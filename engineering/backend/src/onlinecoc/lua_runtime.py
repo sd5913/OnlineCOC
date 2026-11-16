@@ -1,6 +1,5 @@
-"""Spawned Lua 5.4 execution with a narrow JSON/Pipe boundary."""
-import multiprocessing as mp
-import time, math
+"""Lua 5.4 execution with a narrow JSON boundary and shared process limits."""
+import math
 from lupa.lua54 import LuaRuntime, lua_type
 from .errors import DomainError, require
 from .execution import Execution
@@ -101,25 +100,5 @@ def worker(pipe, sources, job):
     finally:pipe.close()
 
 def execute(sources,job,random=None,timeout=10):
-    started=time.perf_counter();context=mp.get_context("spawn");parent,child=context.Pipe()
-    proc=context.Process(target=worker,args=(child,sources,job),daemon=True)
-    proc.start();child.close();deadline=time.monotonic()+timeout
-    try:
-        while time.monotonic()<deadline:
-            if parent.poll(.05):
-                try:message=parent.recv()
-                except EOFError:raise DomainError("WORKER_EXITED")
-                if "random" in message:
-                    try:parent.send({"value":random(message["random"])})
-                    except Exception as e:parent.send({"error":getattr(e,"code","RANDOM_FAILED")})
-                else:
-                    if not message["ok"]:raise DomainError(message["code"],message["diagnostic"])
-                    message["workerMs"]=(time.perf_counter()-started)*1000
-                    return message
-            if not proc.is_alive():raise DomainError("WORKER_EXITED")
-        raise DomainError("RULE_TIMEOUT")
-    finally:
-        if proc.is_alive():proc.terminate()
-        proc.join(3)
-        if proc.is_alive():proc.kill();proc.join()
-        parent.close()
+    from .worker_process import execute_request
+    return execute_request({"sources":sources,"job":job},random,timeout)

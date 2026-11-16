@@ -1,0 +1,11 @@
+{
+  "packageId": "example-player-ui",
+  "version": "1.0.0",
+  "entry": "ui/index.html",
+  "files": [
+    "ui/index.html",
+    "ui/app.js",
+    "ui/style.css",
+    "assets/map.png"
+  ]
+}

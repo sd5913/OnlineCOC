@@ -4,10 +4,21 @@
 - 文档子类：工程
 - 状态：有效
 - 创建日期：2026-10-30
-- 最后更新：2026-10-30
+- 最后更新：2026-11-14
 - 关联文档：[工程运行](first-test.md)、[Lua 编写](lua-authoring.md)、[机器证据](../../../engineering/acceptance/results-2026-10-30.json)、[施工计划](<../../plans/project planning/first-test-construction-plan.md>)
 
+
+2026-11-14，AI 管理器改为房间文件夹对话，新增授权数据短指令/补全与配置包交互原型；合并会话事务并缩小详情查询范围。完整回归 335 项、最终专项 22 项、原操作台/真实启动复验 3 项均通过，去重 337 项，无失败/跳过；证据见[本轮摘要](../../../engineering/acceptance/ai-runtime/chat.json)，本机测量和边界见[管理器说明](ai-manager.md)。原型使用演示数据，不等于树桩镇配置闭环已实现。
+
+2026-11-13，新增 AI 独立管理器、加密凭据、会话、嵌入组件与 SDK 后，完整宿主/AI 回归 330 项及最终专项 28 项、管理器浏览器复验 1 项通过，去重 331 项。证据见[管理器验收](../../../engineering/acceptance/ai-runtime/manager.json)，使用及限制见[当前说明](ai-manager.md)。本轮模型为离线确定性服务，实际执行 Windows DPAPI、宿主鉴权、三检、批准与发布。树桩镇后续咨询接入的实际范围由[包接入说明](../../../rulepacks/stumpsville/docs/current/integrations.md)维护。
+
+2026-11-12，AI-6 最终工程验收运行宿主与 AI 完整回归 302 项，并完成权限/记忆/实际 Edge 的 46 项及 23 项补验；原阶段按测试 ID 去重 304 项，无失败/跳过。补充真实 DeepSeek JSON/工具探测、两个只读工具调用、demo 提案生成与 A/B/C 已通过；结构化生成修复的 49 项回归通过，四次运行累计去重 305 项。实际 demo 概率/旧实例/审批/恢复闭环、CLI 三检及 pip check 通过，见[验收摘要](../../../engineering/acceptance/ai-runtime/acceptance-summary.json)和[真实联调](../../../engineering/acceptance/ai-runtime/deepseek-live.json)。真实生成停在 KP 审核前，真实 KP 试玩尚未验收，AI LAN 路由未开放。
+
 ## 1. 结论与证据
+
+2026-11-12，AI-2 的 Room v2、审批、原子发布和恢复分叉实施后，宿主与 AI 工具完整回归 228 项通过，另补房间锁验收 1 项通过，合计 **229 项，无失败/跳过**。见[阶段证据](../../../engineering/acceptance/ai-runtime/ai-2.json)；未重新执行真实浏览器操作或物理断电试验。
+
+2026-11-12，AI-1 将 inspect、正式 Lua 和离线检查统一到受限子进程后，现有宿主测试再次 **74 项全部通过**，耗时约 124 秒，见 [AI-1 宿主回归](../../../engineering/acceptance/ai-runtime/ai-1-host.json)。本次包含现有 HTTP/聊天/文件/真实进程故障检查，未重跑原阶段三个真实浏览器验收，不把旧浏览器证据算作本轮新测。
 
 聊天室追加后，最终完整回归为 **74 项通过，0 失败/错误/跳过**（其中聊天相关 27 项），用时约 86 秒，包含三个真实隔离浏览器及进程崩溃检查。对应 [机器摘要](../../../engineering/acceptance/chat-results-2026-10-30.json) 保存逐用例结果和源码摘要；下述 47 项及其性能数字保留为原阶段证据，不当作本轮新测数据。首次完整运行遇到一次既有恢复目录发布的 Windows 拒绝访问，单项与最终全套复验均通过，暂未确定瞬时原因。
 
@@ -81,6 +92,6 @@ V08 的慢发送故障是在 ASGI 发送边界注入背压，不冒称真实拥�
 ## 5. 保留项
 
 - 独立制作者试写：按 [Issue](<../../plans/project planning/Issue/lua-authoring-simplification.md>) 的五道任务记录耗时、错误和求助；本次没有虚构参与者或结论。
-- 首测默认单房间、回环联网；没有 LAN/公网部署、P2P、正式用户面板或数据库适配器。聊天室后端已追加实现，聊天页面仍待制作；完整游戏规则归配置包，地图/逻辑图/空间能力暂不作为必要实现。
+- 本页 E0—E6 证据对应单房间回环基线；其后已另行增加 [LAN 网关](network-lan.md)、[公网房间/P2P 模块](network-p2p.md)和[网页房间模块](network-web.md)，公网模块的版本验收及跨机器结果单独记录，不混入本页历史统计。完整产品面板和数据库适配器仍未提供；具体游戏包的规则、网页与服务接入按包另验。
 - Windows 文件发布的物理断电边界、恶意脚本安全托管、长时间饱和负载均未验收。
 - FastAPI/Starlette 的测试客户端对现用 httpx 发出 1 条弃用提醒；本轮适配器测试通过，运行服务路径不使用 TestClient。依赖升级应在后续重新锁定和验证，不在交付末尾盲目升级。

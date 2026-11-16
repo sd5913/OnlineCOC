@@ -1,0 +1,152 @@
+{
+  "checkedAt": "2026-11-15T20:32:47.239065+08:00",
+  "issue": "ISSUE-009",
+  "engineeringRepairsVerified": true,
+  "fullAnswerQualityAccepted": false,
+  "originalFailureExactCauseConfirmed": false,
+  "originalEvidencePreserved": "rulepacks/stumpsville/tests/ai-demand-results.json",
+  "offline": {
+    "tests": 87,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "junit": "engineering/acceptance/ai-runtime/issue-009-live-regression.xml",
+    "cliGuardChecks": 4,
+    "previousStage": "engineering/acceptance/ai-runtime/issue-009-results.json",
+    "countsAreNotAdditive": true
+  },
+  "live": {
+    "consultations": 6,
+    "providerAttempts": 33,
+    "confirmedTokens": 393620,
+    "unsettledCalls": 1,
+    "retainedReservationTokens": 37296,
+    "usageNote": "Confirmed usage excludes one truncated response; retained reservation is not actual billed usage. Original 3473-token case is separate.",
+    "attempts": [
+      {
+        "report": "rulepacks/stumpsville/tests/ai-demand-retest-20261115.json",
+        "reportSha256": "e9c79d3a27ab564e72cd669221570d3f5ea68364fc6dc0d186b8ee7c524260ef",
+        "verdict": "budget reservation ceiling reached",
+        "status": "failed",
+        "error": "BUDGET_EXCEEDED",
+        "providerCalls": 5,
+        "confirmedTokens": 50323,
+        "unsettledCalls": 0,
+        "retainedReservationTokens": 0,
+        "successfulQueries": 10,
+        "diagnosticStage": "budget_reserve"
+      },
+      {
+        "report": "rulepacks/stumpsville/tests/ai-demand-retest-budget200k-20261115.json",
+        "reportSha256": "8caf8ecfc24e50b537052535dd4476d25bb1bc676c2b8a4674390d114eeb30c9",
+        "verdict": "provider output truncated; one call has no settled usage",
+        "status": "failed",
+        "error": "PROVIDER_OUTPUT_TRUNCATED",
+        "providerCalls": 3,
+        "confirmedTokens": 11348,
+        "unsettledCalls": 1,
+        "retainedReservationTokens": 37296,
+        "successfulQueries": 5,
+        "diagnosticStage": "provider_complete"
+      },
+      {
+        "report": "rulepacks/stumpsville/tests/ai-demand-retest-output8192-20261115.json",
+        "reportSha256": "163a20efef9dc9eb2e6b3981e49a1eb363a4a51a8634c7bd1ffe5238ae6469fc",
+        "verdict": "automatic chain passed; manual counts and channel identity failed",
+        "status": "review_ready",
+        "error": null,
+        "providerCalls": 4,
+        "confirmedTokens": 47194,
+        "unsettledCalls": 0,
+        "retainedReservationTokens": 0,
+        "successfulQueries": 5,
+        "diagnosticStage": "completed"
+      },
+      {
+        "report": "rulepacks/stumpsville/tests/ai-demand-retest-final-20261115.json",
+        "reportSha256": "2c219e1761defb6922fa96f5e0bde4329a05817caa51cd0d3210e463cc1ba07d",
+        "verdict": "tool round limit reached before final answer",
+        "status": "failed",
+        "error": "TOOL_ROUND_LIMIT",
+        "providerCalls": 7,
+        "confirmedTokens": 100809,
+        "unsettledCalls": 0,
+        "retainedReservationTokens": 0,
+        "successfulQueries": 12,
+        "diagnosticStage": "response_recheck"
+      },
+      {
+        "report": "rulepacks/stumpsville/tests/ai-demand-retest-bounded-20261115.json",
+        "reportSha256": "fdae2c48e0672129d2c0265089d783faa402297df46e2e945ae18af1baaee94e",
+        "verdict": "diagnostics identified optional behaviors KeyError during proposal validation",
+        "status": "failed",
+        "error": "AI_TASK_FAILED",
+        "providerCalls": 7,
+        "confirmedTokens": 92127,
+        "unsettledCalls": 0,
+        "retainedReservationTokens": 0,
+        "successfulQueries": 8,
+        "diagnosticStage": "proposal_validate"
+      },
+      {
+        "report": "rulepacks/stumpsville/tests/ai-demand-retest-validated-20261115.json",
+        "reportSha256": "9198a872550b3d1ef9496a8222c68c22da88a73bf13a076be3583c4951c8558b",
+        "verdict": "query chain and enumerated counts passed; some gameplay interpretations remain unsupported",
+        "status": "review_ready",
+        "error": null,
+        "providerCalls": 7,
+        "confirmedTokens": 91819,
+        "unsettledCalls": 0,
+        "retainedReservationTokens": 0,
+        "successfulQueries": 11,
+        "diagnosticStage": "completed"
+      }
+    ]
+  },
+  "latestReview": {
+    "queryChainPassed": true,
+    "actualCounts": {
+      "activeEntities": 29,
+      "configurations": 13,
+      "hostChannels": 1
+    },
+    "answerCountsMatch": true,
+    "channelId": "general",
+    "successfulQueries": 11,
+    "rejectedQueries": 1,
+    "finalResponseOnlyTurn": 6,
+    "draftCreated": false,
+    "readCoverageExplicit": true,
+    "unread": [
+      "hidden clue details",
+      "other non-NPC character and inventory details",
+      "chat messages",
+      "event",
+      "ruling",
+      "memory",
+      "rule"
+    ],
+    "unsupportedInterpretations": [
+      "Map asserted to be a single chain without reading topology/rules",
+      "Zero flags interpreted as no story progression or no player clue knowledge without rule evidence",
+      "cheese1 speculates about a one-tenth portion from field name alone"
+    ],
+    "acceptance": "Source enumeration and sampled numeric facts checked; not an exhaustive factual/semantic audit. Gameplay interpretations require KP review."
+  },
+  "isolation": {
+    "scope": "generated sample rooms only",
+    "realSaveChanged": false,
+    "persistentProviderConfigUnchangedInLatestRuns": true,
+    "rawModelResponseStored": false,
+    "cloudDeployed": false
+  },
+  "sourceSha256": {
+    "engineering/ai/src/onlinecoc_ai/coordinator.py": "3f1d65cead60237f23e0876bd6c1bbccdc1ea821393c38502279c155cbee5471",
+    "engineering/ai/src/onlinecoc_ai/data_queries.py": "1872265de5b95a21e0c3d3741e50c39770202ee848f8890046a9e27f91bb97c5",
+    "engineering/ai/src/onlinecoc_ai/validation/base.py": "5c247432ca6362244ec78b28c98dc7e61195dc518e8f11cdedcca0b11e27e38d",
+    "engineering/ai/src/onlinecoc_ai/diagnostics.py": "c21ba053c65bd712092d8b68070a3657e1ea817f803f491843bd3a4039a9d65e",
+    "engineering/ai/tests/test_task_diagnostics.py": "c5ea5f465d7a5a84cabfdbfcdffe1508daf7d6b85ec4db31a444ddee08edac79",
+    "engineering/ai/tests/test_base.py": "731de4b7532f125eb492dbe26f71c3674d51da9109e75414a74b11299f789e74",
+    "rulepacks/stumpsville/tests/verify_ai_demand.py": "39b5cd5bbbe7e3e810ba13bb6f75e2f89146063824b4db33a6a5efbf836c5198"
+  }
+}

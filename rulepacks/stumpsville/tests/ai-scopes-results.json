@@ -1,0 +1,16 @@
+{
+  "checkedAt": "2026-11-15T20:55:33.688869+08:00",
+  "passed": 8,
+  "checks": [
+    "enabled model with all external scopes off receives empty lists despite real KP-visible NPCs",
+    "KP scope exposes authoritative spiders/snake and current locations; name search npc remains empty",
+    "public configurations and private events have distinct scopes; no confirmed memory is a valid empty source",
+    "KP dispatch of a PL request still cannot export KP-only NPCs",
+    "demand placeholders remain empty while queries return data; current guide ships with snapshot and stale guide is detected",
+    "current runtime provides actual authorized page counts and complete pagination; HTTP EvidencePage remains unchanged",
+    "channel evidence reference resolves to general; actual chat text and NPC current fields reach the model",
+    "updated pack guide reaches the model; three tool rounds end in one tool-free plan response with no proposal"
+  ],
+  "provider": "loopback fixture",
+  "realSavesModified": false
+}

@@ -1,0 +1,13 @@
+{
+  "passed": true,
+  "checkedAt": "2026-11-15T18:17:15.222721+08:00",
+  "checks": [
+    "all 18 preset labels, hints, choices and processes have restricted bilingual entries",
+    "locale follows authorized projection; secret catalogs return 404; user text and saved results remain unchanged",
+    "map/actions, compact real roll narrative and state changes, and chat coexist; action refresh preserves draft",
+    "1920/1440/1366 viewports fit without page scrolling; log scroll, filters and expansion survive polling",
+    "language switch updates scene, preset dialog, dice and results; chat draft keeps original text",
+    "390px scene/log/chat tabs remain in one viewport; empty private list never shows a global composer"
+  ],
+  "consoleErrors": []
+}

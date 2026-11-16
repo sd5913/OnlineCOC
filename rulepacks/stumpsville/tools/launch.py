@@ -29,11 +29,24 @@ import websockets
 
 from client import Client, HostError
 from package import PACK, Package, PackageError, bundle
+from chat import ScopedChat
+from localization import localize_projection, localize_result
+from integrations import Modules
+from ai_bridge import consultation
+from processes import OwnedProcess, run_owned, stop_process
 
 ROOT = PACK.parents[1]
 SLOTS = re.compile(r'[a-zA-Z0-9_-]{1,40}')
 STATIC = {'': ('ui/index.html', 'text/html; charset=utf-8'),
           'app.js': ('ui/app.js', 'text/javascript; charset=utf-8'),
+          'chat.js': ('ui/chat.js', 'text/javascript; charset=utf-8'),
+          'ai.js': ('ui/ai.js', 'text/javascript; charset=utf-8'),
+          'ai-embedded.js': ('ui/ai-embedded.js', 'text/javascript; charset=utf-8'),
+          'i18n.js': ('ui/i18n.js', 'text/javascript; charset=utf-8'),
+          'messageformat.js': ('ui/messageformat.js', 'text/javascript; charset=utf-8'),
+          'locales/zh-CN/ui.json': ('locales/zh-CN/ui.json', 'application/json'),
+          'locales/en/ui.json': ('locales/en/ui.json', 'application/json'),
+          'locales/meta/catalog/ui.json': ('locales/meta/catalog/ui.json', 'application/json'),
           'styles.css': ('ui/styles.css', 'text/css; charset=utf-8')}
 
 
@@ -91,13 +104,17 @@ class Runtime:
         self.process = None
         self.log = None
         self.setup_lock = asyncio.Lock()
-        self.command = [sys.executable, '-B', str(ROOT / 'engineering/backend/scripts/run.py'), '--data-dir', str(self.host_data)]
+        python = Path(sys.executable)
+        if python.name.lower() == 'pythonw.exe':
+            python = python.with_name('python.exe')
+        self.command = [str(python), '-B', str(ROOT / 'engineering/backend/scripts/run.py'), '--data-dir', str(self.host_data)]
         self.env = {**os.environ, 'PYTHONDONTWRITEBYTECODE': '1', 'PYTHONUTF8': '1'}
         self.opened_at = time.time()
         self.pack_version = json.loads((PACK/'manifest.json').read_text(encoding='utf-8'))['version']
         self.net_lock = threading.RLock()
         self.connections, self.seen_accounts = {}, {}
         self.visits = deque(maxlen=60)
+        self.modules = Modules(self)
 
     def observe_request(self, peer, path, status):
         try:
@@ -145,38 +162,50 @@ class Runtime:
     def start(self):
         if self.process and self.process.poll() is None:
             return
+        stop_process(self.process)
         if not self.host_data.exists():
             return
         if self.log:
             self.log.close()
         self.log = (self.data / 'host.log').open('a', encoding='utf-8')
-        self.process = subprocess.Popen(self.command + ['serve', '--port', self.backend.rsplit(':', 1)[1]],
+        log_offset = self.log.tell()
+        self.process = OwnedProcess(self.command + ['serve', '--port', self.backend.rsplit(':', 1)[1]] + self.modules.host_args(),
                                         env=self.env, stdout=self.log, stderr=self.log,
                                         creationflags=getattr(subprocess, 'CREATE_NO_WINDOW', 0))
         for _ in range(150):
             if self.process.poll() is not None:
-                raise RuntimeError('宿主启动失败，请查看运行目录 host.log')
+                self.log.flush()
+                with (self.data/'host.log').open('rb') as file:
+                    file.seek(max(log_offset, (self.data/'host.log').stat().st_size-6000))
+                    tail = file.read().decode('utf-8', errors='replace')
+                if 'STORE_LOCKED' in tail:
+                    raise RuntimeError('宿主存档被其他进程占用（STORE_LOCKED）。请关闭原房间面板；不要删除锁文件。详情见 host.log。')
+                raise RuntimeError('宿主启动失败，请在面板查看 host.log')
             try:
                 with urllib.request.urlopen(self.backend + '/api/v1/capabilities', timeout=.5):
+                    self.modules.start()
                     return
             except OSError:
                 time.sleep(.1)
         raise RuntimeError('宿主连接超时')
 
     def close(self):
-        if self.process and self.process.poll() is None:
-            self.process.terminate()
-            self.process.wait(timeout=10)
-        if self.log:
-            self.log.close()
-        self.lock.close()
+        try:
+            self.modules.close()
+        finally:
+            try:
+                stop_process(self.process)
+            finally:
+                if self.log:
+                    self.log.close()
+                self.lock.close()
 
     def setup(self, password):
         if self.host_data.exists():
             raise PackageError('存档已经存在')
         if not isinstance(password, str) or not 8 <= len(password) <= 128:
             raise PackageError('密码应为8至128位')
-        subprocess.run(self.command + ['init'], env={**self.env, 'ONLINECOC_BOOTSTRAP_PASSWORD': password},
+        run_owned(self.command + ['init'], env={**self.env, 'ONLINECOC_BOOTSTRAP_PASSWORD': password},
                        check=True, capture_output=True, timeout=45,
                        creationflags=getattr(subprocess, 'CREATE_NO_WINDOW', 0))
         self.start()
@@ -199,9 +228,11 @@ class Runtime:
 def create_app(runtime):
     @asynccontextmanager
     async def lifespan(app):
-        await asyncio.to_thread(runtime.start)
-        yield
-        runtime.close()
+        try:
+            await asyncio.to_thread(runtime.start)
+            yield
+        finally:
+            await asyncio.to_thread(runtime.close)
 
     app = FastAPI(lifespan=lifespan, docs_url=None, redoc_url=None, openapi_url=None)
 
@@ -246,6 +277,15 @@ def create_app(runtime):
             if path.startswith('api/v1/'):
                 if path.startswith('api/v1/host-control'):
                     return response({'code': 'NOT_FOUND'}, 404)
+                # This integration is consultation-only. Publication would bypass
+                # the package's active revision/recovery bookkeeping.
+                if request.method == 'POST':
+                    payload = json.loads(body)
+                    if not isinstance(payload, dict) or ('payload' in payload and not isinstance(payload['payload'], dict)):
+                        return response({'code': 'INPUT_INVALID'}, 400)
+                    op = payload.get('op') if path == 'api/v1/ai/commands' else payload.get('payload', {}).get('op')
+                    if path == 'api/v1/ai/drafts' or str(op).startswith(('ai.proposal.', 'publication.')) or op == 'ai.draft.create':
+                        return response({'code': 'AI_CONSULTATION_ONLY'}, 403)
                 headers = {'Origin': runtime.backend, 'Cookie': cookie}
                 for key in ('content-type', 'x-csrf-token'):
                     if request.headers.get(key):
@@ -276,19 +316,42 @@ def create_app(runtime):
                 client = await asyncio.to_thread(runtime.client, cookie)
                 if request.method == 'POST' and request.headers.get('x-csrf-token') != client.csrf:
                     return response({'code': 'CSRF_REQUIRED'}, 403)
+                if path in {'package/web/status','package/web/stop'}:
+                    view=await asyncio.to_thread(client.request,'/view')
+                    if view['role']!='kp' or request.client.host not in {'127.0.0.1','::1'}:
+                        return response({'code':'LOCAL_KP_REQUIRED'},403)
+                    if path=='package/web/stop':
+                        if request.method!='POST':return response({'code':'METHOD_NOT_ALLOWED'},405)
+                        await asyncio.to_thread(runtime.modules.stop_web)
+                    return response(runtime.modules.web_status(private=True))
                 if path == 'package/state' and request.method == 'GET':
-                    result = await asyncio.to_thread(runtime.package.projection, client, request.query_params.get('preview'))
+                    result = await asyncio.to_thread(runtime.package.projection, client, request.query_params.get('preview'), request.query_params.get('player') == '1')
                     if not result['preview']:
                         runtime.heartbeat(result, cookie, request.query_params.get('page'), request.client.host)
                         if result['role'] == 'kp':
                             result['network'] = runtime.network_snapshot(result['members'], result['characters'])
-                    return response(result)
+                    return response(localize_projection(result, request.query_params.get('locale', 'zh-CN')))
+                if path == 'package/integrations' and request.method == 'GET':
+                    view = await asyncio.to_thread(client.request, '/view')
+                    if view['role'] != 'kp':
+                        return response({'code': 'KP_REQUIRED'}, 403)
+                    return response(runtime.modules.status())
+                if path == 'package/chat/history' and request.method == 'POST':
+                    def history():
+                        with runtime.package.lock:
+                            return ScopedChat(runtime.package).history(client, json.loads(body))
+                    return response(await asyncio.to_thread(history))
+                if path == 'package/ai' and request.method == 'POST':
+                    if len(body) > 65536:
+                        return response({'code': 'REQUEST_TOO_LARGE'}, 413)
+                    return response(await asyncio.to_thread(consultation, client, json.loads(body)))
                 if path == 'package/scene-executor' and request.method == 'POST':
                     return response(await asyncio.to_thread(runtime.package.scene_executor, client))
                 if path == 'package/action' and request.method == 'POST':
                     if len(body) > 65536:
                         return response({'code': 'REQUEST_TOO_LARGE'}, 413)
-                    return response(await asyncio.to_thread(runtime.package.action, client, json.loads(body)))
+                    result = await asyncio.to_thread(runtime.package.action, client, json.loads(body))
+                    return response(localize_result(result, request.query_params.get('locale', 'zh-CN')))
                 if path == 'package/bundle' and request.method == 'GET':
                     view = await asyncio.to_thread(client.request, '/view')
                     if view['role'] != 'kp':
@@ -301,6 +364,11 @@ def create_app(runtime):
                 return response({'code': 'NOT_FOUND'}, 404)
             if request.method != 'GET':
                 return response({'code': 'METHOD_NOT_ALLOWED'}, 405)
+            ai_files = json.loads((ROOT/'engineering/ai/web/components/pack-manifest.json').read_text(encoding='utf-8'))['runtimeFiles']
+            if path.startswith('ai-ui/') and path[6:] in ai_files and not path.endswith('.html') and runtime.modules.ai_config:
+                async with httpx.AsyncClient(timeout=10, trust_env=False) as upstream:
+                    result = await upstream.get(runtime.backend + '/' + path)
+                return response(result.content, result.status_code, 'text/css; charset=utf-8' if path.endswith('.css') else 'text/javascript; charset=utf-8')
             if path in STATIC:
                 filename, mime = STATIC[path]
                 return response((PACK / filename).read_bytes(), mime=mime)
@@ -361,6 +429,9 @@ def main():
     parser.add_argument('--backend-port', type=int, default=0)
     parser.add_argument('--bind', default='127.0.0.1')
     parser.add_argument('--no-browser', action='store_true')
+    parser.add_argument('--ai-config', type=Path, help='启用咨询模块；不自动启用模型调用')
+    parser.add_argument('--p2p-config', type=Path, help='打开 P2P 基础联机入口；不自动发布房间')
+    parser.add_argument('--web-config', type=Path, help='网页玩家分享；与旧P2P入口互斥')
     args = parser.parse_args()
     address = ipaddress.ip_address(args.bind)
     if address.version != 4 or not (address.is_loopback or (address.is_private and not address.is_unspecified)):
@@ -372,7 +443,10 @@ def main():
         timer = threading.Timer(1.5, webbrowser.open, args=(runtime.origin,))
         timer.daemon = True
         timer.start()
-    uvicorn.run(create_app(runtime), host=args.bind, port=args.port, log_level='warning', proxy_headers=False)
+    try:
+        uvicorn.run(create_app(runtime), host=args.bind, port=args.port, log_level='warning', proxy_headers=False)
+    finally:
+        runtime.close()
 
 
 if __name__ == '__main__':

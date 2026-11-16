@@ -1,0 +1,13 @@
+{
+  "passed": true,
+  "checkedAt": "2026-11-13T10:53:41.191354+08:00",
+  "checks": [
+    "KP can create, approve, ready and play own character; player projection excludes management data",
+    "scene access checked on every read/write after movement; team messages, idempotence and private-chat isolation",
+    "separate KP management and own PL windows; real PL check commits from shared player component",
+    "QQ-style chat lists, scene/team drafts, safe text, Ctrl+Enter and two independent DM windows",
+    "Chinese/English resources, scope isolation, missing-text fallback, language persistence and mobile chat",
+    "scoped chat survives restart without changing actual play saves"
+  ],
+  "consoleErrors": []
+}

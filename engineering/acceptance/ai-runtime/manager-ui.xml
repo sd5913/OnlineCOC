@@ -1,0 +1,1 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="0" skipped="0" tests="1" time="26.979" timestamp="2026-11-13T12:49:24.483263+08:00" hostname="LAPTOP-BIFSL64A"><testcase classname="tests.test_manager_ui" name="test_real_manager_providers_sessions_review_and_embed" time="26.732" /></testsuite></testsuites>

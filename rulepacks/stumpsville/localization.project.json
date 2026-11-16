@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "projectId": "stumpsville",
+  "localization": {
+    "sourceLocale": "zh-CN",
+    "supportedLocales": [
+      "zh-CN",
+      "en"
+    ],
+    "root": "locales",
+    "namespaces": [
+      "ui",
+      "content"
+    ],
+    "messageFormat": "icu-mf1",
+    "fallbacks": {
+      "zh-Hans": [
+        "zh-CN"
+      ],
+      "en-GB": [
+        "en"
+      ]
+    },
+    "releasePolicy": {
+      "allowIncomplete": true,
+      "excludeMessages": []
+    },
+    "missingText": {
+      "mode": "fallback",
+      "errorText": "[Text unavailable]"
+    },
+    "distribution": {
+      "default": "restricted",
+      "publicNamespaces": [
+        "ui"
+      ]
+    }
+  },
+  "references": {
+    "roots": [
+      {
+        "id": "project",
+        "path": "."
+      }
+    ],
+    "adapters": [],
+    "dynamicKeys": []
+  },
+  "build": {
+    "output": "build/localization"
+  },
+  "extensions": {
+    "stumpsville": {
+      "consumer": "ui/i18n.js",
+      "scope": "Public UI messages; restricted server-side scene and result display messages"
+    }
+  }
+}

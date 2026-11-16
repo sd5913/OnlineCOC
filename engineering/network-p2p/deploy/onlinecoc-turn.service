@@ -1,0 +1,25 @@
+[Unit]
+Description=OnlineCOC authenticated TURN relay
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=onlinecoc-net
+Group=onlinecoc-net
+ExecStart=/usr/bin/turnserver -c /etc/onlinecoc-network/turnserver.conf --pidfile=/run/onlinecoc-turn/turn.pid
+RuntimeDirectory=onlinecoc-turn
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/run/onlinecoc-turn /var/lib/onlinecoc-network
+UMask=0077
+MemoryMax=300M
+TasksMax=64
+LimitNOFILE=4096
+
+[Install]
+WantedBy=multi-user.target

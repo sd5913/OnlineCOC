@@ -4,14 +4,14 @@
 - 文档子类：工程
 - 状态：有效
 - 创建日期：2026-10-30
-- 最后更新：2026-10-30
+- 最后更新：2026-11-12
 - 关联文档：[首测工程](first-test.md)、[工程索引](README.md)、[桌面工具源码](../../../engineering/desktop/README.md)、[更新问题](../../plans/Issues/README.md)
 
 ## 使用
 
 在完整工程根目录双击 [安装依赖.exe](../../../安装依赖.exe)，完成后双击 [启动OnlineCOC.exe](../../../启动OnlineCOC.exe)。exe 必须与工程目录及 [launcher-config.json](../../../launcher-config.json) 一起保留，不是可单独搬走的应用包。
 
-安装程序校验并展开官方 Python 3.14.2 x64 完整运行时，创建项目内虚拟环境，依据共享 `engineering/requirements-runtime.lock` 安装 26 项运行依赖，检查版本、模块导入和 `pip check` 后才标记完成。不需要系统 Python、不注册 Python、不修改 PATH 或系统 Python 环境，不需要管理员安装。
+安装程序校验并展开官方 Python 3.14.2 x64 完整运行时，创建项目内虚拟环境，依据共享 `engineering/requirements-runtime.lock` 安装 29 项运行依赖（含 AI 使用的 HTTPX/HTTPCore/certifi），检查版本、模块导入和 `pip check` 后才标记完成。不需要系统 Python、不注册 Python、不修改 PATH 或系统 Python 环境，不需要管理员安装。
 
 启动程序检查环境，尚未安装或依赖锁变化时自动完成必要安装；环境就绪后启动本机服务并打开浏览器。首次启动询问初始密码，初始化 `kp`、`player1`、`player2` 三个首测账号。密码不写入配置或启动日志。后续使用同一存档目录会恢复进度。
 

@@ -1,0 +1,1 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="0" skipped="0" tests="1" time="9.941" timestamp="2026-11-12T17:34:20.323301+08:00" hostname="LAPTOP-BIFSL64A"><testcase classname="tests.test_ai_publication" name="test_resolving_prepared_bundle_does_not_hold_room_lock" time="9.892" /></testsuite></testsuites>

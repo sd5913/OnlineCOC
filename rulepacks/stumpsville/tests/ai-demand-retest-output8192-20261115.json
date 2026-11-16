@@ -1,0 +1,196 @@
+{
+  "checkedAt": "2026-11-15T20:09:59.632375+08:00",
+  "model": "deepseek-flash",
+  "liveProvider": true,
+  "realSaveChanged": false,
+  "scope": "isolated generated sample room only",
+  "passed": true,
+  "evidenceDirectory": "tests/output/ai-demand-82de471b",
+  "limits": {
+    "dailyTokenBudget": 200000,
+    "maxConcurrentPerRoom": 1,
+    "maxQueuedPerRoom": 5,
+    "maxRepairAttempts": 0,
+    "maxToolRounds": 6,
+    "maxTransportRetries": 0,
+    "taskTimeoutMs": 240000
+  },
+  "maxOutputTokens": 8192,
+  "prompt": "查看所有房间信息并梳理",
+  "unsettledCalls": 0,
+  "budgetCharged": 47194,
+  "usageComplete": true,
+  "status": "review_ready",
+  "error": null,
+  "providerCalls": 4,
+  "tokens": 47194,
+  "queries": [
+    {
+      "operation": "search",
+      "types": [
+        "entity"
+      ],
+      "query": "",
+      "references": 0,
+      "hasCursor": false,
+      "limit": 50
+    },
+    {
+      "operation": "search",
+      "types": [
+        "config"
+      ],
+      "query": "",
+      "references": 0,
+      "hasCursor": false,
+      "limit": 50
+    },
+    {
+      "operation": "read",
+      "types": null,
+      "query": null,
+      "references": 6,
+      "hasCursor": false,
+      "limit": null
+    },
+    {
+      "operation": "search",
+      "types": [
+        "channel",
+        "memory"
+      ],
+      "query": "",
+      "references": 0,
+      "hasCursor": false,
+      "limit": 50
+    },
+    {
+      "operation": "search",
+      "types": [
+        "event",
+        "ruling",
+        "memory",
+        "rule"
+      ],
+      "query": "",
+      "references": 0,
+      "hasCursor": false,
+      "limit": 50
+    }
+  ],
+  "providerResponses": 4,
+  "usage": {
+    "prompt_tokens": 44661,
+    "completion_tokens": 2533,
+    "total_tokens": 47194
+  },
+  "rawModelResponseStored": false,
+  "diagnostics": {
+    "errors": [],
+    "schemaVersion": 1,
+    "stage": "completed",
+    "toolCalls": [
+      {
+        "argumentsDigest": "d8efcc6c9d91a5abb1827c90676ff897d7131b1d061c8efe475f1d1b908f8159",
+        "hasQuery": false,
+        "keys": [
+          "limit",
+          "query",
+          "types"
+        ],
+        "name": "room_search_data",
+        "status": "completed",
+        "turn": 0,
+        "types": [
+          "entity"
+        ],
+        "unknownKeys": false
+      },
+      {
+        "argumentsDigest": "c56d1d7624bf3be387d429919cd04cdb113008a49a687d9f6e7964eced7c8f69",
+        "hasQuery": false,
+        "keys": [
+          "limit",
+          "query",
+          "types"
+        ],
+        "name": "room_search_data",
+        "status": "completed",
+        "turn": 0,
+        "types": [
+          "config"
+        ],
+        "unknownKeys": false
+      },
+      {
+        "argumentsDigest": "700f3e053bc88b632876488526f8fc589d8e1619099f48538245e582a98fc3d9",
+        "keys": [
+          "refs"
+        ],
+        "name": "room_read_data",
+        "referenceCount": 6,
+        "status": "completed",
+        "turn": 1,
+        "unknownKeys": false
+      },
+      {
+        "argumentsDigest": "b67213b4f51671978e4608caa2a94273d03ba7cf5aa283420be22914decc6e77",
+        "hasQuery": false,
+        "keys": [
+          "limit",
+          "query",
+          "types"
+        ],
+        "name": "room_search_data",
+        "status": "completed",
+        "turn": 1,
+        "types": [
+          "channel",
+          "memory"
+        ],
+        "unknownKeys": false
+      },
+      {
+        "argumentsDigest": "1beced8b899d3d3b5c96ebfeb4435aa4f168d05ff755aef57a7ca9286a130145",
+        "code": "NOT_VISIBLE",
+        "keys": [
+          "channelId",
+          "limit"
+        ],
+        "name": "room_read_chat",
+        "status": "rejected",
+        "turn": 2,
+        "unknownKeys": false
+      },
+      {
+        "argumentsDigest": "d8d5a57dc44383489e971cde70c97bb63e104bace597ffdf02f565714ccde410",
+        "hasQuery": false,
+        "keys": [
+          "limit",
+          "query",
+          "types"
+        ],
+        "name": "room_search_data",
+        "status": "completed",
+        "turn": 2,
+        "types": [
+          "event",
+          "ruling",
+          "memory",
+          "rule"
+        ],
+        "unknownKeys": false
+      }
+    ],
+    "turn": 3
+  },
+  "replySha256": "bce9ec96b8ebb016d68fec6cae5b9d08d8082658ded7520721b3c03da32952f9",
+  "replyCharacters": 2397,
+  "checks": {
+    "entityEnumeration": true,
+    "configEnumeration": true,
+    "detailsRead": true,
+    "actualNamesInReply": true
+  },
+  "persistentProviderConfigUnchanged": true
+}

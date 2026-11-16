@@ -6,7 +6,7 @@
 
 从 [安装与运行](docs/current/engineering/first-test.md) 开始；规则制作者阅读 [Lua 编写说明](docs/current/engineering/lua-authoring.md)，验证范围见 [首测验收报告](docs/current/engineering/first-test-acceptance.md)。原 [Lua 同步实验](engineering/lua-authoring-prototype/README.md) 作为独立历史原型保留。
 
-聊天室数据、接口和 SDK 见 [聊天室后端](docs/current/engineering/chat-backend.md)；尚无聊天页面。地图、逻辑图和 2D/3D 空间暂不作为必要实现。
+聊天室数据、接口和 SDK 见 [聊天室后端](docs/current/engineering/chat-backend.md)；公网联机入口已提供基础聊天。地图、逻辑图和 2D/3D 空间暂不作为必要实现。
 
 ## Windows 快速开始
 
@@ -41,4 +41,4 @@ Python/Tkinter 独立桌面房间管理工具已位于 [`tools/room-manager/`](t
 
 Agent 或人员施工前，必须检查 [hierarchy 目录与施工登记](docs/current/engineering/hierarchy.md)，用唯一 ID 登记使用或改动范围，确认无冲突后施工，结束后释放标记。
 
-局域网联机使用独立的 [LAN 模块](docs/current/engineering/network-lan.md)，管理器内提供配套 GUI。支持可信局域网 HTTP/WebSocket；公网联机仍待后续。
+局域网使用独立 [LAN 模块](docs/current/engineering/network-lan.md)，管理器内提供 GUI。公网提供[本机 P2P 入口](engineering/network-p2p/README.md)和可选[浏览器房间入口](engineering/network-web/README.md)：后者支持平台注册、代号加入、成员快捷重入、黑名单和独立按需游戏页，已部署腾讯云测试服务。当前已适配首测规则桌面；树桩镇等专用页面与服务仍需单独适配，正式网页证书条件见[工程说明](docs/current/engineering/network-web.md)。

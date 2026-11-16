@@ -1,0 +1,46 @@
+{
+  "startupMs": 724.35,
+  "historyRequests": 250,
+  "samples": {
+    "create": {
+      "medianMs": 57.53,
+      "maxMs": 66.82,
+      "allMs": [
+        52.53,
+        59.9,
+        57.53,
+        58.26,
+        57.47,
+        54.91,
+        66.82
+      ]
+    },
+    "detail": {
+      "medianMs": 3.16,
+      "maxMs": 4.77,
+      "allMs": [
+        4.3,
+        4.77,
+        3.16,
+        3.12,
+        3.11,
+        3.36,
+        3.15
+      ]
+    },
+    "list": {
+      "medianMs": 1.14,
+      "maxMs": 1.15,
+      "allMs": [
+        1.15,
+        1.15,
+        1.13,
+        1.14,
+        1.14,
+        1.13,
+        1.14
+      ]
+    }
+  },
+  "profile": "         339031 function calls (235223 primitive calls) in 0.159 seconds\n\n   Ordered by: cumulative time\n   List reduced from 201 to 12 due to restriction <12>\n\n   ncalls  tottime  percall  cumtime  percall filename:lineno(function)\n        1    0.000    0.000    0.159    0.159 D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\ai\\scripts\\benchmark_local.py:14(command)\n        1    0.000    0.000    0.159    0.159 D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\ai\\src\\onlinecoc_ai\\api.py:26(command)\n    756/3    0.000    0.000    0.126    0.042 {built-in method builtins.next}\n        2    0.000    0.000    0.125    0.063 D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\ai\\src\\onlinecoc_ai\\repository.py:57(transaction)\n        1    0.000    0.000    0.122    0.122 C:\\Users\\26077\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\contextlib.py:145(__exit__)\n        1    0.000    0.000    0.112    0.112 D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\ai\\src\\onlinecoc_ai\\repository.py:71(verify)\n      251    0.001    0.000    0.101    0.000 D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\ai\\src\\onlinecoc_ai\\contracts.py:96(validate)\n      251    0.000    0.000    0.085    0.000 {built-in method builtins.sorted}\n  754/252    0.001    0.000    0.085    0.000 D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\.venv\\Lib\\site-packages\\jsonschema\\validators.py:349(iter_errors)\n      251    0.000    0.000    0.084    0.000 D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\.venv\\Lib\\site-packages\\jsonschema\\_keywords.py:274(ref)\n 3515/252    0.012    0.000    0.076    0.000 D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\.venv\\Lib\\site-packages\\jsonschema\\validators.py:396(descend)\n      252    0.003    0.000    0.069    0.000 D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\.venv\\Lib\\site-packages\\jsonschema\\_keywords.py:290(properties)\n\n\n"
+}

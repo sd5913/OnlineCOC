@@ -1,8 +1,31 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 3,
+  "aiControl": {
+    "schemaVersion": 1,
+    "scopeId": "8726333754c74f5f9340a6f87f00ff26",
+    "packBinding": null,
+    "proposalHeads": {},
+    "approvals": {},
+    "publications": {},
+    "settings": {
+      "enabled": false,
+      "profileId": null,
+      "auto": {
+        "enabled": false,
+        "principal": null,
+        "channelIds": [],
+        "prefix": "!ai "
+      },
+      "externalSources": {
+        "public": false,
+        "kp": false,
+        "private": false
+      }
+    }
+  },
   "roomId": "demo",
   "name": "首测调查室",
-  "runId": "203adb130fa34ab5b9b139b5fd4cb0bc",
+  "runId": "ea9269081b8a48c2b8085def9c4b3b0f",
   "status": "active",
   "entities": {
     "actor-player1": {
@@ -212,8 +235,8 @@
     }
   },
   "relations": {
-    "896d2d9e09754979820e1912fd025b2b": {
-      "relationId": "896d2d9e09754979820e1912fd025b2b",
+    "6efed78e5ba54af2aaf8620238559539": {
+      "relationId": "6efed78e5ba54af2aaf8620238559539",
       "sourceId": "actor-player1",
       "targetId": "bag-player1",
       "relationType": "owns-container",
@@ -221,8 +244,8 @@
       "tags": [],
       "metadata": {}
     },
-    "cf65b270c50a42d4a604eaaaea31c60e": {
-      "relationId": "cf65b270c50a42d4a604eaaaea31c60e",
+    "6210e611e30b4ccd9201ad51fa1644ad": {
+      "relationId": "6210e611e30b4ccd9201ad51fa1644ad",
       "sourceId": "actor-player1",
       "targetId": "skill-player1",
       "relationType": "owns-skill",
@@ -230,8 +253,8 @@
       "tags": [],
       "metadata": {}
     },
-    "06cda40645204246be5db8eba815b19c": {
-      "relationId": "06cda40645204246be5db8eba815b19c",
+    "9133700524514a62b962a49b994e005b": {
+      "relationId": "9133700524514a62b962a49b994e005b",
       "sourceId": "bag-player1",
       "targetId": "item-player1",
       "relationType": "contains",
@@ -239,8 +262,8 @@
       "tags": [],
       "metadata": {}
     },
-    "2986f1edbfdc4afa83a3dcaa861c1ea4": {
-      "relationId": "2986f1edbfdc4afa83a3dcaa861c1ea4",
+    "88a06f169b154b519313bbbc97fd48f2": {
+      "relationId": "88a06f169b154b519313bbbc97fd48f2",
       "sourceId": "actor-player2",
       "targetId": "bag-player2",
       "relationType": "owns-container",
@@ -248,8 +271,8 @@
       "tags": [],
       "metadata": {}
     },
-    "85f597e5410c4cdeb65365b158021a29": {
-      "relationId": "85f597e5410c4cdeb65365b158021a29",
+    "4290ba4f7fd6463a88830315597a5812": {
+      "relationId": "4290ba4f7fd6463a88830315597a5812",
       "sourceId": "actor-player2",
       "targetId": "skill-player2",
       "relationType": "owns-skill",
@@ -257,8 +280,8 @@
       "tags": [],
       "metadata": {}
     },
-    "a1bb6d7b021c4112ae5665bc98834738": {
-      "relationId": "a1bb6d7b021c4112ae5665bc98834738",
+    "bcd42b292b7740ba931145248a6954d7": {
+      "relationId": "bcd42b292b7740ba931145248a6954d7",
       "sourceId": "bag-player2",
       "targetId": "item-player2",
       "relationType": "contains",
@@ -295,48 +318,10 @@
   },
   "progress": {},
   "configurations": {
-    "demo.bag": {
-      "configurationId": "demo.bag",
-      "revision": "1",
-      "typeRef": "bag",
-      "defaults": {
-        "capacity": 2000
-      },
-      "behaviors": {}
-    },
     "demo.weapon": {
       "configurationId": "demo.weapon",
       "revision": "1",
       "typeRef": "weapon",
-      "defaults": {
-        "quantity": 1,
-        "unitMass": 0
-      },
-      "behaviors": {}
-    },
-    "demo.actor": {
-      "configurationId": "demo.actor",
-      "revision": "1",
-      "typeRef": "actor",
-      "defaults": {
-        "hp": 10,
-        "maxHp": 10,
-        "armor": 0,
-        "attack": 0
-      },
-      "behaviors": {}
-    },
-    "demo.status": {
-      "configurationId": "demo.status",
-      "revision": "1",
-      "typeRef": "status",
-      "defaults": {},
-      "behaviors": {}
-    },
-    "demo.item": {
-      "configurationId": "demo.item",
-      "revision": "1",
-      "typeRef": "item",
       "defaults": {
         "quantity": 1,
         "unitMass": 0
@@ -351,6 +336,44 @@
         "value": 0
       },
       "behaviors": {}
+    },
+    "demo.bag": {
+      "configurationId": "demo.bag",
+      "revision": "1",
+      "typeRef": "bag",
+      "defaults": {
+        "capacity": 2000
+      },
+      "behaviors": {}
+    },
+    "demo.item": {
+      "configurationId": "demo.item",
+      "revision": "1",
+      "typeRef": "item",
+      "defaults": {
+        "quantity": 1,
+        "unitMass": 0
+      },
+      "behaviors": {}
+    },
+    "demo.status": {
+      "configurationId": "demo.status",
+      "revision": "1",
+      "typeRef": "status",
+      "defaults": {},
+      "behaviors": {}
+    },
+    "demo.actor": {
+      "configurationId": "demo.actor",
+      "revision": "1",
+      "typeRef": "actor",
+      "defaults": {
+        "hp": 10,
+        "maxHp": 10,
+        "armor": 0,
+        "attack": 0
+      },
+      "behaviors": {}
     }
   },
   "commands": {},
@@ -359,9 +382,6 @@
   "artifacts": {},
   "activeRuleset": null,
   "assets": {},
-  "audit": [],
-  "outbox": [],
-  "collectionRevision": 1,
   "chat": {
     "schemaVersion": 1,
     "channels": {
@@ -381,5 +401,8 @@
       "general": []
     },
     "readPositions": {}
-  }
+  },
+  "audit": [],
+  "outbox": [],
+  "collectionRevision": 1
 }

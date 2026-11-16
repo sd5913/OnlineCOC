@@ -1,0 +1,1 @@
+{"name":"@localizer/desktop","version":"0.1.0","private":true,"type":"module","dependencies":{"@localizer/contracts":"0.1.0","@localizer/messages":"0.1.0","@localizer/core":"0.1.0","react":"19.3.1","react-dom":"19.3.1"}}

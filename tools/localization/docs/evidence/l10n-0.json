@@ -1,0 +1,231 @@
+{
+  "stage": "L10N-0",
+  "status": "in-progress",
+  "toolVersion": "0.1.0",
+  "sourceRevision": "sha256:9dbc4528b40ac9a974928af311159fad5f950f55c593f3de9e6a0f6153064a9d",
+  "dependencyLockHash": "sha256:a6453f7d24e36502f288f018e9033bec4a044d1110aaee351fcf2dc2186ea1ec",
+  "environment": {
+    "os": "Windows 10 Home China",
+    "release": "10.0.19045",
+    "arch": "x64",
+    "cpu": "AMD Ryzen 7 5800H with Radeon Graphics         ",
+    "logicalCpus": 16,
+    "ramBytes": 17041780736,
+    "cliNode": "v24.22.1",
+    "electron": {
+      "node": "24.22.2",
+      "acorn": "8.18.0",
+      "ada": "4.0.0",
+      "amaro": "1.1.11",
+      "ares": "1.34.9",
+      "brotli": "1.2.0",
+      "cldr": "48.0",
+      "icu": "78.2",
+      "llhttp": "9.4.3",
+      "merve": "1.2.2",
+      "modules": "150",
+      "napi": "10",
+      "nbytes": "0.1.4",
+      "ncrypto": "0.0.1",
+      "nghttp2": "1.70.0",
+      "nghttp3": "",
+      "ngtcp2": "",
+      "openssl": "0.0.0",
+      "simdjson": "4.6.11",
+      "simdutf": "7.7.0",
+      "sqlite": "3.53.4",
+      "tz": "2026e",
+      "undici": "7.30.1",
+      "unicode": "17.0",
+      "uv": "1.52.1",
+      "uvwasi": "0.0.23",
+      "v8": "15.6.75.50-electron.0",
+      "zlib": "1.3.2.1-motley",
+      "zstd": "1.6.0",
+      "electron": "45.3.1",
+      "chrome": "156.0.8078.96"
+    }
+  },
+  "fixtureHash": "sha256:a44691d851e36a2b21f05433271067fe6a9e6d11b84d4bdd22b37673c987cffb",
+  "startedAt": "2026-11-12T08:19:31.901Z",
+  "finishedAt": "2026-11-12T08:19:32.944Z",
+  "checks": [
+    {
+      "name": "typecheck",
+      "passed": true,
+      "exitCode": 0,
+      "output": ""
+    },
+    {
+      "name": "boundaries",
+      "passed": true,
+      "exitCode": 0,
+      "output": "Dependency boundaries passed.\n"
+    },
+    {
+      "name": "unit",
+      "passed": true,
+      "exitCode": 0,
+      "output": "✔ shared ICU formatting corpus (17.5997ms)\n✔ malformed messages and invalid arguments become diagnostics (0.449ms)\nℹ tests 2\nℹ suites 0\nℹ pass 2\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 109.4725\n"
+    }
+  ],
+  "cases": [
+    {
+      "id": "E0-1",
+      "expected": "仓库外完整发行启动，游戏环境变量清理，CLI 不依赖 PATH 中的 Node",
+      "actual": "真实 Electron 窗口及便携 CLI 成功；PATH 仅 System32；构建输入限定模块内部",
+      "passed": true,
+      "evidence": "gui-smoke.json"
+    },
+    {
+      "id": "E0-2",
+      "expected": "原生目录选择接受中文空格路径，项目脚本不执行",
+      "actual": "原生对话框 AX 子控件不可操作；截图超时；用户暂时无法接管。等待选择结果 300000ms 超时。",
+      "passed": false,
+      "evidence": "native-dialog.json"
+    },
+    {
+      "id": "E0-3",
+      "expected": "GUI 与独立解析包共享样本一致，错误模板返回诊断",
+      "actual": "8 组真实窗口样本一致；2 组单元测试通过",
+      "passed": true,
+      "evidence": "gui-smoke.json"
+    },
+    {
+      "id": "E0-4",
+      "expected": "依赖版本固定、模块无工程外引用、独立打包及驱动可复验",
+      "actual": "类型与边界检查通过；锁定 Playwright 1.65.0；140 个发行文件摘要通过",
+      "passed": true,
+      "evidence": "release.json + package-lock.json"
+    }
+  ],
+  "distribution": {
+    "files": 140,
+    "bytes": 469232617,
+    "sha256": "9d341157173a576810ea0389296c93ba613e88316dc0f2ccd70fc2727da8f4e8",
+    "repositoryExternalSmoke": true
+  },
+  "unresolved": [
+    "E0-2 原生目录确认未完成；用户暂时无法接管；L10N-1 不启动。",
+    "本机是 Windows 10 19045；Windows 11 和无开发工具的新环境尚未验收。",
+    "仓库内受限执行触发 Electron 目录 ACL 检查；仓库外正常权限执行通过，未修改 ACL 或关闭沙箱。"
+  ],
+  "sources": [
+    {
+      "path": ".npmrc",
+      "sha256": "b86723fc6bc765970dbc23887f1d2c21699642f1596afd5fd883cf7387fd0afe"
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "a6453f7d24e36502f288f018e9033bec4a044d1110aaee351fcf2dc2186ea1ec"
+    },
+    {
+      "path": "package.json",
+      "sha256": "73e9793d40e48a14b6b93a77d282efa4a276d38f565351b2a5884602ae2c96e0"
+    },
+    {
+      "path": "packages/cli/package.json",
+      "sha256": "5f52967606785c3ad0bc529c58242a667a9f7563ca299b0ba116a2cce0cf8816"
+    },
+    {
+      "path": "packages/cli/src/main.ts",
+      "sha256": "c9192e557b3dc31ab6b935fc3e3ca77f29f429accf23e1d1e91da1818d1529f3"
+    },
+    {
+      "path": "packages/contracts/package.json",
+      "sha256": "2df371d3fbe4fa21e00088e8f03fde5cb8007964b8242e63933a62a3702b0798"
+    },
+    {
+      "path": "packages/contracts/src/index.ts",
+      "sha256": "37031a1d10fc6692836f91923c728556d055a1963dc0c10e1c2e3d2a8ebf1926"
+    },
+    {
+      "path": "packages/core/package.json",
+      "sha256": "67217de07936f20e61016dca9b1c12f207a362e2d70d405ee65ab2d275bc22d7"
+    },
+    {
+      "path": "packages/core/src/index.ts",
+      "sha256": "c5bee95c7b44cc8d49698235e52bc7024ab42ed2262676cd52f4f6cd884d42fe"
+    },
+    {
+      "path": "packages/desktop/package.json",
+      "sha256": "0e6f16ea59bcfdc72f52cce060bbcd92da5e183c87c1702aeeb92bbb4938cf13"
+    },
+    {
+      "path": "packages/desktop/src/main/index.ts",
+      "sha256": "04f29140757269b367171fa2b7424b03712bc3201a9f97099642f372fec9330b"
+    },
+    {
+      "path": "packages/desktop/src/preload/index.ts",
+      "sha256": "0a565f579532fd5b07d44dc43cab053411e3ae81c10fa1d992544ade599e884b"
+    },
+    {
+      "path": "packages/desktop/src/renderer/env.d.ts",
+      "sha256": "65996936fbb042915f7b74a200fcdde7e410f32a669b1ab9597cfaa4b0faddb5"
+    },
+    {
+      "path": "packages/desktop/src/renderer/index.html",
+      "sha256": "498ed2301c89a03dd55af27d4e81686f7f2f21a7656896fbf237a936bdf90b06"
+    },
+    {
+      "path": "packages/desktop/src/renderer/main.tsx",
+      "sha256": "784dd5b9132fb42fd648bf5aecfaa70e714122b6f482e2721a9d20c25d8b97ba"
+    },
+    {
+      "path": "packages/desktop/src/renderer/style.css",
+      "sha256": "02e084b23f2fd4efeb00b1c20e467c77cafcc29aa37e1ec9c43a08be1de3b70b"
+    },
+    {
+      "path": "packages/messages/package.json",
+      "sha256": "b5623234177bae9a0dfb14bcf378f2303d25bdceaadf37161282139cb4418820"
+    },
+    {
+      "path": "packages/messages/src/index.ts",
+      "sha256": "93a498fd8a54292d41789217777fb167a016b0c64f1d5388e77eeb4e9dd0a7c2"
+    },
+    {
+      "path": "packages/runtime/package.json",
+      "sha256": "5d507c76ddd018ac10ca281c3a5ca4686126fccd5b26f8500be0d6d2d7d6cb94"
+    },
+    {
+      "path": "packages/runtime/src/index.ts",
+      "sha256": "4d42b4fea7d79feeffe05c2f70ad56ce013464eacdda0fdc9354ea570b5a59eb"
+    },
+    {
+      "path": "scripts/boundaries.mjs",
+      "sha256": "35226549c865af9e0355f8245803d52786dc076a5751910cd5ed3234ae65d792"
+    },
+    {
+      "path": "scripts/build.mjs",
+      "sha256": "2ec318a8ff101b1c77a32535921010a9b30983f27eb2cfa31db56a490f28fa92"
+    },
+    {
+      "path": "scripts/package.mjs",
+      "sha256": "70220f98297bbfe71873639d6f30950d0da578ef6ee73771b65701ee628fd316"
+    },
+    {
+      "path": "scripts/prepare-runtime.ps1",
+      "sha256": "e10194d03e5419f22873822fc28ec851c246a488ca08bb9893ce33aee27c4a99"
+    },
+    {
+      "path": "scripts/report-l10n-0.mjs",
+      "sha256": "e555ca70c0568b2617ba2cd84674f8071647edd456f5fbdce14e5c40d6673920"
+    },
+    {
+      "path": "tests/gui/native-dialog.mjs",
+      "sha256": "8b38650468766ac48807faa4486d3a62ff5b10d1444581bcb8a0123c73fa3c7a"
+    },
+    {
+      "path": "tests/gui/smoke.mjs",
+      "sha256": "46011078c5a3e9aac882dc2b2a52e7c75e3290fe0a4b1f2fa6ffb5b29394888e"
+    },
+    {
+      "path": "tests/unit/messages.test.mjs",
+      "sha256": "f555e26d708418e581678c05ba432f458534ca7bfe01bd6a8850d68333cc52c5"
+    },
+    {
+      "path": "tsconfig.json",
+      "sha256": "598d4434f6c181473d98a909d3fc2e1d2d399386d886c9c8785d1c3f7c721a2e"
+    }
+  ]
+}

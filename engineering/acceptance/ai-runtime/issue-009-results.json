@@ -1,0 +1,40 @@
+{
+  "checkedAt": "2026-11-15T19:54:43.757393+08:00",
+  "engineChecks": 98,
+  "failures": 0,
+  "skipped": 0,
+  "packageChecks": {
+    "ai-scopes": 5,
+    "map-ai": 5
+  },
+  "additionalLiveProviderCalls": 0,
+  "realRoomChanged": false,
+  "originalLiveCase": {
+    "status": "failed",
+    "error": "AI_TASK_FAILED",
+    "tokens": 3473,
+    "exactCauseConfirmed": false,
+    "newLiveVerificationPerformed": false
+  },
+  "coverage": [
+    "DeepSeekProvider protocol with synthetic MockTransport search/read responses, not the original captured reply",
+    "recoverable invalid query parameters and current-source reads",
+    "primary failure survives cleanup error; successful result and cancellation preserved",
+    "bounded redacted diagnostics and KP-only task/session API projection",
+    "Edge KP error/query trace rendering and PL exclusion",
+    "existing budgets, cancellation, source/authority rechecks, contexts and sessions",
+    "two real WebRTC players with loopback provider; no WAN model traffic"
+  ],
+  "sourceSha256": {
+    "engineering/ai/src/onlinecoc_ai/diagnostics.py": "c21ba053c65bd712092d8b68070a3657e1ea817f803f491843bd3a4039a9d65e",
+    "engineering/ai/src/onlinecoc_ai/coordinator.py": "4c7a7338a2e753908d226b8376ebdbd2b7f50e55977b4fc59202d2d44496f193",
+    "engineering/ai/src/onlinecoc_ai/context.py": "f20121dbf420135d6da79afa065c475e4b6e41302a6ef6e8149806ddcb9e2de2",
+    "engineering/ai/src/onlinecoc_ai/data_queries.py": "29230f58bbdd03bd6639ceda296000108ee54608e35982fcbfcf55b08aec4c8e",
+    "engineering/ai/src/onlinecoc_ai/api.py": "3b5c4310b8eea139d76c05c49c8b69866e3f37c8ad1966ae3a8cfd20e91b2333",
+    "engineering/ai/web/components/chat.js": "aee73afaca758c1f48699616ab5cd6f781845d705ba80fe2034aaca7838c02cb",
+    "engineering/ai/web/components/index.d.ts": "83e23c1fcc7b5ce340045b45609e15aeaabe2fd9d343a7634cfc02c243044508",
+    "engineering/ai/tests/test_task_diagnostics.py": "6ebcf754efee868d52b9daf5f26a6635d41e0f81e0dd0d9d52dea1fbef4ad9d2",
+    "engineering/ai/tests/test_data_query_ui.py": "6dc7019ee401d0a2acea6b7288ef51c69d00097e062de372e451da7260a5680a",
+    "rulepacks/stumpsville/ui/ai-embedded.js": "463aba92d680b8f0a7c1501b466eedafa41e3c6d19f5fb779f9e55acdac31860"
+  }
+}

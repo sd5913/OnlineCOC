@@ -1,0 +1,9 @@
+[project]
+name = "onlinecoc-ai"
+version = "0.1.0"
+description = "Room-scoped authoring, validation and publication support"
+requires-python = ">=3.14,<3.15"
+dependencies = ["httpx==0.28.1", "httpcore==1.0.9", "jsonschema"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

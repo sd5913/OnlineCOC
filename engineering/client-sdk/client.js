@@ -18,11 +18,22 @@ export class Client {
   try{const r=await this.transport.request('commands',{method:'POST',csrf:this.csrf,body:m});return r;}catch(e){e.commandId=id;throw e;}
  }
  async receipt(id){return this.transport.request('receipts/'+encodeURIComponent(id));}
+ async aiCommand(op,args,id=crypto.randomUUID()){
+  if(!this.connected)throw new Error('DISCONNECTED');this.aiPending??=new Map();let envelope=this.aiPending.get(id);
+  if(envelope&&(envelope.op!==op||JSON.stringify(envelope.args)!==JSON.stringify(args)))throw new Error('COMMAND_ID_CONFLICT');
+  if(!envelope){envelope={requestId:id,authorityEpoch:this.view.authorityEpoch,op,args:structuredClone(args)};this.aiPending.set(id,envelope);}
+  try{return await this.transport.request(op==='ai.draft.create'||op==='ai.proposal.revise'?'ai/drafts':'ai/commands',{method:'POST',csrf:this.csrf,body:envelope});}
+  catch(e){e.aiRequestId=id;throw e;}
+ }
+ async aiReceipt(id){return this.transport.request('ai/receipts/'+encodeURIComponent(id));}
+ async aiTasks({before,limit=30}={}){return this.transport.request('ai/tasks?'+new URLSearchParams({limit,...(before?{before}:{})}));}
+ async aiProposal(id){return this.transport.request('ai/proposals/'+encodeURIComponent(id));}
+ async aiSettings(){return this.transport.request('ai/settings');}
  async chatMembers(){return this.transport.request('chat/members');}
  async chatHistory(channelId,{before,limit=50}={}){return this.transport.request('chat/history',{method:'POST',csrf:this.csrf,body:{channelId,...(before!==undefined?{before}:{}),limit}});}
  async sendChat(channelId,text,options={},id=crypto.randomUUID()){return this.command('chat.message.send',{...options,channelId,text},id);}
  async openDirect(accountId,id=crypto.randomUUID()){return this.command('chat.direct.open',{accountId},id);}
  async markChatRead(channelId,sequence,id=crypto.randomUUID()){return this.command('chat.read',{channelId,sequence},id);}
  async calculate(rule,input){return this.transport.request('calculate',{method:'POST',csrf:this.csrf,body:{rule,input}});}
- async logout(){this.stopped=true;clearTimeout(this.timer);await this.transport.request('logout',{method:'POST',csrf:this.csrf});this.socket?.close();this.view=null;this.connected=false;this.pending.clear();this.onChange?.();}
+ async logout(){this.stopped=true;clearTimeout(this.timer);await this.transport.request('logout',{method:'POST',csrf:this.csrf});this.socket?.close();this.view=null;this.connected=false;this.pending.clear();this.aiPending?.clear();this.onChange?.();}
 }

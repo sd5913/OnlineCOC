@@ -1,5 +1,7 @@
 import copy, math, uuid
-from .errors import require
+from .errors import require, DomainError
+from .version import ROOM_SCHEMA_VERSION, ROOM_FORMAT_DOCUMENT
+from .room_lifecycle import initial_control
 from .contracts import validate_model
 from . import chat
 
@@ -34,14 +36,50 @@ def demo_state(accounts):
     secret=entity("secret-clue","item","隐藏线索",None,quantity=1,unitMass=0)
     secret["visibility"]="kp";entities["secret-clue"]=secret
     configs={"demo."+k:{"configurationId":"demo."+k,"revision":"1","typeRef":k,"defaults":({"hp":10,"maxHp":10,"armor":0,"attack":0} if k=="actor" else {"quantity":1,"unitMass":0} if k in ("item","weapon") else {"capacity":2000} if k=="bag" else {"value":0} if k=="skill" else {}),"behaviors":{}} for k in KINDS}
-    return {"schemaVersion":1,"roomId":"demo","name":"首测调查室","runId":uid(),"status":"active",
+    return {"schemaVersion":ROOM_SCHEMA_VERSION,"aiControl":initial_control(),"roomId":"demo","name":"首测调查室","runId":uid(),"status":"active",
             "entities":entities,"relations":relations,"members":members,"progress":{},"configurations":configs,
             "commands":{},"flows":{},"waits":{},"artifacts":{},"activeRuleset":None,"assets":{},"chat":chat.initial_state(),"audit":[],"outbox":[],"collectionRevision":1}
 
+def validate_version(state):
+    require(isinstance(state, dict), "INPUT_INVALID")
+    actual = state.get("schemaVersion")
+    if type(actual) is not int or actual != ROOM_SCHEMA_VERSION:
+        raise DomainError("SCHEMA_UNSUPPORTED", {"actualVersion": actual if type(actual) is int else None,
+            "supportedVersions": [ROOM_SCHEMA_VERSION], "formatDocument": ROOM_FORMAT_DOCUMENT})
+
+
 def validate(state):
-    require(state["schemaVersion"]==1,"SCHEMA_UNSUPPORTED")
-    if "commands" in state:validate_model("Room",state)
-    if "chat" in state:chat.validate(state)
+    """Validate a complete persistent Room, never an execution projection."""
+    validate_version(state)
+    validate_model("Room", state)
+    validate_model("AiControl", state["aiControl"])
+    from .ai_contracts import validate_artifact
+    control=state["aiControl"]
+    for key,approval in control["approvals"].items():
+        require(key==approval["approvalId"] and approval["artifactRevision"] in state["artifacts"],"ARTIFACT_MISSING")
+        validate_artifact(state["artifacts"][approval["artifactRevision"]])
+    for key,publication in control["publications"].items():
+        require(key==publication["publicationId"] and publication["approvalId"] in control["approvals"] and
+                publication["ruleset"] in state["artifacts"] and publication["previousRuleset"] in state["artifacts"],"REFERENCE_CONFLICT")
+    chat.validate(state)
+    validate_world(state)
+
+
+EXECUTION_KEYS = ("schemaVersion", "roomId", "entities", "relations", "members", "configurations", "progress", "collectionRevision")
+
+
+def execution_snapshot(state):
+    return {k: copy.deepcopy(state[k]) for k in EXECUTION_KEYS}
+
+
+def validate_execution_state(state):
+    """Internal rule/AI sandbox contract; cannot be opened as a Room."""
+    validate_version(state)
+    validate_model("ExecutionSnapshot", state)
+    validate_world(state)
+
+
+def validate_world(state):
     entities=state["entities"]; held={}; graph={}
     for collection,kind in (("configurations","Configuration"),("members","Member"),("assets","Asset"),("progress","Progress"),("flows","Flow"),("waits","Wait"),("artifacts","RuleArtifact")):
         for value in state.get(collection,{}).values():validate_model(kind,value)

@@ -1,0 +1,88 @@
+{
+  "approvalsCreated": 0,
+  "calls": [
+    {
+      "finishReason": "stop",
+      "outputKeys": [
+        "ok"
+      ],
+      "requestDigest": "ddd0429f66e2ff5fc973e25dc78d4a8c0271f15d2910b378a37856bc1b53fc78",
+      "responseDigest": "e4020e2d5a738af92cb1b82afd4c27b718ed01bd47513e92ef595ecf432641bb",
+      "tools": [],
+      "usage": {
+        "completion_tokens": 5,
+        "prompt_tokens": 42,
+        "total_tokens": 47
+      }
+    },
+    {
+      "finishReason": "tool_calls",
+      "requestDigest": "f35a0eb20f7ca35ee07c780b61185c44587717559135978a8d3d9823023e26ce",
+      "responseDigest": "b9e2893b413728265e7c0e07f5145587ab4b9dcff6831e358f2dc3da5ea902f2",
+      "tools": [
+        "connection_probe"
+      ],
+      "usage": {
+        "completion_tokens": 22,
+        "prompt_tokens": 298,
+        "total_tokens": 320
+      }
+    },
+    {
+      "finishReason": "tool_calls",
+      "requestDigest": "4767e2122eab2d44d5a820a8b68cd43d5108919ff9b64f1e57934c12fa94a84c",
+      "responseDigest": "f5b42136697189a033bebcd439e26fdff06a65c21cf39374db66dcfd151d6e3d",
+      "tools": [
+        "room_read_context",
+        "pack_read_contract"
+      ],
+      "usage": {
+        "completion_tokens": 43,
+        "prompt_tokens": 3002,
+        "total_tokens": 3045
+      }
+    }
+  ],
+  "credentialPersisted": false,
+  "endpoint": "https://api.deepseek.com",
+  "gamePublished": false,
+  "generationTools": [
+    "pack_read_contract",
+    "room_read_context"
+  ],
+  "liveGameUnchanged": true,
+  "model": "deepseek-flash",
+  "packDigest": "f6b007b0feebf79d3fb2fa4bc7afd311170ea9dc8cd3039da6ad81d9c0828ff0",
+  "probe": {
+    "jsonProbe": "passed",
+    "model": "deepseek-flash",
+    "profileId": "deepseek-main",
+    "profileRevision": 1,
+    "responseDigests": [
+      "e4020e2d5a738af92cb1b82afd4c27b718ed01bd47513e92ef595ecf432641bb",
+      "b9e2893b413728265e7c0e07f5145587ab4b9dcff6831e358f2dc3da5ea902f2"
+    ],
+    "toolProbe": "passed",
+    "usage": {
+      "completion_tokens": 27,
+      "prompt_tokens": 340,
+      "total_tokens": 367
+    }
+  },
+  "profileId": "deepseek-main",
+  "profileRevision": 1,
+  "provider": "DeepSeek",
+  "publicationsCreated": 0,
+  "scope": "Isolated host demo; public fixture context only; configured provider remains disabled.",
+  "status": "incomplete",
+  "task": {
+    "error": "INPUT_INVALID",
+    "proposalId": null,
+    "status": "failed",
+    "taskId": "b3fb73ebca6549d6b2f7aa1790f14493",
+    "usage": 0
+  },
+  "testedAt": "2026-11-12T22:01:56.132098+08:00",
+  "totalTokens": 3412,
+  "diagnosticNote": "Recorder incorrectly parsed optional tool-call commentary as final JSON. Provider tool calls succeeded; recorder now parses only final non-tool content."
+}

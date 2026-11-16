@@ -1,0 +1,5136 @@
+{
+  "schemaVersion": 1,
+  "entries": {
+    "text.c131c4e386a27": {
+      "description": "入口隧道",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.ce850c929e032": {
+      "description": "主门",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c6b9e6a42747f": {
+      "description": "庭院",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c2fa75ea3fbb0": {
+      "description": "洗劫屋",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.ca090c5984c56": {
+      "description": "废弃屋",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c44ff73b4cd30": {
+      "description": "蛛网屋",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cea6dca5fc82f": {
+      "description": "大厅",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c399f2b2d815f": {
+      "description": "奶酪工厂",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.ce339d85879a8": {
+      "description": "蛇笼",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cd5794e04b81f": {
+      "description": "熟成洞",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c0dd281b7b3ee": {
+      "description": "一条狭窄隧道通向树桩深处，前方可见一轮奶酪。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c5c1651b6e324": {
+      "description": "石板门阻挡着前进的道路，门上留有可转动的把手。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cbdc5834e638d": {
+      "description": "庭院中央有池塘，梯子通往树桩上的房屋。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cf9c2c15570ea": {
+      "description": "房间被翻找过，生活用具散落各处。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.ce908e611276b": {
+      "description": "一间安静的旧屋，墙上保留着节庆的图画。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c52b0271be201": {
+      "description": "黏密蛛网遮住了屋内的视线，深处传出微弱动静。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cf75b32db0027": {
+      "description": "宽大的厅堂里堆放着桶与杂物，可以听见活动的声音。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cabbc11e7cc7a": {
+      "description": "屋内的器具显示这里曾经用于制作奶酪。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c468815587ef0": {
+      "description": "铁门分隔了前后的空间，深处传来轻微摩擦声。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cb8129ac050be": {
+      "description": "洞窟里堆着熟成的奶酪，空气中满是浓郁气味。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cad8d08d06bdf": {
+      "description": "针剑",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.ca05064959097": {
+      "description": "火把",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c7db734f85dc9": {
+      "description": "口粮",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c4476bc039bce": {
+      "description": "绳索",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c06129e078ad2": {
+      "description": "轻甲",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c8dff0bce078a": {
+      "description": "整轮奶酪",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cf6f87fde05fd": {
+      "description": "金叶鼠像",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c10d009e36b38": {
+      "description": "铜锅盘",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c45b0718ef524": {
+      "description": "蛇笛",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.ca7e93fbafa74": {
+      "description": "搅拌桨",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cd725e9d46748": {
+      "description": "滤布",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cd15e59749f17": {
+      "description": "受伤",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c3bcd542b0800": {
+      "description": "疲惫",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c7675c85fc50e": {
+      "description": "惊惧",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c3a225738f48b": {
+      "description": "法术石板",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c9ce9331e5bd3": {
+      "description": "电提灯",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cfa73b1069a51": {
+      "description": "轻型单手武器。战斗结束后检查用量。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c5f7df239d3f5": {
+      "description": "每燃烧六个探索轮，消耗一格用量。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c8b0d8dfae96f": {
+      "description": "每次食用消耗一格用量。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c939d2ab79040": {
+      "description": "用于攀爬与固定，危险使用后由主持决定是否检查用量。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c999908d61a55": {
+      "description": "轻甲占副手和一个身体槽，装备且仍有用量时减伤1。战后检查用量。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c0ad0b8aedbd5": {
+      "description": "场景物品。价值依据地点对照，实际占槽待原版终校。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cfacab0d4ff12": {
+      "description": "庭院池底宝物，占四槽。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cefd3e6d12b27": {
+      "description": "洗劫屋散落的器具，每件10p。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.ca84fe9bb26d6": {
+      "description": "由主持根据场景裁定对守卫蛇的影响。价值待定。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.ca409f4bc2a70": {
+      "description": "奶酪工厂的器具。用途由主持裁定。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c3c3e5ae85823": {
+      "description": "奶酪工厂的过滤布。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c6fa4391e58a2": {
+      "description": "状态占一格。按对应规则完成恢复后由主持解除。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c25fea87645b6": {
+      "description": "状态占一格。解除条件由规则速查及主持确认。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.ce8e1551ea775": {
+      "description": "状态占一格。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c1740bed11513": {
+      "description": "法术效果、用量与充能条件由主持填写并裁定。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c65434e89817f": {
+      "description": "六格用量的照明工具。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c933b8b1d5396": {
+      "description": "观察地面",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.ca1baabf64fda": {
+      "description": "不触碰物件，检查地面痕迹。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.ce3fecf2744e9": {
+      "description": "仔细观察",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c5a9c58b0d7e3": {
+      "description": "无需投骰；获得可见发现并记录。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c848e662cca80": {
+      "description": "检查奶酪",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.ccc54781abe6e": {
+      "description": "先检查，再决定是否取走。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c7864d2215541": {
+      "description": "检查周围，不触碰",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c89a0cb765a91": {
+      "description": "无需投骰；识别连接和风险。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c3cfcb7cfa298": {
+      "description": "解除连接后取走",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c82293a21f8ba": {
+      "description": "DEX 豁免；失败可能受到 d12 伤害，消耗一探索轮。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cb2fc78ea0bea": {
+      "description": "直接拿取",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c0513ded4ecf3": {
+      "description": "未解除的机关会触发 d12 伤害；消耗一探索轮。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cd4ce19861827": {
+      "description": "检查把手",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c49a92ba8d452": {
+      "description": "从门框与铰接处寻找开启方法。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c6100ddb48ef6": {
+      "description": "检查结构",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cdf993ad0ef4e": {
+      "description": "无需投骰；记录机关结构。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c23730d67e3bb": {
+      "description": "尝试开门",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cb248421b8367": {
+      "description": "选择有准备的开启方式，或承担直接开门的风险。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cf8d771020363": {
+      "description": "用绳索固定后开门",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c26909a647ad4": {
+      "description": "需已检查结构和可用绳索；消耗一格绳索用量及一探索轮。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c1adba802482d": {
+      "description": "直接转动把手",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cb96a3a90de4e": {
+      "description": "机关未解除时掷 d20 伤害；DEX 豁免成功减半，再计算护甲；消耗一探索轮。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cf5a508605ccf": {
+      "description": "调查池塘",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c11d1aae73f53": {
+      "description": "观察水下，或潜入回收已经发现的物品。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cc937940e8854": {
+      "description": "查看池底",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c84fd43eae437": {
+      "description": "无需投骰；记录水下发现。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c8568271b89b4": {
+      "description": "打捞钱袋",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c29f9ca01d26f": {
+      "description": "DEX 豁免；失败受 d4 伤害，成功取得有限钱币；消耗一探索轮。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c140257717e73": {
+      "description": "打捞鼠像",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cc0b5d4cfc979": {
+      "description": "DEX 豁免；失败受 d4 伤害，成功自动安置四格物品；消耗一探索轮。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c8f0b1953d715": {
+      "description": "观察梯子",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c1946bfe54731": {
+      "description": "辨认庭院相连的房屋和通路。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c29b707d61a87": {
+      "description": "辨认路线",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c9c4a269a1c4e": {
+      "description": "无需投骰；揭示可见相邻地点。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cc64248a1bce7": {
+      "description": "搜查器具",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c006e27c6f954": {
+      "description": "搜查产生有限库存，重复查看不会重掷数量。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cd819e6324187": {
+      "description": "整理散落器具",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c0e8c4b4119c1": {
+      "description": "首次掷 d6 确定库存并消耗一探索轮。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cd1411af45d85": {
+      "description": "取走一件器具",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c28027e69feb7": {
+      "description": "从剩余库存领取一件，自动放入可用槽位。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cae4adf9be392": {
+      "description": "观察旧画",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c838bc81ac2d0": {
+      "description": "阅读画面并记录与庭院有关的线索。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c067e40e2d158": {
+      "description": "阅读画面",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c1d1a662f1d1d": {
+      "description": "无需投骰；线索加入个人记录。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cd91d841bb802": {
+      "description": "查看蛛网",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cd4401ba96cc3": {
+      "description": "在屋外辨认网线与屋内动静。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c7b4eaf428202": {
+      "description": "观察网线",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c3f72dd3e3309": {
+      "description": "无需投骰；记录危险与被困者线索。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cb7a905ba570b": {
+      "description": "呼唤屋内",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c35744e4907ac": {
+      "description": "与被困者建立联系，或使用武器割断束缚。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c9e97ac9bfd52": {
+      "description": "低声呼唤",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cb2789d3cdc95": {
+      "description": "无需投骰；记录回应。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c312cc6b61145": {
+      "description": "避开蛛网，割断束缚",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c427e08bee6be": {
+      "description": "需可用武器；DEX 豁免，失败受到 d6 毒咬伤害（溢出扣 DEX）；消耗一探索轮。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cd760909f2eaf": {
+      "description": "观察厅堂",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c03483ec6b6c5": {
+      "description": "观察鼠帮、杂物和后门。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c5a95e9768762": {
+      "description": "观察而不靠近",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c82abea328fba": {
+      "description": "首次掷 2d6 确定鼠帮人数；数量保持不变。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c985b61f771ba": {
+      "description": "交涉",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cb7fb64b7fe3d": {
+      "description": "尝试取得通行和物品交换许可。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cada06401c206": {
+      "description": "说明来意，请求通行",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cd403c0233544": {
+      "description": "WIL 豁免；每次遭遇只允许一次口头尝试，消耗一探索轮。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cedf50a05a5f6": {
+      "description": "提供一份口粮交换",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.ce98a847efc76": {
+      "description": "消耗一格口粮用量；达成通行与蛇笛交换，消耗一探索轮。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cef7a67ba8e27": {
+      "description": "检查设备",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c2a982beed82c": {
+      "description": "检查工厂设备并整理可携带物品。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c437f37e1e643": {
+      "description": "检查器具并询问 Jack",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c1f4ac403f3c6": {
+      "description": "无需投骰；记录设备和人物回应。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c9684e056b981": {
+      "description": "取走搅拌桨",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cb195729af161": {
+      "description": "领取有限库存，自动安排两格占用。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cb47e6624f819": {
+      "description": "取走滤布",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c338dbf6482ec": {
+      "description": "领取有限库存，自动放入可用槽位。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c9f9d10c1d5c6": {
+      "description": "寻找出口",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cd0a5b4a946da": {
+      "description": "检查门、升降机和屋顶货口。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c831e5e4c3b8d": {
+      "description": "辨认出口位置",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.ce384bfe72334": {
+      "description": "无需投骰；揭示相邻通路并记录货口。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cc5dfdb732fc9": {
+      "description": "打开通往蛇笼的铁门",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c0aff976a6b91": {
+      "description": "解除本侧门闩，开放通路；消耗一探索轮。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c3d4d75141c13": {
+      "description": "乘升降机返回庭院",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c320e62547cad": {
+      "description": "移动到庭院；消耗一探索轮。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c4fce0e4694f4": {
+      "description": "观察铁门",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cad62e51dd934": {
+      "description": "检查通向洞窟的铁门和守卫状况。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cca32326ba556": {
+      "description": "检查门与通道",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c764643fabfde": {
+      "description": "无需投骰；记录守卫与出口条件。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c97f3fe2130ea": {
+      "description": "趁守卫平静时开门",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cfe5acf217d06": {
+      "description": "需已安抚守卫蛇；开放通往洞窟的通路。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c81d8a1c881ef": {
+      "description": "聆听",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c6f56be7a4cb9": {
+      "description": "辨认蛇的动静，选择应对方式。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c11cfe3a66bf1": {
+      "description": "保持距离聆听",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c8db99ff9e0db": {
+      "description": "无需投骰；记录守卫动静。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c401c8ba2fc1b": {
+      "description": "吹奏蛇笛",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c9e5666b6b1cf": {
+      "description": "需携带蛇笛；使守卫蛇平静，消耗一探索轮。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cba40df1562bf": {
+      "description": "趁间隙绕过守卫开门",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c3970135f402f": {
+      "description": "DEX 豁免；失败受到 d8 咬击伤害，消耗一探索轮。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cc6defd09a0a8": {
+      "description": "查看奶酪",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.ceb588c3c829b": {
+      "description": "清点存货，决定是否取用。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c6bc1aa209242": {
+      "description": "清点存货",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cf6000932d5e0": {
+      "description": "无需投骰；显示剩余库存。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c7c4e14530044": {
+      "description": "取走一轮奶酪",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cdc67dc65dc31": {
+      "description": "获得许可后直接领取；否则 DEX 豁免，失败会惊醒睡者；消耗一探索轮。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cd34aa7df0b6c": {
+      "description": "观察睡者",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c0ccdcd783c7c": {
+      "description": "观察 Ernie，或询问村民的去向。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c7148fe7a42e0": {
+      "description": "远处观察",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c6e16b09420b9": {
+      "description": "无需投骰；记录睡者状态。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cbe07ecd01685": {
+      "description": "温和唤醒并询问去向",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c043d3f39ec01": {
+      "description": "记录北方据点线索并取得取用许可；消耗一探索轮。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cb437153c8fd3": {
+      "description": "重伤豁免",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c55ef1f09ac2a": {
+      "description": "扣除护甲后受到 {damage} 点伤害，HP 剩余 {hp}。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {
+        "damage": {
+          "type": "number"
+        },
+        "hp": {
+          "type": "number"
+        }
+      },
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c9aac89eac670": {
+      "description": "角色已失能，需要恢复后才能继续行动。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c7ba5092bfb6a": {
+      "description": "STR 已降至 0。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c838fdda43ecf": {
+      "description": "所有槽位均已占用，物品仍留在原处；整理背包后可再取。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c2da0d4df0912": {
+      "description": "入口机关已识别",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c7626bfc61c08": {
+      "description": "入口地面的压痕",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c7dd3d69a8097": {
+      "description": "地面有落石留下的压痕，奶酪连接着触发装置；直接取走会有危险。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c2076626232ba": {
+      "description": "鼠帮人数",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c94c1039ba869": {
+      "description": "鼠帮已观察",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c54f91f321555": {
+      "description": "厅堂里有 {count} 只鼠帮成员；桶后有一道锁门，杂物旁放着蛇笛。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {
+        "count": {
+          "type": "number"
+        }
+      },
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cb2c51bafc76e": {
+      "description": "已取得鼠帮通行许可",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cf8516bf30a2b": {
+      "description": "大厅后门已开放",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c02e5924c2d41": {
+      "description": "鼠帮同意放行，并用蛇笛完成这次交换。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cc2ccc7291f68": {
+      "description": "蛇笛剩余数量",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.ca426d7d4cf4a": {
+      "description": "你避开压痕，辨认出奶酪与上方落石的连接，并找到了通往主门的路线。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c63dab068d09d": {
+      "description": "奶酪是机关诱饵。现在已经记录连接的位置，检查本身不会触发机关。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c29cf0ea6db54": {
+      "description": "奶酪已经被取走。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c79b4ef31d014": {
+      "description": "背包没有可用槽位，奶酪留在原处。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cb7077612816a": {
+      "description": "先检查奶酪周围或观察地面，确认连接后才能拆解。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cd2d185d779ed": {
+      "description": "解除奶酪的机关连接",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c53d5519679ee": {
+      "description": "入口机关（0待处理/1解除/2触发）",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c1c7e1af8ff63": {
+      "description": "连接被稳妥解除，落石没有落下。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c4dfa26d632ab": {
+      "description": "入口落石伤害",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.caf6833363654": {
+      "description": "落石已经落下，机关不会再次触发。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.ce7b752a080b5": {
+      "description": "奶酪暂留原地。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c2b86f5e1f233": {
+      "description": "入口机关已经失效，可以安全取走奶酪。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cbd2eb881ce19": {
+      "description": "入口奶酪剩余数量",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c17369deef228": {
+      "description": "主门结构已识别",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.ca5f64eec9dbe": {
+      "description": "转动把手会使石板倾倒。门框上有可以绑绳固定的位置。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cc5e0c9c145bd": {
+      "description": "倾倒的石板门",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.caf6859e9ba22": {
+      "description": "用绳索固定后再转动把手可避开倾倒；直接开启则需要躲避石板。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c14dbacfb8c4c": {
+      "description": "石板门已经打开，可以前往庭院。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c730fc535c773": {
+      "description": "先检查把手和门框，确定固定位置。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c6e6b410a506f": {
+      "description": "需要仍有用量的绳索固定石板；也可以另选直接开门。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cf77532664a07": {
+      "description": "固定石板，消耗槽位 {slot} 的一格用量。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {
+        "slot": {
+          "type": "number"
+        }
+      },
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.ced69908df19c": {
+      "description": "石板机关（0待处理/1解除/2触发）",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c1f846e46e974": {
+      "description": "躲避倾倒石板",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c84bdc892d2d9": {
+      "description": "石板伤害",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cdc8b4ce21f6a": {
+      "description": "豁免成功，石板伤害减半。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c0304313ccdc7": {
+      "description": "石板门已打开",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c33ba5622c983": {
+      "description": "石板门已经打开，庭院及其通路出现在已知地图上。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c9cd528772ba4": {
+      "description": "池底宝物已发现",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c85004ddc7709": {
+      "description": "水下有一尊金叶鼠像和一只钱袋。鼠像占四格，钱袋内共有 140p。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c31c4df960767": {
+      "description": "池底的宝物",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cd84b25bc599e": {
+      "description": "池底有四格金叶鼠像与钱袋；领取以现场剩余库存为准。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c578d7184e1ac": {
+      "description": "先查看池底，确定打捞目标。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c4a3cdbd6f73d": {
+      "description": "这件宝物已经被取走。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c1dd1d4ccec97": {
+      "description": "无法安置鼠像，宝物仍在池底。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c6b9c90f75907": {
+      "description": "潜入池底打捞",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cf9f2b79d4f11": {
+      "description": "池底剩余钱币",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c61427c440124": {
+      "description": "取得钱袋，钱币增加 {count}p。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {
+        "count": {
+          "type": "number"
+        }
+      },
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.ccfd1d9e0a684": {
+      "description": "池底鼠像剩余数量",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c58d7e7b96579": {
+      "description": "潜水磕碰伤害",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cd332e55a4261": {
+      "description": "你被水流推回岸边，宝物仍留在池底。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c488483c39c14": {
+      "description": "庭院路线已辨认",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c5687c9109f58": {
+      "description": "梯子通往三间房屋，地面通路连接大厅和奶酪工厂；这些地点已加入地图。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c19cc0511e72e": {
+      "description": "首次搜查器具数量",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c4e4750227eb1": {
+      "description": "剩余铜锅盘",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.ca2ac400f1209": {
+      "description": "器具已整理",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cb09a3efb9d02": {
+      "description": "现场剩余 {count} 件铜锅盘，每件价值 10p。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {
+        "count": {
+          "type": "number"
+        }
+      },
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cde493900e886": {
+      "description": "节庆画已阅读",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c79b09f71be45": {
+      "description": "旧画描绘了庭院中央的一尊金色鼠像，与池底的物件相符。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c3e4a0fa440b1": {
+      "description": "旧日节庆画",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cd861d7aea1de": {
+      "description": "旧画记录了庭院节庆时的布置，池底鼠像原本是庭院的陈设。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cb96c87a67d5c": {
+      "description": "图画记录了庭院旧日的节庆布置，其中出现一尊鼠像。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c972e523b6e29": {
+      "description": "蛛网屋危险已识别",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cb228691a8086": {
+      "description": "两只蜘蛛在网线深处活动，网后困着两名村民。保持距离观察没有惊动它们。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c6ede758d5057": {
+      "description": "蛛网后的村民",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c3381e3da17b1": {
+      "description": "网线后困着 Roquefort 和 Paneer；携带可用武器可以尝试割断束缚。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c3cf2b24df547": {
+      "description": "已联系被困村民",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c468a8bbf412f": {
+      "description": "Roquefort 和 Paneer 低声回应，指出可以割断的网线。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cefb8ad4c23f8": {
+      "description": "被困者的回应",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c507768c05cfa": {
+      "description": "两名村民尚能行动，束缚他们的网线可以割断，但附近有蜘蛛。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c333f08cd5d0a": {
+      "description": "两名村民已经脱困，正在安全的庭院等待。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.ccf7026a76b19": {
+      "description": "需要仍有用量的针剑才能执行这个固定救援做法。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cbfc25c31ed44": {
+      "description": "避开网线割断束缚",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cc38c6900d420": {
+      "description": "两名村民已脱困",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c201ced0766b1": {
+      "description": "束缚被割开，两名村民沿梯子撤到庭院。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cfa6bfbbea3ef": {
+      "description": "Roquefort 与 Paneer 已脱困",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c610a79fe0d51": {
+      "description": "你完成了救援，两名村民已撤到庭院。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c2b7a88fb86ef": {
+      "description": "蜘蛛已警觉",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c6dc54b38fd35": {
+      "description": "蜘蛛毒咬伤害",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cce902051dce9": {
+      "description": "网线惊动了蜘蛛，救援尚未完成。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.ce43ec9ee9e2e": {
+      "description": "鼠帮仍认可之前的通行约定。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cc19b46f59be5": {
+      "description": "提供口粮，消耗槽位 {slot} 的一格用量。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {
+        "slot": {
+          "type": "number"
+        }
+      },
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c160bee7f2125": {
+      "description": "鼠帮已经拒绝这番说辞；可选择提供口粮，不会重复掷骰刷取结果。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cffef4b272564": {
+      "description": "已尝试口头交涉",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c8ac27bc8d17d": {
+      "description": "说服鼠帮允许通行",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c574c17433b8b": {
+      "description": "鼠帮保持戒备",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c7016b142690c": {
+      "description": "鼠帮拒绝放行，但愿意用食物交换；后门仍锁住，蛇笛未取得。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c00c6deabfbe7": {
+      "description": "工厂设备已检查",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.ce13dac30e820": {
+      "description": "Jack 介绍了搅拌桨、滤布与升降机，并允许你取用留下的工具。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c8aea09fc334d": {
+      "description": "工厂器具与升降机",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c655144d00bf7": {
+      "description": "工厂有有限数量的搅拌桨、滤布；升降机可以返回庭院。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cc153c16404bf": {
+      "description": "先检查设备并询问 Jack。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cde611abda6cf": {
+      "description": "剩余搅拌桨",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c3329d781d2cd": {
+      "description": "剩余滤布",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c84416cbd85f0": {
+      "description": "工厂出口已辨认",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c4a1a0a7bc7fb": {
+      "description": "你找到升降机、通往蛇笼的铁门和屋顶货口；桶后通往大厅的门仍遵循其锁闭状态。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c86c91497f87e": {
+      "description": "工厂出口",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cd344efe30b81": {
+      "description": "升降机通庭院，铁门通蛇笼，屋顶有通往室外的货口。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cad271538b45a": {
+      "description": "工厂铁门已打开",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.ca9bcd05f3359": {
+      "description": "通往蛇笼的铁门已开放。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c98566c294868": {
+      "description": "你乘升降机返回庭院。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.ceab9b15787d0": {
+      "description": "守卫蛇已发现",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c4ac66f860d69": {
+      "description": "洞窟在另一道铁门后。守卫蛇盘踞在门前，接近门闩需要先安抚它或冒险绕过。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c61b7bc810385": {
+      "description": "守卫蛇尚未平静；可用蛇笛安抚，或从“聆听”选择潜行绕过。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c087b70eb26ec": {
+      "description": "洞窟铁门已开放",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c43ac6cc2f6bb": {
+      "description": "你从平静的守卫蛇旁经过，打开了洞窟铁门。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cd81268e3ff32": {
+      "description": "呼吸声与鳞片摩擦声来自同一条守卫蛇。它仍在门边，没有生成新的蛇。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c654b01b2c7cc": {
+      "description": "守卫蛇的动静",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c70cc2f0221f8": {
+      "description": "可以用蛇笛安抚守卫，或冒险绕过它开启洞窟铁门。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c21be890b04f9": {
+      "description": "需要携带蛇笛；可返回大厅交涉获取。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cb4722c0d5ed0": {
+      "description": "守卫蛇已平静",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cef353f0d6685": {
+      "description": "笛声让守卫蛇放松下来，现在可以靠近铁门。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c4735738af767": {
+      "description": "通向洞窟的门已经打开。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c06379ff59e01": {
+      "description": "绕过守卫蛇开启铁门",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c9af22a403596": {
+      "description": "你抓住间隙拉开门闩，通路已经开放。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c4d17ccbf714e": {
+      "description": "守卫蛇已警觉",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c31bf56ba6c40": {
+      "description": "守卫蛇咬击伤害",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c6e196de60d2a": {
+      "description": "守卫蛇拦住去路，铁门仍未开启。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.ce2cf90999497": {
+      "description": "奶酪库存已清点",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c09dfa713cb5b": {
+      "description": "这里还剩 {count} 轮奶酪，每轮价值 100p。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {
+        "count": {
+          "type": "number"
+        }
+      },
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.ccff2c8432b84": {
+      "description": "这里的奶酪已取完。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cc0a3298c1412": {
+      "description": "没有可用槽位，奶酪仍在原处。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cbb03eea90038": {
+      "description": "Ernie 已经醒来，先与他交谈取得许可。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.caa5caae87847": {
+      "description": "不惊动睡者取走奶酪",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c75529376a204": {
+      "description": "熟成洞剩余奶酪",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cff0d1816711e": {
+      "description": "Ernie 已醒来",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c447528427aa1": {
+      "description": "动静惊醒了 Ernie，你停下动作，奶酪数量没有减少。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cda5c977022da": {
+      "description": "Ernie 已被辨认",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c2b28ea8007a8": {
+      "description": "Ernie 已醒来，正看着洞中的动静。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c1a7787eb0f56": {
+      "description": "Ernie 正在熟睡。贸然搬动奶酪可能惊醒他。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c25435b589113": {
+      "description": "已与 Ernie 交谈",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.ce22b509e3167": {
+      "description": "北方线索已取得",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c0338f1b365b6": {
+      "description": "Ernie 允许你取用这里的奶酪，并指出失踪者的后续去向在北方。线索已加入记录。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cd5afcdedcf26": {
+      "description": "北方据点的线索",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c5b7893b2e247": {
+      "description": "交谈得知，后续调查应前往北方的一处据点。树桩镇这一阶段的追踪线索已取得。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cd356d70dc579": {
+      "description": "进一步调查指向北方的一处据点。主持在确认获取条件后补充详情，树桩镇首轮在此收束。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c7b493ee5f652": {
+      "description": "经过一个探索轮，现在是第 {count} 回合；光源用量按已有规则结算。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {
+        "count": {
+          "type": "number"
+        }
+      },
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c6e282d001dd5": {
+      "description": "本做法不需要投骰，按现场条件直接判定。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c6507994e1d60": {
+      "description": "宿主已完成以下投骰与判定。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c3939f61a4f94": {
+      "description": "按玩家选定的预设做法自动结算",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c997f308d61ea": {
+      "description": "已提交 → 等待自动执行端",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c017ce9153592": {
+      "description": "入口机关",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.ccf7231f26335": {
+      "description": "已识别，尚未解除",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c9f766750c82b": {
+      "description": "已解除",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cc72db881426a": {
+      "description": "已触发，不会重复触发",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cde11f9bb6ccf": {
+      "description": "石板门",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c76ef4ba66457": {
+      "description": "已打开",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c3fd47edce45b": {
+      "description": "关闭",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c002322b9eef3": {
+      "description": "倾倒机关",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.ce16530dd5cfc": {
+      "description": "已触发",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cf3d15c2a36f0": {
+      "description": "池底钱币",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c8be2c0d3db5b": {
+      "description": "庭院路线",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c88e532810e76": {
+      "description": "已辨认并加入地图",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c7b659bdb06d5": {
+      "description": "器具",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cde5015f82f7f": {
+      "description": "已整理；数量不会重复生成",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.ce87da3cfc50e": {
+      "description": "节庆画",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c433ab883cf08": {
+      "description": "已阅读",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cc8e88755bea9": {
+      "description": "屋内危险",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c0e5069073455": {
+      "description": "两只蜘蛛",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c4781f6b2a158": {
+      "description": "村民",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c6e038f168957": {
+      "description": "已撤到庭院",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c9d72a70d7944": {
+      "description": "已取得联系，仍受束缚",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c0053a539b3db": {
+      "description": "蜘蛛",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c3ea00d7d646f": {
+      "description": "警觉",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c28d26b82b866": {
+      "description": "鼠帮",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c01d73da02ac6": {
+      "description": "已达成约定",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cb5a8427b023b": {
+      "description": "保持戒备",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c1932dbcadd14": {
+      "description": "已观察",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cad6375782f69": {
+      "description": "工厂设备",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c16a47e068847": {
+      "description": "已检查并取得工具许可",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c7016090059bd": {
+      "description": "出口",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cca3b3bb7f1d3": {
+      "description": "门、升降机与屋顶货口已记录",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cbe4e2c294974": {
+      "description": "守卫蛇",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c648e6fb8bce1": {
+      "description": "平静",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c9a6413a32321": {
+      "description": "守在铁门附近",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cd913b221e07f": {
+      "description": "洞窟铁门",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.ce2eceecaec62": {
+      "description": "已开放",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c8454eec4822d": {
+      "description": "已交谈并取得许可",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c40b3dbc4ae2f": {
+      "description": "醒来",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c985efa96f480": {
+      "description": "熟睡",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c249d5afb12d8": {
+      "description": "后续调查",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c76d4a858c7ca": {
+      "description": "北方据点线索已取得",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c2f8267a89ad5": {
+      "description": "空",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.ca6a07edbf6bf": {
+      "description": "未公开地点",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c0be6254ac5eb": {
+      "description": "尚未入场",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c194be0b855bd": {
+      "description": "属性检定",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c7b66be73c7ab": {
+      "description": "准备状态",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cec300fe187c6": {
+      "description": "角色审核",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c14e990709cc6": {
+      "description": "探索进度",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cc9438cfbda59": {
+      "description": "物品操作",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c684188b1d799": {
+      "description": "地点移动",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c42fa55bcd523": {
+      "description": "物品转交",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c3f608b7bf8ec": {
+      "description": "事件复核",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c877170e79e5c": {
+      "description": "自由行动",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c6042e2ce2889": {
+      "description": "场景互动",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c2e8f9afcd4b7": {
+      "description": "伤害与豁免",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cefd71653081f": {
+      "description": "休息恢复",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c88699cb1ec88": {
+      "description": "数值调整",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c0569eed65060": {
+      "description": "物品授予",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c2dcce9d61fd8": {
+      "description": "自动裁决设置",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cf71151cb89cb": {
+      "description": "房间状态",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cbcb4a25c64b2": {
+      "description": "地点与线索发布",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cc8e2d53bbd4e": {
+      "description": "探索进度已更新 · 第 {count} 回合",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {
+        "count": {
+          "type": "number"
+        }
+      },
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c9098feb6e34d": {
+      "description": "自动裁决已开启",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c70338d8549b1": {
+      "description": "自动裁决已关闭",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cd502d32465f6": {
+      "description": "房间已暂停",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c3dc7b9f0b99e": {
+      "description": "房间已恢复",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c484488445b45": {
+      "description": "主持发布了地点与线索，请查看已知地图和线索面板",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c2a04c7285c42": {
+      "description": "属性豁免",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c96aa3dae9115": {
+      "description": "掷d20，结果不高于当前属性即成功。优势取两骰低值，劣势取高值。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cf479357e2e04": {
+      "description": "物品栏",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.ca17f508793b2": {
+      "description": "双手2格、身体2格、背包6格。状态卡也占格。超载时不能跑，豁免具有劣势。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cca251de3d3f7": {
+      "description": "光源",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c879c1e2aac6b": {
+      "description": "火把通常3格用量，每六个探索轮消耗一格。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cd1bb5dba58e5": {
+      "description": "谨慎的探路小鼠",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.ca8a9a809015a": {
+      "description": "善于交涉的小鼠",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cb566b1eb7aad": {
+      "description": "行动已接收，等待自动执行端结算；无需主持逐项确认",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.ce40c660693ac": {
+      "description": "预设行动已排入自动队列。KP 页面在线时会自动处理；尚未投骰或扣减资源。",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c99bfad8ee84a": {
+      "description": "本次自动行动未执行",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c8bf9106248af": {
+      "description": "执行前校验未通过，未产生本次行动的掷骰或资源效果",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cdc3100c5572f": {
+      "description": "当前角色或场景条件不允许执行此做法",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cf87cb2fa7754": {
+      "description": "角色归属或状态已改变",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c61d40b3c64ed": {
+      "description": "场景预设规则与状态已安装；保持一个 KP 页面在线即可自动处理",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c9105a524241d": {
+      "description": "已请求 KP 裁决；尚未结算",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.ccb799d770160": {
+      "description": "自动裁决完成：已到达地点 {count}",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {
+        "count": {
+          "type": "number"
+        }
+      },
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c520a927b928e": {
+      "description": "自动裁决已关闭；行动交由 KP 裁决",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cfe92347ed989": {
+      "description": "角色草稿已提交主持审核",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c704df584e9c3": {
+      "description": "手记已保存",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c6b4efba98e37": {
+      "description": "此请求已经处理",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c015d09c6f0e2": {
+      "description": "裁定已保存",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c0d0840401c3a": {
+      "description": "地点草稿已保存",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c4345f1b3d1ee": {
+      "description": "地点公开内容已发布",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c63e7b428a31e": {
+      "description": "通路状态已更新",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c1cc41bff3621": {
+      "description": "物品已领取，地点库存已扣减",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c1cf797a7bf94": {
+      "description": "遭遇",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c876efe8860f2": {
+      "description": "征兆",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c7ce262632246": {
+      "description": "没有遭遇",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c217a88d7c4d6": {
+      "description": "主持随机表已保存",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c3a761c7094e4": {
+      "description": "主持生物已创建",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cc39a2c83d5b4": {
+      "description": "场次回顾已保存",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c23f3713176b0": {
+      "description": "宿主备份与包侧记录均已保存",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c7950e540c7af": {
+      "description": "检查通过，尚未激活",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cbd2d56c51f21": {
+      "description": "规则修订已激活",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cab57c041e7bf": {
+      "description": "配置包已安装",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c4a8e491c8526": {
+      "description": "十地点与规则已安装",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cf0ff756ccb06": {
+      "description": "已退回草稿",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c1bbcdf6af0b5": {
+      "description": "角色审核通过",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c10589073d116": {
+      "description": "行动申请",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.ca5d791f56f85": {
+      "description": "场景行动",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c0edb5733e4f2": {
+      "description": "场景行动自动结果",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c0a7b224ab5b4": {
+      "description": "KP 裁决回复",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c3e0effc3d5f9": {
+      "description": "主持调整数值",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c67f449f00d9c": {
+      "description": "获得物品",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c051f03a7be62": {
+      "description": "伤害结算",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.ca564cca8dfaf": {
+      "description": "移除物品",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c51c08fbcd97f": {
+      "description": "领取物品",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.cf28461bb49c8": {
+      "description": "已完成",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c0143f5412401": {
+      "description": "已结算后果",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "text.c021c2b38d2cf": {
+      "description": "条件不满足",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "map.actor.spider1": {
+      "description": "蜘蛛一",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "map.actor.spider2": {
+      "description": "蜘蛛二",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "map.actor.snake": {
+      "description": "守卫蛇",
+      "tags": [
+        "content"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "restricted",
+      "allowEmpty": false,
+      "extensions": {}
+    }
+  }
+}

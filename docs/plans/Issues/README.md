@@ -13,5 +13,9 @@
 | ISSUE-003 | 配置包多人协助与结构化裁定接入边界 | 包侧已实现并验证，待工程责任者复核记录 | [正文](issue-003-rulepack-cooperative-ruling.md) |
 | ISSUE-004 | 配置包在线恢复与组合管理事务边界 | 文档／接口已核查，待方案确认 | [正文](issue-004-mini-pack-management.md) |
 | ISSUE-005 | 简易账号工具与在线身份管理接口 | 已实现并验证，已归档 | [历史记录](../../history/2026-11-05-issue-005-online-account-management.md) · [现行说明](../../current/engineering/host-accounts.md) |
+| ISSUE-006 | 树桩镇 P2P、网页与 AI 完整玩法接入边界 | 网页桥及完整玩法本地/公网TURN通过；真人独立网络和AI上下文/发布仍开放 | [正文](issue-006-stumpsville-module-bridge.md) |
+| ISSUE-007 | 移除旧房间格式兼容与版本迁移责任 | 已实现并归档；0.2.0 仅支持 Room v3 | [正文](../../history/2026-11-14-issue-007-room-version-policy.md) |
+| ISSUE-008 | 通用请求与裁决记录模型 | 已评估；推荐双模型与读取试点，宿主接线待实施 | [正文](issue-008-generic-request-decision.md) |
+| ISSUE-009 | 真实AI查询失败与异常诊断缺口 | 工程缺陷修复、87项回归及真实查询通过；完整答案语义待验收 | [正文](issue-009-ai-live-query-diagnostics.md) |
 
-ISSUE-001 的正文仍在原位置，本目录只链接它，不复制成第二份。后续新问题统一从本目录登记；编号从 ISSUE-006 继续。配置包作者仅记录证据与需求，由工程责任者判断并处理工程侧问题。与当前功能、版本和运行相关的事实见 [工程索引](../../current/engineering/README.md)。
+ISSUE-001 的正文仍在原位置，本目录只链接它，不复制成第二份。后续新问题统一从本目录登记；编号从 ISSUE-010 继续。配置包作者仅记录证据与需求，由工程责任者判断并处理工程侧问题。与当前功能、版本和运行相关的事实见 [工程索引](../../current/engineering/README.md)。

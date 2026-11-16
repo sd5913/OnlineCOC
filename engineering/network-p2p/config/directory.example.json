@@ -1,0 +1,14 @@
+{
+  "stateFile": "/var/lib/onlinecoc-network/rooms.json",
+  "publishers": {
+    "owner": "SHA256_HEX_OF_LOCAL_PUBLISHER_TOKEN"
+  },
+  "turn": {
+    "urls": [
+      "stun:YOUR_SERVER_IP:3478",
+      "turn:YOUR_SERVER_IP:3478?transport=udp",
+      "turn:YOUR_SERVER_IP:3478?transport=tcp"
+    ],
+    "secret": "REPLACE_ON_SERVER_DO_NOT_COMMIT"
+  }
+}

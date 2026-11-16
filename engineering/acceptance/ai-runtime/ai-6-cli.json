@@ -1,0 +1,6255 @@
+{
+  "pack": "host-demo",
+  "realProviderUsed": false,
+  "outputEncoding": "UTF-8",
+  "reports": {
+    "check-base": {
+      "schemaVersion": 1,
+      "reportId": "e3e0e8a9113247abb11cb2d7a4524375",
+      "level": "A",
+      "status": "pass",
+      "candidateDigest": "e4fcbc5164d58e18b0859bd298f4c3f6909e169c5d60bbbac5929770fe70928d",
+      "baselineDigest": "872e6bd853769d7466cf919ac08741bc03a25320205b8254480cc3b4ed365b3c",
+      "contextDigest": "616c9c0c6f0f3703d8602d8cc4363182e81ef388d612b5cbedc687d0c938ac2c",
+      "contractDigest": "f6b007b0feebf79d3fb2fa4bc7afd311170ea9dc8cd3039da6ad81d9c0828ff0",
+      "validatorSetDigest": "5f0a3beb822985eaf46f448706b12b7e8e6f4c3b50d26d454a690206391fc7e5",
+      "coverage": [
+        "json",
+        "full-artifact",
+        "host-stage",
+        "pack-schemas",
+        "host-model",
+        "references"
+      ],
+      "findings": [],
+      "evidence": {
+        "artifactRevision": "d47709fd7fb018506643f180e5a1789fe09af3d7a5f02e4dbde1807eccfb2a5a",
+        "configurationCount": 6
+      },
+      "risk": "low",
+      "reviewItems": [],
+      "createdAt": 1794490488.6601155
+    },
+    "check-rules": {
+      "schemaVersion": 1,
+      "reportId": "649514f9406e495d99989f6cb0b8ff72",
+      "level": "B",
+      "status": "pass",
+      "candidateDigest": "e4fcbc5164d58e18b0859bd298f4c3f6909e169c5d60bbbac5929770fe70928d",
+      "baselineDigest": "872e6bd853769d7466cf919ac08741bc03a25320205b8254480cc3b4ed365b3c",
+      "contextDigest": "1564bf4b879cd20c07ebae5d35d43cfc382bed9891acb8861594ce8d0e6677b7",
+      "contractDigest": "f6b007b0feebf79d3fb2fa4bc7afd311170ea9dc8cd3039da6ad81d9c0828ff0",
+      "validatorSetDigest": "5f0a3beb822985eaf46f448706b12b7e8e6f4c3b50d26d454a690206391fc7e5",
+      "coverage": [
+        "skill-default-range"
+      ],
+      "findings": [],
+      "evidence": {
+        "skill-default-range": {
+          "matched": 1,
+          "values": [
+            15
+          ]
+        },
+        "existingInstances": {
+          "ids": [
+            "skill-player1"
+          ],
+          "valuesPreserved": true
+        }
+      },
+      "risk": "low",
+      "reviewItems": [],
+      "createdAt": 1794490490.14225
+    },
+    "assess": {
+      "schemaVersion": 1,
+      "reportId": "bebfd8db3bb9490bbf962eda98d7d0c6",
+      "level": "C",
+      "status": "pass",
+      "candidateDigest": "e4fcbc5164d58e18b0859bd298f4c3f6909e169c5d60bbbac5929770fe70928d",
+      "baselineDigest": "872e6bd853769d7466cf919ac08741bc03a25320205b8254480cc3b4ed365b3c",
+      "contextDigest": "c83f59d22b07aaa80c1b84186a0fcb4c6faca72a1de3cf90dffdea23db514037",
+      "contractDigest": "f6b007b0feebf79d3fb2fa4bc7afd311170ea9dc8cd3039da6ad81d9c0828ff0",
+      "validatorSetDigest": "5f0a3beb822985eaf46f448706b12b7e8e6f4c3b50d26d454a690206391fc7e5",
+      "coverage": [
+        "new-skill",
+        "wrong-owner",
+        "existing-skill"
+      ],
+      "findings": [
+        {
+          "code": "GAMEPLAY_DELTA",
+          "severity": "warning",
+          "path": "",
+          "sourceRef": "",
+          "message": "GAMEPLAY_DELTA",
+          "evidence": {
+            "scenarioId": "new-skill",
+            "metricId": "new-skill-success",
+            "unit": "probability",
+            "baseline": 0.0,
+            "candidate": 0.15,
+            "absoluteDelta": 0.15,
+            "relativeDelta": null,
+            "relativeUnavailableReason": "zero-baseline",
+            "exact": true
+          },
+          "suggestion": "KP must review the measured change and remaining choices"
+        }
+      ],
+      "evidence": {
+        "comparisons": [
+          {
+            "scenarioId": "new-skill",
+            "metricId": "new-skill-success",
+            "unit": "probability",
+            "baseline": 0.0,
+            "candidate": 0.15,
+            "absoluteDelta": 0.15,
+            "relativeDelta": null,
+            "relativeUnavailableReason": "zero-baseline",
+            "exact": true
+          },
+          {
+            "scenarioId": "existing-skill",
+            "metricId": "existing-skill-success",
+            "unit": "probability",
+            "baseline": 0.6,
+            "candidate": 0.6,
+            "absoluteDelta": 0.0,
+            "relativeDelta": 0.0,
+            "relativeUnavailableReason": null,
+            "exact": true
+          }
+        ],
+        "scenarios": [
+          {
+            "scenarioId": "new-skill",
+            "population": "new-instances-from-same-fixture",
+            "policies": {
+              "baseline": {
+                "algorithm": "exact-single-die-v1",
+                "seed": 1,
+                "trials": 100,
+                "randomCalls": [
+                  1
+                ]
+              },
+              "candidate": {
+                "algorithm": "exact-single-die-v1",
+                "seed": 1,
+                "trials": 100,
+                "randomCalls": [
+                  1
+                ]
+              }
+            },
+            "trials": {
+              "baseline": [
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 1
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 2
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 3
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 4
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 5
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 6
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 7
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 8
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 9
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 10
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 11
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 12
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 13
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 14
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 15
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 16
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 17
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 18
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 19
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 20
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 21
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 22
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 23
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 24
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 25
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 26
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 27
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 28
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 29
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 30
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 31
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 32
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 33
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 34
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 35
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 36
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 37
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 38
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 39
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 40
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 41
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 42
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 43
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 44
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 45
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 46
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 47
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 48
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 49
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 50
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 51
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 52
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 53
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 54
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 55
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 56
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 57
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 58
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 59
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 60
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 61
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 62
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 63
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 64
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 65
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 66
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 67
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 68
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 69
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 70
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 71
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 72
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 73
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 74
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 75
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 76
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 77
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 78
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 79
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 80
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 81
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 82
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 83
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 84
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 85
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 86
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 87
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 88
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 89
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 90
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 91
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 92
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 93
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 94
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 95
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 96
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 97
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 98
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 99
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 100
+                    }
+                  ]
+                }
+              ],
+              "candidate": [
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 1
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 2
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 3
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 4
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 5
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 6
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 7
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 8
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 9
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 10
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 11
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 12
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 13
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 14
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 15
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 16
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 17
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 18
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 19
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 20
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 21
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 22
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 23
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 24
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 25
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 26
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 27
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 28
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 29
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 30
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 31
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 32
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 33
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 34
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 35
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 36
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 37
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 38
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 39
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 40
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 41
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 42
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 43
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 44
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 45
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 46
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 47
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 48
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 49
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 50
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 51
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 52
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 53
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 54
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 55
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 56
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 57
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 58
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 59
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 60
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 61
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 62
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 63
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 64
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 65
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 66
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 67
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 68
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 69
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 70
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 71
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 72
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 73
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 74
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 75
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 76
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 77
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 78
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 79
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 80
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 81
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 82
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 83
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 84
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 85
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 86
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 87
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 88
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 89
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 90
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 91
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 92
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 93
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 94
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 95
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 96
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 97
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 98
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 99
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 100
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "scenarioId": "wrong-owner",
+            "population": "new-instances-from-same-fixture",
+            "policies": {
+              "baseline": {
+                "algorithm": "fixed-sequence-v1",
+                "seed": 1,
+                "trials": 1,
+                "randomCalls": [
+                  0
+                ]
+              },
+              "candidate": {
+                "algorithm": "fixed-sequence-v1",
+                "seed": 1,
+                "trials": 1,
+                "randomCalls": [
+                  0
+                ]
+              }
+            },
+            "trials": {
+              "baseline": [
+                {
+                  "steps": [
+                    {
+                      "ok": false,
+                      "code": "PERMISSION_DENIED"
+                    }
+                  ],
+                  "random": []
+                }
+              ],
+              "candidate": [
+                {
+                  "steps": [
+                    {
+                      "ok": false,
+                      "code": "PERMISSION_DENIED"
+                    }
+                  ],
+                  "random": []
+                }
+              ]
+            }
+          },
+          {
+            "scenarioId": "existing-skill",
+            "population": "new-instances-from-same-fixture",
+            "policies": {
+              "baseline": {
+                "algorithm": "exact-single-die-v1",
+                "seed": 1,
+                "trials": 100,
+                "randomCalls": [
+                  1
+                ]
+              },
+              "candidate": {
+                "algorithm": "exact-single-die-v1",
+                "seed": 1,
+                "trials": 100,
+                "randomCalls": [
+                  1
+                ]
+              }
+            },
+            "trials": {
+              "baseline": [
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 1
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 2
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 3
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 4
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 5
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 6
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 7
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 8
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 9
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 10
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 11
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 12
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 13
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 14
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 15
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 16
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 17
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 18
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 19
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 20
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 21
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 22
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 23
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 24
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 25
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 26
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 27
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 28
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 29
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 30
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 31
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 32
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 33
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 34
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 35
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 36
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 37
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 38
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 39
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 40
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 41
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 42
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 43
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 44
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 45
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 46
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 47
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 48
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 49
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 50
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 51
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 52
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 53
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 54
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 55
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 56
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 57
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 58
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 59
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 60
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 61
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 62
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 63
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 64
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 65
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 66
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 67
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 68
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 69
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 70
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 71
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 72
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 73
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 74
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 75
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 76
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 77
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 78
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 79
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 80
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 81
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 82
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 83
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 84
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 85
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 86
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 87
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 88
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 89
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 90
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 91
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 92
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 93
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 94
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 95
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 96
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 97
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 98
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 99
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 100
+                    }
+                  ]
+                }
+              ],
+              "candidate": [
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 1
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 2
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 3
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 4
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 5
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 6
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 7
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 8
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 9
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 10
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 11
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 12
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 13
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 14
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 15
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 16
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 17
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 18
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 19
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 20
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 21
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 22
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 23
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 24
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 25
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 26
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 27
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 28
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 29
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 30
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 31
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 32
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 33
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 34
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 35
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 36
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 37
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 38
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 39
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 40
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 41
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 42
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 43
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 44
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 45
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 46
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 47
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 48
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 49
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 50
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 51
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 52
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 53
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 54
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 55
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 56
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 57
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 58
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 59
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": true,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 60
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 61
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 62
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 63
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 64
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 65
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 66
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 67
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 68
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 69
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 70
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 71
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 72
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 73
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 74
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 75
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 76
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 77
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 78
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 79
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 80
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 81
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 82
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 83
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 84
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 85
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 86
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 87
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 88
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 89
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 90
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 91
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 92
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 93
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 94
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 95
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 96
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 97
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 98
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 99
+                    }
+                  ]
+                },
+                {
+                  "steps": [
+                    {
+                      "ok": true,
+                      "result": false,
+                      "effects": []
+                    }
+                  ],
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 100
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        ],
+        "requiredMetrics": [
+          "existing-skill-success",
+          "new-skill-success"
+        ],
+        "measuredMetrics": [
+          "existing-skill-success",
+          "new-skill-success"
+        ],
+        "limitations": [
+          "Only declared scenarios and metrics are covered",
+          "Existing instance values are not migrated",
+          "KP judgment is required for subjective gameplay impact"
+        ]
+      },
+      "risk": "high",
+      "reviewItems": [
+        {
+          "id": "newcomer-value",
+          "question": "新建技能的初始值是否保留已有技能和成长投入的价值？",
+          "required": true
+        }
+      ],
+      "createdAt": 1794490494.5089808
+    }
+  }
+}

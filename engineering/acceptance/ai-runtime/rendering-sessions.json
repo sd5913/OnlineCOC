@@ -1,0 +1,74 @@
+{
+  "checkedAt": "2026-11-15T23:51:03.620121+08:00",
+  "moduleTestsUnique": 51,
+  "runs": [
+    {
+      "file": "session-ui-tests.xml",
+      "tests": 26,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "session-final-tests.xml",
+      "tests": 51,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "session-recovery-tests.xml",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  ],
+  "stumpsvilleGroups": 7,
+  "stumpsvilleEvidence": "rulepacks/stumpsville/tests/map-ai-results.json",
+  "provider": "offline fixtures only",
+  "realCredentialsUsed": false,
+  "realSaveChanged": false,
+  "cloudTested": false,
+  "checks": [
+    "DOM-only Markdown headings/emphasis/lists/quotes/tables/code; semantic references except code",
+    "no HTML execution, unsafe links or automatic image requests; narrow table scroll",
+    "owner isolation, settings defaults and validation, version conflicts, historyTurns 0/2/4",
+    "session search/sort/pinning/archive/restore, persistence, per-session in-memory drafts",
+    "same-origin standalone manager and three conversation embeds; local administrator manager",
+    "lost response reads original receipt and blocks duplicate form writes",
+    "native KP and old consultation rendering, two WebRTC players, bundled styles and Shadow DOM form forwarding"
+  ],
+  "notes": [
+    "The first package run exposed Shadow DOM form retargeting in the existing sandbox bridge; corrected and all 7 groups rerun passed.",
+    "The final 4 UI tests additionally verify duplicate-submit protection after an uncertain receipt; they are included in the 51 unique module tests."
+  ],
+  "sha256": {
+    "engineering/ai/src/onlinecoc_ai/sessions.py": "fd1315e6ffa7b32fb7cedcfc337a516f93e9666f7388de5050664bf18031cb02",
+    "engineering/ai/src/onlinecoc_ai/repository.py": "6d8d48b5c17209c3b8d3d792a9a683ff7b9ab072a69b0576c6485b61fb4e7e71",
+    "engineering/ai/src/onlinecoc_ai/context.py": "9667701e72d6064dfd701f93f92ceafd0f7743703563e309a2389ac254a21e47",
+    "engineering/contracts/ai-operations.json": "d3ecc6d2a16a55cf979d125d4a95774c529209f49e44408ff4d516ca079c54fb",
+    "engineering/backend/src/onlinecoc/server.py": "a613154b8ff0750a509d8d7e3557e9ea2e73fd7a910055991d60596b5bbb5a3c",
+    "engineering/ai/web/components/markdown.js": "0c6c1e6da6e153cb76136277647785aaf53bc0d67a61aa5e1d94f8b0ad375bf4",
+    "engineering/ai/web/components/markdown.css": "0f2c2c8a3d33844c1293693e4b2c0dff60404d2b4cfe6b71329f4e68b21e3161",
+    "engineering/ai/web/components/session-manager.js": "eaa5cc3bb3a78681b1b6b9569c934c8324a023b728ecedae7b380da028fd844d",
+    "engineering/ai/web/components/session-manager.css": "a74b4486a447931b7b788a752da5b2c01f7802dcfddfc2d116f3b46833630ffe",
+    "engineering/ai/web/components/sessions.html": "7f960c03bc3d238e6a8ddcf5fd802c93b7001e72a395c41a9020ea3f6e51c8d2",
+    "engineering/ai/web/components/chat.js": "1e30dfba2960c5c555fab10602b9d2e7faf5f898c0feb0597bf6d522e4e6703a",
+    "engineering/ai/web/components/sessions.js": "9136a191c9863eefe69fcccb16dc58bd59168b52ed8177fdb181f2902fdf26be",
+    "engineering/ai/web/components/views.js": "333502528bb511dbb5ae4fe727890afc1a9e9861ac241d83cbabb45da0f8bae0",
+    "engineering/ai/web/components/views.css": "7b0e644dbdb2c2cf1232109d03bdcde60f588035b178ba1aeb85392a5ad49354",
+    "engineering/ai/web/components/pack.js": "5dbf6157562e2b80b376a041c293835aae97e9d778ff7961b0cc1906e188c525",
+    "engineering/ai/web/components/pack.d.ts": "ac5871ec69c1d084917a80064d251ca28d8f1cd362f6ea2a17a56e4319233aab",
+    "engineering/ai/web/components/index.d.ts": "c804083f82385f4b58c6dfdbbc52dfaacbead9964876c993608a90b4813da555",
+    "engineering/ai/web/components/page-entry.js": "0cc67d23c6a42789f61a9933447439451fc9ebc0646dd99f3c2ecccd3011ef60",
+    "engineering/ai/web/components/pack-manifest.json": "6aa4ca7a0fc2f85d74fd10729e964403b8217c54f4d12a86de5540d07f619b81",
+    "engineering/ai/web/manager/manager.js": "9eebd78261cfdfbb8a70c2e6d5569c4ff8b7ab0828923af7f1a0384be06c59bc",
+    "engineering/ai/web/manager/index.html": "ed2c38547ba1a76dbfcbc1ee5626081aeafcc438054e411fc476d231b35365e0",
+    "rulepacks/stumpsville/ui/ai.js": "64fbb6ebfc6152fe2e5f4a91dfc05a10616a94f7167902fb93134518d6f8e881",
+    "rulepacks/stumpsville/ui/ai-embedded.js": "cc49c7db6d1e6b51f57746b766a33c6be98cc62d5f1efe08700009e7f35621d1",
+    "rulepacks/stumpsville/web/bridge.js": "7ff20298a24109110143f3a2ed0e4bbe54507b555fa8f2e6201beb8e86b77c9a",
+    "rulepacks/stumpsville/tools/build_web.py": "bcb21f0227c6fe7ffab4bfc99845b41cdb065f761d519b4b74339f3c4006d1f4",
+    "rulepacks/stumpsville/tests/verify_map_ai.py": "b4872bdc36f829e6d42f2312952faea881449d704e09ed43a9b61165375f3e9b"
+  }
+}

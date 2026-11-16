@@ -1,0 +1,67 @@
+{
+  "stage": "AM-0 through AM-4",
+  "completedAt": "2026-11-13T12:51:09.609799+08:00",
+  "status": "passed",
+  "uniqueTests": 331,
+  "testExecutions": 359,
+  "failed": 0,
+  "skipped": 0,
+  "runs": [
+    {
+      "junit": "manager-full.xml",
+      "passed": 330,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "junit": "manager-final.xml",
+      "passed": 28,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "junit": "manager-ui.xml",
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0
+    }
+  ],
+  "sourceSnapshot": "manager-ui.json",
+  "browserReport": "manager-browser.json",
+  "provider": "deterministic-offline",
+  "newLiveProviderCalls": 0,
+  "stages": [
+    {
+      "id": "AM-0",
+      "scope": "Local manager authentication, bounded room bridge and schema contracts",
+      "status": "passed"
+    },
+    {
+      "id": "AM-1",
+      "scope": "Provider CRUD/CAS/hot reload, actual Windows DPAPI key storage and explicit probe UI",
+      "status": "passed"
+    },
+    {
+      "id": "AM-2",
+      "scope": "Owned sessions, archive/restore, atomic submission and bounded source-checked history",
+      "status": "passed"
+    },
+    {
+      "id": "AM-3",
+      "scope": "Independent manager, Shadow DOM components, headless client and real KP/PL host login",
+      "status": "passed"
+    },
+    {
+      "id": "AM-4",
+      "scope": "Actual CLI startup, full host/AI regression and final Edge interaction/privacy checks",
+      "status": "passed"
+    }
+  ],
+  "limitations": [
+    "Manager and room bridge are loopback-only",
+    "Browser provider is deterministic offline; prior DeepSeek live report is separate",
+    "Stumpsville integration remains a plan; no package code changed in this task",
+    "Human KP playtest, non-Windows vault and full component localization are not accepted"
+  ],
+  "note": "Full regression precedes final targeted changes. The final targeted run covers provider refresh, sessions, manager and existing console; final browser rerun additionally covers out-of-order view responses. Mobile lock visibility is a CSS-only adjustment."
+}

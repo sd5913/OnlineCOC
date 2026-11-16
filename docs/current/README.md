@@ -7,6 +7,8 @@
 | [设计文档](design/README.md) | 当前有效的项目目标、设计、约束及决策理由 |
 | [工程文档](engineering/README.md) | 与当前代码、配置和实际目录对齐的工程说明 |
 
+配置包作者阅读[开发指南与支持工具](../../rulepacks/README.md)；具体包的版本和进展见[实例统计与管理](../../rulepacks/catalog.md)。工具清单区分已有能力、技术预览与待实施条目。
+
 工程文档每次阶段更新必须核对实际工程，剔除已废弃的内容；有追溯价值的旧内容移入历史目录。Agent 或人员施工前必须检查 [hierarchy](engineering/hierarchy.md) 并登记自己的唯一 ID，施工后释放标记。
 
 更新规则见 [文档维护标准](../standards/document-maintenance.md)。

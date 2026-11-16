@@ -1,0 +1,34 @@
+{
+  "accounts": [
+    {
+      "accountId": "kp",
+      "role": "kp"
+    },
+    {
+      "accountId": "player1",
+      "role": "player"
+    },
+    {
+      "accountId": "player2",
+      "role": "player"
+    }
+  ],
+  "instances": [
+    {
+      "instanceId": "actor-one",
+      "configurationId": "fixture.actor",
+      "owner": "player1",
+      "name": "测试角色",
+      "visibility": "public",
+      "numbers": {}
+    },
+    {
+      "instanceId": "token-one",
+      "configurationId": "fixture.token",
+      "owner": "player1",
+      "name": "测试道具",
+      "visibility": "public",
+      "numbers": {}
+    }
+  ]
+}

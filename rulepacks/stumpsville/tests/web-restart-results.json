@@ -1,0 +1,14 @@
+{
+  "passed": true,
+  "checkedAt": "2026-11-15T21:57:50.202750+08:00",
+  "checks": [
+    "reproduced public CLI EXPORT_ALREADY_EXISTS when exporting twice into the same directory",
+    "existing legacy exports reused only after complete hash comparison; repeated start leaves immutable files unchanged and cleans temporary folders",
+    "changed startup UI produces a new version despite unchanged language/portrait groups; old export preserved",
+    "interrupted export cannot publish a partial directory and does not alter prior versions",
+    "corrupted cached bytes are rejected with a specific error and preserved for diagnosis",
+    "same adapter and full host restart reuse room ID/code and persisted character; actual Edge player loads reused export and authorized projection"
+  ],
+  "cloudMutation": false,
+  "realSaveModified": false
+}

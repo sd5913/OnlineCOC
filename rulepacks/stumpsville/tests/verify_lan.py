@@ -74,7 +74,7 @@ def windows():
     def visit(hwnd, _):
         title = ctypes.create_unicode_buffer(512)
         user.GetWindowTextW(ctypes.c_void_p(hwnd), title, 512)
-        if title.value == '树桩镇 · 局域网启动':
+        if title.value in ('树桩镇 · 局域网启动', '树桩镇 · 房间管理'):
             pid = ctypes.c_ulong()
             user.GetWindowThreadProcessId(ctypes.c_void_p(hwnd), ctypes.byref(pid))
             rows.append((hwnd,pid.value))
@@ -83,9 +83,9 @@ def windows():
     return rows
 
 
-def test_cmd(data):
+def test_cmd(data, entry='start-lan.cmd'):
     before = {h for h,_ in windows()}
-    command = f'"{os.environ["COMSPEC"]}" /d /s /c ""{PACK / "start-lan.cmd"}" --data-dir "{data}" --no-browser"'
+    command = f'"{os.environ["COMSPEC"]}" /d /s /c ""{PACK / entry}" --data-dir "{data}" --no-browser"'
     result = subprocess.run(command,timeout=20,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL,creationflags=subprocess.CREATE_NO_WINDOW)
     assert result.returncode == 0
     target = None
@@ -201,7 +201,7 @@ def gui_suite():
                 return page
             gm,player=login('kp'),login('player1')
             assert not player.evaluate('window.isSecureContext'),'Must test real insecure LAN HTTP'
-            gm.goto(origin+'/sessions/kp/#/gm/console')
+            gm.goto(origin+'/sessions/kp/#/gm/room')
             expect(gm.locator('#room-network')).to_contain_text('房间信息与连线玩家')
             expect(gm.locator('#room-network tr').filter(has_text='player1')).to_contain_text('在线',timeout=15000)
             assert gm.locator('#room-url').input_value()==origin+'/'

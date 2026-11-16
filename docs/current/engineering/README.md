@@ -6,7 +6,14 @@
 
 | 文档 | 说明 |
 | --- | --- |
+| [AI 数据查询与聊天裁决资料](ai-data-query.md) | 按需工具、来源复验、语义引用、包侧只读适配和 Room v3 边界 |
+| [网页房间与按需游戏页](network-web.md) | 可选 network-web：开房串、创建/管理/加入三页、可选公开与密码、成员/黑名单及按需游戏页 |
+| [配置包 AI 工具、嵌入视图与会话管理](ai-pack-embedding.md) | pack.js 无界面工具、三种对话视图、独立会话管理/设置、用量统计、Markdown 显示、同源 iframe 与资源清单 |
+| [AI 管理器、嵌入组件与开发接口](ai-manager.md) | 房间文件夹与对话界面、服务商/加密密钥、可选日限额与用量统计、只读数据引用、可嵌入组件/API、性能测量与包侧原型 |
+| [房间 AI 模块](ai-runtime.md) | AI-0—AI-5、实际 demo 工程试点与真实 DeepSeek 联调已验收；三检、上下文/记忆、服务商、KP 面板及原子发布，人工试玩待补 |
+| [独立本地化工具](localization.md) | 独立 Electron/CLI 骨架、共享 ICU 与便携试打包；L10N-0 的 3/4 条件通过，原生目录确认待验收 |
 | [本机主机账号维护](host-accounts.md) | 工程外账号工具、运行实例选择、主机用户授权和在线密码重设 |
+| [公网房间与 P2P 联机](network-p2p.md) | 短房间码、本机宿主识别、玩家分发、腾讯 CVM 运维和验收；开房/加入见[快速使用](../../../engineering/network-p2p/README.md) |
 | [局域网联网模块](network-lan.md) | 独立 LAN HTTP/WS、身份与路由边界、启停 GUI |
 | [独立桌面房间管理工具](room-manager.md) | 工程外 Python/Tkinter GUI、现有管理接口、变化观察、关注、回执与备份创建 |
 | [Windows 安装与启动工具](desktop-tools.md) | 两个 exe、共享配置、独立运行时、更新与启停 |
@@ -23,6 +30,8 @@
 
 ## 版本管理
 
-项目根目录已初始化为 Git 仓库，远端 `origin` 为 [spathering/polyu-ap-gpcoc](https://github.com/spathering/polyu-ap-gpcoc)。初始化时远端为空，使用现有项目文件建立本地 `main` 初始提交，再从 `main` 创建开发分支 `spathering`。
+项目根目录使用 Git 管理，远端 `origin` 为 [sd5913/OnlineCOC](https://github.com/sd5913/OnlineCOC)。保留原项目提交历史，`main` 为主分支，`spathering` 从主分支创建并作为当前开发分支。
 
 可用 `git status --short --branch` 检查当前工作区和分支，用 `git remote -v` 检查远端配置。分支切换与提交前须遵守 hierarchy 占用规则。初始化与本地分支创建不会自动推送至远端；远端分支及上游关联需在实际推送后确认。
+
+- [房间格式与发行变更](room-format.md)：后端 0.2.0 / Room v3，严格加载、历史定义和只读验证。

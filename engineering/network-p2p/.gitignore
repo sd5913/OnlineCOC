@@ -1,0 +1,11 @@
+/local/*
+!/local/README.md
+/tmp/
+/.venv/
+/.pytest_cache/
+/.test-output/
+/dist/
+*.egg-info/
+__pycache__/
+*.pyc
+/build/

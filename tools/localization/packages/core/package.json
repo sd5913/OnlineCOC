@@ -1,0 +1,1 @@
+{"name":"@localizer/core","version":"0.1.0","private":true,"type":"module","exports":"./src/index.ts","dependencies":{"@localizer/contracts":"0.1.0","@localizer/messages":"0.1.0","ajv":"8.20.0"}}

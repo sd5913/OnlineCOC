@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>OnlineCOC · 联网房间</title><link rel="stylesheet" href="/web/style.css"><script type="module" src="/web/app.js"></script></head>
+<body>
+<header><div><span class="eyebrow">ONLINECOC / MULTIPLAYER</span><h1>联网房间</h1><p>在这里相遇，把故事留在房主的桌上。</p></div><div class="connection"><span id="connection-dot"></span><strong id="connection-state">正在连接目录</strong><small id="directory-address"></small></div></header>
+<main>
+<nav class="tabs" aria-label="功能"><button class="active" data-tab="join">加入房间</button><button data-tab="host">我的房间</button></nav>
+<section id="join-tab" class="tab">
+<div class="workspace">
+<section class="panel lobby"><div class="section-title"><h2>公开房间</h2><button id="refresh" class="quiet">刷新列表</button></div><div id="rooms" class="rooms"><p class="empty">正在读取房间…</p></div></section>
+<section class="panel"><h2>准备加入</h2><p class="muted">输入房主提供的 8 位房间码，或直接粘贴完整加入信息；公开房间也可从左侧选择。</p>
+<form id="join-form"><label>房间码 / 加入信息<input id="room-id" name="roomId" required autocomplete="off" maxlength="512" placeholder="例如 ABCD-EFGH，或粘贴加入信息"></label>
+<label>邀请凭据 <span>已粘贴完整加入信息时无需再填</span><input id="invitation" type="password" autocomplete="off"></label>
+<label>房间密码 <span>与游戏账号密码不同</span><input id="room-password" type="password" autocomplete="off"></label>
+<label class="check"><input id="relay-only" type="checkbox">仅使用中继连接</label><button id="join-button" type="submit">连接房主</button></form>
+<div id="join-status" class="notice" role="status">尚未加入房间</div>
+<form id="login-form" hidden><h3>登录房间账号</h3><label>账号<input id="login-name" autocomplete="username" required></label><label>密码<input id="login-password" type="password" autocomplete="current-password" required></label><button type="submit">登录并检查内容</button></form>
+<div id="content-confirm" hidden><h3>房间所需内容</h3><p id="content-description"></p><p class="muted">只下载房主导出的玩家内容。游戏页面将在隔离视图中运行。</p><button id="prepare">下载并进入</button><progress id="download-progress" max="1" value="0"></progress></div>
+<div id="network-info" class="network" hidden></div><button id="leave" class="quiet danger" hidden>离开房间</button>
+</section>
+</div>
+<section id="play-panel" class="panel play" hidden><div class="section-title"><h2>房间桌面</h2><span id="package-title"></span></div><div id="package-frame"></div><details id="snapshot-detail"><summary>授权状态与联机诊断</summary><pre id="snapshot">等待主机状态…</pre></details><div class="chat-box"><label>聊天频道<input id="chat-channel" value="general"></label><label>消息<input id="chat-text" maxlength="4000" placeholder="发送给当前房间"></label><button id="send-chat">发送</button></div><div id="chat-status" role="status"></div></section>
+</section>
+<section id="host-tab" class="tab" hidden><div class="workspace">
+<section class="panel"><h2>发布本机房间</h2><p class="muted">先启动原游戏宿主，再发布入口。关闭联机入口会撤下房间，原宿主与存档继续保留。</p>
+<form id="host-form"><div class="section-title"><h3>本机已运行房间</h3><button id="refresh-local" type="button" class="quiet">刷新本机房间</button></div><label>选择要联机的宿主<select id="local-hosts"><option value="">正在识别…</option></select></label><p id="local-host-note" class="muted">只识别已启动的本机宿主，不会自动启动或发布房间。</p><label>房间名称<input id="host-title" required maxlength="64" value="一起跑团"></label><label>房间说明<textarea id="host-summary" maxlength="512" placeholder="玩法、时间或加入说明"></textarea></label>
+<div class="two"><label>可见性<select id="host-visibility"><option value="private">私有 · 邀请加入</option><option value="public">公开 · 大厅可见</option></select></label><label>玩家上限<input id="host-max" type="number" min="1" max="32" value="8"></label></div>
+<label>房间密码 <span>可选</span><input id="host-password" type="password" autocomplete="new-password"></label>
+<label class="check"><input id="host-approval" type="checkbox" checked>加入前由我审批</label>
+<details><summary>连接设置</summary><label>本机宿主地址<input id="host-upstream" value="http://127.0.0.1:8765"></label><label class="check"><input id="host-relay" type="checkbox">主机仅使用中继</label></details>
+<button type="submit" id="host-start">发布房间</button></form><p id="host-notice" class="notice" role="status"></p></section>
+<section class="panel"><div class="section-title"><h2>运行状态</h2><span id="host-running">未发布</span></div>
+<dl id="host-details"></dl><div id="host-share" hidden><label>房间码<input id="share-code" readonly></label><div class="actions"><button id="copy-code" class="quiet">复制房间码</button><button id="copy-join" class="quiet">复制加入信息</button></div><label>加入信息<input id="share-join" readonly></label><p id="share-note" class="muted">私有房间的加入信息含邀请凭据，仅发给准备加入的人；游戏账号另行提供。</p></div><details id="host-invitation" hidden><summary>单独查看邀请凭据</summary><label>邀请凭据<input id="share-invitation" readonly></label><p class="muted">仅分享给准备加入的人；此凭据不包含游戏账号。</p></details>
+<div class="actions"><button id="host-lock" class="quiet" disabled>锁定新加入</button><button id="host-stop" class="quiet danger" disabled>停止联机入口</button></div>
+<h3>等待审批</h3><div id="pending"><p class="empty">暂无申请</p></div><h3>在线玩家</h3><div id="players"><p class="empty">暂无玩家</p></div></section>
+</div></section>
+<div id="global-error" class="error" hidden role="alert"></div>
+</main><footer>主机权威 · 直连优先 · 中继兜底 <span>测试版 0.2</span></footer>
+</body></html>

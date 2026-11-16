@@ -80,7 +80,8 @@ def connection_report(address, port, data, runtime=None):
     import httpx
     lines = ['树桩镇连接诊断 · '+time.strftime('%Y-%m-%d %H:%M:%S'), f'玩家地址：http://{address}:{port}/']
     adapters = discover_adapters()
-    lines.append('网卡：'+('当前IP仍在本机网卡上。' if any(a.address == address for a in adapters) else '所选IP已不在本机，请停止后刷新网卡，重新分享地址。'))
+    loopback = address == '127.0.0.1'
+    lines.append('网卡：'+('本机回环入口，只供本机访问。' if loopback else '当前IP仍在本机网卡上。' if any(a.address == address for a in adapters) else '所选IP已不在本机，请停止后刷新网卡，重新分享地址。'))
     try:
         with httpx.Client(trust_env=False, timeout=3) as client:
             response = client.get(f'http://{address}:{port}/setup/status')
@@ -104,7 +105,7 @@ def connection_report(address, port, data, runtime=None):
             lines.append('存档占用：仍被其他启动器使用或无访问权限；先从原窗口停止房间。')
     else:
         lines.append('存档占用：由本窗口持有，属于运行中的正常状态。')
-    if os.name == 'nt':
+    if os.name == 'nt' and not loopback:
         script = r"""
 $ErrorActionPreference='Stop'
 [Console]::OutputEncoding=New-Object System.Text.UTF8Encoding
@@ -131,7 +132,10 @@ $fw=Get-NetFirewallProfile -Name $profile
     lines.append(f'本次进程最近记录：收到其他设备 {len(remote)} 次页面／登录／异常请求（最多保留60条，不是人数）。' if runtime else '访问记录：此窗口尚未管理运行中的服务，无法读取它的访问记录。')
     for visit in remote[-5:]:
         lines.append(time.strftime('%H:%M:%S',time.localtime(visit['time']))+f" · {visit['ip']} · {visit['kind']} · HTTP {visit['status']}")
-    lines.extend(['让朋友重新打开完整的 http://IP:端口/，再运行本检查。',
+    if loopback:
+        lines.append('其他设备不能访问此回环地址。局域网玩家请使用实际网卡IP；网页玩家请使用平台加入网址与房间代号。')
+    else:
+        lines.extend(['让朋友重新打开完整的 http://IP:端口/，再运行本检查。',
         '没有收到访问：核对IP、端口、防火墙，以及校园／公司／访客Wi-Fi是否启用了设备隔离。',
         '收到页面但登录失败：网络已到达服务，检查账号和密码。每位玩家使用自己的账号。',
         '朋友无需安装本项目；浏览器打开地址并登录即可。同一Wi-Fi名称不保证设备之间互通。'])
@@ -140,8 +144,9 @@ $fw=Get-NetFirewallProfile -Name $profile
 
 class LanService:
     """Own exactly one package adapter and its child host, until stop/close."""
-    def __init__(self, data, events):
+    def __init__(self, data, events, *, allow_local=False, modules=None):
         self.data, self.events = Path(data), events
+        self.allow_local, self.modules = allow_local, modules or {}
         self.thread = None
         self.cancel = threading.Event()
         self.runtime = self.server = None
@@ -153,7 +158,7 @@ class LanService:
     def start(self, address, port, password=None):
         if self.active:
             raise ValueError('当前房间仍在运行，请先停止。')
-        if not private_ipv4(address):
+        if not private_ipv4(address) and not (self.allow_local and address == '127.0.0.1'):
             raise ValueError('请选择本机实际的局域网 IPv4。')
         if not isinstance(port, int) or not 1 <= port <= 65535:
             raise ValueError('端口必须是 1–65535 的整数。')
@@ -181,7 +186,8 @@ class LanService:
             from launch import Runtime, create_app
             import uvicorn
             try:
-                runtime = Runtime(argparse.Namespace(data_dir=self.data, bind=address, port=port, backend_port=0))
+                runtime = Runtime(argparse.Namespace(data_dir=self.data, bind=address, port=port, backend_port=0,
+                                                     no_browser=True, **self.modules))
             except PermissionError as error:
                 raise ValueError('存档正在被使用或没有写入权限。请先关闭树桩镇原启动器，再重试。') from error
             self.runtime = runtime
@@ -205,6 +211,10 @@ class LanService:
                     announced = False
                     while True:
                         if self.cancel.is_set():
+                            self.server.should_exit = True
+                        if self.server.started and runtime.process and runtime.process.poll() is not None and not self.cancel.is_set():
+                            self.events.put(('error', '宿主已意外退出，房间正在停止。请查看 host.log。'))
+                            self.cancel.set()
                             self.server.should_exit = True
                         if self.server.started and not announced and not self.cancel.is_set():
                             announced = True
@@ -253,11 +263,13 @@ class LanWindow:
         root.geometry('780x630')
         root.minsize(700, 590)
         root.protocol('WM_DELETE_WINDOW', self.close)
-        frame = ttk.Frame(root, padding=24)
+        frame = self.frame = ttk.Frame(root, padding=24)
         frame.pack(fill='both', expand=True)
         frame.columnconfigure(1, weight=1)
-        ttk.Label(frame, text='树桩镇 · 局域网联机', font=('Microsoft YaHei UI', 18, 'bold')).grid(row=0, column=0, columnspan=3, sticky='w', pady=(0, 8))
-        ttk.Label(frame, text='同一局域网的玩家用浏览器打开连接地址，各自登录账号。').grid(row=1, column=0, columnspan=3, sticky='w', pady=(0, 20))
+        self.heading = ttk.Label(frame, text='树桩镇 · 局域网联机', font=('Microsoft YaHei UI', 18, 'bold'))
+        self.heading.grid(row=0, column=0, columnspan=3, sticky='w', pady=(0, 8))
+        self.subtitle = ttk.Label(frame, text='同一局域网的玩家用浏览器打开连接地址，各自登录账号。')
+        self.subtitle.grid(row=1, column=0, columnspan=3, sticky='w', pady=(0, 20))
         ttk.Label(frame, text='网卡与本机 IP').grid(row=2, column=0, sticky='w', padx=(0, 12))
         self.network = tk.StringVar()
         self.combo = ttk.Combobox(frame, textvariable=self.network, state='readonly', width=48)
@@ -293,7 +305,7 @@ class LanWindow:
         self.diagnose_button.pack(side='left')
         self.status = tk.StringVar(value='正在识别网卡…')
         ttk.Label(frame, textvariable=self.status, wraplength=715).grid(row=6, column=0, columnspan=3, sticky='w', pady=(0, 12))
-        links = ttk.LabelFrame(frame, text='玩家连接地址', padding=14)
+        links = self.links = ttk.LabelFrame(frame, text='玩家连接地址', padding=14)
         links.grid(row=7, column=0, columnspan=3, sticky='ew')
         links.columnconfigure(0, weight=1)
         self.address = tk.StringVar(value='启动成功后显示')
@@ -302,10 +314,11 @@ class LanWindow:
         self.copy_button.grid(row=1, column=0, sticky='w')
         self.browser_button = ttk.Button(links, text='打开主持登录页', command=self.open_kp, state='disabled')
         self.browser_button.grid(row=1, column=1, sticky='e')
-        ttk.Label(frame, text='启动窗口需保持打开；关闭窗口会停止房间，存档保留。\n自动裁决还需一个已登录的 KP 网页保持在线。\n若其他设备无法连接，请检查同网段／访客网络隔离，并允许 Windows 防火墙的所选端口。', wraplength=715).grid(row=8, column=0, columnspan=3, sticky='w', pady=16)
+        self.footer = ttk.Label(frame, text='启动窗口需保持打开；关闭窗口会停止房间，存档保留。\n自动裁决还需一个已登录的 KP 网页保持在线。\n若其他设备无法连接，请检查同网段／访客网络隔离，并允许 Windows 防火墙的所选端口。', wraplength=715)
+        self.footer.grid(row=8, column=0, columnspan=3, sticky='w', pady=16)
         ttk.Label(frame, text='存档：'+str(self.data.resolve()), wraplength=715, foreground='#666666').grid(row=9, column=0, columnspan=3, sticky='w')
         self.scan()
-        root.after(100, self.tick)
+        self.timer = root.after(100, self.tick)
 
     def setup_visibility(self):
         if (self.data/'host').exists():
@@ -391,10 +404,10 @@ class LanWindow:
             self.events.put(('diagnostic', report))
         threading.Thread(target=work, daemon=True).start()
 
-    def show_report(self, report):
+    def show_report(self, report, title='连接诊断'):
         self.last_report = report
         window = tk.Toplevel(self.root)
-        window.title('树桩镇 · 连接诊断')
+        window.title('树桩镇 · '+title)
         window.geometry('800x620')
         body = ttk.Frame(window, padding=16); body.pack(fill='both', expand=True)
         text = tk.Text(body, wrap='word', font=('Microsoft YaHei UI',10))
@@ -404,17 +417,28 @@ class LanWindow:
         text.insert('1.0',report);text.configure(state='disabled')
         def copy_report():
             self.root.clipboard_clear();self.root.clipboard_append(report)
-        ttk.Button(body,text='复制诊断报告',command=copy_report).pack(side='left',pady=(12,0))
-        if os.name == 'nt':
+        ttk.Button(body,text='复制内容',command=copy_report).pack(side='left',pady=(12,0))
+        if os.name == 'nt' and title == '连接诊断':
             ttk.Button(body,text='打开防火墙设置',command=lambda:subprocess.Popen(['control.exe','/name','Microsoft.WindowsFirewall'])).pack(side='left',padx=12,pady=(12,0))
         ttk.Button(body,text='关闭',command=window.destroy).pack(side='right',pady=(12,0))
 
     def close(self):
+        if self.closing:
+            return
         self.closing = True
         if self.busy or self.service.active:
             self.stop()
         else:
-            self.root.destroy()
+            self.destroy_window()
+
+    def destroy_window(self):
+        if self.timer:
+            try:
+                self.root.after_cancel(self.timer)
+            except tk.TclError:
+                pass
+            self.timer = None
+        self.root.destroy()
 
     def tick(self):
         while True:
@@ -467,9 +491,9 @@ class LanWindow:
                 if not self.failed:
                     self.status.set('房间已停止，存档保留。')
         if self.closing and not self.service.active:
-            self.root.destroy()
+            self.destroy_window()
             return
-        self.root.after(100, self.tick)
+        self.timer = self.root.after(100, self.tick)
 
 
 def main():

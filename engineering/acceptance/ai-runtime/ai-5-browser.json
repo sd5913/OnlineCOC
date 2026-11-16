@@ -1,0 +1,16 @@
+{
+  "browser": "157.0.4341.60",
+  "provider": "deterministic-offline",
+  "pageErrors": [],
+  "verified": [
+    "player-request",
+    "KP-forward",
+    "ABC-review",
+    "risk-reasons",
+    "manual-revision",
+    "approval",
+    "publication-receipt",
+    "reconnect",
+    "logout-clear"
+  ]
+}

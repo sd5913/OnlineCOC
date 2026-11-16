@@ -1,0 +1,13 @@
+{
+  "passed": true,
+  "checkedAt": "2026-11-15T16:30:13.828056+08:00",
+  "checks": [
+    "plain-text HTTP 404 becomes missing cloud bridge, not JSON parser failure",
+    "old capabilities, malformed/oversize responses and HTTP server errors stay distinct",
+    "capability check sends no publisher credential; redirects and credential-bearing URLs rejected",
+    "missing CA classified without disabling TLS validation",
+    "failed startup preserves host/data, stops before export/publish, logs stage and code without credentials",
+    "real host remains playable after 404; only local KP sees diagnostics; Edge renders guidance and log path without overflow"
+  ],
+  "cloudMutation": false
+}

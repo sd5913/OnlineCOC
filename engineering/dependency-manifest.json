@@ -326,5 +326,43 @@
       "license": "BSD-3-Clause",
       "licenseClassifiers": []
     }
-  ]
+  ],
+  "runtimePackages": [
+    "annotated-doc",
+    "annotated-types",
+    "anyio",
+    "argon2-cffi-bindings",
+    "argon2-cffi",
+    "attrs",
+    "certifi",
+    "cffi",
+    "click",
+    "fastapi",
+    "h11",
+    "httpcore",
+    "httpx",
+    "idna",
+    "jsonschema-specifications",
+    "jsonschema",
+    "lupa",
+    "opentelemetry-api",
+    "pwdlib",
+    "pycparser",
+    "pydantic",
+    "pydantic_core",
+    "referencing",
+    "rpds-py",
+    "starlette",
+    "typing-inspection",
+    "typing_extensions",
+    "uvicorn",
+    "websockets"
+  ],
+  "aiProviderTransport": {
+    "httpx": "0.28.1",
+    "httpcore": "1.0.9",
+    "tlsVerification": true,
+    "environmentProxies": false,
+    "automaticRedirects": false
+  }
 }

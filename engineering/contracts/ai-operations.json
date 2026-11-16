@@ -1,0 +1,354 @@
+{
+  "ai.request.create": {
+    "type": "object",
+    "properties": {
+      "text": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 8000
+      },
+      "sourceKind": {
+        "enum": [
+          "manual",
+          "external-text",
+          "chat"
+        ]
+      },
+      "channelId": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 200
+      },
+      "sourceId": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 200
+      },
+      "sourceRevision": {
+        "type": [
+          "string",
+          "integer"
+        ]
+      }
+    },
+    "required": [
+      "text",
+      "sourceKind"
+    ],
+    "additionalProperties": false
+  },
+  "ai.request.dispatch": {
+    "type": "object",
+    "properties": {
+      "requestId": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 200
+      }
+    },
+    "required": [
+      "requestId"
+    ],
+    "additionalProperties": false
+  },
+  "ai.request.cancel": {
+    "type": "object",
+    "properties": {
+      "requestId": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 200
+      }
+    },
+    "required": [
+      "requestId"
+    ],
+    "additionalProperties": false
+  },
+  "ai.proposal.validate": {
+    "type": "object",
+    "properties": {
+      "proposalId": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 200
+      },
+      "revision": {
+        "type": "integer",
+        "minimum": 1
+      }
+    },
+    "required": [
+      "proposalId",
+      "revision"
+    ],
+    "additionalProperties": false
+  },
+  "ai.proposal.revise": {
+    "type": "object",
+    "properties": {
+      "proposalId": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 200
+      },
+      "revision": {
+        "type": "integer",
+        "minimum": 1
+      },
+      "changeSet": {
+        "$ref": "#/$defs/ChangeSet"
+      },
+      "summary": {
+        "type": "string",
+        "maxLength": 2000
+      }
+    },
+    "required": [
+      "proposalId",
+      "revision",
+      "changeSet"
+    ],
+    "additionalProperties": false
+  },
+  "ai.memory.create": {
+    "type": "object",
+    "properties": {
+      "content": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 8000
+      },
+      "sourceRefs": {
+        "type": "array",
+        "items": {
+          "$ref": "#/$defs/SourceRef"
+        },
+        "minItems": 1,
+        "maxItems": 100
+      },
+      "kind": {
+        "enum": [
+          "summary",
+          "ruling",
+          "preference",
+          "event"
+        ]
+      },
+      "visibility": {
+        "enum": [
+          "public",
+          "kp",
+          "private"
+        ]
+      }
+    },
+    "required": [
+      "content",
+      "sourceRefs"
+    ],
+    "additionalProperties": false
+  },
+  "ai.memory.confirm": {
+    "type": "object",
+    "properties": {
+      "memoryId": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 200
+      },
+      "revision": {
+        "type": "integer",
+        "minimum": 1
+      }
+    },
+    "required": [
+      "memoryId",
+      "revision"
+    ],
+    "additionalProperties": false
+  },
+  "ai.memory.revoke": {
+    "type": "object",
+    "properties": {
+      "memoryId": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 200
+      },
+      "revision": {
+        "type": "integer",
+        "minimum": 1
+      }
+    },
+    "required": [
+      "memoryId",
+      "revision"
+    ],
+    "additionalProperties": false
+  },
+  "ai.settings.update": {
+    "type": "object",
+    "properties": {
+      "enabled": {
+        "type": "boolean"
+      },
+      "profileId": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "externalSources": {
+        "type": "object",
+        "properties": {
+          "public": {
+            "type": "boolean"
+          },
+          "kp": {
+            "type": "boolean"
+          },
+          "private": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "public",
+          "kp",
+          "private"
+        ],
+        "additionalProperties": false
+      },
+      "auto": {
+        "type": "object",
+        "properties": {
+          "enabled": {
+            "type": "boolean"
+          },
+          "channelIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "maxItems": 32,
+            "uniqueItems": true
+          },
+          "prefix": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 32
+          }
+        },
+        "required": [
+          "enabled",
+          "channelIds",
+          "prefix"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "required": [
+      "enabled",
+      "profileId",
+      "externalSources",
+      "auto"
+    ],
+    "additionalProperties": false
+  },
+  "ai.draft.create": {
+    "type": "object",
+    "properties": {
+      "text": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 8000
+      },
+      "changeSet": {
+        "$ref": "#/$defs/ChangeSet"
+      }
+    },
+    "required": [
+      "text",
+      "changeSet"
+    ],
+    "additionalProperties": false
+  },
+  "ai.session.create": {
+    "type": "object",
+    "properties": {
+      "title": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 120
+      }
+    },
+    "required": [
+      "title"
+    ],
+    "additionalProperties": false
+  },
+  "ai.session.update": {
+    "type": "object",
+    "properties": {
+      "sessionId": {
+        "type": "string",
+        "pattern": "^[a-f0-9]{32}$"
+      },
+      "revision": {
+        "type": "integer",
+        "minimum": 1
+      },
+      "title": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 120
+      },
+      "archived": {
+        "type": "boolean"
+      },
+      "pinned": {
+        "type": "boolean"
+      },
+      "historyTurns": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 4
+      },
+      "renderMode": {
+        "enum": [
+          "formatted",
+          "plain"
+        ]
+      },
+      "showDiagnostics": {
+        "type": "boolean"
+      }
+    },
+    "required": [
+      "sessionId",
+      "revision"
+    ],
+    "additionalProperties": false
+  },
+  "ai.session.submit": {
+    "type": "object",
+    "properties": {
+      "sessionId": {
+        "type": "string",
+        "pattern": "^[a-f0-9]{32}$"
+      },
+      "text": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 8000
+      }
+    },
+    "required": [
+      "sessionId",
+      "text"
+    ],
+    "additionalProperties": false
+  }
+}

@@ -27,7 +27,7 @@ class Assets:
             require(asset and (asset['visibility']=='public' or m['role']=='kp'),'NOT_VISIBLE')
             raw=(self.path/asset['digest']).read_bytes();require(hashlib.sha256(raw).hexdigest()==asset['digest'],'ASSET_CORRUPT')
             return raw,asset
-    def backup(self,account,target,include_identity=False):
+    def backup(self,account,target,include_identity=False,*,ai_snapshot=None):
         with self.host.lock:
             self.host.kp(account);target=Path(target);require(not target.exists(),'TARGET_EXISTS');target.mkdir(parents=True)
             self.host.store.export_snapshot(target/'room.json')
@@ -41,6 +41,9 @@ class Assets:
             if include_identity:
                 identity=copy.deepcopy(identity);identity['sessions']={}
                 durable_write(target/'identity.json',canonical(identity));manifest['identityDigest']=hashlib.sha256(canonical(identity)).hexdigest()
+            if ai_snapshot is not None:
+                require(ai_snapshot.get('schemaVersion')==1 and ai_snapshot.get('scopeId')==self.host.state()['aiControl']['scopeId'],'SCOPE_MISMATCH')
+                durable_write(target/'ai.json',canonical(ai_snapshot));manifest['aiDigest']=hashlib.sha256(canonical(ai_snapshot)).hexdigest()
             durable_write(target/'manifest.json',canonical(manifest));return str(target)
     def collect_orphans(self,account,older_than=86400):
         with self.host.lock:
@@ -54,7 +57,9 @@ class Assets:
         bundle=Path(bundle);directory=Path(directory);require(not directory.exists(),'TARGET_EXISTS')
         manifest,payload=verify_bundle(bundle)
         require(identity_mapping=={k:k for k in payload['members']},'IDENTITY_MAPPING_REQUIRED')
-        FileDataStore.restore(bundle/'room.json',directory)
+        from .room_lifecycle import fork_scope
+        restored=fork_scope(payload)
+        with FileDataStore(directory) as store:store.commit(0,restored)
         shutil.copytree(bundle/'assets',directory/'assets')
 
 def durable_write(path,data):
@@ -68,11 +73,20 @@ def verify_bundle(bundle):
     bundle=Path(bundle);manifest=json.loads((bundle/'manifest.json').read_bytes());require(manifest['format']==1,'BACKUP_INVALID')
     raw=(bundle/'room.json').read_bytes();require(hashlib.sha256(raw).hexdigest()==manifest['roomDigest'],'BACKUP_INVALID')
     env=json.loads(raw);payload=env['payload'];validate(payload)
+    from .ai_contracts import approval_digest
+    require(all(a['approvalDigest']==approval_digest(a) for a in payload['aiControl']['approvals'].values()),'BACKUP_INVALID')
     require(env['format']==1 and hashlib.sha256(canonical(payload)).hexdigest()==env['digest'],'BACKUP_INVALID')
     require(payload['assets']==manifest['assets'],'BACKUP_INVALID')
     for a in manifest['assets'].values():
         require(re.fullmatch('[a-f0-9]{64}',a['digest']),'BACKUP_INVALID')
         require(hashlib.sha256((bundle/'assets'/a['digest']).read_bytes()).hexdigest()==a['digest'],'ASSET_CORRUPT')
+    if 'aiDigest' in manifest:
+        ai_raw=(bundle/'ai.json').read_bytes();require(hashlib.sha256(ai_raw).hexdigest()==manifest['aiDigest'],'BACKUP_INVALID')
+        ai=json.loads(ai_raw);require(ai.get('schemaVersion')==1 and ai.get('scopeId')==payload.get('aiControl',{}).get('scopeId'),'SCOPE_MISMATCH')
+        # Optional history is retained as an inert, verified attachment. It is
+        # not automatically rebound to a new room scope or treated as authority.
+        require(all(p['scopeId']==ai['scopeId'] and p['requestId'] in ai.get('requests',{}) and p['contextRef'] in ai.get('contexts',{}) and
+                    set(p['reportRefs'])<=set(ai.get('reports',{})) for r in ai.get('proposals',{}).values() for p in r['revisions'].values()),'BACKUP_INVALID')
     return manifest,payload
 
 def restore_host(bundle,target,identity_directory=None):
@@ -88,5 +102,16 @@ def restore_host(bundle,target,identity_directory=None):
     staging=target.with_name(target.name+'.restoring-'+uuid.uuid4().hex);staging.mkdir(parents=True)
     with FileDataStore(staging/'identity') as store:store.commit(0,identity)
     Assets.restore(bundle,staging/'rooms/demo',{k:k for k in payload['members']})
-    os.rename(staging,target)
+    if 'aiDigest' in manifest:
+        durable_write(staging/'ai-history-before-restore.json',(bundle/'ai.json').read_bytes())
+    # Windows scanners may briefly retain a handle after the last durable write.
+    # Retry only sharing/access errors, never replace an existing target.
+    for attempt in range(6):
+        require(not target.exists(),'TARGET_EXISTS')
+        try:
+            os.rename(staging,target)
+            break
+        except PermissionError as exc:
+            if os.name!='nt' or getattr(exc,'winerror',None) not in (5,32) or attempt==5:raise
+            time.sleep(.05*(attempt+1))
     return str(target)

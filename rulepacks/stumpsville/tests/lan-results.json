@@ -1,6 +1,6 @@
 {
   "passed": true,
-  "checkedAt": "2026-11-12T15:52:39.014944+08:00",
+  "checkedAt": "2026-11-15T21:54:33.604259+08:00",
   "checks": [
     "real connected WLAN adapters are named, filtered to private IPv4 and deduplicated",
     "invalid port and mismatching first-run passwords are explained before starting or changing a save",

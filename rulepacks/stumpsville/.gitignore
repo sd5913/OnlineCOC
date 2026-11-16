@@ -2,3 +2,5 @@
 tests/output/
 __pycache__/
 *.pyc
+
+/web/dist/

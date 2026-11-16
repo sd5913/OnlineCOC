@@ -1,0 +1,50 @@
+{
+  "stage": "AI-6 engineering acceptance",
+  "completedAt": "2026-11-12T21:38:26.608626+08:00",
+  "status": "engineering-and-live-provider-passed-human-playtest-pending",
+  "uniqueTests": 305,
+  "testExecutions": 419,
+  "failed": 0,
+  "skipped": 0,
+  "runs": [
+    {
+      "report": "ai-6.json",
+      "passed": 302
+    },
+    {
+      "report": "ai-6-privacy.json",
+      "passed": 45
+    },
+    {
+      "report": "ai-6-final-context.json",
+      "passed": 23
+    },
+    {
+      "report": "deepseek-regression.json",
+      "passed": 49
+    }
+  ],
+  "cliReports": "ai-6-cli.json",
+  "actualPackReport": "ai-6-demo-report.json",
+  "browserReport": "ai-5-browser.json",
+  "pipCheck": "No broken requirements found.",
+  "pending": [
+    "Human KP playtest feedback",
+    "LAN AI routing and non-Windows sandbox acceptance"
+  ],
+  "scope": "Existing host-demo skill defaults only; finite-use item workflow uses the technical fixture.",
+  "updatedAt": "2026-11-12T22:14:16.232481+08:00",
+  "liveProviderAcceptance": {
+    "report": "deepseek-live.json",
+    "status": "passed",
+    "model": "deepseek-flash",
+    "successfulRunCalls": 4,
+    "successfulRunTokens": 9507,
+    "priorAttempts": [
+      "deepseek-live-attempt-1.json",
+      "deepseek-live-attempt-2.json",
+      "deepseek-live-attempt-3.json"
+    ],
+    "note": "Prior attempts are separate. Attempt 1 usage was not retained, so this is not a total billable usage estimate. No approval or publication was performed."
+  }
+}

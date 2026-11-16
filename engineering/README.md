@@ -12,6 +12,9 @@
 
 | 路径 | 职责 |
 | --- | --- |
+| [network-web/](network-web/README.md) | 浏览器账号、代号房间、快捷重入、黑名单与独立按需游戏页；服务器部署见[工程说明](../docs/current/engineering/network-web.md) |
+| `ai/` | 房间 AI 独立模块；服务商/队列、A/B/C、上下文/记忆、KP 面板与主机审批发布，阶段状态见[工程说明](../docs/current/engineering/ai-runtime.md) |
+| [network-p2p/](network-p2p/README.md) | 公网开房/加入快速使用；配置、P2P/文件同步和云端运维见[工程说明](../docs/current/engineering/network-p2p.md) |
 | `network-lan/` | 独立 LAN HTTP/WebSocket 网关及可嵌入/独立 GUI，不导入后端业务 |
 | `desktop/` | Windows 两个 exe 的源码、共享配置对接、构建与验收 |
 | `backend/src/onlinecoc/` | 领域约束、命令、身份、聊天室、Lua 子进程、持久流程；`server.py` 为本机联网适配器 |

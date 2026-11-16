@@ -52,7 +52,10 @@ def test_backup_restore_assets_identity(host,tmp_path):
     restore_host(tmp_path/'backup',tmp_path/'restored')
     restored=Host(tmp_path/'restored')
     try:
-        assert restored.state()==before
+        after=restored.state()
+        assert after['aiControl']['scopeId']!=before['aiControl']['scopeId']
+        after['aiControl']['scopeId']=before['aiControl']['scopeId']
+        assert after==before
         assert Assets(restored).read('kp',asset)[0]=='秘密'.encode()
         assert restored.identity.login('player1','test-password')
     finally:restored.close()

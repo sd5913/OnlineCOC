@@ -1,0 +1,27 @@
+{
+  "checkedAt": "2026-11-15T19:25:23.969436+08:00",
+  "model": "deepseek-flash",
+  "liveProvider": true,
+  "realSaveChanged": false,
+  "scope": "isolated generated sample room only",
+  "passed": false,
+  "status": "failed",
+  "error": "AI_TASK_FAILED",
+  "providerCalls": 1,
+  "tokens": 3473,
+  "queries": [],
+  "checks": {
+    "entityEnumeration": false,
+    "configEnumeration": false,
+    "detailsRead": false,
+    "actualNamesInReply": false
+  },
+  "providerResponses": 1,
+  "usage": {
+    "prompt_tokens": 3381,
+    "completion_tokens": 92,
+    "total_tokens": 3473
+  },
+  "rawModelResponseStored": false,
+  "issue": "ISSUE-009"
+}

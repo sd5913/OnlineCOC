@@ -1,0 +1,32 @@
+{
+  "name": "@localizer/workspace",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "packages/*"
+  ],
+  "engines": {
+    "node": "24.22.1"
+  },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "check": "tsc --noEmit && node scripts/boundaries.mjs",
+    "test": "node --test tests/unit/*.test.mjs",
+    "test:gui": "node tests/gui/smoke.mjs",
+    "package": "node scripts/package.mjs",
+    "start": "electron build/desktop/main.cjs",
+    "cli": "node build/cli/main.cjs"
+  },
+  "devDependencies": {
+    "@types/node": "26.6.6",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "electron": "45.3.1",
+    "esbuild": "0.28.2",
+    "playwright": "1.65.0",
+    "typescript": "7.0.2",
+    "vite": "8.3.8"
+  },
+  "packageManager": "npm@12.2.2"
+}

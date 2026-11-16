@@ -1,0 +1,353 @@
+{
+  "checkedAt": "2026-11-15T20:17:10.373717+08:00",
+  "model": "deepseek-flash",
+  "liveProvider": true,
+  "realSaveChanged": false,
+  "scope": "isolated generated sample room only",
+  "passed": false,
+  "acceptanceScope": "automatic query-chain checks; answer quality requires separate evidence review",
+  "evidenceDirectory": "tests/output/ai-demand-6f00933f",
+  "limits": {
+    "dailyTokenBudget": 200000,
+    "maxConcurrentPerRoom": 1,
+    "maxQueuedPerRoom": 5,
+    "maxRepairAttempts": 0,
+    "maxToolRounds": 6,
+    "maxTransportRetries": 0,
+    "taskTimeoutMs": 240000
+  },
+  "maxOutputTokens": 8192,
+  "prompt": "查看所有房间信息并梳理",
+  "unsettledCalls": 0,
+  "budgetCharged": 100809,
+  "usageComplete": true,
+  "status": "failed",
+  "error": "TOOL_ROUND_LIMIT",
+  "providerCalls": 7,
+  "tokens": 100809,
+  "queries": [
+    {
+      "operation": "search",
+      "types": [
+        "entity"
+      ],
+      "query": "",
+      "references": 0,
+      "hasCursor": false,
+      "limit": 12
+    },
+    {
+      "operation": "search",
+      "types": [
+        "config"
+      ],
+      "query": "",
+      "references": 0,
+      "hasCursor": false,
+      "limit": 12
+    },
+    {
+      "operation": "search",
+      "types": [
+        "entity"
+      ],
+      "query": "",
+      "references": 0,
+      "hasCursor": true,
+      "limit": 12
+    },
+    {
+      "operation": "search",
+      "types": [
+        "config"
+      ],
+      "query": "",
+      "references": 0,
+      "hasCursor": true,
+      "limit": 12
+    },
+    {
+      "operation": "search",
+      "types": [
+        "entity"
+      ],
+      "query": "",
+      "references": 0,
+      "hasCursor": true,
+      "limit": 12
+    },
+    {
+      "operation": "read",
+      "types": null,
+      "query": null,
+      "references": 5,
+      "hasCursor": false,
+      "limit": null
+    },
+    {
+      "operation": "read",
+      "types": null,
+      "query": null,
+      "references": 4,
+      "hasCursor": false,
+      "limit": null
+    },
+    {
+      "operation": "read",
+      "types": null,
+      "query": null,
+      "references": 5,
+      "hasCursor": false,
+      "limit": null
+    },
+    {
+      "operation": "read",
+      "types": null,
+      "query": null,
+      "references": 5,
+      "hasCursor": false,
+      "limit": null
+    },
+    {
+      "operation": "read",
+      "types": null,
+      "query": null,
+      "references": 4,
+      "hasCursor": false,
+      "limit": null
+    },
+    {
+      "operation": "read",
+      "types": null,
+      "query": null,
+      "references": 4,
+      "hasCursor": false,
+      "limit": null
+    },
+    {
+      "operation": "search",
+      "types": [
+        "channel"
+      ],
+      "query": "",
+      "references": 0,
+      "hasCursor": false,
+      "limit": 12
+    }
+  ],
+  "providerResponses": 7,
+  "usage": {
+    "prompt_tokens": 95736,
+    "completion_tokens": 5073,
+    "total_tokens": 100809
+  },
+  "rawModelResponseStored": false,
+  "diagnostics": {
+    "errors": [
+      {
+        "code": "TOOL_ROUND_LIMIT",
+        "exceptionType": "AiError",
+        "frames": [
+          {
+            "function": "_generate",
+            "line": 342,
+            "module": "onlinecoc_ai.coordinator"
+          },
+          {
+            "function": "require",
+            "line": 15,
+            "module": "onlinecoc_ai.errors"
+          }
+        ],
+        "stage": "response_recheck"
+      }
+    ],
+    "schemaVersion": 1,
+    "stage": "response_recheck",
+    "toolCalls": [
+      {
+        "argumentsDigest": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "keys": [],
+        "name": "pack_read_contract",
+        "status": "completed",
+        "turn": 0,
+        "unknownKeys": false
+      },
+      {
+        "argumentsDigest": "e83170640b69a4276e9d9c6fd3364ecbae3ce2c8a09b482e074e6622dd1b4c33",
+        "hasQuery": false,
+        "keys": [
+          "limit",
+          "query",
+          "types"
+        ],
+        "name": "room_search_data",
+        "status": "completed",
+        "turn": 0,
+        "types": [
+          "entity"
+        ],
+        "unknownKeys": false
+      },
+      {
+        "argumentsDigest": "316cf098a3eb2494eff6f0cdc9e338f5cc4ffb6448832b3166465b4acdba77d8",
+        "hasQuery": false,
+        "keys": [
+          "limit",
+          "query",
+          "types"
+        ],
+        "name": "room_search_data",
+        "status": "completed",
+        "turn": 0,
+        "types": [
+          "config"
+        ],
+        "unknownKeys": false
+      },
+      {
+        "argumentsDigest": "e778933fdec468567e76c259eb5b203547c9ec521d83fe1bcfb3133e5f1619e4",
+        "hasQuery": false,
+        "keys": [
+          "cursor",
+          "limit",
+          "query",
+          "types"
+        ],
+        "name": "room_search_data",
+        "status": "completed",
+        "turn": 1,
+        "types": [
+          "entity"
+        ],
+        "unknownKeys": false
+      },
+      {
+        "argumentsDigest": "352e7d9fdfacac4ea43e20485cfda03dbe3886e9f23badc63d7ea549231376e6",
+        "hasQuery": false,
+        "keys": [
+          "cursor",
+          "limit",
+          "query",
+          "types"
+        ],
+        "name": "room_search_data",
+        "status": "completed",
+        "turn": 1,
+        "types": [
+          "config"
+        ],
+        "unknownKeys": false
+      },
+      {
+        "argumentsDigest": "efdd8d3eeb9452471f67892f6cd78bf6ed73e5396b77f409d5d96df17565dc67",
+        "hasQuery": false,
+        "keys": [
+          "cursor",
+          "limit",
+          "query",
+          "types"
+        ],
+        "name": "room_search_data",
+        "status": "completed",
+        "turn": 2,
+        "types": [
+          "entity"
+        ],
+        "unknownKeys": false
+      },
+      {
+        "argumentsDigest": "d5b4d0f1099c26889be21897b2c9a7c6c1078771bc6e8b889642b72b9477b866",
+        "keys": [
+          "refs"
+        ],
+        "name": "room_read_data",
+        "referenceCount": 5,
+        "status": "completed",
+        "turn": 2,
+        "unknownKeys": false
+      },
+      {
+        "argumentsDigest": "86500db89992742ac2fddf5e946e2b1d0f0f23221e833b332bb6336a28583abe",
+        "keys": [
+          "refs"
+        ],
+        "name": "room_read_data",
+        "referenceCount": 4,
+        "status": "completed",
+        "turn": 3,
+        "unknownKeys": false
+      },
+      {
+        "argumentsDigest": "829b67da77f0df0fcd1e6347738fe39760c75d1d99923fded65b2df2f131c7a7",
+        "keys": [
+          "refs"
+        ],
+        "name": "room_read_data",
+        "referenceCount": 5,
+        "status": "completed",
+        "turn": 3,
+        "unknownKeys": false
+      },
+      {
+        "argumentsDigest": "eb020896dda16dc193e1ee6b07608aa27e5aa9a1011ddabe9007aa5ac4551d4f",
+        "keys": [
+          "refs"
+        ],
+        "name": "room_read_data",
+        "referenceCount": 5,
+        "status": "completed",
+        "turn": 4,
+        "unknownKeys": false
+      },
+      {
+        "argumentsDigest": "2be3cd2693f8259ebd000d66ebe1180ae09f9a6f1bde7b15b3d4e0529929ebdf",
+        "keys": [
+          "refs"
+        ],
+        "name": "room_read_data",
+        "referenceCount": 4,
+        "status": "completed",
+        "turn": 4,
+        "unknownKeys": false
+      },
+      {
+        "argumentsDigest": "655b9805272199fb7b88a73e19c1cebb151bbec8833e2991044c5fc32ccd4bea",
+        "keys": [
+          "refs"
+        ],
+        "name": "room_read_data",
+        "referenceCount": 4,
+        "status": "completed",
+        "turn": 5,
+        "unknownKeys": false
+      },
+      {
+        "argumentsDigest": "e63b1b8d3e2cf1689117feca6ef5d0f375310ed8f397e0b7058e5452c44ca220",
+        "hasQuery": false,
+        "keys": [
+          "limit",
+          "query",
+          "types"
+        ],
+        "name": "room_search_data",
+        "status": "completed",
+        "turn": 5,
+        "types": [
+          "channel"
+        ],
+        "unknownKeys": false
+      }
+    ],
+    "turn": 6
+  },
+  "replySha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "replyCharacters": 0,
+  "checks": {
+    "entityEnumeration": true,
+    "configEnumeration": true,
+    "detailsRead": true,
+    "actualNamesInReply": false
+  },
+  "persistentProviderConfigUnchanged": true
+}

@@ -1,0 +1,81 @@
+{
+  "checkedAt": "2026-11-14T00:07:23.058997+08:00",
+  "deployedAt": "2026-11-13T23:50:17+08:00",
+  "webVersion": "0.2.0",
+  "p2pVersion": "0.2.2",
+  "release": "/opt/onlinecoc-network/releases/web-20261113T154956Z",
+  "rollback": "/opt/onlinecoc-network/rollback/web-20261113T154956Z",
+  "sourceBundleSHA256": "9c1018a3e0472aaf84c7d6fb1d60068a98860db3fd1a7711cd3d11a7d15d379f",
+  "capabilities": {
+    "webVersion": 2,
+    "packageBridge": 1,
+    "storageBridge": 1
+  },
+  "httpsCertificateVerified": true,
+  "anonymousRoomsRejected": true,
+  "originalState": {
+    "originalAccountsPreserved": 14,
+    "originalRoomPermissionsPreserved": 5,
+    "backupVerified": true
+  },
+  "turn": {
+    "restarted": false,
+    "pidBefore": 27394,
+    "pidAfter": 27394
+  },
+  "sources": {
+    "network-web/src/onlinecoc_web/__init__.py": "d03eacad88bd7a33d49f0a635660e8241fa832e06a3d288fe742cf46833c1b42",
+    "network-web/src/onlinecoc_web/__main__.py": "6d8b7d7846a845059d7a3107143f11131f63c5511d669b44085b15ec5e3d2279",
+    "network-web/src/onlinecoc_web/bridge.py": "2000e9a79d5348b825433dce3d935376adfd75fb4554cda0be670ee1e2dda5ce",
+    "network-web/src/onlinecoc_web/cli.py": "34764db1d939ecb76a15df7364a7b8164a16049d8f479ae2dc2f6867bdea4827",
+    "network-web/src/onlinecoc_web/host.py": "0082ff79f5e17795787fe64451251b213aea73a2423d13fe44be2fa35bfc66a9",
+    "network-web/src/onlinecoc_web/portal.py": "141ec6a26defb24e457bfd32c70aa3d7229fb064101f591068fbb92115f69fd7",
+    "network-web/src/onlinecoc_web/resources.py": "07ec75a015be56f73f5a3cfc3830cb6c20540f1ddf5e850608b1354453968c1d",
+    "network-web/src/onlinecoc_web/store.py": "61e3c90eb1358af11c959a85972b4b938c026005045b807fda0a72d85a58f4f5",
+    "network-web/src/onlinecoc_web/web/app.js": "7855452987fe732ee362e3049bf76ccbce3c67c38c20f8e46060ca368753d7dc",
+    "network-web/src/onlinecoc_web/web/game.js": "32fc9dac60925971a02e69daa27be7c4e855921c2970319c53af2bb1797b6bfc",
+    "network-web/src/onlinecoc_web/web/index.html": "cb090be3038294a3ca302c146c6069d643cab125dd177cd8f4bc287df48b4823",
+    "network-web/src/onlinecoc_web/web/remember.js": "64b83e3a0819da41c55a3da506edce9a63021f85a03146a98aaa152b29e6148f",
+    "network-web/src/onlinecoc_web/web/resources.js": "39cb324dead37beb87a44a385f17c8918cc4e5a68fc9dae0b5e23c79f9af0cb4",
+    "network-web/src/onlinecoc_web/web/sandbox-boot.js": "5b8b81392120545fcfcfbb29e79ccb703c95a4a0b99fe81dbed94b5b5de19355",
+    "network-web/src/onlinecoc_web/web/sandbox.js": "4e7dc9c5ddddc55bcabc48d34eb5fa12802dc3557cd48a907face0ac321acfe4",
+    "network-web/src/onlinecoc_web/web/storage.js": "ff78ed7ce455394c7c82afec8b89117d9b40e083cc5ea452c9ad344e115ec71e",
+    "network-web/src/onlinecoc_web/web/style.css": "6e0891a7010db21d3260abd3c99140a894829bc4f8c09dbdc8323d2ead8b434b",
+    "network-p2p/src/onlinecoc_p2p/__init__.py": "eb5969cabaa0bfc0e894e8de5265ee4cb0c255d21d38b907537eb535ee2cd6ac",
+    "network-p2p/src/onlinecoc_p2p/__main__.py": "cf7390a2508a0fcad4777a4a629fc5212ab655cb45845975995f835676a834e3",
+    "network-p2p/src/onlinecoc_p2p/cli.py": "c1857d2bd731d7aed17e62f0cc244b6f8d376b47d0a69d862834952deee65a92",
+    "network-p2p/src/onlinecoc_p2p/client.py": "8757ad8eef7bfa1e918e6050e012531f405adf156260663bfb8f6423747811ff",
+    "network-p2p/src/onlinecoc_p2p/common.py": "d85702c7f5a0c82f9f3f5bc9fc31215e2ce771d94e347a2abb6bb077a4823d53",
+    "network-p2p/src/onlinecoc_p2p/control.py": "ba24f4b9a5c0393ac798c1b7805a957cf5c3b4862f97707f151e9fde3d9c1303",
+    "network-p2p/src/onlinecoc_p2p/directory.py": "7d277e87f36875c401cd6ba874acebd21130efd5484cc1573e97dd1b9ff213bf",
+    "network-p2p/src/onlinecoc_p2p/discovery.py": "30d6391d650dda90c0d6135c07e1cc5e45c82a1581fdb41d2221a060c3f12f05",
+    "network-p2p/src/onlinecoc_p2p/host.py": "d5b4930187a93e6944ec16e33b42cbdf1465d920564939c19f162f7eaa9785cb",
+    "network-p2p/src/onlinecoc_p2p/local_app.py": "12a41d9b9b9a1e9dab9c3d1769201e639e2f9af2f08ab5bcd236f50994106bc1",
+    "network-p2p/src/onlinecoc_p2p/ownership.py": "a5e08aa4caff65e828a84627010b69cc69c0f5ba4e42222feb2f82051386def1",
+    "network-p2p/src/onlinecoc_p2p/packages.py": "cecbb4805f6f54244ab2622c7a11ab99e7378757ee905d8b3135994d64894f6e",
+    "network-p2p/src/onlinecoc_p2p/rooms.py": "3ff5f075b16be42cdbcb77d0f7e32e7695c9cac527196dd5a56a530af469ac84",
+    "network-p2p/src/onlinecoc_p2p/rtc.py": "ae4dfb142ace462253550a799ab2c698af12094dc7b2e8381823289b30b1e3a6",
+    "network-p2p/src/onlinecoc_p2p/upstream.py": "0851149377a3304b8fe9c36b5a059bf9fefd7017e054a51af4f5f162f7968b50",
+    "network-p2p/src/onlinecoc_p2p/web/app.js": "1f4b75f58327208198609703473b4da675cf1ba621015b2d060a5f3dc47adf0b",
+    "network-p2p/src/onlinecoc_p2p/web/bridge.js": "73c9be13e43f74468cf10b36dfba0d4e133a482ca03b4f1229db1f15f783eff5",
+    "network-p2p/src/onlinecoc_p2p/web/index.html": "08b130995a7eb45e27457de77931127d0993f869b79a1fd91b20b744a8ce3a95",
+    "network-p2p/src/onlinecoc_p2p/web/join.js": "b14c3c20e35b6ee626ac46af44dab8a3dd36038957709d8b08b7f3715bfd51b5",
+    "network-p2p/src/onlinecoc_p2p/web/style.css": "508e7b80555993090c1b933b9b9c1319e9b492c1512abe233ffa43b52ead15b6",
+    "network-p2p/src/onlinecoc_p2p/web/transport.js": "c3d4e3ad67d90561b2ddf47467d443aa8310287fa428aa8d961b61e3b1f38cdd",
+    "network-p2p/src/onlinecoc_p2p/wire.py": "5ca8b46118e903ec1dd212ff32afd040c8f48d18861f571c0bdf1ddc2a09bb72"
+  },
+  "limitations": [
+    "Independent household/mobile network and long-duration load are not tested.",
+    "Public entry still uses the project test CA."
+  ],
+  "stumpsvilleCloudAcceptance": {
+    "result": "rulepacks/stumpsville/tests/web-cloud-turn-results.json",
+    "passedGroups": 8,
+    "presets": 18,
+    "forcedTurn": true,
+    "samePhysicalComputer": true,
+    "browserTestCAException": true,
+    "temporaryRoomClosed": true,
+    "initialAttempt": "Preset and permission checks passed; local 5-second UI assertion expired during remote response-loss recovery. Cloud UI wait bounded to 30 seconds; complete rerun passed."
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "passed": true,
+  "provider": "deterministic-offline",
+  "createSessionEndToEndMs": [
+    50.24
+  ],
+  "consoleErrors": [],
+  "checks": [
+    "room-folder sidebar",
+    "provider key/probe",
+    "keyboard reference autocomplete and preview",
+    "KP send/generate/ABC/approve/load",
+    "archive and reload",
+    "PL ownership and no dispatch",
+    "lock and responsive layout",
+    "package prototype approval/load separation"
+  ]
+}

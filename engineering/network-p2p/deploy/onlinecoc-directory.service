@@ -1,0 +1,28 @@
+[Unit]
+Description=OnlineCOC room directory and signaling
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=onlinecoc-net
+Group=onlinecoc-net
+WorkingDirectory=/opt/onlinecoc-network/app
+Environment=PYTHONDONTWRITEBYTECODE=1
+ExecStart=/opt/onlinecoc-network/venv/bin/python -m onlinecoc_p2p directory --config /etc/onlinecoc-network/directory.json --bind 0.0.0.0 --port 443 --cert /etc/onlinecoc-network/server.pem --key /etc/onlinecoc-network/server.key
+Restart=on-failure
+RestartSec=3
+AmbientCapabilities=CAP_NET_BIND_SERVICE
+CapabilityBoundingSet=CAP_NET_BIND_SERVICE
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/onlinecoc-network
+UMask=0077
+MemoryMax=350M
+TasksMax=64
+LimitNOFILE=2048
+
+[Install]
+WantedBy=multi-user.target

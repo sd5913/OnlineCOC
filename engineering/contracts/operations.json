@@ -760,5 +760,62 @@
       "sequence"
     ],
     "additionalProperties": false
+  },
+  "ai.proposal.approve": {
+    "type": "object",
+    "properties": {
+      "proposalId": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 200
+      },
+      "proposalRevision": {
+        "type": "integer",
+        "minimum": 1
+      },
+      "riskDecisions": {
+        "type": "object",
+        "additionalProperties": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 2000
+        },
+        "maxProperties": 64
+      }
+    },
+    "required": [
+      "proposalId",
+      "proposalRevision",
+      "riskDecisions"
+    ],
+    "additionalProperties": false
+  },
+  "ai.proposal.revoke": {
+    "type": "object",
+    "properties": {
+      "approvalId": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 200
+      }
+    },
+    "required": [
+      "approvalId"
+    ],
+    "additionalProperties": false
+  },
+  "publication.apply": {
+    "type": "object",
+    "properties": {
+      "approvalId": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 200
+      }
+    },
+    "required": [
+      "approvalId"
+    ],
+    "additionalProperties": false
   }
 }

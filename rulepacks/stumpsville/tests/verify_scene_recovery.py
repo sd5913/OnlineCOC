@@ -1,4 +1,4 @@
-"""Scene upgrades, interrupted execution and finite inventory over real HTTP."""
+"""Current scene format, interrupted execution and finite inventory over real HTTP."""
 import copy
 import json
 import uuid
@@ -14,26 +14,12 @@ def main():
         kp, p1, _ = provision(runtime, password)
         actor = p1.state()['character']['instanceId']
         identity_files = sorted(str(p.relative_to(runtime.data)) for p in (runtime.data/'host/identity').rglob('*') if p.is_file())
-        # Simulate an existing custom ruleset without scene automation.
-        legacy = copy.deepcopy(runtime.package.state['ruleRevisions'][runtime.package.state['activeRevision']])
-        legacy['sources'].pop('scene.lua')
-        legacy['data'].pop('scene-actions.json')
-        legacy['sources']['check.lua'] += '\n-- preserve this custom rule annotation\n'
-        revision = kp.command('rule.stage', legacy)['result']
-        kp.command('rule.activate', {'revision': revision})
-        runtime.package.state['ruleRevisions'][revision] = legacy
-        runtime.package.state['activeRevision'] = revision
-        runtime.package.state.pop('sceneId')
-        runtime.package.save()
         before = p1.state()['character']['numbers']
-        assert not p1.state()['sceneAutomation']['ready']
-        kp.action('scene.install')
         assert p1.state()['sceneAutomation']['ready']
-        assert p1.state()['character']['numbers'] == before
-        active = runtime.package.state['ruleRevisions'][runtime.package.state['activeRevision']]
-        assert active['sources']['check.lua'] == legacy['sources']['check.lua']
+        assert kp.action('scene.install',allow_error=True)['code']=='未知行动'
+        assert p1.state()['character']['numbers']==before
         assert identity_files == sorted(str(p.relative_to(runtime.data)) for p in (runtime.data/'host/identity').rglob('*') if p.is_file())
-        checks.append('scene upgrade preserves custom rules and character resources without adding an account or identity file')
+        checks.append('current rooms include scene rules; removed upgrade operation has no effects')
 
         def submit(action, choice):
             key = str(uuid.uuid4())

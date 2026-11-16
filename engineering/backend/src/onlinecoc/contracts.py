@@ -18,8 +18,13 @@ def input_schema(inputs):
 MODELS=json.loads((ROOT/'contracts/models.json').read_text(encoding='utf-8'))
 OPERATIONS=json.loads((ROOT/'contracts/operations.json').read_text(encoding='utf-8'))
 def validate_model(kind,value):
-    try:Draft202012Validator(MODELS[kind]).validate(value)
-    except Exception:raise DomainError('INPUT_INVALID')
+    error = next(Draft202012Validator(MODELS[kind]).iter_errors(value), None)
+    if error is not None:
+        path = list(error.absolute_path)
+        if error.validator == 'required' and isinstance(error.instance, dict):
+            path.append(next(k for k in error.validator_value if k not in error.instance))
+        pointer = '/' + '/'.join(str(k).replace('~','~0').replace('/','~1') for k in path)
+        raise DomainError('INPUT_INVALID', {'model': kind, 'path': pointer[:512], 'constraint': error.validator})
 def validate_operation(op,args):
     if op not in OPERATIONS:raise DomainError('UNKNOWN_OPERATION')
     try:Draft202012Validator(OPERATIONS[op]).validate(args)

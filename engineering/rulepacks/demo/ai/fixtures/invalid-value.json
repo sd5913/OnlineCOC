@@ -1,0 +1,7 @@
+{
+  "checkId": "skill-default-range",
+  "configurationId": "demo.skill",
+  "pointer": "/defaults/value",
+  "value": 31,
+  "expected": "fail"
+}

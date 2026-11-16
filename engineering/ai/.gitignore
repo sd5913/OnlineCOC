@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+.test-output/
+.pytest_cache/
+.manager/
+config/*.lock

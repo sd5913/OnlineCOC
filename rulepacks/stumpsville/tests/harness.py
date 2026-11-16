@@ -50,9 +50,9 @@ class Account:
 
 
 @contextmanager
-def running(label='verify', data=None):
+def running(label='verify', data=None, **modules):
     data = data or PACK / 'tests/output' / (label + '-' + secrets.token_hex(4))
-    runtime = Runtime(argparse.Namespace(data_dir=data, backend_port=0, port=free_port(), bind='127.0.0.1'))
+    runtime = Runtime(argparse.Namespace(data_dir=data, backend_port=0, port=free_port(), bind='127.0.0.1', **modules))
     server = uvicorn.Server(uvicorn.Config(create_app(runtime), host='127.0.0.1', port=runtime.args.port, log_level='error'))
     thread = threading.Thread(target=server.run, daemon=True)
     thread.start()

@@ -1,0 +1,7 @@
+{
+  "directory": "https://YOUR_SERVER_IP",
+  "caFile": "../local/test-ca.pem",
+  "statePath": "../local/host-session",
+  "upstream": "http://127.0.0.1:8765",
+  "publisherToken": "REPLACE_LOCALLY_DO_NOT_COMMIT"
+}

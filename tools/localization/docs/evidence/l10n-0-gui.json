@@ -1,0 +1,159 @@
+{
+  "passed": true,
+  "cli": {
+    "name": "Localizer",
+    "version": "0.1.0",
+    "stage": "L10N-0",
+    "commands": [
+      "--help",
+      "--version"
+    ],
+    "note": "独立本地化工具；文件编辑命令尚未接入。"
+  },
+  "permissions": {
+    "web": {
+      "allowRunningInsecureContent": false,
+      "contextIsolation": true,
+      "disableDialogs": false,
+      "disablePopups": false,
+      "disableWakeLocks": false,
+      "enableBlinkFeatures": "",
+      "experimentalFeatures": false,
+      "javascript": true,
+      "nodeIntegration": false,
+      "nodeIntegrationInSubFrames": false,
+      "nodeIntegrationInWorker": false,
+      "safeDialogs": false,
+      "safeDialogsMessage": "",
+      "sandbox": true,
+      "webSecurity": true,
+      "webviewTag": false
+    },
+    "versions": {
+      "node": "24.22.2",
+      "acorn": "8.18.0",
+      "ada": "4.0.0",
+      "amaro": "1.1.11",
+      "ares": "1.34.9",
+      "brotli": "1.2.0",
+      "cldr": "48.0",
+      "icu": "78.2",
+      "llhttp": "9.4.3",
+      "merve": "1.2.2",
+      "modules": "150",
+      "napi": "10",
+      "nbytes": "0.1.4",
+      "ncrypto": "0.0.1",
+      "nghttp2": "1.70.0",
+      "nghttp3": "",
+      "ngtcp2": "",
+      "openssl": "0.0.0",
+      "simdjson": "4.6.11",
+      "simdutf": "7.7.0",
+      "sqlite": "3.53.4",
+      "tz": "2026e",
+      "undici": "7.30.1",
+      "unicode": "17.0",
+      "uv": "1.52.1",
+      "uvwasi": "0.0.23",
+      "v8": "15.6.75.50-electron.0",
+      "zlib": "1.3.2.1-motley",
+      "zstd": "1.6.0",
+      "electron": "45.3.1",
+      "chrome": "156.0.8078.96"
+    },
+    "appPath": "C:\\Users\\26077\\AppData\\Local\\Temp\\localizer-isolation-20261112-a91c\\localizer-0.1.0-win32-x64\\gui\\resources\\app"
+  },
+  "samples": [
+    {
+      "text": "Confirm {count}",
+      "locale": "en",
+      "count": 3,
+      "expected": {
+        "ok": true,
+        "text": "Confirm 3"
+      },
+      "actual": "Confirm 3",
+      "passed": true
+    },
+    {
+      "text": "确认 {count}",
+      "locale": "zh-CN",
+      "count": 3,
+      "expected": {
+        "ok": true,
+        "text": "确认 3"
+      },
+      "actual": "确认 3",
+      "passed": true
+    },
+    {
+      "text": "This ''quote'' and '{brace}' {count}",
+      "locale": "en",
+      "count": 2,
+      "expected": {
+        "ok": true,
+        "text": "This 'quote' and {brace} 2"
+      },
+      "actual": "This 'quote' and {brace} 2",
+      "passed": true
+    },
+    {
+      "text": "{count, plural, one {# slot} other {# slots}}",
+      "locale": "en",
+      "count": 1,
+      "expected": {
+        "ok": true,
+        "text": "1 slot"
+      },
+      "actual": "1 slot",
+      "passed": true
+    },
+    {
+      "text": "{count, plural, one {# slot} other {# slots}}",
+      "locale": "en",
+      "count": 2,
+      "expected": {
+        "ok": true,
+        "text": "2 slots"
+      },
+      "actual": "2 slots",
+      "passed": true
+    },
+    {
+      "text": "剩余 {count} 个槽位",
+      "locale": "zh-CN",
+      "count": 3,
+      "expected": {
+        "ok": true,
+        "text": "剩余 3 个槽位"
+      },
+      "actual": "剩余 3 个槽位",
+      "passed": true
+    },
+    {
+      "text": "{count, plural, one {one}}",
+      "locale": "en",
+      "count": 2,
+      "expected": {
+        "ok": false,
+        "code": "MESSAGE_INVALID",
+        "message": "MISSING_OTHER_CLAUSE"
+      },
+      "actual": "MESSAGE_INVALID：MISSING_OTHER_CLAUSE",
+      "passed": true
+    },
+    {
+      "text": "{broken",
+      "locale": "en",
+      "count": 2,
+      "expected": {
+        "ok": false,
+        "code": "MESSAGE_INVALID",
+        "message": "EXPECT_ARGUMENT_CLOSING_BRACE"
+      },
+      "actual": "MESSAGE_INVALID：EXPECT_ARGUMENT_CLOSING_BRACE",
+      "passed": true
+    }
+  ]
+}

@@ -1,0 +1,72 @@
+{
+  "checkedAt": "2026-11-16T07:55:03.814767+08:00",
+  "moduleTestsUnique": 122,
+  "runs": [
+    {
+      "file": "usage-core-tests.xml",
+      "tests": 109,
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0
+    },
+    {
+      "file": "usage-ui-tests.xml",
+      "tests": 13,
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0
+    }
+  ],
+  "stumpsvilleGroups": 9,
+  "stumpsvilleEvidence": "rulepacks/stumpsville/tests/map-ai-results.json",
+  "provider": "offline fixtures only",
+  "realProviderCalled": false,
+  "realGameSaveChanged": false,
+  "cloudTested": false,
+  "localProfileChange": {
+    "profileId": "deepseek-main",
+    "revision": 4,
+    "dailyTokenBudget": null,
+    "otherFieldsPreserved": true
+  },
+  "checks": [
+    "unlimited default records usage; opt-in numeric cap reuses existing ledger",
+    "confirmed input/output distinct from pending and uncertain reserves",
+    "retry/cancel/restart and old ledger compatibility without resetting history",
+    "original player request attribution after KP dispatch; own session filtering",
+    "KP room summary, PL own scope, duplicate/unknown query rejection",
+    "UTC date filters, bounded range and detail pagination with complete totals",
+    "manager daily limit checkbox persists; raw and room-proxy APIs",
+    "reusable usage UI, lifecycle/late result cleanup and narrow layouts",
+    "Stumpsville native KP and bundled WebRTC player usage panel and privilege isolation"
+  ],
+  "sha256": {
+    "engineering/contracts/ai.json": "8aa2e325e4667ba51d9cc73f160cee808dddc1b76fbf7bb5e5f37ce8fc996689",
+    "engineering/backend/src/onlinecoc/ai_api.py": "b749052ef148d3c102a516fd90bd7524fe6dbbc6d88ec95023dfd28691472c40",
+    "engineering/ai/examples/ai-providers.json": "b866e209c2bf96329286371886a839d1e5ad509111e5011709f680ae3fb1c863",
+    "engineering/ai/config/ai-providers.json": "85184004a823b7785eb059a28f892923f75f0b05f81347c9e8440fc1e7930938",
+    "engineering/ai/src/onlinecoc_ai/usage.py": "fc3aea811406af1afc6b9dfbc465d4ddfdc530af7d8c3df49e8f8111dba15a24",
+    "engineering/ai/src/onlinecoc_ai/coordinator.py": "9c27a157976b59b008dcd5527e45995134a5b4c6baa5e5d901ad3263c626d2d4",
+    "engineering/ai/src/onlinecoc_ai/api.py": "48b028897b7b4c54d0ee77ec53569b9ae8b37adc52455a9113c82ce14996bb78",
+    "engineering/ai/src/onlinecoc_ai/manager.py": "d4f2a704ae784294e05db925869209a31109fb28d2dbe544ee4d04b3d1d7d2fb",
+    "engineering/ai/web/components/usage.js": "ad56a37e1aa2f09391dafae3f85f726f5dfe9a4a8ca0d5e8213c6c3e600f9c26",
+    "engineering/ai/web/components/usage.css": "fd4876d0d045ab3bcd96191a6040a6b09a23fa90959d861d5594ae85dcfc4826",
+    "engineering/ai/web/components/providers.js": "8cc7597136e486740d9e87a6e7c1fec7d7e742e81e6988625892ef087eb6b0b5",
+    "engineering/ai/web/components/client.js": "ad6f7dab7b3daff664253a1d71b5ba6cc133019fdc3372ab97348b1eeff926f1",
+    "engineering/ai/web/components/guard.js": "d8c09ff19165262f1bd59a28fcac113424a21cd8d469ae5275462f403da6e963",
+    "engineering/ai/web/components/tools.js": "2de5717bd42702811161f251918ce27ab35d363d9c246aa49ea834db22f57db5",
+    "engineering/ai/web/components/views.js": "c71c11f178a8526058e895032a76c70b954f8f4573717fa0796918b460ae62ea",
+    "engineering/ai/web/components/views.css": "10dcec6ef4100b31ee2df5b05a0f9255f4b492c1fe7f66489d34f6e0472f0e79",
+    "engineering/ai/web/components/pack.js": "ddb2f8da5ff08870bf24953eefc850f5f1bd069e6c5e8b2528f8d23d83c63d61",
+    "engineering/ai/web/components/pack.d.ts": "f621f1bb831c4fb885f1f8eb85d1e3c881b4e8204c0b4a4e08185b475be99929",
+    "engineering/ai/web/components/index.d.ts": "2f7a000d5f1dd908fbac6496af70801af2dfb7f136c14144f535ffa835a56fb7",
+    "engineering/ai/web/components/pack-manifest.json": "fc187775ab6d49db1592af0f108d1989ceb437c41a538e704a787806b6bafc86",
+    "engineering/ai/web/manager/manager.js": "f6a870ef206203e8ea3186fde832ca626660c093df4aa3ee929aa2a5e56cb446",
+    "engineering/ai/web/manager/index.html": "90d1e09520eed702e27c593fff7bf21f7c23a3b78da04d1c9064071f8483a5d1",
+    "engineering/ai/tests/test_usage.py": "6a84c21f02bdf4f6dd44ec6677e4c5868e7f7719fb46a0ba01031f63efc22ca6",
+    "engineering/ai/tests/test_usage_ui.py": "0ec4716cc0baf5accaa7717ccf054b18391ef67fe43283651b0ddcfc63ae6400",
+    "rulepacks/stumpsville/tools/ai_bridge.py": "44a26914cc6ce47c15d71cf2cc036c101c03bd9e11a6cabbeab9cad47abd3731",
+    "rulepacks/stumpsville/tools/build_web.py": "a7c8b940fcb054ab391c62c591dcbb308f348fae351d175d5eb02698103863d4",
+    "rulepacks/stumpsville/tests/verify_map_ai.py": "3ceac0669ba9be713d34763af5c473a514e6d7f416ce893f664fd17612958694"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "calls": [],
+  "credentialPersisted": false,
+  "endpoint": "https://api.deepseek.com",
+  "error": "INPUT_INVALID",
+  "gamePublished": false,
+  "model": "deepseek-flash",
+  "profileId": "deepseek-main",
+  "profileRevision": 1,
+  "provider": "DeepSeek",
+  "scope": "Isolated host demo; public fixture context only; configured provider remains disabled.",
+  "status": "failed",
+  "testedAt": "2026-11-12T21:51:28.884386+08:00",
+  "totalTokens": null,
+  "note": "The recorder rejected an empty tuple after the first provider completion. Usage was not retained; this is not a provider authentication failure."
+}

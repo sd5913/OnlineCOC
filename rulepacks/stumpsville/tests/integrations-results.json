@@ -1,0 +1,13 @@
+{
+  "checkedAt": "2026-11-15T21:51:51.755087+08:00",
+  "checks": [
+    "AI real host starts with complete companion; defaults off; private files and KP settings stay restricted",
+    "PL requests / cross-account isolation / KP dispatch / offline provider response / no external context by default / no state changes / publication denied",
+    "two real WebRTC players: account isolation, live state, basic chat; package/action and AI routes rejected",
+    "stopping P2P withdraws directory room and keeps borrowed game host alive",
+    "Edge: KP replies and settings, PL privacy, KP actual PL session, English UI, bounded viewport, logout cleanup; no JS errors"
+  ],
+  "passed": 5,
+  "provider": "loopback fixture only",
+  "cloudTested": false
+}

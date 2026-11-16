@@ -1,16 +1,43 @@
-# 独立配置包
+# 配置包开发指南
 
-本目录与 `engineering/` 同级，保存具体游戏的资料、配置、规则、流程、界面方案、资源与验证材料。它是配置包工作区，具体完成度以每包入口和验证结果为准。
+面向配置包作者，集中提供工程接入、支持工具与开发约定。
+具体包的名单、版本和进展已迁至[配置包实例统计与管理](catalog.md)；本页保留开发入口。
 
-| 配置包 | 状态 | 入口 |
+## 工程接入
+
+配置包维护自己的资料、配置、Lua 规则、流程、界面、资源和测试。
+通过[现行工程接口](../docs/current/engineering/first-test.md)使用宿主能力；工程缺口提交 [Issues](../docs/plans/Issues/README.md)，不在包施工中改动核心。
+操作前遵守[配置包施工边界](AGENTS.md)和[文档维护标准](../docs/standards/document-maintenance.md)。
+
+<a id="rulepack-development-tools"></a>
+
+## 支持工具
+
+核对日期：2026-11-12；AI 工具条目更新于 2026-11-14。工具各自维护和发布；实际能力以其当前说明及验收为准。
+
+| 工具或能力 | 用途与入口 | 可用状态 |
 | --- | --- | --- |
-| 树桩镇 Stumpsville | 0.4.2 双击局域网启动、连接诊断、房间信息与连线玩家；十地点18个预设自动结算、真实骰点／叙述／状态变化；场景悬浮面板、统一主持台、多页独立登录；自动执行需KP页面在线；部分冒险原文待终校 | [配置包入口](stumpsville/README.md) |
-| 调查型线上跑团对照包 | 计划进行中，已核查首轮规则、配置与界面样本 | [配置包入口](investigation-vtt-reference/README.md) |
-| Lasers & Feelings《激光与情感》v1.4 | 1.0.0 已实现，规则与浏览器验证通过 | [配置包入口](lasers-and-feelings/README.md) |
-| 铃蔓回转录（工作簿名称） | 0.1.0 本机人工主持实现，25项HTTP／17项浏览器专项通过，部分计划待实施 | [配置包与运行入口](mini-detective-pack/README.md) |
+| Lua 编写 | [动作、计算与可恢复流程](../docs/current/engineering/lua-authoring.md) | 已有首测能力，规则由包作者维护 |
+| SDK 与操作台 | [界面联调、导入、检查与激活](../docs/current/engineering/first-test.md) | 已有能力，依赖运行中的宿主 |
+| 房间管理与 LAN | [数据、规则、回执与联机工具](../tools/room-manager/README.md) | 已有实现，限现行宿主与可信局域网能力 |
+| 本机账号工具 | [测试账号创建、查询与密码维护](../tools/host-accounts/README.md) | 已有实现，限本机授权实例 |
+| 独立本地化 | [工具与验收](../tools/localization/README.md)、[设计](../docs/plans/localization-engineering-design.md)、[施工](../docs/plans/localization-construction-plan.md) | 技术预览；正式 CRUD、资源发布与 TextRef/fallback 未完成 |
+| AI 接入与界面 | [底层工具与三种嵌入视图](../docs/current/engineering/ai-pack-embedding.md)、[管理器与 API](../docs/current/engineering/ai-manager.md) | 已有 pack.js、无界面工具、单独/对话/折叠视图及同源页面；包须接真实会话与路由/资源白名单 |
+| A/B/C 配置检查 | [现有运行时与验收](../docs/current/engineering/ai-runtime.md)、[包契约及作者分工](../docs/plans/ai-runtime-design.md#75-开发主责与交付边界) | 工程执行 A/B/C；包作者提供规则、Schema、场景及指标，发布仍须 KP 审核 |
+| 网页联机 | [开房串、公开列表、独立游戏页与资源桥](../docs/current/engineering/network-web.md) | 0.3.0 测试版；包须完成资源/接口适配 |
+| 独立语音输入 | [转写与文本接入设计](../docs/plans/speech-input-design.md)、[施工](../docs/plans/speech-input-construction-plan.md) | 待实施；只负责转文字，不直接执行或发布配置 |
 
-每个游戏使用一个稳定英文目录名，分类与状态在各自 README 中说明；原始资料和加工材料分开，来源、许可及署名随包保留。运行存档、账号和密码不得放入配置包。
+## 网页联网接入
 
-工程侧只查阅[现行文档](../docs/current/engineering/README.md)和使用已有能力，不修改 `engineering/`。集成问题统一提交[项目 Issues](../docs/plans/Issues/README.md)，由工程责任者处理；包内仅引用问题编号，不复制第二份正文。施工登记与项目索引按现有维护标准同步。
+使用 [network-web 接入契约](../docs/current/engineering/network-web.md#32-开房串与配置包管理页)提供的 `WebHost.prepare_creation()` 或 `export_room_setup(state_path)` 取得开房串。建议将联网功能放在**独立管理页面**，集中提供启停分享、诊断、“复制开房串”和平台入口；由房主复制后在平台创建页粘贴，设置公开与密码。
+
+开房串是十分钟、一次性的房主认领凭据；仅从本机受权接口返回，禁止进入玩家资源包或普通日志。包侧实现复制按钮与剪贴板失败回退。游戏页只负责游玩，公开列表、创建和成员管理复用平台页面；具体方法、限制与旧版兼容以契约为准。
+
+## 开发约定
+
+- 包内资料使用稳定目录和版本，保留来源、许可与署名；凭据和运行存档不入库。
+- 词库、规则约束、测试场景与包侧适配由作者管理；工具代码与依赖独立维护。
+- 联调使用隔离数据目录；GUI、CLI、运行库与嵌入面板分别按实际接入方式验收。
+- 发布时记录所用接口版本和资源修订；模块维护者同步本表状态，包实例变更更新[统计管理表](catalog.md)。
 
 返回[项目入口](../README.md)。

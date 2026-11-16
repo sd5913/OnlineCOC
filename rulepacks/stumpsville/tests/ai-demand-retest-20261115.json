@@ -1,0 +1,344 @@
+{
+  "checkedAt": "2026-11-15T20:05:28.734005+08:00",
+  "model": "deepseek-flash",
+  "liveProvider": true,
+  "realSaveChanged": false,
+  "scope": "isolated generated sample room only",
+  "passed": false,
+  "evidenceDirectory": "tests/output/ai-demand-3bb7d172",
+  "limits": {
+    "dailyTokenBudget": 100000,
+    "maxConcurrentPerRoom": 1,
+    "maxQueuedPerRoom": 5,
+    "maxRepairAttempts": 0,
+    "maxToolRounds": 6,
+    "maxTransportRetries": 0,
+    "taskTimeoutMs": 240000
+  },
+  "maxOutputTokens": 2200,
+  "prompt": "查看所有房间信息并梳理",
+  "status": "failed",
+  "error": "BUDGET_EXCEEDED",
+  "providerCalls": 5,
+  "tokens": 50323,
+  "queries": [
+    {
+      "operation": "search",
+      "types": [
+        "entity"
+      ],
+      "query": "",
+      "references": 0,
+      "hasCursor": false,
+      "limit": 12
+    },
+    {
+      "operation": "search",
+      "types": [
+        "config"
+      ],
+      "query": "",
+      "references": 0,
+      "hasCursor": false,
+      "limit": 12
+    },
+    {
+      "operation": "search",
+      "types": [
+        "entity"
+      ],
+      "query": "",
+      "references": 0,
+      "hasCursor": true,
+      "limit": 12
+    },
+    {
+      "operation": "search",
+      "types": [
+        "config"
+      ],
+      "query": "",
+      "references": 0,
+      "hasCursor": true,
+      "limit": 12
+    },
+    {
+      "operation": "search",
+      "types": [
+        "entity"
+      ],
+      "query": "",
+      "references": 0,
+      "hasCursor": true,
+      "limit": 12
+    },
+    {
+      "operation": "search",
+      "types": [
+        "channel"
+      ],
+      "query": "",
+      "references": 0,
+      "hasCursor": false,
+      "limit": 12
+    },
+    {
+      "operation": "read",
+      "types": null,
+      "query": null,
+      "references": 7,
+      "hasCursor": false,
+      "limit": null
+    },
+    {
+      "operation": "search",
+      "types": [
+        "event",
+        "ruling",
+        "memory",
+        "rule"
+      ],
+      "query": "",
+      "references": 0,
+      "hasCursor": false,
+      "limit": 20
+    },
+    {
+      "operation": "read",
+      "types": null,
+      "query": null,
+      "references": 4,
+      "hasCursor": false,
+      "limit": null
+    },
+    {
+      "operation": "search",
+      "types": [
+        "event",
+        "ruling",
+        "memory",
+        "rule"
+      ],
+      "query": "",
+      "references": 0,
+      "hasCursor": true,
+      "limit": 20
+    }
+  ],
+  "providerResponses": 5,
+  "usage": {
+    "prompt_tokens": 48078,
+    "completion_tokens": 2245,
+    "total_tokens": 50323
+  },
+  "rawModelResponseStored": false,
+  "diagnostics": {
+    "errors": [
+      {
+        "code": "BUDGET_EXCEEDED",
+        "exceptionType": "AiError",
+        "frames": [
+          {
+            "function": "_generate",
+            "line": 313,
+            "module": "onlinecoc_ai.coordinator"
+          },
+          {
+            "function": "_reserve",
+            "line": 226,
+            "module": "onlinecoc_ai.coordinator"
+          },
+          {
+            "function": "update",
+            "line": 118,
+            "module": "onlinecoc_ai.repository"
+          },
+          {
+            "function": "reserve",
+            "line": 222,
+            "module": "onlinecoc_ai.coordinator"
+          },
+          {
+            "function": "require",
+            "line": 15,
+            "module": "onlinecoc_ai.errors"
+          }
+        ],
+        "stage": "budget_reserve"
+      }
+    ],
+    "schemaVersion": 1,
+    "stage": "budget_reserve",
+    "toolCalls": [
+      {
+        "argumentsDigest": "e83170640b69a4276e9d9c6fd3364ecbae3ce2c8a09b482e074e6622dd1b4c33",
+        "hasQuery": false,
+        "keys": [
+          "limit",
+          "query",
+          "types"
+        ],
+        "name": "room_search_data",
+        "status": "completed",
+        "turn": 0,
+        "types": [
+          "entity"
+        ],
+        "unknownKeys": false
+      },
+      {
+        "argumentsDigest": "316cf098a3eb2494eff6f0cdc9e338f5cc4ffb6448832b3166465b4acdba77d8",
+        "hasQuery": false,
+        "keys": [
+          "limit",
+          "query",
+          "types"
+        ],
+        "name": "room_search_data",
+        "status": "completed",
+        "turn": 0,
+        "types": [
+          "config"
+        ],
+        "unknownKeys": false
+      },
+      {
+        "argumentsDigest": "b1e4111dcc6f41e3a648893f01fbc896d0ef996e1379493be5b5df79f7442848",
+        "hasQuery": false,
+        "keys": [
+          "cursor",
+          "limit",
+          "query",
+          "types"
+        ],
+        "name": "room_search_data",
+        "status": "completed",
+        "turn": 1,
+        "types": [
+          "entity"
+        ],
+        "unknownKeys": false
+      },
+      {
+        "argumentsDigest": "a9c97964f4ee4d24bc43dea2d26fe6ef5075615881cb2afd57cbb70758bbd931",
+        "hasQuery": false,
+        "keys": [
+          "cursor",
+          "limit",
+          "query",
+          "types"
+        ],
+        "name": "room_search_data",
+        "status": "completed",
+        "turn": 1,
+        "types": [
+          "config"
+        ],
+        "unknownKeys": false
+      },
+      {
+        "argumentsDigest": "92690af1fbc73c3fe8979a51f0cce3663bbaa63f10c4948c9a1c4d33cef9657e",
+        "hasQuery": false,
+        "keys": [
+          "cursor",
+          "limit",
+          "query",
+          "types"
+        ],
+        "name": "room_search_data",
+        "status": "completed",
+        "turn": 2,
+        "types": [
+          "entity"
+        ],
+        "unknownKeys": false
+      },
+      {
+        "argumentsDigest": "e63b1b8d3e2cf1689117feca6ef5d0f375310ed8f397e0b7058e5452c44ca220",
+        "hasQuery": false,
+        "keys": [
+          "limit",
+          "query",
+          "types"
+        ],
+        "name": "room_search_data",
+        "status": "completed",
+        "turn": 2,
+        "types": [
+          "channel"
+        ],
+        "unknownKeys": false
+      },
+      {
+        "argumentsDigest": "5efc6cd00c7e1e813725e8d8bb08b8f2469750176381841df72ded8e65ccb979",
+        "keys": [
+          "refs"
+        ],
+        "name": "room_read_data",
+        "referenceCount": 7,
+        "status": "completed",
+        "turn": 3,
+        "unknownKeys": false
+      },
+      {
+        "argumentsDigest": "adcb11ed5b4e2b28c06c10d3206f6a2cf27b27682bb98502143784ed7b5d87a3",
+        "hasQuery": false,
+        "keys": [
+          "limit",
+          "query",
+          "types"
+        ],
+        "name": "room_search_data",
+        "status": "completed",
+        "turn": 3,
+        "types": [
+          "event",
+          "ruling",
+          "memory",
+          "rule"
+        ],
+        "unknownKeys": false
+      },
+      {
+        "argumentsDigest": "bef7322ab04ae9a235f847c64f5f69aa733926c89f695208203131767a7e2927",
+        "keys": [
+          "refs"
+        ],
+        "name": "room_read_data",
+        "referenceCount": 4,
+        "status": "completed",
+        "turn": 4,
+        "unknownKeys": false
+      },
+      {
+        "argumentsDigest": "b8d5c0ef7ab9a0f18e5252fa89eed20295dcb61c7666a7a589f07ada14d0377b",
+        "hasQuery": false,
+        "keys": [
+          "cursor",
+          "limit",
+          "query",
+          "types"
+        ],
+        "name": "room_search_data",
+        "status": "completed",
+        "turn": 4,
+        "types": [
+          "event",
+          "ruling",
+          "memory",
+          "rule"
+        ],
+        "unknownKeys": false
+      }
+    ],
+    "turn": 5
+  },
+  "replySha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "replyCharacters": 0,
+  "checks": {
+    "entityEnumeration": true,
+    "configEnumeration": true,
+    "detailsRead": true,
+    "actualNamesInReply": false
+  }
+}

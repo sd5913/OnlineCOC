@@ -1,0 +1,19 @@
+{
+  "passed": true,
+  "provider": "deterministic-offline",
+  "checks": [
+    "independent manager unlock and credential write",
+    "multiple profile import preview, save and delete",
+    "provider probe UI",
+    "machine contracts through room bridge",
+    "room login isolation",
+    "session submit and dispatch",
+    "A/B/C review and explicit approve/load",
+    "rename/archive/reload",
+    "two Shadow DOM mounts and disposal",
+    "late response after logout is discarded",
+    "PL cannot dispatch, review or read KP sessions",
+    "disconnect and lock clear UI"
+  ],
+  "consoleErrors": []
+}

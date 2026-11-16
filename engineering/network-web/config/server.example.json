@@ -1,0 +1,9 @@
+{
+  "publishers": {"owner":"SHA256_OF_EXISTING_PUBLISHER_TOKEN"},
+  "stateFile":"/var/lib/onlinecoc-network/rooms.json",
+  "webStateFile":"/var/lib/onlinecoc-network/web-accounts.json",
+  "publicOrigin":"https://YOUR_SERVER_IP",
+  "registration":true,
+  "maxAccounts":2000,
+  "turn":{"secret":"EXISTING_TURN_SECRET","urls":["stun:YOUR_SERVER_IP:3478","turn:YOUR_SERVER_IP:3478?transport=udp","turn:YOUR_SERVER_IP:3478?transport=tcp"]}
+}

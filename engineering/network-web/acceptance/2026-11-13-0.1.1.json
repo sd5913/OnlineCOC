@@ -1,0 +1,84 @@
+{
+  "date": "2026-11-13",
+  "recordedUTC": "2026-11-13T12:08:59.471548+00:00",
+  "version": "0.1.1",
+  "changes": [
+    "Platform password minimum 6 characters; no composition rule or password-specific maximum.",
+    "Opt-in browser-local remembered platform and per-account/per-room game credentials; explicit clear.",
+    "Only save after successful authentication; preserve prior value on failed login; update after recovery."
+  ],
+  "localTests": {
+    "passed": 20,
+    "skipped": 1,
+    "seconds": 18.66,
+    "command": "pytest tests/test_auth_preferences.py tests/test_portal.py tests/test_browser.py -q --tb=short",
+    "skippedScope": "Existing cloud game relay case; new public auth UI smoke executed separately.",
+    "newAuthCases": 8
+  },
+  "cloudBrowser": {
+    "browserPrivateCATestException": true,
+    "clearRemovedLocalCopy": true,
+    "noPasswordMaxlength": true,
+    "pageErrors": [],
+    "publicRegistrationSixDigits": true,
+    "rememberPreferenceNotSentToAPI": true,
+    "rememberedAfterLogout": true,
+    "version": "0.1.1"
+  },
+  "deployment": {
+    "release": "/opt/onlinecoc-network/releases/web-20261113T120516Z",
+    "services": {
+      "onlinecoc-directory": "active",
+      "onlinecoc-turn": "active"
+    },
+    "strictCAHTTPS": true,
+    "installedSourcesMatched": 37
+  },
+  "runtimeSourcesSHA256": {
+    "network-web/src/onlinecoc_web/__init__.py": "ae739b3e3b817044ada923b44ba82c752fe8b7c2133908d58fff8fd4b5146298",
+    "network-web/src/onlinecoc_web/__main__.py": "6d8b7d7846a845059d7a3107143f11131f63c5511d669b44085b15ec5e3d2279",
+    "network-web/src/onlinecoc_web/cli.py": "d1288d1e3e3171a2448dfa64ea656b6c22c5ac512a5379554860f12ee09347f5",
+    "network-web/src/onlinecoc_web/host.py": "ff5e2fd269fbb9f6b5d6cb9f71e7a511c10fab7a5f22904ac47c99309203e878",
+    "network-web/src/onlinecoc_web/portal.py": "ca565fcded751d541c3c1b6fd369ac67d8fcea5fafe914e38c0f1da98ee4f0fe",
+    "network-web/src/onlinecoc_web/resources.py": "7d8b6c001b56bf487decbe28eeb3581d1742928c9084635699bd2b3ebeefd8bd",
+    "network-web/src/onlinecoc_web/store.py": "61e3c90eb1358af11c959a85972b4b938c026005045b807fda0a72d85a58f4f5",
+    "network-web/src/onlinecoc_web/web/app.js": "7855452987fe732ee362e3049bf76ccbce3c67c38c20f8e46060ca368753d7dc",
+    "network-web/src/onlinecoc_web/web/game.js": "0c45f5f262624cf1f45b9f4a2dd9a6aba7bb63aafab6f05bb1fb0d90d26646b1",
+    "network-web/src/onlinecoc_web/web/index.html": "cb090be3038294a3ca302c146c6069d643cab125dd177cd8f4bc287df48b4823",
+    "network-web/src/onlinecoc_web/web/remember.js": "64b83e3a0819da41c55a3da506edce9a63021f85a03146a98aaa152b29e6148f",
+    "network-web/src/onlinecoc_web/web/resources.js": "403384509560a724152e82e06a653a0497e39646164d5e7aeb2126fa5d96c7b6",
+    "network-web/src/onlinecoc_web/web/sandbox-boot.js": "5b8b81392120545fcfcfbb29e79ccb703c95a4a0b99fe81dbed94b5b5de19355",
+    "network-web/src/onlinecoc_web/web/sandbox.js": "197e280667fefe7bc15e73503749258e10c844dcc8fa50d40652e19185fc0b00",
+    "network-web/src/onlinecoc_web/web/style.css": "2e9bc7687de0af99f04f3717232d3cb3707d86b2cdb0eaffb26f26ae4be1c4ec",
+    "network-p2p/src/onlinecoc_p2p/__init__.py": "96e73811e7546df876df84cdedcd86882ab5b755eb859bcbdfdd28e9ccde96d6",
+    "network-p2p/src/onlinecoc_p2p/__main__.py": "cf7390a2508a0fcad4777a4a629fc5212ab655cb45845975995f835676a834e3",
+    "network-p2p/src/onlinecoc_p2p/cli.py": "c1857d2bd731d7aed17e62f0cc244b6f8d376b47d0a69d862834952deee65a92",
+    "network-p2p/src/onlinecoc_p2p/client.py": "8757ad8eef7bfa1e918e6050e012531f405adf156260663bfb8f6423747811ff",
+    "network-p2p/src/onlinecoc_p2p/common.py": "d85702c7f5a0c82f9f3f5bc9fc31215e2ce771d94e347a2abb6bb077a4823d53",
+    "network-p2p/src/onlinecoc_p2p/control.py": "ba24f4b9a5c0393ac798c1b7805a957cf5c3b4862f97707f151e9fde3d9c1303",
+    "network-p2p/src/onlinecoc_p2p/directory.py": "7d277e87f36875c401cd6ba874acebd21130efd5484cc1573e97dd1b9ff213bf",
+    "network-p2p/src/onlinecoc_p2p/discovery.py": "30d6391d650dda90c0d6135c07e1cc5e45c82a1581fdb41d2221a060c3f12f05",
+    "network-p2p/src/onlinecoc_p2p/host.py": "d5b4930187a93e6944ec16e33b42cbdf1465d920564939c19f162f7eaa9785cb",
+    "network-p2p/src/onlinecoc_p2p/local_app.py": "12a41d9b9b9a1e9dab9c3d1769201e639e2f9af2f08ab5bcd236f50994106bc1",
+    "network-p2p/src/onlinecoc_p2p/ownership.py": "a5e08aa4caff65e828a84627010b69cc69c0f5ba4e42222feb2f82051386def1",
+    "network-p2p/src/onlinecoc_p2p/packages.py": "cecbb4805f6f54244ab2622c7a11ab99e7378757ee905d8b3135994d64894f6e",
+    "network-p2p/src/onlinecoc_p2p/rooms.py": "3ff5f075b16be42cdbcb77d0f7e32e7695c9cac527196dd5a56a530af469ac84",
+    "network-p2p/src/onlinecoc_p2p/rtc.py": "ae4dfb142ace462253550a799ab2c698af12094dc7b2e8381823289b30b1e3a6",
+    "network-p2p/src/onlinecoc_p2p/upstream.py": "4c7f8aeb576f949636dd12c0ca675b4c77c6733ae159ca750e37eaaba95a5f64",
+    "network-p2p/src/onlinecoc_p2p/web/app.js": "1f4b75f58327208198609703473b4da675cf1ba621015b2d060a5f3dc47adf0b",
+    "network-p2p/src/onlinecoc_p2p/web/bridge.js": "73c9be13e43f74468cf10b36dfba0d4e133a482ca03b4f1229db1f15f783eff5",
+    "network-p2p/src/onlinecoc_p2p/web/index.html": "08b130995a7eb45e27457de77931127d0993f869b79a1fd91b20b744a8ce3a95",
+    "network-p2p/src/onlinecoc_p2p/web/join.js": "b14c3c20e35b6ee626ac46af44dab8a3dd36038957709d8b08b7f3715bfd51b5",
+    "network-p2p/src/onlinecoc_p2p/web/style.css": "508e7b80555993090c1b933b9b9c1319e9b492c1512abe233ffa43b52ead15b6",
+    "network-p2p/src/onlinecoc_p2p/web/transport.js": "c3d4e3ad67d90561b2ddf47467d443aa8310287fa428aa8d961b61e3b1f38cdd",
+    "network-p2p/src/onlinecoc_p2p/wire.py": "5ca8b46118e903ec1dd212ff32afd040c8f48d18861f571c0bdf1ddc2a09bb72"
+  },
+  "storage": {
+    "location": "visitor browser localStorage, isolated by origin",
+    "format": "plaintext autofill credentials",
+    "default": "opt-in, disabled",
+    "logout": "retains remembered values",
+    "clear": "uncheck or clear button",
+    "server": "continues Argon2id hashes; no remembered-copy upload"
+  }
+}

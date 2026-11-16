@@ -1,0 +1,47 @@
+{
+  "accounts": [
+    {
+      "accountId": "kp",
+      "role": "kp"
+    },
+    {
+      "accountId": "player1",
+      "role": "player"
+    },
+    {
+      "accountId": "player2",
+      "role": "player"
+    }
+  ],
+  "instances": [
+    {
+      "instanceId": "actor-player1",
+      "configurationId": "demo.actor",
+      "owner": "player1",
+      "name": "试点调查员",
+      "visibility": "public",
+      "numbers": {}
+    },
+    {
+      "instanceId": "skill-player1",
+      "configurationId": "demo.skill",
+      "owner": "player1",
+      "name": "试点技能",
+      "visibility": "public",
+      "numbers": {
+        "value": 60
+      }
+    }
+  ],
+  "relations": {
+    "skill-ownership": {
+      "relationId": "skill-ownership",
+      "sourceId": "actor-player1",
+      "targetId": "skill-player1",
+      "relationType": "owns-skill",
+      "revision": 1,
+      "tags": [],
+      "metadata": {}
+    }
+  }
+}

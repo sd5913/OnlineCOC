@@ -179,14 +179,11 @@ def test_verified_action_card_uses_host_receipt_and_is_immutable(host):
     assert command(host, "player1", "chat.message.share", {"channelId": "general", "commandId": "roll"})["code"] == "PERMISSION_DENIED"
 
 
-def test_legacy_room_upgrade_is_once_and_backup_restores_chat(host, tmp_path):
-    legacy = host.state(); legacy.pop("chat"); host.commit(legacy)
+def test_current_room_restart_and_backup_preserve_chat(host, tmp_path):
     before = host.store.generation
     host.close(); host.__init__(host.path)
-    assert host.store.generation == before + 1
+    assert host.store.generation == before
     assert host.project("player1")["chatChannels"]["general"]["lastSequence"] == 0
-    host.close(); host.__init__(host.path)
-    assert host.store.generation == before + 1
     cid = group(host); send(host, cid=cid)
     command(host, "player1", "chat.read", {"channelId": cid, "sequence": 1})
     assets = Assets(host); assets.backup("kp", tmp_path / "backup", True)

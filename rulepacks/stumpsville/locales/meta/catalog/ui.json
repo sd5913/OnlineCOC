@@ -1,0 +1,5899 @@
+{
+  "schemaVersion": 1,
+  "entries": {
+    "chat.title": {
+      "description": "Stumpsville interface: Chat",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "chat.global": {
+      "description": "Stumpsville interface: Global",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "chat.scene": {
+      "description": "Stumpsville interface: Current scene",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "chat.party": {
+      "description": "Stumpsville interface: Party",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "chat.groups": {
+      "description": "Stumpsville interface: Groups",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "chat.private": {
+      "description": "Stumpsville interface: Direct messages",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "chat.popout": {
+      "description": "Stumpsville interface: Pop out",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "chat.older": {
+      "description": "Stumpsville interface: Earlier messages",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "chat.read": {
+      "description": "Stumpsville interface: Mark read",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "chat.message": {
+      "description": "Stumpsville interface: Message",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "chat.placeholder": {
+      "description": "Stumpsville interface: Type a message…",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "chat.send": {
+      "description": "Stumpsville interface: Send",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "chat.direct": {
+      "description": "Stumpsville interface: New conversation",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "chat.expand": {
+      "description": "Stumpsville interface: Expand",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "chat.minimize": {
+      "description": "Stumpsville interface: Minimize",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "chat.close": {
+      "description": "Stumpsville interface: Close",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "chat.retracted": {
+      "description": "Stumpsville interface: Message retracted",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "chat.edit": {
+      "description": "Stumpsville interface: Edit",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "chat.retract": {
+      "description": "Stumpsville interface: Retract",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "chat.empty": {
+      "description": "Stumpsville interface: No messages yet",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "chat.busy": {
+      "description": "Stumpsville interface: Wait for the current action",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "chat.contacts": {
+      "description": "Stumpsville interface: Choose a contact",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m001": {
+      "description": "Stumpsville interface: Console",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m002": {
+      "description": "Stumpsville interface: Locations",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m003": {
+      "description": "Stumpsville interface: Library",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m004": {
+      "description": "Stumpsville interface: Session",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m005": {
+      "description": "Stumpsville interface: Scene desktop",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m006": {
+      "description": "Stumpsville interface: Character",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m007": {
+      "description": "Stumpsville interface: Inventory",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m008": {
+      "description": "Stumpsville interface: Clues and notes",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m009": {
+      "description": "Stumpsville interface: Action log",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m010": {
+      "description": "Stumpsville interface: Chat",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m011": {
+      "description": "Stumpsville interface: Rules",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m012": {
+      "description": "Stumpsville interface: Preferences",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m013": {
+      "description": "Stumpsville interface: Sign out",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m014": {
+      "description": "Stumpsville interface: Language",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m015": {
+      "description": "Stumpsville interface: Keeper",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m016": {
+      "description": "Stumpsville interface: Player",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m017": {
+      "description": "Stumpsville interface: Open player window",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m018": {
+      "description": "Stumpsville interface: Open management",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m019": {
+      "description": "Stumpsville interface: Keeper console",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m020": {
+      "description": "Stumpsville interface: Controls and party",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m021": {
+      "description": "Stumpsville interface: Requests and rulings",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m022": {
+      "description": "Stumpsville interface: Messages and logs",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m023": {
+      "description": "Stumpsville interface: Open chat",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m024": {
+      "description": "Stumpsville interface: Create channel",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m025": {
+      "description": "Stumpsville interface: Start / continue",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m026": {
+      "description": "Stumpsville interface: Advance turn",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m027": {
+      "description": "Stumpsville interface: Pause room",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m028": {
+      "description": "Stumpsville interface: Resume room",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m029": {
+      "description": "Stumpsville interface: Disable automatic rulings",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m030": {
+      "description": "Stumpsville interface: Enable automatic rulings",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m032": {
+      "description": "Stumpsville interface: Create a mouse",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m033": {
+      "description": "Stumpsville interface: Lobby",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m034": {
+      "description": "Stumpsville interface: Session recap",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m035": {
+      "description": "Stumpsville interface: Open console",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m036": {
+      "description": "Stumpsville interface: Create or claim a mouse",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m037": {
+      "description": "Stumpsville interface: No character assigned",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m038": {
+      "description": "Stumpsville interface: Your adventuring mouse",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m039": {
+      "description": "Stumpsville interface: Before you begin",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m040": {
+      "description": "Stumpsville interface: Review equipment and ready",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m041": {
+      "description": "Stumpsville interface: Waiting to start",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m042": {
+      "description": "Stumpsville interface: Ready",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m043": {
+      "description": "Stumpsville interface: Not ready",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m044": {
+      "description": "Stumpsville interface: View inventory",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m045": {
+      "description": "Stumpsville interface: Enter scene",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m046": {
+      "description": "Stumpsville interface: Explore",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m047": {
+      "description": "Stumpsville interface: Discovered",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m048": {
+      "description": "Stumpsville interface: What will you do?",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m049": {
+      "description": "Stumpsville interface: Free action",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m050": {
+      "description": "Stumpsville interface: Ask the Keeper",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m051": {
+      "description": "Stumpsville interface: Attribute check",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m052": {
+      "description": "Stumpsville interface: Carried resources",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m053": {
+      "description": "Stumpsville interface: Open inventory",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m054": {
+      "description": "Stumpsville interface: Scene changes",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m055": {
+      "description": "Stumpsville interface: Copy player address",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m056": {
+      "description": "Stumpsville interface: Save notes",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m057": {
+      "description": "Stumpsville interface: Hide panels",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m058": {
+      "description": "Stumpsville interface: Close",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m059": {
+      "description": "Stumpsville interface: Expand",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m060": {
+      "description": "Stumpsville interface: Minimize",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m061": {
+      "description": "Stumpsville interface: Cancel",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m062": {
+      "description": "Stumpsville interface: Confirm",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m063": {
+      "description": "Stumpsville interface: Save",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m064": {
+      "description": "Stumpsville interface: Submit",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m065": {
+      "description": "Stumpsville interface: Synced",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m066": {
+      "description": "Stumpsville interface: Connecting",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m067": {
+      "description": "Stumpsville interface: Disconnected",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m068": {
+      "description": "Stumpsville interface: Access denied",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m069": {
+      "description": "Stumpsville interface: Keeper access required",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m070": {
+      "description": "Stumpsville interface: Page not found",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m071": {
+      "description": "Stumpsville interface: Back to lobby",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m072": {
+      "description": "Stumpsville interface: Claim a character first",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m073": {
+      "description": "Stumpsville interface: Install Stumpsville",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m074": {
+      "description": "Stumpsville interface: Room not prepared",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m075": {
+      "description": "Stumpsville interface: Install rules and locations",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m076": {
+      "description": "Stumpsville interface: Waiting for the Keeper to install",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m077": {
+      "description": "Stumpsville interface: Resolution",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m078": {
+      "description": "Stumpsville interface: Automatic",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m079": {
+      "description": "Stumpsville interface: Request a Keeper ruling",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m080": {
+      "description": "Stumpsville interface: Request Keeper (automation disabled)",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m081": {
+      "description": "Stumpsville interface: Roll",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m082": {
+      "description": "Stumpsville interface: Normal",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m083": {
+      "description": "Stumpsville interface: Advantage",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m084": {
+      "description": "Stumpsville interface: Disadvantage",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m085": {
+      "description": "Stumpsville interface: Success",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m086": {
+      "description": "Stumpsville interface: Failure",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m087": {
+      "description": "Stumpsville interface: Check passed",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m088": {
+      "description": "Stumpsville interface: Check failed",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m089": {
+      "description": "Stumpsville interface: Ready",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m090": {
+      "description": "Stumpsville interface: Not ready",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m091": {
+      "description": "Stumpsville interface: Waiting for Keeper",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m092": {
+      "description": "Stumpsville interface: Resolved",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m093": {
+      "description": "Stumpsville interface: Rejected",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m094": {
+      "description": "Stumpsville interface: Replied",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m095": {
+      "description": "Stumpsville interface: Waiting for automatic resolution",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m096": {
+      "description": "Stumpsville interface: Continue exploring",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m097": {
+      "description": "Stumpsville interface: Review request",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m098": {
+      "description": "Stumpsville interface: Save ruling and notify player",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m099": {
+      "description": "Stumpsville interface: Approve",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m100": {
+      "description": "Stumpsville interface: Reject",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m101": {
+      "description": "Stumpsville interface: Decision",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m102": {
+      "description": "Stumpsville interface: Reason and reply",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m103": {
+      "description": "Stumpsville interface: Party and resources",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m104": {
+      "description": "Stumpsville interface: Creatures and encounter tools",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m105": {
+      "description": "Stumpsville interface: Complete location map",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m106": {
+      "description": "Stumpsville interface: Character approval",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m107": {
+      "description": "Stumpsville interface: No characters awaiting approval",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m108": {
+      "description": "Stumpsville interface: No pending actions",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m109": {
+      "description": "Stumpsville interface: Stats",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m110": {
+      "description": "Stumpsville interface: Grant item",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m111": {
+      "description": "Stumpsville interface: Recover",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m112": {
+      "description": "Stumpsville interface: Damage",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m113": {
+      "description": "Stumpsville interface: Morale",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m114": {
+      "description": "Stumpsville interface: Approve character",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m115": {
+      "description": "Stumpsville interface: Return for revision",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m116": {
+      "description": "Stumpsville interface: Search revealed clues",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m117": {
+      "description": "Stumpsville interface: My private notes",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m118": {
+      "description": "Stumpsville interface: Mark log read",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m119": {
+      "description": "Stumpsville interface: Request review",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m120": {
+      "description": "Stumpsville interface: Use / check depletion",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m121": {
+      "description": "Stumpsville interface: Light",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m122": {
+      "description": "Stumpsville interface: Extinguish",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m123": {
+      "description": "Stumpsville interface: Move item",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m124": {
+      "description": "Stumpsville interface: Request transfer",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m125": {
+      "description": "Stumpsville interface: Save draft",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m126": {
+      "description": "Stumpsville interface: Publish preview",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m127": {
+      "description": "Stumpsville interface: View public preview",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m128": {
+      "description": "Stumpsville interface: Locations and reveals",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m129": {
+      "description": "Stumpsville interface: Library and configuration",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m130": {
+      "description": "Stumpsville interface: Source status",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m131": {
+      "description": "Stumpsville interface: Export package",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m132": {
+      "description": "Stumpsville interface: Import and validate",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m133": {
+      "description": "Stumpsville interface: Install packaged rules",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m134": {
+      "description": "Stumpsville interface: Rules reference",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m135": {
+      "description": "Stumpsville interface: Edit random tables",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m136": {
+      "description": "Stumpsville interface: Configuration revisions",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m137": {
+      "description": "Stumpsville interface: Isolated preview",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m138": {
+      "description": "Stumpsville interface: Activate / roll back",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m139": {
+      "description": "Stumpsville interface: Items and conditions",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m140": {
+      "description": "Stumpsville interface: Encounter table",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m141": {
+      "description": "Stumpsville interface: Session and saves",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m142": {
+      "description": "Stumpsville interface: Save and accounts",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m143": {
+      "description": "Stumpsville interface: Create full backup",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m144": {
+      "description": "Stumpsville interface: Back to console",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m145": {
+      "description": "Stumpsville interface: Our exploration",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m146": {
+      "description": "Stumpsville interface: Preferences and help",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m147": {
+      "description": "Stumpsville interface: Text size",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m148": {
+      "description": "Stumpsville interface: Standard",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m149": {
+      "description": "Stumpsville interface: Larger",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m150": {
+      "description": "Stumpsville interface: Large",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m151": {
+      "description": "Stumpsville interface: Message",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m152": {
+      "description": "Stumpsville interface: Send",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m153": {
+      "description": "Stumpsville interface: Online",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m154": {
+      "description": "Stumpsville interface: Offline",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m155": {
+      "description": "Stumpsville interface: Connection stale",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m156": {
+      "description": "Stumpsville interface: Enter adventure",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m157": {
+      "description": "Stumpsville interface: Account",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ui.m158": {
+      "description": "Stumpsville interface: Password",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "app.name": {
+      "description": "树桩镇",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "nav.main": {
+      "description": "主导航",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "nav.workspace": {
+      "description": "桌面栏目",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "action.recover": {
+      "description": "恢复原行动",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "scene.current": {
+      "description": "当前场景",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "scene.round": {
+      "description": "第 {count} 回合",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {
+        "count": {
+          "type": "number"
+        }
+      },
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "scene.actions": {
+      "description": "可用行动",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "scene.legend": {
+      "description": "实线：开启通路 · 虚线：关闭或上锁 · 绿色：当前位置",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "scene.go": {
+      "description": "前往 {place}",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {
+        "place": {
+          "type": "string"
+        }
+      },
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "scene.unpublished": {
+      "description": "当前地点尚未公开。",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "scene.queued": {
+      "description": "有预设行动正在排队结算。",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "field.str": {
+      "description": "力量",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "field.dex": {
+      "description": "敏捷",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "field.wil": {
+      "description": "意志",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "field.hp": {
+      "description": "生命",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "field.maxhp": {
+      "description": "生命上限",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "field.strmax": {
+      "description": "力量上限",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "field.dexmax": {
+      "description": "敏捷上限",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "field.wilmax": {
+      "description": "意志上限",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "field.armor": {
+      "description": "护甲",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "field.pips": {
+      "description": "钱币",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "field.xp": {
+      "description": "经验",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "field.grit": {
+      "description": "坚韧",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "field.level": {
+      "description": "等级",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "field.light": {
+      "description": "光源",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "field.location": {
+      "description": "所在地点",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "field.ready": {
+      "description": "准备状态",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "field.incapacitated": {
+      "description": "失能",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "field.litslot": {
+      "description": "光源槽位",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "field.conditionpending": {
+      "description": "待整理状态",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "field.slot": {
+      "description": "槽位 {count}",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {
+        "count": {
+          "type": "number"
+        }
+      },
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "light.off": {
+      "description": "未点亮",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "light.slot": {
+      "description": "槽位 {count} 已点亮",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {
+        "count": {
+          "type": "number"
+        }
+      },
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "state.yes": {
+      "description": "是",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "state.no": {
+      "description": "否",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "state.able": {
+      "description": "可行动",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "state.incapacitated": {
+      "description": "已失能",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "state.critical": {
+      "description": "重伤",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "state.overloaded": {
+      "description": "超载",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "state.untreated": {
+      "description": "待处理",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "state.disarmed": {
+      "description": "已解除",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "state.triggered": {
+      "description": "已触发",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "state.open": {
+      "description": "开启",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "state.closed": {
+      "description": "关闭",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "state.freed": {
+      "description": "已脱困",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "state.trapped": {
+      "description": "被困",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "state.awake": {
+      "description": "醒来",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "state.asleep": {
+      "description": "熟睡",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "state.alert": {
+      "description": "警觉",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "state.calm": {
+      "description": "平静",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "state.blocked": {
+      "description": "条件不满足",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "state.approved": {
+      "description": "已批准",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "state.rejected": {
+      "description": "已退回",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "state.pending": {
+      "description": "待审核",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "state.draft": {
+      "description": "草稿",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "state.active": {
+      "description": "运行中",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "state.paused": {
+      "description": "已暂停",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "state.archived": {
+      "description": "已归档",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "mode.normal": {
+      "description": "普通",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "mode.advantage": {
+      "description": "优势",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "mode.disadvantage": {
+      "description": "劣势",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "operation.move": {
+      "description": "移动物品",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "operation.use": {
+      "description": "使用物品",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "operation.light": {
+      "description": "点亮光源",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "operation.extinguish": {
+      "description": "熄灭光源",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "result.done": {
+      "description": "操作已完成",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "result.chat": {
+      "description": "消息已送达",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "result.check": {
+      "description": "{attribute}：投出 {rolled} ≤ {target} · {outcome}",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {
+        "attribute": {
+          "type": "string"
+        },
+        "rolled": {
+          "type": "number"
+        },
+        "target": {
+          "type": "number"
+        },
+        "outcome": {
+          "type": "string"
+        }
+      },
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "result.damage": {
+      "description": "受到 {damage} 点伤害，剩余生命 {hp}",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {
+        "damage": {
+          "type": "number"
+        },
+        "hp": {
+          "type": "number"
+        }
+      },
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "result.count": {
+      "description": "数量：{count}",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {
+        "count": {
+          "type": "number"
+        }
+      },
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "result.roll": {
+      "description": "投骰结果：{count}",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {
+        "count": {
+          "type": "number"
+        }
+      },
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "result.total": {
+      "description": "合计：{count}",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {
+        "count": {
+          "type": "number"
+        }
+      },
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "result.uses": {
+      "description": "剩余用量 {count}",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {
+        "count": {
+          "type": "number"
+        }
+      },
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "result.remaining": {
+      "description": "剩余 {count}",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {
+        "count": {
+          "type": "number"
+        }
+      },
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "result.arrived": {
+      "description": "已到达 {place}",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {
+        "place": {
+          "type": "string"
+        }
+      },
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "result.dice": {
+      "description": "二十面骰：{first}{second} → 采用 {rolled}",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {
+        "first": {
+          "type": "number"
+        },
+        "second": {
+          "type": "string"
+        },
+        "rolled": {
+          "type": "number"
+        }
+      },
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "log.filter": {
+      "description": "筛选",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "log.all": {
+      "description": "全部行动",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "log.pending": {
+      "description": "待处理",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "log.empty": {
+      "description": "还没有符合条件的行动。提交后可在这里查看过程与变化。",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "log.keeper": {
+      "description": "主持裁决",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "log.rules": {
+      "description": "规则结算",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "log.submitted": {
+      "description": "已提交",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "log.waiting": {
+      "description": "等待主持裁决，完成后会在此显示结果。",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "log.rejected": {
+      "description": "主持未批准本次行动。",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "log.reason": {
+      "description": "转交原因",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "log.ruling": {
+      "description": "裁决说明",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "log.clues": {
+      "description": "新增线索：",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "log.review": {
+      "description": "复核行动：{title}",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {
+        "title": {
+          "type": "string"
+        }
+      },
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "log.share": {
+      "description": "分享摘要",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "dialog.attribute": {
+      "description": "属性",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "dialog.mode": {
+      "description": "情境",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "dialog.request": {
+      "description": "向主持描述行动",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "dialog.intent": {
+      "description": "行动意图",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "dialog.travel": {
+      "description": "前往已知地点",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "dialog.move": {
+      "description": "确认移动",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "inventory.empty": {
+      "description": "空",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "inventory.coins": {
+      "description": "钱币袋",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "inventory.occupied": {
+      "description": "↖ 占用",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "inventory.hands": {
+      "description": "双手 · 2格",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "inventory.body": {
+      "description": "身体 · 2格",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "inventory.pack": {
+      "description": "背包 · 6格",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "inventory.overflow": {
+      "description": "超载区",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "inventory.details": {
+      "description": "占用 {slots} 格 · 剩余用量 {uses} / {max}",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {
+        "slots": {
+          "type": "number"
+        },
+        "uses": {
+          "type": "number"
+        },
+        "max": {
+          "type": "number"
+        }
+      },
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "inventory.use": {
+      "description": "确认物品用量",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "inventory.move": {
+      "description": "移动到另一个槽位",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "inventory.destination": {
+      "description": "目标槽位（1–10，超载11–20）",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "inventory.transfer": {
+      "description": "请求转交物品",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "inventory.receiver": {
+      "description": "接收队友",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "inventory.submit": {
+      "description": "提交主持",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "clues.empty": {
+      "description": "主持尚未发布线索",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "clues.save": {
+      "description": "保存手记",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "preferences.reduce": {
+      "description": "减少动画",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "preferences.help": {
+      "description": "Tab 切换控件，Enter 确认，Esc 关闭弹窗。断线时请恢复原行动。",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "account.new": {
+      "description": "新开独立登录页",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "action.busy": {
+      "description": "请等待当前操作完成",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "action.submitting": {
+      "description": "正在提交行动，等待服务器确认…",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "action.queued": {
+      "description": "预设行动已提交，结算进度见行动日志。",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "action.failed": {
+      "description": "；行动未完成。",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "action.uncertain": {
+      "description": "；结果尚未确认，请恢复原行动。",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "panel.label": {
+      "description": "{name}悬浮面板",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {
+        "name": {
+          "type": "string"
+        }
+      },
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "scene.choose": {
+      "description": "选择具体做法",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "scene.auto": {
+      "description": "按预设自动结算",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "scene.execute": {
+      "description": "执行行动",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "error.rule_failed": {
+      "description": "行动未完成，请检查槽位、资源、开场与主持条件",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "error.version_conflict": {
+      "description": "数据已改变，请刷新后重新确认",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "error.not_visible": {
+      "description": "当前账号无权查看此内容",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "error.stale_catalog": {
+      "description": "规则版本已改变，请刷新后重新选择行动",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "error.rate_limited": {
+      "description": "操作过快，请稍后恢复原行动",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "error.room_paused": {
+      "description": "房间已暂停",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "error.csrf_required": {
+      "description": "会话校验失败，请重新登录",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "entry.tagline": {
+      "description": "一场属于小鼠的冒险",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "entry.intro": {
+      "description": "带上火把、针剑与一点勇气。树桩深处，故事正在等待。",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "entry.setup": {
+      "description": "首次准备 · 创建独立游玩存档",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "entry.login": {
+      "description": "服务可连接 · 请登录你的账号",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "entry.password": {
+      "description": "设置初始密码（8–128位）",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "entry.accounts": {
+      "description": "将建立 kp、player1、player2 三个测试账号，共用本次初始密码。",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "entry.prepare": {
+      "description": "准备树桩镇",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "entry.sessions": {
+      "description": "每个独立登录页可使用不同账号；复制相同页面地址则共享该入口的会话。",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "lobby.intro": {
+      "description": "探索树桩镇的十个地点。预设行动自动结算，额外事件可请求主持裁决。",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "lobby.draft": {
+      "description": "草稿",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "lobby.ready": {
+      "description": "角色审核完成后，核对物品栏并标记准备。",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "create.identity": {
+      "description": "身份",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "create.attributes": {
+      "description": "属性",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "create.equipment": {
+      "description": "装备",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "create.preset": {
+      "description": "采用预设",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "create.explanation": {
+      "description": "预设为自制角色。随机建角：三项属性取3d6最高两骰，生命与钱币各d6。",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "create.random": {
+      "description": "生成随机角色",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "create.name": {
+      "description": "小鼠姓名",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "create.swap": {
+      "description": "可交换任意两项属性一次",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "create.noswap": {
+      "description": "不交换",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "create.nextequipment": {
+      "description": "下一步：装备",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "create.starting": {
+      "description": "起始预设包含：针剑、火把、口粮、绳索。",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "create.background": {
+      "description": "随机角色请由主持按生命与钱币交叉查背景表，核定两件背景物品及低属性补偿。这里的装备是待审核草稿。",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "create.nextconfirm": {
+      "description": "下一步：确认",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "create.source": {
+      "description": "来源",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "create.randomsource": {
+      "description": "随机建角",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "create.presetsource": {
+      "description": "自制预设",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "create.swapped": {
+      "description": "属性交换",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "create.none": {
+      "description": "无",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "create.help": {
+      "description": "提交后等待主持核定数值、背景装备与角色归属。",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "create.submit": {
+      "description": "提交审核",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "create.back": {
+      "description": "上一步",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ready.wait": {
+      "description": "请先提交角色并等待主持审核",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ready.check": {
+      "description": "物品栏与角色已完成审核，请核对后准备。",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ready.started": {
+      "description": "主持已开场",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ready.notstarted": {
+      "description": "主持尚未开场",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "recap.empty": {
+      "description": "主持还没有发布本次探索回顾。",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "recap.wait": {
+      "description": "等待主持恢复探索",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "share.title": {
+      "description": "分享回执摘要",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "share.channel": {
+      "description": "发布到频道",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "share.help": {
+      "description": "由包侧读取原回执生成文字摘要。角色私密数据不会随摘要一同公开。",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "share.submit": {
+      "description": "发布摘要",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "spell.request": {
+      "description": "请求施法裁定",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "spell.text": {
+      "description": "施放 {name}，请主持核定力量、用量与效果",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {
+        "name": {
+          "type": "string"
+        }
+      },
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "transfer.text": {
+      "description": "请求转交槽位 {count} 的物品",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {
+        "count": {
+          "type": "number"
+        }
+      },
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "travel.text": {
+      "description": "移动到已知地点 {count}",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {
+        "count": {
+          "type": "number"
+        }
+      },
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "request.text": {
+      "description": "请主持裁决：{kind}",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {
+        "kind": {
+          "type": "string"
+        }
+      },
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "request.item": {
+      "description": "物品操作",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "rules.title": {
+      "description": "规则速查",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "rules.source": {
+      "description": "原版 SRD",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "chat.membersonly": {
+      "description": "Stumpsville interface: Visible to channel members",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "status.pendingcommand": {
+      "description": "有一条行动尚未确认结果。",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "status.savefirst": {
+      "description": "请先保存正在编辑的内容。",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "scene.mapactions": {
+      "description": "地图与行动",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "scene.maplabel": {
+      "description": "已知地点地图",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "scene.nocharacter": {
+      "description": "请先创建角色并等待审核。",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "scene.rulesmissing": {
+      "description": "场景规则尚未安装，请等待主持准备。",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "scene.executoroffline": {
+      "description": "主持执行器暂时离线，行动会排队等待结算。",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "result.encounterdue": {
+      "description": "需要检查遭遇",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "log.nochanges": {
+      "description": "本次行动没有改变角色数值。",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "log.scenechanges": {
+      "description": "场景变化",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "chat.nochannels": {
+      "description": "暂无会话，可点“发起私聊”选择联系人。",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "dialog.submitrequest": {
+      "description": "提交请求",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "dialog.travelhelp": {
+      "description": "公开、相邻且开启的通路可自动通行；主动申请时等待主持批准。",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "dialog.reviewtext": {
+      "description": "事件描述与裁决诉求",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "dialog.reviewlinked": {
+      "description": "关联你已完成的行动，复核不会自动重掷或重复扣减。",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "dialog.reviewhelp": {
+      "description": "描述当前事件，由主持判断并回复。",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "dialog.submitreview": {
+      "description": "提交申请",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "inventory.nooverflow": {
+      "description": "当前没有超载物品",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "inventory.usehelp": {
+      "description": "根据物品规则消耗用量或掷使用骰。",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "inventory.confirmuse": {
+      "description": "确认使用",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "inventory.movebutton": {
+      "description": "移动",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "inventory.receiverslot": {
+      "description": "接收槽位",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "action.recoverfirst": {
+      "description": "请先恢复待确认的原行动",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ai.title": {
+      "description": "Stumpsville AI consultation: title",
+      "tags": [
+        "ui",
+        "ai"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ai.close": {
+      "description": "Stumpsville AI consultation: close",
+      "tags": [
+        "ui",
+        "ai"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ai.refresh": {
+      "description": "Stumpsville AI consultation: refresh",
+      "tags": [
+        "ui",
+        "ai"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ai.disabled": {
+      "description": "Stumpsville AI consultation: disabled",
+      "tags": [
+        "ui",
+        "ai"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ai.scope": {
+      "description": "Stumpsville AI consultation: scope",
+      "tags": [
+        "ui",
+        "ai"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ai.sessions": {
+      "description": "Stumpsville AI consultation: sessions",
+      "tags": [
+        "ui",
+        "ai"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ai.new": {
+      "description": "Stumpsville AI consultation: new",
+      "tags": [
+        "ui",
+        "ai"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ai.name": {
+      "description": "Stumpsville AI consultation: name",
+      "tags": [
+        "ui",
+        "ai"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ai.send": {
+      "description": "Stumpsville AI consultation: send",
+      "tags": [
+        "ui",
+        "ai"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ai.text": {
+      "description": "Stumpsville AI consultation: text",
+      "tags": [
+        "ui",
+        "ai"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ai.archive": {
+      "description": "Stumpsville AI consultation: archive",
+      "tags": [
+        "ui",
+        "ai"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ai.archived": {
+      "description": "Stumpsville AI consultation: archived",
+      "tags": [
+        "ui",
+        "ai"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ai.queue": {
+      "description": "Stumpsville AI consultation: queue",
+      "tags": [
+        "ui",
+        "ai"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ai.dispatch": {
+      "description": "Stumpsville AI consultation: dispatch",
+      "tags": [
+        "ui",
+        "ai"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ai.cancel": {
+      "description": "Stumpsville AI consultation: cancel",
+      "tags": [
+        "ui",
+        "ai"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ai.settings": {
+      "description": "Stumpsville AI consultation: settings",
+      "tags": [
+        "ui",
+        "ai"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ai.enabled": {
+      "description": "Stumpsville AI consultation: enabled",
+      "tags": [
+        "ui",
+        "ai"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ai.public": {
+      "description": "Stumpsville AI consultation: public",
+      "tags": [
+        "ui",
+        "ai"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ai.kp": {
+      "description": "Stumpsville AI consultation: kp",
+      "tags": [
+        "ui",
+        "ai"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ai.private": {
+      "description": "Stumpsville AI consultation: private",
+      "tags": [
+        "ui",
+        "ai"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ai.save": {
+      "description": "Stumpsville AI consultation: save",
+      "tags": [
+        "ui",
+        "ai"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ai.saved": {
+      "description": "Stumpsville AI consultation: saved",
+      "tags": [
+        "ui",
+        "ai"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ai.submitted": {
+      "description": "Stumpsville AI consultation: submitted",
+      "tags": [
+        "ui",
+        "ai"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ai.more": {
+      "description": "Stumpsville AI consultation: more",
+      "tags": [
+        "ui",
+        "ai"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ai.empty": {
+      "description": "Stumpsville AI consultation: empty",
+      "tags": [
+        "ui",
+        "ai"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ai.loading": {
+      "description": "Stumpsville AI consultation: loading",
+      "tags": [
+        "ui",
+        "ai"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ai.offline": {
+      "description": "Stumpsville AI consultation: offline",
+      "tags": [
+        "ui",
+        "ai"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ai.unconfigured": {
+      "description": "Stumpsville AI consultation: unconfigured",
+      "tags": [
+        "ui",
+        "ai"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ai.p2p": {
+      "description": "Stumpsville AI consultation: p2p",
+      "tags": [
+        "ui",
+        "ai"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ai.running": {
+      "description": "Stumpsville AI consultation: running",
+      "tags": [
+        "ui",
+        "ai"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ai.stopped": {
+      "description": "Stumpsville AI consultation: stopped",
+      "tags": [
+        "ui",
+        "ai"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ai.p2perror": {
+      "description": "Stumpsville AI consultation: p2perror",
+      "tags": [
+        "ui",
+        "ai"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ai.pending": {
+      "description": "Stumpsville AI consultation: pending",
+      "tags": [
+        "ui",
+        "ai"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ai.receipt": {
+      "description": "Stumpsville AI consultation: receipt",
+      "tags": [
+        "ui",
+        "ai"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ai.consult": {
+      "description": "Stumpsville AI consultation: consult",
+      "tags": [
+        "ui",
+        "ai"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ai.received": {
+      "description": "Stumpsville AI consultation: received",
+      "tags": [
+        "ui",
+        "ai"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ai.queued": {
+      "description": "Stumpsville AI consultation: queued",
+      "tags": [
+        "ui",
+        "ai"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ai.generating": {
+      "description": "Stumpsville AI consultation: generating",
+      "tags": [
+        "ui",
+        "ai"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ai.validating": {
+      "description": "Stumpsville AI consultation: validating",
+      "tags": [
+        "ui",
+        "ai"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ai.review_ready": {
+      "description": "Stumpsville AI consultation: review_ready",
+      "tags": [
+        "ui",
+        "ai"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ai.blocked": {
+      "description": "Stumpsville AI consultation: blocked",
+      "tags": [
+        "ui",
+        "ai"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ai.needs_input": {
+      "description": "Stumpsville AI consultation: needs_input",
+      "tags": [
+        "ui",
+        "ai"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ai.failed": {
+      "description": "Stumpsville AI consultation: failed",
+      "tags": [
+        "ui",
+        "ai"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ai.cancelled": {
+      "description": "Stumpsville AI consultation: cancelled",
+      "tags": [
+        "ui",
+        "ai"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ai.interrupted": {
+      "description": "Stumpsville AI consultation: interrupted",
+      "tags": [
+        "ui",
+        "ai"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ai.stale": {
+      "description": "Stumpsville AI consultation: stale",
+      "tags": [
+        "ui",
+        "ai"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ai.approved": {
+      "description": "Stumpsville AI consultation: approved",
+      "tags": [
+        "ui",
+        "ai"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ai.published": {
+      "description": "Stumpsville AI consultation: published",
+      "tags": [
+        "ui",
+        "ai"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ai.profile": {
+      "description": "Stumpsville AI consultation: profile",
+      "tags": [
+        "ui",
+        "ai"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "map.occupants": {
+      "description": "{count} characters",
+      "tags": [
+        "ui",
+        "map"
+      ],
+      "format": "icu-mf1",
+      "params": {
+        "count": {
+          "type": "number"
+        }
+      },
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "map.empty": {
+      "description": "No characters",
+      "tags": [
+        "ui",
+        "map"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "map.pc": {
+      "description": "Player character",
+      "tags": [
+        "ui",
+        "map"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "map.npc": {
+      "description": "NPC",
+      "tags": [
+        "ui",
+        "map"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "map.manage": {
+      "description": "Manage location",
+      "tags": [
+        "ui",
+        "map"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "map.legend": {
+      "description": "Select a room for its player characters, including the KP’s own character. NPCs and enemies are excluded.",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ai.setupProvider": {
+      "description": "Module loaded. No provider profile is enabled. Open start-ai-manager.cmd, configure credentials and enable a profile, then reopen this panel.",
+      "tags": [
+        "ui",
+        "ai"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ai.enableHint": {
+      "description": "Module loaded. Enable AI calls and save to enable this room. The model is called only when the KP dispatches a request.",
+      "tags": [
+        "ui",
+        "ai"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ai.ready": {
+      "description": "AI calls are enabled for this room; each request still requires KP dispatch.",
+      "tags": [
+        "ui",
+        "ai"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ai.web": {
+      "description": "Web players can submit personal consultations; the local KP dispatches requests and reviews responses.",
+      "tags": [
+        "ui",
+        "ai"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "nav.room": {
+      "description": "Room management",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "nav.rulings": {
+      "description": "Adjudication",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "nav.map": {
+      "description": "Map",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "room.share": {
+      "description": "Web sharing and connection",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "map.discovered": {
+      "description": "Current location · discovered characters",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "map.self": {
+      "description": "You",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "map.revealTitle": {
+      "description": "Reveal or hide characters",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "map.revealHint": {
+      "description": "Choose recipients. Players see only the names of discovered characters at their current location, without stats.",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "map.reveal": {
+      "description": "Set audience",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "map.revealState": {
+      "description": "Discovery state",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "map.show": {
+      "description": "Discovered",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "map.hide": {
+      "description": "Hidden",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ruling.noMessages": {
+      "description": "No unread channel messages",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ruling.messages": {
+      "description": "Message queue",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ruling.queue": {
+      "description": "Ruling queue",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ruling.history": {
+      "description": "Recent rulings and actions",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ruling.pending": {
+      "description": "{count} pending rulings",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {
+        "count": {
+          "type": "number"
+        }
+      },
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ai.queueSettings": {
+      "description": "Requests and settings",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ai.nativeScope": {
+      "description": "Consultation with semantic references. KP messages dispatch to the model; player messages submit requests. Configuration publishing is unavailable.",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "web.setup": {
+      "description": "Room setup string (host only)",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "web.copySetup": {
+      "description": "Copy setup string",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "web.setupHint": {
+      "description": "Paste into the platform creation page. Valid for ten minutes and one use; keep it private.",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "web.expired": {
+      "description": "Setup string expired. Restart web sharing to obtain a new one.",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "web.claimed": {
+      "description": "Room claimed. Use the platform management page.",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "web.create": {
+      "description": "Create room",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "web.manage": {
+      "description": "Manage rooms",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "web.join": {
+      "description": "Join room",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "web.copied": {
+      "description": "Setup string copied",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "web.selectCopy": {
+      "description": "Copy the selected setup string",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "nav.expandTop": {
+      "description": "Expand top menu",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "nav.collapseTop": {
+      "description": "Collapse top menu",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ai.noRoomData": {
+      "description": "Chat is enabled, but no room data can be sent; AI searches will return empty results.",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ai.scopeHelp": {
+      "description": "NPCs require KP data, configurations require public data, and scene chat or package events require private data. Enable only the scopes you agree to send to this provider. Search matches display names, not NPC types; empty results do not prove absence.",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ai.reloadGuide": {
+      "description": "AI snapshot still contains an older author query guide; room restart is required",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    }
+  }
+}

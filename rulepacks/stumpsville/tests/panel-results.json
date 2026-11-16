@@ -1,0 +1,15 @@
+{
+  "checkedAt": "2026-11-15T22:03:16.384279+08:00",
+  "passed": 6,
+  "checks": [
+    "native panel validates input and prepares an isolated room with AI via public CLI; legacy argument aliases work",
+    "minimized window keeps room reachable; restore, address copy, loopback diagnostics and management controls work",
+    "closing panel releases adapter/backend ports and descendants while keeping the paired save",
+    "same save restarts in web mode; public join info excludes claims; close withdraws directory room and stops web/host processes",
+    "abrupt owner exit kills the venv launcher and backend subtree; the same archive reopens without STORE_LOCKED",
+    "all six double-click entries open the Python panel and close without initializing room data"
+  ],
+  "provider": "loopback only; no model calls",
+  "cloudTested": false,
+  "data": "isolated test rooms"
+}

@@ -1,4 +1,4 @@
-"""Real-host acceptance for automatic rulings, manual requests and legacy upgrade."""
+"""Real-host acceptance for automatic rulings and current-only storage."""
 import copy
 from datetime import datetime
 import json
@@ -10,6 +10,19 @@ def main():
     checks = []
     with running('automation') as (runtime, password):
         kp, p1, p2 = provision(runtime, password)
+        from package import Package, PackageError
+        invalid=runtime.data/'invalid-package.json'
+        for mutation in ('legacy','missing'):
+            value=copy.deepcopy(runtime.package.state)
+            if mutation=='legacy':value['format']=1
+            else:value.pop('scopedChat')
+            invalid.write_text(json.dumps(value,ensure_ascii=False),encoding='utf-8')
+            before=invalid.read_bytes()
+            try:Package(invalid)
+            except PackageError:pass
+            else:raise AssertionError('unsupported or incomplete package accepted')
+            assert invalid.read_bytes()==before
+        checks.append('old and incomplete package formats are rejected without automatic writes')
         assert p1.state()['automation'] == {'enabled': True, 'ready': True}
         assert all(v==0 for k,v in p1.state()['session']['numbers'].items() if k.startswith('door'))
         kp.action('door', {'edge':'3-4','status':'closed'})
@@ -97,19 +110,12 @@ def main():
         assert p1.command('action.invoke', {'actionId':'sv.travel.auto','input':{'actor':actor,'destination':destination3}},True).get('status')=='rejected'
         checks.append('pause and readiness enforced; settings and original receipts survive host/package restart')
 
-        # An older persisted rule revision must be upgraded without recreating actors.
-        legacy = kp.request('/package/bundle')
-        for name in ('automation.lua','auto-travel.lua','adjudicate.lua','check-core.lua','inventory-core.lua'): legacy['sources'].pop(name)
-        legacy['sources']['check.lua']=(PACK/'rules/check-core.lua').read_text(encoding='utf-8').replace("'sv.check.core'", "'sv.check'").replace('public=false, ', '')
-        legacy['sources']['inventory.lua']=(PACK/'rules/inventory-core.lua').read_text(encoding='utf-8').replace("'sv.inventory.core'", "'sv.inventory'").replace('public=false, ', '')
-        revision = kp.action('rules.stage', {'bundle':legacy})['revision']
-        kp.action('rules.activate', {'revision':revision})
-        assert not p1.state()['automation']['ready']
-        numbers = copy.deepcopy(p1.state()['character']['numbers'])
-        kp.action('rules.install')
-        assert p1.state()['automation']=={'enabled':True,'ready':True}
-        assert p1.state()['character']['numbers']==numbers
-        checks.append('old rule revision upgrades in place without changing character resources')
+        # Removed conversion operations cannot change a current room.
+        before = copy.deepcopy(p1.state()['character']['numbers'])
+        for op in ('rules.install', 'scene.install'):
+            assert kp.action(op,allow_error=True)['code']=='未知行动'
+        assert p1.state()['character']['numbers']==before
+        checks.append('removed upgrade operations are rejected without changing character resources')
     result={'passed':True,'checkedAt':datetime.now().astimezone().isoformat(),'checks':checks}
     (PACK/'tests/automation-results.json').write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
     print(json.dumps(result,ensure_ascii=False))

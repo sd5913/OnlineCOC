@@ -1,6 +1,6 @@
 import copy, math
 from .errors import require, DomainError
-from .model import visible,writable,finite,uid,validate
+from .model import visible,writable,finite,uid,validate_execution_state,execution_snapshot
 
 class Execution:
     def __init__(self,state,account,mode,random):
@@ -73,5 +73,5 @@ class Execution:
         return target_id
     def finish(self):
         require(not self.failed,"EXECUTION_REJECTED")
-        require(len(self.effects)<=256,"LIMIT_EXCEEDED");validate(self.state)
+        require(len(self.effects)<=256,"LIMIT_EXCEEDED");validate_execution_state(execution_snapshot(self.state))
         return {"entities":self.state["entities"],"relations":self.state["relations"],"reads":self.reads,"effects":self.effects}

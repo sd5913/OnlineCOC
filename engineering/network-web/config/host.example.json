@@ -1,0 +1,12 @@
+{
+  "directory": "https://YOUR_SERVER_IP",
+  "caFile": "../../network-p2p/local/test-ca.pem",
+  "publisherToken": "COPY_EXISTING_PUBLISHER_TOKEN_LOCALLY",
+  "statePath": "../local/my-room",
+  "upstream": "http://127.0.0.1:8765",
+  "webPackagePath": "../local/exports/web-EXPORTED_DIGEST",
+  "settings": {"title":"我的跑团房间","maxPlayers":8},
+  "webPolicy": {"approvalRequired":false},
+  "fileBytesPerSecond": 131072,
+  "relayOnly": false
+}

@@ -8,11 +8,12 @@ import socket
 import subprocess
 import time
 import urllib.request
+import sys
 
 PACK = Path(__file__).resolve().parents[1]
 
 
-def main():
+def main(integrated=False, web=False, ai=False):
     assert os.name == 'nt', 'This acceptance test targets Windows PowerShell.'
     script = PACK / 'start.ps1'
     assert script.read_bytes().startswith(b'\xef\xbb\xbf'), 'Chinese PowerShell script must retain its UTF-8 BOM.'
@@ -33,7 +34,12 @@ def main():
     log_path = data.parent / 'launcher.log'
     origin = f'http://127.0.0.1:{port}'
     opener = urllib.request.build_opener(urllib.request.ProxyHandler({}))
-    command = f'"{os.environ.get("COMSPEC", "C:/Windows/System32/cmd.exe")}" /d /s /c ""{PACK / "start.cmd"}" -Port {port} -DataDir "{data}" -NoBrowser"'
+    entry = 'start.ps1'
+    command = ['powershell.exe', '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', str(script),
+               '-Port', str(port), '-DataDir', str(data), '-NoBrowser']
+    if web: command += ['-Web', '-AI']
+    elif integrated: command += ['-P2P', '-AI']
+    elif ai: command += ['-AI']
     with log_path.open('wb') as log:
         process = subprocess.Popen(command, cwd=PACK.parents[1], env=env, stdout=log, stderr=log,
                                    stdin=subprocess.DEVNULL, creationflags=subprocess.CREATE_NO_WINDOW)
@@ -71,13 +77,14 @@ def main():
         raise AssertionError('Owned launcher server still running after cleanup')
     result = {'passed': True, 'checkedAt': datetime.now().astimezone().isoformat(), 'powershell': parsed['version'],
               'checks': ['UTF-8 BOM retained and Windows PowerShell parses without errors',
-                         'actual start.cmd launches the HTTP entry page',
-                         'port, no-browser, and Chinese/space data path pass through both launchers',
+                         'actual '+entry+' launches the HTTP entry page',
+                         'port, no-browser, and Chinese/space data path pass through the console launcher',
                          'isolated empty archive is served without initializing the real runtime',
                          'owned launcher process tree and listening port are cleaned up']}
-    (PACK / 'tests/launcher-results.json').write_text(json.dumps(result, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+    target = 'tests/output/web-launcher-results.json' if web else 'tests/output/integrated-launcher-results.json' if integrated else 'tests/output/ai-launcher-results.json' if ai else 'tests/launcher-results.json'
+    (PACK / target).write_text(json.dumps(result, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     print(json.dumps(result, ensure_ascii=False))
 
 
 if __name__ == '__main__':
-    main()
+    main('--integrated' in sys.argv, '--web' in sys.argv, '--ai' in sys.argv)

@@ -1,0 +1,8 @@
+{
+  "passed": false,
+  "nativeDialogOpened": true,
+  "unicodeDirectoryNavigated": true,
+  "directorySelectionConfirmed": false,
+  "scriptExecuted": false,
+  "reason": "原生对话框 AX 子控件不可操作；截图超时；用户暂时无法接管。等待选择结果 300000ms 超时。"
+}

@@ -1,12 +1,13 @@
 {
   "passed": true,
-  "checkedAt": "2026-11-10T19:38:06.378414+08:00",
+  "checkedAt": "2026-11-15T16:33:52.273265+08:00",
   "checks": [
+    "old and incomplete package formats are rejected without automatic writes",
     "default automatic travel; idempotent result; host rejects foreign, hidden, nonadjacent and closed destinations",
     "explicit KP request overrides automatic travel until approved",
     "manual checks roll once after approval; own event review does not replay effects; narrative actions remain pending",
     "KP toggle gates public host actions; players cannot bypass via raw API or internal rules; manual inventory executes once",
     "pause and readiness enforced; settings and original receipts survive host/package restart",
-    "old rule revision upgrades in place without changing character resources"
+    "removed upgrade operations are rejected without changing character resources"
   ]
 }

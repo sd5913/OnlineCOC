@@ -8,6 +8,7 @@ from onlinecoc_data import StoreError,canonical
 from .errors import DomainError,require
 from .contracts import check
 from .assets import Assets
+from .version import ENGINE_VERSION, ROOM_SCHEMA_VERSION
 
 ROOT=Path(__file__).resolve().parents[3]
 
@@ -25,7 +26,7 @@ def runtime_info():
     return result
 
 
-def create_app(host,port=8765,host_control=None):
+def create_app(host,port=8765,host_control=None,*,ai_runtime=None):
     origins={f'http://127.0.0.1:{port}',f'http://localhost:{port}'}
     allowed_hosts={f'127.0.0.1:{port}',f'localhost:{port}'}
     assets=Assets(host);inflight=0
@@ -45,9 +46,11 @@ def create_app(host,port=8765,host_control=None):
                 host_control.close()
                 logging.warning('Local host account control unavailable; room service continues')
         task=asyncio.create_task(ticker())
+        if ai_runtime:await ai_runtime.start()
         try:
             yield
         finally:
+            if ai_runtime:await ai_runtime.close()
             if host_control: host_control.close()
             task.cancel()
         try:await task
@@ -67,7 +70,7 @@ def create_app(host,port=8765,host_control=None):
         if request.headers.get('host') not in allowed_hosts:return JSONResponse({'code':'HOST_REJECTED'},status_code=403)
         if request.method in ('POST','PUT','DELETE') and not request.url.path.startswith('/api/v1/host-control/') and request.headers.get('origin') not in origins:return JSONResponse({'code':'ORIGIN_REJECTED'},status_code=403)
         if request.url.path.startswith('/api/'):
-            limit=10*1024*1024 if request.url.path=='/api/v1/assets' else 64*1024
+            limit=10*1024*1024 if request.url.path=='/api/v1/assets' else 8*1024*1024 if request.url.path=='/api/v1/ai/drafts' else 64*1024
             # Bound streamed bodies, including requests without Content-Length.
             raw=bytearray()
             async for chunk in request.stream():
@@ -77,7 +80,9 @@ def create_app(host,port=8765,host_control=None):
         response=await call_next(request)
         response.headers['Cache-Control']='no-store'
         response.headers['X-Content-Type-Options']='nosniff'
-        response.headers['Content-Security-Policy']="default-src 'self'; connect-src 'self' ws://127.0.0.1:* ws://localhost:*; style-src 'self'; script-src 'self'; frame-ancestors 'none'"
+        # Only the three room AI entry pages support same-origin framing.
+        frame_policy = "'self'" if ai_runtime and request.url.path in ('/ai-ui/page.html', '/ai-ui/conversation.html', '/ai-ui/collapsible.html', '/ai-ui/sessions.html') else "'none'"
+        response.headers['Content-Security-Policy']="default-src 'self'; connect-src 'self' ws://127.0.0.1:* ws://localhost:*; style-src 'self'; script-src 'self'; frame-ancestors " + frame_policy
         return response
     def auth(request,write=False):
         token=request.cookies.get('onlinecoc','');session=host.auth(token)
@@ -111,7 +116,7 @@ def create_app(host,port=8765,host_control=None):
             return host.identity.store.snapshot()[1].get('hostAdminReceipts',{}).get(request_id, {'requestId':request_id,'status':'unknown'})
 
     @app.get('/api/v1/capabilities')
-    def capabilities():return {'protocolVersion':1,'transports':['http','websocket'],'resumeWindow':0,'storage':'files','maxCommandBytes':65536,'chat':{'version':1,'maxTextLength':4000,'maxHistoryPage':100,'maxChannels':128,'maxMessages':10000,'privateAssetAttachments':False}}
+    def capabilities():return {'engineVersion':ENGINE_VERSION,'roomSchemaVersion':ROOM_SCHEMA_VERSION,'protocolVersion':1,'transports':['http','websocket'],'resumeWindow':0,'storage':'files','maxCommandBytes':65536,'ai':{'version':1,'available':ai_runtime is not None,'enabled':bool(ai_runtime and host.state()['aiControl']['settings']['enabled']),'maxCommandBytes':65536,'maxDraftBytes':8*1024*1024,'maxPage':100},'chat':{'version':1,'maxTextLength':4000,'maxHistoryPage':100,'maxChannels':128,'maxMessages':10000,'privateAssetAttachments':False}}
     @app.post('/api/v1/login')
     async def login(request:Request):
         data=await read_object(request);check('login',data)
@@ -148,7 +153,7 @@ def create_app(host,port=8765,host_control=None):
     @app.get('/api/v1/contracts')
     def contracts():
         from .contracts import MODELS,OPERATIONS
-        return {'protocolVersion':1,'models':MODELS,'operations':OPERATIONS}
+        return {'protocolVersion':1,'models':MODELS,'operations':OPERATIONS,'ai':json.loads((ROOT/'contracts/ai.json').read_text(encoding='utf-8')),'aiOperations':json.loads((ROOT/'contracts/ai-operations.json').read_text(encoding='utf-8'))}
     @app.get('/api/v1/catalog')
     def catalog(request:Request):return host.catalog(auth(request))
     @app.post('/api/v1/commands')
@@ -246,6 +251,10 @@ def create_app(host,port=8765,host_control=None):
         except (WebSocketDisconnect,RuntimeError,asyncio.TimeoutError):
             try:await ws.close(code=1013)
             except Exception:pass
+    if ai_runtime:
+        from .ai_api import install
+        install(app,ai_runtime,auth)
+        app.mount('/ai-ui',StaticFiles(directory=ROOT/'ai/web/components'),name='ai-components')
     app.mount('/sdk',StaticFiles(directory=ROOT/'client-sdk'),name='sdk')
     app.mount('/',StaticFiles(directory=ROOT/'test-console',html=True),name='console')
     return app

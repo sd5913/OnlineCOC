@@ -1,0 +1,20 @@
+{
+  "stage": "AI-0",
+  "group": "T01",
+  "completedAt": "2026-11-12T16:36:11.758526+08:00",
+  "python": "3.14.2",
+  "platform": "Windows-10-10.0.19045-SP0",
+  "tests": 64,
+  "failed": 0,
+  "skipped": 0,
+  "passed": 64,
+  "status": "passed",
+  "junit": "engineering/acceptance/ai-runtime/ai-0.xml",
+  "sourceDigests": {
+    "engineering/ai/src/onlinecoc_ai/__init__.py": "45a5eef692b3ff17f5451ed03348f091061741b46e352d2f560a77735f28b1c8",
+    "engineering/ai/src/onlinecoc_ai/contracts.py": "1c280b1aca00312bbdaec3653d391995e9131ade3e087eaf65edc920d4253075",
+    "engineering/ai/src/onlinecoc_ai/errors.py": "d082dda537453626acb6f3b8424aa4d73f85c00da42d762762fb23d2e7a384ce",
+    "engineering/ai/src/onlinecoc_ai/policy.py": "71fdc34ae18ad920bf197dfe57a2e3c7cbd3449cc33001da4a63fc90b02cea83",
+    "engineering/contracts/ai.json": "e1eed27ca72ad3053a4593d0bc182437d52bff9d27bf454c44a129b57abe5441"
+  }
+}

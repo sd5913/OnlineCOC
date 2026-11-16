@@ -2,7 +2,7 @@ import copy, hashlib, json, secrets, threading, time
 from pathlib import Path
 from jsonschema import Draft202012Validator
 from onlinecoc_data import FileDataStore, StoreError, canonical
-from .model import demo_state, validate, member, visible, writable, uid, entity
+from .model import demo_state, validate, member, visible, writable, uid, entity, execution_snapshot
 from .errors import DomainError, require
 from .identity import Identity
 from .registry import stage
@@ -14,6 +14,7 @@ class Host:
     def __init__(self,directory,*,bootstrap=None,fault=None,clock=time.time,store_factory=FileDataStore):
         self.path=Path(directory);self.path.mkdir(parents=True,exist_ok=True)
         self.lock=threading.RLock();self.capacity=threading.BoundedSemaphore(128)
+        self.ai_prepared_resolver=None
         self.metrics={'commands':[],'commits':[],'workers':[]};self.clock=clock;self.fault=fault;self.epoch=uid();self.views={}
         self.identity=Identity(self.path/'identity',store_factory)
         try:self.store=store_factory(self.path/'rooms/demo')
@@ -29,10 +30,7 @@ class Host:
                 artifact=stage({p.name:p.read_text(encoding='utf-8') for p in folder.glob('*.lua')},{p.name:json.loads(p.read_text(encoding='utf-8')) for p in folder.glob('*.json')})
                 state['artifacts'][artifact['revision']]=artifact;state['activeRuleset']=artifact['revision']
                 validate(state);self.store.commit(0,state)
-            state=self.state()
-            if "chat" not in state:
-                validate(state)
-                state["chat"]=chat.initial_state();self.commit(state)
+            validate(self.state())
             self.recover()
         except BaseException:
             self.close();raise
@@ -80,7 +78,7 @@ class Host:
             result.pop('result',None)
         return result
     def snapshot_for_execution(self,s):
-        return {k:copy.deepcopy(s[k]) for k in ('schemaVersion','roomId','entities','relations','members','configurations','progress','collectionRevision')}
+        return execution_snapshot(s)
     def dispatch(self,token,csrf,message):
         require(self.capacity.acquire(blocking=False),'LIMIT_EXCEEDED')
         start=time.perf_counter()
@@ -88,14 +86,27 @@ class Host:
             with self.lock:
                 wait=(time.perf_counter()-start)*1000;session=self.identity.authenticate(token)
                 require(session['csrf']==csrf,'PERMISSION_DENIED')
-                result=self.command(session['accountId'],message)
-                self.metrics['commands'].append({'queueMs':wait,'totalMs':(time.perf_counter()-start)*1000})
-                self.metrics['commands']=self.metrics['commands'][-1000:]
-                return result
+            result=self.command(session['accountId'],message)
+            self.metrics['commands'].append({'queueMs':wait,'totalMs':(time.perf_counter()-start)*1000})
+            self.metrics['commands']=self.metrics['commands'][-1000:]
+            return result
         finally:self.capacity.release()
     def command(self,account,message):
         require(self.capacity.acquire(blocking=False),'LIMIT_EXCEEDED')
         try:
+            prepared=None
+            # Resolve only a server-registered proposal ID, outside the room lock.
+            # Duplicate receipts remain available without the independent AI store.
+            with self.lock:
+                check('command',message);pre=self.state();member(pre,account)
+                payload=message['payload'];prior=pre['commands'].get(account+':'+payload['commandId'])
+                needs_prepare=not prior and payload['op']=='ai.proposal.approve'
+                if needs_prepare:
+                    require(member(pre,account)['role']=='kp','PERMISSION_DENIED')
+                    validate_operation(payload['op'],payload['args'])
+                    resolver=self.ai_prepared_resolver
+                    require(resolver is not None,'AI_SERVICE_UNAVAILABLE')
+            if needs_prepare:prepared=resolver(account,payload['args']['proposalId'],payload['args']['proposalRevision'])
             with self.lock:
                 check('command',message);s=self.state();m=member(s,account)
                 require(message['roomId']==s['roomId'],'NOT_VISIBLE')
@@ -133,14 +144,24 @@ class Host:
                 else:
                     s['commands'][key]=rec
                     try:
-                        result=self.manage(s,account,op,args)
+                        result=self.manage(s,account,op,args,prepared=prepared,command_id=p['commandId'])
                         validate(s);rec['status']='committed';rec['receipt']={'status':'committed','commandId':rec['id'],'result':result}
                         s['audit'].append({'commandId':rec['id'],'account':account,'op':op,'at':self.clock()})
                         if op.startswith('chat.'):self.hit('before_chat_commit')
+                        if op in ('ai.proposal.approve','publication.apply'):self.hit('before_'+op+'_commit')
                         self.commit(s)
                         if op.startswith('chat.'):self.hit('after_chat_commit')
+                        if op in ('ai.proposal.approve','publication.apply'):self.hit('after_'+op+'_commit')
                     except DomainError as e:
+                        committed=self.state()['commands'].get(key)
+                        if committed and committed.get('status')=='committed' and committed['signature']==signature:
+                            return self.receipt(account,p['commandId'])
                         s=self.state();rec['status']='rejected';rec['receipt']={'status':'rejected','commandId':rec['id'],'code':e.code};s['commands'][key]=rec;self.commit(s)
+                    except Exception:
+                        committed=self.state()['commands'].get(key)
+                        if committed and committed.get('status')=='committed' and committed['signature']==signature:
+                            return self.receipt(account,p['commandId'])
+                        raise
                     self.tick()
                 return self.receipt(account,p['commandId'])
         finally:self.capacity.release()
@@ -225,7 +246,7 @@ class Host:
             try:Draft202012Validator(m['schema']).validate(input)
             except Exception:raise DomainError('INPUT_INVALID')
             return execute(artifact['sources'],{'kind':'run','rule':rule,'input':input,'mode':'calculation','state':self.snapshot_for_execution(s),'account':account,'data':artifact['data']})['result']
-    def manage(self,s,account,op,args):
+    def manage(self,s,account,op,args,*,prepared=None,command_id=None):
         m=member(s,account)
         if op.startswith('chat.'):return chat.apply(s,account,op,args,self.clock())
         if op=='flow.respond':
@@ -240,6 +261,15 @@ class Host:
             require(set(args)=={'id','name'} and isinstance(args['name'],str))
             e=s['entities'].get(args['id']);require(e and writable(s,account,e),'NOT_VISIBLE');e['name']=args['name'];e['revision']+=1;return e['instanceId']
         require(m['role']=='kp','PERMISSION_DENIED')
+        if op=='ai.proposal.approve':
+            from .publication import approve
+            return approve(self,s,account,args,prepared)
+        if op=='ai.proposal.revoke':
+            from .publication import revoke
+            return revoke(s,account,args)
+        if op=='publication.apply':
+            from .publication import apply
+            return apply(self,s,account,args,command_id)
         if op=='room.status':
             require(set(args)=={'status'} and args['status'] in ('active','paused','archived'));s['status']=args['status'];return True
         if op=='member.update':
@@ -322,4 +352,32 @@ class Host:
             view=self.project(account);require(collection in ('entities','relations','progress','waits','flows'),'PERMISSION_DENIED')
             equals=equals or {};require(isinstance(equals,dict) and len(equals)<=8)
             return [x for x in view[collection].values() if all(x.get(k)==v for k,v in equals.items())][:1000]
+    def register_ai(self,resolver,pack_binding):
+        """Local composition port; never exposed as an HTTP operation."""
+        from .ai_contracts import validate_ai,validator_digest
+        validate_ai('PackContract',pack_binding['contract'])
+        require(pack_binding['validatorSetDigest']==validator_digest(),'VALIDATOR_STALE')
+        with self.lock:
+            s=self.state()
+            if s['aiControl']['packBinding']!=pack_binding:
+                s['aiControl']['packBinding']=copy.deepcopy(pack_binding);self.commit(s)
+            self.ai_prepared_resolver=resolver
+    def ai_proposal_head(self,account,proposal_id,revision):
+        with self.lock:
+            self.kp(account);s=self.state();control=s['aiControl']
+            require(revision>=control['proposalHeads'].get(proposal_id,0),'PROPOSAL_STALE')
+            control['proposalHeads'][proposal_id]=revision
+            for approval in control['approvals'].values():
+                if approval['proposalId']==proposal_id and approval['proposalRevision']!=revision and approval['status']=='approved':approval['status']='revoked'
+            self.commit(s)
+    def validate_ai_sources(self,state,account,context):
+        from .ai_sources import check_sources
+        check_sources(self,state,account,context['sourceRefs'],context['memoryRefs'])
+        from .data_queries import recheck
+        recheck(self,state,account,context)
+        if 'externalPolicyDigest' in context['facts']:
+            from .ai_contracts import digest
+            require(context['facts']['externalPolicyDigest']==digest(state['aiControl']['settings']['externalSources']),'EXTERNAL_SCOPE_CHANGED')
+        if 'profileId' in context['facts']:
+            require(context['facts']['profileId']==state['aiControl']['settings']['profileId'],'PROFILE_CHANGED')
     def close(self):self.store.close();self.identity.close()

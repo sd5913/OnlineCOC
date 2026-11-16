@@ -1,0 +1,39 @@
+{
+  "passed": true,
+  "checkedAt": "2026-11-14T00:06:27.452283+08:00",
+  "presets": [
+    "cage-gate",
+    "cage-listen",
+    "cave-cheese",
+    "cave-sleeper",
+    "courtyard-ladders",
+    "courtyard-pool",
+    "factory-equipment",
+    "factory-exits",
+    "gate-handle",
+    "gate-open",
+    "hall-negotiate",
+    "hall-observe",
+    "house-painting",
+    "house-pots",
+    "tunnel-cheese",
+    "tunnel-ground",
+    "web-call",
+    "web-inspect"
+  ],
+  "checks": [
+    "public HTTPS directory and two real browser players; both connections verified as TURN relay",
+    "platform code admission and independent game pages; six-character passwords; two game identities; KP remote login rejected; opaque sandbox",
+    "two PL characters/readiness; KP browser resumes queued action; all 18 presets over actual WebRTC with dice/narrative/resources/clues and same-ID idempotence",
+    "remote management/AI/setup and query injection denied; game-side permission guards remain active; scene and personal clue isolation",
+    "real UI lost-response recovery persists original command ID; stale rules stop replay; recovery does not reroll; private and party chats cross browsers",
+    "on-demand English and portraits; declared storage only; platform/room/game scoping; reconnect restores preferences; one viewport",
+    "blacklist tears down old peer/frame without affecting another player; unban; no browser JavaScript errors",
+    "stop-file graceful web shutdown preserves borrowed host and game archive"
+  ],
+  "cloud": true,
+  "forcedTurn": true,
+  "browserTestCAException": true,
+  "samePhysicalComputer": true,
+  "temporaryRoomClosed": true
+}

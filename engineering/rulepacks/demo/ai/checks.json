@@ -1,0 +1,23 @@
+[
+  {
+    "checkId": "skill-default-range",
+    "sourceRef": "demo-rules#initial-value",
+    "selector": {
+      "collection": "configurations",
+      "ids": [
+        "demo.skill"
+      ]
+    },
+    "checkerId": "core.numeric-range@1",
+    "parameters": {
+      "pointer": "/defaults/value",
+      "minimum": 0,
+      "maximum": 30
+    },
+    "required": true,
+    "caseRefs": [
+      "ai/fixtures/valid-value.json",
+      "ai/fixtures/invalid-value.json"
+    ]
+  }
+]
