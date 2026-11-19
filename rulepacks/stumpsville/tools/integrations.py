@@ -160,10 +160,11 @@ def ai_snapshot(data):
                 raise ValueError('Invalid author manifest path')
             files[folder + '/' + name] = (PACK / folder / name).read_bytes()
     files['ai/guide.md'] = (PACK / 'ai/guide.md').read_bytes()
+    files['ai/player-guide.md'] = (PACK / 'ai/player-guide.md').read_bytes()
     contract = {
         'schemaVersion': 1, 'packId': manifest['id'], 'packVersion': manifest['version'],
         'hostProtocolRange': {'min': 1, 'max': 1},
-        'sources': [{'id': 'stumpsville-guide', 'path': 'ai/guide.md', 'visibility': 'public'}],
+        'sources': [{'id': 'stumpsville-guide', 'path': 'ai/guide.md', 'visibility': 'kp'}, {'id':'stumpsville-player-guide','path':'ai/player-guide.md','visibility':'public'}],
         'schemas': {f'config/{name}': f'ai/{name}.schema.json' for name in manifest['data']},
         'checks': 'ai/checks.json', 'scenarios': [], 'metrics': 'ai/metrics.json',
         'reviewChecklist': 'ai/guide.md', 'extensionPoints': [], 'requiredChecks': [], 'requiredMetrics': [],
@@ -173,6 +174,8 @@ def ai_snapshot(data):
     strict = {k: manifest[k] for k in ('id', 'version', 'protocolVersion', 'configurations', 'rules', 'data')}
     strict['ai'] = 'ai/contract.json'
     values = {'manifest.json': strict, 'ai/contract.json': contract, 'ai/checks.json': [], 'ai/metrics.json': []}
+    from ai_extensions import materials
+    values.update(materials(contract,json.loads(files[manifest['configurations']])))
     for name in manifest['data']:
         values[f'ai/{name}.schema.json'] = {'const': json.loads(files['config/' + name])}
     files.update({name: (json.dumps(value, ensure_ascii=False, indent=2)+'\n').encode('utf-8') for name, value in values.items()})
@@ -208,11 +211,13 @@ class Modules:
         self.started = False
 
     def host_args(self):
+        knowledge=['--knowledge-provider',str(PACK/'tools/knowledge_provider.py'),
+                   '--knowledge-data-path',str(self.runtime.data/'package.json')]
         if not self.ai_config:
-            return []
+            return knowledge
         config = Path(self.ai_config).resolve(strict=True)
         self.ai_pack = ai_snapshot(self.runtime.data)
-        return ['--ai-config', str(config), '--ai-pack', str(self.ai_pack),
+        return knowledge + ['--ai-config', str(config), '--ai-pack', str(self.ai_pack),
                 '--ai-data-adapter', str(PACK / 'tools/ai_data.py'), '--ai-data-path', str(self.runtime.data / 'package.json')]
 
     def start(self):
@@ -261,7 +266,7 @@ class Modules:
 
     def status(self):
         try:
-            guide_current = bool(self.ai_pack and (self.ai_pack/'ai/guide.md').read_bytes() == (PACK/'ai/guide.md').read_bytes())
+            guide_current = bool(self.ai_pack and all((self.ai_pack/name).read_bytes() == (PACK/name).read_bytes() for name in ('ai/guide.md','ai/player-guide.md')))
         except OSError:
             guide_current = False
         return {'ai': {'available': bool(self.ai_config), 'mode': 'consultation', 'queryMode': 'demand', 'guideCurrent': guide_current},

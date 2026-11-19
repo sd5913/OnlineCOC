@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="53" time="251.233" timestamp="2026-11-16T23:01:31.571459+08:00" hostname="LAPTOP-BIFSL64A"><testcase classname="tests.test_context" name="test_default_excludes_room_and_pack_text" time="1.266" /><testcase classname="tests.test_context" name="test_public_context_strips_secret_and_never_reads_others_private_chat" time="1.070" /><testcase classname="tests.test_context" name="test_context_rechecks_source_and_policy_after_generation[edit]" time="1.407" /><testcase classname="tests.test_context" name="test_context_rechecks_source_and_policy_after_generation[delete]" time="1.126" /><testcase classname="tests.test_context" name="test_context_rechecks_source_and_policy_after_generation[policy]" time="1.026" /><testcase classname="tests.test_context" name="test_context_rechecks_source_and_policy_after_generation[revoke]" time="1.003" /><testcase classname="tests.test_context" name="test_context_rechecks_source_and_policy_after_generation[profile]" time="1.037" /><testcase classname="tests.test_context" name="test_manual_revision_keeps_original_source_authorization" time="1.067" /><testcase classname="tests.test_context" name="test_chat_source_requires_actual_current_text_and_external_permission" time="1.017" /><testcase classname="tests.test_context" name="test_unrelated_read_position_and_ai_history_do_not_change_world" time="1.037" /><testcase classname="tests.test_context" name="test_scope_mismatch_rejects_cross_room_context" time="0.986" /><testcase classname="tests.test_context" name="test_context_size_is_bounded" time="1.029" /><testcase classname="tests.test_context" name="test_two_actual_demo_directories_do_not_share_secrets_or_memory" time="1.643" /><testcase classname="tests.test_access_batches" name="test_defaults_binding_and_no_permission_escalation" time="1.082" /><testcase classname="tests.test_access_batches" name="test_player_auto_dispatch_context_output_and_revoke" time="1.339" /><testcase classname="tests.test_access_batches" name="test_kp_player_session_has_player_ceiling_and_data_proof" time="1.118" /><testcase classname="tests.test_access_batches" name="test_batch_human_approval_idempotence_and_player_denial" time="1.398" /><testcase classname="tests.test_access_batches" name="test_batch_stale_reject_auto_and_bypass_forbidden" time="1.392" /><testcase classname="tests.test_access_batches" name="test_batch_unknown_reconciles_without_reexecuting" time="1.599" /><testcase classname="tests.test_access_batches" name="test_batch_stops_after_partial_failure_and_restart_never_replays" time="1.299" /><testcase classname="tests.test_access_batches" name="test_delete_cancels_queue_hides_session_and_keeps_usage_audit" time="1.457" /><testcase classname="tests.test_access_batches" name="test_administrator_tools_respect_external_scope" time="1.360" /><testcase classname="tests.test_access_batches" name="test_player_contract_tool_and_batch_output_cannot_escalate" time="1.500" /><testcase classname="tests.test_access_batches" name="test_delete_interrupts_active_generation" time="1.550" /><testcase classname="tests.test_access_batches" name="test_management_catalog_is_bounded_and_schema_complete" time="1.065" /><testcase classname="tests.test_access_batches" name="test_other_administrator_can_inspect_draft_without_taking_review_identity" time="1.088" /><testcase classname="tests.test_access_batches" name="test_player_history_rechecks_package_evidence_during_generation" time="1.427" /><testcase classname="tests.test_entrypoints" name="test_requests_are_explicit_idempotent_redacted_and_paged" time="1.060" /><testcase classname="tests.test_entrypoints" name="test_chat_forwarding_binds_original_and_policy" time="1.175" /><testcase classname="tests.test_entrypoints" name="test_player_can_cancel_after_dispatching_kp_loses_role" time="1.110" /><testcase classname="tests.test_entrypoints" name="test_plan_without_proposal_rechecks_context_on_read" time="1.146" /><testcase classname="tests.test_entrypoints" name="test_auto_off_prefix_dedup_edits_withdrawal_and_role" time="1.175" /><testcase classname="tests.test_entrypoints" name="test_manual_revision_invalidates_approval_and_cancel_revokes" time="24.965" /><testcase classname="tests.test_entrypoints" name="test_receipt_rechecks_private_sources_and_restart_pending" time="1.128" /><testcase classname="tests.test_entrypoints" name="test_http_auth_limits_schema_capability_and_disabled_module" time="1.408" /><testcase classname="tests.test_entrypoints" name="test_cli_uses_same_three_engines" time="10.501" /><testcase classname="tests.test_embeds" name="test_package_manifest_covers_public_runtime_dependencies" time="0.026" /><testcase classname="tests.test_embeds" name="test_real_room_page_variants[page]" time="46.629"><failure message="AssertionError: Locator expected to be enabled&#10;Actual value: None&#10;Error: element(s) not found &#10;Call log:&#10;  - Expect &quot;to_be_enabled&quot; get_by_role(&quot;button&quot;, name=&quot;查看方案与三检&quot;, exact=True) with timeout 40000ms&#10;  - waiting for get_by_role(&quot;button&quot;, name=&quot;查看方案与三检&quot;, exact=True)&#10;&#10;Aria snapshot:&#10;- banner:&#10;  - strong: 房间 AI&#10;  - text: kp&#10;  - button &quot;退出房间登录&quot;&#10;- main:&#10;  - strong: 房间 AI 助手&#10;  - text: kp · KP&#10;  - button &quot;KP 审核与设置&quot;&#10;  - button &quot;用量统计&quot;&#10;  - complementary:&#10;    - strong: 本房间的会话&#10;    - button &quot;新会话&quot;&#10;[+21 more lines; full report in element text]">services = ('http://127.0.0.1:64286', {'key': 'eXuPVQYVbVF8Ru8eHCOLF6c-V3ewKSqNxhbBOCiPhfw', 'roomPort': 64285, 'managerPort': 64286}, WindowsPath('C:/Users/26077/AppData/Local/Temp/pytest-of-26077/pytest-45/test_real_room_page_variants_p0'))
+variant = 'page'
+
+    @pytest.mark.parametrize('variant',['page','conversation','collapsible'])
+    def test_real_room_page_variants(services,variant):
+        _,entry,_=services;origin=f'http://127.0.0.1:{entry["roomPort"]}'
+        allow_players(origin)
+        with sync_playwright() as p:
+            browser=p.chromium.launch(channel='msedge',headless=True);page=browser.new_page(viewport={'width':1360,'height':940});errors=[];queries=[]
+            page.on('pageerror',lambda error:errors.append(str(error)))
+            page.on('request',lambda request:queries.append(request.url) if '/api/v1/ai/sessions' in request.url else None)
+            try:
+                response=page.goto(origin+'/ai-ui/'+variant+'.html')
+                assert "frame-ancestors 'self'" in response.headers['content-security-policy']
+                login(page,'kp' if variant=='page' else 'player1')
+                if variant=='collapsible':
+                    expect(page.locator('.collapse-toggle')).to_have_attribute('aria-expanded','false')
+                    assert page.locator('.view-chat').count()==0 and not queries
+                    page.locator('.collapse-toggle').click()
+                expect(page.locator('#text')).to_be_visible()
+                if variant=='page':expect(page.locator('.view-sidebar')).to_be_visible()
+                else:expect(page.locator('.session-select')).to_be_visible()
+                if variant=='page':
+                    page.locator('.review-open').click();page.locator('[data-tab=settings]').click();page.get_by_text('服务与外发范围',exact=True).click()
+                    expect(page.locator('#ai-save-settings')).to_be_enabled()
+                    page.locator('#ai-enabled').check();page.locator('#ai-profile').select_option('deepseek-main');page.locator('#ai-public').check();page.locator('#ai-save-settings').click()
+                    expect(page.locator('#ai-result')).to_have_text('设置已保存');page.locator('.review-close').click()
+                else:expect(page.locator('.review-open')).to_be_hidden()
+                page.locator('.new-chat').click();expect(page.locator('#status')).to_have_text('新会话已创建')
+                page.locator('#text').fill('将新建技能初值改为 15，已有技能保持原值。')
+                if variant=='collapsible':
+                    page.locator('.collapse-toggle').click();expect(page.locator('.collapse-body')).to_be_hidden()
+                    page.screenshot(path=str(OUTPUT/'embed-collapsed.png'),full_page=True)
+                    count=len(queries);page.wait_for_timeout(1600);assert len(queries)==count
+                    page.locator('.collapse-toggle').click();expect(page.locator('#text')).to_contain_text('已有技能保持原值')
+                page.locator('#send').click()
+                if variant=='page':
+&gt;                   button=page.get_by_role('button',name='查看方案与三检',exact=True);expect(button).to_be_enabled(timeout=40000);button.click()
+                                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E                   AssertionError: Locator expected to be enabled
+E                   Actual value: None
+E                   Error: element(s) not found 
+E                   Call log:
+E                     - Expect "to_be_enabled" get_by_role("button", name="查看方案与三检", exact=True) with timeout 40000ms
+E                     - waiting for get_by_role("button", name="查看方案与三检", exact=True)
+E                   
+E                   Aria snapshot:
+E                   - banner:
+E                     - strong: 房间 AI
+E                     - text: kp
+E                     - button "退出房间登录"
+E                   - main:
+E                     - strong: 房间 AI 助手
+E                     - text: kp · KP
+E                     - button "KP 审核与设置"
+E                     - button "用量统计"
+E                     - complementary:
+E                       - strong: 本房间的会话
+E                       - button "新会话"
+E                     - main:
+E                       - navigation:
+E                         - button "新建会话"
+E                         - button "归档会话"
+E                         - button "会话管理"
+E                       - textbox "会话名称": 新会话
+E                       - button "改名"
+E                       - text: 管理员 · kp
+E                       - button "归档"
+E                       - article: 将新建技能初值改为 15，已有技能保持原值。
+E                       - article:
+E                         - text: 待审核
+E                         - paragraph: 离线验收：新技能默认值 15；已有技能保持 60，需要 KP 判断。
+E                         - group: 本次未完成资料查询
+E                         - button "查看配置裁决"
+E                         - button "取消"
+E                       - textbox "输入需求": 描述需求，输入 / 选择指令或引用房间数据
+E                       - button "查看引用"
+E                       - text: Ctrl + Enter 发送
+E                       - button "发送 ↑"
+E                       - status: 会话已就绪
+
+engineering\ai\tests\test_embeds.py:64: AssertionError</failure></testcase><testcase classname="tests.test_embeds" name="test_real_room_page_variants[conversation]" time="5.287" /><testcase classname="tests.test_embeds" name="test_real_room_page_variants[collapsible]" time="6.985" /><testcase classname="tests.test_embeds" name="test_same_origin_iframe_entry_and_csp_scope" time="5.414" /><testcase classname="tests.test_embeds" name="test_headless_tools_and_shared_client_ownership" time="4.908" /><testcase classname="tests.test_session_ui" name="test_markdown_format_reference_security_and_mobile" time="4.918" /><testcase classname="tests.test_session_ui" name="test_embedded_management_settings_drafts_and_identity" time="6.072" /><testcase classname="tests.test_session_ui" name="test_standalone_manager_and_same_origin_frame" time="5.281" /><testcase classname="tests.test_session_ui" name="test_management_lost_response_and_version_conflict" time="5.131" /><testcase classname="tests.test_answers_ui" name="test_answer_choices_in_all_embeds[page]" time="6.018" /><testcase classname="tests.test_answers_ui" name="test_answer_choices_in_all_embeds[conversation]" time="6.130" /><testcase classname="tests.test_answers_ui" name="test_answer_choices_in_all_embeds[collapsible]" time="6.082" /><testcase classname="tests.test_answers_ui" name="test_standalone_choices_and_inline_citation" time="4.704" /><testcase classname="tests.test_reference_details_ui" name="test_inspector_authorization_races_and_keyboard" time="5.257" /><testcase classname="tests.test_reference_details_ui" name="test_chat_repeated_refresh_keeps_chips_and_dialog" time="5.124" /><testcase classname="tests.test_manager_ui" name="test_real_manager_providers_sessions_review_and_embed" time="48.462" /></testsuite></testsuites>

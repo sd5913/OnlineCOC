@@ -35,6 +35,14 @@ class CompatibleProvider:
             limits=httpx.Limits(max_connections=4, max_keepalive_connections=2))
 
     def body(self, messages, tools):
+        # JSON mode requires an explicit instruction, not merely JSON-shaped
+        # examples. Guard custom callers too, without mutating their history.
+        messages = list(messages)
+        if not any(m.get("role") in ("system", "user") and
+                   isinstance(m.get("content"), str) and "json" in m["content"].lower()
+                   for m in messages):
+            messages.insert(0, {"role": "system", "content":
+                "Return a valid JSON object matching the requested response contract."})
         result = {"model": self.profile["model"], "messages": messages, "stream": False,
                   "max_tokens": self.profile["request"]["maxOutputTokens"], "response_format": {"type": "json_object"}}
         if tools:
@@ -55,6 +63,16 @@ class CompatibleProvider:
                     status = response.status_code
                     if status in (401, 403):
                         raise ProviderError("PROVIDER_AUTH_FAILED", status=status)
+                    if status in (400, 422):
+                        raise ProviderError("PROVIDER_REQUEST_INVALID", status=status)
+                    if status == 402:
+                        raise ProviderError("PROVIDER_BALANCE_INSUFFICIENT", status=status)
+                    if status == 404:
+                        raise ProviderError("PROVIDER_NOT_FOUND", status=status)
+                    if status == 408:
+                        raise ProviderError("PROVIDER_TIMEOUT", retryable=True, status=status)
+                    if status == 413:
+                        raise ProviderError("PROVIDER_REQUEST_TOO_LARGE", status=status)
                     if status == 429:
                         raise ProviderError("PROVIDER_RATE_LIMITED", retryable=True, status=status)
                     if 500 <= status <= 599:
@@ -62,7 +80,7 @@ class CompatibleProvider:
                     if 300 <= status <= 399:
                         raise ProviderError("PROVIDER_REDIRECT_REJECTED", status=status)
                     if status != 200:
-                        raise ProviderError("UNSUPPORTED_CAPABILITY", status=status)
+                        raise ProviderError("PROVIDER_HTTP_ERROR", status=status)
                     chunks = bytearray()
                     async for chunk in response.aiter_bytes():
                         chunks.extend(chunk)
@@ -107,7 +125,8 @@ class CompatibleProvider:
                     normalized["tool_calls"].append({"id": call["id"], "type": "function", "function": {"name": function["name"], "arguments": function["arguments"]}})
             else:
                 require(reason == "stop" and content and content.strip(), "PROVIDER_EMPTY_OUTPUT")
-                require(type(loads(content)) is dict, "PROVIDER_RESPONSE_INVALID")
+                # A valid wire reply has billable usage even if its answer JSON
+                # is malformed. Let the coordinator record and repair that text.
             return Completion(normalized, normalized_usage, reason, digest(value))
         except ProviderError:
             raise

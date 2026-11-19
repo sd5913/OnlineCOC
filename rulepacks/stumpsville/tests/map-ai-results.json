@@ -1,15 +1,17 @@
 {
-  "checkedAt": "2026-11-16T07:49:49.039324+08:00",
-  "passed": 9,
+  "checkedAt": "2026-11-16T23:13:49.412180+08:00",
+  "passed": 11,
   "checks": [
     "server-side sightings: same-room players, per-player preset NPC discovery, no cross-room/other-player leaks, manual hide and current NPC movement; only display fields",
     "independent room/map/rulings pages; KP map excludes NPCs; queues, pinned chat and embedded conversation coexist; drafts survive polling; desktop viewport fits",
     "native KP usage panel reports provider-confirmed 40 tokens separately from reserves with unlimited daily default",
     "native KP and consultation queue render Markdown headings/tables; embedded owner preferences persist through package public API",
-    "updated native AI component and semantic editor load through explicit public resources; KP send dispatches once; provider admin and config publication remain blocked",
+    "updated native AI component and semantic editor load through explicit public resources; KP send dispatches once; provider admin stays private; malformed drafts remain rejected",
+    "bundled reference inspector resolves authorized values over WebRTC with packaged CSS and close control",
     "bundled web session manager saves per-owner preferences and archives/restores through WebRTC bridge; KP diagnostics hidden",
+    "bundled structured choices fill composer without extra calls or execution",
     "bundled WebRTC usage component and API show only requesting player usage; room/account injection denied",
-    "two real web players load bundled native components/CSS; semantic entity reference submits without auto-dispatch; account/hidden-reference/management isolation and KP-only reply; lost-response receipt recovery does not duplicate sessions; close clears editor",
+    "two real web players load bundled native components/CSS; player enable switch, direct dispatch and player-safe replies; account/known-data/hidden-reference/management isolation, archive view and deletion; lost-response receipt recovery does not duplicate sessions; tab switch hides AI while preserving its mounted conversation",
     "same-archive restart preserves personal discoveries and explicit hides"
   ],
   "provider": "loopback fixture only",

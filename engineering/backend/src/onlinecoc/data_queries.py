@@ -5,7 +5,32 @@ from .errors import require
 from .model import member, visible
 from . import chat
 
-KINDS = ('entity', 'config', 'rule', 'memory', 'channel', 'chat', 'event', 'ruling')
+KINDS = ('entity', 'config', 'rule', 'memory', 'channel', 'chat', 'event', 'ruling', 'knowledge')
+
+
+def entity_projection(host, state, account):
+    """Trusted package may project player knowledge, never client-selected code."""
+    if member(state, account)['role']=='kp':return copy.deepcopy(state['entities'])
+    adapter=getattr(host,'ai_data_adapter',None)
+    if adapter and hasattr(adapter,'entities'):
+        try:values=adapter.entities(state,account)
+        except Exception:require(False,'DATA_SOURCE_UNAVAILABLE')
+        require(type(values) is dict and all(k in state['entities'] and type(v) is dict and v.get('instanceId')==k for k,v in values.items()),'INPUT_INVALID')
+    else:values={k:v for k,v in state['entities'].items() if v['lifecycle']=='active' and visible(state,account,v)}
+    values=copy.deepcopy(values)
+    values={k:v for k,v in values.items() if not host.knowledge.managed(state,'entity',k,state['entities'][k])}
+    for value in values.values():value.get('metadata',{}).pop('secret',None)
+    return values
+
+
+def configuration_projection(host, state, account):
+    if member(state,account)['role']=='kp':return copy.deepcopy(state['configurations'])
+    known={e['configurationId'] for e in entity_projection(host,state,account).values()}
+    adapter=getattr(host,'ai_data_adapter',None)
+    if adapter and hasattr(adapter,'known_configurations'):
+        try:known &= set(adapter.known_configurations(state,account))
+        except Exception:require(False,'DATA_SOURCE_UNAVAILABLE')
+    return {k:copy.deepcopy(v) for k,v in state['configurations'].items() if k in known}
 
 
 def row(state, source, kind, key, revision, label, data, visibility, authority):
@@ -26,13 +51,21 @@ def rows(host, state, account, initiator=None, external=False, kinds=KINDS):
         if kind not in kinds or (external and not policy[visibility]):return
         result.append(row(state, source, kind, key, revision, label, data, visibility, authority))
 
-    for key, value in (state['entities'].items() if 'entity' in kinds else []):
-        if value['lifecycle'] != 'active' or not all(visible(state, p, value) for p in principals):continue
+    audience=[p for p in principals if member(state,p)['role']!='kp']
+    projections=[entity_projection(host,state,p) for p in audience] if audience and set(kinds)&{'entity','config'} else []
+    entities=projections[0] if projections else state['entities']
+    entities={k:v for k,v in entities.items() if all(k in other and digest(other[k])==digest(v) for other in projections[1:])}
+    for key, value in (entities.items() if 'entity' in kinds else []):
+        if value['lifecycle'] != 'active' and not kp:continue
         data = copy.deepcopy(value)
         if not kp or (external and not policy['kp']):data['metadata'].pop('secret', None)
         add('entity', key, value['revision'], value['name'], data,
             'private' if value['visibility'] == 'owner' else value['visibility'])
-    for key, value in (state['configurations'].items() if 'config' in kinds else []):add('config', key, value['revision'], value.get('name', key), value)
+    known_configs = set(state['configurations'])
+    if 'config' in kinds:
+        for p in audience:known_configs &= set(configuration_projection(host,state,p))
+    for key, value in (state['configurations'].items() if 'config' in kinds else []):
+        if kp or key in known_configs:add('config', key, value['revision'], value.get('name', key), value)
     artifact = state['artifacts'].get(state['activeRuleset'], {})
     if kp and 'rule' in kinds:
         for key, value in artifact.get('sources', {}).items():add('rule', key, state['activeRuleset'], key, {'text':value}, 'kp', 'pack-rule')
@@ -74,7 +107,14 @@ def rows(host, state, account, initiator=None, external=False, kinds=KINDS):
     return result
 
 
-def query(host, state, account, operation, args, *, initiator=None, external=False):
+def query(host, state, account, operation, args, *, initiator=None, external=False, player=None):
+    if player is not None or member(state, account)['role'] != 'kp':
+        return knowledge_query(host,state,player or account,operation,args,external=external)
+    if player is not None:
+        member(state, player)
+        state = copy.deepcopy(state)
+        state['members'][player]['role'] = 'player'
+        initiator = player
     require(type(args) is dict and operation in ('search','read','chat','case'), 'INPUT_INVALID')
     common = {'limit','cursor'}
     allowed = {'search':common|{'types','query'}, 'read':{'refs','fields'},
@@ -116,7 +156,7 @@ def query(host, state, account, operation, args, *, initiator=None, external=Fal
                 require(all(k in value['data'] for k in fields),'INPUT_INVALID')
                 value['data']={k:value['data'][k] for k in fields}
     # Cursor binds the authorized result and policy, never a global or hidden record count.
-    snapshot=digest([state['aiControl']['scopeId'],account,initiator,external,
+    snapshot=digest([state['aiControl']['scopeId'],account,initiator,external,player,
                      getattr(host,'ai_data_adapter_digest',None),
                      state['aiControl']['settings']['externalSources'],operation,
                      {k:v for k,v in args.items() if k!='cursor'},values])
@@ -137,10 +177,41 @@ def query(host, state, account, operation, args, *, initiator=None, external=Fal
     return result
 
 
+def knowledge_query(host,state,account,operation,args,*,external=False):
+    """Strict player evidence has no legacy public/adapter fallback."""
+    require(isinstance(args,dict),'INPUT_INVALID')
+    host.knowledge.capture(account,state=state,player=True)
+    host.knowledge.require_egress(account,'ai',state=state)
+    require(operation in ('search','read'),'PERMISSION_DENIED')
+    if operation=='search':
+        require(set(args)<={'types','query','limit','cursor'},'INPUT_INVALID')
+        require(set(args.get('types',['knowledge'])) <= {'knowledge'},'PERMISSION_DENIED')
+        query_args={k:v for k,v in args.items() if k!='types'}
+        page=host.knowledge.search(account,query_args,state=state,player=True)
+    else:
+        require(set(args)=={'refs'} and isinstance(args['refs'],list) and 1<=len(args['refs'])<=12,'INPUT_INVALID')
+        refs=[]
+        for ref in args['refs']:
+            require(set(ref)=={'sourceId','kind','scopeId','id','revision','digest'} and ref['sourceId']=='knowledge' and ref['kind']=='knowledge','NOT_VISIBLE')
+            refs.append({'schemaVersion':1,**{k:v for k,v in ref.items() if k not in ('sourceId','kind')}})
+        page=host.knowledge.read(account,{'refs':refs},state=state,player=True)
+    if external and not state['aiControl']['settings']['externalSources']['private']:
+        require(operation=='search','PERMISSION_DENIED')
+        page=dict(page,items=[],nextCursor=None,viewRevision=digest([]))
+    items=[]
+    for item in page['items']:
+        value={'ref':{'sourceId':'knowledge','kind':'knowledge',**{k:v for k,v in item['ref'].items() if k!='schemaVersion'}},
+               'label':item['label'],'visibility':'private','authority':'host-disclosure'}
+        if 'data' in item:value['data']=item['data']
+        items.append(value)
+    return {'schemaVersion':1,'snapshotId':page['viewRevision'],'items':items,'page':{'nextCursor':page['nextCursor']},
+            'coverage':{'status':'partial' if page['nextCursor'] else 'complete','within':'requested-authorized-scope'}}
+
+
 def recheck(host, state, account, context):
     proofs=context['facts'].get('dataQueries',[])
     require(type(proofs) is list and len(proofs)<=24,'INPUT_INVALID')
     for proof in proofs:
         require(proof['scopeId']==state['aiControl']['scopeId'],'SCOPE_MISMATCH')
-        result=query(host,state,account,proof['operation'],proof['args'],initiator=proof['initiator'],external=True)
+        result=query(host,state,account,proof['operation'],proof['args'],initiator=proof['initiator'],external=True,player=proof.get('player'))
         require(digest(result)==proof['digest'],'SOURCE_STALE')

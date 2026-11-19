@@ -8,12 +8,12 @@ from test_context import enable
 
 def test_search_resolve_privacy_and_revision(application):
     app=application;refs=References(app.host)
-    token=refs.search('player1','config')['items'][0]['token']
-    assert refs.resolve('player1',[token])['items'][0]['value']
+    token=refs.search('kp','config')['items'][0]['token']
+    assert refs.resolve('kp',[token])['items'][0]['value']
     state=app.host.state();key=next(iter(state['entities']))
     state['entities'][key]['visibility']='kp';state['entities'][key]['owner']='player2';state['entities'][key]['metadata']['secret']='must-not-leak';app.host.commit(state)
-    assert key not in [x['id'] for x in refs.search('player1','entity')['items']]
-    assert refs.search('player1','data')['items']==[]
+    for kind in ('entity','data','config'):
+        with pytest.raises(AiError,match='REFERENCE_NOT_VISIBLE'):refs.search('player1',kind)
     with pytest.raises(AiError):refs.resolve('player1',[f'[[entity:{key}@1]]'])
     with pytest.raises(AiError,match='REFERENCE_STALE'):refs.resolve('kp',[token.rsplit('@',1)[0]+'@wrong]]'])
     with pytest.raises(AiError,match='REFERENCE_LIMIT'):refs.resolve('kp',[token]*13)
@@ -65,6 +65,8 @@ def test_runtime_data_cannot_be_requested_on_behalf_of_player(application):
 
 
 def test_reference_http_boundary(application):
+    from test_known_runtime import install,observe
+    install(application);observe(application)
     from fastapi.testclient import TestClient
     from onlinecoc.server import create_app
     from types import SimpleNamespace
@@ -74,8 +76,8 @@ def test_reference_http_boundary(application):
         assert client.get('/api/v1/ai/references').status_code==401
         client.headers['Origin']='http://127.0.0.1:8765'
         csrf=client.post('/api/v1/login',json={'loginName':'player1','password':'test-password'}).json()['csrf']
-        token=client.get('/api/v1/ai/references?kind=config').json()['items'][0]['token']
-        assert client.get('/api/v1/ai/references?kind=data').json()['items']==[]
+        token=client.get('/api/v1/ai/references?kind=knowledge').json()['items'][0]['token']
+        assert 'items' not in client.get('/api/v1/ai/references?kind=data').json()
         assert client.post('/api/v1/ai/references/resolve',json={'tokens':[token]}).status_code==403
         client.headers['X-CSRF-Token']=csrf
         result=client.post('/api/v1/ai/references/resolve',json={'tokens':[token]})

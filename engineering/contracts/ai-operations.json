@@ -282,6 +282,12 @@
         "type": "string",
         "minLength": 1,
         "maxLength": 120
+      },
+      "accessLevel": {
+        "enum": [
+          "administrator",
+          "player"
+        ]
       }
     },
     "required": [
@@ -350,5 +356,138 @@
       "text"
     ],
     "additionalProperties": false
+  },
+  "ai.session.delete": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "sessionId": {
+        "type": "string",
+        "pattern": "^[a-f0-9]{32}$"
+      },
+      "revision": {
+        "type": "integer",
+        "minimum": 1
+      }
+    },
+    "required": [
+      "sessionId",
+      "revision"
+    ]
+  },
+  "ai.access.update": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "revision": {
+        "type": "integer",
+        "minimum": 1
+      },
+      "allowPlayerChat": {
+        "type": "boolean"
+      },
+      "autoApproveBatches": {
+        "type": "boolean"
+      },
+      "autoApproveConfigurations": {
+        "type": "boolean"
+      }
+    },
+    "required": [
+      "revision",
+      "allowPlayerChat",
+      "autoApproveBatches"
+    ]
+  },
+  "ai.batch.approve": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "batchId": {
+        "type": "string",
+        "pattern": "^[a-f0-9]{32}$"
+      },
+      "digest": {
+        "type": "string",
+        "minLength": 64,
+        "maxLength": 64
+      }
+    },
+    "required": [
+      "batchId",
+      "digest"
+    ]
+  },
+  "ai.batch.reject": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "batchId": {
+        "type": "string",
+        "pattern": "^[a-f0-9]{32}$"
+      },
+      "digest": {
+        "type": "string",
+        "minLength": 64,
+        "maxLength": 64
+      }
+    },
+    "required": [
+      "batchId",
+      "digest"
+    ]
+  },
+  "ai.batch.reconcile": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "batchId": {
+        "type": "string",
+        "pattern": "^[a-f0-9]{32}$"
+      },
+      "digest": {
+        "type": "string",
+        "minLength": 64,
+        "maxLength": 64
+      }
+    },
+    "required": [
+      "batchId",
+      "digest"
+    ]
+  },
+  "ai.ruling.decide": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "rulingId",
+      "digest",
+      "decision"
+    ],
+    "properties": {
+      "rulingId": {
+        "type": "string",
+        "pattern": "^(batch|proposal):[a-f0-9]{32}$"
+      },
+      "digest": {
+        "type": "string",
+        "pattern": "^[a-f0-9]{64}$"
+      },
+      "decision": {
+        "enum": [
+          "approve",
+          "reject"
+        ]
+      },
+      "riskDecisions": {
+        "type": "object",
+        "maxProperties": 51,
+        "additionalProperties": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 1000
+        }
+      }
+    }
   }
 }

@@ -14,6 +14,8 @@ def main():
     serve.add_argument('--ai-pack',help='含 AI 机器契约的配置包目录；须与 ai-config 一起提供')
     serve.add_argument('--ai-data-adapter',help='管理员明确安装的可信 Python 只读适配器；不接收模型指定路径')
     serve.add_argument('--ai-data-path',help='只读适配器的本机数据路径')
+    serve.add_argument('--knowledge-provider',help='管理员安装的本机 Python 披露提供方；可在 AI 关闭时使用')
+    serve.add_argument('--knowledge-data-path',help='提供方使用的本机资料路径')
     backup=sub.add_parser('backup');backup.add_argument('--output',required=True);backup.add_argument('--include-identity',action='store_true')
     restore=sub.add_parser('restore');restore.add_argument('--bundle',required=True);restore.add_argument('--identity-dir')
     create=sub.add_parser('account-create');create.add_argument('account');create.add_argument('--role',choices=['kp','player'],default='player')
@@ -22,7 +24,13 @@ def main():
     validation=sub.add_parser('validate-room', help='只读检查目标房间格式，不启动宿主或迁移')
     validation.add_argument('--input', required=True)
     validation.add_argument('--format', choices=['room','snapshot','backup'], default='room')
+    migration=sub.add_parser('convert-room',help='显式复制转换 v3 到 v4；不修改原数据')
+    migration.add_argument('--input',required=True);migration.add_argument('--output',required=True)
+    migration.add_argument('--format',choices=['room','snapshot','backup'],default='room')
     args=parser.parse_args()
+    if args.operation=='convert-room':
+        from .room_migration import convert_file
+        print(json.dumps(convert_file(args.input,args.output,args.format),ensure_ascii=True));return
     if args.operation=='validate-room':
         from .room_validation import check_file
         from .errors import DomainError
@@ -51,6 +59,13 @@ def main():
         elif args.operation=='collect-assets':print(Assets(host).collect_orphans('kp'))
         elif args.operation=='backup':print(Assets(host).backup('kp',args.output,args.include_identity))
         else:
+            if args.knowledge_provider:
+                import importlib.util
+                source=Path(args.knowledge_provider).resolve()
+                spec=importlib.util.spec_from_file_location('onlinecoc_installed_knowledge',source)
+                module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+                module.install(host,Path(args.knowledge_data_path).resolve() if args.knowledge_data_path else None)
+                host.recover()
             import uvicorn
             from .server import create_app
             from .host_control import HostControl

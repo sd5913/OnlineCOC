@@ -4766,7 +4766,7 @@
       "extensions": {}
     },
     "ai.scope": {
-      "description": "Stumpsville AI consultation: scope",
+      "description": "Current session permission and direct dispatch behavior",
       "tags": [
         "ui",
         "ai"
@@ -5471,7 +5471,7 @@
       "extensions": {}
     },
     "ai.web": {
-      "description": "Web players can submit personal consultations; the local KP dispatches requests and reviews responses.",
+      "description": "Current session permission and direct dispatch behavior",
       "tags": [
         "ui",
         "ai"
@@ -5885,6 +5885,630 @@
     },
     "ai.reloadGuide": {
       "description": "AI snapshot still contains an older author query guide; room restart is required",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ai.accessTitle": {
+      "description": "Stumpsville AI session permission: accessTitle",
+      "tags": [
+        "ui",
+        "ai"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ai.allowPlayers": {
+      "description": "Stumpsville AI session permission: allowPlayers",
+      "tags": [
+        "ui",
+        "ai"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ai.autoApprove": {
+      "description": "Stumpsville AI session permission: autoApprove",
+      "tags": [
+        "ui",
+        "ai"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ai.saveAccess": {
+      "description": "Stumpsville AI session permission: saveAccess",
+      "tags": [
+        "ui",
+        "ai"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "ai.batchManager": {
+      "description": "Stumpsville AI session permission: batchManager",
+      "tags": [
+        "ui",
+        "ai"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "workspace.character": {
+      "description": "Stumpsville interface: Character & inventory",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "workspace.communication": {
+      "description": "Stumpsville interface: Chat & AI",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "workspace.notebook": {
+      "description": "Stumpsville interface: Clues & action log",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "workspace.drag": {
+      "description": "Stumpsville interface: Drag panel; arrow keys to move",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "dice.preference": {
+      "description": "Stumpsville interface: Play dice animation after checks",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "dice.rolling": {
+      "description": "Stumpsville interface: Showing this check…",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "dice.settled": {
+      "description": "Stumpsville interface: Settled · actual host-confirmed rolls",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "queue.aiSettings": {
+      "description": "Stumpsville keeper queue: AI service & permissions",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "queue.aiHistory": {
+      "description": "Stumpsville keeper queue: Show AI history",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "queue.aiRequest": {
+      "description": "Stumpsville keeper queue: AI request · KP action needed",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "queue.aiReply": {
+      "description": "Stumpsville keeper queue: AI response & context",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "queue.saved": {
+      "description": "Stumpsville keeper queue: Decision saved",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "queue.noSession": {
+      "description": "Stumpsville keeper queue: No readable conversation found for this request",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "queue.sourceUnavailable": {
+      "description": "Stumpsville keeper queue: Source unavailable or no longer readable",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "queue.openSession": {
+      "description": "Stumpsville keeper queue: Open conversation",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "queue.disclose": {
+      "description": "Stumpsville keeper queue: Open knowledge disclosure",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "queue.characterApproval": {
+      "description": "Stumpsville keeper queue: Character approval",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "queue.approvalsMoved": {
+      "description": "Stumpsville keeper queue: {count} drafts await review in the ruling queue.",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {
+        "count": {
+          "type": "number"
+        }
+      },
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "queue.open": {
+      "description": "Stumpsville keeper queue: Open ruling queue",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "queue.flowWait": {
+      "description": "Stumpsville keeper queue: Flow awaiting KP response",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "queue.flowAttention": {
+      "description": "Stumpsville keeper queue: Flow needs attention",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "queue.retryFlow": {
+      "description": "Stumpsville keeper queue: Retry flow",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "queue.cancelFlow": {
+      "description": "Stumpsville keeper queue: Cancel flow",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "queue.allInRulings": {
+      "description": "Stumpsville keeper queue: Player requests, AI handoffs and change proposals are handled in the ruling queue.",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "queue.completed": {
+      "description": "Stumpsville keeper queue: Completed",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "queue.rejected": {
+      "description": "Stumpsville keeper queue: Rejected",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "queue.partial": {
+      "description": "Stumpsville keeper queue: Partially completed",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "queue.unknown": {
+      "description": "Stumpsville keeper queue: Result unknown",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "failure.reason": {
+      "description": "行动失败说明与处理指引",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "failure.next": {
+      "description": "行动失败说明与处理指引",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "failure.id": {
+      "description": "行动失败说明与处理指引",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "effects.title": {
+      "description": "Stumpsville interface: Character changes",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "effects.updated": {
+      "description": "Stumpsville interface: Character state updated",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "effects.queued": {
+      "description": "Stumpsville interface: {count} more notifications",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {
+        "count": {
+          "type": "number"
+        }
+      },
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "effects.confirm": {
+      "description": "Stumpsville interface: Got it",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "effects.log": {
+      "description": "Stumpsville interface: View action log",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "effects.uses": {
+      "description": "Stumpsville interface: {item} · {count} uses",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {
+        "item": {
+          "type": "string"
+        },
+        "count": {
+          "type": "number"
+        }
+      },
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "map.route.open": {
+      "description": "Stumpsville interface: Open",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "map.route.closed": {
+      "description": "Stumpsville interface: Closed",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "map.route.locked": {
+      "description": "Stumpsville interface: Locked",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "map.route.unknown": {
+      "description": "Stumpsville interface: Door status unknown",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "effects.ticks": {
+      "description": "Slot {count} burn progress",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {
+        "count": {
+          "type": "number"
+        }
+      },
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "effects.clues": {
+      "description": "Stumpsville interface: New clues discovered",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "effects.viewClues": {
+      "description": "Stumpsville interface: View clues",
+      "tags": [
+        "ui"
+      ],
+      "format": "icu-mf1",
+      "params": {},
+      "lifecycle": "active",
+      "distribution": "public",
+      "allowEmpty": false,
+      "extensions": {}
+    },
+    "effects.result": {
+      "description": "Stumpsville interface: Action result",
       "tags": [
         "ui"
       ],

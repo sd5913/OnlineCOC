@@ -16,3 +16,8 @@ class InProcessTransport:
     def receipt(self, command_id):return self.gateway.receipt(self.account,command_id)
     def chat_history(self, channel_id, before=None, limit=50):return self.gateway.chat_history(self.account,channel_id,before,limit)
     def chat_members(self):return self.gateway.chat_members(self.account)
+    def knowledge_capabilities(self):return self.gateway.knowledge.capabilities(self.account)
+    def knowledge_search(self,args):return self.gateway.knowledge.search(self.account,args)
+    def knowledge_read(self,args):return self.gateway.knowledge.read(self.account,args)
+    def knowledge_preview(self,args):return self.gateway.knowledge.preview(self.account,args)
+    def knowledge_grants(self,args):return self.gateway.knowledge.grants(self.account,args)

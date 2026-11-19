@@ -1,0 +1,131 @@
+"""Trusted package knowledge adapter, installed independently of the AI module.
+
+No grants are created on reads or startup. KP commands bind policy and disclose;
+successful host movement creates a new immutable observation in the same commit.
+"""
+import copy
+import hashlib
+import json
+from pathlib import Path
+
+POLICY='stumpsville-personal-v1'
+NAMESPACE='stumpsville'
+PERSONAL_ACTIONS=frozenset(('sv.create','sv.ready','sv.check','sv.inventory','sv.travel.auto'))
+
+
+def digest(value):
+    return hashlib.sha256(json.dumps(value,sort_keys=True,ensure_ascii=False,separators=(',',':')).encode()).hexdigest()
+
+
+def descriptor():
+    return {'policyId':POLICY,'namespace':NAMESPACE,'contractVersion':1,'mode':'required-personal',
+        'providerId':'stumpsville-known-v1','selectors':[{'kind':'entity','configurationPrefix':'sv.'}],
+        'facetSchemas':{
+            'scene':{'schema':{'type':'object'},'modes':['observed_snapshot'],'labelField':'name'},
+            'identity':{'schema':{'type':'object'},'modes':['observed_snapshot'],'labelField':'name'},
+            'play':{'schema':{'type':'object'},'modes':['live_scope'],'labelField':'name'},
+            'sheet':{'schema':{'type':'object'},'modes':['live_scope'],'labelField':'name','entityProjection':True}},
+        'egress':{key:'filtered' for key in ('view','query','rules','receipts','assets','export','ai')}}
+
+
+class Provider:
+    def __init__(self,path):self.path=Path(path) if path else None
+
+    def package(self,context):
+        if self.path is None:raise ValueError('PACKAGE_DATA_REQUIRED')
+        with self.path.open('rb') as stream:raw=stream.read(8*1024*1024+1)
+        if len(raw)>8*1024*1024:raise ValueError('PACKAGE_DATA_LIMIT')
+        data=json.loads(raw)
+        if data.get('format')!=2 or data.get('sceneId') not in context['state']['entities']:
+            raise ValueError('PACKAGE_ROOM_MISMATCH')
+        return data
+
+    def pin(self,resource,facets,context):
+        entity=context['state']['entities'].get(resource['id'])
+        if not entity or not entity['configurationId'].startswith('sv.') or entity['lifecycle']!='active':
+            raise ValueError('RESOURCE_UNAVAILABLE')
+        values={};versions={}
+        for facet in facets:
+            if facet=='scene' and entity['configurationId']=='sv.location':
+                data=self.package(context);index=str(entity['numbers']['index'])
+                place=data['published'].get(index) or data['locations'][index]
+                # Published choices define clues. Entering an unpublished scene
+                # reveals only its ordinary description, not its hidden clues.
+                value={k:copy.deepcopy(place[k]) for k in ('index','name','description','exits','features')}
+                value['clues']=copy.deepcopy(data['published'].get(index,{}).get('clues',[]))
+                known_ids={c['id'] for c in value['clues']}
+                value['clues'].extend(copy.deepcopy(c) for c in data.get('discoveries',{}).get(context['accountId'],{}).values()
+                    if str(c.get('location'))==index and c['id'] not in known_ids)
+                artifact=context['state']['artifacts'][context['state']['activeRuleset']]
+                definitions=artifact['data'].get('scene-actions.json',{}).get('actions',[])
+                value['actions']=[copy.deepcopy(a) for a in definitions if str(a['location'])==index]
+                value['entityId']=entity['instanceId']
+                value['doors']={str(target):data.get('doors',{}).get('-'.join(map(str,sorted((int(index),target)))),'unknown')
+                    for target in value['exits']}
+                value['navigation']={str(e['numbers']['index']):e['instanceId'] for e in context['state']['entities'].values()
+                    if e['configurationId']=='sv.location' and e['numbers']['index'] in value['exits']}
+                values[facet]=value
+                # Preview runs as KP; pin runs as the recipient. The source
+                # version must describe authoritative inputs independently of
+                # their projections, including personal discoveries but not
+                # volatile job/receipt writes between preview and command.
+                versions[facet]={'place':place,'discoveries':data.get('discoveries',{}),
+                    'definitions':definitions,'navigation':value['navigation'],'doors':value['doors']}
+            elif facet=='identity' and (entity['configurationId'] in ('sv.character','sv.npc') or entity['configurationId'].startswith('sv.ext.npc.')):
+                values[facet]={'name':entity['name'],'location':entity['numbers'].get('location'),'entityId':entity['instanceId']}
+            elif facet=='sheet' and entity['configurationId'] in ('sv.character','sv.draft') and entity['owner']==context['accountId']:
+                value=copy.deepcopy(entity)
+                value.update(metadata={},tags=[],components={},rules={})
+                values[facet]=value
+            elif facet=='play' and entity['configurationId']=='sv.session':
+                values[facet]={'name':'场次状态','entityId':entity['instanceId'],
+                    'numbers':{k:v for k,v in entity['numbers'].items() if k in ('phase','round','autoResolve')}}
+            else:raise ValueError('FACET_UNAVAILABLE')
+        return {'sourceRevision':digest({k:versions.get(k,v) for k,v in values.items()}),'facets':values,
+            'sourceGuard':{'entityId':entity['instanceId'],'configurationId':entity['configurationId']}}
+
+    def read_live(self,resource,facets,context):
+        if facets not in (['sheet'],['play']):raise ValueError('LIVE_SCENE_NOT_SUPPORTED')
+        return self.pin(resource,facets,context)
+
+    def check_guard(self,guard,context):
+        value=context['state']['entities'].get(guard.get('entityId'))
+        return bool(value and value['configurationId']==guard.get('configurationId') and not value['metadata'].get('knowledgeRevoked'))
+
+    def derive_observations(self,outcome,context):
+        operation=outcome['operation'];inputs=outcome.get('input',{})
+        if operation in ('sv.profile','sv.travel','sv.travel.auto'):
+            key=inputs.get('actor')
+        elif operation in ('entity.update','entity.patch') and 'location' in inputs.get('numbers',{}):key=inputs.get('id')
+        else:return []
+        actor=context['state']['entities'].get(key)
+        if not actor or actor['configurationId']!='sv.character' or actor['numbers'].get('approved')!=1:return []
+        previous=context.get('previousState',{}).get('entities',{}).get(key)
+        if operation in ('entity.update','entity.patch') and previous and previous['numbers'].get('location')==actor['numbers']['location']:return []
+        owner=context['state']['members'].get(actor['owner'])
+        if not owner or not owner['active']:return []
+        location=next((e for e in context['state']['entities'].values() if e['configurationId']=='sv.location'
+            and e['numbers']['index']==actor['numbers']['location'] and e['lifecycle']=='active'),None)
+        if not location:return []
+        return [{'subjectMemberId':owner['memberId'],'resource':{'namespace':NAMESPACE,'kind':'entity','id':location['instanceId']},'facetIds':['scene']}]
+
+    def authorize_operation(self,operation,args,context):
+        actor=context['state']['entities'].get(args.get('actor'))
+        return operation in PERSONAL_ACTIONS and bool(actor and actor['owner']==context['accountId']
+            and actor['configurationId'] in ('sv.character','sv.draft') and actor['lifecycle']=='active')
+
+    def project_operation(self,operation,result,reads,context):
+        if operation not in PERSONAL_ACTIONS or not isinstance(result,dict):return None
+        # The rules expose only the invoking player's check/status values.
+        fields={'sv.create':('str','dex','wil','hp','pips'), 'sv.ready':('ready',),
+            'sv.check':('first','second','rolled','target','passed','attribute','mode'),
+            'sv.inventory':('operation','slot','target','uses','overloaded'), 'sv.travel.auto':('location','automatic')}
+        return {key:copy.deepcopy(result[key]) for key in fields[operation] if key in result}
+
+    def project_catalog(self,actions,context):
+        if isinstance(actions,dict):return {key:value for key,value in actions.items() if key in PERSONAL_ACTIONS}
+        return [value for value in actions if value.get('actionId',value.get('id')) in PERSONAL_ACTIONS]
+
+
+def install(host,path=None):
+    return host.register_knowledge_provider(descriptor(),Provider(path))

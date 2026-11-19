@@ -25,7 +25,7 @@ def verify_runtime(output, checks):
                 payload = json.loads(request['messages'][1]['content'])
                 guide = payload['sources']['stumpsville-guide']
                 for text in ('pageSummary.returnedItems', 'data.channelId', 'kind="plan"',
-                             '未读详情', '不能按编号顺序推断', 'cheese1不能仅凭名称', '个人知识未接入'):
+                             '未读取的聊天', '不能按编号顺序推断', 'cheese1不能仅凭名称', '个人知识查询未覆盖'):
                     assert text in guide, text
                 calls = [call('entities1', 'room_search_data', {'types': ['entity'], 'query': '', 'limit': 25}),
                          call('configs', 'room_search_data', {'types': ['config'], 'query': '', 'limit': 50}),
@@ -109,7 +109,7 @@ def main():
         if not tools:
             payload=json.loads(request['messages'][1]['content']);payloads.append(payload)
             assert payload['dataAccess']['mode']=='demand'
-            assert payload['roomFacts']['entities']=={} and payload['roomFacts']['configurations']=={}
+            assert not payload['roomFacts'].get('entities') and not payload['roomFacts'].get('configurations')
             return {'role':'assistant','content':None,'tool_calls':[call('s'+str(i),'room_search_data',{'types':[kind],'query':query,'limit':5}) for i,(kind,query) in enumerate(searches)]}
         if tools['s1']['items'] and 'read-npc' not in tools:
             return {'role':'assistant','content':None,'tool_calls':[call('read-npc','room_read_data',{'refs':[v['ref'] for v in tools['s1']['items']]})]}
@@ -118,12 +118,13 @@ def main():
     checks=[]
     with provider(output,responder=respond) as (config,calls),running('ai-scopes',data=output/'game',ai_config=config,no_browser=True) as (runtime,password):
         kp,p1,p2=provision(runtime,password)
+        result(ai(kp,'ai.access.update',{'revision':1,'allowPlayerChat':True,'autoApproveBatches':False}))
         pending=p1.action('request',{'kind':'free','text':'观察门边','manual':True})
         kp.action('resolve',{'requestId':pending['requestId'],'approve':True,'reason':'可以观察'})
         def ask(policy,owner=kp):
             result(ai(kp,'ai.settings.update',{'enabled':True,'profileId':'offline','externalSources':policy,'auto':{'enabled':False,'channelIds':[],'prefix':'!ai '}}))
             request=result(ai(owner,'ai.request.create',{'sourceKind':'manual','text':'查询场景NPC，验证资料范围'}))
-            result(ai(kp,'ai.request.dispatch',request))
+            if not request.get('taskId'):result(ai(kp,'ai.request.dispatch',{'requestId':request['requestId']}))
             deadline=time.monotonic()+25
             while time.monotonic()<deadline:
                 task=next(t for t in kp.request('/api/v1/ai/tasks')['items'] if t['requestId']==request['requestId'])
@@ -144,12 +145,14 @@ def main():
         opened=ask({'public':True,'kp':True,'private':True})
         assert len(opened['s0']['items'])==1 and opened['s3']['items'] and not opened['s2']['items']
         checks.append('public configurations and private events have distinct scopes; no confirmed memory is a valid empty source')
-        player=ask({'public':True,'kp':True,'private':True},p1)
-        assert player['s0']['items'] and not player['s1']['items'] and not player['s5']['items']
-        assert 'read-npc' not in player
-        checks.append('KP dispatch of a PL request still cannot export KP-only NPCs')
         guide=payloads[-1]['sources']['stumpsville-guide']
         assert '表示“尚未加载”' in guide and '"types":["entity"],"query":""' in guide and 'room_read_data' in guide
+        player=ask({'public':True,'kp':True,'private':True},p1)
+        assert not player['s0']['items'] and not player['s1']['items'] and not player['s5']['items']
+        assert 'read-npc' not in player
+        checks.append('Player direct dispatch cannot export KP-only NPCs or their templates')
+        assert 'stumpsville-guide' not in payloads[-1]['sources']
+        assert '本人进入过' in payloads[-1]['sources']['stumpsville-player-guide']
         assert kp.request('/package/integrations')['ai']['guideCurrent'] is True
         active=runtime.modules.ai_pack
         stale=output/'stale-pack/ai';stale.mkdir(parents=True);(stale/'guide.md').write_text('old guide',encoding='utf-8')

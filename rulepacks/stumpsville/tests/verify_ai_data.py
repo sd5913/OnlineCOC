@@ -11,6 +11,7 @@ def main():
     checks=[]
     with provider(output) as (config,calls), running('ai-data',data=output/'game',ai_config=config,no_browser=True) as (runtime,password):
         kp,p1,p2=provision(runtime,password)
+        result(ai(kp,'ai.access.update',{'revision':1,'allowPlayerChat':True,'autoApproveBatches':False}))
         result(ai(kp,'ai.settings.update',{'enabled':True,'profileId':'offline','externalSources':{'public':True,'private':True,'kp':False},'auto':{'enabled':False,'channelIds':[],'prefix':'!ai '}}))
         channel='sv-scene-'+str(p1.state()['character']['numbers']['location'])
         sent=p1.action('chat',{'operation':'chat.message.send','input':{'channelId':channel,'text':'我想观察门锁。'}})

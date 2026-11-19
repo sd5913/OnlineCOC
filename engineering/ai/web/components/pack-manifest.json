@@ -12,6 +12,7 @@
     "sessions": "sessions.html"
   },
   "runtimeFiles": [
+    "styles.js",
     "pack.js",
     "client.js",
     "tools.js",
@@ -37,7 +38,13 @@
     "session-manager.css",
     "sessions.html",
     "usage.js",
-    "usage.css"
+    "usage.css",
+    "choices.js",
+    "choices.css",
+    "reference-details.js",
+    "reference-details.css",
+    "rulings.js",
+    "rulings.css"
   ],
   "defaultApiBase": "/api/v1/",
   "framing": "same-origin-only",
@@ -56,7 +63,10 @@
       "ai/references",
       "ai/receipts/{id}",
       "receipts/{id}",
-      "ai/usage"
+      "ai/usage",
+      "ai/access",
+      "ai/batches",
+      "ai/rulings"
     ],
     "post": [
       "login",

@@ -5,13 +5,31 @@ import uuid
 from datetime import datetime
 from unittest.mock import patch
 from harness import PACK, running, provision
-from package import Package
+from package import Package, Job
+from client import Client
 
 
 def main():
     checks = []
     with running('scene-recovery') as (runtime, password):
         kp, p1, _ = provision(runtime, password)
+        host = Client(runtime.backend, 'kp', password)
+        session = next(e for e in host.request('/view')['entities'].values() if e['configurationId'] == 'sv.session')
+        record = {'steps': {}}
+        job = Job(runtime.package, host, record)
+        before_session = copy.deepcopy(session)
+        job.sync_numbers('unchanged', session, {'autoResolve': 1})
+        assert host.request('/view')['entities'][session['instanceId']] == before_session
+        job.sync_numbers('changed', session, {'autoResolve': 0})
+        changed = host.request('/view')['entities'][session['instanceId']]
+        assert changed['numbers']['autoResolve'] == 0
+        # Simulate committed host effects with the local step result missing.
+        record['steps']['changed'].pop('result')
+        job.sync_numbers('changed', changed, {'autoResolve': 0})
+        assert 'result' in record['steps']['changed']
+        assert host.request('/view')['entities'][session['instanceId']] == changed
+        job.sync_numbers('restore', changed, {'autoResolve': 1})
+        checks.append('unchanged numeric sync creates no revision; changes commit; lost step result recovers the same receipt without another write')
         actor = p1.state()['character']['instanceId']
         identity_files = sorted(str(p.relative_to(runtime.data)) for p in (runtime.data/'host/identity').rglob('*') if p.is_file())
         before = p1.state()['character']['numbers']

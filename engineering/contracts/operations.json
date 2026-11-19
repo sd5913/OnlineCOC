@@ -817,5 +817,200 @@
       "approvalId"
     ],
     "additionalProperties": false
+  },
+  "knowledge.policy.bind": {
+    "type": "object",
+    "properties": {
+      "policyId": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 200
+      },
+      "descriptorDigest": {
+        "type": "string",
+        "pattern": "^[0-9a-f]{64}$"
+      },
+      "expectedRevision": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "required": [
+      "policyId",
+      "descriptorDigest",
+      "expectedRevision"
+    ],
+    "additionalProperties": false
+  },
+  "knowledge.observe": {
+    "type": "object",
+    "properties": {
+      "policyId": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 200
+      },
+      "expectedPolicyRevision": {
+        "type": "integer",
+        "minimum": 1
+      },
+      "subjectMemberId": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 200
+      },
+      "resource": {
+        "type": "object",
+        "properties": {
+          "namespace": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "kind": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          }
+        },
+        "required": [
+          "namespace",
+          "kind",
+          "id"
+        ],
+        "additionalProperties": false
+      },
+      "facetIds": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "minItems": 1,
+        "maxItems": 8,
+        "uniqueItems": true
+      },
+      "reason": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 500
+      },
+      "expectedSourceRevision": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 200
+      }
+    },
+    "required": [
+      "policyId",
+      "expectedPolicyRevision",
+      "subjectMemberId",
+      "resource",
+      "facetIds",
+      "reason",
+      "expectedSourceRevision"
+    ],
+    "additionalProperties": false
+  },
+  "knowledge.subscribe": {
+    "type": "object",
+    "properties": {
+      "policyId": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 200
+      },
+      "expectedPolicyRevision": {
+        "type": "integer",
+        "minimum": 1
+      },
+      "subjectMemberId": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 200
+      },
+      "resource": {
+        "type": "object",
+        "properties": {
+          "namespace": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "kind": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          }
+        },
+        "required": [
+          "namespace",
+          "kind",
+          "id"
+        ],
+        "additionalProperties": false
+      },
+      "facetIds": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "minItems": 1,
+        "maxItems": 8,
+        "uniqueItems": true
+      },
+      "reason": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 500
+      }
+    },
+    "required": [
+      "policyId",
+      "expectedPolicyRevision",
+      "subjectMemberId",
+      "resource",
+      "facetIds",
+      "reason"
+    ],
+    "additionalProperties": false
+  },
+  "knowledge.revoke": {
+    "type": "object",
+    "properties": {
+      "grantId": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 200
+      },
+      "expectedRevision": {
+        "type": "integer",
+        "minimum": 1
+      },
+      "reason": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 500
+      }
+    },
+    "required": [
+      "grantId",
+      "expectedRevision",
+      "reason"
+    ],
+    "additionalProperties": false
   }
 }

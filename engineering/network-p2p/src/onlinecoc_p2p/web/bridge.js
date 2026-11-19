@@ -1,5 +1,5 @@
-const allowedGet=/^(me|view|contracts|catalog|chat\/members|receipts\/[A-Za-z0-9_.-]+)$/;
-const allowedPost=/^(commands|query|calculate|chat\/history)$/;
+const allowedGet=/^(me|view|contracts|catalog|chat\/members|knowledge\/capabilities|receipts\/[A-Za-z0-9_.-]+)$/;
+const allowedPost=/^(commands|query|calculate|chat\/history|knowledge\/(preview|search|read|grants\/query))$/;
 
 export async function mountPackage(container, packageData, transport, prepare) {
   const {manifest,files}=packageData;

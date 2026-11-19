@@ -25,6 +25,8 @@ class Assets:
         with self.host.lock:
             s=self.host.state();m=member(s,account);asset=s['assets'].get(id)
             require(asset and (asset['visibility']=='public' or m['role']=='kp'),'NOT_VISIBLE')
+            require(m['role']=='kp' or not self.host.knowledge.managed(s,'asset',id,asset),'NOT_VISIBLE')
+            require(m['role']=='kp' or not any(id in e['components'].get('core.assets',[]) and self.host.knowledge.managed(s,'entity',key,e) for key,e in s['entities'].items()),'NOT_VISIBLE')
             raw=(self.path/asset['digest']).read_bytes();require(hashlib.sha256(raw).hexdigest()==asset['digest'],'ASSET_CORRUPT')
             return raw,asset
     def backup(self,account,target,include_identity=False,*,ai_snapshot=None):

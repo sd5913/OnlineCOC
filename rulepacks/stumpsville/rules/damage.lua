@@ -1,5 +1,5 @@
 return rule('sv.damage', {'actor', 'amount:amount', 'attribute:text'}, function(r, actor, amount, attribute)
-  assert(r.matches(actor, 'sv.character') or r.matches(actor, 'sv.npc'), 'SV_DAMAGE_TARGET')
+  assert(r.matches(actor, 'sv.character') or (r.matches(actor, 'sv.npc') or r.number(actor, 'isNpc') == 1), 'SV_DAMAGE_TARGET')
   assert(attribute == 'str' or attribute == 'dex', 'SV_DAMAGE_ATTRIBUTE')
   assert(amount <= 1000, 'SV_DAMAGE_RANGE')
   local layout = nil

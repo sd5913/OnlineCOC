@@ -10,8 +10,9 @@ export function createAITools(rawClient){
  const host=(op,args,id)=>{if(dead)throw new Error('TOOLS_DESTROYED');return client.command(op,args,id);};
  return {
   sessions:{list:(archived=false)=>client.aiSessions(archived),get:id=>client.aiSession(id),
-   create:(title,id)=>ai('ai.session.create',{title},id),
+   create:(title,id,accessLevel)=>ai('ai.session.create',{title,...(accessLevel?{accessLevel}:{})},id),
    update:(sessionId,revision,changes,id)=>ai('ai.session.update',{...changes,sessionId,revision},id),
+   delete:(sessionId,revision,id)=>ai('ai.session.delete',{sessionId,revision},id),
    submit:(sessionId,text,id)=>ai('ai.session.submit',{sessionId,text},id)},
   requests:{list:options=>client.aiTasks(options),submit:(text,id)=>ai('ai.request.create',{sourceKind:'manual',text},id),
    dispatch:(requestId,id)=>ai('ai.request.dispatch',{requestId},id),cancel:(requestId,id)=>ai('ai.request.cancel',{requestId},id)},
@@ -23,6 +24,9 @@ export function createAITools(rawClient){
    validate:(proposalId,revision,id)=>ai('ai.proposal.validate',{proposalId,revision},id),
    approve:(proposalId,proposalRevision,riskDecisions,id)=>host('ai.proposal.approve',{proposalId,proposalRevision,riskDecisions},id),
    apply:(approvalId,id)=>host('publication.apply',{approvalId},id),revoke:(approvalId,id)=>host('ai.proposal.revoke',{approvalId},id)},
+  access:{get:()=>client.aiAccess(),update:(value,id)=>ai('ai.access.update',value,id)},
+  rulings:{list:()=>client.aiRulings(),decide:(value,id)=>ai('ai.ruling.decide',value,id)},
+  batches:{list:()=>client.aiBatches(),approve:(batchId,digest,id)=>ai('ai.batch.approve',{batchId,digest},id),reject:(batchId,digest,id)=>ai('ai.batch.reject',{batchId,digest},id),reconcile:(batchId,digest,id)=>ai('ai.batch.reconcile',{batchId,digest},id)},
   usage:options=>client.aiUsage(options),
   settings:{get:()=>client.aiSettings(),update:(settings,id)=>ai('ai.settings.update',settings,id)},
   receipts:{ai:id=>client.aiReceipt(id),host:id=>client.receipt(id)},contracts:()=>client.aiContracts(),

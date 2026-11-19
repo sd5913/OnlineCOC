@@ -1,16 +1,18 @@
+import {mountStyle} from './styles.js';
 import {renderReferenceText,hydrateReferences} from './reference-editor.js';
+import {bindReferenceDetails} from './reference-details.js';
 
 // Deliberately DOM-only: model HTML is text, images never cause automatic requests.
 function plain(parent,text){const span=document.createElement('span');renderReferenceText(span,text);parent.append(...span.childNodes);}
 function inline(parent,text,depth=0){
  if(depth>12){plain(parent,text);return;}
- const pattern=/\[\[(?:config|entity|data|chat|event|ruling):[^\]\n]+\]\]|\\[\\`*_[\]{}()#+.!|>-]|(`+)([^`\n]*?)\1|!\[([^\]\n]*)\]\([^\n)]*\)|\[([^\]\n]+)\]\(([^\s)]+)(?:\s+"[^"]*")?\)|\*\*([^\n]+?)\*\*|__([^\n]+?)__|~~([^\n]+?)~~|\*([^*\n]+)\*|_([^_\n]+)_/g;
+ const pattern=/\[\[(?:config|entity|data|chat|event|ruling|knowledge):[^\]\n]+\]\]|\\[\\`*_[\]{}()#+.!|>-]|(`+)([^`\n]*?)\1|!\[([^\]\n]*)\]\([^\n)]*\)|\[([^\]\n]+)\]\(([^\s)]+)(?:\s+"[^"]*")?\)|\*\*([^\n]+?)\*\*|__([^\n]+?)__|~~([^\n]+?)~~|\*([^*\n]+)\*|_([^_\n]+)_/g;
  let end=0;
  for(const match of text.matchAll(pattern)){
   plain(parent,text.slice(end,match.index));const raw=match[0];let node;
   if(raw.startsWith('[['))plain(parent,raw);
   else if(raw.startsWith('\\'))plain(parent,raw.slice(1));
-  else if(match[1]){node=document.createElement('code');node.textContent=match[2];parent.append(node);}
+  else if(match[1]){if(/^\[\[(config|entity|data|chat|event|ruling|knowledge):[A-Za-z0-9_.-]+@[A-Za-z0-9_.-]+\]\]$/.test(match[2]))plain(parent,match[2]);else{node=document.createElement('code');node.textContent=match[2];parent.append(node);}}
   else if(raw.startsWith('!['))plain(parent,match[3]||'图片');
   else if(match[4]){
    let url;try{url=new URL(match[5],document.baseURI);}catch{}
@@ -67,9 +69,11 @@ export function renderMarkdown(target,text,{plainText=false}={}){
  const value=String(text??'').slice(0,100000);
  if(plainText)renderReferenceText(target,value);else blocks(target,value.replace(/\r\n?/g,'\n').split('\n'));
 }
-export function markdownStyle(root){const css=document.createElement('link');css.rel='stylesheet';css.href=new URL('./markdown.css',import.meta.url);root.append(css);}
+export function markdownStyle(root){mountStyle(root,new URL('./markdown.css',import.meta.url));}
 export function mountMarkdown(target,text,options={}){
- const element=document.createElement('div');target.append(element);const root=element.attachShadow({mode:'open'});markdownStyle(root);const body=document.createElement('div');root.append(body);let revision=0;
- function update(value,next=options){options=next;const stamp=++revision;renderMarkdown(body,value,next);hydrateReferences(body,next.resolveReferences,()=>element.isConnected&&stamp===revision);}
- update(text);return {update,destroy(){revision++;element.remove();}};
+ const element=document.createElement('div');target.append(element);const root=element.attachShadow({mode:'open'});markdownStyle(root);const body=document.createElement('div');root.append(body);let revision=0,dead=false;
+ const details=bindReferenceDetails(body,tokens=>options.resolveReferences?.(tokens),{container:root,valid:()=>element.isConnected});
+ let previous;
+ function update(value,next=options){if(dead)return;const unchanged=value===previous&&next.plainText===options.plainText&&next.resolveReferences===options.resolveReferences;options=next;if(unchanged){details.refresh();return;}previous=value;details.close();const stamp=++revision;renderMarkdown(body,value,next);hydrateReferences(body,next.resolveReferences,()=>!dead&&stamp===revision);}
+ update(text);return {update,destroy(){dead=true;revision++;details.destroy();element.remove();}};
 }

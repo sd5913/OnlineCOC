@@ -16,15 +16,22 @@ def install(app, runtime, auth):
     @app.post('/api/v1/ai/data/{operation}')
     async def data_query(operation: str, request: Request):
         account = auth(request, True)
-        return await asyncio.to_thread(queries.execute, account, operation, loads(await request.body()))
+        from onlinecoc_ai.access import can_use
+        role=can_use(service.host,service.repository,account)
+        return await asyncio.to_thread(queries.execute, account, operation, loads(await request.body()),player=account if role!='kp' else None)
 
     @app.get('/api/v1/ai/references')
     def reference_search(request: Request, kind: str = 'config', q: str = ''):
-        return references.search(auth(request), kind, q)
+        account=auth(request)
+        from onlinecoc_ai.access import can_use
+        can_use(service.host,service.repository,account)
+        return references.search(account, kind, q)
 
     @app.post('/api/v1/ai/references/resolve')
     async def reference_resolve(request: Request):
         account = auth(request, True);data = loads(await request.body())
+        from onlinecoc_ai.access import can_use
+        can_use(service.host,service.repository,account)
         from onlinecoc_ai.errors import require
         require(type(data) is dict and set(data) == {'tokens'}, 'INPUT_INVALID')
         return await asyncio.to_thread(references.resolve, account, data['tokens'])
@@ -57,6 +64,15 @@ def install(app, runtime, auth):
 
     @app.get('/api/v1/ai/proposals/{proposal_id}')
     def proposal(proposal_id: str, request: Request):return service.proposal(auth(request), proposal_id)
+
+    @app.get('/api/v1/ai/access')
+    def access(request: Request):return service.sessions.access(auth(request))
+
+    @app.get('/api/v1/ai/rulings')
+    def rulings(request: Request):return service.rulings.list(auth(request))
+
+    @app.get('/api/v1/ai/batches')
+    def batches(request: Request):return service.batches.list(auth(request))
 
     @app.get('/api/v1/ai/settings')
     def settings(request: Request):return service.settings(auth(request))

@@ -21,7 +21,7 @@ from .profiles import AI_ROOT, DEFAULT_PATH, credential, delete_profile, load_pr
 from .providers import create_provider
 from .vault import Vault
 
-ROOM_GET = re.compile(r'^(?:me|view|capabilities|ai/settings|ai/contracts|ai/usage(?:\?[\w.=&%-]+)?|ai/tasks(?:\?(?:before|limit)=[\w.-]+(?:&(?:before|limit)=[\w.-]+)*)?|ai/sessions(?:\?archived=(?:true|false))?|ai/sessions/[\w-]+|ai/(?:receipts|proposals)/[\w.-]+|receipts/[\w.-]+)$')
+ROOM_GET = re.compile(r'^(?:me|view|capabilities|ai/settings|ai/contracts|ai/access|ai/batches|ai/rulings|ai/usage(?:\?[\w.=&%-]+)?|ai/tasks(?:\?(?:before|limit)=[\w.-]+(?:&(?:before|limit)=[\w.-]+)*)?|ai/sessions(?:\?archived=(?:true|false))?|ai/sessions/[\w-]+|ai/(?:receipts|proposals)/[\w.-]+|receipts/[\w.-]+)$')
 ROOM_POST = {'ai/commands', 'ai/drafts', 'ai/references/resolve', 'ai/data/search', 'ai/data/read', 'ai/data/chat', 'ai/data/case', 'commands', 'logout'}
 
 

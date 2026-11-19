@@ -1,13 +1,15 @@
 """Real-browser semantic chat references in all three packaged views."""
 import pytest
 from playwright.sync_api import sync_playwright, expect
-from test_manager_ui import services
+from test_manager_ui import services, allow_players
 from test_embeds import login
 
 
 @pytest.mark.parametrize('account',['kp','player1'])
-def test_task_diagnostics_are_visible_only_in_keeper_conversation(services,account):
+@pytest.mark.parametrize('error_code',['AI_TASK_FAILED','PROVIDER_REQUEST_INVALID'])
+def test_task_diagnostics_are_visible_only_in_keeper_conversation(services,account,error_code):
     _,entry,_=services;origin=f'http://127.0.0.1:{entry["roomPort"]}'
+    allow_players(origin)
     with sync_playwright() as p:
         browser=p.chromium.launch(channel='msedge',headless=True);page=browser.new_page();errors=[]
         page.on('pageerror',lambda error:errors.append(str(error)))
@@ -18,10 +20,10 @@ def test_task_diagnostics_are_visible_only_in_keeper_conversation(services,accou
                 for item in data.get('items',[]):
                     # Deliberately also inject this into PL transport: role guard
                     # must still suppress diagnostics even with an extra field.
-                    item.update(status='failed',error='AI_TASK_FAILED',diagnostics={
+                    item.update(status='failed',error=error_code,diagnostics={
                         'schemaVersion':1,'stage':'tool_execute','turn':0,
                         'toolCalls':[{'name':'room_search_data','status':'completed'}],
-                        'errors':[{'stage':'tool_execute','code':'AI_TASK_FAILED','exceptionType':'KeyError',
+                        'errors':[{'stage':'tool_execute','code':error_code,'exceptionType':'KeyError','httpStatus':400,
                             'frames':[{'module':'onlinecoc_ai.data_queries','function':'execute','line':1}]}]})
                 route.fulfill(response=reply,json=data)
             page.route('**/api/v1/ai/sessions/*',response)
@@ -29,13 +31,14 @@ def test_task_diagnostics_are_visible_only_in_keeper_conversation(services,accou
             page.locator('#text').fill('诊断显示验收');page.locator('#send').click()
             expect(page.locator('#history')).to_contain_text('诊断显示验收')
             if account=='kp':
-                expect(page.locator('.task-error')).to_have_text('错误：AI_TASK_FAILED')
+                expect(page.locator('.task-error')).to_contain_text(error_code)
                 page.locator('.task-diagnostics summary').click()
                 expect(page.locator('.task-diagnostics')).to_contain_text('资料查询：已完成 1 次')
-                expect(page.locator('.task-diagnostics')).to_contain_text('执行查询 · KeyError · AI_TASK_FAILED')
+                expect(page.locator('.task-diagnostics')).to_contain_text('执行查询 · KeyError · '+error_code+' · HTTP 400')
                 expect(page.locator('.task-diagnostics')).to_contain_text('onlinecoc_ai.data_queries.execute:1')
             else:
                 expect(page.locator('.task-error,.task-diagnostics')).to_have_count(0)
+            if error_code=='PROVIDER_REQUEST_INVALID':expect(page.locator('.error-detail')).to_contain_text('AI 服务商拒绝了请求参数')
             assert not errors,errors
         finally:browser.close()
 
@@ -43,6 +46,7 @@ def test_task_diagnostics_are_visible_only_in_keeper_conversation(services,accou
 @pytest.mark.parametrize('variant',['page','conversation','collapsible'])
 def test_chat_evidence_reference_and_preview(services,variant):
     _,entry,_=services;origin=f'http://127.0.0.1:{entry["roomPort"]}'
+    allow_players(origin)
     with sync_playwright() as p:
         browser=p.chromium.launch(channel='msedge',headless=True);page=browser.new_page()
         try:

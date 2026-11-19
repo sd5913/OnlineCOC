@@ -4,10 +4,12 @@
 - 文档子类：工程
 - 状态：有效
 - 创建日期：2026-11-12
-- 最后更新：2026-11-16
+- 最后更新：2026-11-17
 - 关联文档：[工程索引](README.md)、[模块入口](../../../engineering/ai/README.md)、[设计](../../plans/ai-runtime-design.md)、[施工计划](../../plans/ai-runtime-construction-plan.md)
 
 ## 当前阶段
+
+2026-11-17 的个人知识接入已完成，严格玩家辅助只消费宿主可复验的固定资料及显式持续授权，见[已知资料实现](ai-player-knowledge.md)。本轮384项AI模块测试已通过；下述早期阶段数字保留为交付背景，不累加为本轮数量。
 
 AI-0—AI-5 已完成本地实现与验收；AI-6 实际 demo 包的工程试点、故障/恢复脚本和最终回归已完成，真实 KP 试玩反馈待补。完整回归 **302 项通过**，末轮权限/记忆/界面复验分别 **45 项、23 项通过**；三次运行按测试 ID 去重共 **304 项**，无失败/跳过。见[交付验收摘要](../../../engineering/acceptance/ai-runtime/acceptance-summary.json)、[完整回归](../../../engineering/acceptance/ai-runtime/ai-6.json)、[权限补验](../../../engineering/acceptance/ai-runtime/ai-6-privacy.json)及[最终上下文/浏览器复验](../../../engineering/acceptance/ai-runtime/ai-6-final-context.json)。
 
@@ -15,7 +17,7 @@ AI-0—AI-5 已完成本地实现与验收；AI-6 实际 demo 包的工程试点
 
 2026-11-12 补充真实 DeepSeek 联调：`deepseek-flash` 的 JSON/工具探测、房间与包契约读取、提案生成和 A/B/C 均通过，见[真实联调报告](../../../engineering/acceptance/ai-runtime/deepseek-live.json)。本轮针对实际机器契约提示与修复路径补强后，[49 项离线回归](../../../engineering/acceptance/ai-runtime/deepseek-regression.json)通过；与上述三次运行去重共 305 项。隔离房间中的提案停在待 KP 审核，未批准或发布。密钥仅用于测试进程，未写入配置或证据；持久服务配置、房间调用与自动接收仍默认关闭。
 
-2026-11-13 增加独立 AI 管理器、Windows 加密凭据、房间会话、嵌入组件及无界面客户端。当前使用/API 和本轮验收见[管理器与开发接入](ai-manager.md)；上述 305 项属于此前交付记录，不代表新增管理功能的测试数。Stumpsville 已有包侧咨询接入，配置生成/发布仍见[后续计划](../../plans/stumpsville-ai-integration.md)。2026-11-14 通用管理器新增房间文件夹对话、版本化数据引用与补全，并优化会话提交/读取；测量、验收及包侧交互原型入口见[管理器说明](ai-manager.md)。
+2026-11-13 增加独立 AI 管理器、Windows 加密凭据、房间会话、嵌入组件及无界面客户端。当前使用/API 和本轮验收见[管理器与开发接入](ai-manager.md)；上述 305 项属于此前交付记录，不代表新增管理功能的测试数。Stumpsville 已有包侧接入；2026-11-16 的受限 NPC 模板／规则发布与统一裁决见[现行说明](ai-rulings.md)。2026-11-14 通用管理器新增房间文件夹对话、版本化数据引用与补全，并优化会话提交/读取；测量、验收及包侧交互原型入口见[管理器说明](ai-manager.md)。
 
 ## 已有内容
 
@@ -24,7 +26,7 @@ AI-0—AI-5 已完成本地实现与验收；AI-6 实际 demo 包的工程试点
 | 机器契约 | [ai.json](../../../engineering/contracts/ai.json) 定义 Profile、包契约、上下文、提案、报告、批准等结构；顶层拒绝未知字段 |
 | JSON/摘要工具 | [contracts.py](../../../engineering/ai/src/onlinecoc_ai/contracts.py)：拒绝重复键、非法 Unicode、非有限/不安全数字、过深数据；canonical 字节与现有存储一致 |
 | 跨对象约束 | 候选、基线、上下文及报告摘要绑定；配置 ID/修订前置条件、工件摘要和作用域一致性检查；这些结构检查不等于主机授权 |
-| 工具权限目录 | [policy.py](../../../engineering/ai/src/onlinecoc_ai/policy.py)：模型能力与禁用操作的目录；当前编排接线六个只读工具，最终草稿交给三检，模型不能审批、发布或写实体 |
+| 工具权限目录 | [policy.py](../../../engineering/ai/src/onlinecoc_ai/policy.py)：模型能力与禁用操作的目录；编排的基本查询工具及管理员附加管理查询均只读；配置草稿交给三检，运行时修改只提出[执行批次](ai-session-access.md)，模型不能直接审批或执行 |
 | 技术包 | [包规则](../../../engineering/ai/tests/fixtures/pack/docs/rules.md)、Schema、B 正反例、C 场景和指标；仅用于工程验收，不代表实际游戏已适配 |
 | 服务商模板 | [ai-providers.json](../../../engineering/ai/examples/ai-providers.json)，默认禁用，凭据仅引用 ONLINECOC_DEEPSEEK_API_KEY；[实际配置](../../../engineering/ai/config/ai-providers.json)支持本机管理及可选启动加载 |
 
@@ -70,7 +72,7 @@ Windows 上已验证顶层死循环、内存/输出膨胀、文件/网络与 Pyt
 
 ## 升级与备份恢复
 
-后端 0.2.0 只接受 Room schemaVersion=3，chat 与 aiControl 均必需；文件数据管理格式仍为 1。旧 v1/v2、未知新版及损坏的当前格式均拒绝加载，不导出迁移快照、不自动补齐字段。格式定义、旧定义及外部迁移责任见[房间格式](room-format.md)。新建房间直接使用 v3。同一存档重启保留 scopeId，主机 authorityEpoch 会改变，因此未消费的旧批准需要重新检查和审核；已消费命令回执仍可查询。
+后端 0.3.0 只接受 Room schemaVersion=4，chat、aiControl 与 knowledge 均必需；文件数据管理格式仍为 1。加载时拒绝其他版本，不自动补齐或改档。v3 可通过独立离线转换器生成新副本；格式、命令及回滚步骤见[房间格式](room-format.md)。新建房间直接使用 v4。同一存档重启保留 AI 与知识 scopeId，主机 authorityEpoch 会改变，因此未消费的旧批准需要重新检查和审核；已消费命令回执仍可查询。
 
 恢复到新目录会生成新 scopeId、撤销未消费批准、关闭自动需求；已发布配置和工件保留。备份验证工件引用、批准证据摘要及可选 AI 快照引用。`Assets.backup(..., ai_snapshot=...)` 可携带独立历史；恢复为 `ai-history-before-restore.json` 附件，不自动把旧作用域历史当作新房间有效记忆。没有 AI 附件也能恢复已发布游戏。
 
@@ -103,11 +105,11 @@ Coordinator 每房间只运行一个任务，队列、总期限、工具回合�
 
 用户授权后的真实DeepSeek复验已跑通分页搜索、详情读取和最终回答，最终样例29实体、13配置及频道general核对一致；本轮87项回归通过，见[汇总](../../../engineering/acceptance/ai-runtime/issue-009-live-results.json)。真实复验发现并修复了可选behaviors字段的KeyError。最初3473 tokens失败只有响应摘要，仍无法确认其确切根因。完整答案仍有未读规则却推断地图及剧情语义的问题；[ISSUE-009](../../plans/Issues/issue-009-ai-live-query-diagnostics.md)保留该验收缺口，链路通过不代表所有推论准确。
 
-生成提示从 `ChangeSet` 机器契约提取实际 Schema 及依赖定义，明确完整配置值、字符串修订与未改文件的合并方式。结构化草稿不合法时，有限修复会反馈稳定错误码和字段路径；校验标准不因模型输出而放宽。
+生成提示从 `ChangeSet` 机器契约提取实际 Schema 及依赖定义，明确完整配置值、字符串修订与未改文件的合并方式。结构化草稿不合法时，默认最多 5 次自动修正，反馈稳定错误码、字段路径和约束；校验标准不因模型输出而放宽。
 
 每日累计限额默认关闭（Profile.limits.dailyTokenBudget=null），正整数显式启用；不限额时仍保留完整记账。每次网络尝试在独立仓库持久预留额度，成功按用量结算；失败或中断保留预留量，避免把可能计费的调用当作免费。使用 UTF-8 字节作保守输入估算；每日额度是按房间＋服务配置＋UTC日期计算的本地约束，不是服务商账单保证。授权只读 `GET /api/v1/ai/usage` 区分确认消耗、调用中预留和待核实预留；KP可查整个房间，PL只查本人原始需求，接口/界面和升级步骤见[每日限额与统计](ai-manager.md#每日限额与用量统计)。任务重启变为 interrupted，不自动重发。取消/关闭会终止网络等待并等待本地检查收尾；模型等待及三检均不占房间写锁。
 
-启动可选参数为 `serve --ai-config <配置文件> --ai-pack <带AI契约的包目录>`；不提供时不创建 AI 服务。配置和房间开关均默认关闭；房间开关由 KP 在操作台设置，本机服务商配置由独立管理器或管理员 CLI 维护，下一次调用前按配置文件摘要刷新；当前任务仍绑定原 Profile 修订。队列、用量和错误存在独立 AI 仓库；模型输出仅能进入方案/草稿，不能获得 KP 审核权限。
+启动可选参数为 `serve --ai-config <配置文件> --ai-pack <带AI契约的包目录>`；不提供时不创建 AI 服务。配置和房间开关均默认关闭；房间开关由 KP 在操作台设置，本机服务商配置由独立管理器或管理员 CLI 维护，下一次调用前按配置文件摘要刷新；当前任务仍绑定原 Profile 修订。队列、用量和错误存在独立 AI 仓库；模型输出进入方案／配置草稿／管理员执行批次，不能获得 KP 审核权限。
 
 ## 授权上下文和持久记忆
 
@@ -130,10 +132,10 @@ Coordinator 每房间只运行一个任务，队列、总期限、工具回合�
 | `POST /api/v1/ai/commands` | `{requestId,authorityEpoch,op,args}`；64 KiB，账号由会话绑定，参数见 [ai-operations.json](../../../engineering/contracts/ai-operations.json) |
 | `POST /api/v1/ai/drafts` | 同一封套，仅 ai.draft.create / ai.proposal.revise，8 MiB；人工草稿和修改都重新三检 |
 | `GET /api/v1/ai/receipts/{id}` | 当前账号的幂等回执；pending/committed/rejected/unknown，重启时未完成回执标记 unknown/PROCESS_RESTARTED |
-| `GET /api/v1/ai/tasks?before=&limit=` | 请求分页，上限 100；玩家只见自己请求的 ID/状态/时间，KP 需通过当前来源权限 |
+| `GET /api/v1/ai/tasks?before=&limit=` | 请求分页，上限 100；玩家开关启用后可见本人玩家会话的授权回答；诊断／报告仍限 KP，来源读取重新复验 |
 | `GET /api/v1/ai/proposals/{id}` | 当前审核者可读提案及报告；旧回执同样重新验证来源，撤权后不返回旧正文 |
 | `GET /api/v1/ai/contracts` | 当前 JSON 操作 Schema 与依赖定义，需登录 |
-| `GET /api/v1/ai/sessions` / `sessions/{id}` | 当前账号会话列表/详情；新增 create/update/submit 命令与有限会话历史，详见[管理器接口](ai-manager.md) |
+| `GET /api/v1/ai/sessions` / `sessions/{id}` | KP 全部／PL 本人会话列表及详情；create/update/submit/delete 命令与有限会话历史，详见[管理器接口](ai-manager.md) |
 | `GET /api/v1/ai/references?kind=&q=` / `POST /api/v1/ai/references/resolve` | 当前账号可见的配置、活动实体与 KP 工件数据；修订绑定、只读预览与外发复验，详见[引用契约](ai-manager.md#数据引用与短指令) |
 | `GET /api/v1/ai/settings` | KP 可见房间开关、服务配置公开标识、外发范围、额度和有效记忆 |
 
@@ -167,3 +169,5 @@ engineering/.venv/Scripts/python -m pytest engineering/backend/tests engineering
 ~~~
 
 测试使用公开的固定夹具，不读取真实游戏存档。服务商模板不是密钥存储，不能把实际密钥写入仓库。显式真实联调命令与不回显输入说明见[模块入口](../../../engineering/ai/README.md)；真实服务结果与本地模拟结果分别记录。
+
+会话级权限、玩家直接转交、管理员执行批次、自动批准和删除行为见[会话权限与执行批次](ai-session-access.md)。配置发布仍使用既有三检与独立风险批准。

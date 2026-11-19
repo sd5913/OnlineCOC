@@ -1,0 +1,12 @@
+{
+  "passed": true,
+  "checkedAt": "2026-11-18T09:42:02.837912+08:00",
+  "checks": [
+    "not ready, incapacitated, zero attribute and unopened session have distinct causes and PL/KP recovery instructions",
+    "inventory explains exhaustion, empty/occupied slots and multi-cell layout; rejected actions change no numbers and repeated IDs create one private event",
+    "failed KP approval remains pending with the same reason delivered to PL; correcting the condition allows approval without replaying the failed attempt",
+    "condition changes between queuing and execution produce a precise blocked result on the original player card",
+    "unknown host rejection stays explicitly uncertain about its cause; private diagnostics never reach player feedback",
+    "browser dialog and persistent log show reason, next steps and action ID; blocked badge survives reload with no JS errors"
+  ]
+}

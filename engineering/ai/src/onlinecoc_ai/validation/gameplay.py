@@ -122,7 +122,13 @@ def assess(pack, state, baseline, context, changes, artifact=None):
         # Without an explicit mapping, fail closed instead of implying that new
         # fixture instances prove compatibility with an arbitrary live room.
         code_changed = changes["sources"] != baseline["sources"] or changes["data"] != baseline["data"]
-        if code_changed and state["entities"]:
+        from .extensions import assess_extensions
+        extension_evidence=assess_extensions(pack,state,baseline,artifact,changes,context['reviewPrincipal'])
+        if extension_evidence and (extension_evidence['changedRules'] or changes['configurations']):
+            risk='high'
+            findings.append(finding('EXTENSION_GAMEPLAY_REVIEW',severity='warning',suggestion='Review NPC template deltas and explicit rule effects before publication'))
+            executions.append({'extensionValidation':extension_evidence})
+        if code_changed and state["entities"] and extension_evidence is None:
             covered_entities = set()
             for scenario in pack.scenarios:
                 ids = {v for step in scenario["steps"] for v in step["input"].values() if isinstance(v, str) and v in state["entities"]}

@@ -19,7 +19,7 @@
         "maxConcurrentPerRoom": 1,
         "maxQueuedPerRoom": 5,
         "maxToolRounds": 6,
-        "maxRepairAttempts": 2,
+        "maxRepairAttempts": 5,
         "maxTransportRetries": 2,
         "taskTimeoutMs": 300000,
         "dailyTokenBudget": null

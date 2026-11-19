@@ -1,5 +1,6 @@
 """Read-only package evidence adapter. Uses documented room fields, no engine imports."""
 import hashlib
+import copy
 import json
 from pathlib import Path
 
@@ -8,9 +9,53 @@ def fingerprint(value):
     return hashlib.sha256(json.dumps(value,sort_keys=True,ensure_ascii=True,separators=(',',':')).encode()).hexdigest()
 
 
+def known_locations(state, entities, account):
+    """Personal visits or explicit disclosure; never global publish or inferred from a clue."""
+    known=set(state.get('locationKnowledge',{}).get(account,[]))
+    known.update(str(v['numbers']['location']) for v in entities.values()
+        if v['configurationId']=='sv.character' and v['owner']==account and v['lifecycle']=='active')
+    return known
+
+
 class Adapter:
     kinds=("channel","chat","event","ruling")
     def __init__(self,path):self.path=Path(path)
+
+    def reference_label(self,kind,key,fallback):
+        labels={'sv.npc':'NPC 模板','sv.character':'角色模板','sv.location':'地点模板','sv.scene':'场景状态模板'}
+        return labels.get(key,fallback) if kind=='config' else fallback
+
+    def known_configurations(self,room,account):
+        # Seeing a contact's name never discloses its NPC template or default stats.
+        return {v['configurationId'] for v in room['entities'].values() if v['owner']==account and v['lifecycle']=='active'}
+
+    def entities(self, room, account):
+        """Same player boundary as the package UI: own sheet and disclosed map facts."""
+        if not self.path.exists():return {}
+        raw=self.path.read_bytes()
+        if len(raw)>8*1024*1024:raise ValueError('PACKAGE_DATA_LIMIT')
+        state=json.loads(raw)
+        if state.get('format')!=2 or state.get('sceneId') not in room['entities']:return {}
+        all_entities=room['entities'];mine=[v for v in all_entities.values() if v['configurationId']=='sv.character' and v['owner']==account and v['lifecycle']=='active']
+        locations={v['numbers']['location'] for v in mine};seen=state.get('actorDiscoveries',{}).get(account,{})
+        known=known_locations(state,all_entities,account)
+        result={}
+        for key,value in all_entities.items():
+            if value['lifecycle']!='active':continue
+            cid=value['configurationId'];out=None
+            if value['owner']==account:
+                out=copy.deepcopy(value)
+            elif cid=='sv.location' and value['visibility']=='public' and str(value['numbers'].get('index')) in known:
+                disclosed=state.get('published',{}).get(str(value['numbers'].get('index')))
+                if disclosed:
+                    out=copy.deepcopy(value);out.update(numbers={'index':value['numbers']['index']},rules={},metadata={'known':copy.deepcopy(disclosed)},components={},tags=[])
+                    out['metadata']['known']['exits']=[i for i in disclosed.get('exits',[]) if str(i) in known]
+                    out['metadata']['discoveries']=[v for v in state.get('discoveries',{}).get(account,{}).values() if v.get('location')==value['numbers']['index']]
+            elif (cid in ('sv.character','sv.npc') or cid.startswith('sv.ext.npc.')) and value['numbers'].get('location') in locations and (seen.get(key, cid=='sv.character')):
+                out=copy.deepcopy(value);out.update(numbers={'location':value['numbers']['location']},rules={},metadata={},components={},tags=[],visibility='public')
+            if out:
+                out['metadata'].pop('secret',None);result[key]=out
+        return result
 
     def read(self,room,account):
         if not self.path.exists():return []

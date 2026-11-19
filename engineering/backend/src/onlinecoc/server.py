@@ -135,6 +135,17 @@ def create_app(host,port=8765,host_control=None,*,ai_runtime=None):
         response=JSONResponse({'ok':True});response.delete_cookie('onlinecoc');return response
     @app.get('/api/v1/view')
     def view(request:Request):return host.project(auth(request))
+    @app.get('/api/v1/knowledge/capabilities')
+    def knowledge_capabilities(request:Request):
+        with host.lock:return host.knowledge.capabilities(auth(request))
+    @app.post('/api/v1/knowledge/{operation:path}')
+    async def knowledge_query(operation:str,request:Request):
+        methods={'preview':host.knowledge.preview,'search':host.knowledge.search,'read':host.knowledge.read,'grants/query':host.knowledge.grants}
+        require(operation in methods,'NOT_VISIBLE')
+        data=await read_object(request)
+        def dispatch():
+            with host.lock:return methods[operation](auth(request,True),data)
+        return await asyncio.to_thread(dispatch)
     @app.post('/api/v1/query')
     async def query(request:Request):
         data=await read_object(request);require(set(data)<={'collection','equals'} and 'collection' in data)
@@ -153,7 +164,7 @@ def create_app(host,port=8765,host_control=None,*,ai_runtime=None):
     @app.get('/api/v1/contracts')
     def contracts():
         from .contracts import MODELS,OPERATIONS
-        return {'protocolVersion':1,'models':MODELS,'operations':OPERATIONS,'ai':json.loads((ROOT/'contracts/ai.json').read_text(encoding='utf-8')),'aiOperations':json.loads((ROOT/'contracts/ai-operations.json').read_text(encoding='utf-8'))}
+        return {'protocolVersion':1,'models':MODELS,'operations':OPERATIONS,'knowledge':json.loads((ROOT/'contracts/knowledge.json').read_text(encoding='utf-8')),'ai':json.loads((ROOT/'contracts/ai.json').read_text(encoding='utf-8')),'aiOperations':json.loads((ROOT/'contracts/ai-operations.json').read_text(encoding='utf-8'))}
     @app.get('/api/v1/catalog')
     def catalog(request:Request):return host.catalog(auth(request))
     @app.post('/api/v1/commands')
@@ -239,7 +250,17 @@ def create_app(host,port=8765,host_control=None,*,ai_runtime=None):
                     text=raw.decode('utf-8');chunks=[text[i:i+24000] for i in range(0,len(text),24000)]
                     await asyncio.wait_for(ws.send_json({'type':'snapshot.begin','id':snapshot,'parts':len(chunks)}),2)
                     for i,part in enumerate(chunks):await asyncio.wait_for(ws.send_json({'type':'snapshot.part','id':snapshot,'index':i,'data':part}),2)
-                    await asyncio.wait_for(ws.send_json({'type':'snapshot.end','id':snapshot}),2);last=fingerprint
+                    host.hit('before_snapshot_end')
+                    # The authorization check and outbound scheduling are one
+                    # lock-protected boundary; network I/O runs after release.
+                    with host.lock:
+                        host.auth(ws.cookies.get('onlinecoc',''))
+                        current=hashlib.sha256(canonical(host.project(account))).hexdigest()
+                        valid=current==fingerprint
+                        outgoing=asyncio.create_task(ws.send_json({'type':'snapshot.end','id':snapshot} if valid else {'type':'reset'}))
+                    await asyncio.wait_for(outgoing,2)
+                    if not valid:last=None;continue
+                    last=fingerprint
                 try:
                     message=await asyncio.wait_for(ws.receive_text(),timeout=.25)
                     if len(message)>65536:await ws.close(code=1009);return

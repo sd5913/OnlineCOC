@@ -93,6 +93,11 @@ class Pack:
                 self.json(case)
         for scenario in self.scenarios:
             self.json(scenario["fixtureRef"])
+        self.extension_validation = None
+        if self.contract['contextMapping'].get('extensionValidation'):
+            self.extension_validation=validate('ExtensionValidation',self.json(self.contract['contextMapping']['extensionValidation']))
+            local_schema(self.json(self.extension_validation['defaultsSchema']))
+            self.json(self.extension_validation['fixtureRef'])
         self.digest = digest(self.files)
         self._sealed = True
 

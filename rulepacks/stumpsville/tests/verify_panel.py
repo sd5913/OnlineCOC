@@ -59,10 +59,11 @@ def main():
         window = PanelWindow(root, output/'中文 存档', False, ai=True, ai_config=config, port=free_port())
         try:
             pump(root, lambda: not window.scanning)
+            window.slot_name.set('面板验收');window.slot_create.invoke()
             password = secrets.token_urlsafe(18)
             window.password.set(password); window.confirm.set('wrong')
             window.start_button.invoke()
-            assert '不一致' in window.status.get() and not window.data.exists()
+            assert '不一致' in window.status.get() and not (window.data/'host').exists()
             window.confirm.set(password)
             window.start_button.invoke()
             pump(root, lambda: bool(window.url) or window.failed)

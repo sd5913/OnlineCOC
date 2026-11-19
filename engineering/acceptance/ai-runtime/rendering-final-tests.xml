@@ -1,0 +1,1 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="0" skipped="0" tests="1" time="18.636" timestamp="2026-11-16T23:14:21.793031+08:00" hostname="LAPTOP-BIFSL64A"><testcase classname="tests.test_embeds" name="test_real_room_page_variants[page]" time="18.353" /></testsuite></testsuites>

@@ -1,0 +1,88 @@
+{
+  "checkedAt": "2026-11-16T23:16:01.274654+08:00",
+  "uniqueModuleTestsPassed": 55,
+  "runs": [
+    {
+      "artifact": "rendering-knowledge-tests.xml",
+      "tests": 53,
+      "failures": 1
+    },
+    {
+      "artifact": "style-prototype-tests.xml",
+      "tests": 2,
+      "failures": 0
+    },
+    {
+      "artifact": "rendering-retest.xml",
+      "tests": 8,
+      "failures": 1
+    },
+    {
+      "artifact": "rendering-final-tests.xml",
+      "tests": 1,
+      "failures": 0
+    }
+  ],
+  "pack": [
+    {
+      "artifact": "rulepacks/stumpsville/tests/ai-knowledge-results.json",
+      "passedGroups": 5
+    },
+    {
+      "artifact": "rulepacks/stumpsville/tests/ai-data-results.json",
+      "passedGroups": 4
+    },
+    {
+      "artifact": "rulepacks/stumpsville/tests/ai-scopes-results.json",
+      "passedGroups": 8
+    },
+    {
+      "artifact": "rulepacks/stumpsville/tests/map-ai-results.json",
+      "passedGroups": 11
+    }
+  ],
+  "packGroupsPassed": 28,
+  "realApiCalls": 0,
+  "realSaveChanged": false,
+  "browser": "headless Edge, desktop and 390px prototype, local WebRTC pack integration",
+  "correctedTestExpectations": [
+    "Old embed test expected pre-ruling button and two-step approval; now verifies unified ruling reaches executed, with 40s publication wait.",
+    "Scope test expected KP guide in player payload and retired guide wording; now checks separated guides."
+  ],
+  "limits": [
+    "No trace of the original intermittent user session; identified stylesheet lifecycle path, regression tested.",
+    "No reconstructed historical visits for old saves.",
+    "Base host public entity name/index and package navigation topology are not made confidential by this AI query fix.",
+    "Session-management prototype uses in-memory demo data, not production integration."
+  ],
+  "sha256": {
+    "engineering/ai/web/components/styles.js": "2da73e4f1c3cd43f0a723275c8a2671cccfc85775a64d21d2500250f8843a48b",
+    "engineering/ai/web/components/pack-manifest.json": "bf7d97ba5e4ec1ca1f90113d6ed1d8ab2c8624f191ef697223cf4e02a87ea8e1",
+    "engineering/ai/src/onlinecoc_ai/context.py": "c0f00a57cec7f945c73031a6f4666c5b06747d9d5353e0d621ea6a2ca9106288",
+    "engineering/ai/web/manager/session-prototype.html": "bf21b170e7dae847dfc2a4c2ac75fb71087bc1ab105e6a2ac94c0b1f79ece3fd",
+    "engineering/ai/web/manager/session-prototype.css": "52673645f09f16539d1790a7724f3e34a994c12231ee76bb7b50adc2716cabf8",
+    "engineering/ai/web/manager/session-prototype.js": "fde13cd1e3345ecdc0d0196d37197362faf9eb1b87ff5dde262c4d0f425fd4d2",
+    "rulepacks/stumpsville/tools/ai_data.py": "8706df94278bede5729863af984846866267835dd737fcf723c2f994b8373e19",
+    "rulepacks/stumpsville/tools/visibility.py": "599a2c376beb234e7688591544cc25224421dfcce55069e52c1adc7c8874efc5",
+    "rulepacks/stumpsville/tools/package.py": "4c5fb8c73f42d5f3c24a3993d31f1f083cc5e98f79176059c336f5c8100fb079",
+    "rulepacks/stumpsville/tools/integrations.py": "98af01c3a6d8100395451648b38ce232650a058f794777db66c983ab93e7b3b9",
+    "rulepacks/stumpsville/tools/build_web.py": "e6cd49cf8bfa6ee5e49ce267a079cd01b9bdf6e0705c1dfec094ca210bd874f2",
+    "rulepacks/stumpsville/ui/app.js": "70d42da9ce4d584adf0ad06818114aa03b4dc8c0fe85839bdc607b7639f42f48",
+    "rulepacks/stumpsville/ai/player-guide.md": "dcedf0a6d255e8583e8f2c51c53b2cf3d4c79ea161a724dbc18d9049985da5b9",
+    "engineering/ai/web/components/chat.js": "47fdf29d400c38522c91319f90f00c019ba73a2695843d122bbc9e4d8346070b",
+    "engineering/ai/web/components/choices.js": "b8b34a352f52e00068d04f73d1c8a1f387cbd5c3053114fbf904e33b7cb7421c",
+    "engineering/ai/web/components/markdown.js": "bda71858f1500b9782a7bdcd50d2a124d611e85bd79f02b9733d95eae344b193",
+    "engineering/ai/web/components/providers.js": "e7cdc63f2a4fc889e37fe2caf48d32cb15af2aeb2e6246d93df890f9d789e75e",
+    "engineering/ai/web/components/reference-details.js": "1851f183157a83d32b6d70948f7d8b3a6af2aec2c28d0fd8119dcfbc7b4af206",
+    "engineering/ai/web/components/room-panel.js": "ffa98ac8e787837c8f2858ca0418722945896fa3889d057842f736f4d597e249",
+    "engineering/ai/web/components/rulings.js": "b15e9629f44d29db639322da01d58850d2d2ab2b06805d390a8c734a05abef18",
+    "engineering/ai/web/components/session-manager.js": "9c88f72dc2bae019f8931ea822c11c29a3f21467863eea0416d02ef488bab86c",
+    "engineering/ai/web/components/sessions.js": "9dd5b59228e769003275695d256f4febeef831b60f63a6ada584287608b945a9",
+    "engineering/ai/web/components/usage.js": "f2682739b4ddb8703954768135d914fdc35602778b43c462e726c758be40339e",
+    "engineering/ai/web/components/views.js": "6ec0978376fbd53cef9af3c40323c0bb45096af4c9b2275903ec964a9ff1811d",
+    "engineering/ai/tests/test_style_stability.py": "6a80f3dfaf66b289604358ac4db192a437eda03b73ec919a9d7ecef768a32b3d",
+    "engineering/ai/tests/test_embeds.py": "dcf9bb046b2c1f0d5f77272dfa91ac45d90edbf5a49974fdcd4bc08b4377a474",
+    "rulepacks/stumpsville/tests/verify_ai_knowledge.py": "1f53dcbfbcef907636e9b7c0815cb0a72dfe9dce3733efe6cc9ea6070fd6d5dd",
+    "rulepacks/stumpsville/tests/verify_ai_scopes.py": "b8336ef05797c0a10716ea81829bee325261fda887a9660c90c9dc290b7f64f0"
+  }
+}

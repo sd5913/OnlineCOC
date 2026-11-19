@@ -55,6 +55,8 @@ def test_backup_restore_assets_identity(host,tmp_path):
         after=restored.state()
         assert after['aiControl']['scopeId']!=before['aiControl']['scopeId']
         after['aiControl']['scopeId']=before['aiControl']['scopeId']
+        assert after['knowledge']['scopeId']!=before['knowledge']['scopeId']
+        after['knowledge']['scopeId']=before['knowledge']['scopeId']
         assert after==before
         assert Assets(restored).read('kp',asset)[0]=='秘密'.encode()
         assert restored.identity.login('player1','test-password')

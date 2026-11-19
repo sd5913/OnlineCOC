@@ -23,8 +23,12 @@ class Context:
 
     def capture(self, account, request):
         with self.host.lock:
+            from .access import binding
+            access = binding(self.host, self.proposals.repository, request)
+            if access and access['level'] == 'player':return self.capture_player(account, request, access)
             snapshot = self.proposals.snapshot(account)
             context, _, artifact = snapshot
+            if access:context['facts']['sessionAccess'] = access
             room = self.host.state()
             policy = room['aiControl']['settings']['externalSources']
             facts = {'entities': {}, 'configurations': {}, 'messages': [], 'memory': []}
@@ -83,7 +87,7 @@ class Context:
                 reference = source('message', message['messageId'], message, visibility, channelId=cid)
                 if reference not in refs:refs.append(reference)
             context.update(sourceRefs=refs, memoryRefs=memory_refs, includedSources=included, omittedSources=omitted,
-                facts={'externalPolicyDigest': digest(policy), 'profileId': room['aiControl']['settings']['profileId']})
+                facts={**context['facts'], 'externalPolicyDigest': digest(policy), 'profileId': room['aiControl']['settings']['profileId']})
             validate('ContextSnapshot', context)
             pack = self.proposals.pack
             sources = {s['id']: pack.text(s['path']) for s in pack.contract['sources'] if policy[s['visibility']]}
@@ -95,7 +99,7 @@ class Context:
             # A conversation retains immutable submitted requests. Earlier
             # assistant text is reusable only while its original evidence and
             # external policy are still valid for this reviewer and room.
-            history, history_refs, history_memory, omitted_history = self.history(account, request, room, policy)
+            history, history_refs, history_memory, omitted_history = self.history(account, request, room, policy, context)
             payload['conversationHistory'] = history
             from .references import References
             payload['selectedReferences'] = References(self.host).from_text(account, request['text'], room=room,
@@ -118,7 +122,45 @@ class Context:
             require(len(canonical(payload)) <= MAX_CONTEXT_BYTES, 'CONTEXT_LIMIT_EXCEEDED')
             return snapshot, payload
 
-    def history(self, account, request, room, policy):
+    def capture_player(self, account, request, access):
+        from .access import player_room
+        from .references import References
+        from .knowledge import service
+        room = self.host.state();policy = room['aiControl']['settings']['externalSources']
+        owner=access['owner'];port=service(self.host,owner,room)
+        require(policy['private'],'EXTERNAL_SCOPE_DISABLED')
+        require(request['sourceKind'] != 'chat','KNOWLEDGE_HISTORY_UNAVAILABLE')
+        proof=port.capture(owner,state=room,player=True)
+        # Internal schema compatibility fields are constants, never a full-world
+        # baseline. This context is read-only and cannot authorize a mutation.
+        context={'schemaVersion':1,'scopeId':room['aiControl']['scopeId'],
+            'initiator':owner,'reviewPrincipal':owner,'authorityEpoch':self.host.epoch,
+            'authorizationEpoch':room['members'][owner]['authorizationEpoch'],
+            'baseRuleset':'knowledge-read-only','configDigest':digest({}),
+            'contractDigest':self.proposals.pack.digest,'validatorSetDigest':digest({}),'worldDigest':digest({}),
+            'sourceRefs':[],'memoryRefs':[],'includedSources':[],'omittedSources':[],
+            'facts':{'strictPlayer':True,'consultationOnly':True,'knowledgeProofs':[proof]},'createdAt':self.host.clock()}
+        snapshot=(context,{}, {})
+        projected = player_room(room, access['owner'])
+        external = {**policy, 'kp':False}
+        selected = References(self.host).from_text(access['owner'],request['text'],room=projected,external_policy=external)
+        context['facts'].update(sessionAccess=access,externalPolicyDigest=digest(policy),profileId=room['aiControl']['settings']['profileId'],
+            playerReferences={'text':request['text'],'digest':digest(selected)})
+        if selected:
+            context['facts']['knowledgeProofs'].append(port.evidence(owner,[i['value']['ref'] for i in selected],state=room,player=True))
+        history,refs,memories,omitted = self.history(account,request,room,policy,context)
+        context.update(sourceRefs=refs,memoryRefs=memories,omittedSources=omitted)
+        payload = {'request':request['text'],
+            'selectedReferences':selected,'conversationHistory':history,
+            'sessionAccess':{'level':'player','boundPlayer':access['owner']},
+            'authorityNotice':'Only exact personally disclosed evidence is available. No world-state guide, free model facts or live writes. The KP can separately review this submitted request.',
+            'dataAccess':{'mode':'strict-known','tools':['room_search_knowledge','room_read_knowledge'],
+                'initialFacts':'not-loaded','notice':'Query only server-authorized personal knowledge. Publication alone does not imply personal discovery. Missing history is not proof of absence.'}}
+        validate('ContextSnapshot',context)
+        require(len(canonical(payload))<=MAX_CONTEXT_BYTES,'CONTEXT_LIMIT_EXCEEDED')
+        return snapshot,payload
+
+    def history(self, account, request, room, policy, target):
         from onlinecoc.publication import check_context
         state = self.proposals.repository.state()
         original = next((r for r in state['requests'].values() if r['sourceId'] == request['sourceId'] and
@@ -134,7 +176,8 @@ class Context:
             previous = state['requests'][key]
             if previous['status'] == 'cancelled':
                 omitted.append('session-request:' + key);continue
-            history.append({'role': 'user', 'content': previous['text'], 'authority': 'participant-statement'})
+            strict=target['facts'].get('strictPlayer',False)
+            if not strict:history.append({'role': 'user', 'content': previous['text'], 'authority': 'participant-statement'})
             tid = state['settings'].get('dispatch', {}).get(key)
             task = state['tasks'].get(tid, {})
             context = state['contexts'].get(task.get('contextRef'))
@@ -142,8 +185,15 @@ class Context:
             try:
                 require(task.get('account') == account and context is not None and
                     context['facts'].get('externalPolicyDigest') == digest(policy), 'CONTEXT_STALE')
+                if session.get('accessLevel') == 'player':
+                    prior_access = context['facts'].get('sessionAccess', {})
+                    require(prior_access.get('level') == 'player' and prior_access.get('owner') == session['owner'], 'CONTEXT_STALE')
+                    require(context['facts'].get('strictPlayer') is True,'CONTEXT_STALE')
                 check_context(self.host, room, account, context)
-                history.append({'role': 'assistant', 'content': task['text'], 'authority': 'unapproved-model-response'})
+                if strict:history.append({'role':'user','content':previous['text'],'authority':'participant-statement'})
+                history.append({'role': 'assistant', 'content': task['text'], 'authority': 'verified-known-records' if strict else 'unapproved-model-response'})
+                target['facts'].setdefault('historyContexts', []).append(task['contextRef'])
+                if context['facts'].get('consultationOnly'):target['facts']['consultationOnly']=True
                 refs.extend(context['sourceRefs']);memories.extend(context['memoryRefs'])
             except Exception:omitted.append('session-response:' + key)
         return history, refs, memories, omitted

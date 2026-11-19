@@ -59,17 +59,27 @@ def test_compatible_endpoint_omits_vendor_options():
 
 @pytest.mark.parametrize('status,code,retryable',[(401,'PROVIDER_AUTH_FAILED',False),(403,'PROVIDER_AUTH_FAILED',False),
     (429,'PROVIDER_RATE_LIMITED',True),(500,'PROVIDER_UNAVAILABLE',True),(503,'PROVIDER_UNAVAILABLE',True),
-    (302,'PROVIDER_REDIRECT_REJECTED',False),(400,'UNSUPPORTED_CAPABILITY',False)])
+    (302,'PROVIDER_REDIRECT_REJECTED',False),(400,'PROVIDER_REQUEST_INVALID',False),(422,'PROVIDER_REQUEST_INVALID',False),
+    (402,'PROVIDER_BALANCE_INSUFFICIENT',False),(404,'PROVIDER_NOT_FOUND',False),
+    (408,'PROVIDER_TIMEOUT',True),(413,'PROVIDER_REQUEST_TOO_LARGE',False),(409,'PROVIDER_HTTP_ERROR',False),(204,'PROVIDER_HTTP_ERROR',False)])
 def test_http_failures_are_bounded_and_redacted(status,code,retryable):
     with pytest.raises(ProviderError) as error:
         call(lambda request:httpx.Response(status,text='secret test-only-key private data',headers={'Location':'http://127.0.0.1/'}))
     assert error.value.code==code and error.value.retryable==retryable
+    assert error.value.http_status==status
     assert 'secret' not in str(error.value) and 'key' not in str(error.value)
 
 
-@pytest.mark.parametrize('content',['', '   ', '{', '[]', '{"x":1,"x":2}', '{"n":NaN}'])
-def test_bad_model_json_is_rejected(content):
+@pytest.mark.parametrize('content',['', '   '])
+def test_empty_model_content_is_rejected(content):
     with pytest.raises(ProviderError):call(lambda request:httpx.Response(200,json=response(content)))
+
+@pytest.mark.parametrize('content',['{','[]','{"x":1,"x":2}','{"n":NaN}'])
+def test_bad_answer_json_keeps_usage_for_coordinator_repair(content):
+    from onlinecoc_ai.answers import parse_answer
+    reply=call(lambda request:httpx.Response(200,json=response(content)))
+    assert reply.usage['total_tokens']==20
+    with pytest.raises(AiError):parse_answer(reply.message['content'])
 
 
 def test_truncation_usage_and_unknown_reasoning():
@@ -139,3 +149,26 @@ def test_probe_requires_json_and_a_real_tool_call():
             assert len(seen)==2
         finally:await provider.close()
     asyncio.run(run())
+
+
+@pytest.mark.parametrize('adapter',['deepseek-chat','compatible-chat'])
+@pytest.mark.parametrize('content',['Return only {"ok":true}.','Return JSON only.'])
+def test_json_mode_guard_preserves_caller_history_and_tool_envelope(adapter,content):
+    value=profile();value['adapter']=adapter
+    messages=[{'role':'system','content':content},{'role':'user','content':'Hello'}]
+    before=copy.deepcopy(messages);seen=[]
+    def handler(request):
+        body=json.loads(request.content);seen.append(body)
+        # Reproduce the provider's HTTP validation before producing any model text.
+        if not any(m['role'] in ('system','user') and 'json' in m['content'].lower() for m in body['messages']):
+            return httpx.Response(400,json={'error':{'message':'Prompt must contain json'}})
+        assert body['response_format']=={'type':'json_object'}
+        return httpx.Response(200,json=response())
+    async def run():
+        provider=create_provider(value,transport=httpx.MockTransport(handler),credential_loader=lambda _:'test-key')
+        try:
+            await provider.complete(messages);await provider.complete(messages)
+        finally:await provider.close()
+    asyncio.run(run())
+    assert messages==before and seen[0]==seen[1]
+    assert len(seen[0]['messages'])==len(messages)+(0 if 'json' in content.lower() else 1)

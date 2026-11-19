@@ -1,0 +1,322 @@
+{
+  "date": "2026-11-17T22:00:20+08:00",
+  "result": "passed-after-selector-retest",
+  "uniqueTests": 27,
+  "addedInteractionTests": 6,
+  "provider": "deterministic-offline",
+  "browser": "Microsoft Edge (Playwright, headless)",
+  "formalGameDataTouched": false,
+  "realProviderCalls": 0,
+  "rounds": [
+    {
+      "report": "chat-polish-round1.xml",
+      "passed": 12,
+      "failed": 0,
+      "cases": [
+        {
+          "id": "tests.test_reference_details_ui::test_inspector_authorization_races_and_keyboard",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_reference_details_ui::test_chat_repeated_refresh_keeps_chips_and_dialog",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_embeds::test_package_manifest_covers_public_runtime_dependencies",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_embeds::test_real_room_page_variants[page]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_embeds::test_real_room_page_variants[conversation]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_embeds::test_real_room_page_variants[collapsible]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_embeds::test_same_origin_iframe_entry_and_csp_scope",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_embeds::test_headless_tools_and_shared_client_ownership",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_answers_ui::test_answer_choices_in_all_embeds[page]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_answers_ui::test_answer_choices_in_all_embeds[conversation]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_answers_ui::test_answer_choices_in_all_embeds[collapsible]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_answers_ui::test_standalone_choices_and_inline_citation",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "report": "chat-polish-round2.xml",
+      "passed": 5,
+      "failed": 0,
+      "cases": [
+        {
+          "id": "tests.test_chat_polish::test_composer_failure_keyboard_and_inflight_draft",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_chat_polish::test_reading_anchor_directory_and_stop",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_chat_polish::test_embed_readability_at_container_width[page]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_chat_polish::test_embed_readability_at_container_width[conversation]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_chat_polish::test_embed_readability_at_container_width[collapsible]",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "report": "chat-polish-round3-targeted.xml",
+      "passed": 6,
+      "failed": 0,
+      "cases": [
+        {
+          "id": "tests.test_chat_polish::test_composer_failure_keyboard_and_inflight_draft",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_chat_polish::test_reading_anchor_directory_and_stop",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_chat_polish::test_embed_readability_at_container_width[page]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_chat_polish::test_embed_readability_at_container_width[conversation]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_chat_polish::test_embed_readability_at_container_width[collapsible]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_chat_polish::test_delayed_send_does_not_switch_session_or_erase_other_draft",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "report": "chat-polish-round3.xml",
+      "passed": 25,
+      "failed": 2,
+      "cases": [
+        {
+          "id": "tests.test_chat_polish::test_composer_failure_keyboard_and_inflight_draft",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_chat_polish::test_reading_anchor_directory_and_stop",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_chat_polish::test_embed_readability_at_container_width[page]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_chat_polish::test_embed_readability_at_container_width[conversation]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_chat_polish::test_embed_readability_at_container_width[collapsible]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_chat_polish::test_delayed_send_does_not_switch_session_or_erase_other_draft",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_reference_details_ui::test_inspector_authorization_races_and_keyboard",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_reference_details_ui::test_chat_repeated_refresh_keeps_chips_and_dialog",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_reference_ui::test_prototype_commands_semantic_tokens_and_atomic_editing",
+          "status": "failed"
+        },
+        {
+          "id": "tests.test_reference_ui::test_reference_editor_serialization_unavailable_and_late_labels",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_known_ui::test_known_snapshot_completion_atomic_chip_and_revoked_inspector",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_answers_ui::test_answer_choices_in_all_embeds[page]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_answers_ui::test_answer_choices_in_all_embeds[conversation]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_answers_ui::test_answer_choices_in_all_embeds[collapsible]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_answers_ui::test_standalone_choices_and_inline_citation",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_embeds::test_package_manifest_covers_public_runtime_dependencies",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_embeds::test_real_room_page_variants[page]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_embeds::test_real_room_page_variants[conversation]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_embeds::test_real_room_page_variants[collapsible]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_embeds::test_same_origin_iframe_entry_and_csp_scope",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_embeds::test_headless_tools_and_shared_client_ownership",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_manager_ui::test_real_manager_providers_sessions_review_and_embed",
+          "status": "failed"
+        },
+        {
+          "id": "tests.test_access_ui::test_permissions_archive_delete_batches_and_mobile",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_style_stability::test_style_reparent_and_failed_load_retry",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_style_stability::test_session_management_prototype",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_usage_ui::test_room_usage_metrics_filters_account_scope_and_mobile",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_usage_ui::test_local_manager_budget_toggle_and_usage_proxy",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "report": "chat-polish-round3-retest.xml",
+      "passed": 2,
+      "failed": 0,
+      "cases": [
+        {
+          "id": "tests.test_reference_ui::test_prototype_commands_semantic_tokens_and_atomic_editing",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_manager_ui::test_real_manager_providers_sessions_review_and_embed",
+          "status": "passed"
+        }
+      ]
+    }
+  ],
+  "finalCases": {
+    "tests.test_reference_details_ui::test_inspector_authorization_races_and_keyboard": "passed",
+    "tests.test_reference_details_ui::test_chat_repeated_refresh_keeps_chips_and_dialog": "passed",
+    "tests.test_embeds::test_package_manifest_covers_public_runtime_dependencies": "passed",
+    "tests.test_embeds::test_real_room_page_variants[page]": "passed",
+    "tests.test_embeds::test_real_room_page_variants[conversation]": "passed",
+    "tests.test_embeds::test_real_room_page_variants[collapsible]": "passed",
+    "tests.test_embeds::test_same_origin_iframe_entry_and_csp_scope": "passed",
+    "tests.test_embeds::test_headless_tools_and_shared_client_ownership": "passed",
+    "tests.test_answers_ui::test_answer_choices_in_all_embeds[page]": "passed",
+    "tests.test_answers_ui::test_answer_choices_in_all_embeds[conversation]": "passed",
+    "tests.test_answers_ui::test_answer_choices_in_all_embeds[collapsible]": "passed",
+    "tests.test_answers_ui::test_standalone_choices_and_inline_citation": "passed",
+    "tests.test_chat_polish::test_composer_failure_keyboard_and_inflight_draft": "passed",
+    "tests.test_chat_polish::test_reading_anchor_directory_and_stop": "passed",
+    "tests.test_chat_polish::test_embed_readability_at_container_width[page]": "passed",
+    "tests.test_chat_polish::test_embed_readability_at_container_width[conversation]": "passed",
+    "tests.test_chat_polish::test_embed_readability_at_container_width[collapsible]": "passed",
+    "tests.test_chat_polish::test_delayed_send_does_not_switch_session_or_erase_other_draft": "passed",
+    "tests.test_reference_ui::test_prototype_commands_semantic_tokens_and_atomic_editing": "passed",
+    "tests.test_reference_ui::test_reference_editor_serialization_unavailable_and_late_labels": "passed",
+    "tests.test_known_ui::test_known_snapshot_completion_atomic_chip_and_revoked_inspector": "passed",
+    "tests.test_manager_ui::test_real_manager_providers_sessions_review_and_embed": "passed",
+    "tests.test_access_ui::test_permissions_archive_delete_batches_and_mobile": "passed",
+    "tests.test_style_stability::test_style_reparent_and_failed_load_retry": "passed",
+    "tests.test_style_stability::test_session_management_prototype": "passed",
+    "tests.test_usage_ui::test_room_usage_metrics_filters_account_scope_and_mobile": "passed",
+    "tests.test_usage_ui::test_local_manager_budget_toggle_and_usage_proxy": "passed"
+  },
+  "fixes": [
+    "Centered conversation and bottom composer; container-width responsive layout for page/conversation/collapsible",
+    "Enter/Shift+Enter and optional Ctrl/Command+Enter; autocomplete and IME precedence",
+    "Starter suggestions only fill drafts; copy semantic rendered answers; manual edit/retry",
+    "Stop existing request; remove stale pending placeholder after cancellation",
+    "Retain in-flight and per-session drafts; delayed submit receipt cannot switch the viewed session",
+    "Keep unchanged list/message nodes; user scrolling wins over late reference hydration; latest-message shortcut"
+  ],
+  "testRepair": "Two existing option-count assertions included the new shortcut select. Scoped them to #completion; both original end-to-end tests then passed. Initial failure report is retained.",
+  "viewports": [
+    "1240×920 desktop",
+    "390px embedded container in 1240px desktop",
+    "390×844 mobile"
+  ],
+  "screenshots": [
+    "chat-polish-collapsible-mobile.png",
+    "chat-polish-collapsible.png",
+    "chat-polish-conversation-mobile.png",
+    "chat-polish-conversation.png",
+    "chat-polish-empty.png",
+    "chat-polish-page-mobile.png",
+    "chat-polish-page.png"
+  ],
+  "limits": [
+    "No token streaming or backend/model latency change",
+    "In-memory drafts and shortcut preference reset on page reload",
+    "Stumpsville built distributions need rebuilding to include refreshed shared assets; this run does not rebuild a running game"
+  ],
+  "sha256": {
+    "engineering/ai/web/components/chat.js": "076c9a2a1b8b755290d007803895566af9847bfbf62d8e0604c80932c5f1e401",
+    "engineering/ai/web/components/chat.css": "4cf4dd104bb1c1db0d289e1ff3d481c88be2ae07202640f58754fb0fc1130ba4",
+    "engineering/ai/web/components/views.js": "43977a7bc4e248c5600ce6852318f31441dd745f4e48729136fedac405962353",
+    "engineering/ai/web/components/views.css": "e3fdf0cc2bdc280d11e09965d816fbf68c95401ed08f6d71064613bb1d2d1b70",
+    "engineering/ai/web/components/markdown.css": "8c5609113a5cf9cc98b6a501a0e1bdf797224a73a47025868ce6fe357e2e8b40",
+    "engineering/ai/tests/test_chat_polish.py": "aeaf9fa513a61482ae9ce80525d63683dac21081100be283dc14653d6e6e688b",
+    "engineering/ai/tests/test_reference_ui.py": "0bed04018d7243b9fa03a83a157291fc2c2b8fbd4ef9bb696af134b433f65169",
+    "engineering/ai/tests/test_manager_ui.py": "93835bfa08bde6427b5a7429dde15b8c7521ffbffaaf6c696eb90c676cf7ab1c"
+  }
+}

@@ -18,6 +18,7 @@ def consultation(client, payload):
     if not isinstance(path, str):
         reject()
     if method == 'GET' and 'body' not in payload:
+        if path == 'ai/access':return client.request('/' + path)
         if path == 'capabilities':
             return {'ai': client.request('/capabilities').get('ai', {'available': False})}
         url = urlsplit(path)
@@ -27,13 +28,13 @@ def consultation(client, payload):
                 return client.request('/' + path)
         if url.path == 'ai/references' and not url.scheme and not url.netloc and not url.fragment:
             query = parse_qs(url.query, keep_blank_values=True)
-            if set(query) == {'kind', 'q'} and all(len(v) == 1 for v in query.values()) and query['kind'][0] in {'entity', 'config', 'chat', 'event', 'ruling'} and len(query['q'][0]) <= 120:
+            if set(query) == {'kind', 'q'} and all(len(v) == 1 for v in query.values()) and query['kind'][0] in {'knowledge'} and len(query['q'][0]) <= 120:
                 return client.request('/' + path)
         if path in {'ai/sessions?archived=false', 'ai/sessions?archived=true'} or re.fullmatch(r'ai/(?:sessions|receipts)/[a-zA-Z0-9_-]{1,128}', path):
             return client.request('/' + path)
     if method == 'POST' and path == 'ai/references/resolve':
         body = payload.get('body')
-        if isinstance(body, dict) and set(body) == {'tokens'} and isinstance(body['tokens'], list) and len(body['tokens']) <= 50 and all(isinstance(t, str) and len(t) <= 512 for t in body['tokens']):
+        if isinstance(body, dict) and set(body) == {'tokens'} and isinstance(body['tokens'], list) and len(body['tokens']) <= 12 and all(isinstance(t, str) and len(t) <= 1700 for t in body['tokens']):
             return client.request('/ai/references/resolve', body)
     if method == 'POST' and path in {'ai/data/search','ai/data/read','ai/data/chat','ai/data/case'}:
         body=payload.get('body')
@@ -42,6 +43,6 @@ def consultation(client, payload):
         body = payload.get('body')
         if not isinstance(body, dict) or set(body) != {'requestId', 'authorityEpoch', 'op', 'args'}:
             reject()
-        if body['op'] in {'ai.session.create', 'ai.session.update', 'ai.session.submit', 'ai.request.cancel'}:
+        if body['op'] in {'ai.session.create', 'ai.session.update', 'ai.session.submit', 'ai.session.delete', 'ai.request.cancel'}:
             return client.request('/ai/commands', body)
     reject()

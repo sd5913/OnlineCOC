@@ -15,7 +15,7 @@ def ai_modules():
     """Compile the declared public component graph, with CSS inside shadow roots."""
     base=ROOT/'engineering/ai/web/components'
     declared=json.loads((base/'pack-manifest.json').read_text(encoding='utf-8'))['runtimeFiles']
-    names=['client.js','guard.js','reference-commands.js','reference-editor.js','markdown.js','reference-input.js','tools.js','chat.js','room-panel.js','sessions.js','session-manager.js','usage.js','views.js']
+    names=['styles.js','client.js','guard.js','reference-commands.js','reference-editor.js','reference-details.js','markdown.js','reference-input.js','tools.js','choices.js','chat.js','rulings.js','room-panel.js','sessions.js','session-manager.js','usage.js','views.js']
     output='const aiModules={};\n'
     for name in names:
         assert name in declared
@@ -24,8 +24,8 @@ def ai_modules():
         code=re.sub(r"import\s+\{([^}]+)\}\s+from\s+'\./([^']+)';",lambda m:'const {'+m[1]+'}=aiModules['+json.dumps(m[2])+'];',code)
         def style(match):
             filename=match[1];assert filename in declared
-            return "const css=document.createElement('style');css.textContent="+json.dumps((base/filename).read_text(encoding='utf-8'))+';root.append(css);'
-        code=re.sub(r"const css=document.createElement\('link'\);css.rel='stylesheet';css.href=new URL\('\./([^']+)',import.meta.url\);root.append\(css\);",style,code)
+            return "mountStyle(root,"+json.dumps('inline:'+filename)+","+json.dumps((base/filename).read_text(encoding='utf-8'))+");"
+        code=re.sub(r"mountStyle\(root,new URL\('\./([^']+)',import.meta.url\)\);",style,code)
         code=re.sub(r'\bexport (?=(const|function|async|class)\b)','',code)
         assert 'import.meta' not in code
         output+='aiModules['+json.dumps(name)+']=(()=>{'+code+'\nreturn {'+','.join(exports)+'};})();\n'
@@ -35,17 +35,17 @@ def ai_modules():
 def build(output):
     output=Path(output).resolve();output.mkdir(parents=True,exist_ok=True)
     manifest=json.loads((PACK/'manifest.json').read_text(encoding='utf-8'))
-    sources={name:(PACK/'ui'/name).read_text(encoding='utf-8') for name in ('messageformat.js','i18n.js','chat.js','ai.js','ai-embedded.js','app.js')}
+    sources={name:(PACK/'ui'/name).read_text(encoding='utf-8') for name in ('messageformat.js','i18n.js','chat.js','dice.js','effects.js','map.js','keeper-queue.js','ai.js','ai-embedded.js','app.js')}
     sources['ai-client.js']=(ROOT/'engineering/ai/web/components/client.js').read_text(encoding='utf-8')
     public={name:json.loads((PACK/name).read_text(encoding='utf-8')) for name in ('locales/zh-CN/ui.json','locales/meta/catalog/ui.json')}
     script='const STUMPSVILLE_STARTUP='+json.dumps(public,ensure_ascii=False)+';\n'+(PACK/'web/bridge.js').read_text(encoding='utf-8')
     script+='\n(async()=>{const web=await connectStumpsville();globalThis.stumpsvilleWeb=web;const localStorage=web.storage,sessionStorage=web.storage;\n'
     script+=ai_modules()
-    for name,imports,exports in [('messageformat.js','',['IntlMessageFormat']),('i18n.js','const {IntlMessageFormat}=modules["messageformat.js"];',['t','setLocale','locale','initLocale']),('chat.js','const {t}=modules["i18n.js"];',['chatUI']),('ai-client.js','',['AiClient','HttpTransport']),('ai.js','const {t}=modules["i18n.js"];',['aiUI']),('ai-embedded.js','const {t}=modules["i18n.js"];',['embeddedAI'])]:
+    for name,imports,exports in [('messageformat.js','',['IntlMessageFormat']),('i18n.js','const {IntlMessageFormat}=modules["messageformat.js"];',['t','setLocale','locale','initLocale']),('chat.js','const {t}=modules["i18n.js"];',['chatUI']),('dice.js','',['diceUI']),('effects.js','',['effectsUI','effectSnapshot','effectChanges']),('map.js','',['mapPositions','mapRoutes','mapRoutePath']),('ai-client.js','',['AiClient','HttpTransport']),('ai.js','const {t}=modules["i18n.js"];',['aiUI']),('keeper-queue.js','const {t,locale}=modules["i18n.js"];',['mountKeeperAIQueue']),('ai-embedded.js','const {t}=modules["i18n.js"],{mountKeeperAIQueue}=modules["keeper-queue.js"];',['embeddedAI'])]:
         code=sources[name];code=re.sub(r'^import .*?;\s*','',code,flags=re.M);code=re.sub(r'^export \{.*?\};\s*','',code,flags=re.M);code=re.sub(r'\bexport (?=(const|function|async|class)\b)','',code);code=re.sub(r'^//# sourceMappingURL=.*','',code,flags=re.M)
         script+=('const modules={};\n' if name=='messageformat.js' else '')+'modules['+json.dumps(name)+']=(()=>{'+imports+'\n'+code+'\nreturn {'+','.join(exports)+'};})();\n'
     app=re.sub(r'^import .*?;\s*','',sources['app.js'],flags=re.M).replace('src="art/mouse.png"', 'data-web-image="mouse"')
-    script+='web.aiClient=modules["ai-client.js"];const {chatUI}=modules["chat.js"],{aiUI}=modules["ai.js"],{embeddedAI}=modules["ai-embedded.js"],{t,setLocale,locale,initLocale}=modules["i18n.js"];\n'+app+'\n})().catch(e=>{document.querySelector("#app").textContent="网页连接失败 · "+e.message;});'
+    script+='web.aiClient=modules["ai-client.js"];const {chatUI}=modules["chat.js"],{diceUI}=modules["dice.js"],{effectsUI}=modules["effects.js"],{mapPositions,mapRoutes,mapRoutePath}=modules["map.js"],{aiUI}=modules["ai.js"],{embeddedAI}=modules["ai-embedded.js"],{t,setLocale,locale,initLocale}=modules["i18n.js"];\n'+app+'\n})().catch(e=>{document.querySelector("#app").textContent="网页连接失败 · "+e.message;});'
     # Resource groups may be served at blob URLs; avoid any direct network request.
     css=(PACK/'ui/styles.css').read_text(encoding='utf-8');css=re.sub(r"url\('art/welcome.png'\)",'none',css)
     html=(PACK/'ui/index.html').read_text(encoding='utf-8').replace('<link rel="stylesheet" href="styles.css">','<style>'+css+'</style>').replace('<script type="module" src="app.js"></script>','')

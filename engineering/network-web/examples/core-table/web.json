@@ -1,17 +1,97 @@
 {
   "webVersion": 1,
-  "package": {"id":"onlinecoc-core-table","name":"首测规则桌面","version":"1.0.0","source":"OnlineCOC engineering/rulepacks/demo（自制工程规则）","description":"浏览器规则桌面：查看授权状态、运行目录动作和发送房间聊天。规则与存档留在本机宿主。"},
+  "package": {
+    "id": "onlinecoc-core-table",
+    "name": "首测规则桌面",
+    "version": "1.0.0",
+    "source": "OnlineCOC engineering/rulepacks/demo（自制工程规则）",
+    "description": "浏览器规则桌面：查看授权状态、运行目录动作和发送房间聊天。规则与存档留在本机宿主。"
+  },
   "rules": "使用房主提供的宿主游戏账号登录。只能操作本人获授权对象；所有命令由宿主校验。此包演示工程规则，不是完整 COC 规则实现。详细规则在游戏页按需加载。",
-  "modules": {"required":["network-web"],"optional":[]},
+  "modules": {
+    "required": [
+      "network-web"
+    ],
+    "optional": []
+  },
   "groups": [
-    {"id":"startup","access":"members","entry":"index.html","files":["index.html"]},
-    {"id":"reference","access":"members","entry":null,"files":["reference.txt"]},
-    {"id":"revealed-note","access":"grant","entry":null,"files":["revealed-note.txt"]}
+    {
+      "id": "startup",
+      "access": "members",
+      "entry": "index.html",
+      "files": [
+        "index.html"
+      ]
+    },
+    {
+      "id": "reference",
+      "access": "members",
+      "entry": null,
+      "files": [
+        "reference.txt"
+      ]
+    },
+    {
+      "id": "revealed-note",
+      "access": "grant",
+      "entry": null,
+      "files": [
+        "revealed-note.txt"
+      ]
+    }
   ],
   "routes": [
-    {"method":"GET","path":"view"}, {"method":"GET","path":"catalog"},
-    {"method":"GET","path":"contracts"}, {"method":"GET","path":"chat/members"},
-    {"method":"POST","path":"commands"}, {"method":"POST","path":"query"},
-    {"method":"POST","path":"calculate"}, {"method":"POST","path":"chat/history"}
+    {
+      "method": "GET",
+      "path": "view"
+    },
+    {
+      "method": "GET",
+      "path": "catalog"
+    },
+    {
+      "method": "GET",
+      "path": "contracts"
+    },
+    {
+      "method": "GET",
+      "path": "chat/members"
+    },
+    {
+      "method": "POST",
+      "path": "commands"
+    },
+    {
+      "method": "POST",
+      "path": "query"
+    },
+    {
+      "method": "POST",
+      "path": "calculate"
+    },
+    {
+      "method": "POST",
+      "path": "chat/history"
+    },
+    {
+      "method": "GET",
+      "path": "knowledge/capabilities"
+    },
+    {
+      "method": "POST",
+      "path": "knowledge/preview"
+    },
+    {
+      "method": "POST",
+      "path": "knowledge/search"
+    },
+    {
+      "method": "POST",
+      "path": "knowledge/read"
+    },
+    {
+      "method": "POST",
+      "path": "knowledge/grants/query"
+    }
   ]
 }

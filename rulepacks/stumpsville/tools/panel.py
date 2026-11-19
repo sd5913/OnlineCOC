@@ -9,6 +9,7 @@ import webbrowser
 
 sys.dont_write_bytecode = True
 from lan import PACK, Adapter, LanService, LanWindow
+from slots import RoomSlots
 
 ROOT = PACK.parents[1]
 MODES = {'local': '本机游玩', 'lan': '局域网联机', 'web': '网页联机', 'p2p': '旧 P2P（基础功能）'}
@@ -23,11 +24,27 @@ class PanelWindow(LanWindow):
                         'web_config': web_config or ROOT/'engineering/network-p2p/local/client-config.json',
                         'p2p_config': p2p_config or ROOT/'engineering/network-p2p/local/client-config.json'}
         self.last_url = self.share_url = ''
-        super().__init__(root, data, open_browser)
+        self.slots = RoomSlots(data)
+        self.current_slot = self.slots.selected()
+        self.slot_rows = []
+        viewport = ttk.Frame(root)
+        viewport.pack(fill='both', expand=True)
+        self.canvas = tk.Canvas(viewport, highlightthickness=0)
+        scrollbar = ttk.Scrollbar(viewport, orient='vertical', command=self.canvas.yview)
+        scrollbar.pack(side='right', fill='y')
+        self.canvas.pack(side='left', fill='both', expand=True)
+        self.canvas.configure(yscrollcommand=scrollbar.set)
+        initial_data = self.slots.path(self.current_slot['id']) if self.current_slot else self.slots.directory/'_unselected'
+        super().__init__(root, initial_data, open_browser, container=self.canvas)
+        self.frame.pack_forget()
+        self.canvas_window = self.canvas.create_window((0, 0), window=self.frame, anchor='nw')
+        self.frame.bind('<Configure>', lambda _: self.canvas.configure(scrollregion=self.canvas.bbox('all')))
+        self.canvas.bind('<Configure>', lambda event: self.canvas.itemconfigure(self.canvas_window, width=event.width))
+        root.bind('<MouseWheel>', lambda event: self.canvas.yview_scroll(-int(event.delta/120), 'units') if not isinstance(event.widget, ttk.Combobox) else None)
         self.service = LanService(self.data, self.events, allow_local=True)
         root.title('树桩镇 · 房间管理')
-        root.geometry('820x770')
-        root.minsize(790, 740)
+        root.geometry('870x'+str(min(900, root.winfo_screenheight()-100)))
+        root.minsize(790, 600)
         self.heading.configure(text='树桩镇 · 房间管理')
         self.subtitle.grid_remove()
         self.controls = ttk.Frame(self.frame)
@@ -52,10 +69,96 @@ class PanelWindow(LanWindow):
         ttk.Label(self.frame, textvariable=self.share, wraplength=755).grid(row=11, column=0, columnspan=3, sticky='w', pady=12)
         self.share_button = ttk.Button(self.frame, text='复制联机信息', command=self.copy_share, state='disabled')
         self.share_button.grid(row=12, column=0, columnspan=3, sticky='w')
+        for widget in self.frame.grid_slaves():
+            row = int(widget.grid_info()['row'])
+            if row >= 2:
+                widget.grid_configure(row=row+1)
+        self.slot_frame = ttk.LabelFrame(self.frame, text='房间数据 · 存档槽位', padding=10)
+        self.slot_frame.grid(row=2, column=0, columnspan=3, sticky='ew', pady=(0, 12))
+        self.slot_frame.columnconfigure(0, weight=1)
+        self.slot_choice = tk.StringVar(root)
+        self.slot_input = ttk.Combobox(self.slot_frame, textvariable=self.slot_choice, state='readonly')
+        self.slot_input.grid(row=0, column=0, sticky='ew')
+        self.slot_input.bind('<<ComboboxSelected>>', lambda _: self.choose_slot())
+        self.slot_refresh = ttk.Button(self.slot_frame, text='刷新槽位', command=self.refresh_slots)
+        self.slot_refresh.grid(row=0, column=1, padx=(8, 0))
+        self.slot_name = tk.StringVar(root)
+        name_row = ttk.Frame(self.slot_frame)
+        name_row.grid(row=1, column=0, sticky='ew', pady=(8, 0))
+        ttk.Label(name_row, text='新槽位名称').pack(side='left', padx=(0, 8))
+        self.slot_entry = ttk.Entry(name_row, textvariable=self.slot_name)
+        self.slot_entry.pack(side='left', fill='x', expand=True)
+        self.slot_create = ttk.Button(self.slot_frame, text='创建新槽位', command=self.create_slot)
+        self.slot_create.grid(row=1, column=1, padx=(8, 0), pady=(8, 0))
+        self.slot_entry.bind('<Return>', lambda _: self.create_slot())
+        self.slot_info = tk.StringVar(root)
+        ttk.Label(self.slot_frame, textvariable=self.slot_info, wraplength=740).grid(row=2, column=0, columnspan=2, sticky='w', pady=(8, 0))
+        self.refresh_slots()
         if port is not None:
             self.port.set(str(port))
         if bind:
             self.preferred = bind
+
+    def setup_visibility(self):
+        if not self.current_slot:
+            self.setup_frame.grid_remove()
+        else:
+            super().setup_visibility()
+
+    def slots_locked(self):
+        return self.busy or self.service.active or self.closing
+
+    def refresh_slots(self):
+        if self.slots_locked():
+            return
+        try:
+            self.slot_rows = self.slots.list()
+            selected = next((row for row in self.slot_rows if self.current_slot and row['id'] == self.current_slot['id']), None)
+            selected = selected or self.slots.selected()
+            self.slot_input.configure(values=[row['name'] for row in self.slot_rows])
+            self.apply_slot(selected)
+        except (OSError, ValueError) as error:
+            self.status.set(str(error))
+
+    def choose_slot(self):
+        if self.slots_locked():
+            self.slot_choice.set(self.current_slot['name'] if self.current_slot else '')
+            return
+        try:
+            index = self.slot_input.current()
+            if index < 0:
+                return
+            row = self.slots.select(self.slot_rows[index]['id'])
+            self.apply_slot(row)
+        except (OSError, ValueError) as error:
+            self.status.set(str(error))
+
+    def create_slot(self):
+        if self.slots_locked():
+            return
+        try:
+            self.current_slot = self.slots.create(self.slot_name.get())
+            self.slot_name.set('')
+            self.refresh_slots()
+            self.status.set('槽位已创建。设置初始密码后点击“启动房间”。')
+        except (OSError, ValueError) as error:
+            self.status.set(str(error))
+
+    def apply_slot(self, row):
+        self.current_slot = row
+        self.data = self.slots.path(row['id']) if row else self.slots.directory/'_unselected'
+        self.service = LanService(self.data, self.events, allow_local=True)
+        self.slot_choice.set(row['name'] if row else '')
+        self.password.set(''); self.confirm.set('')
+        self.failed = False
+        self.invalidate_url()
+        self.last_url = self.share_url = ''
+        self.setup_visibility()
+        self.data_label.configure(text='当前存档：'+str(self.data) if row else '数据根目录：'+str(self.slots.root))
+        ready = row and (self.data/'host').exists()
+        self.slot_info.set(('已选择：'+row['name']+' · '+('已有房间数据' if ready else '新槽位，首次启动需设置密码')+'。停止房间后可切换。') if row else '尚无槽位。先在上方输入名称，再点击“创建新槽位”。')
+        self.status.set(('已选择槽位“'+row['name']+'”。') if row else '请创建房间槽位。')
+        self.start_button.configure(state='normal' if row and self.adapters and not self.scanning else 'disabled')
 
     def selected_mode(self):
         return next(key for key, label in MODES.items() if label == self.mode.get())
@@ -71,7 +174,10 @@ class PanelWindow(LanWindow):
             self.events.put(('adapters', [Adapter('本机管理入口', '127.0.0.1')]))
 
     def start(self):
-        if self.busy:
+        if self.busy or self.service.active:
+            return
+        if not self.current_slot:
+            self.status.set('请先创建并选择房间槽位。')
             return
         mode = self.selected_mode()
         modules = {}
@@ -116,7 +222,7 @@ class PanelWindow(LanWindow):
                     webbrowser.open(value['url'].rstrip('/')+'/manage')
 
     def open_data(self):
-        if self.data.is_dir():
+        if self.current_slot and self.data.is_dir():
             os.startfile(self.data.resolve())
         else:
             self.status.set('首次启动成功后才会创建存档目录。')
@@ -137,6 +243,15 @@ class PanelWindow(LanWindow):
         super().tick()
         if self.closing:
             return
+        locked = self.slots_locked()
+        if self.current_slot:
+            slot_status = '运行中' if self.url else '已有房间数据' if (self.data/'host').exists() else '新槽位，首次启动需设置密码'
+            self.slot_info.set('已选择：'+self.current_slot['name']+' · '+slot_status+'。停止房间后可切换。')
+        self.slot_input.configure(state='disabled' if locked else 'readonly')
+        for widget in (self.slot_create, self.slot_entry, self.slot_refresh):
+            widget.configure(state='disabled' if locked else 'normal')
+        if not self.current_slot:
+            self.start_button.configure(state='disabled')
         self.mode_input.configure(state='disabled' if self.busy or self.scanning else 'readonly')
         self.ai_input.configure(state='disabled' if self.busy else 'normal')
         self.manage_button.configure(state='normal' if self.url else 'disabled')
@@ -166,14 +281,14 @@ class PanelWindow(LanWindow):
             else:
                 self.share.set('本机房间运行中。其他设备加入前，请停止房间并切换到局域网或网页联机。')
         elif not self.busy:
-            self.share.set('房间已停止；再次启动使用同一存档。' if (self.data/'host').exists() else '全新房间：设置初始密码后启动。')
+            self.share.set('请先创建并选择槽位。' if not self.current_slot else '房间已停止；再次启动使用所选槽位。' if (self.data/'host').exists() else '全新房间：设置初始密码后启动。')
         self.share_button.configure(state='normal' if self.share_url else 'disabled')
 
 
 def arguments(argv=None):
     parser = argparse.ArgumentParser(description='树桩镇 Python 房间管理面板')
     parser.add_argument('--mode', choices=MODES, default='local')
-    parser.add_argument('--data-dir', '-DataDir', type=Path, default=PACK/'runtime')
+    parser.add_argument('--data-dir', '-DataDir', type=Path, default=PACK/'runtime', help='房间槽位根目录；各槽位存于其 slots 子目录')
     parser.add_argument('--port', '-Port', type=int)
     parser.add_argument('--bind', '-Bind')
     parser.add_argument('--no-browser', '-NoBrowser', action='store_true')

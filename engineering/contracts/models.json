@@ -483,7 +483,7 @@
         "type": "object"
       },
       "schemaVersion": {
-        "const": 3
+        "const": 4
       },
       "roomId": {
         "type": "string",
@@ -528,6 +528,9 @@
       },
       "aiControl": {
         "type": "object"
+      },
+      "knowledge": {
+        "type": "object"
       }
     },
     "required": [
@@ -551,7 +554,8 @@
       "outbox",
       "collectionRevision",
       "aiControl",
-      "chat"
+      "chat",
+      "knowledge"
     ],
     "additionalProperties": false
   },
@@ -1712,7 +1716,8 @@
               "maxRepairAttempts": {
                 "type": "integer",
                 "minimum": 0,
-                "maximum": 3
+                "maximum": 10,
+                "default": 5
               },
               "maxTransportRetries": {
                 "type": "integer",
@@ -1811,6 +1816,9 @@
               "maxLength": 200
             },
             "maxItems": 50
+          },
+          "allowNamespaceReplace": {
+            "type": "boolean"
           }
         },
         "required": [
@@ -2406,14 +2414,20 @@
               "type": "string",
               "maxLength": 1048576
             },
-            "maxProperties": 64
+            "maxProperties": 64,
+            "propertyNames": {
+              "pattern": "^(?!\\.)[A-Za-z0-9_.-]+\\.lua$"
+            }
           },
           "data": {
             "type": "object",
             "additionalProperties": {
               "$ref": "#/$defs/JsonValue"
             },
-            "maxProperties": 100
+            "maxProperties": 100,
+            "propertyNames": {
+              "pattern": "^(?!\\.)[A-Za-z0-9_.-]+\\.json$"
+            }
           },
           "suggestions": {
             "type": "array",
@@ -3369,7 +3383,7 @@
     "type": "object",
     "properties": {
       "schemaVersion": {
-        "const": 3
+        "const": 4
       },
       "roomId": {
         "type": "string",

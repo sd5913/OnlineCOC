@@ -90,6 +90,7 @@ def main():
     with provider(output) as (config,calls), directory(output) as (network_config,directory_url):
         with running('integration', data=output/'game', ai_config=config, p2p_config=network_config, no_browser=True) as (runtime,password):
             kp,p1,p2=provision(runtime,password)
+            result(ai(kp,'ai.access.update',{'revision':1,'allowPlayerChat':True,'autoApproveBatches':False}))
             caps=kp.request('/api/v1/capabilities'); assert caps['ai']['available'] and not caps['ai']['enabled']
             settings=kp.request('/api/v1/ai/settings')['settings']; assert not any(settings['externalSources'].values())
             assert not calls
@@ -119,11 +120,11 @@ def main():
             assert len(calls)==1
             encoded=json.dumps(calls[0],ensure_ascii=False)
             assert '木栗' not in encoded and '豆叶' not in encoded
-            assert 'OFFLINE_REPLY' not in json.dumps(p1.request('/api/v1/ai/sessions/'+session['sessionId']))
+            assert 'OFFLINE_REPLY' in json.dumps(p1.request('/api/v1/ai/sessions/'+session['sessionId']))
             assert p1.state()['character']==before
-            assert kp.request('/api/v1/ai/drafts',{},True)['code']=='AI_CONSULTATION_ONLY'
-            assert kp.command('publication.apply',{'approvalId':'anything'},True)['code']=='AI_CONSULTATION_ONLY'
-            checks.append('PL requests / cross-account isolation / KP dispatch / offline provider response / no external context by default / no state changes / publication denied')
+            assert kp.request('/api/v1/ai/drafts',{},True)['code']=='INPUT_INVALID'
+            assert kp.command('publication.apply',{'approvalId':'anything'},True)['code']=='NOT_VISIBLE'
+            checks.append('PL requests / cross-account isolation / KP dispatch after disabled provider / player-safe offline response / no external context by default / no state changes / invalid publication rejected')
             # Borrow the actual package host through the networking module's local API.
             entry=urllib.parse.urlsplit(runtime.modules.entry); origin=entry.scheme+'://'+entry.netloc
             headers={'Origin':origin,'Authorization':'Bearer '+urllib.parse.parse_qs(entry.fragment)['token'][0]}
@@ -164,33 +165,39 @@ def browser_check(runtime,password,checks,output):
             page.locator('.identity').wait_for()
             if name=='kp' and not suffix:
                 page.locator('a[href="#/gm/rulings"]').click();page.locator('#kp-ai-embedded .review-open').click()
-                page.locator('.ai-dialog [data-create]').wait_for()
+                page.locator('.keeper-ai-queue [data-settings]').click()
+                page.locator('.ai-dialog [data-settings]').wait_for()
             else:
                 page.locator('[data-action=ai-assistant]').click();page.locator('#player-ai-embedded .reference-editor').wait_for()
             return page
         gm=login('kp');gm.locator('.ai-dialog [data-settings] select').wait_for(state='attached')
         if gm.locator('.ai-dialog details').get_attribute('open') is None:gm.locator('.ai-dialog summary').click()
-        gm.locator('.ai-dialog [data-settings] select').wait_for();gm.get_by_text('OFFLINE_REPLY:',exact=False).wait_for()
+        gm.locator('.ai-dialog [data-settings] select').wait_for()
         gm.locator('.ai-dialog summary').click();gm.screenshot(path=str(output/'ai-kp.png'))
         assert gm.locator('.ai-guide-warning').count()==0
         gm.locator('.ai-dialog [data-close]').click()
+        gm.locator('.keeper-ai-queue [data-history]').check()
+        gm.locator('.ai-assistance-list details summary').first.click()
+        expect(gm.locator('.ai-assistance-list')).to_contain_text('OFFLINE_REPLY:')
+        gm.locator('.keeper-ai-queue [data-history]').uncheck()
         # A UI refresh can load new JS while the host still uses an old snapshot.
         def old_snapshot(route):
             response=route.fetch();data=response.json();data['ai'].pop('guideCurrent',None);data['ai'].pop('queryMode',None)
             route.fulfill(response=response,json=data)
         gm.route('**/package/integrations',old_snapshot)
         gm.locator('#kp-ai-embedded .review-open').click()
+        gm.locator('.keeper-ai-queue [data-settings]').click()
         expect(gm.locator('.ai-guide-warning')).to_contain_text('仅刷新网页不会更新 AI 快照')
         assert gm.locator('.ai-dialog details').get_attribute('open') is not None
         gm.locator('.ai-dialog [data-close]').click();gm.unroute('**/package/integrations',old_snapshot)
         player=login('player1');assert not player.locator('[data-settings],[data-tasks],.review-open:visible').count()
         player.locator('.session-select').select_option(label='PL request')
         expect(player.locator('#player-ai-embedded #history')).to_contain_text('Explain the result')
-        expect(player.locator('#player-ai-embedded #history')).not_to_contain_text('OFFLINE_REPLY')
+        expect(player.locator('#player-ai-embedded #history')).to_contain_text('OFFLINE_REPLY')
         player.locator('#dialog [data-action=close]').first.click();assert not player.locator('.reference-editor').count()
         own=login('kp','?view=player#/play/scene');assert not own.locator('[data-settings],[data-tasks],.review-open:visible').count()
         own.locator('.reference-editor').fill('KP own PL session');own.locator('#player-ai-embedded #send').click()
-        expect(own.locator('#player-ai-embedded #history')).to_contain_text('等待 KP',timeout=20000)
+        expect(own.locator('#player-ai-embedded #history')).to_contain_text('OFFLINE_REPLY',timeout=20000)
         own.locator('#dialog [data-action=close]').first.click();own.locator('[name=locale]').select_option('en')
         expect(own.locator('[data-action=ai-assistant]')).to_have_text('AI assistant');own.locator('[data-action=ai-assistant]').click()
         expect(own.locator('.view-title')).to_have_text('AI assistant',timeout=20000)

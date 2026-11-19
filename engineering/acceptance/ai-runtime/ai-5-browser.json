@@ -3,7 +3,7 @@
   "provider": "deterministic-offline",
   "pageErrors": [],
   "verified": [
-    "player-request",
+    "KP-request",
     "KP-forward",
     "ABC-review",
     "risk-reasons",

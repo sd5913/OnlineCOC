@@ -4,65 +4,63 @@
 - 文档子类：工程
 - 状态：有效
 - 创建日期：2026-11-14
-- 最后更新：2026-11-14
-- 关联文档：[机器契约](../../../engineering/contracts/models.json)、[完整初始化样例](../../../engineering/contracts/fixtures/room-initial.json)、[运行说明](first-test.md)、[旧格式定义](../../history/2026-11-14-room-formats-before-0.2.0.json)
+- 最后更新：2026-11-17
+- 关联文档：[机器契约](../../../engineering/contracts/models.json)、[知识契约](../../../engineering/contracts/knowledge.json)、[初始化样例](../../../engineering/contracts/fixtures/room-initial.json)、[运行说明](first-test.md)、[个人知识服务](player-knowledge.md)
 
-## 支持矩阵与责任
+## 当前支持
 
-| 后端版本 / 阶段 | 可加载的 Room | 行为 |
-| --- | --- | --- |
-| 0.1.0，AI 接入前的首测阶段 | v1 | 曾补齐缺失 chat；只作历史说明 |
-| 0.1.0，2026-11-14 本次调整前 AI 工作区 | v1 / v2 | 曾将 v1 自动转成 v2，缺 chat 自动补齐 |
-| **0.2.0，本次工作区实现** | **仅 v3** | 新建直接生成 v3；打开、提交、备份验证及恢复拒绝旧版、未知新版与损坏的当前格式 |
+后端 **0.3.0 仅加载 Room v4**。新建直接生成 v4；打开、提交、备份验证和恢复拒绝旧版本、未知版本及损坏格式。Python包版本、`onlinecoc.version`、CLI `--version` 和 `/api/v1/capabilities` 对齐。LAN、P2P、网页与桌面管理器版本独立。
 
-0.1.0 曾复用包版本号，不能只凭该号码确定其旧契约；上表阶段与[历史机器定义快照](../../history/2026-11-14-room-formats-before-0.2.0.json)共同标识调整前版本。0.2.0 的 Python 包版本与 `onlinecoc.version` 一致，CLI `--version` 和 `/api/v1/capabilities` 返回版本。这里的版本只属于后端，不代表 LAN、网页或桌面管理器版本。
+v4 新增必需 `knowledge`：子格式1、独立scopeId、revision、policies、observations、grants、subjectEpochs。它属于宿主权威存档，即使AI关闭也保留。主体、观察摘要、授权引用、容量与提供方策略均参与验证。原v3的chat、aiControl继续必需。
 
-引擎不再自动迁移业务存档。配置包开发者／数据持有方负责备份、转换、校验和选择升级时机。实际游玩数据、旧备份和包侧存档均未在本次更新中转换、删除或覆盖；仍为 v1/v2 的存档无法直接用此后端启动。正常锁文件操作不等于迁移。
+后端不在打开或查询时自动迁移。已有v3需要显式复制转换；真实游玩数据与旧备份不因更新代码而改变。更早v1/v2不在本转换器范围，其历史契约见[旧格式快照](../../history/2026-11-14-room-formats-before-0.2.0.json)。
 
-## 0.2.0 / Room v3 变更
+## 完整结构
 
-- `schemaVersion` 必须是整数 3；不接受字符串、布尔值、缺失版本、旧版或未知新版。
-- `chat` 由旧 Room v2 的可选字段改为必需。因为这是不兼容约束，提升 Room 版本，避免沿用 v2 静默收紧。
-- `aiControl` 延续 v2 的必需性。新建时 AI 与自动需求均关闭；即使没有启用 AI，也要保留控制结构及有效作用域。
-- 移除 `RoomV1` 活跃契约、自动迁移和缺聊天补齐分支。规则执行及 AI 验证使用独立 `ExecutionSnapshot` 契约；精简投影不能保存或恢复成完整房间。
-- 正常重启保持 scopeId；恢复为新副本仍创建新 scopeId、撤销 approved 状态的未消费批准、关闭自动需求及其 principal；已发布配置、回执和可选 AI 历史附件保持原恢复规则。代码为 `room_lifecycle.py`，没有格式升级职责。
-- 验证器摘要覆盖当前模型、版本及相关机器契约；旧 AI 校验证据不能直接用于新验证器下发布，需重新验证与审批。
-
-v1→v2 的历史差异是新增必需 `aiControl`。v2→v3 没有重命名实体/关系字段或改变业务数值；完整合法的 v2 数据经外部确认聊天结构、AI 作用域及引用后，才可声明 v3。不能把仅改版本号当成对缺字段、无效引用或旧批准的修复。不得就地编辑文件存储代号或忽略摘要链；应在独立副本按文件模块的导出／导入与备份约束重建并验证。
-
-## 当前结构
-
-所有下列 Room 顶层字段必需，无未知顶层字段。形状、长度、枚举和数值界限以机器契约为准；完整模型入口还校验引用、包含环、归属、数值和聊天约束。
+所有顶层字段必需，无未知顶层字段。完整验证另检查世界引用、归属、包含环、数值、聊天、AI批准工件与知识账本。
 
 | 字段 | 语义 |
 | --- | --- |
-| schemaVersion、roomId、name、runId、status | 格式、稳定房间身份、名称、场次及 active/paused/archived 状态 |
-| entities、relations、members | 实例、关系、成员，均以稳定 ID 索引；实体归属和关系端点必须有效 |
-| configurations、progress | 配置定义和成员／实体个人进度；进度所有者必须存在 |
-| commands、flows、waits | 幂等执行回执、持久流程和等待，不代表玩家客户端可自行写入 |
-| artifacts、activeRuleset | 完整规则工件及生效修订；初始化示例允许 null，运行宿主会装载工件 |
-| assets | 素材元信息；完整备份另验证实际字节与摘要 |
-| chat | schemaVersion=1 的聊天频道、消息、序号及已读结构；不能以空对象代替合法 ChatState |
-| aiControl | AI 控制、scopeId、批准与发布记录；控制子格式仍为 1 |
-| audit、outbox、collectionRevision | 审计、通知及集合版本，由宿主管理 |
+| schemaVersion、roomId、name、runId、status | 格式、房间身份、名称、场次及运行状态 |
+| entities、relations、members | 实例、关系、成员，使用稳定ID索引 |
+| configurations、progress | 配置定义与成员／实例进度 |
+| commands、flows、waits | 幂等回执、持久流程、等待 |
+| artifacts、activeRuleset | 规则工件及生效版本 |
+| assets | 素材元信息；备份另外验证实际文件 |
+| chat | 频道、消息、序号与个人已读 |
+| aiControl | AI设置、独立scope、批准与发布记录 |
+| knowledge | 持久策略、固定观察和个人授权 |
+| audit、outbox、collectionRevision | 审计、通知与集合版本 |
 
-格式号彼此独立：Room=3，Entity=1、AI 契约/控制=1、聊天=1、网络 protocolVersion=1、文件封套 format=1、备份 format=1；配置包版本由包作者维护。本次未修改独立文件数据模块或网络协议号。
+版本号彼此独立：Room=4，Entity=1，AI契约/控制=1，知识=1，聊天=1，网络protocolVersion=1，文件封套format=1，备份format=1。执行态ExecutionSnapshot仍是精简投影，不能作为完整Room打开；知识账本不直接传入Lua。
 
-## 只读验证
+## 显式v3→v4转换
 
-从工程根目录运行，`--input` 指向待校验副本：
+以下命令从项目根目录运行，输入必须是停止写入的独立副本或已导出备份。输出必须不存在，不能与输入相同或位于输入目录内。
+
+```powershell
+engineering/.venv/Scripts/python engineering/backend/scripts/run.py convert-room --format room --input D:/isolated/v3-room.json --output D:/isolated/v4-room.json
+engineering/.venv/Scripts/python engineering/backend/scripts/run.py convert-room --format snapshot --input D:/isolated/v3-snapshot.json --output D:/isolated/v4-snapshot.json
+engineering/.venv/Scripts/python engineering/backend/scripts/run.py convert-room --format backup --input D:/isolated/v3-backup --output D:/isolated/v4-backup
+```
+
+转换器验证输入版本、封套/备份摘要和文件，再复制形成合法v4，输出源/目标SHA-256。原文件字节不变；新知识账本为空，生成独立知识scope。历史pending执行快照的格式标识同步为4，原命令与随机记录保留。转换不批准新动作，不伪造过去场景的正文或到访时间。
+
+转换报告historicalKnowledgeImported=false。包侧旧locationKnowledge只表明曾有记录，不能证明旧时正文；须在包提供的KP预览后明确执行“现在揭示”。不要在原数据代链中直接改版本号和摘要。
+
+只读检查通过后，仍需要正确身份绑定、素材和包提供方才能实际恢复。部署时停止旧服务，选定新程序及新副本；回滚使用原程序和原备份，新版期间产生的数据不会自动反向合并。
+
+## 验证与恢复
 
 ```powershell
 engineering/.venv/Scripts/python engineering/backend/scripts/run.py --version
 engineering/.venv/Scripts/python engineering/backend/scripts/run.py validate-room --input engineering/contracts/fixtures/room-initial.json
-engineering/.venv/Scripts/python engineering/backend/scripts/run.py validate-room --format snapshot --input D:/isolated-copy/room.json
-engineering/.venv/Scripts/python engineering/backend/scripts/run.py validate-room --format backup --input D:/isolated-copy/backup
+engineering/.venv/Scripts/python engineering/backend/scripts/run.py validate-room --format snapshot --input D:/isolated/v4-snapshot.json
+engineering/.venv/Scripts/python engineering/backend/scripts/run.py validate-room --format backup --input D:/isolated/v4-backup
 ```
 
-`room` 检查纯 Room JSON；`snapshot` 另检查导出封套 format/digest；`backup` 调用宿主完整备份验证（规则、素材、批准及可选 AI 历史）。验证不创建 Host、不占用存档锁、不写入文件、不校正内容。成功退出 0，失败退出 2，输出 JSON。纯 Room 检查不证明素材文件齐全或身份库能匹配；实际恢复仍校验身份绑定。
+room校验纯Room；snapshot另校验封套；backup验证完整备份。检查不启动Host、不占存档锁、不修改输入，成功退出0、失败退出2并输出JSON。SCHEMA_UNSUPPORTED只报告整数版本或null、支持版本[4]和文档路径，不回显正文。当前格式字段错误使用INPUT_INVALID，无效引用使用相关领域错误。
 
-旧版返回 `SCHEMA_UNSUPPORTED`，detail 包含 actualVersion、supportedVersions=[3] 和本说明路径；版本值本身若非整数则返回 null，不回显任意原文。当前格式字段错误返回 `INPUT_INVALID`，如 model=Room、path=/chat、constraint=required；坏引用返回 `REFERENCE_CONFLICT` 等领域错误。不会把房间正文或密码作为错误输出。
+普通重启保留AI与知识scope。恢复为新副本分别生成新AI/知识scope，撤销未消费的approved批准，关闭自动需求；已发布数据与回执保持恢复规则。知识内部观察/授权ID保留，但对外ref的scope与opaque ID改变，旧引用不能读新副本。
 
-验证证据见[专项结果](../../../engineering/acceptance/room-version-policy/results.json)。
-
-2026-11-14 验收：后端与 AI 全量回归 367 项、单独补验恢复自动需求关闭 1 项，共 368 项通过，0 失败、0 跳过；其中本次版本策略专项 23 项。包含真实宿主子进程及浏览器；未转换真实存档、未调用真实模型服务。
+核心验收覆盖三种离线转换、原字节不变、冷启动、备份恢复和知识引用分叉，见[专项测试](../../../engineering/backend/tests/test_knowledge_network.py)。本轮不转换或覆盖正式存档。

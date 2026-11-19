@@ -1,0 +1,1455 @@
+{
+  "checkedAt": "2026-11-16T10:57:54.028851+08:00",
+  "moduleTests": {
+    "unique": 323,
+    "failed": 0,
+    "skipped": 0,
+    "method": "Latest result per test ID across the listed runs; initial failures corrected and retested. Runs are not added together."
+  },
+  "packageRuns": [
+    {
+      "report": "rulepacks/stumpsville/tests/map-ai-results.json",
+      "groups": 9,
+      "sha256": "2229edc7b267b63c3f69bcdc20c559a0ea7adbc6bb26655ffa73db8cf9bf998c"
+    },
+    {
+      "report": "rulepacks/stumpsville/tests/ai-data-results.json",
+      "groups": 4,
+      "sha256": "a37053c39e3209d946e0055e3461a3fbae6c01b07b0d35c8cd2b5cf213d2eecb"
+    },
+    {
+      "report": "rulepacks/stumpsville/tests/ai-scopes-results.json",
+      "groups": 8,
+      "sha256": "b189415becc6a2c490ac089894101a9f2b3e8102655c65702617930e99ae04c2"
+    },
+    {
+      "report": "rulepacks/stumpsville/tests/screen-results.json",
+      "groups": 6,
+      "sha256": "3843f804e981585d7f6356f304105fc26918299dd44d7be7754eca46b1c64031"
+    },
+    {
+      "report": "rulepacks/stumpsville/tests/integrations-results.json",
+      "groups": 5,
+      "sha256": "7faefb95fa974813a357b14cff9e7d235974c5db08c79e5c4c581d2ff16b667c"
+    }
+  ],
+  "runs": [
+    {
+      "report": "engineering/ai/.test-output/access-evidence-20261116/access-ui-tests.xml",
+      "tests": 1,
+      "failed": 0
+    },
+    {
+      "report": "engineering/ai/.test-output/access-evidence-20261116/access-core-tests.xml",
+      "tests": 300,
+      "failed": 12
+    },
+    {
+      "report": "engineering/ai/.test-output/access-evidence-20261116/access-core-retest.xml",
+      "tests": 82,
+      "failed": 0
+    },
+    {
+      "report": "engineering/ai/.test-output/access-evidence-20261116/access-ui-retest.xml",
+      "tests": 23,
+      "failed": 0
+    },
+    {
+      "report": "engineering/ai/.test-output/access-evidence-20261116/access-boundaries.xml",
+      "tests": 110,
+      "failed": 0
+    },
+    {
+      "report": "engineering/ai/.test-output/access-evidence-20261116/access-final.xml",
+      "tests": 39,
+      "failed": 0
+    },
+    {
+      "report": "engineering/ai/.test-output/access-evidence-20261116/access-history.xml",
+      "tests": 43,
+      "failed": 0
+    },
+    {
+      "report": "engineering/ai/.test-output/access-evidence-20261116/access-batches.xml",
+      "tests": 14,
+      "failed": 0
+    },
+    {
+      "report": "engineering/ai/.test-output/access-evidence-20261116/access-ui-final.xml",
+      "tests": 1,
+      "failed": 0
+    }
+  ],
+  "tests": {
+    "tests.test_access_ui::test_permissions_archive_delete_batches_and_mobile": {
+      "status": "passed",
+      "run": "access-ui-final.xml"
+    },
+    "tests.test_access_batches::test_defaults_binding_and_no_permission_escalation": {
+      "status": "passed",
+      "run": "access-batches.xml"
+    },
+    "tests.test_access_batches::test_player_auto_dispatch_context_output_and_revoke": {
+      "status": "passed",
+      "run": "access-batches.xml"
+    },
+    "tests.test_access_batches::test_kp_player_session_has_player_ceiling_and_data_proof": {
+      "status": "passed",
+      "run": "access-batches.xml"
+    },
+    "tests.test_access_batches::test_batch_human_approval_idempotence_and_player_denial": {
+      "status": "passed",
+      "run": "access-batches.xml"
+    },
+    "tests.test_access_batches::test_batch_stale_reject_auto_and_bypass_forbidden": {
+      "status": "passed",
+      "run": "access-batches.xml"
+    },
+    "tests.test_access_batches::test_batch_unknown_reconciles_without_reexecuting": {
+      "status": "passed",
+      "run": "access-batches.xml"
+    },
+    "tests.test_access_batches::test_delete_cancels_queue_hides_session_and_keeps_usage_audit": {
+      "status": "passed",
+      "run": "access-batches.xml"
+    },
+    "tests.test_base::test_real_load_and_full_merge": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_base::test_configuration_without_optional_behaviors[False]": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_base::test_configuration_without_optional_behaviors[True]": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_base::test_load_rejects_invalid_candidates[<lambda>-INCOMPLETE_CANDIDATE]": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_base::test_load_rejects_invalid_candidates[<lambda>-PACK_SCHEMA_INVALID]": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_base::test_load_rejects_invalid_candidates[<lambda>-SCHEMA_MISSING]": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_base::test_load_rejects_invalid_candidates[<lambda>-VERSION_CONFLICT]": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_base::test_load_rejects_invalid_candidates[<lambda>-TYPE_CHANGE_FORBIDDEN]": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_base::test_load_rejects_invalid_candidates[<lambda>-REFERENCE_CONFLICT]": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_base::test_load_rejects_invalid_candidates[<lambda>-RULE_CYCLE_OR_MISSING0]": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_base::test_load_rejects_invalid_candidates[<lambda>-RULE_CYCLE_OR_MISSING1]": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_base::test_load_rejects_invalid_candidates[<lambda>-RULE_INVALID]": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_base::test_load_rejects_invalid_candidates[<lambda>-RULE_FAILED]": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_base::test_path_rejection[../x]": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_base::test_path_rejection[/x]": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_base::test_path_rejection[C:/x]": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_base::test_path_rejection[x\\\\y]": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_base::test_path_rejection[a//b]": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_base::test_path_rejection[a/../b]": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_base::test_path_rejection[a./b]": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_base::test_path_rejection[CON.json]": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_base::test_path_rejection[a:b]": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_base::test_path_rejection[.hidden]": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_base::test_junction_or_symlink_escape": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_base::test_pack_bad_json_and_limits[{\"x\":1,\"x\":2}-INPUT_INVALID]": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_base::test_pack_bad_json_and_limits[{\"x\":NaN}-INPUT_INVALID]": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_base::test_pack_bad_json_and_limits[{-INPUT_INVALID]": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_base::test_pack_bad_json_and_limits[content3-LIMIT_EXCEEDED]": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_base::test_schema_cannot_resolve_external_resources[https://example.invalid/schema]": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_base::test_schema_cannot_resolve_external_resources[file:///secrets]": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_base::test_schema_cannot_resolve_external_resources[../schema.json]": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_base::test_pack_snapshot_and_baseline_changes_are_detected": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_context::test_default_excludes_room_and_pack_text": {
+      "status": "passed",
+      "run": "access-history.xml"
+    },
+    "tests.test_context::test_public_context_strips_secret_and_never_reads_others_private_chat": {
+      "status": "passed",
+      "run": "access-history.xml"
+    },
+    "tests.test_context::test_context_rechecks_source_and_policy_after_generation[edit]": {
+      "status": "passed",
+      "run": "access-history.xml"
+    },
+    "tests.test_context::test_context_rechecks_source_and_policy_after_generation[delete]": {
+      "status": "passed",
+      "run": "access-history.xml"
+    },
+    "tests.test_context::test_context_rechecks_source_and_policy_after_generation[policy]": {
+      "status": "passed",
+      "run": "access-history.xml"
+    },
+    "tests.test_context::test_context_rechecks_source_and_policy_after_generation[revoke]": {
+      "status": "passed",
+      "run": "access-history.xml"
+    },
+    "tests.test_context::test_context_rechecks_source_and_policy_after_generation[profile]": {
+      "status": "passed",
+      "run": "access-history.xml"
+    },
+    "tests.test_context::test_manual_revision_keeps_original_source_authorization": {
+      "status": "passed",
+      "run": "access-history.xml"
+    },
+    "tests.test_context::test_chat_source_requires_actual_current_text_and_external_permission": {
+      "status": "passed",
+      "run": "access-history.xml"
+    },
+    "tests.test_context::test_unrelated_read_position_and_ai_history_do_not_change_world": {
+      "status": "passed",
+      "run": "access-history.xml"
+    },
+    "tests.test_context::test_scope_mismatch_rejects_cross_room_context": {
+      "status": "passed",
+      "run": "access-history.xml"
+    },
+    "tests.test_context::test_context_size_is_bounded": {
+      "status": "passed",
+      "run": "access-history.xml"
+    },
+    "tests.test_context::test_two_actual_demo_directories_do_not_share_secrets_or_memory": {
+      "status": "passed",
+      "run": "access-history.xml"
+    },
+    "tests.test_contracts::test_valid_model[Profile]": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_contracts::test_valid_model[PackContract]": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_contracts::test_valid_model[ContextSnapshot]": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_contracts::test_valid_model[Request]": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_contracts::test_valid_model[Proposal]": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_contracts::test_valid_model[ChangeSet]": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_contracts::test_valid_model[ValidationReport]": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_contracts::test_valid_model[PreparedBundle]": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_contracts::test_valid_model[Approval]": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_contracts::test_valid_model[Publication]": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_contracts::test_valid_model[MemoryEntry]": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_contracts::test_valid_model[Scenario]": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_contracts::test_valid_model[CheckSpec]": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_contracts::test_valid_model[Metric]": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_contracts::test_valid_model[AiCommand]": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_contracts::test_unknown_authority_fields_rejected[Profile]": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_contracts::test_unknown_authority_fields_rejected[PackContract]": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_contracts::test_unknown_authority_fields_rejected[ContextSnapshot]": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_contracts::test_unknown_authority_fields_rejected[Request]": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_contracts::test_unknown_authority_fields_rejected[Proposal]": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_contracts::test_unknown_authority_fields_rejected[ChangeSet]": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_contracts::test_unknown_authority_fields_rejected[ValidationReport]": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_contracts::test_unknown_authority_fields_rejected[PreparedBundle]": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_contracts::test_unknown_authority_fields_rejected[Approval]": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_contracts::test_unknown_authority_fields_rejected[Publication]": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_contracts::test_unknown_authority_fields_rejected[MemoryEntry]": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_contracts::test_unknown_authority_fields_rejected[Scenario]": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_contracts::test_unknown_authority_fields_rejected[CheckSpec]": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_contracts::test_unknown_authority_fields_rejected[Metric]": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_contracts::test_unknown_authority_fields_rejected[AiCommand]": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_contracts::test_negative_fixtures[case0]": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_contracts::test_negative_fixtures[case1]": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_contracts::test_negative_fixtures[case2]": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_contracts::test_negative_fixtures[case3]": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_contracts::test_negative_fixtures[case4]": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_contracts::test_negative_fixtures[case5]": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_contracts::test_every_schema_is_valid": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_contracts::test_ambiguous_or_invalid_json_rejected[{\"x\":1,\"x\":2}]": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_contracts::test_ambiguous_or_invalid_json_rejected[{\"nested\":{\"x\":1,\"x\":2}}]": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_contracts::test_ambiguous_or_invalid_json_rejected[{\"x\":NaN}]": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_contracts::test_ambiguous_or_invalid_json_rejected[{\"x\":Infinity}]": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_contracts::test_ambiguous_or_invalid_json_rejected[\"\\ud800\"]": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_contracts::test_ambiguous_or_invalid_json_rejected[\\xff]": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_contracts::test_non_json_or_unsafe_numbers_rejected[nan]": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_contracts::test_non_json_or_unsafe_numbers_rejected[inf]": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_contracts::test_non_json_or_unsafe_numbers_rejected[9007199254740992]": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_contracts::test_non_json_or_unsafe_numbers_rejected[1044388881413152506691752710716624382579964249047383780384233483283953907971557456848826811934997558340890106714439262837987573438185793607263236087851365277945956976543709998340361590134383718314428070011855946226376318839397712745672334684344586617496807908705803704071284048740118609114467977783598029006686938976881787785946905630190260940599579453432823469303026696443059025015972399867714215541693835559885291486318237914434496734087811872639496475100189041349008417061675093668333850551032972088269550769983616369411933015213796825837188091833656751221318492846368125550225998300412344784862595674492194617023806505913245610825731835380087608622102834270197698202313169017678006675195485079921636419370285375124784014907159135459982790513399611551794271106831134090584272884279791554849782954323534517065223269061394905987693002122963395687782878948440616007412945674919823050571642377154816321380631045902916136926708342856440730447899971901781465763473223850267253059899795996090799469201774624817718449867455659250178329070473119433165550807568221846571746373296884912819520317457002440926616910874148385078411929804522981857338977648103126085903001302413467189726673216491511131602920781738033436090243804708340403154190336]": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_contracts::test_non_json_or_unsafe_numbers_rejected[value4]": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_contracts::test_non_json_or_unsafe_numbers_rejected[value5]": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_contracts::test_cycles_and_depth_are_bounded": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_contracts::test_golden_digests_and_host_interop": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_contracts::test_baseline_binds_every_precondition[scopeId]": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_contracts::test_baseline_binds_every_precondition[baseRuleset]": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_contracts::test_baseline_binds_every_precondition[configDigest]": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_contracts::test_baseline_binds_every_precondition[contractDigest]": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_contracts::test_baseline_binds_every_precondition[validatorSetDigest]": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_contracts::test_baseline_binds_every_precondition[worldDigest]": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_contracts::test_candidate_binds_complete_artifact_and_configuration": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_contracts::test_mismatched_report_or_candidate_cannot_be_reused[PreparedBundle]": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_contracts::test_mismatched_report_or_candidate_cannot_be_reused[Approval]": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_contracts::test_change_identity_and_expected_revision": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_contracts::test_model_tools_do_not_include_approval_or_mutation": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_contracts::test_pack_materials_are_present_and_typed": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_contracts::test_provider_template_is_disabled_and_contains_only_secret_reference": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_coordinator::test_draft_is_checked_but_never_published": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_coordinator::test_blocked_model_does_not_hold_host_lock_and_can_cancel": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_coordinator::test_request_dedup_queue_and_budget": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_coordinator::test_untrusted_model_and_retry_limits[forged-TOOL_FORBIDDEN]": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_coordinator::test_untrusted_model_and_retry_limits[loop-TOOL_ROUND_LIMIT]": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_coordinator::test_untrusted_model_and_retry_limits[retry-PROVIDER_UNAVAILABLE]": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_coordinator::test_untrusted_model_and_retry_limits[repair-MODEL_OUTPUT_INVALID]": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_coordinator::test_expired_task_and_authority_change_fail_closed": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_coordinator::test_disabled_service_makes_no_provider_calls": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_coordinator::test_retry_budget_records_each_attempt_once": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_coordinator::test_restart_interrupts_queued_tasks_and_preserves_budget": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_coordinator::test_permissions_changed_during_generation_discard_output": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_coordinator::test_profile_changed_during_generation_discards_output_and_runner_survives": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_coordinator::test_real_contract_is_exposed_and_repair_names_invalid_field": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_data_queries::test_search_detail_and_external_policy": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_data_queries::test_query_rejects_unbounded_or_identity_input[args0]": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_data_queries::test_query_rejects_unbounded_or_identity_input[args1]": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_data_queries::test_query_rejects_unbounded_or_identity_input[args2]": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_data_queries::test_query_rejects_unbounded_or_identity_input[args3]": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_data_queries::test_query_rejects_unbounded_or_identity_input[args4]": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_data_queries::test_query_rejects_unbounded_or_identity_input[args5]": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_data_queries::test_query_rejects_unbounded_or_identity_input[args6]": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_data_queries::test_chat_intersection_window_cursor_and_edit": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_data_queries::test_dynamic_evidence_and_explicit_reference_recheck": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_data_queries::test_tool_queries_never_read_kp_secret_for_player": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_data_queries::test_model_search_read_then_result_keeps_evidence": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_data_queries::test_http_query_auth_csrf_and_contract": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_data_queries::test_result_limit_and_missing_adapter_are_fail_closed": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_data_queries::test_query_evidence_prevents_publish_after_source_edit": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_data_queries::test_per_round_multi_call_budget": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_data_query_ui::test_task_diagnostics_are_visible_only_in_keeper_conversation[kp]": {
+      "status": "passed",
+      "run": "access-ui-retest.xml"
+    },
+    "tests.test_data_query_ui::test_task_diagnostics_are_visible_only_in_keeper_conversation[player1]": {
+      "status": "passed",
+      "run": "access-ui-retest.xml"
+    },
+    "tests.test_data_query_ui::test_chat_evidence_reference_and_preview[page]": {
+      "status": "passed",
+      "run": "access-ui-retest.xml"
+    },
+    "tests.test_data_query_ui::test_chat_evidence_reference_and_preview[conversation]": {
+      "status": "passed",
+      "run": "access-ui-retest.xml"
+    },
+    "tests.test_data_query_ui::test_chat_evidence_reference_and_preview[collapsible]": {
+      "status": "passed",
+      "run": "access-ui-retest.xml"
+    },
+    "tests.test_entrypoints::test_requests_are_explicit_idempotent_redacted_and_paged": {
+      "status": "passed",
+      "run": "access-final.xml"
+    },
+    "tests.test_entrypoints::test_chat_forwarding_binds_original_and_policy": {
+      "status": "passed",
+      "run": "access-final.xml"
+    },
+    "tests.test_entrypoints::test_player_can_cancel_after_dispatching_kp_loses_role": {
+      "status": "passed",
+      "run": "access-final.xml"
+    },
+    "tests.test_entrypoints::test_plan_without_proposal_rechecks_context_on_read": {
+      "status": "passed",
+      "run": "access-final.xml"
+    },
+    "tests.test_entrypoints::test_auto_off_prefix_dedup_edits_withdrawal_and_role": {
+      "status": "passed",
+      "run": "access-final.xml"
+    },
+    "tests.test_entrypoints::test_manual_revision_invalidates_approval_and_cancel_revokes": {
+      "status": "passed",
+      "run": "access-final.xml"
+    },
+    "tests.test_entrypoints::test_receipt_rechecks_private_sources_and_restart_pending": {
+      "status": "passed",
+      "run": "access-final.xml"
+    },
+    "tests.test_entrypoints::test_http_auth_limits_schema_capability_and_disabled_module": {
+      "status": "passed",
+      "run": "access-final.xml"
+    },
+    "tests.test_entrypoints::test_cli_uses_same_three_engines": {
+      "status": "passed",
+      "run": "access-final.xml"
+    },
+    "tests.test_gameplay::test_exact_d100_probability_and_cost_no_live_effects": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_gameplay::test_wrong_owner_and_repeated_use_are_exercised": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_gameplay::test_missing_cost_guard_fails_resource_exhaustion": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_gameplay::test_positive_fixture_cannot_replace_negative_assertion": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_gameplay::test_missing_required_metric_blocks": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_gameplay::test_extra_random_call_is_not_paired_with_old_trace": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_gameplay::test_sampling_uses_replayable_independent_streams": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_gameplay::test_zero_baseline_is_not_divided": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_manager::test_local_boundary_bootstrap_csrf_and_lock": {
+      "status": "passed",
+      "run": "access-core-retest.xml"
+    },
+    "tests.test_manager::test_profile_cas_disable_delete_and_secret_rejected_in_config": {
+      "status": "passed",
+      "run": "access-core-retest.xml"
+    },
+    "tests.test_manager::test_real_dpapi_key_roundtrip_no_plaintext_and_legacy_fallback": {
+      "status": "passed",
+      "run": "access-core-retest.xml"
+    },
+    "tests.test_manager::test_room_endpoint_is_bounded[https://127.0.0.1:8765]": {
+      "status": "passed",
+      "run": "access-core-retest.xml"
+    },
+    "tests.test_manager::test_room_endpoint_is_bounded[http://192.168.1.2:8765]": {
+      "status": "passed",
+      "run": "access-core-retest.xml"
+    },
+    "tests.test_manager::test_room_endpoint_is_bounded[http://example.com:8765]": {
+      "status": "passed",
+      "run": "access-core-retest.xml"
+    },
+    "tests.test_manager::test_room_endpoint_is_bounded[http://user:pass@127.0.0.1:8765]": {
+      "status": "passed",
+      "run": "access-core-retest.xml"
+    },
+    "tests.test_manager::test_room_endpoint_is_bounded[http://127.0.0.1:8765/api]": {
+      "status": "passed",
+      "run": "access-core-retest.xml"
+    },
+    "tests.test_manager::test_room_endpoint_is_bounded[http://127.0.0.1:8765?x=1]": {
+      "status": "passed",
+      "run": "access-core-retest.xml"
+    },
+    "tests.test_manager::test_room_endpoint_is_bounded[http://127.0.0.1:99999]": {
+      "status": "passed",
+      "run": "access-core-retest.xml"
+    },
+    "tests.test_manager::test_room_profiles_persist_but_login_does_not": {
+      "status": "passed",
+      "run": "access-core-retest.xml"
+    },
+    "tests.test_manager::test_room_bridge_never_exposes_host_control_or_shares_sessions": {
+      "status": "passed",
+      "run": "access-core-retest.xml"
+    },
+    "tests.test_manager::test_session_ownership_archive_idempotence_and_reopen": {
+      "status": "passed",
+      "run": "access-core-retest.xml"
+    },
+    "tests.test_manager::test_manager_static_modules_have_correct_mime_and_headers": {
+      "status": "passed",
+      "run": "access-core-retest.xml"
+    },
+    "tests.test_manager::test_late_room_login_cannot_restore_locked_session": {
+      "status": "passed",
+      "run": "access-core-retest.xml"
+    },
+    "tests.test_manager::test_concurrent_profile_edits_have_exactly_one_winner": {
+      "status": "passed",
+      "run": "access-core-retest.xml"
+    },
+    "tests.test_manager::test_advisory_lock_is_bounded": {
+      "status": "passed",
+      "run": "access-core-retest.xml"
+    },
+    "tests.test_manager::test_running_room_refreshes_profile_and_fails_closed": {
+      "status": "passed",
+      "run": "access-core-retest.xml"
+    },
+    "tests.test_manager_cli::test_actual_cli_start_and_one_use_bootstrap": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_memory::test_draft_is_not_fact_and_confirmed_memory_survives_restart": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_memory::test_source_change_invalidates_memory_and_descendants": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_memory::test_stale_ai_store_draft_cannot_reconfirm_revoked_room_memory": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_memory::test_revoke_and_expiry_never_leave_usable_summary": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_memory::test_secret_summary_cannot_be_downgraded_to_public": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_memory::test_player_cannot_confirm_and_private_memory_is_not_shared": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_memory::test_scope_fork_does_not_reuse_old_memory": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_memory::test_context_approval_binding_tracks_memory_revision": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_pack_rules::test_valid_constraints_and_old_instances_preserved": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_pack_rules::test_out_of_range_is_traced_to_rule_clause": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_pack_rules::test_cost_change_outside_extension_is_rejected": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_pack_rules::test_missing_or_unknown_required_evidence_never_passes[<lambda>0]": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_pack_rules::test_missing_or_unknown_required_evidence_never_passes[<lambda>1]": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_pack_rules::test_missing_or_unknown_required_evidence_never_passes[<lambda>2]": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_pack_rules::test_missing_or_unknown_required_evidence_never_passes[<lambda>3]": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_pack_rules::test_missing_or_unknown_required_evidence_never_passes[<lambda>4]": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_pack_rules::test_old_flow_is_not_assumed_to_use_old_configs": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_pack_rules::test_versioned_reference_and_unique_checkers": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_pack_rules::test_missing_numeric_field_is_not_zero": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_pack_rules::test_scenario_checker_covers_permission_and_cost": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_pilot::test_actual_pack_baseline_metrics_and_no_live_effects": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_pilot::test_demo_edit_stale_reject_publish_and_restore": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_pilot::test_demo_pack_author_constraints_and_existing_flow_block": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_providers::test_deepseek_wire_format_and_secret_stays_in_header": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_providers::test_compatible_endpoint_omits_vendor_options": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_providers::test_http_failures_are_bounded_and_redacted[401-PROVIDER_AUTH_FAILED-False]": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_providers::test_http_failures_are_bounded_and_redacted[403-PROVIDER_AUTH_FAILED-False]": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_providers::test_http_failures_are_bounded_and_redacted[429-PROVIDER_RATE_LIMITED-True]": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_providers::test_http_failures_are_bounded_and_redacted[500-PROVIDER_UNAVAILABLE-True]": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_providers::test_http_failures_are_bounded_and_redacted[503-PROVIDER_UNAVAILABLE-True]": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_providers::test_http_failures_are_bounded_and_redacted[302-PROVIDER_REDIRECT_REJECTED-False]": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_providers::test_http_failures_are_bounded_and_redacted[400-UNSUPPORTED_CAPABILITY-False]": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_providers::test_bad_model_json_is_rejected[]": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_providers::test_bad_model_json_is_rejected[   ]": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_providers::test_bad_model_json_is_rejected[{]": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_providers::test_bad_model_json_is_rejected[[]]": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_providers::test_bad_model_json_is_rejected[{\"x\":1,\"x\":2}]": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_providers::test_bad_model_json_is_rejected[{\"n\":NaN}]": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_providers::test_truncation_usage_and_unknown_reasoning": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_providers::test_connection_failure_and_total_timeout": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_providers::test_unsafe_url_is_rejected[file:///x]": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_providers::test_unsafe_url_is_rejected[https://key:password@example.com]": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_providers::test_unsafe_url_is_rejected[https://example.com?key=secret]": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_providers::test_unsafe_url_is_rejected[http://127.0.0.1]": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_providers::test_unsafe_url_is_rejected[https://example.com:99999]": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_providers::test_unsafe_url_is_rejected[https://example.com/\\r\\nx]": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_providers::test_dns_pinning_blocks_rebinding_and_preserves_original_host": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_providers::test_local_profile_management_never_stores_key": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_providers::test_probe_requires_json_and_a_real_tool_call": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_reference_ui::test_prototype_commands_semantic_tokens_and_atomic_editing": {
+      "status": "passed",
+      "run": "access-ui-retest.xml"
+    },
+    "tests.test_reference_ui::test_reference_editor_serialization_unavailable_and_late_labels": {
+      "status": "passed",
+      "run": "access-ui-retest.xml"
+    },
+    "tests.test_references::test_search_resolve_privacy_and_revision": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_references::test_context_references_are_bound_and_obey_external_policy": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_references::test_session_mutation_and_receipt_use_one_durable_commit": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_references::test_detail_does_not_scan_other_session_tasks": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_references::test_runtime_data_cannot_be_requested_on_behalf_of_player": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_references::test_reference_http_boundary": {
+      "status": "passed",
+      "run": "access-boundaries.xml"
+    },
+    "tests.test_sandbox::test_ai_and_host_share_execution_policy": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_sandbox::test_top_level_loop_is_bounded": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_sandbox::test_memory_and_output_limits[local t={} while true do table.insert(t, string.format('%08000d',1)) end]": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_sandbox::test_memory_and_output_limits[return rule('huge', {}, function(r) return string.format('%09000000d',1) end)]": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_sandbox::test_lua_cannot_access_host_bridges[os.getenv('ONLINECOC_DEEPSEEK_API_KEY')]": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_sandbox::test_lua_cannot_access_host_bridges[io.open('save.json','w')]": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_sandbox::test_lua_cannot_access_host_bridges[require('socket')]": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_sandbox::test_lua_cannot_access_host_bridges[python.eval('1')]": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_sandbox::test_lua_cannot_access_host_bridges[debug.getregistry()]": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_sandbox::test_lua_cannot_access_host_bridges[_G.os]": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_sandbox::test_lua_cannot_access_host_bridges[r.read.__globals__]": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_sandbox::test_lua_cannot_access_host_bridges[r.read['__self__']]": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_sandbox::test_secrets_are_removed_before_process_creation": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_sandbox::test_worker_failure_is_not_success": {
+      "status": "passed",
+      "run": "access-core-tests.xml"
+    },
+    "tests.test_sessions::test_history_reuses_valid_response_but_drops_stale_sources": {
+      "status": "passed",
+      "run": "access-history.xml"
+    },
+    "tests.test_sessions::test_history_is_bounded_and_never_reads_other_sessions": {
+      "status": "passed",
+      "run": "access-history.xml"
+    },
+    "tests.test_sessions::test_repository_rejects_broken_conversation_links[foreign]": {
+      "status": "passed",
+      "run": "access-history.xml"
+    },
+    "tests.test_sessions::test_repository_rejects_broken_conversation_links[missing]": {
+      "status": "passed",
+      "run": "access-history.xml"
+    },
+    "tests.test_sessions::test_repository_rejects_broken_conversation_links[duplicate]": {
+      "status": "passed",
+      "run": "access-history.xml"
+    },
+    "tests.test_sessions::test_repository_rejects_broken_conversation_links[title]": {
+      "status": "passed",
+      "run": "access-history.xml"
+    },
+    "tests.test_sessions::test_session_preferences_owner_conflict_and_persistence": {
+      "status": "passed",
+      "run": "access-history.xml"
+    },
+    "tests.test_sessions::test_configured_history_bound_preserves_records[0]": {
+      "status": "passed",
+      "run": "access-history.xml"
+    },
+    "tests.test_sessions::test_configured_history_bound_preserves_records[2]": {
+      "status": "passed",
+      "run": "access-history.xml"
+    },
+    "tests.test_sessions::test_configured_history_bound_preserves_records[4]": {
+      "status": "passed",
+      "run": "access-history.xml"
+    },
+    "tests.test_sessions::test_session_preferences_validate_command_and_stored_data[historyTurns--1]": {
+      "status": "passed",
+      "run": "access-history.xml"
+    },
+    "tests.test_sessions::test_session_preferences_validate_command_and_stored_data[historyTurns-5]": {
+      "status": "passed",
+      "run": "access-history.xml"
+    },
+    "tests.test_sessions::test_session_preferences_validate_command_and_stored_data[historyTurns-True]": {
+      "status": "passed",
+      "run": "access-history.xml"
+    },
+    "tests.test_sessions::test_session_preferences_validate_command_and_stored_data[historyTurns-1.5]": {
+      "status": "passed",
+      "run": "access-history.xml"
+    },
+    "tests.test_sessions::test_session_preferences_validate_command_and_stored_data[renderMode-html]": {
+      "status": "passed",
+      "run": "access-history.xml"
+    },
+    "tests.test_sessions::test_session_preferences_validate_command_and_stored_data[pinned-1]": {
+      "status": "passed",
+      "run": "access-history.xml"
+    },
+    "tests.test_sessions::test_session_preferences_validate_command_and_stored_data[showDiagnostics-false]": {
+      "status": "passed",
+      "run": "access-history.xml"
+    },
+    "tests.test_task_diagnostics::test_failure_diagnostics_redact_messages_and_preserve_primary": {
+      "status": "passed",
+      "run": "access-core-retest.xml"
+    },
+    "tests.test_task_diagnostics::test_cleanup_error_does_not_replace_result_or_cancellation[False]": {
+      "status": "passed",
+      "run": "access-core-retest.xml"
+    },
+    "tests.test_task_diagnostics::test_cleanup_error_does_not_replace_result_or_cancellation[True]": {
+      "status": "passed",
+      "run": "access-core-retest.xml"
+    },
+    "tests.test_task_diagnostics::test_tool_metadata_is_bounded_and_contains_no_argument_values": {
+      "status": "passed",
+      "run": "access-core-retest.xml"
+    },
+    "tests.test_task_diagnostics::test_deepseek_wire_query_replay_and_parameter_repair[None]": {
+      "status": "passed",
+      "run": "access-core-retest.xml"
+    },
+    "tests.test_task_diagnostics::test_deepseek_wire_query_replay_and_parameter_repair[bad1]": {
+      "status": "passed",
+      "run": "access-core-retest.xml"
+    },
+    "tests.test_task_diagnostics::test_deepseek_wire_query_replay_and_parameter_repair[bad2]": {
+      "status": "passed",
+      "run": "access-core-retest.xml"
+    },
+    "tests.test_task_diagnostics::test_deepseek_wire_query_replay_and_parameter_repair[bad3]": {
+      "status": "passed",
+      "run": "access-core-retest.xml"
+    },
+    "tests.test_task_diagnostics::test_provider_error_and_cleanup_keep_stable_code": {
+      "status": "passed",
+      "run": "access-core-retest.xml"
+    },
+    "tests.test_task_diagnostics::test_model_page_counts_do_not_change_proofs_or_reveal_hidden_totals": {
+      "status": "passed",
+      "run": "access-core-retest.xml"
+    },
+    "tests.test_task_diagnostics::test_channel_reference_resolves_actual_id_before_chat": {
+      "status": "passed",
+      "run": "access-core-retest.xml"
+    },
+    "tests.test_task_diagnostics::test_last_round_closes_tools_and_returns_bounded_partial_answer": {
+      "status": "passed",
+      "run": "access-core-retest.xml"
+    },
+    "tests.test_usage::test_unlimited_default_still_records_and_opt_in_reuses_ledger": {
+      "status": "passed",
+      "run": "access-core-retest.xml"
+    },
+    "tests.test_usage::test_totals_owner_dispatch_session_filters_and_pagination": {
+      "status": "passed",
+      "run": "access-core-retest.xml"
+    },
+    "tests.test_usage::test_old_records_restart_and_utc_date_filters": {
+      "status": "passed",
+      "run": "access-core-retest.xml"
+    },
+    "tests.test_usage::test_invalid_usage_queries[options0]": {
+      "status": "passed",
+      "run": "access-core-retest.xml"
+    },
+    "tests.test_usage::test_invalid_usage_queries[options1]": {
+      "status": "passed",
+      "run": "access-core-retest.xml"
+    },
+    "tests.test_usage::test_invalid_usage_queries[options2]": {
+      "status": "passed",
+      "run": "access-core-retest.xml"
+    },
+    "tests.test_usage::test_invalid_usage_queries[options3]": {
+      "status": "passed",
+      "run": "access-core-retest.xml"
+    },
+    "tests.test_usage::test_invalid_usage_queries[options4]": {
+      "status": "passed",
+      "run": "access-core-retest.xml"
+    },
+    "tests.test_usage::test_invalid_usage_queries[options5]": {
+      "status": "passed",
+      "run": "access-core-retest.xml"
+    },
+    "tests.test_usage::test_invalid_usage_queries[options6]": {
+      "status": "passed",
+      "run": "access-core-retest.xml"
+    },
+    "tests.test_usage::test_invalid_usage_queries[options7]": {
+      "status": "passed",
+      "run": "access-core-retest.xml"
+    },
+    "tests.test_usage::test_http_auth_parameter_injection_and_duplicate_filters": {
+      "status": "passed",
+      "run": "access-core-retest.xml"
+    },
+    "tests.test_usage::test_retry_and_cancel_classification": {
+      "status": "passed",
+      "run": "access-core-retest.xml"
+    },
+    "tests.test_session_ui::test_markdown_format_reference_security_and_mobile": {
+      "status": "passed",
+      "run": "access-ui-retest.xml"
+    },
+    "tests.test_session_ui::test_embedded_management_settings_drafts_and_identity": {
+      "status": "passed",
+      "run": "access-ui-retest.xml"
+    },
+    "tests.test_session_ui::test_standalone_manager_and_same_origin_frame": {
+      "status": "passed",
+      "run": "access-ui-retest.xml"
+    },
+    "tests.test_session_ui::test_management_lost_response_and_version_conflict": {
+      "status": "passed",
+      "run": "access-ui-retest.xml"
+    },
+    "tests.test_manager_ui::test_real_manager_providers_sessions_review_and_embed": {
+      "status": "passed",
+      "run": "access-ui-retest.xml"
+    },
+    "tests.test_embeds::test_package_manifest_covers_public_runtime_dependencies": {
+      "status": "passed",
+      "run": "access-ui-retest.xml"
+    },
+    "tests.test_embeds::test_real_room_page_variants[page]": {
+      "status": "passed",
+      "run": "access-ui-retest.xml"
+    },
+    "tests.test_embeds::test_real_room_page_variants[conversation]": {
+      "status": "passed",
+      "run": "access-ui-retest.xml"
+    },
+    "tests.test_embeds::test_real_room_page_variants[collapsible]": {
+      "status": "passed",
+      "run": "access-ui-retest.xml"
+    },
+    "tests.test_embeds::test_same_origin_iframe_entry_and_csp_scope": {
+      "status": "passed",
+      "run": "access-ui-retest.xml"
+    },
+    "tests.test_embeds::test_headless_tools_and_shared_client_ownership": {
+      "status": "passed",
+      "run": "access-ui-retest.xml"
+    },
+    "tests.test_usage_ui::test_room_usage_metrics_filters_account_scope_and_mobile": {
+      "status": "passed",
+      "run": "access-ui-retest.xml"
+    },
+    "tests.test_usage_ui::test_local_manager_budget_toggle_and_usage_proxy": {
+      "status": "passed",
+      "run": "access-ui-retest.xml"
+    },
+    "tests.test_ui::test_browser_requests_review_revision_publish_and_cache_clear": {
+      "status": "passed",
+      "run": "access-ui-retest.xml"
+    },
+    "tests.test_ui::test_missing_optional_ai_script_keeps_ordinary_console_working": {
+      "status": "passed",
+      "run": "access-ui-retest.xml"
+    },
+    "tests.test_access_batches::test_administrator_tools_respect_external_scope": {
+      "status": "passed",
+      "run": "access-batches.xml"
+    },
+    "tests.test_access_batches::test_player_contract_tool_and_batch_output_cannot_escalate": {
+      "status": "passed",
+      "run": "access-batches.xml"
+    },
+    "tests.test_access_batches::test_delete_interrupts_active_generation": {
+      "status": "passed",
+      "run": "access-batches.xml"
+    },
+    "tests.test_access_batches::test_management_catalog_is_bounded_and_schema_complete": {
+      "status": "passed",
+      "run": "access-batches.xml"
+    },
+    "tests.test_access_batches::test_other_administrator_can_inspect_draft_without_taking_review_identity": {
+      "status": "passed",
+      "run": "access-batches.xml"
+    },
+    "tests.test_access_batches::test_player_history_rechecks_package_evidence_during_generation": {
+      "status": "passed",
+      "run": "access-batches.xml"
+    },
+    "tests.test_access_batches::test_batch_stops_after_partial_failure_and_restart_never_replays": {
+      "status": "passed",
+      "run": "access-batches.xml"
+    }
+  },
+  "sourceSha256": {
+    "engineering/ai/src/onlinecoc_ai/access.py": "a82f3f3bf02ebe215cefb53f621da421b3ebaed795a1fa75d8642957e7b51ebe",
+    "engineering/ai/src/onlinecoc_ai/api.py": "49cb5dc400dda68f61ef96a3ad3e9871b21f83e1e9ddfa31ed6cc94b7c420c05",
+    "engineering/ai/src/onlinecoc_ai/batches.py": "408141545c61fe0918dfcaeabb309be630a8c1a39622b8e66d2accec5f663c5c",
+    "engineering/ai/src/onlinecoc_ai/context.py": "358851d332872252845c01bb516dd2f7b6dc6bdd5a26c0804e0f01f630023c2a",
+    "engineering/ai/src/onlinecoc_ai/coordinator.py": "2daed2a9e506429e9717febe1cb93efa75326f438924b32891a30d2b86899c0f",
+    "engineering/ai/src/onlinecoc_ai/data_queries.py": "7e0478b85c36805498378c15474d93e9f5cf82d979ef25522513da4aa5e6f2ab",
+    "engineering/ai/src/onlinecoc_ai/manager.py": "55d0aa485c27eaca0684b2b91e33c076da12576d80d8bba84195f534802a229b",
+    "engineering/ai/src/onlinecoc_ai/references.py": "e6f499f7478eea71d87dbb8362f90a524fd1fe918cab9ead067b8005f1ad9167",
+    "engineering/ai/src/onlinecoc_ai/repository.py": "dff51af86a86cefc1959163ed74e3fec322d19b614529d2302496fb3f6fa75c2",
+    "engineering/ai/src/onlinecoc_ai/sessions.py": "e41fd2ba644381de71b89e8b561d25c9a2ff60092083b9e04d0b81fd6fd4c3c6",
+    "engineering/ai/src/onlinecoc_ai/usage.py": "e1b38804a341bf1f825daf2367938e5c8350ed46755d858089819c8cb4c644a6",
+    "engineering/ai/tests/manager_ui_server.py": "94908231970f2f96bbf267cc9b7d69dbc7d2cc4895bdfdddf56ba3e01bebf075",
+    "engineering/ai/tests/test_access_batches.py": "11d792e4ed88cb7bc6ba903081b31e6f2057208334bae34c925159f490d18048",
+    "engineering/ai/tests/test_access_ui.py": "4962baa077d51879fc1d6854d501357c241a7cb1026a4a5dc62246fad7c06eb9",
+    "engineering/ai/tests/test_data_query_ui.py": "8bf5f645512a71bb63ef5da8dd9295bdeeedd35e5e9afbf5071b57d1b693eea0",
+    "engineering/ai/tests/test_embeds.py": "e8a74cd4059f8f950d62fdb4ed00fc7c2de17b9059cb0b23a6ed6454b1ada9a9",
+    "engineering/ai/tests/test_entrypoints.py": "18149c24f5213c0fa39c43ffd78d8d604f6dc2c36f3070795a45e10431900f45",
+    "engineering/ai/tests/test_manager.py": "858d5f42f95dd9bbbe27ff12738f556b9c1acfec5f2171a23685105d773f5c92",
+    "engineering/ai/tests/test_manager_ui.py": "e7053f4ef38b80d637d75934b63d12da9c60d9cad9a0e060a175d7a1579ef943",
+    "engineering/ai/tests/test_references.py": "5f4e21ddce11b44d5b3eb2b4e415f0cea9432aacc966c3feb0a469cf4afede30",
+    "engineering/ai/tests/test_session_ui.py": "2630004ec0c9b75f4909c0740928dcb38ac9aff378e040576b0dccce00df0b75",
+    "engineering/ai/tests/test_sessions.py": "40787c1d220bde4ff73a2e98ce364509e3d3d866a464dd75abb2b74c6f36c4ba",
+    "engineering/ai/tests/test_task_diagnostics.py": "acf53ae68a7d2d9bc34a49464d22f17d85b8df0aff14e366b8b5f7c0df2bb727",
+    "engineering/ai/tests/test_ui.py": "9e963548d6dea6e7a4b283712cf94669cff9ef95a9e35ce5afb185a18b225610",
+    "engineering/ai/tests/test_usage.py": "650e4eaf9f0456c2bc5643fbdc79ada97c6aa34b1e5c47a10e15f83670df64a5",
+    "engineering/ai/tests/test_usage_ui.py": "956c1731823bbd0cea93b783ad61c1f5d30812c43c30436a637859cdf0e0df75",
+    "engineering/ai/web/components/chat.css": "13340297ebeeeb48be4c8b5a188abaff4fb12c6de32c8ec896e2ca3b1affe510",
+    "engineering/ai/web/components/chat.js": "496d856424f3c9eeb260066f17267d4a8b64fd0f61c6c8bd572783d58edcb339",
+    "engineering/ai/web/components/client.js": "99625321a7070627287f10ba4fbca63ade8136e594384d68bf9f6cccf6989057",
+    "engineering/ai/web/components/guard.js": "23b054364d825ec7d93bdc8c2b12d735874bea009bac23fbc89c4049f0439d81",
+    "engineering/ai/web/components/index.d.ts": "82dcda5e294a054a7e6ab6e40c55a80a1364052a95d0a73d8d1b994e2da0c4ed",
+    "engineering/ai/web/components/pack-manifest.json": "f05f5af80f528ff19bc790987c2e95349477ca146ecf0c18b18900b9487be8fc",
+    "engineering/ai/web/components/pack.d.ts": "69b1ab22c7aeba89684829745baa7ed70e70ed44ed39d0a4a3a0c4a7d36b8413",
+    "engineering/ai/web/components/panel.css": "0c1dd83f2355b7bf4f7a171c4939383bf9320f4a39210a97caf254402c848ea8",
+    "engineering/ai/web/components/room-panel.js": "2f507da1c744cd59854279ded80fefbe8b12d19d3c6dd91e395db9a8107ce162",
+    "engineering/ai/web/components/session-manager.css": "546311842e0ef5385710a5a71b77ae2975b7be60a470213706460ad904905819",
+    "engineering/ai/web/components/session-manager.js": "7fba3503e7088fd539d023690078f4bab05e5ecfae9624724f207f293e8175a1",
+    "engineering/ai/web/components/tools.js": "3d765a8ff0a1d9c1fe3d58088e676f4bbeada0f0da86218e400f069549a23260",
+    "engineering/ai/web/components/usage.js": "824005ad566a8102fbeccd70e53f8bdcfe4a465103f166bbfc3085e85e6c69a4",
+    "engineering/ai/web/components/views.css": "1786cf64c104b80a95546a7c18b08c48df89526816385e438e8c79389d31bdb3",
+    "engineering/ai/web/components/views.js": "19ab0f59d3101dd7f5e94548b5c76183033cfcdcad31e14580545f0b042c7729",
+    "engineering/ai/web/manager/index.html": "1359655e2db993f0d12fc2139fe435fcdf0b776280c8646c395c2f40bce41860",
+    "engineering/ai/web/manager/manager.js": "1a93ecca8f41b648de3e126ef83b41011a474133903bbbec907c0a232f1a0e4a",
+    "engineering/ai/web/manager/prototype.js": "7e9b368b14b8af1cc72f76c8821daaf0c0fbfaa276fe4a7aeb48df90b96d819b",
+    "engineering/ai/web/manager/style.css": "fd062b5367c14528ffbaa507963e1c2e34f73bbf00727605f6706a41342e8be2",
+    "engineering/backend/src/onlinecoc/ai_api.py": "0882202ff5271a08de83e7c3afab1093061b69e88b95ca526f83087508be9a8d",
+    "engineering/backend/src/onlinecoc/data_queries.py": "66ba93885b18d29eb2021d3feb9f71aed2a8a951536fadbb8868eac98ba36dfe",
+    "engineering/backend/src/onlinecoc/host.py": "8014b49c1f1fc5d555e304c54d2eea176962bb35b008cb7d3b2937ea60d0e561",
+    "engineering/client-sdk/client.js": "a28ee136f7b7bd4a410aaacbeb45ef31349d8717bb9edc01978c64aa8e62e037",
+    "engineering/contracts/ai-operations.json": "67f64343bad059df7ed583d05e099e1b5e6db97dba2c8c57a0f7c8e6765abcd0",
+    "rulepacks/stumpsville/locales/en/ui.json": "1c434291611b1c0ff67ae717ecd280844b62551d51e3ca22b5777a494cb7ecfe",
+    "rulepacks/stumpsville/locales/meta/catalog/ui.json": "fd116bb2d29362ec5197af949a3c3df5364d790b14b9aa4ee6eebb5f7a32746f",
+    "rulepacks/stumpsville/locales/zh-CN/ui.json": "19528ffec7a9ab9607066e47f117b82361f5644e65f060fc56620cd611e44d6e",
+    "rulepacks/stumpsville/tests/verify_ai_data.py": "a41cf00f05f650953d8df9f6211ba6e1bfb36df5190f5b11b595be66f568becd",
+    "rulepacks/stumpsville/tests/verify_ai_scopes.py": "9d90ec70362d5e6ed1bcf5e0a35d1957a689d48377a97fe5c6fde2b6dd89de50",
+    "rulepacks/stumpsville/tests/verify_integrations.py": "47869856b7b6dc3cea90c06a0afbaeec76d8feb1d9858f528e0170f3baafa6e6",
+    "rulepacks/stumpsville/tests/verify_map_ai.py": "37e3b5f0026b5ede62a1b1b1bf4a0f87f75bbf903bf7bf8a266966165a5bd64b",
+    "rulepacks/stumpsville/tools/ai_bridge.py": "858511e71a3e7836fdbd0b52e5785ae6fb6ab650800f5d2a53d17acc468528a3",
+    "rulepacks/stumpsville/tools/ai_data.py": "032ab3c0b12088f1185b139a77682f8563d713763d595f4e663038142e443ecd",
+    "rulepacks/stumpsville/ui/ai-embedded.js": "cc1b5d870d1a649b601624821d163925e0ef2cba4620f535fd31cb518c439593",
+    "rulepacks/stumpsville/ui/ai.js": "b975389092a9cc97a6c2236d791c1dd344d2c77d5a9fc30683be7557635365dc",
+    "rulepacks/stumpsville/ai/guide.md": "1e39c07e999bb42b1d5b0727bd35c703b816d89affada14aae840ec37ebbd089"
+  },
+  "provider": "Offline deterministic/loopback fixtures only",
+  "realProviderTested": false,
+  "realSavesModified": false,
+  "coverage": [
+    "Immutable administrator/player session ownership; server-side visibility, PL switch and direct dispatch",
+    "Player/KP-as-player knowledge projections, references and inherited evidence revalidation",
+    "Reviewed/automatic batches, baseline changes, partial failure, receipt-only recovery, restart and no duplicate writes",
+    "Archive/restore/delete race handling; active generation cancellation; archived directory; desktop/mobile layouts",
+    "Stumpsville two WebRTC players, native KP, KP player view, package knowledge/template isolation and bilingual wrapper"
+  ],
+  "remaining": [
+    "Configuration deletion, package-owned write transactions and unified configuration auto-publication are tracked in ISSUE-010."
+  ],
+  "packageGroups": 32
+}

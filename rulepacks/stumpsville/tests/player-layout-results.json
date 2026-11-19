@@ -1,0 +1,14 @@
+{
+  "checkedAt": "2026-11-16T21:10:03.310723+08:00",
+  "passed": 5,
+  "checks": [
+    "1920/1440/1366: resident character/inventory, map/actions, and conversation columns fit one viewport without duplicate tools",
+    "chat/AI tab switches and state polling retain both drafts; arrow-key tabs work and opening AI does not call a model",
+    "notebook buttons and grip drag without accidental toggling; keyboard movement and per-account position/expanded state survive reload",
+    "clue notes survive dragging and conversation switching, save successfully, and resident inventory opens the real item actions",
+    "390px columns and clamped notebook stay reachable; English labels and KP own-player view use the same PL layout"
+  ],
+  "consoleErrors": [],
+  "provider": "loopback; no model calls",
+  "realSaveModified": false
+}

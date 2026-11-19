@@ -1,13 +1,15 @@
 /** Semantic, atomic references; the wire format remains revision-bound tokens. */
-const TOKEN=/\[\[(config|entity|data|chat|event|ruling):([A-Za-z0-9_.-]{1,200})@([A-Za-z0-9_.-]{1,200})\]\]/g;
+const TOKEN=/\[\[(config|entity|data|chat|event|ruling|knowledge):([A-Za-z0-9_.-]{1,1500})@([A-Za-z0-9_.-]{1,200})\]\]/g;
 const MIME='application/x-onlinecoc-ai-references';
-const names={config:'配置',entity:'实体',data:'运行数据',chat:'聊天',event:'事件',ruling:'裁决'};
+const names={config:'配置',entity:'实体',data:'运行数据',chat:'聊天',event:'事件',ruling:'裁决',knowledge:'已知资料'};
+const hydrationVersions=new WeakMap();
 export const referenceToken=item=>item.token||`[[${item.kind}:${item.id}@${item.revision}]]`;
 
 function chip(token,label,editable=false){
  const node=document.createElement('span');node.className='reference-chip';node.contentEditable='false';node.dataset.token=token;
  const text=document.createElement('span');text.className='reference-label';text.textContent=label||'数据引用';node.append(text);
  if(label)node.dataset.resolved='true';
+ if(!editable){node.tabIndex=0;node.setAttribute('role','button');node.setAttribute('aria-haspopup','dialog');}
  const kind=token.slice(2,token.indexOf(':'));node.title=(names[kind]||'数据')+'引用';
  if(editable){const remove=document.createElement('button');remove.type='button';remove.className='reference-remove';remove.tabIndex=-1;remove.textContent='×';remove.setAttribute('aria-label','移除引用：'+text.textContent);node.append(remove);}
  return node;
@@ -26,22 +28,26 @@ function read(node,semantic=false){
 /** Labels are fetched from the current authorized source, never from message HTML. */
 export async function hydrateReferences(target,resolve,valid=()=>true){
  if(!resolve)return;
- const nodes=[...target.querySelectorAll('.reference-chip:not([data-resolved])')],tokens=[...new Set(nodes.map(n=>n.dataset.token))];
+ const generation=(hydrationVersions.get(target)||0)+1;hydrationVersions.set(target,generation);
+ const current=()=>valid()&&hydrationVersions.get(target)===generation;
+ const nodes=[...target.querySelectorAll('.reference-chip')].filter(n=>!n.dataset.resolved||n.dataset.token.startsWith('[[knowledge:')),
+  tokens=[...new Set(nodes.map(n=>n.dataset.token))];
  async function batch(part){
   try{
-   const result=await resolve(part);if(!valid())return;
+   const result=await resolve(part);if(!current())return;
    for(const item of result.items){const token=referenceToken(item);for(const node of nodes.filter(n=>n.dataset.token===token)){
     if(!target.contains(node))continue;
-    node.querySelector('.reference-label').textContent=item.label;node.dataset.resolved='true';
+    const label=node.querySelector('.reference-label');if(label.textContent!==item.label)label.textContent=item.label;
+    node.dataset.resolved='true';node.classList.remove('unavailable');
     node.querySelector('button')?.setAttribute('aria-label','移除引用：'+item.label);
    }}
   }catch(error){
-   if(!valid())return;
+   if(!current())return;
    if(part.length>1){for(const token of part)await batch([token]);return;}
    for(const node of nodes.filter(n=>n.dataset.token===part[0])){node.querySelector('.reference-label').textContent=error.code==='REFERENCE_STALE'?'已过期引用':'不可用引用';node.classList.add('unavailable');}
   }
  }
- for(let i=0;i<tokens.length&&valid();i+=12)await batch(tokens.slice(i,i+12));
+ for(let i=0;i<tokens.length&&current();i+=12)await batch(tokens.slice(i,i+12));
 }
 export function renderReferenceText(target,text){target.replaceChildren(fragment(text));}
 

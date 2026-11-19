@@ -14,6 +14,8 @@ class Host:
     def __init__(self,directory,*,bootstrap=None,fault=None,clock=time.time,store_factory=FileDataStore):
         self.path=Path(directory);self.path.mkdir(parents=True,exist_ok=True)
         self.lock=threading.RLock();self.capacity=threading.BoundedSemaphore(128)
+        from .knowledge import KnowledgeService
+        self.knowledge=KnowledgeService(self)
         self.ai_prepared_resolver=None
         self.metrics={'commands':[],'commits':[],'workers':[]};self.clock=clock;self.fault=fault;self.epoch=uid();self.views={}
         self.identity=Identity(self.path/'identity',store_factory)
@@ -35,6 +37,8 @@ class Host:
         except BaseException:
             self.close();raise
     def state(self):return self.store.snapshot()[1]
+    def register_knowledge_provider(self, descriptor, provider):
+        return self.knowledge.register(descriptor, provider)
     def commit(self,state):
         start=time.perf_counter();validate(state);self.store.commit(self.store.generation,state)
         self.metrics['commits'].append((time.perf_counter()-start)*1000);self.metrics['commits']=self.metrics['commits'][-1000:]
@@ -46,24 +50,35 @@ class Host:
     def catalog(self,account):
         s=self.state();m=member(s,account);a=s['artifacts'][s['activeRuleset']]
         return {'revision':s['activeRuleset']+':'+str(m['authorizationEpoch']),'rulesetRevision':s['activeRuleset'],
-                'actions':[v for v in a['metadata'].values() if v['public'] and (not v['kp'] or m['role']=='kp')]}
+                'actions':self.knowledge.project_catalog(s,account,[v for v in a['metadata'].values() if v['public'] and (not v['kp'] or m['role']=='kp')])}
     def project(self,account):
         with self.lock:
             s=self.state();m=member(s,account);entities={}
+            full={};knowledge_summary=None
+            if s['knowledge']['policies']:
+                try:full,knowledge_summary=self.knowledge.projection(s,account)
+                except DomainError:knowledge_summary={'schemaVersion':1,'status':'blocked','items':[]}
             for id,e in s['entities'].items():
                 if e['lifecycle']=='active' and visible(s,account,e):
-                    out=copy.deepcopy(e)
+                    protected=m['role']!='kp' and self.knowledge.managed(s,'entity',id,e)
+                    if protected and id not in full:continue
+                    out=copy.deepcopy(full[id][0] if protected else e)
                     if m['role']!='kp':out['metadata'].pop('secret',None)
                     # Tokens are random and stable only for this visible object version and principal.
                     key=(account,m['authorizationEpoch'],id,e['revision'])
+                    if protected:key=(*key,hashlib.sha256(canonical(full[id][1])).hexdigest())
                     if key not in self.views:self.views[key]=secrets.token_urlsafe(18)
                     out['viewToken']=self.views[key];entities[id]=out
             relations={k:v for k,v in s['relations'].items() if v['sourceId'] in entities and v['targetId'] in entities}
             waits={k:v for k,v in s['waits'].items() if v['status']=='waiting' and (m['role']=='kp' or (v['role']=='initiator' and v['account']==account))}
             progress={k:v for k,v in s['progress'].items() if m['role']=='kp' or (v['ownerKind']=='member' and v['ownerId']==m['memberId']) or (v['ownerKind']=='entity' and v['ownerId'] in entities and entities[v['ownerId']]['owner']==account)}
             flows={k:{x:v[x] for x in ('id','rule','status','cursor','error') if x in v} for k,v in s['flows'].items() if m['role']=='kp' or v['account']==account}
-            return {'roomId':s['roomId'],'name':s['name'],'runId':s['runId'],'status':s['status'],'authorityEpoch':self.epoch,'authorizationEpoch':m['authorizationEpoch'],
+            if self.knowledge.strict(s,account):relations={};waits={};progress={};flows={}
+            result = {'roomId':s['roomId'],'name':s['name'],'runId':s['runId'],'status':s['status'],'authorityEpoch':self.epoch,'authorizationEpoch':m['authorizationEpoch'],
                     'accountId':account,'role':m['role'],'entities':entities,'relations':relations,'progress':progress,'waits':waits,'flows':flows,'catalog':self.catalog(account),'chatChannels':chat.project(s,account)}
+            if s['knowledge']['policies']:
+                result['knowledge']=knowledge_summary
+            return result
     def receipt(self,account,id):
         s=self.state();member(s,account);rec=s['commands'].get(account+':'+id)
         if not rec:return {'status':'unknown','commandId':id}
@@ -76,6 +91,10 @@ class Host:
         if member(s,account)['role']!='kp' and rec.get('op') not in ('action.invoke','behavior.invoke','entity.patch','flow.respond',None):result.pop('result',None)
         if any(k!='@relations' and (k not in s['entities'] or not visible(s,account,s['entities'][k])) for k in rec.get('reads',{})):
             result.pop('result',None)
+        if 'result' in result and self.knowledge.strict(s,account):
+            projected=self.knowledge.project_result(s,account,rec.get('rule',rec.get('op')),result['result'],rec.get('reads',{}))
+            if projected is None:result.pop('result',None)
+            else:result['result']=projected
         return result
     def snapshot_for_execution(self,s):
         return execution_snapshot(s)
@@ -116,16 +135,21 @@ class Host:
                     if s['commands'][key]['status']=='pending':self.run_attempt(key)
                     return self.receipt(account,p['commandId'])
                 require(p['authorityEpoch']==self.epoch,'STALE_AUTHORITY')
-                for id,token in p.get('expectedViews',{}).items():
-                    e=s['entities'].get(id);require(e and self.views.get((account,m['authorizationEpoch'],id,e['revision']))==token,'VERSION_CONFLICT')
+                if p.get('expectedViews'):
+                    current_view=self.project(account)
+                    for id,token in p['expectedViews'].items():
+                        require(current_view['entities'].get(id,{}).get('viewToken')==token,'VERSION_CONFLICT')
                 op,args=p['op'],p['args']
                 rec={'signature':signature,'status':'pending','account':account,'id':p['commandId'],'op':op,'args':copy.deepcopy(args),'random':[]}
                 validate_operation(op,args)
                 if op=='behavior.invoke':
+                    if m['role']!='kp' and self.knowledge.managed(s,'entity',args['entityId'],s['entities'].get(args['entityId'])):
+                        require(args['entityId'] in self.knowledge.full_entities(s,account),'NOT_VISIBLE')
                     e=s['entities'].get(args['entityId']);require(e and visible(s,account,e),'NOT_VISIBLE')
                     binding=e['rules'].get(args['event']) or s['configurations'][e['configurationId']].get('behaviors',{}).get(args['event'])
                     require(binding,'NOT_VISIBLE');args={'actionId':binding['ruleId'],'input':args['input']}
                 if op in ('action.invoke','behavior.invoke'):
+                    self.knowledge.authorize_operation(s,account,args['actionId'],args['input'])
                     require(s['status']=='active','ROOM_PAUSED')
                     cat=self.catalog(account);require(p.get('catalogRevision')==cat['revision'] and p.get('rulesetRevision')==s['activeRuleset'],'STALE_CATALOG')
                     require(p.get('runId')==s['runId'],'STALE_AUTHORITY')
@@ -144,12 +168,17 @@ class Host:
                 else:
                     s['commands'][key]=rec
                     try:
+                        before_manage=self.snapshot_for_execution(s) if op in ('entity.create','entity.update','entity.patch') else None
                         result=self.manage(s,account,op,args,prepared=prepared,command_id=p['commandId'])
+                        if op in ('entity.create','entity.update','entity.patch'):
+                            self.knowledge.derive(s,account,p['commandId'],{'commandId':p['commandId'],'operation':op,'input':args,'result':result,'effects':[]},previous=before_manage)
                         validate(s);rec['status']='committed';rec['receipt']={'status':'committed','commandId':rec['id'],'result':result}
                         s['audit'].append({'commandId':rec['id'],'account':account,'op':op,'at':self.clock()})
                         if op.startswith('chat.'):self.hit('before_chat_commit')
                         if op in ('ai.proposal.approve','publication.apply'):self.hit('before_'+op+'_commit')
+                        if op.startswith('knowledge.'):self.hit('before_knowledge_commit')
                         self.commit(s)
+                        if op.startswith('knowledge.'):self.hit('after_knowledge_commit')
                         if op.startswith('chat.'):self.hit('after_chat_commit')
                         if op in ('ai.proposal.approve','publication.apply'):self.hit('after_'+op+'_commit')
                     except DomainError as e:
@@ -167,6 +196,7 @@ class Host:
         finally:self.capacity.release()
     def run_attempt(self,key):
         s=self.state();rec=s['commands'][key];account=rec['account'];artifact=s['artifacts'][rec['ruleset']];ordinal=0
+        if s['knowledge']['policies']:self.knowledge.ready(s)
         def random(sides):
             nonlocal ordinal
             current=self.state();r=current['commands'][key];i=ordinal;ordinal+=1
@@ -189,6 +219,7 @@ class Host:
             r['receipt']={'status':'committed','commandId':r['id'],'result':out['result']}
             current['audit'].append({'commandId':r['id'],'account':account,'rule':r['rule'],'ruleset':r['ruleset'],'random':r['random'],'effects':out['effects'],'at':self.clock()})
             current['outbox'].append({'id':uid(),'commandId':r['id']})
+            self.knowledge.derive(current,account,r['id'],{'commandId':r['id'],'operation':r['rule'],'input':r['input'],'result':out['result'],'effects':out['effects']},previous=rec.get('snapshot'))
             if rec.get('flowId'):self.finish_node(current,rec['flowId'],rec['node'],out['result'])
             self.hit('before_t2');self.commit(current);self.hit('after_t2')
         except DomainError as e:
@@ -227,6 +258,9 @@ class Host:
         with self.lock:
             s=self.state()
             if s['status']!='active':return
+            if s['knowledge']['policies']:
+                try:self.knowledge.ready(s)
+                except DomainError:return
             changed=False
             for w in s['waits'].values():
                 if w['status']=='waiting' and w['deadline']<=self.clock():
@@ -236,20 +270,34 @@ class Host:
     def recover(self):
         with self.lock:
             validate(self.state())
+            if self.state()['knowledge']['policies']:
+                try:self.knowledge.ready(self.state())
+                except DomainError:return  # Trusted providers are installed by composition after opening.
             for key,r in list(self.state()['commands'].items()):
                 if r['status']=='pending':self.run_attempt(key)
             self.tick()
     def calculate(self,account,rule,input):
         with self.lock:
             s=self.state();member(s,account);artifact=s['artifacts'][s['activeRuleset']];m=artifact['metadata'].get(rule)
+            self.knowledge.authorize_operation(s,account,rule,input)
             require(m and m['public'] and m['mode']=='calculation' and (not m['kp'] or member(s,account)['role']=='kp'),'NOT_VISIBLE')
             try:Draft202012Validator(m['schema']).validate(input)
             except Exception:raise DomainError('INPUT_INVALID')
-            return execute(artifact['sources'],{'kind':'run','rule':rule,'input':input,'mode':'calculation','state':self.snapshot_for_execution(s),'account':account,'data':artifact['data']})['result']
+            out=execute(artifact['sources'],{'kind':'run','rule':rule,'input':input,'mode':'calculation','state':self.snapshot_for_execution(s),'account':account,'data':artifact['data']})
+            return self.knowledge.project_result(s,account,rule,out['result'],out['reads'],egress='rules')
     def manage(self,s,account,op,args,*,prepared=None,command_id=None):
         m=member(s,account)
-        if op.startswith('chat.'):return chat.apply(s,account,op,args,self.clock())
+        if op.startswith('knowledge.'):return self.knowledge.apply(s,account,op,args,command_id)
+        if op.startswith('chat.'):
+            if s['knowledge']['policies']:
+                if op=='chat.message.share':require(False,'PERMISSION_DENIED')
+                if op=='chat.message.send':
+                    speaker=args.get('speakerId')
+                    require(not speaker or not self.knowledge.managed(s,'entity',speaker,s['entities'].get(speaker)),'NOT_VISIBLE')
+                    require(not any(self.knowledge.protected_asset(s,key) for key in args.get('assetIds',[])),'NOT_VISIBLE')
+            return chat.apply(s,account,op,args,self.clock())
         if op=='flow.respond':
+            self.knowledge.authorize_operation(s,account,op,args)
             require(s['status']=='active','ROOM_PAUSED')
             require(set(args)=={'waitId','revision','answer'} and type(args['answer']) is bool)
             w=s['waits'].get(args['waitId']);require(w and w['status']=='waiting' and w['revision']==args['revision'],'FLOW_ALREADY_RESOLVED')
@@ -258,6 +306,8 @@ class Host:
             w.update(status='answered',answer=args['answer'],resolvedAt=self.clock(),revision=w['revision']+1)
             self.move_flow(s,s['flows'][w['flowId']],w['options']['yes' if args['answer'] else 'no']);return True
         if op=='entity.patch':
+            if m['role']!='kp' and self.knowledge.managed(s,'entity',args['id'],s['entities'].get(args['id'])):
+                require(args['id'] in self.knowledge.full_entities(s,account),'NOT_VISIBLE')
             require(set(args)=={'id','name'} and isinstance(args['name'],str))
             e=s['entities'].get(args['id']);require(e and writable(s,account,e),'NOT_VISIBLE');e['name']=args['name'];e['revision']+=1;return e['instanceId']
         require(m['role']=='kp','PERMISSION_DENIED')
@@ -346,10 +396,22 @@ class Host:
     def chat_history(self,account,channel_id,before=None,limit=50):
         with self.lock:
             s=self.state();member(s,account)
-            return chat.history(s,account,channel_id,before,limit)
+            page=chat.history(s,account,channel_id,before,limit)
+            if self.knowledge.strict(s,account):
+                for item in page['items']:
+                    speaker=item.get('speakerId')
+                    if speaker and self.knowledge.managed(s,'entity',speaker,s['entities'].get(speaker)):
+                        item['speakerId']=None;item['speakerName']=None
+                    item['assetIds']=[key for key in item['assetIds'] if not self.knowledge.protected_asset(s,key)]
+                    if item.get('card'):
+                        item.update(card=None,kind='text',text=item['text'] or '行动记录（结果未公开）')
+            return page
     def query(self,account,collection,equals=None):
         with self.lock:
             view=self.project(account);require(collection in ('entities','relations','progress','waits','flows'),'PERMISSION_DENIED')
+            if collection=='entities' and view['role']!='kp':
+                state=self.state()
+                view['entities']={key:e for key,e in view['entities'].items() if self.knowledge.entity_query_allowed(state,key,state['entities'][key])}
             equals=equals or {};require(isinstance(equals,dict) and len(equals)<=8)
             return [x for x in view[collection].values() if all(x.get(k)==v for k,v in equals.items())][:1000]
     def register_ai(self,resolver,pack_binding):
@@ -371,6 +433,8 @@ class Host:
                 if approval['proposalId']==proposal_id and approval['proposalRevision']!=revision and approval['status']=='approved':approval['status']='revoked'
             self.commit(s)
     def validate_ai_sources(self,state,account,context):
+        validator = getattr(self, 'ai_access_validator', None)
+        if validator:validator(state,context)
         from .ai_sources import check_sources
         check_sources(self,state,account,context['sourceRefs'],context['memoryRefs'])
         from .data_queries import recheck

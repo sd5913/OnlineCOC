@@ -189,6 +189,9 @@
       },
       "chatChannels": {
         "type": "object"
+      },
+      "knowledge": {
+        "type": "object"
       }
     },
     "required": [

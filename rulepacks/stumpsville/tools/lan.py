@@ -200,6 +200,10 @@ class LanService:
             if not runtime.host_data.exists():
                 self.events.put(('status', '正在首次准备房间，请稍候…'))
                 runtime.setup(password)
+            else:
+                # Report the actual host error to Tk before ASGI can reduce it
+                # to a generic lifespan/startup failure.
+                runtime.start()
             password = None
             if self.cancel.is_set():
                 return
@@ -251,7 +255,7 @@ class LanService:
 
 
 class LanWindow:
-    def __init__(self, root, data=PACK/'runtime', open_browser=True):
+    def __init__(self, root, data=PACK/'runtime', open_browser=True, *, container=None):
         self.root, self.data, self.open_browser = root, Path(data), open_browser
         self.events = queue.Queue()
         self.service = LanService(self.data, self.events)
@@ -263,7 +267,7 @@ class LanWindow:
         root.geometry('780x630')
         root.minsize(700, 590)
         root.protocol('WM_DELETE_WINDOW', self.close)
-        frame = self.frame = ttk.Frame(root, padding=24)
+        frame = self.frame = ttk.Frame(container or root, padding=24)
         frame.pack(fill='both', expand=True)
         frame.columnconfigure(1, weight=1)
         self.heading = ttk.Label(frame, text='树桩镇 · 局域网联机', font=('Microsoft YaHei UI', 18, 'bold'))
@@ -316,7 +320,8 @@ class LanWindow:
         self.browser_button.grid(row=1, column=1, sticky='e')
         self.footer = ttk.Label(frame, text='启动窗口需保持打开；关闭窗口会停止房间，存档保留。\n自动裁决还需一个已登录的 KP 网页保持在线。\n若其他设备无法连接，请检查同网段／访客网络隔离，并允许 Windows 防火墙的所选端口。', wraplength=715)
         self.footer.grid(row=8, column=0, columnspan=3, sticky='w', pady=16)
-        ttk.Label(frame, text='存档：'+str(self.data.resolve()), wraplength=715, foreground='#666666').grid(row=9, column=0, columnspan=3, sticky='w')
+        self.data_label = ttk.Label(frame, text='存档：'+str(self.data.resolve()), wraplength=715, foreground='#666666')
+        self.data_label.grid(row=9, column=0, columnspan=3, sticky='w')
         self.scan()
         self.timer = root.after(100, self.tick)
 

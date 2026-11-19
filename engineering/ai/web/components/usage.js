@@ -1,9 +1,10 @@
+import {mountStyle} from './styles.js';
 import {guardedClient} from './guard.js';
 
 /** Shared room ledger UI; never owns or logs out the supplied client. */
 export function mountUsage(target,rawClient,{sessionId=null,scope=null}={}){
  const element=document.createElement('div');target.append(element);const root=element.attachShadow({mode:'open'});
- const css=document.createElement('link');css.rel='stylesheet';css.href=new URL('./usage.css',import.meta.url);root.append(css);
+ mountStyle(root,new URL('./usage.css',import.meta.url));
  const panel=document.createElement('section');panel.className='usage-panel';root.append(panel);
  panel.innerHTML=`<header><h2>用量统计</h2><span class="usage-owner"></span></header><p class="note">按 UTC 日期统计（北京时间每天 08:00 换日）。仅包含本房间记录，不是服务商账户账单。</p><div class="usage-filters"><label>日期范围<select class="period"><option value="1">今天</option><option value="7" selected>最近 7 天</option><option value="30">最近 30 天</option><option value="custom">自定义</option></select></label><label>开始<input class="from" type="date"></label><label>结束<input class="to" type="date"></label><label>统计范围<select class="scope"><option value="mine">我的需求</option><option value="room">整个房间（KP）</option></select></label><label>服务配置<select class="profile"><option value="">全部</option></select></label><label class="session-filter"><input type="checkbox" class="session-only">仅当前会话</label><button class="usage-refresh" type="button">查询 / 刷新</button></div><p class="usage-status" role="status"></p><div class="summary"></div><div class="budgets"></div><details open><summary>按日期</summary><div class="days table-scroll"></div></details><details open><summary>按服务配置 / 模型</summary><div class="profiles table-scroll"></div></details><details><summary>调用明细（每轮调用单独计数）</summary><div class="calls table-scroll"></div><button class="more" type="button" hidden>更多调用</button></details><p class="note">确认消耗来自服务商 usage；预留是保守估算，不是实际扣费。失败、取消或重启后无法确认的调用保留为“待核实”。连接测试和其他房间的用量不计入此处。</p>`;
  const $=s=>panel.querySelector(s),client=guardedClient(rawClient,()=>dead);let dead=false,paused=false,sequence=0,identity='',next=null,query=null,records=[];
@@ -22,7 +23,7 @@ export function mountUsage(target,rawClient,{sessionId=null,scope=null}={}){
  function calls(){table($('.calls'),['日期（UTC）','服务配置 / 模型','结果','确认 Token','预留 Token'],records.map(c=>[c.date,c.profileId+' / '+(c.model||'未知'),{confirmed:'已确认',pending:'调用中',uncertain:'待核实'}[c.status],count(c.confirmedTokens),count(c.pendingReservedTokens+c.uncertainReservedTokens)]));$('.more').hidden=!next;}
  async function refresh(more=false){if(dead||paused||!client.connected)return;const seq=++sequence;let options;
   if(more){if(!next||!query)return;options={...query,before:next};}
-  else{clear();options={from:$('.from').value,to:$('.to').value,scope:$('.scope').value,limit:'30'};if($('.profile').value)options.profileId=$('.profile').value;if(sessionId&&$('.session-only').checked){options.sessionId=sessionId;options.scope='mine';}query=options;}
+  else{clear();options={from:$('.from').value,to:$('.to').value,scope:$('.scope').value,limit:'30'};if($('.profile').value)options.profileId=$('.profile').value;if(sessionId&&$('.session-only').checked){options.sessionId=sessionId;if(client.view?.role!=='kp')options.scope='mine';}query=options;}
   status('正在查询…');$('.usage-refresh').disabled=true;$('.more').disabled=true;
   try{const data=await client.aiUsage(options);if(dead||paused||seq!==sequence)return;if(!more)render(data);else status('查询完成');records.push(...data.items);next=data.nextBefore;calls();}
   catch(error){if(seq===sequence)status(error.code||error.message);}

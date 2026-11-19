@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-11-15T22:03:16.384279+08:00",
+  "checkedAt": "2026-11-17T14:43:09.694284+08:00",
   "passed": 6,
   "checks": [
     "native panel validates input and prepares an isolated room with AI via public CLI; legacy argument aliases work",

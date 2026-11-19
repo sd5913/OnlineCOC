@@ -111,9 +111,10 @@ def test_room_bridge_never_exposes_host_control_or_shares_sessions(manager):
 
 
 def test_session_ownership_archive_idempotence_and_reopen(application):
+    committed(command(application,'ai.access.update',{'revision':1,'allowPlayerChat':True,'autoApproveBatches':False}))
     app=application
     s=committed(command(app,'ai.session.create',{'title':'我的会话'},'player1'))
-    assert app.sessions.list('player2')['items']==[] and app.sessions.list('kp')['items']==[]
+    assert app.sessions.list('player2')['items']==[] and len(app.sessions.list('kp')['items'])==1
     with pytest.raises(AiError,match='NOT_VISIBLE'):app.sessions.get('player2',s['sessionId'])
     args={'sessionId':s['sessionId'],'text':'希望增加一个有限次数物品'}
     first=command(app,'ai.session.submit',args,'player1','stable-submit')

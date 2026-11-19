@@ -89,7 +89,7 @@ def extension_check(pack, state, baseline, artifact, changes):
     for change in changes["configurations"]:
         identifier, value = change["id"], change["value"]
         matches = [e for e in extensions if value["typeRef"] in e["typeRefs"] and
-                   (identifier in e["allowExistingIds"] if change["kind"] == "replace" else identifier.startswith(e["namespace"]))]
+                   ((identifier in e["allowExistingIds"] or e.get("allowNamespaceReplace",False) and identifier.startswith(e["namespace"])) if change["kind"] == "replace" else identifier.startswith(e["namespace"]))]
         require(matches, "EXTENSION_FORBIDDEN", path="/configurations/" + identifier)
         if change["kind"] == "replace":
             paths = set(changed_paths(state["configurations"][identifier], value)) - {"/revision"}
@@ -123,6 +123,8 @@ def check_rules(pack, state, baseline, context, changes, artifact=None):
     try:
         extension_check(pack, state, baseline, artifact, changes)
         candidate = apply_configurations(state, changes)
+        from .extensions import configuration_checks
+        configuration_checks(pack,candidate,baseline,artifact,changes)
         required = set(pack.contract["requiredChecks"])
         present = {c["checkId"] for c in pack.checks}
         require(required <= present, "REQUIRED_CHECK_MISSING")

@@ -21,7 +21,7 @@ async def test_existing_client_sdk_with_webrtc(directory,real_upstream,tmp_path)
     sdk=Path(__file__).resolve().parents[2]/"client-sdk/client.js"
     try:
         async with async_playwright() as p:
-            browser=await p.chromium.launch(headless=True)
+            browser=await p.chromium.launch(headless=True,channel=os.environ.get('PLAYWRIGHT_CHANNEL'))
             page=await browser.new_page()
             await page.route("**/acceptance-sdk.js",lambda route: route.fulfill(content_type="text/javascript",body=sdk.read_text(encoding="utf-8")))
             await page.goto(entry)

@@ -1,0 +1,18 @@
+{
+  "checkedAt": "2026-11-19T09:58:55.842288+08:00",
+  "passed": 10,
+  "checks": [
+    "notice stays 3 seconds then fades for 280ms; polling does not extend its lifetime or replay it",
+    "same-event result and clue merge, snapshot does not duplicate the clue; queued notice gets a fresh lifetime",
+    "snapshot-only clues show safe text with a clue notebook link; manual close cancels expiry",
+    "pending and other-owner events stay silent; final rejection notifies, reduced motion and scope/logout cleanup work",
+    "real safe observation shows narrative and one new clue without resource changes; only its owner is notified",
+    "repeat observation still reports its result but not an old clue; automatic expiry and reload do not replay it",
+    "KP explicit disclosure creates a clue-only notification; another player receives no clue",
+    "a manual refusal with no attribute change still shows the keeper reply and opens the log",
+    "actual dice result expires before the no-attribute-change action summary appears",
+    "no uncaught browser errors"
+  ],
+  "realSaveChanged": false,
+  "realModelCalled": false
+}

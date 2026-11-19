@@ -15,6 +15,7 @@ def fork_scope(state):
     validate(state)
     result = copy.deepcopy(state)
     result["aiControl"]["scopeId"] = uuid.uuid4().hex
+    result['knowledge']['scopeId'] = uuid.uuid4().hex
     result["aiControl"]["settings"]["auto"].update(enabled=False, principal=None)
     for approval in result["aiControl"]["approvals"].values():
         if approval["status"] == "approved":

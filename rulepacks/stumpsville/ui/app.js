@@ -1,4 +1,7 @@
 import {chatUI} from './chat.js';
+import {diceUI} from './dice.js';
+import {effectsUI} from './effects.js';
+import {mapPositions,mapRoutes,mapRoutePath} from './map.js';
 import {aiUI} from './ai.js';
 import {embeddedAI} from './ai-embedded.js';
 import {t, setLocale, locale, initLocale} from './i18n.js';
@@ -32,8 +35,9 @@ let busy = false;
 let lastFocus = null;
 let connection = t('ui.m066');
 let desktop = null, desktopAccount = '', consoleTab = 'control', selectedRequest = '', localAction = null, renderDeferred = false;
-let executorBusy = false;
-let roomVisitsOpen=false, mobileColumn='scene', logFilter='all';
+let executorBusy = false, aiQueuePending=0;
+let statePollRunning=false,lastStatePoll=0,stateGeneration=0;
+let roomVisitsOpen=false, mobileColumn='scene', logFilter='all', notebookDrag=null;
 const expandedLogs=new Map();
 const fieldName=key=>t('field.'+String(key).toLowerCase(),{},key);
 const displayValue=value=>typeof value==='boolean'?t(value?'state.yes':'state.no'):String(value??'—');
@@ -53,7 +57,7 @@ const heading = (id,title,actions='') => `<div class="page-head"><div><div class
 const panel = (title,body,kind='') => `<section class="panel ${kind}"><h2>${title}</h2>${body}</section>`;
 const empty = text => `<div class="empty">${escape(text)}</div>`;
 const actorOptions = () => (state.characters || [state.character].filter(Boolean)).map(x=>[x.instanceId,x.name]);
-const pendingKey = () => 'stumpsville.pending.' + base.pathname + '.' + state.accountId;
+const pendingKey = () => 'stumpsville.pending.' + base.pathname + '.' + state.accountId + '.' + state.storageScope;
 const independentLogin = () => webMode?'':`<a class="account-link" href="/" target="_blank" rel="noopener">${t('account.new')}</a>`;
 const rulingMode = () => select(t('ui.m077'),'ruling',[['auto',state.automation?.enabled?t('ui.m078'):t('ui.m080')],['manual',t('ui.m079')]],'auto');
 function submitAction(kind,input,data){return data?.get('ruling')==='manual'?perform('request',{kind,input,manual:true,text:t('request.text',{kind:kind==='check'?t('ui.m051'):t('request.item')})}):perform(kind,input);}
@@ -61,13 +65,16 @@ function myRulings(){
   return panel('我的裁决申请',state.requests.filter(x=>x.account===state.accountId&&x.status!=='automatic').slice(-20).reverse().map(x=>`<article class="receipt"><strong>${escape(x.text||x.kind)}</strong><p>${{pending:'等待 KP 裁决',approved:'KP 已批准',rejected:'KP 已拒绝'}[x.status]||escape(x.status)} · ${escape(x.reason||'')}</p>${x.result?'<p>'+escape(resultText(x.result))+'</p>':''}</article>`).join('')||empty('没有待处理申请'));
 }
 
+function actionError(data){return Object.assign(new Error(data.failure.reason+' '+data.failure.nextStep),{status:409,failure:data.failure});}
+function failurePanel(f){return `<div class="notice error action-failure"><strong>${t('failure.reason')}</strong><p>${escape(f.reason)}</p><strong>${t('failure.next')}</strong><p>${escape(f.nextStep)}</p>${f.actionId?`<small>${t('failure.id')} ${escape(f.actionId)}</small>`:''}</div>`;}
 async function api(path, body) {
-  if(webMode){const data=await webMode.api(path==='package/action'?path+'?locale='+encodeURIComponent(locale()):path,body);if(data.status==='rejected'&&data.commandId)throw Object.assign(Error(data.code),{status:409});return data;}
+  if(webMode){const data=await webMode.api(path==='package/action'?path+'?locale='+encodeURIComponent(locale()):path,body);if(data.failure)throw actionError(data);if(data.status==='rejected'&&data.commandId)throw Object.assign(Error(data.code),{status:409});return data;}
   const headers = {};
   if (body !== undefined) headers['Content-Type'] = 'application/json';
   if (csrf) headers['X-CSRF-Token'] = csrf;
   const response = await fetch(new URL(path==='package/action'?path+'?locale='+encodeURIComponent(locale()):path,base), {method:body===undefined?'GET':'POST',headers,body:body===undefined?undefined:JSON.stringify(body),credentials:'same-origin'});
   const data = await response.json();
+  if(data.failure)throw actionError(data);
   if (!response.ok || (data.status === 'rejected' && data.commandId)) {
     const messages={RULE_FAILED:t('error.rule_failed'),VERSION_CONFLICT:t('error.version_conflict'),NOT_VISIBLE:t('error.not_visible'),STALE_CATALOG:t('error.stale_catalog'),RATE_LIMITED:t('error.rate_limited'),ROOM_PAUSED:t('error.room_paused'),CSRF_REQUIRED:t('error.csrf_required')};
     const error = new Error(messages[data.code] || data.code || '请求失败');
@@ -80,9 +87,13 @@ async function api(path, body) {
 function toast(message) {
   const element = document.querySelector('#toast');
   element.textContent = message;
+  element.classList.remove('fading');
   element.style.display = 'block';
-  clearTimeout(toast.timer);
-  toast.timer = setTimeout(()=>element.style.display='none',5000);
+  clearTimeout(toast.timer);clearTimeout(toast.fade);
+  toast.timer = setTimeout(()=>{
+    element.classList.add('fading');
+    toast.fade=setTimeout(()=>element.style.display='none',diceUI.reduced||matchMedia('(prefers-reduced-motion: reduce)').matches?0:280);
+  },3000);
 }
 
 function resultText(result){
@@ -105,9 +116,12 @@ function resultText(result){
 }
 
 async function refresh(render = true) {
-  state = await api(statePath());
+  const generation=++stateGeneration;
+  const next=await api(statePath());
+  if(generation!==stateGeneration)return;
+  state = next;
   connection = t('ui.m065');
-  chatUI.update(state);
+  chatUI.update(state);diceUI.observe(state);effectsUI.observe(state);
   if (render) renderPage();
 }
 
@@ -122,22 +136,25 @@ async function perform(operation,args,existing) {
   const key = pendingKey();
   localStorage.setItem(key,JSON.stringify(webMode?{...body,_webRules:webRules}:body));
   localAction = {status:'submitting',text:t('action.submitting')};
-  updateActivity();
+  updateActivity();toast(t('action.submitting'));
   try {
     if(webMode)await webMode.flush();
     const result = await api('package/action',body);
     localStorage.removeItem(key);
+    if(result.status==='processing')actionWake?.postMessage({scope:state.storageScope});
     dirtyForm = null;
     closeDialog();
     localAction = null;
     await refresh();
-    toast(result.status==='processing'?t('action.queued'):resultText(result));
+    const notified=state.role==='player'&&state.events?.some(e=>e.id===state.accountId+':'+body.id&&!['pending','processing'].includes(e.status));
+    if(!notified)toast(result.status==='processing'?t('action.queued'):resultText(result));
     return result;
   } catch(error) {
-    localAction = {status:'error',text:error.message + (error.status>=400&&error.status<500?t('action.failed'):t('action.uncertain'))};
+    localAction = {status:'error',failure:error.failure,text:error.failure?'':error.message + (error.status>=400&&error.status<500?t('action.failed'):t('action.uncertain'))};
     updateActivity();
     toast(error.message);
-    if (error.status === 400 || error.status === 403 || error.status === 409) localStorage.removeItem(key);
+    if ([400,403,409].includes(error.status)) localStorage.removeItem(key);
+    if(error.failure){await refresh(false).catch(()=>{});if(state?.events?.some(e=>e.result?.failure?.actionId===body.id))localAction=null;updateActivity();updateKeeperQueue();const target=dialog.querySelector('[data-action-error]');if(target)target.innerHTML=failurePanel(error.failure);}
     throw error;
   } finally {
     busy = false;
@@ -147,12 +164,12 @@ async function perform(operation,args,existing) {
 function openDialog(title,body,onSubmit,label=t('ui.m062'),id='S14') {
   lastFocus = document.activeElement;
   dialogSubmit = onSubmit;
-  dialog.innerHTML = `<div class="dialog-head"><h2 id="dialog-title"><span class="eyebrow">${id}</span> ${title}</h2>${button(t('ui.m058'),'close',{},'quiet')}</div><form id="dialog-form"><div class="dialog-body">${body}<div class="dialog-actions">${button(t('ui.m061'),'close')}${onSubmit?`<button class="primary" type="submit">${label}</button>`:''}</div></div></form>`;
+  dialog.innerHTML = `<div class="dialog-head"><h2 id="dialog-title"><span class="eyebrow">${id}</span> ${title}</h2>${button(t('ui.m058'),'close',{},'quiet')}</div><form id="dialog-form"><div class="dialog-body">${body}<div data-action-error role="alert"></div><div class="dialog-actions">${button(t('ui.m061'),'close')}${onSubmit?`<button class="primary" type="submit">${label}</button>`:''}</div></div></form>`;
   if (!dialog.open) dialog.showModal();
 }
 
 function closeDialog() {
-  if(dialog.querySelector('#player-ai-embedded'))embeddedAI.close();
+  if(dialog.open&&dialog.querySelector('#player-ai-embedded'))embeddedAI.close();
   dialog.close();
   dialogSubmit = null;
   if (lastFocus?.isConnected) lastFocus.focus();
@@ -184,7 +201,9 @@ function discoveryControls(index){
 }
 
 function roomPage(){
-  return heading('P15',t('nav.room'),button(t('room.share'),'web-room',{},'primary'))+roomNetworkPanel();
+  const grants=state.knowledgeGrants?.items||[];
+  const knowledge=panel('个人已知资料',`<p>${state.knowledge?.status==='ready'?'已启用：进入或向本人揭示产生观察记录；发布地点不会向所有玩家披露。':'知识服务尚未启用。旧存档需要显式启用，再选择现在揭示。'}</p>${button('启用个人知识服务','knowledge-enable')}${button('处理旧地点记录','knowledge-import')}<div class="stack">${grants.map(g=>`<div class="row"><span>${escape(g.label)} · ${escape(g.subject.accountId)} · ${g.mode==='live_scope'?'持续告知':'观察记录'}</span>${button('撤回','knowledge-revoke',{grantId:g.grantId,revision:g.revision},'small')}</div>`).join('')||'<p>暂无授权记录。</p>'}</div>${state.knowledgeGrants?.nextCursor?'<p>这里只展示前 50 项；更多记录可通过知识管理接口分页查询。</p>':''}`);
+  return heading('P15',t('nav.room'),button(t('room.share'),'web-room',{},'primary'))+roomNetworkPanel()+knowledge;
 }
 function mapPage(){
   return heading('P16',t('nav.map'))+panel(t('ui.m105'),mapView(Object.values(state.allLocations),selectedLocation,true));
@@ -193,21 +212,34 @@ function messageQueue(){
   const channels=Object.values(state.channels).filter(c=>c.unreadCount>0);
   return channels.map(c=>`<button type="button" class="message-queue-item" data-action="chat-channel" data-args="${escape(JSON.stringify({channel:c.channelId}))}"><strong>${escape(c.name)}</strong><span class="tag">${c.unreadCount}</span></button>`).join('')||empty(t('ruling.noMessages'));
 }
+function keeperLocalPending(){return (state?.requests||[]).filter(r=>r.status==='pending').length+Object.values(state?.drafts||{}).filter(d=>d.status==='submitted').length+(state?.keeperWaits||[]).length+(state?.keeperFlows||[]).length;}
+function updateQueueCount(value=aiQueuePending){aiQueuePending=value;const count=document.querySelector('#keeper-pending-count');if(count)count.textContent=keeperLocalPending()+aiQueuePending;}
+function updateKeeperQueue(){
+  if(state?.role!=='kp'||!document.querySelector('.ruling-work'))return;
+  for(const [selector,render] of [['#keeper-character-approvals',characterApprovalQueue],['#keeper-host-flows',hostFlowQueue],['#keeper-game-requests',rulingQueue]]){
+    const node=document.querySelector(selector);if(!node)continue;
+    const markup=render();if(node._queueMarkup!==markup){node.innerHTML=markup;node._queueMarkup=markup;}
+  }
+  const detail=document.querySelector('.ruling-detail');
+  if(detail&&!detail.querySelector('form')&&!dirtyForm)detail.innerHTML=rulingDetail();
+  updateQueueCount();
+}
+function characterApprovalQueue(){
+  return Object.values(state.drafts||{}).filter(d=>d.status==='submitted').map(d=>`<article class="queue-item character-approval" data-draft="${escape(d.account)}"><small>${escape(d.account)}</small><strong>${t('queue.characterApproval')} · ${escape(d.name)}</strong><p>${fieldName('str')} ${d.str} / ${fieldName('dex')} ${d.dex} / ${fieldName('wil')} ${d.wil} · ${fieldName('hp')} ${d.hp}</p><div class="actions">${button(t('ui.m114'),'approve',{account:d.account},'primary small')}${button(t('ui.m115'),'reject',{account:d.account},'small')}</div></article>`).join('');
+}
+function hostFlowQueue(){
+  return (state.keeperWaits||[]).map(w=>`<article class="queue-item host-wait" data-wait="${escape(w.id)}"><small>${escape(w.account)} · ${escape(w.flowId)}</small><strong>${t('queue.flowWait')}</strong><p>${escape(w.options?.question||w.options?.prompt||w.node)}</p><div class="actions">${button(t('ui.m099'),'host-flow',{operation:'flow.respond',input:{waitId:w.id,revision:w.revision,answer:true}},'primary small')}${button(t('ui.m100'),'host-flow',{operation:'flow.respond',input:{waitId:w.id,revision:w.revision,answer:false}},'small')}</div></article>`).join('')+(state.keeperFlows||[]).map(f=>`<article class="queue-item" data-flow="${escape(f.id)}"><small>${escape(f.rule)} · ${escape(f.id)}</small><strong>${t('queue.flowAttention')}</strong><p>${escape(f.error||f.status)}</p><div class="actions">${button(t('queue.retryFlow'),'host-flow',{operation:'flow.retry',input:{flowId:f.id}},'small')}${button(t('queue.cancelFlow'),'host-flow',{operation:'flow.cancel',input:{flowId:f.id}},'small')}</div></article>`).join('');
+}
 function rulingsPage(){
-  return `<div class="rulings-grid"><div class="ruling-queues"><section class="panel message-queue"><h2>${t('ruling.messages')}</h2><div id="message-queue-list" class="ruling-scroll">${messageQueue()}</div></section><section class="panel ruling-work"><h2>${t('ruling.queue')}</h2><div class="ruling-scroll">${rulingQueue()}<div class="ruling-detail">${rulingDetail()}</div><details><summary>${t('ruling.history')}</summary>${activityFeed()}</details></div></section></div><section class="panel ruling-ai" aria-label="${t('ai.title')}"><div id="kp-ai-embedded"></div></section><aside id="chat-column" class="ruling-chat" aria-label="${t('chat.title')}"></aside></div>`;
+  return `<div class="rulings-grid"><div class="ruling-queues"><section class="panel message-queue"><h2>${t('ruling.messages')}</h2><div id="message-queue-list" class="ruling-scroll">${messageQueue()}</div></section><section class="panel ruling-work"><h2>${t('ruling.queue')} <span class="tag" id="keeper-pending-count">${keeperLocalPending()+aiQueuePending}</span></h2><div class="ruling-scroll"><div id="keeper-character-approvals">${characterApprovalQueue()}</div><div id="keeper-host-flows">${hostFlowQueue()}</div><div id="keeper-game-requests">${rulingQueue()}</div><div class="ruling-detail">${rulingDetail()}</div><div id="kp-ai-rulings"></div><details><summary>${t('ruling.history')}</summary>${activityFeed()}</details></div></section></div><section class="panel ruling-ai" aria-label="${t('ai.title')}"><div id="kp-ai-embedded"></div></section><aside id="chat-column" class="ruling-chat" aria-label="${t('chat.title')}"></aside></div>`;
 }
 
 function mapView(locations,current,rosters=false) {
-  const positions={1:[90,280],2:[90,180],3:[270,180],4:[120,65],5:[290,65],6:[460,65],7:[460,180],8:[640,180],9:[640,280],10:[460,280]};
+  const positions=mapPositions;
   const points=locations.map(l=>positions[l.index]);
   const minX=Math.min(...points.map(p=>p[0]))-85,minY=Math.min(...points.map(p=>p[1]))-65;
   const mapBox=`${minX} ${minY} ${Math.max(250,Math.max(...points.map(p=>p[0]))-minX+85)} ${Math.max(170,Math.max(...points.map(p=>p[1]))-minY+65)}`;
-  const edges=locations.flatMap(x=>x.exits.filter(y=>y>x.index&&locations.some(l=>l.index===y)).map(y=>{
-    const [x1,y1]=positions[x.index],[x2,y2]=positions[y];
-    const door=state.doors?.[[x.index,y].sort((a,b)=>a-b).join('-')]||x.doors?.[String(y)]||'open';
-    if(x.index===3&&y===8)return `<path d="M${x1} ${y1} C${x1} 255 ${x2} 255 ${x2} ${y2}" class="${door==='open'?'':'closed'}"/>`;
-    return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" class="${door==='open'?'':'closed'}"/>`;
-  })).join('');
+  const edges=mapRoutes(locations,rosters===true?state.doors:null).map(edge=>`<path data-route="${edge.key}" data-status="${edge.status}" d="${mapRoutePath(edge)}" class="${edge.status==='open'?'open':edge.status==='unknown'?'unknown':'closed'}"><title>${edge.key} · ${t('map.route.'+edge.status)}</title></path>`).join('');
   const action=rosters===true?'map-room':'location';
   const nodes=locations.map(x=>{const [left,top]=positions[x.index],show=rosters===true||rosters==='player'&&x.index===current,actors=rosters===true?roomActors(x.index):show?(state.mapContacts||[]):[],names=actors.map(a=>a.name).join('、'),count=t('map.occupants',{count:actors.length});return `<g role="button" tabindex="0" aria-label="${escape(x.name+(show?' · '+count+' · '+names:''))}" data-action="${action}" data-args="${escape(JSON.stringify({index:x.index}))}" class="${x.index===current?'current':''}" transform="translate(${left},${top})"><title>${escape(x.name+(show?' · '+count+' · '+names:''))}</title><rect x="-64" y="-24" width="128" height="${show?84:48}" rx="9"/><text text-anchor="middle"><tspan x="0" y="-6" class="map-index">${String(x.index).padStart(2,'0')}</tspan><tspan x="0" y="13" ${x.name.length>13?'textLength="112" lengthAdjust="spacingAndGlyphs"':''}>${escape(x.name)}</tspan>${show?`<tspan x="0" y="32" class="map-count">${count}</tspan><tspan x="0" y="49" class="map-names">${escape(names.length>11?names.slice(0,10)+'…':names||t('map.empty'))}</tspan>`:''}</text>${x.index===current?'<circle cx="57" cy="-20" r="6"/>':''}</g>`;}).join('');
   const selected=locations.find(x=>x.index===current)||locations[0];
@@ -215,6 +247,7 @@ function mapView(locations,current,rosters=false) {
 }
 
 function renderEntry() {
+  diceUI.observe(null);effectsUI.observe(null);
   if(webMode){app.innerHTML=empty('连接已断开，请在网页上方退出并重新连接房主。');return;}
   aiUI.update(null);embeddedAI.close();
   chatUI.mount(null);document.body.classList.remove('scene-workspace','rulings-workspace','player-ui','topbar-collapsed');
@@ -225,12 +258,13 @@ function renderPage() {
   if (!state) return renderEntry();
   const logScroll=document.querySelector('#action-feedback')?.scrollTop||0;
   const sceneScroll=document.querySelector('.scene-column')?.scrollTop||0;
+  const characterScroll=document.querySelector('.character-column')?.scrollTop||0;
   restoreDesktop();
   let path = route();
   const legacyPanels = {'play/character':'inventory','play/journal':'clues','play/records':'records'};
   if(legacyPanels[path]){
     if(state.role==='kp'){path='gm/rulings';}
-    else {if(legacyPanels[path]!=='records'){desktop[legacyPanels[path]]={open:true,collapsed:false};desktop.front=legacyPanels[path];}else mobileColumn='log';saveDesktop();path='play/scene';}
+    else {const name=legacyPanels[path];if(name==='inventory')mobileColumn='character';else{for(const key of Object.keys(paneNames()))desktop[key].open=key===name;desktop[name].collapsed=false;desktop.front=name;}saveDesktop();path='play/scene';}
     historyReplace('#/'+path);acceptedHash=location.hash;
   }
   if(['gm/overview','gm/encounters'].includes(path)){path=path==='gm/encounters'?'gm/rulings':'gm/console';historyReplace('#/'+path);acceptedHash=location.hash;}
@@ -246,7 +280,7 @@ function renderPage() {
   const pending = localStorage.getItem(pendingKey());
   const folded=localStorage.getItem('sv.desktop.topbar.'+base.pathname+'.'+state.accountId)==='1';
   document.body.classList.toggle('topbar-collapsed',folded);
-  app.innerHTML = `<header class="topbar"><div class="brand"><span class="brand-symbol">♧</span><span>${t('app.name')}<small>STUMPSVILLE</small></span></div>${!gm?`<nav class="top-nav" aria-label="${t('nav.main')}">${navigation.map(([url,label])=>`<a href="#/${url}" class="${path===url?'active':''}">${label}</a>`).join('')}</nav>`:''}<div class="toptools"><span class="identity">${gm?t('ui.m015'):t('ui.m016')} · ${escape(state.accountId)}</span><span class="tag" id="connection">${connection}</span>${state.canManage?`<a class="account-link" target="_blank" rel="noopener" href="${base.pathname}${gm?'?view=player#/play/scene':'#/gm/console'}">${gm?t('ui.m017'):t('ui.m018')}</a>`:''}${gm?'':button(t('ai.title'),'ai-assistant',{},'quiet')}${button(t('ui.m011'),'rules',{},'quiet')}${button(t('ui.m012'),'preferences',{},'quiet')}${button(t('ui.m013'),'logout',{},'quiet')}${select(t('ui.m014'),'locale',[['zh-CN','简体中文'],['en','English']],locale())}</div><button class="topbar-toggle quiet" data-action="topbar-toggle" aria-expanded="${!folded}" aria-label="${t(folded?'nav.expandTop':'nav.collapseTop')}" title="${t(folded?'nav.expandTop':'nav.collapseTop')}">${folded?t('nav.expandTop')+' ▾':'▴'}</button></header>${pending?`<div class="pendingbar">${t('status.pendingcommand')} ${button(t('action.recover'),'recover',{},'small')}</div>`:''}<div class="shell ${gm?'':'player-shell'}">${gm?`<nav class="sidebar" aria-label="${t('nav.main')}">${navigation.map(([url,label])=>`<a href="#/${url}" class="${path.startsWith(url)?'active':''}">${label}</a>`).join('')}</nav>`:''}<main id="main"></main></div>`;
+  app.innerHTML = `<header class="topbar"><div class="brand"><span class="brand-symbol">♧</span><span>${t('app.name')}<small>STUMPSVILLE</small></span></div>${!gm?`<nav class="top-nav" aria-label="${t('nav.main')}">${navigation.map(([url,label])=>`<a href="#/${url}" class="${path===url?'active':''}">${label}</a>`).join('')}</nav>`:''}<div class="toptools"><span class="identity">${gm?t('ui.m015'):t('ui.m016')} · ${escape(state.accountId)}</span><span class="tag" id="connection">${connection}</span>${state.canManage?`<a class="account-link" target="_blank" rel="noopener" href="${base.pathname}${gm?'?view=player#/play/scene':'#/gm/console'}">${gm?t('ui.m017'):t('ui.m018')}</a>`:''}${gm||workspace?'':button(t('ai.title'),'ai-assistant',{},'quiet')}${button(t('ui.m011'),'rules',{},'quiet')}${button(t('ui.m012'),'preferences',{},'quiet')}${button(t('ui.m013'),'logout',{},'quiet')}${select(t('ui.m014'),'locale',[['zh-CN','简体中文'],['en','English']],locale())}</div><button class="topbar-toggle quiet" data-action="topbar-toggle" aria-expanded="${!folded}" aria-label="${t(folded?'nav.expandTop':'nav.collapseTop')}" title="${t(folded?'nav.expandTop':'nav.collapseTop')}">${folded?t('nav.expandTop')+' ▾':'▴'}</button></header>${pending?`<div class="pendingbar">${t('status.pendingcommand')} ${button(t('action.recover'),'recover',{},'small')}</div>`:''}<div class="shell ${gm?'':'player-shell'}">${gm?`<nav class="sidebar" aria-label="${t('nav.main')}">${navigation.map(([url,label])=>`<a href="#/${url}" class="${path.startsWith(url)?'active':''}">${label}</a>`).join('')}</nav>`:''}<main id="main"></main></div>`;
   const main = document.querySelector('#main');
   if (!state.initialized) {
     chatUI.mount(null);main.innerHTML = heading('准备',t('ui.m073')) + panel(t('ui.m074'),gm?button(t('ui.m075'),'initialize',{},'primary'):empty(t('ui.m076')));
@@ -265,9 +299,9 @@ function renderPage() {
   main.innerHTML = (routes[path] || (()=>heading('S16',t('ui.m070'))+link(t('ui.m071'),'lobby')))();
   chatUI.update(state);
   chatUI.mount(workspace||path==='gm/rulings'?document.querySelector('#chat-column'):null);
-  embeddedAI.mount(path==='gm/rulings'?document.querySelector('#kp-ai-embedded'):null,{base,manager:gm,account:state.accountId,onReview:()=>aiUI.open({base,manager:gm,language:locale()})});
+  embeddedAI.mount(path==='gm/rulings'?document.querySelector('#kp-ai-embedded'):workspace?document.querySelector('#player-ai-embedded'):null,{base,manager:gm,account:state.accountId,scope:state.storageScope,rulingsTarget:document.querySelector('#kp-ai-rulings'),onQueueCount:updateQueueCount,onSettings:()=>aiUI.open({base,manager:gm,language:locale(),onQueue:()=>{aiUI.close();location.hash='/gm/rulings';}}),onReveal:()=>{location.hash='/gm/locations';},onReview:()=>{location.hash='/gm/rulings';}});
   updateActivity();
-  if(workspace){document.querySelector('#action-feedback').scrollTop=logScroll;document.querySelector('.scene-column').scrollTop=sceneScroll;}
+  if(workspace){const log=document.querySelector('#action-feedback');if(log)log.scrollTop=logScroll;document.querySelector('.scene-column').scrollTop=sceneScroll;document.querySelector('.character-column').scrollTop=characterScroll;positionNotebook();}
 }
 
 function lobbyPage() {
@@ -300,7 +334,8 @@ function scenePage(){
   if(!c.numbers.ready||state.session?.numbers.phase!==1)return `<div class="scene-empty">${empty(t('ui.m041'))}${link(t('ui.m040'),'ready')}</div>`;
   const place=state.locations.find(x=>x.index===c.numbers.location);
   if(!place)return empty(t('scene.unpublished'));
-  return `<header class="scene-heading"><div><small>${t('scene.current')}</small><h1>${String(place.index).padStart(2,'0')} ${escape(place.name)}</h1></div><span class="tag">${t('scene.round',{count:state.session?.numbers.round||0})}</span></header><p class="scene-description">${escape(place.description)}</p><div class="scene-map-area">${mapView(state.locations,place.index,'player')}${playerContacts()}</div><div class="available-actions"><header><h2>${t('scene.actions')}</h2><span class="tag">${state.automation.enabled?t('ui.m078'):t('ui.m091')}</span></header><div class="preset-actions">${sceneButtons(place)}</div><div class="travel-actions">${place.exits.map(index=>button(t('scene.go',{place:escape(state.locations.find(x=>x.index===index)?.name||String(index))}),'travel',{destination:index},'small')).join('')}</div><div class="generic-actions">${button(t('ui.m051'),'check',{},'primary')}${button(t('ui.m049'),'request',{kind:'free'})}${button(t('ui.m050'),'review')}</div></div>${sceneStatusPanel()}`;
+  const observation=place.observedAt?`观察记录 · ${new Date(place.observedAt*1000).toLocaleString()}（非实时场景）`:t('scene.current');
+  return `<header class="scene-heading"><div><small>${escape(observation)}</small><h1>${String(place.index).padStart(2,'0')} ${escape(place.name)}</h1></div><span class="tag">${t('scene.round',{count:state.session?.numbers.round||0})}</span></header><p class="scene-description">${escape(place.description)}</p><div class="scene-map-area">${mapView(state.locations,place.index,'player')}${playerContacts()}</div><div class="available-actions"><header><h2>${t('scene.actions')}</h2><span class="tag">${state.automation.enabled?t('ui.m078'):t('ui.m091')}</span></header><div class="preset-actions">${sceneButtons(place)}</div><div class="travel-actions">${place.exits.map(index=>button(t('scene.go',{place:escape(state.locations.find(x=>x.index===index)?.name||String(index))}),'travel',{destination:index},'small')).join('')}</div><div class="generic-actions">${button(t('ui.m051'),'check',{},'primary')}${button(t('ui.m049'),'request',{kind:'free'})}${button(t('ui.m050'),'review')}</div></div>${sceneStatusPanel()}`;
 }
 
 function inventoryCards(c) {
@@ -333,7 +368,7 @@ function locationsPage() {
   const place=state.allLocations[String(selectedLocation)]||Object.values(state.allLocations)[0];
   const doors=place.exits.map(x=>{const edge=[place.index,x].sort((a,b)=>a-b).join('-');return button(`通往 ${x} · ${{open:'开启',closed:t('ui.m058'),locked:'锁住'}[state.doors[edge]]}`,'door',{edge});}).join('');
   const stock=place.stock.map(x=>`<div class="row"><span>${escape(state.items[String(x.item)]?.name)} × ${x.count}</span>${x.count?button('领取','take-stock',{index:place.index,item:x.item},'small'):''}</div>`).join('');
-  return heading('P10',t('ui.m128'),button(t('ui.m127'),'preview',{index:place.index}))+`<div class="layout-aside"><div>${panel(`${place.index} ${escape(place.name)}`,`<form id="location-form"><input type="hidden" name="index" value="${place.index}"><input type="hidden" name="revision" value="${place.revision||0}"><div class="grid2"><div>${area('公开描述','description',place.description)}</div><div>${area('KP 主持真相','truth',place.truth)}</div></div><div class="actions"><button class="primary">保存草稿</button>${button(t('ui.m126'),'publish',{index:place.index})}</div></form><h3>通路与门</h3><div class="actions">${doors}</div><h3>库存</h3>${stock||'<p class="muted">无固定物品</p>'}${place.index===4?button('首次生成铜锅盘','generate',{kind:'pots'}):''}${place.index===7?button('首次生成鼠帮人数','generate',{kind:'rats'}):''}${roomRoster(place.index,true)}${discoveryControls(place.index)}`,'private')}</div><aside>${panel('地点索引',`<div class="stack">${Object.values(state.allLocations).map(x=>button(`${String(x.index).padStart(2,'0')} ${escape(x.name)}`,'select-location',{index:x.index},x.index===place.index?'primary':'')).join('')}</div>`)}</aside></div>`;
+  return heading('P10',t('ui.m128'),button(t('ui.m127'),'preview',{index:place.index}))+`<div class="layout-aside"><div>${panel(`${place.index} ${escape(place.name)}`,`<form id="location-form"><input type="hidden" name="index" value="${place.index}"><input type="hidden" name="revision" value="${place.revision||0}"><div class="grid2"><div>${area('公开描述','description',place.description)}</div><div>${area('KP 主持真相','truth',place.truth)}</div></div><div class="actions"><button class="primary">保存草稿</button>${button(t('ui.m126'),'publish',{index:place.index})}${state.published[String(place.index)]?button('向玩家揭示','location-reveal',{index:place.index}):''}</div></form><h3>通路与门</h3><div class="actions">${doors}</div><h3>库存</h3>${stock||'<p class="muted">无固定物品</p>'}${place.index===4?button('首次生成铜锅盘','generate',{kind:'pots'}):''}${place.index===7?button('首次生成鼠帮人数','generate',{kind:'rats'}):''}${roomRoster(place.index,true)}${discoveryControls(place.index)}`,'private')}</div><aside>${panel('地点索引',`<div class="stack">${Object.values(state.allLocations).map(x=>button(`${String(x.index).padStart(2,'0')} ${escape(x.name)}`,'select-location',{index:x.index},x.index===place.index?'primary':'')).join('')}</div>`)}</aside></div>`;
 }
 
 function libraryPage() {
@@ -352,7 +387,7 @@ async function rawCommand(op,args) {
   return {result:await perform('chat',{operation:op,input:args})};
 }
 
-const paneNames = () => ({status:t('ui.m006'),inventory:t('ui.m007'),clues:t('ui.m008')});
+const paneNames = () => ({clues:t('ui.m008'),records:t('ui.m009')});
 function desktopKey(){return 'sv.desktop.'+base.pathname+'.'+state.accountId;}
 function restoreDesktop(){
   const key=desktopKey();
@@ -360,7 +395,7 @@ function restoreDesktop(){
   desktopAccount=key;
   try{desktop=JSON.parse(localStorage.getItem(key)||'{}');}catch{desktop={};}
   for(const name of Object.keys(paneNames()))desktop[name]??={open:false,collapsed:false};
-  desktop.front??='status';desktop.seen??=[];
+  desktop.front??='clues';desktop.seen??=[];desktop.communication??='chat';desktop.notebook??={};
   localAction=null;
 }
 function saveDesktop(){localStorage.setItem(desktopKey(),JSON.stringify(desktop));}
@@ -389,12 +424,21 @@ function sceneResult(result){
   if(!result?.sceneAction)return '';
   return `<div class="scene-result"><p class="muted">${escape(result.process)}</p>${(result.checks||[]).map(r=>`<div class="scene-check"><strong>${escape(r.label)}</strong>${diceBlock(r)}</div>`).join('')}${result.rolls?.length?`<ul class="scene-rolls">${result.rolls.map(r=>`<li>${escape(r.label)} · d${r.sides} → <b>${r.value}</b></li>`).join('')}</ul>`:''}<ol class="scene-narrative">${(result.narrative||[]).map(line=>`<li>${escape(line)}</li>`).join('')}</ol>${result.stateChanges?.length?`<h4>${t('log.scenechanges')}</h4><ul class="change-list">${result.stateChanges.map(c=>`<li><span>${escape(c.label.replace(/（0待处理[^）]*）/,''))}</span><span><del>${escape(sceneValue(c.key,c.before))}</del> <b>→ ${escape(sceneValue(c.key,c.after))}</b></span></li>`).join('')}</ul>`:''}${result.clues?.length?`<p class="notice">${t('log.clues')} ${result.clues.map(c=>escape(c.title)).join(' / ')}</p>`:''}</div>`;
 }
+function notificationResult(event){
+  const result=event.result||{};
+  if(result.failure)return failurePanel(result.failure);
+  const lines=event.status==='rejected'?[t('log.rejected')]:result.narrative?.length?result.narrative:[resultText(result)];
+  return lines.map(line=>`<p>${escape(line)}</p>`).join('')+
+    (event.reason?`<p class="muted">${escape(event.reason)}</p>`:'')+
+    (result.stateChanges||[]).map(c=>`<p>${escape(c.label)}：${escape(sceneValue(c.key,c.before))} → ${escape(sceneValue(c.key,c.after))}</p>`).join('');
+}
+function changeList(changes){return changes.map(c=>`<li><span>${escape(c.key.startsWith('slot')?t('field.slot',{count:Number(c.key.slice(4))}):c.key.startsWith('ticks')?t('effects.ticks',{count:Number(c.key.slice(5))}):fieldName(c.key))}</span><span><del>${escape(['ready','incapacitated'].includes(c.key)?t(c.before?'state.yes':'state.no'):displayValue(c.before))}</del> <b>→ ${escape(['ready','incapacitated'].includes(c.key)?t(c.after?'state.yes':'state.no'):displayValue(c.after))}</b></span></li>`).join('');}
 function eventCard(e,compact=false){
   const waiting=['pending','processing'].includes(e.status),denied=e.status==='rejected';
-  const label=t(e.status==='processing'?'ui.m095':waiting?'ui.m091':denied?'ui.m093':e.result?.outcome==='blocked'?'state.blocked':e.status==='approved'?'state.approved':'ui.m092');
+  const label=t(e.status==='processing'?'ui.m095':waiting?'ui.m091':denied?'ui.m093':e.status==='blocked'||e.result?.outcome==='blocked'?'state.blocked':e.status==='approved'?'state.approved':'ui.m092');
   const r=e.result&&typeof e.result==='object'?e.result:{};
-  const changes=(e.changes||[]).map(c=>`<li><span>${escape(c.key.startsWith('slot')?t('field.slot',{count:Number(c.key.slice(4))}):fieldName(c.key))}</span><span><del>${escape(['ready','incapacitated'].includes(c.key)?t(c.before?'state.yes':'state.no'):displayValue(c.before))}</del> <b>→ ${escape(['ready','incapacitated'].includes(c.key)?t(c.after?'state.yes':'state.no'):displayValue(c.after))}</b></span></li>`).join('');
-  return `<article class="event-card ${waiting?'waiting':denied?'denied':''}" data-event-id="${escape(e.id)}"><div class="event-head"><strong>${escape(e.title)}</strong><span class="tag">${label}</span></div><small class="muted">${new Date(e.time*1000).toLocaleString(locale())} · ${t(e.mode==='kp'?'log.keeper':'ui.m078')}${state.role==='kp'?' · '+escape(e.account):''}</small>${compact?'':`<p class="action-steps">${t('log.submitted')} → ${t(e.mode==='kp'?'log.keeper':'log.rules')} → ${label}</p>`}${e.text&&!compact?'<p>'+escape(e.text)+'</p>':''}${sceneResult(r)||('passed' in r?diceBlock(r):`<p>${escape(waiting?t('log.waiting'):denied?t('log.rejected'):resultText(r))}</p>`)}${e.reason?`<p class="ruling-reason">${t(waiting?'log.reason':'log.ruling')}：${escape(e.reason)}</p>`:''}${changes?`<ul class="change-list">${changes}</ul>`:!waiting?`<p class="muted">${t('log.nochanges')}</p>`:''}${!compact&&state.character&&e.receiptId?button(t('ui.m119'),'review',{receiptId:e.receiptId,text:t('log.review',{title:e.title})},'small quiet'):''}</article>`;
+  const changes=changeList(e.changes||[]);
+  return `<article class="event-card ${waiting?'waiting':denied?'denied':''}" data-event-id="${escape(e.id)}"><div class="event-head"><strong>${escape(e.title)}</strong><span class="tag">${label}</span></div><small class="muted">${new Date(e.time*1000).toLocaleString(locale())} · ${t(e.mode==='kp'?'log.keeper':'ui.m078')}${state.role==='kp'?' · '+escape(e.account):''}</small>${compact?'':`<p class="action-steps">${t('log.submitted')} → ${t(e.mode==='kp'?'log.keeper':'log.rules')} → ${label}</p>`}${e.text&&!compact?'<p>'+escape(e.text)+'</p>':''}${r.failure?failurePanel(r.failure):sceneResult(r)||('passed' in r?diceBlock(r):`<p>${escape(waiting?t('log.waiting'):denied?t('log.rejected'):resultText(r))}</p>`)}${e.reason?`<p class="ruling-reason">${t(waiting?'log.reason':'log.ruling')}：${escape(e.reason)}</p>`:''}${changes?`<ul class="change-list">${changes}</ul>`:!waiting&&!r.failure?`<p class="muted">${t('log.nochanges')}</p>`:''}${!compact&&state.character&&e.receiptId?button(t('ui.m119'),'review',{receiptId:e.receiptId,text:t('log.review',{title:e.title})},'small quiet'):''}</article>`;
 }
 function activityFeed(){
   const events=(state.events||[]).slice().reverse();
@@ -403,18 +447,19 @@ function activityFeed(){
 function logEntry(e,index){
   const key=e.account+':'+e.id;
   const waiting=['pending','processing'].includes(e.status);
-  const label=waiting?t(e.status==='processing'?'ui.m095':'ui.m091'):e.status==='rejected'?t('ui.m093'):t('ui.m092');
+  const label=waiting?t(e.status==='processing'?'ui.m095':'ui.m091'):e.status==='blocked'||e.result?.outcome==='blocked'?t('state.blocked'):e.status==='rejected'?t('ui.m093'):t('ui.m092');
   const open=expandedLogs.has(key)?expandedLogs.get(key):index===0;
   return `<details class="log-entry ${waiting?'waiting':''}" data-log="${escape(key)}" ${open?'open':''}><summary><time>${new Date(e.time*1000).toLocaleTimeString(locale(),{hour:'2-digit',minute:'2-digit'})}</time><strong>${escape(e.title)}</strong><span class="tag">${label}</span></summary><div class="log-details">${eventCard(e,true)}<div class="log-actions">${e.receiptId?button(t('ui.m119'),'review',{receiptId:e.receiptId,text:t('log.review',{title:e.title})},'quiet small'):''}${e.receiptId&&['check','inventory','ready'].includes(state.receipts.find(r=>r.id===e.receiptId)?.operation)?button(t('log.share'),'share',{id:e.receiptId},'quiet small'):''}</div></div></details>`;
 }
 function updateActivity(){
+  const badge=document.querySelector('[data-log-badge]');if(badge&&state)badge.textContent=unreadEvents()||'';
   const target=document.querySelector('#action-feedback');if(!target||!state)return;
   const events=(state.events||[]).slice().reverse().filter(e=>logFilter==='all'||(logFilter==='pending'?['pending','processing'].includes(e.status):e.result?.checks?.length||e.result?.rolled!==undefined));
   const fingerprint=JSON.stringify([events,localAction,logFilter,locale()]);
   if(target.dataset.content===fingerprint)return;
   target.dataset.content=fingerprint;
   const top=target.scrollTop;
-  target.innerHTML=`${localAction?`<p class="notice ${localAction.status==='error'?'error':''}">${escape(localAction.text)}</p>`:''}${events.map(logEntry).join('')||empty(t('log.empty'))}`;
+  target.innerHTML=`${localAction?.failure?failurePanel(localAction.failure):localAction?`<p class="notice ${localAction.status==='error'?'error':''}">${escape(localAction.text)}</p>`:''}${events.map(logEntry).join('')||empty(t('log.empty'))}`;
   target.scrollTop=top;
 }
 document.addEventListener('click',event=>{const summary=event.target.closest('details[data-log]>summary');if(summary){const entry=summary.parentElement;expandedLogs.set(entry.dataset.log,!entry.open);}},true);
@@ -428,13 +473,58 @@ function paneContent(name){
   }
   return '';
 }
-function floatingPanel(name){
-  const p=desktop[name];if(!p.open)return '';
-  return `<section class="floating-panel pane-${name} ${p.collapsed?'collapsed':''} ${desktop.front===name?'front':''}" aria-label="${t('panel.label',{name:paneNames()[name]})}"><header class="floating-head">${button(paneNames()[name],'pane-front',{name},'pane-title quiet')}<div>${button(p.collapsed?t('ui.m059'):t('ui.m060'),'pane-collapse',{name},'small quiet')}${button(t('ui.m058'),'pane-close',{name},'small quiet')}</div></header><div class="floating-body" ${p.collapsed?'hidden':''}>${p.collapsed?'':paneContent(name)}</div></section>`;
+function notebookPanel(){
+  const name=desktop.front==='records'?'records':'clues';
+  const expanded=desktop[name].open&&!desktop[name].collapsed;
+  return `<aside class="player-notebook ${expanded?'expanded':''}" aria-label="${t('workspace.notebook')}"><header class="notebook-head" data-notebook-drag><button type="button" class="notebook-grip quiet" aria-label="${t('workspace.drag')}" title="${t('workspace.drag')}">⠿</button>${Object.entries(paneNames()).map(([key,label])=>`<button type="button" data-action="notebook-toggle" data-args="${escape(JSON.stringify({name:key}))}" aria-expanded="${expanded&&key===name}" aria-controls="notebook-body" class="${expanded&&key===name?'primary':''}">${label}${key==='records'?` <b data-log-badge>${unreadEvents()||''}</b>`:''}</button>`).join('')}</header><div id="notebook-body" class="notebook-body pane-${name}" ${expanded?'':'hidden'}>${expanded?(name==='records'?`<header class="column-head"><h2>${t('ui.m009')}</h2>${select(t('log.filter'),'log-filter',[['all',t('log.all')],['pending',t('log.pending')],['checks',t('ui.m051')]],logFilter)}${button(t('chat.read'),'events-read',{},'small')}</header><section id="action-feedback" aria-live="polite"></section>`:paneContent('clues')):''}</div></aside>`;
 }
 function workspacePage(){
-  return `<div class="workspace-toolbar"><div class="character-tools">${Object.entries(paneNames()).map(([name,label])=>button(label,'pane-toggle',{name},desktop[name].open?'primary small':'small')).join('')}</div><nav class="workspace-tabs" aria-label="${t('nav.workspace')}">${[['scene',t('ui.m005')],['log',t('ui.m009')],['chat',t('chat.title')]].map(([column,label])=>button(label,'workspace-column',{column},mobileColumn===column?'primary small':'small')).join('')}</nav><span class="workspace-identity">${escape(state.character?.name||'')} ${state.character?`${t('field.hp')} ${state.character.numbers.hp}/${state.character.numbers.maxHp}`:''}</span></div><div id="scene-desktop" data-column="${mobileColumn}"><section class="scene-column workspace-column" aria-label="${t('scene.mapactions')}">${scenePage()}</section><section class="log-column workspace-column" aria-label="${t('ui.m009')}"><header class="column-head"><h2>${t('ui.m009')}</h2>${select(t('log.filter'),'log-filter',[['all',t('log.all')],['pending',t('log.pending')],['checks',t('ui.m051')]],logFilter)}</header><section id="action-feedback" aria-live="polite"></section></section><section id="chat-column" class="workspace-column" aria-label="${t('chat.title')}"></section></div><div class="desktop-panels">${Object.keys(paneNames()).map(floatingPanel).join('')}</div>`;
+  const ai=desktop.communication==='ai';
+  return `<div class="workspace-toolbar"><nav class="workspace-tabs" aria-label="${t('nav.workspace')}">${[['character',t('workspace.character')],['scene',t('scene.mapactions')],['communication',t('workspace.communication')]].map(([column,label])=>button(label,'workspace-column',{column},mobileColumn===column?'primary small':'small')).join('')}</nav></div><div id="scene-desktop" data-column="${mobileColumn}"><section class="character-column workspace-column" aria-label="${t('workspace.character')}"><section class="resident-status"><h2>${t('ui.m006')}</h2>${paneContent('status')}</section><section class="resident-inventory"><h2>${t('ui.m007')}</h2>${paneContent('inventory')}</section></section><section class="scene-column workspace-column" aria-label="${t('scene.mapactions')}">${scenePage()}</section><section class="communication-column workspace-column" aria-label="${t('workspace.communication')}"><div class="communication-tabs" role="tablist" aria-label="${t('workspace.communication')}">${[['chat',t('chat.title')],['ai',t('ai.title')]].map(([tab,label])=>`<button role="tab" id="comm-tab-${tab}" aria-selected="${(tab==='ai')===ai}" aria-controls="comm-${tab}" tabindex="${(tab==='ai')===ai?0:-1}" data-action="communication-tab" data-args="${escape(JSON.stringify({tab}))}">${label}</button>`).join('')}</div><div id="comm-chat" class="communication-body" role="tabpanel" aria-labelledby="comm-tab-chat" ${ai?'hidden':''}><section id="chat-column" aria-label="${t('chat.title')}"></section></div><div id="comm-ai" class="communication-body" role="tabpanel" aria-labelledby="comm-tab-ai" ${ai?'':'hidden'}><div id="player-ai-embedded"></div></div></section></div>${notebookPanel()}`;
 }
+function communicationTab(tab){
+  desktop.communication=tab;saveDesktop();
+  document.querySelectorAll('.communication-tabs [role=tab]').forEach(node=>{const active=node.id==='comm-tab-'+tab;node.setAttribute('aria-selected',String(active));node.tabIndex=active?0:-1;});
+  for(const name of ['chat','ai']){const body=document.querySelector('#comm-'+name);if(body)body.hidden=name!==tab;}
+}
+function positionNotebook(){
+  const node=document.querySelector('.player-notebook');if(!node||!desktop)return;
+  const rect=node.getBoundingClientRect(),pos=desktop.notebook;
+  const x=Number.isFinite(pos.x)?pos.x:20,y=Number.isFinite(pos.y)?pos.y:document.querySelector('#main').getBoundingClientRect().top+4;
+  node.style.left=Math.max(8,Math.min(x,innerWidth-rect.width-8))+'px';
+  node.style.top=Math.max(8,Math.min(y,innerHeight-rect.height-8))+'px';
+}
+let suppressNotebookClick=false;
+document.addEventListener('pointerdown',event=>{
+  const head=event.target.closest('[data-notebook-drag]');if(!head||event.button!==0)return;
+  const node=head.closest('.player-notebook'),rect=node.getBoundingClientRect();
+  notebookDrag={id:event.pointerId,node,head,startX:event.clientX,startY:event.clientY,x:rect.x,y:rect.y,moved:false};
+});
+document.addEventListener('pointermove',event=>{
+  const drag=notebookDrag;if(!drag||event.pointerId!==drag.id)return;
+  const dx=event.clientX-drag.startX,dy=event.clientY-drag.startY;
+  if(!drag.moved&&Math.hypot(dx,dy)<5)return;
+  drag.moved=true;drag.head.setPointerCapture(drag.id);event.preventDefault();
+  desktop.notebook={x:drag.x+dx,y:drag.y+dy};positionNotebook();
+});
+function finishNotebookDrag(event){
+  const drag=notebookDrag;if(!drag||event.pointerId!==drag.id)return;
+  if(drag.moved){const r=drag.node.getBoundingClientRect();desktop.notebook={x:r.x,y:r.y};saveDesktop();suppressNotebookClick=true;setTimeout(()=>suppressNotebookClick=false,0);}
+  notebookDrag=null;
+}
+document.addEventListener('pointerup',finishNotebookDrag);
+document.addEventListener('pointercancel',finishNotebookDrag);
+document.addEventListener('click',event=>{if(suppressNotebookClick&&event.target.closest('.player-notebook')){event.preventDefault();event.stopImmediatePropagation();}},true);
+document.addEventListener('keydown',event=>{
+  if(event.target.matches('.notebook-grip')&&['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(event.key)){
+    event.preventDefault();const r=event.target.closest('.player-notebook').getBoundingClientRect(),step=event.shiftKey?40:10;
+    desktop.notebook={x:r.x+(event.key==='ArrowLeft'?-step:event.key==='ArrowRight'?step:0),y:r.y+(event.key==='ArrowUp'?-step:event.key==='ArrowDown'?step:0)};positionNotebook();saveDesktop();
+  }else if(event.target.matches('.communication-tabs [role=tab]')&&['ArrowLeft','ArrowRight','Home','End'].includes(event.key)){
+    event.preventDefault();const tab=event.key==='Home'?'chat':event.key==='End'?'ai':desktop.communication==='ai'?'chat':'ai';communicationTab(tab);document.querySelector('#comm-tab-'+tab).focus();
+  }
+});
+window.addEventListener('resize',positionNotebook);
+
 function requestDescription(r){
   const a=r.args.input||r.args;
   const kind={scene:'场景预设',travel:'移动',check:'检定',inventory:t('request.item'),transfer:'转交',review:'复核',free:t('ui.m049'),interact:'场景互动'}[r.kind]||r.kind;
@@ -442,11 +532,11 @@ function requestDescription(r){
   return `${kind}${detail?' · '+detail:''}`;
 }
 function rulingQueue(){
-  return state.requests.filter(r=>r.status==='pending').map(r=>`<article class="queue-item ${selectedRequest===r.id?'selected':''}"><small>${escape(r.account)} · ${new Date(r.time*1000).toLocaleTimeString()}</small><strong>${escape(requestDescription(r))}</strong><p>${escape(r.text||'等待主持处理')}</p>${button(t('ui.m097'),'console-request',{id:r.id},'primary small')}</article>`).join('')||empty(t('ui.m108'));
+  return state.requests.filter(r=>r.status==='pending').map(r=>`<article class="queue-item ${selectedRequest===r.id?'selected':''}"><small>${escape(r.account)} · ${new Date(r.time*1000).toLocaleTimeString()}</small><strong>${escape(requestDescription(r))}</strong><p>${escape(r.text||'等待主持处理')}</p>${r.failure?failurePanel(r.failure):''}${button(t('ui.m097'),'console-request',{id:r.id},'primary small')}</article>`).join('');
 }
 function rulingDetail(){
-  const r=state.requests.find(r=>r.id===selectedRequest)||state.requests.find(r=>r.status==='pending');
-  if(!r)return empty('玩家提交行动申请后，可在这里查看上下文并裁决。');
+  const r=state.requests.find(r=>r.id===selectedRequest&&r.status==='pending')||state.requests.find(r=>r.status==='pending');
+  if(!r)return '';
   selectedRequest=r.id;
   const actor=state.characters.find(c=>c.instanceId===r.actor);
   return `<h3>${escape(requestDescription(r))}</h3><p>${escape(r.account)} · ${escape(actor?.name||'角色')} · ${escape(state.allLocations[String(r.location)]?.name||'')}</p><blockquote>${escape(r.text||'')}</blockquote><p>转交原因：${escape(r.reason||'玩家申请')}</p>${actor?`<p>当前资源：${fieldName('hp')} ${actor.numbers.hp}/${actor.numbers.maxHp} · ${fieldName('str')} ${actor.numbers.str} / ${fieldName('dex')} ${actor.numbers.dex} / ${fieldName('wil')} ${actor.numbers.wil}</p>`:''}${r.status==='pending'?`<form id="ruling-form"><input type="hidden" name="requestId" value="${escape(r.id)}">${select(t('ui.m101'),'approve',[['yes',t('ui.m099')],['no',t('ui.m100')]],'yes')}${area(t('ui.m102'),'reason')}<p class="muted">${['check','inventory','travel','transfer','scene'].includes(r.kind)?'批准后执行规则，结算结果与资源变化会送达相关玩家。':'此类申请记录主持回复，数值影响请使用控制台工具另行结算。'}</p><button class="primary" type="submit">保存裁决并通知玩家</button></form>`:`<span class="tag">${r.status==='approved'?'已批准':t('ui.m093')}</span><p>${escape(r.reason||'未附说明')}</p>`}`;
@@ -463,7 +553,7 @@ function consolePage(){
   const drafts=Object.values(state.drafts).filter(d=>d.status==='submitted');
   const controls=`<div class="console-controls"><div><small>探索时钟</small><strong>第 ${state.session?.numbers.round||0} 回合</strong></div><div class="actions">${button(t('ui.m025'),'start',{},'primary')}${button(t('ui.m026'),'round')}${button(state.roomStatus==='paused'?t('ui.m028'):t('ui.m027'),'room',{status:state.roomStatus==='paused'?'active':'paused'})}${button(state.automation.enabled?t('ui.m029'):t('ui.m030'),'automation-console')}</div></div>`;
   let content='';
-  content=`<div class="console-columns"><div>${panel(t('ui.m103'),charactersTable())}${panel(t('ui.m104'),`<div class="actions">${button('掷遭遇检查','generate',{kind:'encounter'})}${button('抽取遭遇内容','generate',{kind:'encounter-table'})}${button('反应骰','generate',{kind:'reaction'})}${button('战利品骰','generate',{kind:'loot'})}${button('角色伤害','damage')}${button('创建生物','npc-create')}</div>${(state.npcs||[]).map(n=>`<div class="row"><span>${escape(n.name)} · ${fieldName('hp')} ${n.numbers.hp}/${n.numbers.maxHp}</span><div>${button(t('ui.m112'),'damage',{actor:n.instanceId},'small')}${button(t('ui.m113'),'morale',{actor:n.instanceId},'small')}${button(t('ui.m109'),'actor-edit',{id:n.instanceId},'small')}</div></div>`).join('')}`)}</div><aside>${panel('建角审核 · '+drafts.length,drafts.map(d=>`<article class="receipt"><strong>${escape(d.name)} · ${escape(d.account)}</strong><p>${fieldName('str')} ${d.str} / ${fieldName('dex')} ${d.dex} / ${fieldName('wil')} ${d.wil} · ${fieldName('hp')} ${d.hp}</p>${button(t('ui.m114'),'approve',{account:d.account},'primary small')}${button(t('ui.m115'),'reject',{account:d.account},'small')}</article>`).join('')||empty(t('ui.m107')))}</aside></div>`;
+  content=`<div class="console-columns"><div>${panel(t('ui.m103'),charactersTable())}${panel(t('ui.m104'),`<div class="actions">${button('掷遭遇检查','generate',{kind:'encounter'})}${button('抽取遭遇内容','generate',{kind:'encounter-table'})}${button('反应骰','generate',{kind:'reaction'})}${button('战利品骰','generate',{kind:'loot'})}${button('角色伤害','damage')}${button('创建生物','npc-create')}</div>${(state.npcs||[]).map(n=>`<div class="row"><span>${escape(n.name)} · ${fieldName('hp')} ${n.numbers.hp}/${n.numbers.maxHp}</span><div>${button(t('ui.m112'),'damage',{actor:n.instanceId},'small')}${button(t('ui.m113'),'morale',{actor:n.instanceId},'small')}${button(t('ui.m109'),'actor-edit',{id:n.instanceId},'small')}</div></div>`).join('')}`)}</div><aside>${panel(t('queue.characterApproval'),`<p>${t('queue.approvalsMoved',{count:drafts.length})}</p>${button(t('queue.open'),'navigate',{path:'gm/rulings'},'primary')}`)}</aside></div>`;
   return heading('P09',t('ui.m019'))+`<section class="kp-console">${controls}<div class="console-content">${content}</div></section>`;
 }
 
@@ -474,13 +564,11 @@ function updateRoomNetwork(){
   if(template.content.firstElementChild)panel.replaceWith(template.content.firstElementChild);
 }
 
-function changePane(name,change){
-  if(dirtyForm){toast('请先保存正在编辑的内容，再切换面板。');return;}
-  Object.assign(desktop[name],change);desktop.front=name;saveDesktop();renderPage();
-}
 
 const actions = {
-  'topbar-toggle':()=>{const folded=document.body.classList.toggle('topbar-collapsed');localStorage.setItem('sv.desktop.topbar.'+base.pathname+'.'+state.accountId,folded?'1':'0');const b=document.querySelector('.topbar-toggle');b.setAttribute('aria-expanded',String(!folded));b.setAttribute('aria-label',t(folded?'nav.expandTop':'nav.collapseTop'));b.title=t(folded?'nav.expandTop':'nav.collapseTop');b.textContent=folded?t('nav.expandTop')+' ▾':'▴';},
+  'topbar-toggle':()=>{requestAnimationFrame(positionNotebook);const folded=document.body.classList.toggle('topbar-collapsed');localStorage.setItem('sv.desktop.topbar.'+base.pathname+'.'+state.accountId,folded?'1':'0');const b=document.querySelector('.topbar-toggle');b.setAttribute('aria-expanded',String(!folded));b.setAttribute('aria-label',t(folded?'nav.expandTop':'nav.collapseTop'));b.title=t(folded?'nav.expandTop':'nav.collapseTop');b.textContent=folded?t('nav.expandTop')+' ▾':'▴';},
+  'communication-tab':({tab})=>communicationTab(tab),
+  'notebook-toggle':({name})=>{if(dirtyForm)return toast(t('status.savefirst'));const was=desktop.front===name&&desktop[name].open&&!desktop[name].collapsed;for(const key of Object.keys(paneNames()))desktop[key].open=false;desktop[name]={open:!was,collapsed:false};desktop.front=name;saveDesktop();renderPage();},
   'chat-channel':({channel})=>chatUI.select(channel),
   'actor-reveal':({id})=>openDialog(t('map.revealTitle'),select(t('map.revealState'),'visible',[['yes',t('map.show')],['no',t('map.hide')]],'yes')+state.characters.map(a=>`<label><input type="checkbox" name="account" value="${escape(a.owner)}" ${state.actorDiscoveries?.[a.owner]?.[id]?'checked':''}>${escape(a.name)} · ${escape(a.owner)}</label>`).join(''),data=>perform('actor.reveal',{id,visible:data.get('visible')==='yes',accounts:data.getAll('account')})),
   'workspace-column':({column})=>{mobileColumn=column;document.querySelector('#scene-desktop').dataset.column=column;document.querySelectorAll('.workspace-tabs button').forEach(b=>b.classList.toggle('primary',JSON.parse(b.dataset.args).column===column));},
@@ -492,7 +580,7 @@ const actions = {
     openDialog('网页分享',w.running?`<div class="actions"><a href="${escape(platform+'/create')}" target="_blank" rel="noopener">${t('web.create')}</a><a href="${escape(platform+'/manage')}" target="_blank" rel="noopener">${t('web.manage')}</a><a href="${escape(platform+'/join')}" target="_blank" rel="noopener">${t('web.join')}</a></div>${field('房间代号（分享给玩家）','room-code',w.roomCode)}${setup}<p>玩家使用平台账号及游戏账号两次登录。保持本机KP管理台在线。</p>`:failure,w.running?async()=>{await api('package/web/stop',{});closeDialog();toast('网页分享已停止，游戏宿主继续运行。');}:null,'停止网页分享');
   },
   'copy-web-setup':async()=>{const input=document.querySelector('#web-setup');try{if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(input.value);return toast(t('web.copied'));}}catch{}input.focus();input.select();toast(document.execCommand('copy')?t('web.copied'):t('web.selectCopy'));},
-  'ai-assistant':()=>{if(state.role==='kp'){location.hash='/gm/rulings';return;}openDialog(t('ai.title'),'<div id="player-ai-embedded"></div>',null,'','AI');embeddedAI.mount(document.querySelector('#player-ai-embedded'),{base,account:state.accountId});},
+  'ai-assistant':()=>{if(state.role==='kp'){location.hash='/gm/rulings';return;}if(route()==='play/scene'){communicationTab('ai');actions['workspace-column']({column:'communication'});return;}openDialog(t('ai.title'),'<div id="player-ai-embedded"></div>',null,'','AI');embeddedAI.mount(document.querySelector('#player-ai-embedded'),{base,account:state.accountId});},
   'open-chat':()=>chatUI.open(),
   'copy-room-address':async()=>{
     const input=document.querySelector('#room-url');
@@ -505,11 +593,6 @@ const actions = {
     openDialog(a.label,`<p>${escape(a.hint)}</p>${select(t('scene.choose'),'scene-choice',a.choices.map(c=>[c.id,c.label]),a.choices[0].id)}<div id="scene-process" class="notice">${escape(a.choices[0].process)}</div>${select(t('ui.m077'),'ruling',[['auto',t('scene.auto')],['manual',t('ui.m079')]],'auto')}`,data=>perform('scene.action',{action:id,choice:data.get('scene-choice'),manual:data.get('ruling')==='manual'}),t('scene.execute'),'S18');
     dialog.dataset.sceneAction=id;
   },
-  'pane-toggle':({name})=>changePane(name,{open:desktop.front!==name||desktop[name].collapsed?true:!desktop[name].open,collapsed:false}),
-  'pane-close':({name})=>changePane(name,{open:false}),
-  'pane-collapse':({name})=>changePane(name,{collapsed:!desktop[name].collapsed}),
-  'pane-front':({name})=>{desktop.front=name;saveDesktop();document.querySelectorAll('.floating-panel').forEach(p=>p.classList.toggle('front',p.classList.contains('pane-'+name)));},
-  'panes-hide':()=>{if(dirtyForm)return toast('请先保存正在编辑的内容。');for(const name of Object.keys(paneNames()))desktop[name].open=false;saveDesktop();renderPage();},
   'events-read':()=>{markEventsRead();renderPage();},
   'console-tab':({tab})=>{if(dirtyForm)return toast('请先保存当前表单。');location.hash=tab==='control'?'/gm/console':'/gm/rulings';renderPage();},
   'console-request':({id})=>{if(dirtyForm)return toast('请先完成当前裁决。');selectedRequest=id;location.hash='/gm/rulings';renderPage();},
@@ -537,10 +620,15 @@ const actions = {
   start:()=>perform('world',{operation:'start',round:state.session.numbers.round}),
   round:()=>openDialog('推进一个探索回合',`<p>当前为第 ${state.session.numbers.round} 回合。确认后同步更新所有角色的燃烧计时。</p>`,()=>perform('world',{operation:'round',round:state.session.numbers.round}),'推进一次','S12'),
   generate:args=>perform('generate',args),
+  'host-flow':args=>perform('host-flow',args),
   approve:args=>perform('approve',args),
   reject:args=>openDialog('退回角色草稿',area('修改建议','reason'),data=>perform('approve',{...args,reject:true,reason:data.get('reason')}),'退回','S10'),
   resolve:args=>{const request=state.requests.find(x=>x.id===args.id);openDialog('主持裁定','<p>'+escape(request.text||request.kind)+'</p><p>'+escape(request.reason||'')+'</p>'+(request.kind==='review'?'<p>复核只记录裁定说明，必要的数值修正请另用主持管理工具执行。</p>':'')+select('决定','approve',[['yes',t('ui.m099')],['no',t('ui.m100')]],'yes')+area('裁定依据','reason'),data=>perform('resolve',{requestId:args.id,approve:data.get('approve')==='yes',reason:data.get('reason')}),'保存裁定','S10');},
-  publish:args=>{const p=state.allLocations[String(args.index)];const old=state.published[String(args.index)];openDialog(t('ui.m126'),`<span class="tag">受众 · 房间成员</span><h3>${escape(p.name)}</h3><div class="grid2"><div><h3>当前公开</h3><p>${escape(old?.description||'尚未发布')}</p></div><div><h3>拟发布</h3><p>${escape(p.description)}</p></div></div>${p.clues.map(x=>`<label><input type="checkbox" name="clue" value="${escape(x.id)}" ${old?.clues.some(c=>c.id===x.id)?'checked':''}> ${escape(x.title)}<br>${escape(x.text)}</label>`).join('')}<p class="muted">仅发布已保存的描述和勾选线索，主持真相保持私密。</p>`,data=>perform('location.publish',{...args,clues:data.getAll('clue')}),'公开此地点','S08');},
+  publish:args=>{const p=state.allLocations[String(args.index)];const old=state.published[String(args.index)];openDialog(t('ui.m126'),`<span class="tag">受众 · 已进入或已被揭示的玩家</span><h3>${escape(p.name)}</h3><div class="grid2"><div><h3>当前公开</h3><p>${escape(old?.description||'尚未发布')}</p></div><div><h3>拟发布</h3><p>${escape(p.description)}</p></div></div>${p.clues.map(x=>`<label><input type="checkbox" name="clue" value="${escape(x.id)}" ${old?.clues.some(c=>c.id===x.id)?'checked':''}> ${escape(x.title)}<br>${escape(x.text)}</label>`).join('')}<p class="muted">发布已保存的描述和勾选线索；未进入的玩家仍只见导航占位。可再使用“向玩家揭示”，主持真相保持私密。</p>`,data=>perform('location.publish',{...args,clues:data.getAll('clue')}),'公开此地点','S08');},
+  'location-reveal':args=>openDialog('向指定玩家揭示地点',`<p>保存当前已发布内容的固定观察。之后修改地点不会更新这次观察；不会公开主持真相。</p>${state.characters.map(c=>`<label><input type="checkbox" name="account" value="${escape(c.owner)}"> ${escape(c.name)} · ${escape(c.owner)}</label>`).join('')}`,data=>perform('location.reveal',{index:args.index,accounts:data.getAll('account')}),'揭示地点'),
+  'knowledge-enable':()=>perform('knowledge.enable',{}),
+  'knowledge-revoke':args=>openDialog('撤回知识授权','<p>撤回后会复验引用及 AI 历史。若同内容仍有其他有效授权，仍可读取。</p>',()=>perform('knowledge.revoke',args),'撤回授权'),
+  'knowledge-import':()=>openDialog('旧地点记录：现在揭示',`<p>旧记录没有当时内容。只对勾选项创建现在的观察；未发布地点需先由 KP 编辑和发布。</p>${Object.entries(state.legacyKnowledge||{}).flatMap(([account,indices])=>indices.map(index=>`<label><input type="checkbox" name="legacy" value="${escape(JSON.stringify({account,index:Number(index)}))}" ${state.published[index]?'':'disabled'}> ${escape(account)} · ${escape(state.allLocations[index]?.name||index)}</label>`)).join('')||'<p>没有待处理的旧地点记录。</p>'}`,data=>perform('knowledge.import-current',{items:data.getAll('legacy').map(JSON.parse)}),'现在揭示所选内容'),
   preview:async args=>{const account=state.members.find(x=>x.role==='player')?.accountId;if(!account)return toast('房间内还没有玩家');const data=await api('package/state?preview='+encodeURIComponent(account));openDialog('玩家公开预览',`<div class="notice">只读 · ${escape(account)} · 包侧公开投影</div>${mapView(data.locations,1)}<p>${escape(data.locations.find(x=>x.index===args.index)?.description||'该地点尚未公开')}</p>`,null,'','S09');},
   damage:args=>openDialog('伤害与豁免',select('目标','actor',[...actorOptions(),...(state.npcs||[]).map(x=>[x.instanceId,x.name])],args.actor)+field('伤害骰最终值（减甲前）','amount',1,'number')+select('溢出扣减属性','attribute',[['str',fieldName('str')],['dex',fieldName('dex')]],'str'),data=>perform('damage',{actor:data.get('actor'),amount:number(data.get('amount')),attribute:data.get('attribute')}),'确认结算','S11'),
   grant:args=>openDialog(t('ui.m110'),select('物品','item',Object.entries(state.items).map(([id,x])=>[id,x.name]),1)+field('起始槽位（1–10，超载11–20）','slot',5,'number'),data=>{const item=number(data.get('item'));return perform('grant',{actor:args.actor,item,slot:number(data.get('slot')),uses:state.items[String(item)].uses});},'授予','S01'),
@@ -549,7 +637,7 @@ const actions = {
   room:args=>openDialog('确认房间状态','<p>将房间设为 '+escape(args.status==='paused'?'暂停':'运行')+'。</p>',()=>perform('room',args),t('ui.m062'),'S14'),
   backup:()=>openDialog(t('ui.m143'),'<p>保存宿主房间备份与包侧手记、草稿和请求记录。</p>',()=>perform('backup',{}),'创建备份','S14'),
   rules:()=>openDialog(t('rules.title'),state.rules.map(x=>`<h3>${escape(x.title)}</h3><p>${escape(x.text)}</p><a href="${escape(x.source)}" target="_blank" rel="noreferrer">${t('rules.source')}</a>`).join('<hr>'),null,'','S13'),
-  preferences:()=>openDialog(t('ui.m146'),select(t('ui.m147'),'font',[['16',t('ui.m148')],['18',t('ui.m149')],['20',t('ui.m150')]],localStorage.getItem('sv.font')||'16')+`<label><input type="checkbox" name="reduce">${t('preferences.reduce')}</label><p>${t('preferences.help')}</p><p>${independentLogin()}</p>`,data=>{localStorage.setItem('sv.font',data.get('font'));document.documentElement.style.fontSize=data.get('font')+'px';document.body.classList.toggle('reduce-motion',data.has('reduce'));closeDialog();},t('ui.m063'),'S17'),
+  preferences:()=>openDialog(t('ui.m146'),select(t('ui.m147'),'font',[['16',t('ui.m148')],['18',t('ui.m149')],['20',t('ui.m150')]],localStorage.getItem('sv.font')||'16')+`<label><input type="checkbox" name="reduce" ${diceUI.reduced?'checked':''}>${t('preferences.reduce')}</label><label><input type="checkbox" name="dice" ${diceUI.enabled?'checked':''}>${t('dice.preference')}</label><p>${t('preferences.help')}</p><p>${independentLogin()}</p>`,data=>{localStorage.setItem('sv.font',data.get('font'));document.documentElement.style.fontSize=data.get('font')+'px';diceUI.setReduced(data.has('reduce'));diceUI.setEnabled(data.has('dice'));closeDialog();},t('ui.m063'),'S17'),
   export:async()=>{const data=await api('package/bundle');const url=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download='stumpsville-bundle.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);},
   item:({slot})=>{const n=state.character.numbers;const def=state.items[String(n['item'+slot])];openDialog(def.name,`<p>${escape(def.description)}</p><p>${t('inventory.details',{slots:def.slots,uses:n['uses'+slot],max:def.uses})}</p><div class="actions">${def.uses&&def.kind!=='spell'?button(t('ui.m120'),'use',{slot}):''}${def.kind==='spell'?button(t('spell.request'),'request',{kind:'free',text:t('spell.text',{name:def.name})}):''}${def.light?button(n.litSlot===slot?t('ui.m122'):t('ui.m121'),'light',{slot,operation:n.litSlot===slot?'extinguish':'light'}):''}${button(t('ui.m123'),'move-item',{slot})}${button(t('ui.m124'),'transfer',{slot})}</div>`,null,'','S01');},
   use:({slot})=>openDialog(t('inventory.use'),`<p>${t('inventory.usehelp')}</p>`+rulingMode(),data=>submitAction('inventory',{operation:'use',slot,value:0},data),t('inventory.confirmuse'),'S03'),
@@ -641,11 +729,28 @@ async function runAutoScenes(){
     for(const job of ready.jobs){
       await api('package/action',{id:job.commandId,operation:'scene.autorun',args:{jobId:job.id}});
       renderDeferred=true;
+      actionWake?.postMessage({scope:state.storageScope,completed:true});
     }
+    if(ready.jobs.length)pollState();
   }catch(error){
     const label=document.querySelector('#connection');
     if(label)label.textContent='自动执行暂缓 · '+error.message;
   }finally{executorBusy=false;}
+}
+diceUI.configure(t,event=>{
+  const r=event.result||{};
+  const check=r.save>0?{attribute:r.attribute,rolled:r.save,first:r.save,target:r.remaining,passed:!r.critical,mode:'normal'}:Number.isFinite(r.rolled)&&Number.isFinite(r.target)?{...r,first:r.first??r.rolled}:null;
+  return (check?diceBlock(check):'')+(r.checks||[]).map(check=>`<div class="scene-check"><strong>${escape(check.label)}</strong>${diceBlock(check)}</div>`).join('')+(r.rolls||[]).map(roll=>`<p>${escape(roll.label)} · d${roll.sides} → <strong>${roll.value}</strong></p>`).join('');
+});
+diceUI.setReduced(diceUI.reduced);
+effectsUI.configure(t,changeList,()=>diceUI.presenting,(pane='records')=>{
+  for(const key of Object.keys(paneNames()))desktop[key].open=false;
+  desktop[pane]={open:true,collapsed:false};desktop.front=pane;saveDesktop();
+  if(route()!=='play/scene')location.hash='#/play/scene';else renderPage();
+},notificationResult);
+let actionWake=null;
+if(!webMode&&typeof BroadcastChannel!=='undefined'){
+  try{actionWake=new BroadcastChannel('stumpsville-action-wake');actionWake.onmessage=event=>{if(event.data?.scope===state?.storageScope){if(event.data.completed)pollState();else runAutoScenes();}};}catch{}
 }
 chatUI.configure({api,send:rawCommand,toast,t});
 if(!webMode&&base.pathname==='/'){
@@ -653,22 +758,25 @@ if(!webMode&&base.pathname==='/'){
   const slot='tab-'+Array.from(bytes,x=>x.toString(16).padStart(2,'0')).join('');
   location.replace('/sessions/'+slot+'/'+location.hash);
 }else await boot();
-setInterval(async()=>{
-  if(!state||busy)return;
+async function pollState(){
+  if(!state||busy||statePollRunning)return;
+  statePollRunning=true;
   try{
+    const generation=stateGeneration;
     const next=await api(statePath());
+    if(busy||!state||generation!==stateGeneration)return;
     const visual=value=>{const {network,channels,...rest}=value;return JSON.stringify(rest);};
     const changed=visual(next)!==visual(state);
-    state=next;chatUI.update(state);connection=t('ui.m065');
+    state=next;chatUI.update(state);diceUI.observe(state);effectsUI.observe(state);connection=t('ui.m065');
     const editing=['INPUT','TEXTAREA','SELECT'].includes(document.activeElement?.tagName)&&!document.activeElement?.readOnly;
     if(changed)renderDeferred=true;
-    if(renderDeferred&&!editing&&!dialog.open&&!dirtyForm){renderDeferred=false;renderPage();}
+    if(renderDeferred&&!editing&&!dialog.open&&!dirtyForm&&!notebookDrag){renderDeferred=false;renderPage();}
     else if(changed){updateActivity();}
-    updateRoomNetwork();
+    updateRoomNetwork();updateKeeperQueue();
     const queue=document.querySelector('#message-queue-list');if(queue)queue.innerHTML=messageQueue();
     const chatBadge=document.querySelector('.chat-badge');if(chatBadge)chatBadge.textContent=unreadMessages()||'';
     await chatUI.poll();
-    await runAutoScenes();
+
     const label=document.querySelector('#connection');if(label)label.textContent=t('ui.m065');
   }catch(error){
     chatUI.update(null);aiUI.update(null);embeddedAI.close();
@@ -676,5 +784,11 @@ setInterval(async()=>{
     const label=document.querySelector('#connection');if(label)label.textContent=connection;
     if(error.status===401){state=null;chatUI.update(null);csrf='';history=[];closeDialog();renderEntry();}
   }
-},2500);
-
+  finally{statePollRunning=false;lastStatePoll=performance.now();}
+}
+// Keep executor work independent of full projections and chat history requests.
+setInterval(runAutoScenes,500);
+setInterval(()=>{
+  const settling=state?.autoSceneTasks?.some(task=>['queued','running','finishing'].includes(task.status));
+  if(performance.now()-lastStatePoll>=(settling?400:2500))pollState();
+},200);

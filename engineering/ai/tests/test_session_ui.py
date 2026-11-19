@@ -2,7 +2,7 @@
 from pathlib import Path
 
 from playwright.sync_api import sync_playwright, expect
-from test_manager_ui import services
+from test_manager_ui import services, allow_players
 from test_embeds import login
 
 OUTPUT=Path(__file__).resolve().parents[2]/'acceptance/ai-runtime'
@@ -38,6 +38,7 @@ SAMPLE='''## 当前授权范围内的房间概览
 
 def test_markdown_format_reference_security_and_mobile(services):
     _,entry,_=services;origin=f'http://127.0.0.1:{entry["roomPort"]}'
+    allow_players(origin)
     with sync_playwright() as p:
         browser=p.chromium.launch(channel='msedge',headless=True);page=browser.new_page(viewport={'width':760,'height':900});errors=[];remote=[]
         page.on('pageerror',lambda e:errors.append(str(e)))
@@ -49,7 +50,7 @@ def test_markdown_format_reference_security_and_mobile(services):
               const target=document.createElement('main');target.id='sample';target.style.cssText='max-width:680px;padding:16px;font:14px/1.7 system-ui;background:#faf6eb';document.body.append(target);
               window.markdown=mountMarkdown(target,text,{resolveReferences:async()=>({items:[{kind:'entity',id:'lantern',revision:'1',label:'提灯'}]})});
             }''',SAMPLE)
-            expect(page.locator('h2')).to_have_text('当前授权范围内的房间概览')
+            expect(page.locator('.ai-markdown h2')).to_have_text('当前授权范围内的房间概览')
             expect(page.locator('tbody tr')).to_have_count(3)
             expect(page.locator('th')).to_have_count(4)
             expect(page.locator('.reference-chip')).to_have_text('提灯')
@@ -65,7 +66,7 @@ def test_markdown_format_reference_security_and_mobile(services):
             assert page.evaluate('document.documentElement.scrollWidth<=innerWidth')
             assert page.locator('.md-table').evaluate('(e)=>e.scrollWidth>e.clientWidth')
             page.evaluate('text=>markdown.update(text,{plainText:true})',SAMPLE)
-            expect(page.locator('h2,table')).to_have_count(0)
+            expect(page.locator('.ai-markdown h2,.ai-markdown table')).to_have_count(0)
             expect(page.locator('.md-plain')).to_contain_text('## 当前授权范围')
             assert not errors and not remote,(errors,remote)
         finally:browser.close()
@@ -73,6 +74,7 @@ def test_markdown_format_reference_security_and_mobile(services):
 
 def test_embedded_management_settings_drafts_and_identity(services):
     _,entry,_=services;origin=f'http://127.0.0.1:{entry["roomPort"]}'
+    allow_players(origin)
     with sync_playwright() as p:
         browser=p.chromium.launch(channel='msedge',headless=True);page=browser.new_page(viewport={'width':1280,'height':900});errors=[]
         page.on('pageerror',lambda e:errors.append(str(e)))
@@ -93,9 +95,9 @@ def test_embedded_management_settings_drafts_and_identity(services):
             expect(page.locator('.session-manager .session-link').first).to_contain_text('★ 提灯讨论')
             page.locator('.search').fill('地图');expect(page.locator('.session-manager .session-link')).to_have_count(1)
             page.locator('.search').fill('');page.locator('.session-manager .archive').click();expect(page.locator('.session-manager .status')).to_have_text('会话已归档')
-            page.locator('.filter').select_option('archived');expect(page.locator('.session-manager .session-link')).to_have_count(1)
+            page.locator('[data-filter=archived]').click();expect(page.locator('.session-manager .session-link')).to_have_count(1)
             page.locator('.archive').last.click();expect(page.locator('.session-manager .status')).to_have_text('会话已恢复')
-            page.locator('.filter').select_option('all');expect(page.locator('.session-manager .session-link')).to_have_count(2)
+            page.locator('[data-filter=all]').click();expect(page.locator('.session-manager .session-link')).to_have_count(2)
             page.screenshot(path=str(OUTPUT/'session-management.png'),full_page=True)
             page.locator('.session-close').click();page.reload();page.locator('.session-select').select_option(first)
             expect(page.locator('#rename')).to_have_value('提灯讨论');page.locator('.manage-sessions').click()
@@ -110,6 +112,7 @@ def test_embedded_management_settings_drafts_and_identity(services):
 
 def test_standalone_manager_and_same_origin_frame(services):
     _,entry,_=services;origin=f'http://127.0.0.1:{entry["roomPort"]}'
+    allow_players(origin)
     with sync_playwright() as p:
         browser=p.chromium.launch(channel='msedge',headless=True);page=browser.new_page(viewport={'width':390,'height':840})
         try:
@@ -124,6 +127,7 @@ def test_standalone_manager_and_same_origin_frame(services):
 
 def test_management_lost_response_and_version_conflict(services):
     _,entry,_=services;origin=f'http://127.0.0.1:{entry["roomPort"]}'
+    allow_players(origin)
     with sync_playwright() as p:
         browser=p.chromium.launch(channel='msedge',headless=True);page=browser.new_page()
         try:

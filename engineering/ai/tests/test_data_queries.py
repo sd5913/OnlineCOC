@@ -42,12 +42,13 @@ def test_chat_intersection_window_cursor_and_edit(setup):
     state=host.state();state['chat']['channels']['secret']=chat.channel('secret','direct','secret',['player1','player2']);state['chat']['messages']['secret']=[];host.commit(state)
     add_message(host,'player1','hidden','secret')
     with pytest.raises(DomainError,match='NOT_VISIBLE'):q.execute('kp','chat',{'channelId':'secret'},initiator='player1')
-    page=q.execute('player1','chat',{'channelId':'general','limit':1})
+    with pytest.raises(DomainError,match='KNOWLEDGE_UNAVAILABLE'):q.execute('player1','chat',{'channelId':'general','limit':1})
+    page=q.execute('kp','chat',{'channelId':'general','limit':1})
     assert page['items'][0]['data']['text']=='first'
     cursor=page['page']['nextCursor'];assert cursor
-    assert q.execute('player1','chat',{'channelId':'general','limit':1,'cursor':cursor})['items'][0]['data']['text']=='second'
+    assert q.execute('kp','chat',{'channelId':'general','limit':1,'cursor':cursor})['items'][0]['data']['text']=='second'
     add_message(host,'player1','fourth')
-    with pytest.raises(DomainError,match='SOURCE_STALE'):q.execute('player1','chat',{'channelId':'general','limit':1,'cursor':cursor})
+    with pytest.raises(DomainError,match='SOURCE_STALE'):q.execute('kp','chat',{'channelId':'general','limit':1,'cursor':cursor})
 
 
 def test_dynamic_evidence_and_explicit_reference_recheck(setup):

@@ -33,6 +33,9 @@ export class AiClient{
  aiTasks({before,limit=30}={}){return this.transport.request('ai/tasks?'+new URLSearchParams({limit,...(before?{before}:{})}));}
  aiProposal(id){return this.transport.request('ai/proposals/'+encodeURIComponent(id));}
  aiUsage(options={}){const query=new URLSearchParams(options).toString();return this.transport.request('ai/usage'+(query?'?'+query:''));}
+ aiAccess(){return this.transport.request('ai/access');}
+ aiRulings(){return this.transport.request('ai/rulings');}
+ aiBatches(){return this.transport.request('ai/batches');}
  aiSettings(){return this.transport.request('ai/settings');}
  aiContracts(){return this.transport.request('ai/contracts');}
  aiReferences(kind='config',q=''){return this.transport.request('ai/references?'+new URLSearchParams({kind,q}));}

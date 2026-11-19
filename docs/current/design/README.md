@@ -5,5 +5,6 @@
 | 文档 | 说明 |
 | --- | --- |
 | [项目概况](project-overview.md) | 项目目标、当前阶段、已确认语言及房间/规则数据设计决策与文档边界 |
+| [PL AI 已知信息与严格读取](ai-player-knowledge.md) | 固定观察、持续告知、故障拒绝、可信输出及 D01—D16 回归边界 |
 
 代码结构、运行配置、接口实际行为和操作步骤放入 [工程文档](../engineering/README.md)。施工前检查并登记 [hierarchy](../engineering/hierarchy.md)，维护要求见 [文档维护标准](../../standards/document-maintenance.md)。

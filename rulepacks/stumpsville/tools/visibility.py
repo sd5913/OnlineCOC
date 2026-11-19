@@ -1,5 +1,6 @@
 """Package-owned sightings; only names and current locations reach the map."""
 import copy
+from ai_data import known_locations
 
 
 class MapVisibility:
@@ -8,6 +9,8 @@ class MapVisibility:
         self.state = package.state
 
     def sync(self, view):
+        # Reads never fabricate new observations. The legacy location set is
+        # retained only for a KP's explicit "disclose now" migration choices.
         players = {a['instanceId']: {'id': a['instanceId'], 'name': a['name'], 'kind': 'pc',
                                     'owner': a['owner'], 'location': a['numbers']['location']}
                    for a in self.package.entities(view, 'sv.character')

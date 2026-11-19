@@ -4,12 +4,12 @@
 - 文档子类：工程
 - 状态：有效
 - 创建日期：2026-11-15
-- 最后更新：2026-11-15
+- 最后更新：2026-11-18
 - 关联文档：[AI 运行时](ai-runtime.md)、[嵌入组件](ai-pack-embedding.md)、[房间格式](room-format.md)、[剩余计划](../../plans/ai-data-query-adjudication.md)、[通用请求与决定规划](../../plans/interaction-records.md)
 
 ## 当前能力
 
-后端 0.2.0 / Room v3 上增加只读数据查询、聊天窗口、事件资料和语义引用。未改变 Room 格式，不转换旧存档，也未实现通用 InteractionRequest / DecisionRecord 持久集合。
+当前依赖后端 0.3.0 / Room v4。宿主已提供持久个人知识账本及显式离线格式转换，未实现通用 InteractionRequest / DecisionRecord 持久集合。下述原始房间、聊天及裁决工具用于 KP 管理员通路；严格 PL 通路只开放个人知识。
 
 房间启动的 AI Runtime 使用按需上下文：需求、包契约、允许外发的作者条款、确认记忆、有限会话历史和显式引用先进入输入，实体/配置/聊天详情通过工具读取；不再默认发送每频道最近 50 条聊天和全部运行源码。直接构造 `Context(proposals)` 仍保留旧模式，`Context(proposals, demand=True)` 使用新模式。
 
@@ -28,7 +28,7 @@
 | `room_read_chat` | `chat` | `channelId`，可选 `after / before / query / limit / cursor`；序号为排他边界，返回升序消息 |
 | `room_read_case` | `case` | `refs`；读取 event/ruling 资料，可同时选择多项 |
 
-类型为 entity、config、rule、memory、channel、chat、event、ruling。完整运行规则源码仅 KP 可读且模型外发需启用 kp；普通玩家不能借查询取得源码。公开作者条款仍走既有包契约。模型另保留 `room_read_context` 和 `pack_read_contract` 两个工具。
+KP 类型为 entity、config、rule、memory、channel、chat、event、ruling，另可读取本人 knowledge。完整运行规则源码仅 KP 可读且外发需启用 kp；KP 模型保留 `room_read_context` 和 `pack_read_contract`。PL 的 HTTP search/read 只接受 knowledge 类型，chat/case 因缺少历史受众证明拒绝；PL 模型使用 `room_search_knowledge` / `room_read_knowledge`，直接消费 KnowledgeRef，详见[已知资料](ai-player-knowledge.md)。
 
 输入 JSON Schema 由 `/api/v1/ai/contracts` 的 `dataTools` 返回，与模型使用同一工具定义。返回形状：
 
@@ -61,13 +61,15 @@ AI Runtime 给模型的列表结果另附 `pageSummary`：`returnedItems`、`cou
 
 EventBundle 是只读投影，包含 messages、actions、rulings、executions、links、coverage。决定内容与执行状态分开：否决是已确认决定、outcome=deny，叙事裁决无需执行；没有完整回执时执行状态为 unknown。未记录的决定者、时间或聊天关联保持缺失，不由 AI 推断补齐。
 
-宿主已分享的行动结果卡可构成 event，附同频道有效 replyTo 消息；卡片不授予原始命令权限，也不虚构 KP 决定。树桩镇适配器读取本包场景/队伍聊天、原 requests 和逐玩家事件投影，使用真实 requestId 与命令回执关联。KP 读取包侧允许的事件，PL 只读取本人事件；渠道与来源进一步过滤。原始命令参数和整个 package.json 均不直接发送给模型。
+宿主已分享的行动结果卡可构成 event，附同频道有效 replyTo 消息；卡片不授予原始命令权限，也不虚构 KP 决定。树桩镇适配器读取本包场景/队伍聊天、原 requests 和逐玩家事件投影，使用真实 requestId 与命令回执关联。该 adapter 仅供 KP 管理员通路；严格 PL 因缺少聊天／裁决历史受众证明不读取此类事件。原始命令参数和整个 package.json 均不直接发送给模型。
 
 树桩镇发起业务行动时可在 args 中加入 `sourceMessages`，最多 12 条，每条为 `{channelId, messageId, revision, sequence}`。包服务通过既有授权历史接口核验，申请和后续裁决沿用这些引用；新裁决记录真实决定者和时间。历史无关联记录仍标为不完整。当前没有自动语义配对或历史回填；界面可手选多个聊天/事件标签共同咨询。
 
 可信包开发者的适配器实现 `create_adapter(data_path)`，返回有 `read(room_snapshot, account)` 的对象，可用 `kinds` 声明支持类型。每项输出 `{sourceId,kind,id,revision,label,data,visibility}`，引用、筛选、分页和复验由宿主统一处理。适配器获得完整主机快照，必须由管理员审查和明确安装；它是本机可信程序，不是模型沙箱或从包文档自动加载的脚本。
 
 公开 CLI 参数为 `serve --ai-config ... --ai-pack ... --ai-data-adapter <可信py文件> --ai-data-path <包存档>`；后两项成对且必须启用 AI。树桩镇可选 AI 启动已自动提供其 `tools/ai_data.py` 和本次运行目录的 package.json。适配器不创建/修改存档，读取文件最多 8 MiB，异常返回 DATA_SOURCE_UNAVAILABLE。代码摘要参与查询快照；未配置适配器的房间仅提供主机资料。
+
+KP 任务诊断的 `errors[]` 现可附带 `httpStatus`（100—599 的整数），旧记录缺失时不推测补齐。只记录阶段、内部错误码、模块栈和 HTTP 状态；PL 不返回诊断字段。服务商 HTTP 错误分类与修复边界见[回答协议](ai-responses.md#json-请求与服务商错误)。
 
 ## 开发者与界面
 
@@ -92,3 +94,9 @@ if (found.items.length) {
 2026-11-15经授权追加真实DeepSeek隔离验证，分页枚举、详情读取、实际数量与最终回答链路通过；同时保留未读规则却推断游戏含义的答案质量缺口。见[实测与87项回归汇总](../../../engineering/acceptance/ai-runtime/issue-009-live-results.json)。未修改用户存档或部署公网，不能将链路通过等同于完整事实审核。
 
 2026-11-15 验收汇总：全量运行后修正一项旧指令列表断言，最终受影响路径 67 项通过；按测试名称取最新结果去重，共 387 项通过、0 失败、0 跳过。另通过树桩镇资料链路 4 组及既有自动裁决/恢复 6 组验收。[汇总及源码摘要](../../../engineering/acceptance/ai-runtime/data-results.json)保留了全量运行与复验的关系。
+
+## 会话权限投影
+
+玩家会话统一绑定 owner，使用知识查询、不可变引用与 knowledgeProofs；即使实际账号为 KP 也使用 player=True。HTTP／模型参数不能指定主体。PL 不复用原实体／模板 adapter，缺少知识提供方时不降级。管理员会话的资料管理及修改批次维持原权限与基线，严格只读证明不能用于批准或执行。
+
+模型结果额外携带 citation.token/label，原 HTTP EvidencePage 和来源摘要不变。标记只从授权条目生成；正文引用按已提供标记校验，显示由真实权限解析。模板显示名可由包侧 reference_label 映射，见[回答与选择项](ai-responses.md)。

@@ -101,7 +101,7 @@ def test_deepseek_wire_query_replay_and_parameter_repair(setup, bad):
             provider_factory=lambda p:create_provider(p,transport=httpx.MockTransport(handler),credential_loader=lambda _:'offline-key'))
         await c.start()
         try:
-            task=c.enqueue('kp','wire','查看所有房间信息并梳理',initiator='player1')
+            task=c.enqueue('kp','wire','查看所有房间信息并梳理')
             saved=await wait_task(c,task['taskId'])
             assert saved['status']=='review_ready',saved
             assert '已读取角色' in saved['text']
@@ -111,7 +111,8 @@ def test_deepseek_wire_query_replay_and_parameter_repair(setup, bad):
             assert diagnostics['toolCalls'][0]['status']==('rejected' if bad is not None else 'completed')
             app=Application(SimpleNamespace(proposals=service,coordinator=c))
             assert app.tasks('kp')['items'][0]['diagnostics']==diagnostics
-            assert 'diagnostics' not in app.tasks('player1')['items'][0]
+            app.repository.update(lambda state:state['settings'].update(accessPolicy={'revision':1,'allowPlayerChat':True,'autoApproveBatches':False,'principal':'kp'}))
+            assert app.tasks('player1')['items']==[]
             assert not host.state()['aiControl']['approvals']
         finally:await c.close()
     asyncio.run(run())
@@ -151,8 +152,8 @@ def test_model_page_counts_do_not_change_proofs_or_reveal_hidden_totals(setup):
     assert empty['pageSummary']['returnedItems']==0 and empty['pageSummary']['countsByType']=={'memory':0}
     # Counts describe this principal's authorized result, not a hidden/global count.
     args={'types':['entity'],'limit':50}
-    visible=query.execute('player1','search',args,external=True)
-    assert model_result(visible,args)['pageSummary']['returnedItems']==len(visible['items'])
+    with pytest.raises(Exception,match='KNOWLEDGE_UNAVAILABLE'):
+        query.execute('player1','search',args,external=True)
 
 
 def test_channel_reference_resolves_actual_id_before_chat(setup):
@@ -213,3 +214,14 @@ def test_last_round_closes_tools_and_returns_bounded_partial_answer(setup):
             assert len(saved['diagnostics']['toolCalls'])==1
         finally:await c.close()
     asyncio.run(run())
+
+
+@pytest.mark.parametrize('status',[400,422,None,'private error',True,99,600])
+def test_http_diagnostics_keep_only_valid_status_without_remote_text(status,caplog):
+    error=ProviderError('PROVIDER_REQUEST_INVALID',status=status)
+    error.detail='SECRET_REMOTE_BODY';error.args=('SECRET_REMOTE_BODY',)
+    trace=TaskTrace();trace.at('provider_complete');trace.error(error);trace.log('test-task')
+    item=trace.snapshot()['errors'][0]
+    if status in (400,422):assert item['httpStatus']==status
+    else:assert 'httpStatus' not in item
+    assert 'SECRET_REMOTE_BODY' not in json.dumps(trace.snapshot())+caplog.text

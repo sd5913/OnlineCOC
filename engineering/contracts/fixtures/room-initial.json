@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 3,
+  "schemaVersion": 4,
   "aiControl": {
     "schemaVersion": 1,
     "scopeId": "8726333754c74f5f9340a6f87f00ff26",
@@ -404,5 +404,14 @@
   },
   "audit": [],
   "outbox": [],
-  "collectionRevision": 1
+  "collectionRevision": 1,
+  "knowledge": {
+    "schemaVersion": 1,
+    "scopeId": "56b2d951-6e63-4775-b783-1527ae4f29e8",
+    "revision": 1,
+    "policies": {},
+    "observations": {},
+    "grants": {},
+    "subjectEpochs": {}
+  }
 }

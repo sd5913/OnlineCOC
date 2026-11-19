@@ -40,6 +40,10 @@ SLOTS = re.compile(r'[a-zA-Z0-9_-]{1,40}')
 STATIC = {'': ('ui/index.html', 'text/html; charset=utf-8'),
           'app.js': ('ui/app.js', 'text/javascript; charset=utf-8'),
           'chat.js': ('ui/chat.js', 'text/javascript; charset=utf-8'),
+          'keeper-queue.js': ('ui/keeper-queue.js', 'text/javascript; charset=utf-8'),
+          'dice.js': ('ui/dice.js', 'text/javascript; charset=utf-8'),
+          'effects.js': ('ui/effects.js', 'text/javascript; charset=utf-8'),
+          'map.js': ('ui/map.js', 'text/javascript; charset=utf-8'),
           'ai.js': ('ui/ai.js', 'text/javascript; charset=utf-8'),
           'ai-embedded.js': ('ui/ai-embedded.js', 'text/javascript; charset=utf-8'),
           'i18n.js': ('ui/i18n.js', 'text/javascript; charset=utf-8'),
@@ -180,6 +184,8 @@ class Runtime:
                     tail = file.read().decode('utf-8', errors='replace')
                 if 'STORE_LOCKED' in tail:
                     raise RuntimeError('宿主存档被其他进程占用（STORE_LOCKED）。请关闭原房间面板；不要删除锁文件。详情见 host.log。')
+                if 'SCHEMA_UNSUPPORTED' in tail:
+                    raise RuntimeError('房间存档版本与当前引擎不兼容（SCHEMA_UNSUPPORTED）。请在房间数据区创建新槽位，或先离线处理旧档。详情见所选槽位 host.log。')
                 raise RuntimeError('宿主启动失败，请在面板查看 host.log')
             try:
                 with urllib.request.urlopen(self.backend + '/api/v1/capabilities', timeout=.5):
@@ -277,15 +283,6 @@ def create_app(runtime):
             if path.startswith('api/v1/'):
                 if path.startswith('api/v1/host-control'):
                     return response({'code': 'NOT_FOUND'}, 404)
-                # This integration is consultation-only. Publication would bypass
-                # the package's active revision/recovery bookkeeping.
-                if request.method == 'POST':
-                    payload = json.loads(body)
-                    if not isinstance(payload, dict) or ('payload' in payload and not isinstance(payload['payload'], dict)):
-                        return response({'code': 'INPUT_INVALID'}, 400)
-                    op = payload.get('op') if path == 'api/v1/ai/commands' else payload.get('payload', {}).get('op')
-                    if path == 'api/v1/ai/drafts' or str(op).startswith(('ai.proposal.', 'publication.')) or op == 'ai.draft.create':
-                        return response({'code': 'AI_CONSULTATION_ONLY'}, 403)
                 headers = {'Origin': runtime.backend, 'Cookie': cookie}
                 for key in ('content-type', 'x-csrf-token'):
                     if request.headers.get(key):
@@ -356,7 +353,9 @@ def create_app(runtime):
                     view = await asyncio.to_thread(client.request, '/view')
                     if view['role'] != 'kp':
                         return response({'code': 'KP_REQUIRED'}, 403)
+                    await asyncio.to_thread(runtime.package.sync_rules,client,view)
                     content = bundle()
+                    content['configurations']=list((await asyncio.to_thread(client.request,'/admin'))['configurations'].values())
                     active = runtime.package.state.get('activeRevision')
                     if active in runtime.package.state['ruleRevisions']:
                         content.update(runtime.package.state['ruleRevisions'][active])
@@ -380,6 +379,10 @@ def create_app(runtime):
         except urllib.error.HTTPError as error:
             return response({'code': '登录失效，请重新登录'}, error.code)
         except HostError as error:
+            if path == 'package/action' and error.response.get('failure'):
+                # A domain rejection is a result, so the web service bridge also
+                # preserves its explanation instead of reducing it to a code.
+                return response(error.response)
             return response(error.response, error.response.get('httpStatus', 409))
         except (PackageError, ValueError, KeyError, TypeError) as error:
             return response({'code': str(error)}, 400)

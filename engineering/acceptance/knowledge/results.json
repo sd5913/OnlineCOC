@@ -1,0 +1,2795 @@
+{
+  "checkedAt": "2026-11-17T12:42:06.041467+08:00",
+  "passed": true,
+  "engineVersion": "0.3.0",
+  "roomSchemaVersion": 4,
+  "protocolVersion": 1,
+  "uniqueEngineNetworkTests": 176,
+  "uniqueAiTests": 384,
+  "unresolvedFailures": 0,
+  "stumpsvilleStrictGroups": 12,
+  "stumpsvilleSceneGroups": 8,
+  "stumpsvillePresetActions": 18,
+  "documentationChecks": {
+    "documents": 100,
+    "brokenRelativeLinks": []
+  },
+  "formalRoomModified": false,
+  "liveModelCalls": 0,
+  "deploymentPerformed": false,
+  "networkScope": "loopback host, LAN proxy, real local WebRTC, web routes and static export; no cloud deployment or independent household test",
+  "obligations": {
+    "K-01": {
+      "status": "passed",
+      "evidence": "README.md"
+    },
+    "K-02": {
+      "status": "passed",
+      "evidence": "README.md"
+    },
+    "K-03": {
+      "status": "passed",
+      "evidence": "README.md"
+    },
+    "K-04": {
+      "status": "passed",
+      "evidence": "README.md"
+    },
+    "K-05": {
+      "status": "passed",
+      "evidence": "README.md"
+    },
+    "K-06": {
+      "status": "passed",
+      "evidence": "README.md"
+    },
+    "K-07": {
+      "status": "passed",
+      "evidence": "README.md"
+    },
+    "K-08": {
+      "status": "passed",
+      "evidence": "README.md"
+    },
+    "K-09": {
+      "status": "passed",
+      "evidence": "README.md"
+    },
+    "K-10": {
+      "status": "passed",
+      "evidence": "README.md"
+    },
+    "K-11": {
+      "status": "passed",
+      "evidence": "README.md"
+    },
+    "K-12": {
+      "status": "passed",
+      "evidence": "README.md"
+    },
+    "K-13": {
+      "status": "passed",
+      "evidence": "README.md"
+    },
+    "K-14": {
+      "status": "passed",
+      "evidence": "README.md"
+    },
+    "K-15": {
+      "status": "passed",
+      "evidence": "README.md"
+    },
+    "K-16": {
+      "status": "passed",
+      "evidence": "README.md"
+    },
+    "K-17": {
+      "status": "passed",
+      "evidence": "README.md"
+    },
+    "K-18": {
+      "status": "passed",
+      "evidence": "README.md"
+    },
+    "K-19": {
+      "status": "passed",
+      "evidence": "README.md"
+    },
+    "K-20": {
+      "status": "passed",
+      "evidence": "README.md"
+    },
+    "K-21": {
+      "status": "passed",
+      "evidence": "README.md"
+    },
+    "K-22": {
+      "status": "passed",
+      "evidence": "README.md"
+    },
+    "K-23": {
+      "status": "passed",
+      "evidence": "README.md"
+    },
+    "K-24": {
+      "status": "passed",
+      "evidence": "README.md"
+    },
+    "K-25": {
+      "status": "passed",
+      "evidence": "README.md"
+    },
+    "K-26": {
+      "status": "passed",
+      "evidence": "README.md"
+    },
+    "K-27": {
+      "status": "passed",
+      "evidence": "README.md"
+    }
+  },
+  "runs": [
+    {
+      "path": "core-tests.xml",
+      "tests": 29,
+      "exitCode": 0,
+      "cases": [
+        {
+          "id": "test_knowledge::test_k01_empty_and_k24_no_ai",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_k02_k03_subject_and_legacy_exit",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_k04_fixed_versions_and_k20_archive",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_k05_live_revisions_and_eligibility",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_k06_equivalent_grant_and_k14_unrelated_change",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_k07_forgery_and_k08_dedupe",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_k09_crash_atomicity[before_knowledge_commit]",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_k09_crash_atomicity[after_knowledge_commit]",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_k10_persistent_policy_and_k11_future_objects",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_k12_member_recreated_and_k22_scope_fork",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_k15_k18_operations_and_old_receipts",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_k19_protected_asset_url",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_k21_oversized_snapshot_and_query",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_k26_strict_data_query",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_k09_host_effect_and_automatic_observation_same_commit",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_policy_overlap_and_provider_exception_fail_closed",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_explicit_live_entity_compatibility_and_revoke",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_manage_observation_uses_previous_state_atomically",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge_network::test_http_authority_and_all_five_routes",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge_network::test_k17_ws_revocation_before_end_resets",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge_network::test_k23_explicit_conversion_original_bytes_unchanged[room]",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge_network::test_k23_explicit_conversion_original_bytes_unchanged[snapshot]",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge_network::test_k23_explicit_conversion_original_bytes_unchanged[backup]",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge_network::test_k22_backup_restore_forks_knowledge_scope",
+          "status": "passed"
+        },
+        {
+          "id": "test_host::test_transfer_dedupe_restart",
+          "status": "passed"
+        },
+        {
+          "id": "test_host::test_readonly_and_permissions",
+          "status": "passed"
+        },
+        {
+          "id": "test_host::test_old_flow_lock_and_restart",
+          "status": "passed"
+        },
+        {
+          "id": "test_host::test_failure_rolls_back",
+          "status": "passed"
+        },
+        {
+          "id": "test_host::test_personal_progress_and_revocation",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "path": "backend-regression.xml",
+      "tests": 121,
+      "exitCode": 1,
+      "cases": [
+        {
+          "id": "test_host::test_transfer_dedupe_restart",
+          "status": "passed"
+        },
+        {
+          "id": "test_host::test_readonly_and_permissions",
+          "status": "passed"
+        },
+        {
+          "id": "test_host::test_old_flow_lock_and_restart",
+          "status": "passed"
+        },
+        {
+          "id": "test_host::test_failure_rolls_back",
+          "status": "passed"
+        },
+        {
+          "id": "test_host::test_personal_progress_and_revocation",
+          "status": "passed"
+        },
+        {
+          "id": "test_foundation::test_store_contract[FileDataStore]",
+          "status": "passed"
+        },
+        {
+          "id": "test_foundation::test_store_contract[MemoryDataStore]",
+          "status": "passed"
+        },
+        {
+          "id": "test_foundation::test_failed_publish",
+          "status": "passed"
+        },
+        {
+          "id": "test_foundation::test_corruption_and_export",
+          "status": "passed"
+        },
+        {
+          "id": "test_foundation::test_lua_real_execution",
+          "status": "passed"
+        },
+        {
+          "id": "test_foundation::test_lua_timeout_and_restricted_globals",
+          "status": "passed"
+        },
+        {
+          "id": "test_faults::test_real_host_crash[before_t1]",
+          "status": "passed"
+        },
+        {
+          "id": "test_faults::test_real_host_crash[after_t1]",
+          "status": "passed"
+        },
+        {
+          "id": "test_faults::test_real_host_crash[after_random]",
+          "status": "passed"
+        },
+        {
+          "id": "test_faults::test_real_host_crash[before_t2]",
+          "status": "passed"
+        },
+        {
+          "id": "test_faults::test_real_host_crash[after_t2]",
+          "status": "passed"
+        },
+        {
+          "id": "test_faults::test_real_file_crash[half_write]",
+          "status": "passed"
+        },
+        {
+          "id": "test_faults::test_real_file_crash[before_sync]",
+          "status": "passed"
+        },
+        {
+          "id": "test_faults::test_real_file_crash[before_publish]",
+          "status": "passed"
+        },
+        {
+          "id": "test_faults::test_real_file_crash[after_publish]",
+          "status": "passed"
+        },
+        {
+          "id": "test_faults::test_backup_restore_assets_identity",
+          "status": "failed"
+        },
+        {
+          "id": "test_faults::test_wait_timeout_and_permission_recheck",
+          "status": "passed"
+        },
+        {
+          "id": "test_faults::test_lua_invalid_boundaries[return rule('x',{},function(r) r.roll(100) end,{mode='calculation'})]",
+          "status": "passed"
+        },
+        {
+          "id": "test_faults::test_lua_invalid_boundaries[return rule('x',{},function(r) local a={};a.x=a;return a end)]",
+          "status": "passed"
+        },
+        {
+          "id": "test_faults::test_lua_invalid_boundaries[return rule('x',{},function(r) return 0/0 end)]",
+          "status": "passed"
+        },
+        {
+          "id": "test_faults::test_lua_invalid_boundaries[return rule('x',{},function(r) return r.read.__globals__ end)]",
+          "status": "passed"
+        },
+        {
+          "id": "test_faults::test_lua_invalid_boundaries[return rule('x',{},function(r) local x={}; while true do x[#x+1]=string.format('%01000d',1) end end)]",
+          "status": "passed"
+        },
+        {
+          "id": "test_faults::test_poison_cannot_be_caught",
+          "status": "passed"
+        },
+        {
+          "id": "test_faults::test_invalid_dependency_and_wait",
+          "status": "passed"
+        },
+        {
+          "id": "test_faults::test_quota_and_sync_failure",
+          "status": "passed"
+        },
+        {
+          "id": "test_faults::test_flow_stage_crash_preserves_wait_and_random[before_t2]",
+          "status": "passed"
+        },
+        {
+          "id": "test_faults::test_flow_stage_crash_preserves_wait_and_random[after_t2]",
+          "status": "passed"
+        },
+        {
+          "id": "test_faults::test_old_data_snapshot_survives_hot_reload",
+          "status": "passed"
+        },
+        {
+          "id": "test_faults::test_second_host_process_is_rejected",
+          "status": "passed"
+        },
+        {
+          "id": "test_model_contracts::test_same_configuration_distinct_instances",
+          "status": "passed"
+        },
+        {
+          "id": "test_model_contracts::test_relation_invariants",
+          "status": "passed"
+        },
+        {
+          "id": "test_model_contracts::test_concurrent_quantity_and_view_precondition",
+          "status": "passed"
+        },
+        {
+          "id": "test_model_contracts::test_behavior_entry_and_retry",
+          "status": "passed"
+        },
+        {
+          "id": "test_model_contracts::test_queue_and_internal_transport",
+          "status": "passed"
+        },
+        {
+          "id": "test_model_contracts::test_storage_query_receipt_contract[MemoryDataStore]",
+          "status": "passed"
+        },
+        {
+          "id": "test_model_contracts::test_storage_query_receipt_contract[FileDataStore]",
+          "status": "passed"
+        },
+        {
+          "id": "test_model_contracts::test_machine_fixtures",
+          "status": "passed"
+        },
+        {
+          "id": "test_model_contracts::test_host_storage_injection_and_author_helpers",
+          "status": "passed"
+        },
+        {
+          "id": "test_adapters::test_http_inprocess_equivalent",
+          "status": "passed"
+        },
+        {
+          "id": "test_adapters::test_slow_sender_is_closed",
+          "status": "passed"
+        },
+        {
+          "id": "test_chat::test_public_send_restart_idempotency_and_projection",
+          "status": "passed"
+        },
+        {
+          "id": "test_chat::test_private_channels_revoke_and_no_projection_side_channel",
+          "status": "passed"
+        },
+        {
+          "id": "test_chat::test_direct_pair_dedup_and_kp_not_implicit_recipient",
+          "status": "passed"
+        },
+        {
+          "id": "test_chat::test_pagination_read_positions_and_old_message_edits",
+          "status": "passed"
+        },
+        {
+          "id": "test_chat::test_edit_retract_moderation_and_channel_policy",
+          "status": "passed"
+        },
+        {
+          "id": "test_chat::test_paused_room_can_chat_archived_room_read_only",
+          "status": "passed"
+        },
+        {
+          "id": "test_chat::test_message_schema_rejects_forgery_and_limits[extra0]",
+          "status": "passed"
+        },
+        {
+          "id": "test_chat::test_message_schema_rejects_forgery_and_limits[extra1]",
+          "status": "passed"
+        },
+        {
+          "id": "test_chat::test_message_schema_rejects_forgery_and_limits[extra2]",
+          "status": "passed"
+        },
+        {
+          "id": "test_chat::test_message_schema_rejects_forgery_and_limits[extra3]",
+          "status": "passed"
+        },
+        {
+          "id": "test_chat::test_message_schema_rejects_forgery_and_limits[extra4]",
+          "status": "passed"
+        },
+        {
+          "id": "test_chat::test_message_schema_rejects_forgery_and_limits[extra5]",
+          "status": "passed"
+        },
+        {
+          "id": "test_chat::test_speaker_attachment_reference_and_private_asset_boundary",
+          "status": "passed"
+        },
+        {
+          "id": "test_chat::test_verified_action_card_uses_host_receipt_and_is_immutable",
+          "status": "passed"
+        },
+        {
+          "id": "test_chat::test_current_room_restart_and_backup_preserve_chat",
+          "status": "passed"
+        },
+        {
+          "id": "test_chat::test_model_rejects_corrupt_chat_references[sequence]",
+          "status": "passed"
+        },
+        {
+          "id": "test_chat::test_model_rejects_corrupt_chat_references[reply]",
+          "status": "passed"
+        },
+        {
+          "id": "test_chat::test_model_rejects_corrupt_chat_references[sender]",
+          "status": "passed"
+        },
+        {
+          "id": "test_chat::test_model_rejects_corrupt_chat_references[read]",
+          "status": "passed"
+        },
+        {
+          "id": "test_chat::test_model_rejects_corrupt_chat_references[asset]",
+          "status": "passed"
+        },
+        {
+          "id": "test_chat::test_rate_limit_and_retention_limit_roll_back",
+          "status": "passed"
+        },
+        {
+          "id": "test_chat::test_real_process_crash_chat_and_receipt_are_atomic[before_chat_commit]",
+          "status": "passed"
+        },
+        {
+          "id": "test_chat::test_real_process_crash_chat_and_receipt_are_atomic[after_chat_commit]",
+          "status": "passed"
+        },
+        {
+          "id": "test_chat::test_http_history_auth_csrf_and_inprocess_equivalence",
+          "status": "passed"
+        },
+        {
+          "id": "test_chat::test_channel_management_permissions_stale_versions_and_atomic_rejection",
+          "status": "passed"
+        },
+        {
+          "id": "test_chat::test_empty_message_and_retracted_reply_are_consistent",
+          "status": "passed"
+        },
+        {
+          "id": "test_chat_network::test_chat_sdk_real_browsers_sync_privacy_reconnect_and_revocation",
+          "status": "passed"
+        },
+        {
+          "id": "test_network::test_http_boundary",
+          "status": "passed"
+        },
+        {
+          "id": "test_network::test_three_browsers_and_eight_connections",
+          "status": "passed"
+        },
+        {
+          "id": "test_room_versions::test_open_rejects_before_room_mutation[v1]",
+          "status": "passed"
+        },
+        {
+          "id": "test_room_versions::test_open_rejects_before_room_mutation[v2]",
+          "status": "passed"
+        },
+        {
+          "id": "test_room_versions::test_open_rejects_before_room_mutation[future]",
+          "status": "passed"
+        },
+        {
+          "id": "test_room_versions::test_open_rejects_before_room_mutation[no-chat]",
+          "status": "passed"
+        },
+        {
+          "id": "test_room_versions::test_open_rejects_before_room_mutation[no-control]",
+          "status": "passed"
+        },
+        {
+          "id": "test_room_versions::test_open_rejects_before_room_mutation[no-commands]",
+          "status": "passed"
+        },
+        {
+          "id": "test_room_versions::test_open_rejects_before_room_mutation[reference]",
+          "status": "passed"
+        },
+        {
+          "id": "test_room_versions::test_open_rejects_before_room_mutation[bad-version]",
+          "status": "passed"
+        },
+        {
+          "id": "test_room_versions::test_backup_rejects_before_any_restore_target[v1]",
+          "status": "passed"
+        },
+        {
+          "id": "test_room_versions::test_backup_rejects_before_any_restore_target[v2]",
+          "status": "passed"
+        },
+        {
+          "id": "test_room_versions::test_backup_rejects_before_any_restore_target[future]",
+          "status": "passed"
+        },
+        {
+          "id": "test_room_versions::test_backup_rejects_before_any_restore_target[no-chat]",
+          "status": "passed"
+        },
+        {
+          "id": "test_room_versions::test_backup_rejects_before_any_restore_target[no-control]",
+          "status": "passed"
+        },
+        {
+          "id": "test_room_versions::test_backup_rejects_before_any_restore_target[no-commands]",
+          "status": "passed"
+        },
+        {
+          "id": "test_room_versions::test_backup_rejects_before_any_restore_target[reference]",
+          "status": "passed"
+        },
+        {
+          "id": "test_room_versions::test_backup_rejects_before_any_restore_target[bad-version]",
+          "status": "passed"
+        },
+        {
+          "id": "test_room_versions::test_execution_projection_cannot_be_used_as_room",
+          "status": "passed"
+        },
+        {
+          "id": "test_room_versions::test_external_conversion_is_explicit_and_works",
+          "status": "passed"
+        },
+        {
+          "id": "test_room_versions::test_validation_cli_is_read_only[room]",
+          "status": "passed"
+        },
+        {
+          "id": "test_room_versions::test_validation_cli_is_read_only[snapshot]",
+          "status": "passed"
+        },
+        {
+          "id": "test_room_versions::test_validation_cli_is_read_only[backup]",
+          "status": "passed"
+        },
+        {
+          "id": "test_room_versions::test_release_schema_and_fixture_agree",
+          "status": "passed"
+        },
+        {
+          "id": "test_room_versions::test_restore_lifecycle_disables_auto_without_mutating_input",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_k01_empty_and_k24_no_ai",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_k02_k03_subject_and_legacy_exit",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_k04_fixed_versions_and_k20_archive",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_k05_live_revisions_and_eligibility",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_k06_equivalent_grant_and_k14_unrelated_change",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_k07_forgery_and_k08_dedupe",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_k09_crash_atomicity[before_knowledge_commit]",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_k09_crash_atomicity[after_knowledge_commit]",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_k10_persistent_policy_and_k11_future_objects",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_k12_member_recreated_and_k22_scope_fork",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_k15_k18_operations_and_old_receipts",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_k19_protected_asset_url",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_k21_oversized_snapshot_and_query",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_k26_strict_data_query",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_k09_host_effect_and_automatic_observation_same_commit",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_policy_overlap_and_provider_exception_fail_closed",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_explicit_live_entity_compatibility_and_revoke",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_manage_observation_uses_previous_state_atomically",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge_network::test_http_authority_and_all_five_routes",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge_network::test_k17_ws_revocation_before_end_resets",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge_network::test_k23_explicit_conversion_original_bytes_unchanged[room]",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge_network::test_k23_explicit_conversion_original_bytes_unchanged[snapshot]",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge_network::test_k23_explicit_conversion_original_bytes_unchanged[backup]",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge_network::test_k22_backup_restore_forks_knowledge_scope",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "path": "edges.xml",
+      "tests": 4,
+      "exitCode": 0,
+      "cases": [
+        {
+          "id": "test_edges::test_cursor_copy_and_policy_rebind_invalidate_old_evidence",
+          "status": "passed"
+        },
+        {
+          "id": "test_edges::test_query_response_and_observation_limit_are_atomic",
+          "status": "passed"
+        },
+        {
+          "id": "test_edges::test_old_chat_result_and_speaker_do_not_bypass_policy",
+          "status": "passed"
+        },
+        {
+          "id": "test_edges::test_schema_unknown_fields_and_bool_revisions",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "path": "validation-retest.xml",
+      "tests": 52,
+      "exitCode": 0,
+      "cases": [
+        {
+          "id": "test_knowledge::test_k01_empty_and_k24_no_ai",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_k02_k03_subject_and_legacy_exit",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_k04_fixed_versions_and_k20_archive",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_k05_live_revisions_and_eligibility",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_k06_equivalent_grant_and_k14_unrelated_change",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_k07_forgery_and_k08_dedupe",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_k09_crash_atomicity[before_knowledge_commit]",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_k09_crash_atomicity[after_knowledge_commit]",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_k10_persistent_policy_and_k11_future_objects",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_k12_member_recreated_and_k22_scope_fork",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_k15_k18_operations_and_old_receipts",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_k19_protected_asset_url",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_k21_oversized_snapshot_and_query",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_k26_strict_data_query",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_k09_host_effect_and_automatic_observation_same_commit",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_policy_overlap_and_provider_exception_fail_closed",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_explicit_live_entity_compatibility_and_revoke",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_manage_observation_uses_previous_state_atomically",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_structural_cache_never_bypasses_mutation_or_references",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge_network::test_http_authority_and_all_five_routes",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge_network::test_k17_ws_revocation_before_end_resets",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge_network::test_k23_explicit_conversion_original_bytes_unchanged[room]",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge_network::test_k23_explicit_conversion_original_bytes_unchanged[snapshot]",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge_network::test_k23_explicit_conversion_original_bytes_unchanged[backup]",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge_network::test_k22_backup_restore_forks_knowledge_scope",
+          "status": "passed"
+        },
+        {
+          "id": "test_faults::test_real_host_crash[before_t1]",
+          "status": "passed"
+        },
+        {
+          "id": "test_faults::test_real_host_crash[after_t1]",
+          "status": "passed"
+        },
+        {
+          "id": "test_faults::test_real_host_crash[after_random]",
+          "status": "passed"
+        },
+        {
+          "id": "test_faults::test_real_host_crash[before_t2]",
+          "status": "passed"
+        },
+        {
+          "id": "test_faults::test_real_host_crash[after_t2]",
+          "status": "passed"
+        },
+        {
+          "id": "test_faults::test_real_file_crash[half_write]",
+          "status": "passed"
+        },
+        {
+          "id": "test_faults::test_real_file_crash[before_sync]",
+          "status": "passed"
+        },
+        {
+          "id": "test_faults::test_real_file_crash[before_publish]",
+          "status": "passed"
+        },
+        {
+          "id": "test_faults::test_real_file_crash[after_publish]",
+          "status": "passed"
+        },
+        {
+          "id": "test_faults::test_backup_restore_assets_identity",
+          "status": "passed"
+        },
+        {
+          "id": "test_faults::test_wait_timeout_and_permission_recheck",
+          "status": "passed"
+        },
+        {
+          "id": "test_faults::test_lua_invalid_boundaries[return rule('x',{},function(r) r.roll(100) end,{mode='calculation'})]",
+          "status": "passed"
+        },
+        {
+          "id": "test_faults::test_lua_invalid_boundaries[return rule('x',{},function(r) local a={};a.x=a;return a end)]",
+          "status": "passed"
+        },
+        {
+          "id": "test_faults::test_lua_invalid_boundaries[return rule('x',{},function(r) return 0/0 end)]",
+          "status": "passed"
+        },
+        {
+          "id": "test_faults::test_lua_invalid_boundaries[return rule('x',{},function(r) return r.read.__globals__ end)]",
+          "status": "passed"
+        },
+        {
+          "id": "test_faults::test_lua_invalid_boundaries[return rule('x',{},function(r) local x={}; while true do x[#x+1]=string.format('%01000d',1) end end)]",
+          "status": "passed"
+        },
+        {
+          "id": "test_faults::test_poison_cannot_be_caught",
+          "status": "passed"
+        },
+        {
+          "id": "test_faults::test_invalid_dependency_and_wait",
+          "status": "passed"
+        },
+        {
+          "id": "test_faults::test_quota_and_sync_failure",
+          "status": "passed"
+        },
+        {
+          "id": "test_faults::test_flow_stage_crash_preserves_wait_and_random[before_t2]",
+          "status": "passed"
+        },
+        {
+          "id": "test_faults::test_flow_stage_crash_preserves_wait_and_random[after_t2]",
+          "status": "passed"
+        },
+        {
+          "id": "test_faults::test_old_data_snapshot_survives_hot_reload",
+          "status": "passed"
+        },
+        {
+          "id": "test_faults::test_second_host_process_is_rejected",
+          "status": "passed"
+        },
+        {
+          "id": "test_edges::test_cursor_copy_and_policy_rebind_invalidate_old_evidence",
+          "status": "passed"
+        },
+        {
+          "id": "test_edges::test_query_response_and_observation_limit_are_atomic",
+          "status": "passed"
+        },
+        {
+          "id": "test_edges::test_old_chat_result_and_speaker_do_not_bypass_policy",
+          "status": "passed"
+        },
+        {
+          "id": "test_edges::test_schema_unknown_fields_and_bool_revisions",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "path": "dto-tests.xml",
+      "tests": 1,
+      "exitCode": 0,
+      "cases": [
+        {
+          "id": "test_edges::test_machine_dtos_match_actual_host_responses",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "path": "batch-egress-tests.xml",
+      "tests": 32,
+      "exitCode": 0,
+      "cases": [
+        {
+          "id": "test_knowledge::test_k01_empty_and_k24_no_ai",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_k02_k03_subject_and_legacy_exit",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_k04_fixed_versions_and_k20_archive",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_k05_live_revisions_and_eligibility",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_k06_equivalent_grant_and_k14_unrelated_change",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_k07_forgery_and_k08_dedupe",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_k09_crash_atomicity[before_knowledge_commit]",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_k09_crash_atomicity[after_knowledge_commit]",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_k10_persistent_policy_and_k11_future_objects",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_k12_member_recreated_and_k22_scope_fork",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_k15_k18_operations_and_old_receipts",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_k19_protected_asset_url",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_k21_oversized_snapshot_and_query",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_k26_strict_data_query",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_k09_host_effect_and_automatic_observation_same_commit",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_policy_overlap_and_provider_exception_fail_closed",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_explicit_live_entity_compatibility_and_revoke",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_manage_observation_uses_previous_state_atomically",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_structural_cache_never_bypasses_mutation_or_references",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_batch_read_proofs_capture_provider_once",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_explicit_denied_egress_wins_over_provider_hooks",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge_network::test_http_authority_and_all_five_routes",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge_network::test_k17_ws_revocation_before_end_resets",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge_network::test_k23_explicit_conversion_original_bytes_unchanged[room]",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge_network::test_k23_explicit_conversion_original_bytes_unchanged[snapshot]",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge_network::test_k23_explicit_conversion_original_bytes_unchanged[backup]",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge_network::test_k22_backup_restore_forks_knowledge_scope",
+          "status": "passed"
+        },
+        {
+          "id": "test_edges::test_cursor_copy_and_policy_rebind_invalidate_old_evidence",
+          "status": "passed"
+        },
+        {
+          "id": "test_edges::test_query_response_and_observation_limit_are_atomic",
+          "status": "passed"
+        },
+        {
+          "id": "test_edges::test_old_chat_result_and_speaker_do_not_bypass_policy",
+          "status": "passed"
+        },
+        {
+          "id": "test_edges::test_schema_unknown_fields_and_bool_revisions",
+          "status": "passed"
+        },
+        {
+          "id": "test_edges::test_machine_dtos_match_actual_host_responses",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "path": "ai-host-regression.xml",
+      "tests": 28,
+      "exitCode": 0,
+      "cases": [
+        {
+          "id": "test_ai_approval::test_approval_stages_evidence_without_loading",
+          "status": "passed"
+        },
+        {
+          "id": "test_ai_approval::test_player_and_forged_pass_are_rejected",
+          "status": "passed"
+        },
+        {
+          "id": "test_ai_approval::test_required_risk_reasons_are_enforced",
+          "status": "passed"
+        },
+        {
+          "id": "test_ai_approval::test_edit_revokes_old_approval_and_requires_fresh_reports",
+          "status": "passed"
+        },
+        {
+          "id": "test_ai_approval::test_approved_context_and_evidence_cannot_drift[<lambda>-BASELINE_STALE]",
+          "status": "passed"
+        },
+        {
+          "id": "test_ai_approval::test_approved_context_and_evidence_cannot_drift[<lambda>-DIGEST_MISMATCH]",
+          "status": "passed"
+        },
+        {
+          "id": "test_ai_approval::test_approved_context_and_evidence_cannot_drift[<lambda>-VALIDATOR_STALE]",
+          "status": "passed"
+        },
+        {
+          "id": "test_ai_approval::test_approved_context_and_evidence_cannot_drift[<lambda>-PERMISSION_DENIED]",
+          "status": "passed"
+        },
+        {
+          "id": "test_ai_approval::test_expiry_blocks_loading",
+          "status": "passed"
+        },
+        {
+          "id": "test_ai_approval::test_failed_validation_cannot_be_prepared",
+          "status": "passed"
+        },
+        {
+          "id": "test_ai_publication::test_load_once_after_ai_store_is_closed_and_restart",
+          "status": "passed"
+        },
+        {
+          "id": "test_ai_publication::test_same_command_id_different_payload_conflicts",
+          "status": "passed"
+        },
+        {
+          "id": "test_ai_publication::test_concurrent_duplicate_publications_have_one_effect",
+          "status": "passed"
+        },
+        {
+          "id": "test_ai_publication::test_publication_reconciliation_never_reapplies_effects",
+          "status": "passed"
+        },
+        {
+          "id": "test_ai_publication::test_two_kps_cannot_publish_against_the_same_old_baseline",
+          "status": "passed"
+        },
+        {
+          "id": "test_ai_publication::test_resolving_prepared_bundle_does_not_hold_room_lock",
+          "status": "passed"
+        },
+        {
+          "id": "test_ai_recovery::test_post_commit_error_keeps_committed_publication[exception0]",
+          "status": "passed"
+        },
+        {
+          "id": "test_ai_recovery::test_post_commit_error_keeps_committed_publication[exception1]",
+          "status": "passed"
+        },
+        {
+          "id": "test_ai_recovery::test_pre_commit_failure_has_no_partial_configuration",
+          "status": "passed"
+        },
+        {
+          "id": "test_ai_recovery::test_approval_reply_loss_can_be_queried_without_ai_repository",
+          "status": "passed"
+        },
+        {
+          "id": "test_ai_recovery::test_failure_after_local_configuration_edit_rolls_back_everything",
+          "status": "passed"
+        },
+        {
+          "id": "test_ai_backup::test_current_room_restarts_without_upgrade",
+          "status": "passed"
+        },
+        {
+          "id": "test_ai_backup::test_unknown_room_version_is_not_overwritten",
+          "status": "passed"
+        },
+        {
+          "id": "test_ai_backup::test_restore_forks_scope_revokes_approval_and_retains_optional_history",
+          "status": "passed"
+        },
+        {
+          "id": "test_ai_backup::test_published_game_restores_without_ai_store",
+          "status": "passed"
+        },
+        {
+          "id": "test_ai_backup::test_restore_retries_transient_windows_directory_handle",
+          "status": "passed"
+        },
+        {
+          "id": "test_ai_backup::test_backup_missing_references_fails_before_creating_target[artifact]",
+          "status": "passed"
+        },
+        {
+          "id": "test_ai_backup::test_backup_missing_references_fails_before_creating_target[ai-reference]",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "path": "network-regression.xml",
+      "tests": 14,
+      "exitCode": 1,
+      "cases": [
+        {
+          "id": "test_sdk::test_existing_client_sdk_with_webrtc",
+          "status": "failed"
+        },
+        {
+          "id": "test_local_boundary::test_session_lock_is_exclusive_and_released",
+          "status": "passed"
+        },
+        {
+          "id": "test_local_boundary::test_local_capability_origin_and_one_use_sandbox",
+          "status": "passed"
+        },
+        {
+          "id": "test_portal::test_code_only_join_shortcuts_no_game_connection",
+          "status": "passed"
+        },
+        {
+          "id": "test_portal::test_approval_ban_unban_and_permanent_close",
+          "status": "passed"
+        },
+        {
+          "id": "test_portal::test_sessions_csrf_recovery_and_other_device",
+          "status": "passed"
+        },
+        {
+          "id": "test_portal::test_duplicate_seat_and_revoke_ticket",
+          "status": "passed"
+        },
+        {
+          "id": "test_portal::test_persistent_store_lock_backup_and_no_silent_rollback",
+          "status": "passed"
+        },
+        {
+          "id": "test_portal::test_resource_projection_and_unlisted_hash_denied",
+          "status": "passed"
+        },
+        {
+          "id": "test_portal::test_cross_device_membership_and_offline_shortcut",
+          "status": "passed"
+        },
+        {
+          "id": "test_portal::test_room_cannot_be_enumerated_by_changing_legacy_settings",
+          "status": "passed"
+        },
+        {
+          "id": "test_portal::test_wrong_origin_and_page_security_headers",
+          "status": "passed"
+        },
+        {
+          "id": "test_portal::test_expired_approval_requests_do_not_fill_room_forever",
+          "status": "passed"
+        },
+        {
+          "id": "test_portal::test_server_restart_preserves_account_membership_and_bans",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "path": "network-retest.xml",
+      "tests": 17,
+      "exitCode": 1,
+      "cases": [
+        {
+          "id": "test_sdk::test_existing_client_sdk_with_webrtc",
+          "status": "passed"
+        },
+        {
+          "id": "test_local_boundary::test_session_lock_is_exclusive_and_released",
+          "status": "passed"
+        },
+        {
+          "id": "test_local_boundary::test_local_capability_origin_and_one_use_sandbox",
+          "status": "passed"
+        },
+        {
+          "id": "test_portal::test_code_only_join_shortcuts_no_game_connection",
+          "status": "passed"
+        },
+        {
+          "id": "test_portal::test_approval_ban_unban_and_permanent_close",
+          "status": "passed"
+        },
+        {
+          "id": "test_portal::test_sessions_csrf_recovery_and_other_device",
+          "status": "passed"
+        },
+        {
+          "id": "test_portal::test_duplicate_seat_and_revoke_ticket",
+          "status": "passed"
+        },
+        {
+          "id": "test_portal::test_persistent_store_lock_backup_and_no_silent_rollback",
+          "status": "passed"
+        },
+        {
+          "id": "test_portal::test_resource_projection_and_unlisted_hash_denied",
+          "status": "passed"
+        },
+        {
+          "id": "test_portal::test_cross_device_membership_and_offline_shortcut",
+          "status": "passed"
+        },
+        {
+          "id": "test_portal::test_room_cannot_be_enumerated_by_changing_legacy_settings",
+          "status": "passed"
+        },
+        {
+          "id": "test_portal::test_wrong_origin_and_page_security_headers",
+          "status": "passed"
+        },
+        {
+          "id": "test_portal::test_expired_approval_requests_do_not_fill_room_forever",
+          "status": "passed"
+        },
+        {
+          "id": "test_portal::test_server_restart_preserves_account_membership_and_bans",
+          "status": "passed"
+        },
+        {
+          "id": "test_network_paths::test_p2p_upstream_knowledge_routes_and_isolated_peers",
+          "status": "failed"
+        },
+        {
+          "id": "test_network_paths::test_lan_gateway_knowledge_and_csrf",
+          "status": "failed"
+        },
+        {
+          "id": "test_network_paths::test_web_export_has_exact_knowledge_routes",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "path": "network-paths.xml",
+      "tests": 3,
+      "exitCode": 0,
+      "cases": [
+        {
+          "id": "test_network_paths::test_p2p_upstream_knowledge_routes_and_isolated_peers",
+          "status": "passed"
+        },
+        {
+          "id": "test_network_paths::test_lan_gateway_knowledge_and_csrf",
+          "status": "passed"
+        },
+        {
+          "id": "test_network_paths::test_web_export_has_exact_knowledge_routes",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "path": "sdk-sessions.xml",
+      "tests": 2,
+      "exitCode": 0,
+      "cases": [
+        {
+          "id": "test_sdk_sessions::test_sdk_discards_previous_account_and_connection",
+          "status": "passed"
+        },
+        {
+          "id": "test_sdk::test_existing_client_sdk_with_webrtc",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "path": "backend-release.xml",
+      "tests": 129,
+      "exitCode": 0,
+      "cases": [
+        {
+          "id": "test_host::test_transfer_dedupe_restart",
+          "status": "passed"
+        },
+        {
+          "id": "test_host::test_readonly_and_permissions",
+          "status": "passed"
+        },
+        {
+          "id": "test_host::test_old_flow_lock_and_restart",
+          "status": "passed"
+        },
+        {
+          "id": "test_host::test_failure_rolls_back",
+          "status": "passed"
+        },
+        {
+          "id": "test_host::test_personal_progress_and_revocation",
+          "status": "passed"
+        },
+        {
+          "id": "test_foundation::test_store_contract[FileDataStore]",
+          "status": "passed"
+        },
+        {
+          "id": "test_foundation::test_store_contract[MemoryDataStore]",
+          "status": "passed"
+        },
+        {
+          "id": "test_foundation::test_failed_publish",
+          "status": "passed"
+        },
+        {
+          "id": "test_foundation::test_corruption_and_export",
+          "status": "passed"
+        },
+        {
+          "id": "test_foundation::test_lua_real_execution",
+          "status": "passed"
+        },
+        {
+          "id": "test_foundation::test_lua_timeout_and_restricted_globals",
+          "status": "passed"
+        },
+        {
+          "id": "test_faults::test_real_host_crash[before_t1]",
+          "status": "passed"
+        },
+        {
+          "id": "test_faults::test_real_host_crash[after_t1]",
+          "status": "passed"
+        },
+        {
+          "id": "test_faults::test_real_host_crash[after_random]",
+          "status": "passed"
+        },
+        {
+          "id": "test_faults::test_real_host_crash[before_t2]",
+          "status": "passed"
+        },
+        {
+          "id": "test_faults::test_real_host_crash[after_t2]",
+          "status": "passed"
+        },
+        {
+          "id": "test_faults::test_real_file_crash[half_write]",
+          "status": "passed"
+        },
+        {
+          "id": "test_faults::test_real_file_crash[before_sync]",
+          "status": "passed"
+        },
+        {
+          "id": "test_faults::test_real_file_crash[before_publish]",
+          "status": "passed"
+        },
+        {
+          "id": "test_faults::test_real_file_crash[after_publish]",
+          "status": "passed"
+        },
+        {
+          "id": "test_faults::test_backup_restore_assets_identity",
+          "status": "passed"
+        },
+        {
+          "id": "test_faults::test_wait_timeout_and_permission_recheck",
+          "status": "passed"
+        },
+        {
+          "id": "test_faults::test_lua_invalid_boundaries[return rule('x',{},function(r) r.roll(100) end,{mode='calculation'})]",
+          "status": "passed"
+        },
+        {
+          "id": "test_faults::test_lua_invalid_boundaries[return rule('x',{},function(r) local a={};a.x=a;return a end)]",
+          "status": "passed"
+        },
+        {
+          "id": "test_faults::test_lua_invalid_boundaries[return rule('x',{},function(r) return 0/0 end)]",
+          "status": "passed"
+        },
+        {
+          "id": "test_faults::test_lua_invalid_boundaries[return rule('x',{},function(r) return r.read.__globals__ end)]",
+          "status": "passed"
+        },
+        {
+          "id": "test_faults::test_lua_invalid_boundaries[return rule('x',{},function(r) local x={}; while true do x[#x+1]=string.format('%01000d',1) end end)]",
+          "status": "passed"
+        },
+        {
+          "id": "test_faults::test_poison_cannot_be_caught",
+          "status": "passed"
+        },
+        {
+          "id": "test_faults::test_invalid_dependency_and_wait",
+          "status": "passed"
+        },
+        {
+          "id": "test_faults::test_quota_and_sync_failure",
+          "status": "passed"
+        },
+        {
+          "id": "test_faults::test_flow_stage_crash_preserves_wait_and_random[before_t2]",
+          "status": "passed"
+        },
+        {
+          "id": "test_faults::test_flow_stage_crash_preserves_wait_and_random[after_t2]",
+          "status": "passed"
+        },
+        {
+          "id": "test_faults::test_old_data_snapshot_survives_hot_reload",
+          "status": "passed"
+        },
+        {
+          "id": "test_faults::test_second_host_process_is_rejected",
+          "status": "passed"
+        },
+        {
+          "id": "test_model_contracts::test_same_configuration_distinct_instances",
+          "status": "passed"
+        },
+        {
+          "id": "test_model_contracts::test_relation_invariants",
+          "status": "passed"
+        },
+        {
+          "id": "test_model_contracts::test_concurrent_quantity_and_view_precondition",
+          "status": "passed"
+        },
+        {
+          "id": "test_model_contracts::test_behavior_entry_and_retry",
+          "status": "passed"
+        },
+        {
+          "id": "test_model_contracts::test_queue_and_internal_transport",
+          "status": "passed"
+        },
+        {
+          "id": "test_model_contracts::test_storage_query_receipt_contract[MemoryDataStore]",
+          "status": "passed"
+        },
+        {
+          "id": "test_model_contracts::test_storage_query_receipt_contract[FileDataStore]",
+          "status": "passed"
+        },
+        {
+          "id": "test_model_contracts::test_machine_fixtures",
+          "status": "passed"
+        },
+        {
+          "id": "test_model_contracts::test_host_storage_injection_and_author_helpers",
+          "status": "passed"
+        },
+        {
+          "id": "test_adapters::test_http_inprocess_equivalent",
+          "status": "passed"
+        },
+        {
+          "id": "test_adapters::test_slow_sender_is_closed",
+          "status": "passed"
+        },
+        {
+          "id": "test_chat::test_public_send_restart_idempotency_and_projection",
+          "status": "passed"
+        },
+        {
+          "id": "test_chat::test_private_channels_revoke_and_no_projection_side_channel",
+          "status": "passed"
+        },
+        {
+          "id": "test_chat::test_direct_pair_dedup_and_kp_not_implicit_recipient",
+          "status": "passed"
+        },
+        {
+          "id": "test_chat::test_pagination_read_positions_and_old_message_edits",
+          "status": "passed"
+        },
+        {
+          "id": "test_chat::test_edit_retract_moderation_and_channel_policy",
+          "status": "passed"
+        },
+        {
+          "id": "test_chat::test_paused_room_can_chat_archived_room_read_only",
+          "status": "passed"
+        },
+        {
+          "id": "test_chat::test_message_schema_rejects_forgery_and_limits[extra0]",
+          "status": "passed"
+        },
+        {
+          "id": "test_chat::test_message_schema_rejects_forgery_and_limits[extra1]",
+          "status": "passed"
+        },
+        {
+          "id": "test_chat::test_message_schema_rejects_forgery_and_limits[extra2]",
+          "status": "passed"
+        },
+        {
+          "id": "test_chat::test_message_schema_rejects_forgery_and_limits[extra3]",
+          "status": "passed"
+        },
+        {
+          "id": "test_chat::test_message_schema_rejects_forgery_and_limits[extra4]",
+          "status": "passed"
+        },
+        {
+          "id": "test_chat::test_message_schema_rejects_forgery_and_limits[extra5]",
+          "status": "passed"
+        },
+        {
+          "id": "test_chat::test_speaker_attachment_reference_and_private_asset_boundary",
+          "status": "passed"
+        },
+        {
+          "id": "test_chat::test_verified_action_card_uses_host_receipt_and_is_immutable",
+          "status": "passed"
+        },
+        {
+          "id": "test_chat::test_current_room_restart_and_backup_preserve_chat",
+          "status": "passed"
+        },
+        {
+          "id": "test_chat::test_model_rejects_corrupt_chat_references[sequence]",
+          "status": "passed"
+        },
+        {
+          "id": "test_chat::test_model_rejects_corrupt_chat_references[reply]",
+          "status": "passed"
+        },
+        {
+          "id": "test_chat::test_model_rejects_corrupt_chat_references[sender]",
+          "status": "passed"
+        },
+        {
+          "id": "test_chat::test_model_rejects_corrupt_chat_references[read]",
+          "status": "passed"
+        },
+        {
+          "id": "test_chat::test_model_rejects_corrupt_chat_references[asset]",
+          "status": "passed"
+        },
+        {
+          "id": "test_chat::test_rate_limit_and_retention_limit_roll_back",
+          "status": "passed"
+        },
+        {
+          "id": "test_chat::test_real_process_crash_chat_and_receipt_are_atomic[before_chat_commit]",
+          "status": "passed"
+        },
+        {
+          "id": "test_chat::test_real_process_crash_chat_and_receipt_are_atomic[after_chat_commit]",
+          "status": "passed"
+        },
+        {
+          "id": "test_chat::test_http_history_auth_csrf_and_inprocess_equivalence",
+          "status": "passed"
+        },
+        {
+          "id": "test_chat::test_channel_management_permissions_stale_versions_and_atomic_rejection",
+          "status": "passed"
+        },
+        {
+          "id": "test_chat::test_empty_message_and_retracted_reply_are_consistent",
+          "status": "passed"
+        },
+        {
+          "id": "test_chat_network::test_chat_sdk_real_browsers_sync_privacy_reconnect_and_revocation",
+          "status": "passed"
+        },
+        {
+          "id": "test_network::test_http_boundary",
+          "status": "passed"
+        },
+        {
+          "id": "test_network::test_three_browsers_and_eight_connections",
+          "status": "passed"
+        },
+        {
+          "id": "test_room_versions::test_open_rejects_before_room_mutation[v1]",
+          "status": "passed"
+        },
+        {
+          "id": "test_room_versions::test_open_rejects_before_room_mutation[v2]",
+          "status": "passed"
+        },
+        {
+          "id": "test_room_versions::test_open_rejects_before_room_mutation[future]",
+          "status": "passed"
+        },
+        {
+          "id": "test_room_versions::test_open_rejects_before_room_mutation[no-chat]",
+          "status": "passed"
+        },
+        {
+          "id": "test_room_versions::test_open_rejects_before_room_mutation[no-control]",
+          "status": "passed"
+        },
+        {
+          "id": "test_room_versions::test_open_rejects_before_room_mutation[no-commands]",
+          "status": "passed"
+        },
+        {
+          "id": "test_room_versions::test_open_rejects_before_room_mutation[reference]",
+          "status": "passed"
+        },
+        {
+          "id": "test_room_versions::test_open_rejects_before_room_mutation[bad-version]",
+          "status": "passed"
+        },
+        {
+          "id": "test_room_versions::test_backup_rejects_before_any_restore_target[v1]",
+          "status": "passed"
+        },
+        {
+          "id": "test_room_versions::test_backup_rejects_before_any_restore_target[v2]",
+          "status": "passed"
+        },
+        {
+          "id": "test_room_versions::test_backup_rejects_before_any_restore_target[future]",
+          "status": "passed"
+        },
+        {
+          "id": "test_room_versions::test_backup_rejects_before_any_restore_target[no-chat]",
+          "status": "passed"
+        },
+        {
+          "id": "test_room_versions::test_backup_rejects_before_any_restore_target[no-control]",
+          "status": "passed"
+        },
+        {
+          "id": "test_room_versions::test_backup_rejects_before_any_restore_target[no-commands]",
+          "status": "passed"
+        },
+        {
+          "id": "test_room_versions::test_backup_rejects_before_any_restore_target[reference]",
+          "status": "passed"
+        },
+        {
+          "id": "test_room_versions::test_backup_rejects_before_any_restore_target[bad-version]",
+          "status": "passed"
+        },
+        {
+          "id": "test_room_versions::test_execution_projection_cannot_be_used_as_room",
+          "status": "passed"
+        },
+        {
+          "id": "test_room_versions::test_external_conversion_is_explicit_and_works",
+          "status": "passed"
+        },
+        {
+          "id": "test_room_versions::test_validation_cli_is_read_only[room]",
+          "status": "passed"
+        },
+        {
+          "id": "test_room_versions::test_validation_cli_is_read_only[snapshot]",
+          "status": "passed"
+        },
+        {
+          "id": "test_room_versions::test_validation_cli_is_read_only[backup]",
+          "status": "passed"
+        },
+        {
+          "id": "test_room_versions::test_release_schema_and_fixture_agree",
+          "status": "passed"
+        },
+        {
+          "id": "test_room_versions::test_restore_lifecycle_disables_auto_without_mutating_input",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_k01_empty_and_k24_no_ai",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_k02_k03_subject_and_legacy_exit",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_k04_fixed_versions_and_k20_archive",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_k05_live_revisions_and_eligibility",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_k06_equivalent_grant_and_k14_unrelated_change",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_k07_forgery_and_k08_dedupe",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_k09_crash_atomicity[before_knowledge_commit]",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_k09_crash_atomicity[after_knowledge_commit]",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_k10_persistent_policy_and_k11_future_objects",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_k12_member_recreated_and_k22_scope_fork",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_k15_k18_operations_and_old_receipts",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_k19_protected_asset_url",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_k21_oversized_snapshot_and_query",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_k26_strict_data_query",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_k09_host_effect_and_automatic_observation_same_commit",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_policy_overlap_and_provider_exception_fail_closed",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_explicit_live_entity_compatibility_and_revoke",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_manage_observation_uses_previous_state_atomically",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_structural_cache_never_bypasses_mutation_or_references",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_batch_read_proofs_capture_provider_once",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge::test_explicit_denied_egress_wins_over_provider_hooks",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge_network::test_http_authority_and_all_five_routes",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge_network::test_k17_ws_revocation_before_end_resets",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge_network::test_k23_explicit_conversion_original_bytes_unchanged[room]",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge_network::test_k23_explicit_conversion_original_bytes_unchanged[snapshot]",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge_network::test_k23_explicit_conversion_original_bytes_unchanged[backup]",
+          "status": "passed"
+        },
+        {
+          "id": "test_knowledge_network::test_k22_backup_restore_forks_knowledge_scope",
+          "status": "passed"
+        },
+        {
+          "id": "test_edges::test_cursor_copy_and_policy_rebind_invalidate_old_evidence",
+          "status": "passed"
+        },
+        {
+          "id": "test_edges::test_query_response_and_observation_limit_are_atomic",
+          "status": "passed"
+        },
+        {
+          "id": "test_edges::test_old_chat_result_and_speaker_do_not_bypass_policy",
+          "status": "passed"
+        },
+        {
+          "id": "test_edges::test_schema_unknown_fields_and_bool_revisions",
+          "status": "passed"
+        },
+        {
+          "id": "test_edges::test_machine_dtos_match_actual_host_responses",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "path": "ws-enqueue.xml",
+      "tests": 1,
+      "exitCode": 0,
+      "cases": [
+        {
+          "id": "test_ws_boundary::test_k17_revocation_after_end_enqueue_cannot_retract",
+          "status": "passed"
+        }
+      ]
+    }
+  ],
+  "latestCases": {
+    "test_knowledge::test_k01_empty_and_k24_no_ai": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_knowledge::test_k02_k03_subject_and_legacy_exit": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_knowledge::test_k04_fixed_versions_and_k20_archive": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_knowledge::test_k05_live_revisions_and_eligibility": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_knowledge::test_k06_equivalent_grant_and_k14_unrelated_change": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_knowledge::test_k07_forgery_and_k08_dedupe": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_knowledge::test_k09_crash_atomicity[before_knowledge_commit]": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_knowledge::test_k09_crash_atomicity[after_knowledge_commit]": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_knowledge::test_k10_persistent_policy_and_k11_future_objects": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_knowledge::test_k12_member_recreated_and_k22_scope_fork": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_knowledge::test_k15_k18_operations_and_old_receipts": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_knowledge::test_k19_protected_asset_url": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_knowledge::test_k21_oversized_snapshot_and_query": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_knowledge::test_k26_strict_data_query": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_knowledge::test_k09_host_effect_and_automatic_observation_same_commit": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_knowledge::test_policy_overlap_and_provider_exception_fail_closed": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_knowledge::test_explicit_live_entity_compatibility_and_revoke": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_knowledge::test_manage_observation_uses_previous_state_atomically": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_knowledge_network::test_http_authority_and_all_five_routes": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_knowledge_network::test_k17_ws_revocation_before_end_resets": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_knowledge_network::test_k23_explicit_conversion_original_bytes_unchanged[room]": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_knowledge_network::test_k23_explicit_conversion_original_bytes_unchanged[snapshot]": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_knowledge_network::test_k23_explicit_conversion_original_bytes_unchanged[backup]": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_knowledge_network::test_k22_backup_restore_forks_knowledge_scope": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_host::test_transfer_dedupe_restart": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_host::test_readonly_and_permissions": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_host::test_old_flow_lock_and_restart": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_host::test_failure_rolls_back": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_host::test_personal_progress_and_revocation": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_foundation::test_store_contract[FileDataStore]": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_foundation::test_store_contract[MemoryDataStore]": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_foundation::test_failed_publish": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_foundation::test_corruption_and_export": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_foundation::test_lua_real_execution": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_foundation::test_lua_timeout_and_restricted_globals": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_faults::test_real_host_crash[before_t1]": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_faults::test_real_host_crash[after_t1]": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_faults::test_real_host_crash[after_random]": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_faults::test_real_host_crash[before_t2]": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_faults::test_real_host_crash[after_t2]": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_faults::test_real_file_crash[half_write]": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_faults::test_real_file_crash[before_sync]": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_faults::test_real_file_crash[before_publish]": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_faults::test_real_file_crash[after_publish]": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_faults::test_backup_restore_assets_identity": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_faults::test_wait_timeout_and_permission_recheck": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_faults::test_lua_invalid_boundaries[return rule('x',{},function(r) r.roll(100) end,{mode='calculation'})]": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_faults::test_lua_invalid_boundaries[return rule('x',{},function(r) local a={};a.x=a;return a end)]": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_faults::test_lua_invalid_boundaries[return rule('x',{},function(r) return 0/0 end)]": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_faults::test_lua_invalid_boundaries[return rule('x',{},function(r) return r.read.__globals__ end)]": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_faults::test_lua_invalid_boundaries[return rule('x',{},function(r) local x={}; while true do x[#x+1]=string.format('%01000d',1) end end)]": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_faults::test_poison_cannot_be_caught": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_faults::test_invalid_dependency_and_wait": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_faults::test_quota_and_sync_failure": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_faults::test_flow_stage_crash_preserves_wait_and_random[before_t2]": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_faults::test_flow_stage_crash_preserves_wait_and_random[after_t2]": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_faults::test_old_data_snapshot_survives_hot_reload": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_faults::test_second_host_process_is_rejected": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_model_contracts::test_same_configuration_distinct_instances": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_model_contracts::test_relation_invariants": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_model_contracts::test_concurrent_quantity_and_view_precondition": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_model_contracts::test_behavior_entry_and_retry": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_model_contracts::test_queue_and_internal_transport": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_model_contracts::test_storage_query_receipt_contract[MemoryDataStore]": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_model_contracts::test_storage_query_receipt_contract[FileDataStore]": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_model_contracts::test_machine_fixtures": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_model_contracts::test_host_storage_injection_and_author_helpers": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_adapters::test_http_inprocess_equivalent": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_adapters::test_slow_sender_is_closed": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_chat::test_public_send_restart_idempotency_and_projection": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_chat::test_private_channels_revoke_and_no_projection_side_channel": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_chat::test_direct_pair_dedup_and_kp_not_implicit_recipient": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_chat::test_pagination_read_positions_and_old_message_edits": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_chat::test_edit_retract_moderation_and_channel_policy": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_chat::test_paused_room_can_chat_archived_room_read_only": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_chat::test_message_schema_rejects_forgery_and_limits[extra0]": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_chat::test_message_schema_rejects_forgery_and_limits[extra1]": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_chat::test_message_schema_rejects_forgery_and_limits[extra2]": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_chat::test_message_schema_rejects_forgery_and_limits[extra3]": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_chat::test_message_schema_rejects_forgery_and_limits[extra4]": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_chat::test_message_schema_rejects_forgery_and_limits[extra5]": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_chat::test_speaker_attachment_reference_and_private_asset_boundary": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_chat::test_verified_action_card_uses_host_receipt_and_is_immutable": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_chat::test_current_room_restart_and_backup_preserve_chat": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_chat::test_model_rejects_corrupt_chat_references[sequence]": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_chat::test_model_rejects_corrupt_chat_references[reply]": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_chat::test_model_rejects_corrupt_chat_references[sender]": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_chat::test_model_rejects_corrupt_chat_references[read]": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_chat::test_model_rejects_corrupt_chat_references[asset]": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_chat::test_rate_limit_and_retention_limit_roll_back": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_chat::test_real_process_crash_chat_and_receipt_are_atomic[before_chat_commit]": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_chat::test_real_process_crash_chat_and_receipt_are_atomic[after_chat_commit]": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_chat::test_http_history_auth_csrf_and_inprocess_equivalence": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_chat::test_channel_management_permissions_stale_versions_and_atomic_rejection": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_chat::test_empty_message_and_retracted_reply_are_consistent": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_chat_network::test_chat_sdk_real_browsers_sync_privacy_reconnect_and_revocation": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_network::test_http_boundary": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_network::test_three_browsers_and_eight_connections": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_room_versions::test_open_rejects_before_room_mutation[v1]": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_room_versions::test_open_rejects_before_room_mutation[v2]": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_room_versions::test_open_rejects_before_room_mutation[future]": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_room_versions::test_open_rejects_before_room_mutation[no-chat]": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_room_versions::test_open_rejects_before_room_mutation[no-control]": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_room_versions::test_open_rejects_before_room_mutation[no-commands]": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_room_versions::test_open_rejects_before_room_mutation[reference]": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_room_versions::test_open_rejects_before_room_mutation[bad-version]": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_room_versions::test_backup_rejects_before_any_restore_target[v1]": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_room_versions::test_backup_rejects_before_any_restore_target[v2]": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_room_versions::test_backup_rejects_before_any_restore_target[future]": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_room_versions::test_backup_rejects_before_any_restore_target[no-chat]": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_room_versions::test_backup_rejects_before_any_restore_target[no-control]": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_room_versions::test_backup_rejects_before_any_restore_target[no-commands]": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_room_versions::test_backup_rejects_before_any_restore_target[reference]": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_room_versions::test_backup_rejects_before_any_restore_target[bad-version]": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_room_versions::test_execution_projection_cannot_be_used_as_room": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_room_versions::test_external_conversion_is_explicit_and_works": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_room_versions::test_validation_cli_is_read_only[room]": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_room_versions::test_validation_cli_is_read_only[snapshot]": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_room_versions::test_validation_cli_is_read_only[backup]": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_room_versions::test_release_schema_and_fixture_agree": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_room_versions::test_restore_lifecycle_disables_auto_without_mutating_input": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_edges::test_cursor_copy_and_policy_rebind_invalidate_old_evidence": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_edges::test_query_response_and_observation_limit_are_atomic": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_edges::test_old_chat_result_and_speaker_do_not_bypass_policy": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_edges::test_schema_unknown_fields_and_bool_revisions": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_knowledge::test_structural_cache_never_bypasses_mutation_or_references": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_edges::test_machine_dtos_match_actual_host_responses": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_knowledge::test_batch_read_proofs_capture_provider_once": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_knowledge::test_explicit_denied_egress_wins_over_provider_hooks": {
+      "status": "passed",
+      "evidence": "backend-release.xml"
+    },
+    "test_ai_approval::test_approval_stages_evidence_without_loading": {
+      "status": "passed",
+      "evidence": "ai-host-regression.xml"
+    },
+    "test_ai_approval::test_player_and_forged_pass_are_rejected": {
+      "status": "passed",
+      "evidence": "ai-host-regression.xml"
+    },
+    "test_ai_approval::test_required_risk_reasons_are_enforced": {
+      "status": "passed",
+      "evidence": "ai-host-regression.xml"
+    },
+    "test_ai_approval::test_edit_revokes_old_approval_and_requires_fresh_reports": {
+      "status": "passed",
+      "evidence": "ai-host-regression.xml"
+    },
+    "test_ai_approval::test_approved_context_and_evidence_cannot_drift[<lambda>-BASELINE_STALE]": {
+      "status": "passed",
+      "evidence": "ai-host-regression.xml"
+    },
+    "test_ai_approval::test_approved_context_and_evidence_cannot_drift[<lambda>-DIGEST_MISMATCH]": {
+      "status": "passed",
+      "evidence": "ai-host-regression.xml"
+    },
+    "test_ai_approval::test_approved_context_and_evidence_cannot_drift[<lambda>-VALIDATOR_STALE]": {
+      "status": "passed",
+      "evidence": "ai-host-regression.xml"
+    },
+    "test_ai_approval::test_approved_context_and_evidence_cannot_drift[<lambda>-PERMISSION_DENIED]": {
+      "status": "passed",
+      "evidence": "ai-host-regression.xml"
+    },
+    "test_ai_approval::test_expiry_blocks_loading": {
+      "status": "passed",
+      "evidence": "ai-host-regression.xml"
+    },
+    "test_ai_approval::test_failed_validation_cannot_be_prepared": {
+      "status": "passed",
+      "evidence": "ai-host-regression.xml"
+    },
+    "test_ai_publication::test_load_once_after_ai_store_is_closed_and_restart": {
+      "status": "passed",
+      "evidence": "ai-host-regression.xml"
+    },
+    "test_ai_publication::test_same_command_id_different_payload_conflicts": {
+      "status": "passed",
+      "evidence": "ai-host-regression.xml"
+    },
+    "test_ai_publication::test_concurrent_duplicate_publications_have_one_effect": {
+      "status": "passed",
+      "evidence": "ai-host-regression.xml"
+    },
+    "test_ai_publication::test_publication_reconciliation_never_reapplies_effects": {
+      "status": "passed",
+      "evidence": "ai-host-regression.xml"
+    },
+    "test_ai_publication::test_two_kps_cannot_publish_against_the_same_old_baseline": {
+      "status": "passed",
+      "evidence": "ai-host-regression.xml"
+    },
+    "test_ai_publication::test_resolving_prepared_bundle_does_not_hold_room_lock": {
+      "status": "passed",
+      "evidence": "ai-host-regression.xml"
+    },
+    "test_ai_recovery::test_post_commit_error_keeps_committed_publication[exception0]": {
+      "status": "passed",
+      "evidence": "ai-host-regression.xml"
+    },
+    "test_ai_recovery::test_post_commit_error_keeps_committed_publication[exception1]": {
+      "status": "passed",
+      "evidence": "ai-host-regression.xml"
+    },
+    "test_ai_recovery::test_pre_commit_failure_has_no_partial_configuration": {
+      "status": "passed",
+      "evidence": "ai-host-regression.xml"
+    },
+    "test_ai_recovery::test_approval_reply_loss_can_be_queried_without_ai_repository": {
+      "status": "passed",
+      "evidence": "ai-host-regression.xml"
+    },
+    "test_ai_recovery::test_failure_after_local_configuration_edit_rolls_back_everything": {
+      "status": "passed",
+      "evidence": "ai-host-regression.xml"
+    },
+    "test_ai_backup::test_current_room_restarts_without_upgrade": {
+      "status": "passed",
+      "evidence": "ai-host-regression.xml"
+    },
+    "test_ai_backup::test_unknown_room_version_is_not_overwritten": {
+      "status": "passed",
+      "evidence": "ai-host-regression.xml"
+    },
+    "test_ai_backup::test_restore_forks_scope_revokes_approval_and_retains_optional_history": {
+      "status": "passed",
+      "evidence": "ai-host-regression.xml"
+    },
+    "test_ai_backup::test_published_game_restores_without_ai_store": {
+      "status": "passed",
+      "evidence": "ai-host-regression.xml"
+    },
+    "test_ai_backup::test_restore_retries_transient_windows_directory_handle": {
+      "status": "passed",
+      "evidence": "ai-host-regression.xml"
+    },
+    "test_ai_backup::test_backup_missing_references_fails_before_creating_target[artifact]": {
+      "status": "passed",
+      "evidence": "ai-host-regression.xml"
+    },
+    "test_ai_backup::test_backup_missing_references_fails_before_creating_target[ai-reference]": {
+      "status": "passed",
+      "evidence": "ai-host-regression.xml"
+    },
+    "test_sdk::test_existing_client_sdk_with_webrtc": {
+      "status": "passed",
+      "evidence": "sdk-sessions.xml"
+    },
+    "test_local_boundary::test_session_lock_is_exclusive_and_released": {
+      "status": "passed",
+      "evidence": "network-retest.xml"
+    },
+    "test_local_boundary::test_local_capability_origin_and_one_use_sandbox": {
+      "status": "passed",
+      "evidence": "network-retest.xml"
+    },
+    "test_portal::test_code_only_join_shortcuts_no_game_connection": {
+      "status": "passed",
+      "evidence": "network-retest.xml"
+    },
+    "test_portal::test_approval_ban_unban_and_permanent_close": {
+      "status": "passed",
+      "evidence": "network-retest.xml"
+    },
+    "test_portal::test_sessions_csrf_recovery_and_other_device": {
+      "status": "passed",
+      "evidence": "network-retest.xml"
+    },
+    "test_portal::test_duplicate_seat_and_revoke_ticket": {
+      "status": "passed",
+      "evidence": "network-retest.xml"
+    },
+    "test_portal::test_persistent_store_lock_backup_and_no_silent_rollback": {
+      "status": "passed",
+      "evidence": "network-retest.xml"
+    },
+    "test_portal::test_resource_projection_and_unlisted_hash_denied": {
+      "status": "passed",
+      "evidence": "network-retest.xml"
+    },
+    "test_portal::test_cross_device_membership_and_offline_shortcut": {
+      "status": "passed",
+      "evidence": "network-retest.xml"
+    },
+    "test_portal::test_room_cannot_be_enumerated_by_changing_legacy_settings": {
+      "status": "passed",
+      "evidence": "network-retest.xml"
+    },
+    "test_portal::test_wrong_origin_and_page_security_headers": {
+      "status": "passed",
+      "evidence": "network-retest.xml"
+    },
+    "test_portal::test_expired_approval_requests_do_not_fill_room_forever": {
+      "status": "passed",
+      "evidence": "network-retest.xml"
+    },
+    "test_portal::test_server_restart_preserves_account_membership_and_bans": {
+      "status": "passed",
+      "evidence": "network-retest.xml"
+    },
+    "test_network_paths::test_p2p_upstream_knowledge_routes_and_isolated_peers": {
+      "status": "passed",
+      "evidence": "network-paths.xml"
+    },
+    "test_network_paths::test_lan_gateway_knowledge_and_csrf": {
+      "status": "passed",
+      "evidence": "network-paths.xml"
+    },
+    "test_network_paths::test_web_export_has_exact_knowledge_routes": {
+      "status": "passed",
+      "evidence": "network-paths.xml"
+    },
+    "test_sdk_sessions::test_sdk_discards_previous_account_and_connection": {
+      "status": "passed",
+      "evidence": "sdk-sessions.xml"
+    },
+    "test_ws_boundary::test_k17_revocation_after_end_enqueue_cannot_retract": {
+      "status": "passed",
+      "evidence": "ws-enqueue.xml"
+    }
+  },
+  "aiEvidence": "../ai-runtime/known-results.json",
+  "performance": {
+    "python": "3.14.2",
+    "platform": "Windows-10-10.0.19045-SP0",
+    "processor": "AMD64 Family 25 Model 80 Stepping 0, AuthenticAMD",
+    "subjects": 20,
+    "resources": 1000,
+    "grants": 5000,
+    "knowledgeBytes": 3009599,
+    "roomCommitBytes": 3378223,
+    "wsProjectionBytes": 23337,
+    "measurements": {
+      "legacy_entities": {
+        "p50Ms": 54.741850000027625,
+        "p95Ms": 67.38499999983105,
+        "maxMs": 82.82010000039008,
+        "repetitions": 100,
+        "counts": {
+          "storeSnapshots": 100,
+          "guard": 0,
+          "pin": 0,
+          "live": 0
+        }
+      },
+      "search_50": {
+        "p50Ms": 62.702649999891946,
+        "p95Ms": 71.51220000014291,
+        "maxMs": 74.67329999963113,
+        "repetitions": 100,
+        "counts": {
+          "storeSnapshots": 100,
+          "guard": 25000,
+          "pin": 0,
+          "live": 0
+        }
+      },
+      "read_12": {
+        "p50Ms": 60.8249000001706,
+        "p95Ms": 68.9273999996658,
+        "maxMs": 75.05059999994046,
+        "repetitions": 100,
+        "counts": {
+          "storeSnapshots": 100,
+          "guard": 25000,
+          "pin": 0,
+          "live": 0
+        }
+      },
+      "recheck_12": {
+        "p50Ms": 61.5530499999295,
+        "p95Ms": 70.37979999995514,
+        "maxMs": 72.63109999985318,
+        "repetitions": 100,
+        "counts": {
+          "storeSnapshots": 100,
+          "guard": 25000,
+          "pin": 0,
+          "live": 0
+        }
+      }
+    },
+    "thresholdMs": 154.7699999996621,
+    "passed": true,
+    "baseline": "same ledger and host snapshot, legacy visible-entity scan; no knowledge filtering",
+    "storage": "FileDataStore warm in-memory snapshot; 1 snapshot capture per request, no repeated disk/package loads",
+    "cold": {
+      "openMs": 2060.0899999999456,
+      "firstSearchMs": 83.40130000033241,
+      "initialFullCommitMs": 1352.3118000002796,
+      "items": 50,
+      "warmObserveCommandMs": 1441.4318999997704,
+      "warmCommitMs": 442.90280000041093,
+      "note": "cold open uses a fresh process; warmObserve adds one observation/grant after the 5000-grant fixture"
+    }
+  },
+  "sha256": {
+    "engineering/acceptance/knowledge/benchmark.py": "408b6b3bdc744733270bbbd41b171eb890e7f0ca0ee4020a8a5c55268e165066",
+    "engineering/acceptance/knowledge/record_report.py": "b3cc3eabb515287cadc4bab6e5227653e04300885d5ee45dd2c6f0f2cdab4737",
+    "engineering/acceptance/knowledge/test_edges.py": "51161a72bdc624bf30ec907355e6dd7f38b0d855b436c95451816edb70c053f3",
+    "engineering/acceptance/knowledge/test_network_paths.py": "d945eb9c91e1c40e9ee42bbbb009bf7e20e80c9d90ee485ead41fa93ac00bbb8",
+    "engineering/acceptance/knowledge/test_sdk_sessions.py": "7586edc047d379f9be6ff8f3fd02767e47dc50c71fe214b61e4d979f4b23fa21",
+    "engineering/acceptance/knowledge/test_ws_boundary.py": "e8018ab5e2399b6a208cae3cc6989a70010faf9fcbb7c739b24f6c571a423400",
+    "engineering/backend/pyproject.toml": "1dd030f2f4837e4c78f5c70623466b0396df1839f8916bca91c934d025bf9c8a",
+    "engineering/backend/src/onlinecoc/__init__.py": "41362a5ea4931c546433d4c48290c5707bf02dbbea1c3aafa9f43d1225e47003",
+    "engineering/backend/src/onlinecoc/ai_api.py": "6c56ca52d84d579ea80881fc40f43be12a55985122c6b5267e9a223a26d915ab",
+    "engineering/backend/src/onlinecoc/ai_contracts.py": "5722391fccb3de0907ffc42bb0129ac7918dd339a106a6939c45593e0438870b",
+    "engineering/backend/src/onlinecoc/ai_sources.py": "5b2cca568c6e5ed5e7f3a5eecaa89d9865f1565c293848292d61b7a4b11f0509",
+    "engineering/backend/src/onlinecoc/assets.py": "e3b1c6fe8df0da49aa6fe6d023dc87e3cf6f6f34771afc222dde066e829838c2",
+    "engineering/backend/src/onlinecoc/chat.py": "517355bad8942507bd3e166b80e50d9f871a5f81297c3187ba0d9fa7fe37431f",
+    "engineering/backend/src/onlinecoc/cli.py": "2181b82a915f3599da822057606fd2e5db8729f42679764a2268a3ea3cabe671",
+    "engineering/backend/src/onlinecoc/contracts.py": "a6aa1d6b61c4d90f58759754a1042385daa7d349a40033d7a71271846ecb8cf8",
+    "engineering/backend/src/onlinecoc/data_adapter.py": "f1e439ce95ffecad46cd51ef62b6dd59d413625dce935be8b0e11ea50456d24e",
+    "engineering/backend/src/onlinecoc/data_queries.py": "573d4526c36854d8cb1ff6916f61b3780f7aa0f68c155401389b6baf8284b5ed",
+    "engineering/backend/src/onlinecoc/errors.py": "6dd146a3ac9bceb5d04f09abb5a144f4382735330f09b59417a3825f4652dddf",
+    "engineering/backend/src/onlinecoc/execution.py": "6339f51fbd515514a83330f7f799050ff24a01284e4d552eacbfafc4f4c60f75",
+    "engineering/backend/src/onlinecoc/gateway.py": "5dfbd56442c9abf1c42a5510044b590ef7907fc4e1b0f24362b4256049f8e099",
+    "engineering/backend/src/onlinecoc/host.py": "28daaf0b9f204bb763a9ddbd034adb6b4830848e25f87d1e2454f9e4f02dd62e",
+    "engineering/backend/src/onlinecoc/host_control.py": "99ce3dbd37723b9673f006f127d4a9f07837076f11e969179180b778f2291b10",
+    "engineering/backend/src/onlinecoc/identity.py": "2f6703e95b3c59b2870618f82f0cb9a564d4c491e5c92a164ec39141b3aeeb63",
+    "engineering/backend/src/onlinecoc/knowledge/__init__.py": "0f65906a26d2c907bb921f50d216877102f6bdf3efb6b6844cc53e2dd077c104",
+    "engineering/backend/src/onlinecoc/knowledge/models.py": "93d658f525c9c8526c24b80d460e0c3db5af7716d72d5f105096eab132eb5cee",
+    "engineering/backend/src/onlinecoc/knowledge/provider.py": "292e689f12edf258b52c53368a870e30980fe510155ff9d803726a23b5018924",
+    "engineering/backend/src/onlinecoc/knowledge/service.py": "6d606d227583559abd19d548e03422dd64f3e2964ab657b51858ab5b76909ac5",
+    "engineering/backend/src/onlinecoc/lua_runtime.py": "0f7936f0b2060351da5cffff9eefbc7e3158ed3f899a07a14e8e346377413f69",
+    "engineering/backend/src/onlinecoc/model.py": "f5476ee69dad86079c0f03bdb6cdd297d0800ecbae9defecd98860c24f545393",
+    "engineering/backend/src/onlinecoc/publication.py": "cf8d1fbfe117175aff42649fdd879bb062457c98a23f27dde25896c27e732920",
+    "engineering/backend/src/onlinecoc/registry.py": "7cd791c4fedc2f10cf7426646bc3abd18e26f5cb0bbabc86bbc4bf719a180b4a",
+    "engineering/backend/src/onlinecoc/room_lifecycle.py": "eb14fa9bbb81c4441090c8dcd1526f8de2cdcb7fc4b43f09d423481748b483eb",
+    "engineering/backend/src/onlinecoc/room_migration.py": "56a27ad17e676ac336f6b12c58643b09ebee5b8ed60816c5426f0176e531ff6e",
+    "engineering/backend/src/onlinecoc/room_validation.py": "ba52626e80e83f68381289e30264a73d5cc6c63b4bc9d992f125aca543f6805d",
+    "engineering/backend/src/onlinecoc/server.py": "4e09c28ba790f1c4cc9eef620a63bc0b68f13fa5cb64e76f91d10e709d68fcf9",
+    "engineering/backend/src/onlinecoc/version.py": "1b5cf11a096d130a6702e6370686c3f21b2cf673bf43dc0ea86e97023ca806eb",
+    "engineering/backend/src/onlinecoc/worker_entry.py": "0ca8980db2791e9ab72982e34f9b36bbb4a79f66aa4f24a31aa4343239205500",
+    "engineering/backend/src/onlinecoc/worker_process.py": "dc451662822013ec99ac2d1c3902d73876cef4e9decdbeedc282cebc74906fea",
+    "engineering/client-sdk/client.js": "fec8caad3994c07b9f4163532ac49a133ad6cc07a4a28ea1f94025bf0729e6bb",
+    "engineering/contracts/ai-operations.json": "ab43f1d664c5cee5f21b536d47c0d589d1f4c7720cf9fb514edab126252b7a9b",
+    "engineering/contracts/ai.json": "70f00a6edc752769258a1c78cd6ac967b59b91d7de5ddfc31d20a5b54483cbdf",
+    "engineering/contracts/host-control.json": "dae9925bcb8d23b045685aa35da55a0cfe01048076a611d6802dd58cd731f1a1",
+    "engineering/contracts/knowledge.json": "3b1f7d7ec106f46eeb781bdcdf1f453a3e0b5f54611c1d3d3f3ccf61e5e67b87",
+    "engineering/contracts/messages.json": "a296e181c36db1289ff40c85a8e89dc0bbe0ac6abd97bf8e958f53741719e7e7",
+    "engineering/contracts/models.json": "8d1ff205f5027b6b91265a709cefc6523b31745b3ae34828a7fae63700d31d8f",
+    "engineering/contracts/operations.json": "58c8b96d0a8eb01379b9f7725605da435fa39ceb9bdd0e09c4f349e9e0c749ed",
+    "engineering/network-lan/src/onlinecoc_lan/gateway.py": "ebd774ab57676f7da094087145a6be26a3b61a4a1406243bd23e50adc93cdccf",
+    "engineering/network-p2p/src/onlinecoc_p2p/upstream.py": "41a92dc9c018fb30d58bf89be1bcce9ff4af95c23f5fcf013773061e43ff184b",
+    "engineering/network-p2p/src/onlinecoc_p2p/web/bridge.js": "fe6a3c708be9eaee0fda7b3817af367d2249c4e003e71d78c3dfac68370d1cfa",
+    "engineering/network-web/examples/core-table/web.json": "4654dd4e45c7b7cffaddb9fb465d65b7082da807a27a4d3e42ef4bf2dceb38f3"
+  },
+  "retestNotes": [
+    "backup test now asserts independently renewed knowledge scope; backend-release passes",
+    "bundled Chromium absent; installed Edge used",
+    "isolated network child aiohttp path corrected; network-paths passes",
+    "AI legacy console test omitted KP dispatch click; final two UI tests pass; original failures retained"
+  ]
+}

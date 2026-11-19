@@ -2,6 +2,8 @@
 
 收录待讨论、待验证或待实施的需求、调研、设计提案及实施计划。计划被接受不代表功能已经实现。
 
+ISSUE-011首版与AI消费接入已完成，见[现行知识服务](../current/engineering/player-knowledge.md)、[有效设计](../current/design/ai-player-knowledge.md)及[归档施工记录](../history/2026-11-17-player-knowledge-construction-plan.md)。
+
 新增计划时，在下表登记，并在正文写清目标、范围、待确认问题、实施步骤与验收条件。
 
 | 文档 | 状态 | 说明 |
@@ -42,3 +44,7 @@
 维护规则见 [文档维护标准](../standards/document-maintenance.md)。
 
 - [通用请求与决定工程评估](interaction-records.md)：双模型、读取试点、权限与事务边界，宿主接线尚未实现。
+
+- [AI 裁决与输出修正实验](ai-rulings-experiments.md)：离线故障注入、真实 API 与隔离房间验收。
+
+- [AI 会话管理交互原型](ai-session-management-prototype.md)：房间／列表／详情三栏、KP／PL、归档撤销和窄屏交互，等待试玩反馈。

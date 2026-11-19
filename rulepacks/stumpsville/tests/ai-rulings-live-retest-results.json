@@ -1,0 +1,437 @@
+{
+  "checkedAt": "2026-11-16T15:15:35.668245+08:00",
+  "model": "deepseek-flash",
+  "realSaveChanged": false,
+  "evidenceDirectory": "tests/output/ai-rulings-live-4d50d61b",
+  "calls": [
+    {
+      "injected": true,
+      "reason": "synthetic invalid JSON",
+      "usage": {
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "total_tokens": 0
+      }
+    },
+    {
+      "injected": false,
+      "httpStatus": 200,
+      "seconds": 1.87,
+      "usage": {
+        "prompt_tokens": 6845,
+        "completion_tokens": 131,
+        "total_tokens": 6976,
+        "prompt_tokens_details": {
+          "cached_tokens": 512
+        },
+        "prompt_cache_hit_tokens": 512,
+        "prompt_cache_miss_tokens": 6333
+      },
+      "finishReasons": [
+        "tool_calls"
+      ]
+    },
+    {
+      "injected": false,
+      "httpStatus": 200,
+      "seconds": 1.64,
+      "usage": {
+        "prompt_tokens": 12887,
+        "completion_tokens": 236,
+        "total_tokens": 13123,
+        "prompt_tokens_details": {
+          "cached_tokens": 6912
+        },
+        "prompt_cache_hit_tokens": 6912,
+        "prompt_cache_miss_tokens": 5975
+      },
+      "finishReasons": [
+        "tool_calls"
+      ]
+    },
+    {
+      "injected": false,
+      "httpStatus": 200,
+      "seconds": 4.05,
+      "usage": {
+        "prompt_tokens": 13600,
+        "completion_tokens": 564,
+        "total_tokens": 14164,
+        "prompt_tokens_details": {
+          "cached_tokens": 13056
+        },
+        "prompt_cache_hit_tokens": 13056,
+        "prompt_cache_miss_tokens": 544
+      },
+      "finishReasons": [
+        "stop"
+      ]
+    },
+    {
+      "injected": false,
+      "httpStatus": 200,
+      "seconds": 2.94,
+      "usage": {
+        "prompt_tokens": 14237,
+        "completion_tokens": 428,
+        "total_tokens": 14665,
+        "prompt_tokens_details": {
+          "cached_tokens": 14080
+        },
+        "prompt_cache_hit_tokens": 14080,
+        "prompt_cache_miss_tokens": 157
+      },
+      "finishReasons": [
+        "stop"
+      ]
+    },
+    {
+      "injected": false,
+      "httpStatus": 200,
+      "seconds": 1.64,
+      "usage": {
+        "prompt_tokens": 14738,
+        "completion_tokens": 23,
+        "total_tokens": 14761,
+        "prompt_tokens_details": {
+          "cached_tokens": 14592
+        },
+        "prompt_cache_hit_tokens": 14592,
+        "prompt_cache_miss_tokens": 146
+      },
+      "finishReasons": [
+        "tool_calls"
+      ]
+    },
+    {
+      "injected": false,
+      "httpStatus": 200,
+      "seconds": 2.42,
+      "usage": {
+        "prompt_tokens": 15115,
+        "completion_tokens": 278,
+        "total_tokens": 15393,
+        "prompt_tokens_details": {
+          "cached_tokens": 14720
+        },
+        "prompt_cache_hit_tokens": 14720,
+        "prompt_cache_miss_tokens": 395
+      },
+      "finishReasons": [
+        "tool_calls"
+      ]
+    },
+    {
+      "injected": false,
+      "httpStatus": 200,
+      "seconds": 2.63,
+      "usage": {
+        "prompt_tokens": 16128,
+        "completion_tokens": 396,
+        "total_tokens": 16524,
+        "prompt_tokens_details": {
+          "cached_tokens": 15360
+        },
+        "prompt_cache_hit_tokens": 15360,
+        "prompt_cache_miss_tokens": 768
+      },
+      "finishReasons": [
+        "stop"
+      ]
+    }
+  ],
+  "cases": [
+    {
+      "id": "R6-live",
+      "prompt": "请新增独立 NPC 模板 sv.ext.npc.liveguide，完整复制现有 NPC 默认值，仅将生命上限与生命改为 6，增加 isNpc=1。另新增计算规则 sv.ext.live_score，输入 actor，返回力量加意志，KP 专用；每个 Lua 文件只返回一个规则。不要建实例，不要改核心规则。方向已经确定，请提交可供 KP 整批裁决的配置。",
+      "seconds": 33.55,
+      "task": {
+        "requestId": "d9a7cccb620c4e12bad8800bad834d22",
+        "status": "review_ready",
+        "createdAt": 1794813358.1439848,
+        "text": "请新增独立 NPC 模板 sv.ext.npc.liveguide，完整复制现有 NPC 默认值，仅将生命上限与生命改为 6，增加 isNpc=1。另新增计算规则 sv.ext.live_score，输入 actor，返回力量加意志，KP 专用；每个 Lua 文件只返回一个规则。不要建实例，不要改核心规则。方向已经确定，请提交可供 KP 整批裁决的配置。",
+        "initiator": "kp",
+        "taskId": "90930cb708e2433ea26ee2cea0d231c6",
+        "proposalId": "242980cfae7f47cc9ede5de9839a56f8",
+        "error": null,
+        "response": null
+      },
+      "passed": true,
+      "reports": [
+        {
+          "level": "A",
+          "status": "pass",
+          "findings": []
+        },
+        {
+          "level": "B",
+          "status": "pass",
+          "findings": []
+        },
+        {
+          "level": "C",
+          "status": "pass",
+          "findings": [
+            {
+              "code": "EXTENSION_GAMEPLAY_REVIEW",
+              "severity": "warning",
+              "path": "",
+              "sourceRef": "",
+              "message": "EXTENSION_GAMEPLAY_REVIEW",
+              "evidence": null,
+              "suggestion": "Review NPC template deltas and explicit rule effects before publication"
+            }
+          ]
+        }
+      ],
+      "decision": "completed"
+    }
+  ],
+  "passed": true,
+  "usage": {
+    "schemaVersion": 1,
+    "scopeId": "a8202616e62d4288a69d8bf48a087b6e",
+    "scope": "room",
+    "timezone": "UTC",
+    "from": "2026-11-10",
+    "to": "2026-11-16",
+    "totals": {
+      "calls": 8,
+      "settledCalls": 7,
+      "pendingCalls": 0,
+      "uncertainCalls": 1,
+      "confirmedTokens": 95606,
+      "promptTokens": 93550,
+      "completionTokens": 2056,
+      "missingBreakdownCalls": 0,
+      "pendingReservedTokens": 0,
+      "uncertainReservedTokens": 36380,
+      "accountedTokens": 131986
+    },
+    "byDay": [
+      {
+        "date": "2026-11-16",
+        "calls": 8,
+        "settledCalls": 7,
+        "pendingCalls": 0,
+        "uncertainCalls": 1,
+        "confirmedTokens": 95606,
+        "promptTokens": 93550,
+        "completionTokens": 2056,
+        "missingBreakdownCalls": 0,
+        "pendingReservedTokens": 0,
+        "uncertainReservedTokens": 36380,
+        "accountedTokens": 131986
+      }
+    ],
+    "byProfile": [
+      {
+        "profileId": "deepseek-main",
+        "model": "deepseek-flash",
+        "calls": 8,
+        "settledCalls": 7,
+        "pendingCalls": 0,
+        "uncertainCalls": 1,
+        "confirmedTokens": 95606,
+        "promptTokens": 93550,
+        "completionTokens": 2056,
+        "missingBreakdownCalls": 0,
+        "pendingReservedTokens": 0,
+        "uncertainReservedTokens": 36380,
+        "accountedTokens": 131986
+      }
+    ],
+    "budgetsToday": [
+      {
+        "profileId": "deepseek-main",
+        "date": "2026-11-16",
+        "dailyTokenBudget": null,
+        "enabled": false,
+        "accountedTokens": 131986,
+        "remainingTokens": null
+      }
+    ],
+    "items": [
+      {
+        "callId": "6b0a21bac5c64f94b5d77ffb73f22479",
+        "date": "2026-11-16",
+        "profileId": "deepseek-main",
+        "model": "deepseek-flash",
+        "requestId": "d9a7cccb620c4e12bad8800bad834d22",
+        "sessionId": "f44da20132114c8dbc6b078aafab9d4b",
+        "status": "confirmed",
+        "taskStatus": "review_ready",
+        "createdAt": 1794813379.318644,
+        "calls": 1,
+        "settledCalls": 1,
+        "pendingCalls": 0,
+        "uncertainCalls": 0,
+        "confirmedTokens": 16524,
+        "promptTokens": 16128,
+        "completionTokens": 396,
+        "missingBreakdownCalls": 0,
+        "pendingReservedTokens": 0,
+        "uncertainReservedTokens": 0,
+        "accountedTokens": 16524
+      },
+      {
+        "callId": "7095ab8362874d29ba5888869dfa935c",
+        "date": "2026-11-16",
+        "profileId": "deepseek-main",
+        "model": "deepseek-flash",
+        "requestId": "d9a7cccb620c4e12bad8800bad834d22",
+        "sessionId": "f44da20132114c8dbc6b078aafab9d4b",
+        "status": "confirmed",
+        "taskStatus": "review_ready",
+        "createdAt": 1794813376.319829,
+        "calls": 1,
+        "settledCalls": 1,
+        "pendingCalls": 0,
+        "uncertainCalls": 0,
+        "confirmedTokens": 15393,
+        "promptTokens": 15115,
+        "completionTokens": 278,
+        "missingBreakdownCalls": 0,
+        "pendingReservedTokens": 0,
+        "uncertainReservedTokens": 0,
+        "accountedTokens": 15393
+      },
+      {
+        "callId": "7b48fee3e1f34420a8a11a15af5957e1",
+        "date": "2026-11-16",
+        "profileId": "deepseek-main",
+        "model": "deepseek-flash",
+        "requestId": "d9a7cccb620c4e12bad8800bad834d22",
+        "sessionId": "f44da20132114c8dbc6b078aafab9d4b",
+        "status": "confirmed",
+        "taskStatus": "review_ready",
+        "createdAt": 1794813374.375063,
+        "calls": 1,
+        "settledCalls": 1,
+        "pendingCalls": 0,
+        "uncertainCalls": 0,
+        "confirmedTokens": 14761,
+        "promptTokens": 14738,
+        "completionTokens": 23,
+        "missingBreakdownCalls": 0,
+        "pendingReservedTokens": 0,
+        "uncertainReservedTokens": 0,
+        "accountedTokens": 14761
+      },
+      {
+        "callId": "ba4a4bd8cf774e729f35c280a6f2123e",
+        "date": "2026-11-16",
+        "profileId": "deepseek-main",
+        "model": "deepseek-flash",
+        "requestId": "d9a7cccb620c4e12bad8800bad834d22",
+        "sessionId": "f44da20132114c8dbc6b078aafab9d4b",
+        "status": "confirmed",
+        "taskStatus": "review_ready",
+        "createdAt": 1794813369.140927,
+        "calls": 1,
+        "settledCalls": 1,
+        "pendingCalls": 0,
+        "uncertainCalls": 0,
+        "confirmedTokens": 14665,
+        "promptTokens": 14237,
+        "completionTokens": 428,
+        "missingBreakdownCalls": 0,
+        "pendingReservedTokens": 0,
+        "uncertainReservedTokens": 0,
+        "accountedTokens": 14665
+      },
+      {
+        "callId": "86027af976ca444f9f6a954950f2003f",
+        "date": "2026-11-16",
+        "profileId": "deepseek-main",
+        "model": "deepseek-flash",
+        "requestId": "d9a7cccb620c4e12bad8800bad834d22",
+        "sessionId": "f44da20132114c8dbc6b078aafab9d4b",
+        "status": "confirmed",
+        "taskStatus": "review_ready",
+        "createdAt": 1794813363.095263,
+        "calls": 1,
+        "settledCalls": 1,
+        "pendingCalls": 0,
+        "uncertainCalls": 0,
+        "confirmedTokens": 14164,
+        "promptTokens": 13600,
+        "completionTokens": 564,
+        "missingBreakdownCalls": 0,
+        "pendingReservedTokens": 0,
+        "uncertainReservedTokens": 0,
+        "accountedTokens": 14164
+      },
+      {
+        "callId": "865f20fcb25f4599a6124c365d6f3bbf",
+        "date": "2026-11-16",
+        "profileId": "deepseek-main",
+        "model": "deepseek-flash",
+        "requestId": "d9a7cccb620c4e12bad8800bad834d22",
+        "sessionId": "f44da20132114c8dbc6b078aafab9d4b",
+        "status": "confirmed",
+        "taskStatus": "review_ready",
+        "createdAt": 1794813361.318631,
+        "calls": 1,
+        "settledCalls": 1,
+        "pendingCalls": 0,
+        "uncertainCalls": 0,
+        "confirmedTokens": 13123,
+        "promptTokens": 12887,
+        "completionTokens": 236,
+        "missingBreakdownCalls": 0,
+        "pendingReservedTokens": 0,
+        "uncertainReservedTokens": 0,
+        "accountedTokens": 13123
+      },
+      {
+        "callId": "b7f770c1d2c842cabf9f5fa44be37380",
+        "date": "2026-11-16",
+        "profileId": "deepseek-main",
+        "model": "deepseek-flash",
+        "requestId": "d9a7cccb620c4e12bad8800bad834d22",
+        "sessionId": "f44da20132114c8dbc6b078aafab9d4b",
+        "status": "confirmed",
+        "taskStatus": "review_ready",
+        "createdAt": 1794813359.336096,
+        "calls": 1,
+        "settledCalls": 1,
+        "pendingCalls": 0,
+        "uncertainCalls": 0,
+        "confirmedTokens": 6976,
+        "promptTokens": 6845,
+        "completionTokens": 131,
+        "missingBreakdownCalls": 0,
+        "pendingReservedTokens": 0,
+        "uncertainReservedTokens": 0,
+        "accountedTokens": 6976
+      },
+      {
+        "callId": "84bebdbf555e443ea74046fe11de29e0",
+        "date": "2026-11-16",
+        "profileId": "deepseek-main",
+        "model": "deepseek-flash",
+        "requestId": "d9a7cccb620c4e12bad8800bad834d22",
+        "sessionId": "f44da20132114c8dbc6b078aafab9d4b",
+        "status": "uncertain",
+        "taskStatus": "review_ready",
+        "createdAt": 1794813359.283796,
+        "calls": 1,
+        "settledCalls": 0,
+        "pendingCalls": 0,
+        "uncertainCalls": 1,
+        "confirmedTokens": 0,
+        "promptTokens": 0,
+        "completionTokens": 0,
+        "missingBreakdownCalls": 0,
+        "pendingReservedTokens": 0,
+        "uncertainReservedTokens": 36380,
+        "accountedTokens": 36380
+      }
+    ],
+    "nextBefore": null
+  },
+  "persistentProviderConfigUnchanged": true,
+  "realCalls": 7,
+  "confirmedTokens": 95606
+}

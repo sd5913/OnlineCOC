@@ -2,7 +2,7 @@
 import json
 from datetime import datetime
 from harness import PACK, running, provision
-from playwright.sync_api import sync_playwright
+from playwright.sync_api import sync_playwright, expect
 
 
 def main():
@@ -52,26 +52,25 @@ def main():
             checks.append('global top menu folding persists across navigation/reload and stays isolated by login identity')
             player = pages['player1']
             player.goto(runtime.origin + '/sessions/player1/#/play/character')
-            while player.locator('.floating-panel').count():
-                top=player.locator('.floating-panel.front')
-                (top if top.count() else player.locator('.floating-panel').last).locator('[data-action=pane-close]').click()
-            player.locator('.character-tools').get_by_role('button', name='角色状态', exact=True).click()
-            player.locator('.character-tools').get_by_role('button', name='背包装备', exact=True).click()
-            player.locator('.character-tools [data-args*=status]').click()
+            player.locator('.resident-status').wait_for()
+            if player.locator('#notebook-body').is_visible():
+                player.locator('[data-action=notebook-toggle][aria-expanded=true]').click()
             player.get_by_role('button', name='敏捷', exact=True).click()
             player.locator('dialog[open]').wait_for()
             player.get_by_role('button', name='投骰', exact=True).click()
             player.locator('dialog').wait_for(state='hidden')
             assert p1.state()['character']['numbers']['checks'] == 1
+            player.locator('[data-action=notebook-toggle][data-args*=records]').click()
             player.locator('#action-feedback .log-entry').first.locator('.dice-result').wait_for()
             assert '检定' in player.locator('#action-feedback').inner_text()
-            player.locator('.character-tools [data-args*=inventory]').click()
+            player.locator('[data-action=notebook-toggle][data-args*=records]').click()
             player.get_by_role('button', name='火把', exact=False).first.click()
             player.get_by_role('button', name='移动物品', exact=True).click()
             player.locator('dialog input[name=value]').fill('8')
             player.get_by_role('button', name='移动', exact=True).click()
             player.locator('dialog').wait_for(state='hidden')
             assert p1.state()['character']['numbers']['item8'] == 2
+            player.locator('[data-action=notebook-toggle][data-args*=records]').click()
             assert '槽位 8' in player.locator('#action-feedback').inner_text()
             checks.append('browser check and item move commit through real host rules')
             request = p2.action('request', {'kind': 'free', 'text': 'UI拒绝裁定验收'})
@@ -85,13 +84,14 @@ def main():
             assert next(x for x in kp.state()['requests'] if x['id'] == request['requestId'])['status'] == 'rejected'
             recipient = pages['player2']
             recipient.goto(runtime.origin + '/sessions/player2/#/play/scene')
+            recipient.locator('[data-action=notebook-toggle][data-args*=records]').click()
             recipient.get_by_text('裁决说明：UI验证：这个行动暂不可行', exact=True).wait_for()
             checks.append('unified KP console sends a visible rejection and explanation to the requesting player')
             player.goto(runtime.origin + '/sessions/player1/#/play/scene')
-            while player.locator('.floating-panel').count():
-                top=player.locator('.floating-panel.front')
-                (top if top.count() else player.locator('.floating-panel').last).locator('[data-action=pane-close]').click()
-            player.get_by_role('button', name='前往 主门', exact=True).click()
+            if player.locator('#notebook-body').is_visible():
+                player.locator('[data-action=notebook-toggle][aria-expanded=true]').click()
+            # A navigation exit need not disclose the destination's name yet.
+            player.locator('[data-action=travel][data-args=\'{"destination":2}\']').click()
             player.get_by_role('button', name='确认移动', exact=True).click()
             player.locator('dialog').wait_for(state='hidden')
             assert p1.state()['character']['numbers']['location'] == 2
@@ -100,7 +100,9 @@ def main():
             player.get_by_role('button', name='提交申请', exact=True).click()
             player.locator('dialog').wait_for(state='hidden')
             assert any(x['kind']=='review' and x['status']=='pending' for x in kp.state()['requests'])
-            assert '等待 KP' in player.locator('#action-feedback').inner_text()
+            player.locator('[data-action=notebook-toggle][data-args*=records]').click()
+            expect(player.locator('#action-feedback')).to_contain_text('等待 KP')
+            player.locator('[data-action=notebook-toggle][data-args*=records]').click()
             gm.goto(runtime.origin + '/sessions/kp/#/gm/console')
             gm.get_by_role('button', name='关闭自动裁决', exact=True).click()
             gm.get_by_role('button', name='保存设置', exact=True).click()
@@ -122,13 +124,17 @@ def main():
             player.get_by_role('button', name='线索手记', exact=True).click()
             player.locator('#note-form textarea').fill('未保存的手记草稿')
             kp.action('resolve', {'requestId':manual['id'],'approve':True,'reason':'继续你的调查'})
-            player.get_by_text('裁决说明：继续你的调查', exact=True).wait_for(timeout=15000)
+            page_badge=player.locator('[data-log-badge]')
+            player.wait_for_timeout(3000)
+            assert int(page_badge.inner_text())>0
             assert p1.state()['character']['numbers']['checks'] == count+1
             assert player.locator('#note-form textarea').input_value() == '未保存的手记草稿'
             player.get_by_role('button', name='保存手记', exact=True).click()
-            while player.locator('.floating-panel').count():
-                top=player.locator('.floating-panel.front')
-                (top if top.count() else player.locator('.floating-panel').last).locator('[data-action=pane-close]').click()
+            expect(player.locator('#note-form textarea')).to_have_text('未保存的手记草稿')
+            player.locator('[data-action=notebook-toggle][data-args*=records]').click()
+            player.get_by_text('裁决说明：继续你的调查', exact=True).wait_for(timeout=15000)
+            if player.locator('#notebook-body').is_visible():
+                player.locator('[data-action=notebook-toggle][aria-expanded=true]').click()
             checks.append('manual roll process and KP result update in-place without discarding unsaved notes')
             player.goto(runtime.origin + '/sessions/player1/#/play/records')
             player.locator('#chat-form textarea').fill('UI联机消息')
@@ -141,18 +147,14 @@ def main():
             gm.locator('#chat-history').get_by_text('UI联机消息', exact=True).wait_for()
             gm.screenshot(path=str(screenshots / 'gm-console-messages.png'), full_page=True)
             checks.append('resident player chat and pinned KP rulings chat receive live messages')
-            player.locator('.character-tools [data-args*=status]').click()
-            records=player.get_by_role('region', name='角色状态悬浮面板')
-            records.get_by_role('button',name='折叠',exact=True).click()
-            assert records.locator('.floating-body').is_hidden()
+            player.locator('[data-action=notebook-toggle][data-args*=records]').click()
             player.reload()
-            player.locator('.pane-status.collapsed').wait_for()
-            player.get_by_role('region',name='角色状态悬浮面板').get_by_role('button',name='展开',exact=True).click()
+            assert player.locator('#notebook-body').is_hidden()
+            player.locator('[data-action=notebook-toggle][data-args*=records]').click()
             player.get_by_text('主持消息自动到达', exact=True).wait_for()
-            player.locator('.character-tools [data-args*=inventory]').click()
-            assert player.locator('.floating-panel').count()==2
+            assert player.locator('.resident-status,.resident-inventory').count()==2
             player.screenshot(path=str(screenshots / 'scene-floating-panels.png'), full_page=True)
-            checks.append('character panels toggle, collapse, reopen and persist their layout after reload')
+            checks.append('notebook collapses and persists after reload while character and inventory remain resident')
             player.set_viewport_size({'width': 390, 'height': 844})
             player.goto(runtime.origin + '/sessions/player1/#/play/character')
             player.locator('.inventory').wait_for()

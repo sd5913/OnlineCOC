@@ -9,8 +9,8 @@ import aiohttp
 
 from .common import Fault, MAX_REQUEST, MAX_RESPONSE, canonical, loopback_url, require
 
-READ = re.compile(r"^(capabilities|me|view|contracts|catalog|chat/members|receipts/[A-Za-z0-9_.-]{1,128})$")
-WRITE = re.compile(r"^(login|logout|query|commands|calculate|chat/history)$")
+READ = re.compile(r"^(capabilities|me|view|contracts|catalog|chat/members|knowledge/capabilities|receipts/[A-Za-z0-9_.-]{1,128})$")
+WRITE = re.compile(r"^(login|logout|query|commands|calculate|chat/history|knowledge/(preview|search|read|grants/query))$")
 
 
 class Upstream:

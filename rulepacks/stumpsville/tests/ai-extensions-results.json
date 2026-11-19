@@ -1,0 +1,14 @@
+{
+  "checkedAt": "2026-11-19T10:03:17.595610+08:00",
+  "passed": 6,
+  "checks": [
+    "A/B/C validate a new NPC template, action and calculation with actual existing NPC sandbox coverage",
+    "one whole configuration ruling publishes atomically; repeated approval is idempotent; PL cannot access the queue",
+    "published action/calculation execute; extension NPC appears in KP roster and existing morale operation; package active revision follows host",
+    "out-of-range extension defaults cannot enter approval-ready state",
+    "separate automatic configuration policy publishes only after A/B/C; existing instance values are preserved",
+    "restart reconciles authoritative published rules and keeps extension NPCs and package export content"
+  ],
+  "provider": "no model calls; isolated public HTTP",
+  "realSaveChanged": false
+}

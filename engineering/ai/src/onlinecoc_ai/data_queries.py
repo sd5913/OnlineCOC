@@ -28,34 +28,55 @@ TOOLS=[{'type':'function','function':{'name':name,'description':description,
 class DataQueryService:
     def __init__(self, host):self.host=host
 
-    def execute(self, account, operation, args, *, initiator=None, external=False):
+    def execute(self, account, operation, args, *, initiator=None, external=False, player=None):
         from jsonschema import Draft202012Validator
         require(operation in PARAMETERS,'INPUT_INVALID')
         schema=next(t['function']['parameters'] for t in TOOLS if NAMES[t['function']['name']]==operation)
         require(not list(Draft202012Validator(schema).iter_errors(args)),'INPUT_INVALID')
         require(len(canonical(args))<=16*1024,'QUERY_INPUT_LIMIT')
         with self.host.lock:state=self.host.state()
-        return query(self.host,state,account,operation,args,initiator=initiator,external=external)
+        return query(self.host,state,account,operation,args,initiator=initiator,external=external,player=player)
 
     def attach(self, account, operation, args, snapshot, initiator=None):
-        result=self.execute(account,operation,args,initiator=initiator,external=True)
+        player = snapshot[0]['facts'].get('sessionAccess', {})
+        player = player.get('owner') if player.get('level') == 'player' else None
+        result=self.execute(account,operation,args,initiator=initiator,external=True,player=player)
         context=snapshot[0]
         proofs=context['facts'].setdefault('dataQueries',[])
         require(len(proofs)<24,'QUERY_LIMIT')
-        proof={'scopeId':context['scopeId'],'operation':operation,'args':args,'initiator':initiator,'digest':digest(result)}
+        proof={'scopeId':context['scopeId'],'operation':operation,'args':args,'initiator':initiator,'player':player,'digest':digest(result)}
         if proof not in proofs:proofs.append(proof)
         if any(item['ref']['sourceId']!='host' for item in result['items']):context['facts']['consultationOnly']=True
         # Recheck also catches changes between reading the snapshot and obtaining evidence.
         with self.host.lock:self.host.validate_ai_sources(self.host.state(),account,context)
         return result
 
+    def citations(self, account, result, snapshot, initiator=None):
+        """Bridge opaque evidence IDs to existing UI tokens; never guess from labels."""
+        from .references import References
+        from .access import player_room
+        access=snapshot[0]['facts'].get('sessionAccess',{})
+        with self.host.lock:
+            room=self.host.state()
+            if access.get('level')=='player':
+                account=access['owner'];room=player_room(room,account)
+            else:account=initiator or account
+            candidates={}
+            for kind in {i['ref']['kind'] for i in result['items']} & {'entity','config','chat','event','ruling'}:
+                for key,label,revision,scope,value in References(self.host)._items(room,account,kind):
+                    evidence_id=digest(['host',kind,key]) if kind in ('entity','config') else key
+                    candidates[kind,evidence_id]={'token':f'[[{kind}:{key}@{revision}]]','label':label}
+            return {digest(i['ref']):candidates[i['ref']['kind'],i['ref']['id']]
+                for i in result['items'] if (i['ref']['kind'],i['ref']['id']) in candidates}
 
-def model_result(result, args):
+
+def model_result(result, args, citations=None):
     """Presentation-only counts of this authorized page; proof hashes stay raw."""
     counts = {kind: 0 for kind in args.get('types', []) if kind in KINDS}
     for item in result['items']:
         kind = item['ref']['kind']
         counts[kind] = counts.get(kind, 0) + 1
-    return {**result, 'pageSummary': {'returnedItems': len(result['items']),
+    return {**result, 'items':[{**item,**({'citation':citations[digest(item['ref'])]} if citations and digest(item['ref']) in citations else {})} for item in result['items']],
+        'pageSummary': {'returnedItems': len(result['items']),
         'countsByType': counts, 'hasMore': result['page']['nextCursor'] is not None,
         'isFirstPage': not bool(args.get('cursor'))}}

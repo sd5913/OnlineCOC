@@ -61,6 +61,7 @@ def main():
             for key in ('check','request','review'):expect(page.locator('.generic-actions [data-action='+key+']')).to_have_count(1)
             expect(page.locator('.top-nav')).to_contain_text('入场大厅')
             page.locator('#chat-form textarea').fill('保留的聊天草稿 HP DEX')
+            page.locator('[data-action=notebook-toggle][data-args*=records]').click()
             page.get_by_role('button',name='呼唤屋内',exact=True).click()
             page.locator('[name=scene-choice]').select_option('rescue')
             page.get_by_role('button',name='执行行动',exact=True).click()
@@ -69,14 +70,16 @@ def main():
             expect(page.locator('.log-entry').first).to_contain_text('敏捷 ≤ 20')
             expect(page.locator('.log-entry').first).to_contain_text('被困 → 已脱困')
             assert page.locator('#chat-form textarea').input_value()=='保留的聊天草稿 HP DEX'
-            checks.append('map/actions, compact real roll narrative and state changes, and chat coexist; action refresh preserves draft')
+            checks.append('map/actions, notebook roll narrative and state changes, and chat coexist; action refresh preserves draft')
+            page.locator('[data-action=notebook-toggle][data-args*=records]').click()
             for width,height in [(1920,1080),(1440,900),(1366,768)]:
                 page.set_viewport_size({'width':width,'height':height})
                 assert page.evaluate('document.documentElement.scrollHeight<=innerHeight+1 && document.documentElement.scrollWidth<=innerWidth+1')
-                for selector in ['.scene-column','.log-column','#chat-column']:
+                for selector in ['.character-column','.scene-column','.communication-column']:
                     box=page.locator(selector).bounding_box()
                     assert box and box['y']+box['height']<=height+1,(selector,box)
                 page.screenshot(path=str(screenshots/f'screen-{width}.png'),full_page=True)
+            page.locator('[data-action=notebook-toggle][data-args*=records]').click()
             log=page.locator('#action-feedback')
             assert log.evaluate('(n)=>n.scrollHeight>n.clientHeight')
             log.evaluate('(n)=>n.scrollTop=150')
@@ -107,8 +110,9 @@ def main():
             page.screenshot(path=str(screenshots/'screen-english.png'),full_page=True)
             checks.append('language switch updates scene, preset dialog, dice and results; chat draft keeps original text')
             page.locator('[name=locale]').select_option('zh-CN')
+            page.locator('[data-action=notebook-toggle][data-args*=records]').click()
             page.set_viewport_size({'width':390,'height':844})
-            for column in ['scene','log','chat']:
+            for column in ['character','scene','communication']:
                 page.locator(f'.workspace-tabs [data-action=workspace-column][data-args*=\"{column}\"]').click()
                 assert page.evaluate('document.documentElement.scrollHeight<=innerHeight+1 && document.documentElement.scrollWidth<=innerWidth+1')
                 expect(page.locator('#scene-desktop>.workspace-column:visible')).to_have_count(1)
@@ -119,7 +123,7 @@ def main():
             expect(page.locator('.messenger')).to_contain_text('暂无会话')
             page.locator('[data-chat=group][data-channel=room]').click()
             assert page.locator('#chat-form textarea').input_value()=='保留的聊天草稿 HP DEX'
-            checks.append('390px scene/log/chat tabs remain in one viewport; empty private list never shows a global composer')
+            checks.append('390px character/scene/conversation tabs remain in one viewport; empty private list never shows a global composer')
             browser.close()
     assert not errors,errors
     report={'passed':True,'checkedAt':datetime.now().astimezone().isoformat(),'checks':checks,'consoleErrors':errors}

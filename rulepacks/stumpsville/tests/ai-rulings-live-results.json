@@ -1,0 +1,906 @@
+{
+  "checkedAt": "2026-11-16T15:09:35.633120+08:00",
+  "model": "deepseek-flash",
+  "realSaveChanged": false,
+  "evidenceDirectory": "tests/output/ai-rulings-live-ff78aadc",
+  "calls": [
+    {
+      "injected": true,
+      "reason": "synthetic invalid JSON",
+      "usage": {
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "total_tokens": 0
+      }
+    },
+    {
+      "injected": false,
+      "httpStatus": 200,
+      "seconds": 2.37,
+      "usage": {
+        "prompt_tokens": 6661,
+        "completion_tokens": 148,
+        "total_tokens": 6809,
+        "prompt_tokens_details": {
+          "cached_tokens": 384
+        },
+        "prompt_cache_hit_tokens": 384,
+        "prompt_cache_miss_tokens": 6277
+      },
+      "finishReasons": [
+        "stop"
+      ]
+    },
+    {
+      "injected": false,
+      "httpStatus": 200,
+      "seconds": 3.0,
+      "usage": {
+        "prompt_tokens": 6668,
+        "completion_tokens": 274,
+        "total_tokens": 6942,
+        "prompt_tokens_details": {
+          "cached_tokens": 3712
+        },
+        "prompt_cache_hit_tokens": 3712,
+        "prompt_cache_miss_tokens": 2956
+      },
+      "finishReasons": [
+        "stop"
+      ]
+    },
+    {
+      "injected": false,
+      "httpStatus": 200,
+      "seconds": 2.06,
+      "usage": {
+        "prompt_tokens": 6851,
+        "completion_tokens": 165,
+        "total_tokens": 7016,
+        "prompt_tokens_details": {
+          "cached_tokens": 3200
+        },
+        "prompt_cache_hit_tokens": 3200,
+        "prompt_cache_miss_tokens": 3651
+      },
+      "finishReasons": [
+        "tool_calls"
+      ]
+    },
+    {
+      "injected": false,
+      "httpStatus": 200,
+      "seconds": 2.66,
+      "usage": {
+        "prompt_tokens": 14217,
+        "completion_tokens": 295,
+        "total_tokens": 14512,
+        "prompt_tokens_details": {
+          "cached_tokens": 6784
+        },
+        "prompt_cache_hit_tokens": 6784,
+        "prompt_cache_miss_tokens": 7433
+      },
+      "finishReasons": [
+        "tool_calls"
+      ]
+    },
+    {
+      "injected": false,
+      "httpStatus": 200,
+      "seconds": 2.27,
+      "usage": {
+        "prompt_tokens": 15148,
+        "completion_tokens": 267,
+        "total_tokens": 15415,
+        "prompt_tokens_details": {
+          "cached_tokens": 14464
+        },
+        "prompt_cache_hit_tokens": 14464,
+        "prompt_cache_miss_tokens": 684
+      },
+      "finishReasons": [
+        "stop"
+      ]
+    },
+    {
+      "injected": false,
+      "httpStatus": 200,
+      "seconds": 1.81,
+      "usage": {
+        "prompt_tokens": 6728,
+        "completion_tokens": 99,
+        "total_tokens": 6827,
+        "prompt_tokens_details": {
+          "cached_tokens": 3712
+        },
+        "prompt_cache_hit_tokens": 3712,
+        "prompt_cache_miss_tokens": 3016
+      },
+      "finishReasons": [
+        "tool_calls"
+      ]
+    },
+    {
+      "injected": false,
+      "httpStatus": 200,
+      "seconds": 1.6,
+      "usage": {
+        "prompt_tokens": 9314,
+        "completion_tokens": 231,
+        "total_tokens": 9545,
+        "prompt_tokens_details": {
+          "cached_tokens": 6656
+        },
+        "prompt_cache_hit_tokens": 6656,
+        "prompt_cache_miss_tokens": 2658
+      },
+      "finishReasons": [
+        "tool_calls"
+      ]
+    },
+    {
+      "injected": false,
+      "httpStatus": 200,
+      "seconds": 4.25,
+      "usage": {
+        "prompt_tokens": 13740,
+        "completion_tokens": 604,
+        "total_tokens": 14344,
+        "prompt_tokens_details": {
+          "cached_tokens": 9472
+        },
+        "prompt_cache_hit_tokens": 9472,
+        "prompt_cache_miss_tokens": 4268
+      },
+      "finishReasons": [
+        "stop"
+      ]
+    },
+    {
+      "injected": false,
+      "httpStatus": 200,
+      "seconds": 3.22,
+      "usage": {
+        "prompt_tokens": 14426,
+        "completion_tokens": 537,
+        "total_tokens": 14963,
+        "prompt_tokens_details": {
+          "cached_tokens": 14208
+        },
+        "prompt_cache_hit_tokens": 14208,
+        "prompt_cache_miss_tokens": 218
+      },
+      "finishReasons": [
+        "stop"
+      ]
+    },
+    {
+      "injected": false,
+      "httpStatus": 200,
+      "seconds": 3.5,
+      "usage": {
+        "prompt_tokens": 15045,
+        "completion_tokens": 546,
+        "total_tokens": 15591,
+        "prompt_tokens_details": {
+          "cached_tokens": 14848
+        },
+        "prompt_cache_hit_tokens": 14848,
+        "prompt_cache_miss_tokens": 197
+      },
+      "finishReasons": [
+        "stop"
+      ]
+    },
+    {
+      "injected": false,
+      "httpStatus": 200,
+      "seconds": 3.42,
+      "usage": {
+        "prompt_tokens": 15673,
+        "completion_tokens": 550,
+        "total_tokens": 16223,
+        "prompt_tokens_details": {
+          "cached_tokens": 15488
+        },
+        "prompt_cache_hit_tokens": 15488,
+        "prompt_cache_miss_tokens": 185
+      },
+      "finishReasons": [
+        "stop"
+      ]
+    },
+    {
+      "injected": false,
+      "httpStatus": 200,
+      "seconds": 3.46,
+      "usage": {
+        "prompt_tokens": 16305,
+        "completion_tokens": 529,
+        "total_tokens": 16834,
+        "prompt_tokens_details": {
+          "cached_tokens": 16128
+        },
+        "prompt_cache_hit_tokens": 16128,
+        "prompt_cache_miss_tokens": 177
+      },
+      "finishReasons": [
+        "stop"
+      ]
+    },
+    {
+      "injected": false,
+      "httpStatus": 200,
+      "seconds": 3.13,
+      "usage": {
+        "prompt_tokens": 16916,
+        "completion_tokens": 504,
+        "total_tokens": 17420,
+        "prompt_tokens_details": {
+          "cached_tokens": 16768
+        },
+        "prompt_cache_hit_tokens": 16768,
+        "prompt_cache_miss_tokens": 148
+      },
+      "finishReasons": [
+        "stop"
+      ]
+    }
+  ],
+  "cases": [
+    {
+      "id": "R9",
+      "prompt": "请用一句简短的话介绍你能怎样帮助 KP，不需要读取资料。",
+      "seconds": 5.61,
+      "task": {
+        "requestId": "f1f1b82222ff4e64a8df88065c7296e5",
+        "status": "review_ready",
+        "createdAt": 1794812999.022458,
+        "text": "请用一句简短的话介绍你能怎样帮助 KP，不需要读取资料。",
+        "initiator": "kp",
+        "taskId": "1336a99d6d8e4bdc9958993712e32398",
+        "proposalId": null,
+        "error": null,
+        "response": "我可以帮你查房间资料、解释规则数值，并把配置改动整理成可供你审阅的候选方案。\n\n- **查资料**：按需检索场景实体、NPC 状态、配置、聊天与行动记录，区分已读事实和未覆盖部分。\n- **做判断**：把读到的字段值、规则依据和推断分开说明，不替你决定剧情走向。\n- **提改动**：需要改配置或规则时，整批提交草案走 A/B/C 检查；新增 NPC 等运行时操作只提批次，等你批准后才生效。\n\n下一步告诉我具体想查或想改的内容即可。",
+        "diagnostics": {
+          "schemaVersion": 1,
+          "stage": "completed",
+          "turn": 0,
+          "toolCalls": [],
+          "errors": [],
+          "outputFailures": []
+        }
+      },
+      "passed": true
+    },
+    {
+      "id": "R4-live",
+      "prompt": "想给庭院增加一个 NPC，但友好向导还是敌对守卫我还没决定。请先问我并提供选项，不要代替我选择，也先不要提交修改。",
+      "seconds": 5.11,
+      "task": {
+        "requestId": "645a23316b14420a8451a0d05d7ba4fa",
+        "status": "needs_input",
+        "createdAt": 1794813005.2070186,
+        "text": "想给庭院增加一个 NPC，但友好向导还是敌对守卫我还没决定。请先问我并提供选项，不要代替我选择，也先不要提交修改。",
+        "initiator": "kp",
+        "taskId": "e2cac7e12a404a2ba3f3f01db7e12429",
+        "proposalId": null,
+        "error": null,
+        "response": "好的，先不提交任何修改 —— 庭院的 NPC 是**友好向导**还是**敌对守卫**，由你决定。\n\n- 方向不同，后续填写的默认数值（生命、护甲、意志）和可能的规则效果都会不同，所以我先问再动手。\n- 你选定后，我会据此提一份沿用现有 NPC 模板的创建方案，交给你审阅。\n\n选定方向后，再告诉我它在庭院的具体位置和大致强弱即可。",
+        "diagnostics": {
+          "schemaVersion": 1,
+          "stage": "completed",
+          "turn": 0,
+          "toolCalls": [],
+          "errors": [],
+          "outputFailures": []
+        },
+        "choices": {
+          "prompt": "庭院这个 NPC 的定位选哪个？",
+          "options": [
+            {
+              "id": "friendly-guide",
+              "label": "友好向导",
+              "text": "庭院 NPC 定为友好向导，偏协助和提示，体质普通、不强硬。先在庭院入口一带。"
+            },
+            {
+              "id": "hostile-guard",
+              "label": "敌对守卫",
+              "text": "庭院 NPC 定为敌对守卫，偏阻拦和战斗，体质与护甲更硬。守在庭院要道。"
+            },
+            {
+              "id": "ambiguous-first",
+              "label": "先看两种草案",
+              "text": "先分别给我友好向导和敌对守卫两版数值草案对比，我再决定。"
+            },
+            {
+              "id": "undecided",
+              "label": "暂不决定",
+              "text": "我先不定，你先帮我梳理庭院当前已有的人物和地点，之后再选。"
+            }
+          ]
+        }
+      },
+      "passed": true
+    },
+    {
+      "id": "R5-live",
+      "prompt": "选友好向导，名称为实验向导，位置为庭院，先仅 KP 可见。沿用现有 NPC 模板默认属性，仅创建一个实例，不增加剧情。方向已确定，请直接提交执行批次。",
+      "seconds": 10.6,
+      "task": {
+        "requestId": "becd310cf20c46f08c7724395f6aa3c2",
+        "status": "review_ready",
+        "createdAt": 1794813010.2925785,
+        "ruling": {
+          "batchId": "575896b0b1d14151b3273a13b4ff7073",
+          "status": "pending",
+          "digest": "3d31a2ff3b6ca7138c1fbffc4f87c03317c3b7ee28268767407c87431aceca43"
+        },
+        "text": "选友好向导，名称为实验向导，位置为庭院，先仅 KP 可见。沿用现有 NPC 模板默认属性，仅创建一个实例，不增加剧情。方向已确定，请直接提交执行批次。",
+        "initiator": "kp",
+        "taskId": "c82c54152a774e84b1a71444fe45c3fa",
+        "proposalId": null,
+        "error": null,
+        "response": "已定位**庭院**（地点编号 3，KP 可见），沿用现有 **NPC 模板**创建 1 个实例「实验向导」，位置设为 3，仅 KP 可见，不新增规则或剧情。\n\n- **属性**：沿用模板默认值（生命 4、力量 10、敏捷 10、意志 10、护甲 0），未修改模板本身。\n- **可见性**：visibility=kp、owner=null，玩家侧暂不可见；如需向玩家揭示，需 KP 后续单独处理。\n- **范围**：仅一个实例，不涉及配置/规则改动，因此不走 A/B/C。\n\n批准后才会真正创建，届时可再核对实例 ID 与数值。",
+        "diagnostics": {
+          "schemaVersion": 1,
+          "stage": "output_validate",
+          "turn": 2,
+          "toolCalls": [
+            {
+              "name": "room_search_data",
+              "status": "completed",
+              "argumentsDigest": "3a92f627ab4b3f9a5f1f38e51652c3592808e3d0975eb108a025e207f8d19a48",
+              "keys": [
+                "limit",
+                "query",
+                "types"
+              ],
+              "unknownKeys": false,
+              "turn": 0,
+              "types": [
+                "entity"
+              ],
+              "hasQuery": true
+            },
+            {
+              "name": "room_search_data",
+              "status": "completed",
+              "argumentsDigest": "52f06eb02feeb3216d87bb669c79d43eaa91b13199b88595557e08e70ee8703a",
+              "keys": [
+                "limit",
+                "query",
+                "types"
+              ],
+              "unknownKeys": false,
+              "turn": 0,
+              "types": [
+                "config"
+              ],
+              "hasQuery": false
+            },
+            {
+              "name": "unknown",
+              "status": "completed",
+              "argumentsDigest": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+              "keys": [],
+              "unknownKeys": false,
+              "turn": 0
+            },
+            {
+              "name": "room_read_data",
+              "status": "completed",
+              "argumentsDigest": "5d59e24e66c64f5ca5e26fa8dd7a6d38e941c8453b6ec0e09a498ac81bb7848a",
+              "keys": [
+                "refs"
+              ],
+              "unknownKeys": false,
+              "turn": 1,
+              "referenceCount": 2
+            }
+          ],
+          "errors": [],
+          "outputFailures": []
+        },
+        "batchId": "575896b0b1d14151b3273a13b4ff7073"
+      },
+      "passed": true,
+      "decisions": [
+        "completed",
+        "completed"
+      ],
+      "instances": 1
+    },
+    {
+      "id": "R6-live",
+      "prompt": "请新增独立 NPC 模板 sv.ext.npc.liveguide，完整复制现有 NPC 默认值，仅将生命上限与生命改为 6，增加 isNpc=1。另新增计算规则 sv.ext.live_score，输入 actor，返回力量加意志，KP 专用；每个 Lua 文件只返回一个规则。不要建实例，不要改核心规则。方向已经确定，请提交可供 KP 整批裁决的配置。",
+      "seconds": 28.15,
+      "task": {
+        "requestId": "9b5cdec13c4a4e44bea2dc8017da339a",
+        "status": "failed",
+        "createdAt": 1794813024.2453153,
+        "text": "请新增独立 NPC 模板 sv.ext.npc.liveguide，完整复制现有 NPC 默认值，仅将生命上限与生命改为 6，增加 isNpc=1。另新增计算规则 sv.ext.live_score，输入 actor，返回力量加意志，KP 专用；每个 Lua 文件只返回一个规则。不要建实例，不要改核心规则。方向已经确定，请提交可供 KP 整批裁决的配置。",
+        "initiator": "kp",
+        "taskId": "9ab60972d2fa4532921d29eefd2f46d3",
+        "proposalId": null,
+        "error": "MODEL_OUTPUT_INVALID",
+        "response": null,
+        "diagnostics": {
+          "schemaVersion": 1,
+          "stage": "output_validate",
+          "turn": 2,
+          "toolCalls": [
+            {
+              "name": "pack_read_contract",
+              "status": "completed",
+              "argumentsDigest": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+              "keys": [],
+              "unknownKeys": false,
+              "turn": 0
+            },
+            {
+              "name": "room_search_data",
+              "status": "completed",
+              "argumentsDigest": "52f06eb02feeb3216d87bb669c79d43eaa91b13199b88595557e08e70ee8703a",
+              "keys": [
+                "limit",
+                "query",
+                "types"
+              ],
+              "unknownKeys": false,
+              "turn": 0,
+              "types": [
+                "config"
+              ],
+              "hasQuery": false
+            },
+            {
+              "name": "room_read_data",
+              "status": "completed",
+              "argumentsDigest": "52749610834248fb59a1359350103dbceefd0084f3e6d7dc5272b028675911a5",
+              "keys": [
+                "refs"
+              ],
+              "unknownKeys": false,
+              "turn": 1,
+              "referenceCount": 1
+            },
+            {
+              "name": "room_search_data",
+              "status": "completed",
+              "argumentsDigest": "3710c07170d09e9835f7b73a7c641ad84e19cb2155985be6152ff3c14b157e76",
+              "keys": [
+                "limit",
+                "query",
+                "types"
+              ],
+              "unknownKeys": false,
+              "turn": 1,
+              "types": [
+                "rule"
+              ],
+              "hasQuery": false
+            }
+          ],
+          "errors": [
+            {
+              "stage": "output_validate",
+              "code": "MODEL_OUTPUT_INVALID",
+              "exceptionType": "AiError",
+              "frames": [
+                {
+                  "module": "onlinecoc_ai.coordinator",
+                  "function": "_generate",
+                  "line": 495
+                },
+                {
+                  "module": "onlinecoc_ai.errors",
+                  "function": "require",
+                  "line": 15
+                }
+              ]
+            }
+          ],
+          "outputFailures": [
+            {
+              "attempt": 4,
+              "code": "INPUT_INVALID",
+              "path": "/"
+            },
+            {
+              "attempt": 5,
+              "code": "INPUT_INVALID",
+              "path": "/"
+            },
+            {
+              "attempt": 6,
+              "code": "INPUT_INVALID",
+              "path": "/"
+            }
+          ]
+        }
+      },
+      "passed": false
+    }
+  ],
+  "passed": false,
+  "usage": {
+    "schemaVersion": 1,
+    "scopeId": "d9b29565a3c040af87784daeb11f356b",
+    "scope": "room",
+    "timezone": "UTC",
+    "from": "2026-11-10",
+    "to": "2026-11-16",
+    "totals": {
+      "calls": 14,
+      "settledCalls": 13,
+      "pendingCalls": 0,
+      "uncertainCalls": 1,
+      "confirmedTokens": 162441,
+      "promptTokens": 157692,
+      "completionTokens": 4749,
+      "missingBreakdownCalls": 0,
+      "pendingReservedTokens": 0,
+      "uncertainReservedTokens": 35656,
+      "accountedTokens": 198097
+    },
+    "byDay": [
+      {
+        "date": "2026-11-16",
+        "calls": 14,
+        "settledCalls": 13,
+        "pendingCalls": 0,
+        "uncertainCalls": 1,
+        "confirmedTokens": 162441,
+        "promptTokens": 157692,
+        "completionTokens": 4749,
+        "missingBreakdownCalls": 0,
+        "pendingReservedTokens": 0,
+        "uncertainReservedTokens": 35656,
+        "accountedTokens": 198097
+      }
+    ],
+    "byProfile": [
+      {
+        "profileId": "deepseek-main",
+        "model": "deepseek-flash",
+        "calls": 14,
+        "settledCalls": 13,
+        "pendingCalls": 0,
+        "uncertainCalls": 1,
+        "confirmedTokens": 162441,
+        "promptTokens": 157692,
+        "completionTokens": 4749,
+        "missingBreakdownCalls": 0,
+        "pendingReservedTokens": 0,
+        "uncertainReservedTokens": 35656,
+        "accountedTokens": 198097
+      }
+    ],
+    "budgetsToday": [
+      {
+        "profileId": "deepseek-main",
+        "date": "2026-11-16",
+        "dailyTokenBudget": null,
+        "enabled": false,
+        "accountedTokens": 198097,
+        "remainingTokens": null
+      }
+    ],
+    "items": [
+      {
+        "callId": "e0a6fb9af5f54196a22e02be34e21473",
+        "date": "2026-11-16",
+        "profileId": "deepseek-main",
+        "model": "deepseek-flash",
+        "requestId": "9b5cdec13c4a4e44bea2dc8017da339a",
+        "sessionId": "36dd6c66792543179100a1f4d5d621cf",
+        "status": "confirmed",
+        "taskStatus": "failed",
+        "createdAt": 1794813047.868024,
+        "calls": 1,
+        "settledCalls": 1,
+        "pendingCalls": 0,
+        "uncertainCalls": 0,
+        "confirmedTokens": 17420,
+        "promptTokens": 16916,
+        "completionTokens": 504,
+        "missingBreakdownCalls": 0,
+        "pendingReservedTokens": 0,
+        "uncertainReservedTokens": 0,
+        "accountedTokens": 17420
+      },
+      {
+        "callId": "d1acaa42d0f34c7bb5bfb2504275735b",
+        "date": "2026-11-16",
+        "profileId": "deepseek-main",
+        "model": "deepseek-flash",
+        "requestId": "9b5cdec13c4a4e44bea2dc8017da339a",
+        "sessionId": "36dd6c66792543179100a1f4d5d621cf",
+        "status": "confirmed",
+        "taskStatus": "failed",
+        "createdAt": 1794813044.275057,
+        "calls": 1,
+        "settledCalls": 1,
+        "pendingCalls": 0,
+        "uncertainCalls": 0,
+        "confirmedTokens": 16834,
+        "promptTokens": 16305,
+        "completionTokens": 529,
+        "missingBreakdownCalls": 0,
+        "pendingReservedTokens": 0,
+        "uncertainReservedTokens": 0,
+        "accountedTokens": 16834
+      },
+      {
+        "callId": "934f6b8307e542998df9c9f1f4b5feb9",
+        "date": "2026-11-16",
+        "profileId": "deepseek-main",
+        "model": "deepseek-flash",
+        "requestId": "9b5cdec13c4a4e44bea2dc8017da339a",
+        "sessionId": "36dd6c66792543179100a1f4d5d621cf",
+        "status": "confirmed",
+        "taskStatus": "failed",
+        "createdAt": 1794813040.720385,
+        "calls": 1,
+        "settledCalls": 1,
+        "pendingCalls": 0,
+        "uncertainCalls": 0,
+        "confirmedTokens": 16223,
+        "promptTokens": 15673,
+        "completionTokens": 550,
+        "missingBreakdownCalls": 0,
+        "pendingReservedTokens": 0,
+        "uncertainReservedTokens": 0,
+        "accountedTokens": 16223
+      },
+      {
+        "callId": "46624b22e3a644328231de252d94f493",
+        "date": "2026-11-16",
+        "profileId": "deepseek-main",
+        "model": "deepseek-flash",
+        "requestId": "9b5cdec13c4a4e44bea2dc8017da339a",
+        "sessionId": "36dd6c66792543179100a1f4d5d621cf",
+        "status": "confirmed",
+        "taskStatus": "failed",
+        "createdAt": 1794813037.081188,
+        "calls": 1,
+        "settledCalls": 1,
+        "pendingCalls": 0,
+        "uncertainCalls": 0,
+        "confirmedTokens": 15591,
+        "promptTokens": 15045,
+        "completionTokens": 546,
+        "missingBreakdownCalls": 0,
+        "pendingReservedTokens": 0,
+        "uncertainReservedTokens": 0,
+        "accountedTokens": 15591
+      },
+      {
+        "callId": "17fff9b2424e4241b2b2c5ed2fb44a79",
+        "date": "2026-11-16",
+        "profileId": "deepseek-main",
+        "model": "deepseek-flash",
+        "requestId": "9b5cdec13c4a4e44bea2dc8017da339a",
+        "sessionId": "36dd6c66792543179100a1f4d5d621cf",
+        "status": "confirmed",
+        "taskStatus": "failed",
+        "createdAt": 1794813033.733666,
+        "calls": 1,
+        "settledCalls": 1,
+        "pendingCalls": 0,
+        "uncertainCalls": 0,
+        "confirmedTokens": 14963,
+        "promptTokens": 14426,
+        "completionTokens": 537,
+        "missingBreakdownCalls": 0,
+        "pendingReservedTokens": 0,
+        "uncertainReservedTokens": 0,
+        "accountedTokens": 14963
+      },
+      {
+        "callId": "68e021e706e5484d9fc5d443c6ac149c",
+        "date": "2026-11-16",
+        "profileId": "deepseek-main",
+        "model": "deepseek-flash",
+        "requestId": "9b5cdec13c4a4e44bea2dc8017da339a",
+        "sessionId": "36dd6c66792543179100a1f4d5d621cf",
+        "status": "confirmed",
+        "taskStatus": "failed",
+        "createdAt": 1794813029.345229,
+        "calls": 1,
+        "settledCalls": 1,
+        "pendingCalls": 0,
+        "uncertainCalls": 0,
+        "confirmedTokens": 14344,
+        "promptTokens": 13740,
+        "completionTokens": 604,
+        "missingBreakdownCalls": 0,
+        "pendingReservedTokens": 0,
+        "uncertainReservedTokens": 0,
+        "accountedTokens": 14344
+      },
+      {
+        "callId": "e7fdcb331ebe4bc2a6b26fff29210085",
+        "date": "2026-11-16",
+        "profileId": "deepseek-main",
+        "model": "deepseek-flash",
+        "requestId": "9b5cdec13c4a4e44bea2dc8017da339a",
+        "sessionId": "36dd6c66792543179100a1f4d5d621cf",
+        "status": "confirmed",
+        "taskStatus": "failed",
+        "createdAt": 1794813027.53718,
+        "calls": 1,
+        "settledCalls": 1,
+        "pendingCalls": 0,
+        "uncertainCalls": 0,
+        "confirmedTokens": 9545,
+        "promptTokens": 9314,
+        "completionTokens": 231,
+        "missingBreakdownCalls": 0,
+        "pendingReservedTokens": 0,
+        "uncertainReservedTokens": 0,
+        "accountedTokens": 9545
+      },
+      {
+        "callId": "7cbe25b76b0b4546bf3eaacaff9a82f8",
+        "date": "2026-11-16",
+        "profileId": "deepseek-main",
+        "model": "deepseek-flash",
+        "requestId": "9b5cdec13c4a4e44bea2dc8017da339a",
+        "sessionId": "36dd6c66792543179100a1f4d5d621cf",
+        "status": "confirmed",
+        "taskStatus": "failed",
+        "createdAt": 1794813025.567841,
+        "calls": 1,
+        "settledCalls": 1,
+        "pendingCalls": 0,
+        "uncertainCalls": 0,
+        "confirmedTokens": 6827,
+        "promptTokens": 6728,
+        "completionTokens": 99,
+        "missingBreakdownCalls": 0,
+        "pendingReservedTokens": 0,
+        "uncertainReservedTokens": 0,
+        "accountedTokens": 6827
+      },
+      {
+        "callId": "3f12cac8ff2c4e0791f6f907c1e204f5",
+        "date": "2026-11-16",
+        "profileId": "deepseek-main",
+        "model": "deepseek-flash",
+        "requestId": "becd310cf20c46f08c7724395f6aa3c2",
+        "sessionId": "0ed4f708f07e46dc88ea7ffcc68f7604",
+        "status": "confirmed",
+        "taskStatus": "review_ready",
+        "createdAt": 1794813016.588247,
+        "calls": 1,
+        "settledCalls": 1,
+        "pendingCalls": 0,
+        "uncertainCalls": 0,
+        "confirmedTokens": 15415,
+        "promptTokens": 15148,
+        "completionTokens": 267,
+        "missingBreakdownCalls": 0,
+        "pendingReservedTokens": 0,
+        "uncertainReservedTokens": 0,
+        "accountedTokens": 15415
+      },
+      {
+        "callId": "e46149d5e8cd4ec7b690c97cb78f3ffe",
+        "date": "2026-11-16",
+        "profileId": "deepseek-main",
+        "model": "deepseek-flash",
+        "requestId": "becd310cf20c46f08c7724395f6aa3c2",
+        "sessionId": "0ed4f708f07e46dc88ea7ffcc68f7604",
+        "status": "confirmed",
+        "taskStatus": "review_ready",
+        "createdAt": 1794813013.761366,
+        "calls": 1,
+        "settledCalls": 1,
+        "pendingCalls": 0,
+        "uncertainCalls": 0,
+        "confirmedTokens": 14512,
+        "promptTokens": 14217,
+        "completionTokens": 295,
+        "missingBreakdownCalls": 0,
+        "pendingReservedTokens": 0,
+        "uncertainReservedTokens": 0,
+        "accountedTokens": 14512
+      },
+      {
+        "callId": "12abad19f47841aaab94f12bd38d8a50",
+        "date": "2026-11-16",
+        "profileId": "deepseek-main",
+        "model": "deepseek-flash",
+        "requestId": "becd310cf20c46f08c7724395f6aa3c2",
+        "sessionId": "0ed4f708f07e46dc88ea7ffcc68f7604",
+        "status": "confirmed",
+        "taskStatus": "review_ready",
+        "createdAt": 1794813011.512282,
+        "calls": 1,
+        "settledCalls": 1,
+        "pendingCalls": 0,
+        "uncertainCalls": 0,
+        "confirmedTokens": 7016,
+        "promptTokens": 6851,
+        "completionTokens": 165,
+        "missingBreakdownCalls": 0,
+        "pendingReservedTokens": 0,
+        "uncertainReservedTokens": 0,
+        "accountedTokens": 7016
+      },
+      {
+        "callId": "7cb118c87fc448e5bc94dadecd3e3776",
+        "date": "2026-11-16",
+        "profileId": "deepseek-main",
+        "model": "deepseek-flash",
+        "requestId": "645a23316b14420a8451a0d05d7ba4fa",
+        "sessionId": "0ed4f708f07e46dc88ea7ffcc68f7604",
+        "status": "confirmed",
+        "taskStatus": "needs_input",
+        "createdAt": 1794813006.417615,
+        "calls": 1,
+        "settledCalls": 1,
+        "pendingCalls": 0,
+        "uncertainCalls": 0,
+        "confirmedTokens": 6942,
+        "promptTokens": 6668,
+        "completionTokens": 274,
+        "missingBreakdownCalls": 0,
+        "pendingReservedTokens": 0,
+        "uncertainReservedTokens": 0,
+        "accountedTokens": 6942
+      },
+      {
+        "callId": "95450a8c53b94983b8532ea7965795f4",
+        "date": "2026-11-16",
+        "profileId": "deepseek-main",
+        "model": "deepseek-flash",
+        "requestId": "f1f1b82222ff4e64a8df88065c7296e5",
+        "sessionId": "65dc9e11ce54423897ca8005599e0efa",
+        "status": "confirmed",
+        "taskStatus": "review_ready",
+        "createdAt": 1794813000.474042,
+        "calls": 1,
+        "settledCalls": 1,
+        "pendingCalls": 0,
+        "uncertainCalls": 0,
+        "confirmedTokens": 6809,
+        "promptTokens": 6661,
+        "completionTokens": 148,
+        "missingBreakdownCalls": 0,
+        "pendingReservedTokens": 0,
+        "uncertainReservedTokens": 0,
+        "accountedTokens": 6809
+      },
+      {
+        "callId": "c586ed70ec8c463c9a7800e24556d403",
+        "date": "2026-11-16",
+        "profileId": "deepseek-main",
+        "model": "deepseek-flash",
+        "requestId": "f1f1b82222ff4e64a8df88065c7296e5",
+        "sessionId": "65dc9e11ce54423897ca8005599e0efa",
+        "status": "uncertain",
+        "taskStatus": "review_ready",
+        "createdAt": 1794813000.421433,
+        "calls": 1,
+        "settledCalls": 0,
+        "pendingCalls": 0,
+        "uncertainCalls": 1,
+        "confirmedTokens": 0,
+        "promptTokens": 0,
+        "completionTokens": 0,
+        "missingBreakdownCalls": 0,
+        "pendingReservedTokens": 0,
+        "uncertainReservedTokens": 35656,
+        "accountedTokens": 35656
+      }
+    ],
+    "nextBefore": null
+  },
+  "persistentProviderConfigUnchanged": true,
+  "realCalls": 13,
+  "confirmedTokens": 162441
+}

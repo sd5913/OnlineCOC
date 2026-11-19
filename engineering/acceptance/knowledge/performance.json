@@ -1,0 +1,74 @@
+{
+  "python": "3.14.2",
+  "platform": "Windows-10-10.0.19045-SP0",
+  "processor": "AMD64 Family 25 Model 80 Stepping 0, AuthenticAMD",
+  "subjects": 20,
+  "resources": 1000,
+  "grants": 5000,
+  "knowledgeBytes": 3009599,
+  "roomCommitBytes": 3378223,
+  "wsProjectionBytes": 23337,
+  "measurements": {
+    "legacy_entities": {
+      "p50Ms": 54.741850000027625,
+      "p95Ms": 67.38499999983105,
+      "maxMs": 82.82010000039008,
+      "repetitions": 100,
+      "counts": {
+        "storeSnapshots": 100,
+        "guard": 0,
+        "pin": 0,
+        "live": 0
+      }
+    },
+    "search_50": {
+      "p50Ms": 62.702649999891946,
+      "p95Ms": 71.51220000014291,
+      "maxMs": 74.67329999963113,
+      "repetitions": 100,
+      "counts": {
+        "storeSnapshots": 100,
+        "guard": 25000,
+        "pin": 0,
+        "live": 0
+      }
+    },
+    "read_12": {
+      "p50Ms": 60.8249000001706,
+      "p95Ms": 68.9273999996658,
+      "maxMs": 75.05059999994046,
+      "repetitions": 100,
+      "counts": {
+        "storeSnapshots": 100,
+        "guard": 25000,
+        "pin": 0,
+        "live": 0
+      }
+    },
+    "recheck_12": {
+      "p50Ms": 61.5530499999295,
+      "p95Ms": 70.37979999995514,
+      "maxMs": 72.63109999985318,
+      "repetitions": 100,
+      "counts": {
+        "storeSnapshots": 100,
+        "guard": 25000,
+        "pin": 0,
+        "live": 0
+      }
+    }
+  },
+  "thresholdMs": 154.7699999996621,
+  "passed": true,
+  "baseline": "same ledger and host snapshot, legacy visible-entity scan; no knowledge filtering",
+  "storage": "FileDataStore warm in-memory snapshot; 1 snapshot capture per request, no repeated disk/package loads",
+  "cold": {
+    "openMs": 2060.0899999999456,
+    "firstSearchMs": 83.40130000033241,
+    "initialFullCommitMs": 1352.3118000002796,
+    "items": 50,
+    "warmObserveCommandMs": 1441.4318999997704,
+    "warmCommitMs": 442.90280000041093,
+    "note": "cold open uses a fresh process; warmObserve adds one observation/grant after the 5000-grant fixture"
+  }
+}

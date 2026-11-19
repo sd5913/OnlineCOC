@@ -1,5 +1,5 @@
 return rule('sv.morale', {'actor'}, function(r, actor)
-  assert(r.matches(actor, 'sv.npc'), 'SV_NOT_NPC')
+  assert((r.matches(actor, 'sv.npc') or r.number(actor, 'isNpc') == 1), 'SV_NOT_NPC')
   local rolled = r.roll(20)
   local target = r.number(actor, 'wil')
   r.set(actor, 'lastRoll', rolled)

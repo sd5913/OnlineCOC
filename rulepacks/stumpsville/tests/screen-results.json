@@ -1,6 +1,6 @@
 {
   "passed": true,
-  "checkedAt": "2026-11-15T18:17:15.222721+08:00",
+  "checkedAt": "2026-11-16T20:54:36.154590+08:00",
   "checks": [
     "all 18 preset labels, hints, choices and processes have restricted bilingual entries",
     "locale follows authorized projection; secret catalogs return 404; user text and saved results remain unchanged",

@@ -1,8 +1,9 @@
+import {mountStyle} from './styles.js';
 import {renderMarkdown,markdownStyle} from './markdown.js';
 import {guardedClient} from './guard.js';
 export function mountSessions(target,client,{onReview=()=>{},onError=()=>{},t=(key,fallback)=>fallback}={}){
  const shell=document.createElement('div');target.append(shell);const root=shell.attachShadow({mode:'open'});
- const css=document.createElement('link');css.rel='stylesheet';css.href=new URL('./panel.css',import.meta.url);root.append(css);
+ mountStyle(root,new URL('./panel.css',import.meta.url));
  markdownStyle(root);const panel=document.createElement('section');root.append(panel);
  panel.innerHTML=`<h2></h2><div class="toolbar"><input id="title" maxlength="120" aria-label="会话名称" placeholder="新的会话名称"><button id="create" class="primary">新建会话</button><label><input id="archived" type="checkbox">查看已归档</label></div><div class="sessions"><div id="list" class="session-list"></div><div id="detail" hidden><div class="toolbar"><input id="rename" maxlength="120" aria-label="修改会话名称"><button id="save">改名</button><button id="archive">归档</button></div><div id="history" class="history"></div><label>继续提出需求<textarea id="text" maxlength="8000" placeholder="说明这次希望调整的内容"></textarea></label><button id="send" class="primary">提交需求</button></div></div><p id="status" role="status"></p>`;
  panel.querySelector('h2').textContent=t('sessions.title','房间会话');const $=id=>panel.querySelector('#'+id);let current=null,dead=false,busy=false,epoch=0;

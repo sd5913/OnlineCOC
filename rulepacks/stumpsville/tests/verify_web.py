@@ -140,10 +140,10 @@ def main(cloud=False,relay=False):
                 frame=games[0].frame_locator('#package-frame iframe')
                 before=p1.state()['character']['numbers']['checks']
                 frame.locator('body').evaluate("()=>{const original=stumpsvilleWeb.api;let lost=false;stumpsvilleWeb.api=async(path,body)=>{const result=await original(path,body);if(!lost&&path.startsWith('package/action')&&body?.operation==='check'){lost=true;throw Error('SIMULATED_RESPONSE_LOST')}return result;};}")
-                frame.locator('[data-action=check]').click();frame.locator('#dialog-form button[type=submit]').click()
+                frame.get_by_role('button', name='属性检定', exact=True).click();frame.locator('#dialog-form button[type=submit]').click()
                 expect(frame.locator('#toast')).to_contain_text('SIMULATED_RESPONSE_LOST');frame.locator('#dialog').press('Escape')
                 expect(frame.locator('[data-action=recover]')).to_be_visible(timeout=15000)
-                key='stumpsville.pending./.player1'
+                key='stumpsville.pending./.player1.'+p1.state()['storageScope']
                 saved=frame.locator('body').evaluate('(el,key)=>stumpsvilleWeb.storage.getItem(key)',key);assert saved
                 stale=json.loads(saved);stale['_webRules']='old-rules'
                 frame.locator('body').evaluate('(el,a)=>{stumpsvilleWeb.storage.setItem(a.key,a.value);return stumpsvilleWeb.flush()}',{'key':key,'value':json.dumps(stale)})

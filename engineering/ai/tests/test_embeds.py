@@ -4,7 +4,7 @@ import json
 import re
 import pytest
 from playwright.sync_api import sync_playwright, expect
-from test_manager_ui import services
+from test_manager_ui import services, allow_players
 
 OUTPUT=Path(__file__).resolve().parents[2]/'acceptance/ai-runtime'
 
@@ -30,6 +30,7 @@ def login(page,account):
 @pytest.mark.parametrize('variant',['page','conversation','collapsible'])
 def test_real_room_page_variants(services,variant):
     _,entry,_=services;origin=f'http://127.0.0.1:{entry["roomPort"]}'
+    allow_players(origin)
     with sync_playwright() as p:
         browser=p.chromium.launch(channel='msedge',headless=True);page=browser.new_page(viewport={'width':1360,'height':940});errors=[];queries=[]
         page.on('pageerror',lambda error:errors.append(str(error)))
@@ -46,7 +47,7 @@ def test_real_room_page_variants(services,variant):
             if variant=='page':expect(page.locator('.view-sidebar')).to_be_visible()
             else:expect(page.locator('.session-select')).to_be_visible()
             if variant=='page':
-                page.locator('.review-open').click();page.get_by_text('服务与外发范围',exact=True).click()
+                page.locator('.review-open').click();page.locator('[data-tab=settings]').click();page.get_by_text('服务与外发范围',exact=True).click()
                 expect(page.locator('#ai-save-settings')).to_be_enabled()
                 page.locator('#ai-enabled').check();page.locator('#ai-profile').select_option('deepseek-main');page.locator('#ai-public').check();page.locator('#ai-save-settings').click()
                 expect(page.locator('#ai-result')).to_have_text('设置已保存');page.locator('.review-close').click()
@@ -60,11 +61,11 @@ def test_real_room_page_variants(services,variant):
                 page.locator('.collapse-toggle').click();expect(page.locator('#text')).to_contain_text('已有技能保持原值')
             page.locator('#send').click()
             if variant=='page':
-                button=page.get_by_role('button',name='查看方案与三检',exact=True);expect(button).to_be_enabled(timeout=40000);button.click()
-                expect(page.locator('#ai-review-status')).to_contain_text('等待审核')
-                for field in page.locator('#ai-risks textarea').all():field.fill('验收接受新建技能收益，已有技能保持原值。')
-                page.locator('#ai-approve').click();expect(page.locator('#ai-load')).to_be_enabled();page.locator('#ai-load').click()
-                expect(page.locator('#ai-result')).to_contain_text('加载成功');page.locator('.review-close').click()
+                button=page.get_by_role('button',name='查看配置裁决',exact=True);expect(button).to_be_enabled(timeout=40000);button.click()
+                expect(page.get_by_role('button',name='批准并执行',exact=True)).to_be_enabled()
+                for field in page.locator('.batch-card textarea').all():field.fill('验收接受新建技能收益，已有技能保持原值。')
+                page.get_by_role('button',name='批准并执行',exact=True).click()
+                expect(page.locator('.batch-card')).to_contain_text('已执行',timeout=40000);page.locator('.review-close').click()
             else:
                 expect(page.locator('#history')).to_contain_text('等待 KP 处理')
                 assert page.get_by_role('button',name='转交 AI',exact=True).count()==0
@@ -79,6 +80,7 @@ def test_real_room_page_variants(services,variant):
 
 def test_same_origin_iframe_entry_and_csp_scope(services):
     manager,entry,_=services;origin=f'http://127.0.0.1:{entry["roomPort"]}'
+    allow_players(origin)
     with sync_playwright() as p:
         browser=p.chromium.launch(channel='msedge',headless=True);page=browser.new_page()
         try:
@@ -98,15 +100,16 @@ def test_same_origin_iframe_entry_and_csp_scope(services):
 
 def test_headless_tools_and_shared_client_ownership(services):
     _,entry,_=services;origin=f'http://127.0.0.1:{entry["roomPort"]}'
+    allow_players(origin)
     with sync_playwright() as p:
         browser=p.chromium.launch(channel='msedge',headless=True);page=browser.new_page()
         try:
             page.goto(origin+'/ai-ui/conversation.html')
             result=page.evaluate("""async()=>{
               const api=await import('/ai-ui/pack.js');if('mountProviders' in api)throw new Error('ADMIN_EXPORT_LEAK');const client=new api.AiClient();await client.login('player1','test-password');
-              const tools=api.createAITools(client);const dataPage=await tools.data.search({types:['config']});if(!dataPage.items.length)throw new Error('DATA_QUERY_EMPTY');await tools.data.read({refs:[dataPage.items[0].ref]});const created=await tools.sessions.create('开发者自行装配','tool-create');
+              const tools=api.createAITools(client);const dataPage=await tools.data.search({types:['knowledge']});if(!dataPage.items.length)throw new Error('DATA_QUERY_EMPTY');await tools.data.read({refs:[dataPage.items[0].ref]});const created=await tools.sessions.create('开发者自行装配','tool-create');
               const replay=await tools.sessions.create('开发者自行装配','tool-create');
-              const selected=(await tools.references.search('config','demo.skill')).items[0];
+              const selected=(await tools.references.search('knowledge','')).items[0];
               const sent=await tools.sessions.submit(created.result.sessionId,'参考 '+tools.references.token(selected),'tool-submit');
               const detail=await tools.sessions.get(created.result.sessionId);
               const denied=await tools.requests.dispatch(sent.result.requestId);
@@ -118,7 +121,7 @@ def test_headless_tools_and_shared_client_ownership(services):
                 allowedCommands:api.referenceCommands(client.view.role).map(x=>x.kind),denied:denied.status,connected:client.connected,
                 contracts:!!(await client.aiContracts()).operations['ai.session.submit']};
             }""")
-            assert result=={'created':'committed','replay':True,'submitted':'committed','status':'received','allowedCommands':['config','entity','chat','event','ruling'],'denied':'rejected','connected':True,'contracts':True}
+            assert result=={'created':'committed','replay':True,'submitted':'committed','status':'received','allowedCommands':['knowledge'],'denied':'rejected','connected':True,'contracts':True}
             expect(page.locator('#two #text')).to_have_text('第二份草稿')
             late=page.evaluate("""async()=>{
               const {AiClient,createAITools}=await import('/ai-ui/pack.js');let release,calls=0;

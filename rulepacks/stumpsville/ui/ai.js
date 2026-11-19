@@ -11,7 +11,7 @@ export const aiUI = {
     if(next!==identity){this.close();identity=next;}
   },
   close(){epoch++;const previous=current;current=null;previous?.destroy();},
-  async open({base,manager,language}) {
+  async open({base,manager,language,onQueue=()=>{}}) {
     this.close();const generation=epoch, w=Object.fromEntries(wordKeys.map(key=>[key,t('ai.'+key)]));
     const dialog=document.createElement('dialog');dialog.className='ai-dialog';dialog.setAttribute('aria-label',w.title);
     dialog.innerHTML=`<header><h2>${w.title}</h2><button data-close>${w.close}</button></header><p>${w.scope}</p><p data-status role="status">${w.loading}</p><div data-body></div>`;
@@ -40,40 +40,48 @@ export const aiUI = {
       if(!live()){client.destroy();return;}
       const account=client.view.accountId,authority=client.view.authorityEpoch;
       client.subscribe(()=>{if(live()&&(!client.connected||client.view?.accountId!==account||client.view?.authorityEpoch!==authority)){this.close();}});
-      body.innerHTML=`<div class="ai-columns"><section><h3>${w.sessions}</h3><form data-create><input name="title" maxlength="120" required placeholder="${w.name}" aria-label="${w.name}"><button>${w.new}</button></form><label><input type="checkbox" data-archived>${w.archived}</label><div data-list></div></section><section><div data-detail hidden><h3 data-title></h3><div data-history></div><form data-send><textarea name="text" maxlength="8000" required aria-label="${w.text}" placeholder="${w.text}"></textarea><button>${w.send}</button></form><button data-archive>${w.archive}</button></div></section></div>${manager?`<details><summary>${w.settings}</summary><form data-settings></form></details><h3>${w.queue}</h3><div data-tasks></div><button data-more hidden>${w.more}</button><p data-network>${w.p2p}</p>`:''}<button data-refresh>${w.refresh}</button><button data-receipt hidden>${w.receipt}</button>`;
+      body.innerHTML=`<div class="ai-columns" ${manager?'hidden':''}><section><h3>${w.sessions}</h3><form data-create><input name="title" maxlength="120" required placeholder="${w.name}" aria-label="${w.name}"><button>${w.new}</button></form><label><input type="checkbox" data-archived>${w.archived}</label><div data-list></div></section><section><div data-detail hidden><h3 data-title></h3><div data-history></div><form data-send><textarea name="text" maxlength="8000" required aria-label="${w.text}" placeholder="${w.text}"></textarea><button>${w.send}</button></form><button data-archive>${w.archive}</button></div></section></div>${manager?`<details><summary>${w.settings}</summary><form data-settings></form></details><p>${t('queue.allInRulings')}</p><button data-queue>${t('queue.open')}</button><p data-network>${w.p2p}</p>`:''}<button data-refresh>${w.refresh}</button><button data-receipt hidden>${w.receipt}</button>`;
       const $=s=>body.querySelector(s);
+      if(manager)$('[data-queue]').onclick=onQueue;
       const rows=(target,items)=>{target.replaceChildren();for(const item of items){const row=document.createElement('article');row.className='ai-task';const p=document.createElement('p');p.textContent=(item.text||'')+' · '+(w[item.status]||item.status);row.append(p);
-        if(manager&&item.response){const answer=document.createElement('div');answer.className='ai-answer';row.append(answer);mountMarkdown(answer,item.response,{plainText:target.matches('[data-history]')&&session?.renderMode==='plain',resolveReferences:tokens=>client.aiResolve(tokens)});}
+        if(item.response){const answer=document.createElement('div');answer.className='ai-answer';row.append(answer);mountMarkdown(answer,item.response,{plainText:target.matches('[data-history]')&&session?.renderMode==='plain',resolveReferences:tokens=>client.aiResolve(tokens)});}
         if(item.error){const err=document.createElement('p');err.textContent=item.error;row.append(err);}
-        if(manager&&item.status==='received')row.append(button(w.dispatch,async()=>{await command('ai.request.dispatch',{requestId:item.requestId});await refresh();}));
-        if(['received','queued','generating','validating','review_ready','needs_input'].includes(item.status))row.append(button(w.cancel,async()=>{await command('ai.request.cancel',{requestId:item.requestId});await refresh();}));
+        if(manager)row.append(button(t('queue.open'),onQueue));
+        if(!manager&&['received','queued','generating','validating','review_ready','needs_input'].includes(item.status))row.append(button(w.cancel,async()=>{await command('ai.request.cancel',{requestId:item.requestId});await refresh();}));
         target.append(row);
       }if(!items.length)target.textContent=w.empty;};
       async function select(id){const data=await client.aiSession(id);if(!live())return;session=data.session;$('[data-detail]').hidden=false;$('[data-title]').textContent=session.title;$('[data-send]').hidden=session.archived;$('[data-archive]').hidden=session.archived;rows($('[data-history]'),data.items);}
       async function sessions(){const data=await client.aiSessions($('[data-archived]').checked);if(!live())return;$('[data-list]').replaceChildren(...data.items.map(s=>button(s.title+' · '+s.requestCount,()=>select(s.sessionId))));if(!data.items.length)$('[data-list]').textContent=w.empty;}
-      async function tasks(append=false){const data=await client.aiTasks(append?{before:nextBefore}:{});if(!live())return;const target=append?document.createElement('div'):$('[data-tasks]');rows(target,data.items);if(append)$('[data-tasks]').append(target);nextBefore=data.nextBefore;$('[data-more]').hidden=!nextBefore;}
-      async function refresh(){await sessions();if(session)await select(session.sessionId);if(manager)await tasks();}
+
+      async function refresh(){if(manager)return;await sessions();if(session)await select(session.sessionId);}
       $('[data-create]').onsubmit=e=>{e.preventDefault();run(async()=>{const form=e.target;const result=await command('ai.session.create',{title:form.elements.title.value.trim()});if(!live())return;form.reset();$('[data-archived]').checked=false;await sessions();await select(result.sessionId);});};
       $('[data-send]').onsubmit=e=>{e.preventDefault();run(async()=>{await command('ai.session.submit',{sessionId:session.sessionId,text:e.target.elements.text.value});if(!live())return;e.target.reset();status.textContent=w.submitted;await refresh();});};
       $('[data-archive]').onclick=()=>run(async()=>{await command('ai.session.update',{sessionId:session.sessionId,revision:session.revision,archived:true});session=null;$('[data-detail]').hidden=true;await sessions();});
       $('[data-archived]').onchange=()=>run(async()=>{session=null;$('[data-detail]').hidden=true;await sessions();});
-      $('[data-refresh]').onclick=()=>run(refresh);
+      $('[data-refresh]').onclick=()=>manager?this.open({base,manager,language,onQueue}):run(refresh);
       $('[data-receipt]').onclick=()=>run(async()=>{if(!uncertain)return;const result=await client.aiReceipt(uncertain);if(!live())return;status.textContent=JSON.stringify(result);if(result.status==='committed'||result.status==='rejected'){uncertain=null;$('[data-receipt]').hidden=true;await refresh();}});
       if(manager){
         const data=await client.aiSettings();if(!live())return;const s=data.settings,form=$('[data-settings]');
         if(!s.enabled||!Object.values(s.externalSources).some(Boolean))form.parentElement.open=true;
         const readiness=(enabled,policy,profile)=>t(!profile?.enabled?'ai.setupProvider':!enabled?'ai.enableHint':!Object.values(policy).some(Boolean)?'ai.noRoomData':'ai.ready');
         form.innerHTML=`<p data-ai-readiness>${readiness(s.enabled,s.externalSources,data.profiles.find(p=>p.profileId===s.profileId))}</p><p class="muted">${t('ai.scopeHelp')}</p><label><input name="enabled" type="checkbox" ${s.enabled?'checked':''}>${w.enabled}</label><select name="profile" aria-label="${w.profile}">${data.profiles.map(p=>`<option value="${esc(p.profileId)}" ${p.profileId===s.profileId?'selected':''}>${esc(p.profileId+' / '+p.model)}${p.enabled?'':' ('+w.unconfigured+')'}</option>`).join('')}</select>${['public','kp','private'].map(k=>`<label><input type="checkbox" name="${k}" ${s.externalSources[k]?'checked':''}>${w[k]}</label>`).join('')}<button>${w.save}</button>`;
+        let accessRevision=data.access.revision;
+        const accessForm=document.createElement('form');accessForm.dataset.accessSettings='';
+        accessForm.innerHTML=`<h3>${t('ai.accessTitle')}</h3><label><input type="checkbox" name="allowPlayerChat">${t('ai.allowPlayers')}</label><label><input type="checkbox" name="autoApproveBatches">${t('ai.autoApprove')}</label><label><input type="checkbox" name="autoApproveConfigurations">通过三检后自动批准并加载配置</label><button>${t('ai.saveAccess')}</button>`;
+        form.after(accessForm);accessForm.elements.allowPlayerChat.checked=data.access.allowPlayerChat;accessForm.elements.autoApproveBatches.checked=data.access.autoApproveBatches;accessForm.elements.autoApproveConfigurations.checked=data.access.autoApproveConfigurations;
+        accessForm.onsubmit=e=>{e.preventDefault();run(async()=>{const value=await command('ai.access.update',{revision:accessRevision,allowPlayerChat:accessForm.elements.allowPlayerChat.checked,autoApproveBatches:accessForm.elements.autoApproveBatches.checked,autoApproveConfigurations:accessForm.elements.autoApproveConfigurations.checked});accessRevision=value.revision;status.textContent=w.saved;});};
         form.onsubmit=e=>{e.preventDefault();run(async()=>{await command('ai.settings.update',{enabled:form.elements.enabled.checked,profileId:form.elements.profile.value||null,externalSources:Object.fromEntries(['public','kp','private'].map(k=>[k,form.elements[k].checked])),auto:{enabled:false,channelIds:['general'],prefix:'!ai '}});if(live()){status.textContent=w.saved;const profile=data.profiles.find(p=>p.profileId===form.elements.profile.value);form.querySelector('[data-ai-readiness]').textContent=readiness(form.elements.enabled.checked,Object.fromEntries(['public','kp','private'].map(k=>[k,form.elements[k].checked])),profile);}});};
-        $('[data-more]').onclick=()=>run(()=>tasks(true));
-        const network=await client.transport.request('../../package/integrations');if(!live())return;
-        if(network.ai?.queryMode!=='demand'||!network.ai?.guideCurrent){
-          const warning=document.createElement('p');warning.className='ai-guide-warning';warning.setAttribute('role','status');warning.textContent=t('ai.reloadGuide');
-          form.prepend(warning);form.parentElement.open=true;
-        }
-        $('[data-network]').textContent=network.web?.requested?t('ai.web'):network.p2p.requested?w.p2p+' '+(network.p2p.error?w.p2perror:network.p2p.running?w.running:w.stopped):'';
+        // Network diagnostics must not hold up the room's session and review UI.
+        client.transport.request('../../package/integrations').then(network=>{
+          if(!live()||!form.isConnected)return;
+          if(network.ai?.queryMode!=='demand'||!network.ai?.guideCurrent){
+            const warning=document.createElement('p');warning.className='ai-guide-warning';warning.setAttribute('role','status');warning.textContent=t('ai.reloadGuide');
+            form.prepend(warning);form.parentElement.open=true;
+          }
+          $('[data-network]').textContent=network.web?.requested?t('ai.web'):network.p2p.requested?w.p2p+' '+(network.p2p.error?w.p2perror:network.p2p.running?w.running:w.stopped):'';
+        }).catch(error=>{if(live()&&$('[data-network]'))$('[data-network]').textContent=error.code||w.offline;});
       }
-      await refresh();if(!live())return;if(status.textContent===w.loading)status.textContent='';timer=setInterval(()=>run(refresh),4000);
+      await refresh();if(!live())return;if(status.textContent===w.loading)status.textContent='';if(!manager)timer=setInterval(()=>run(refresh),4000);
     }catch(e){if(live())status.textContent=e.code||e.message;}
   }
 };

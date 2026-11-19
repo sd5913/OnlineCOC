@@ -11,3 +11,9 @@ export {REFERENCE_COMMANDS,referenceCommands} from './reference-commands.js';
 export {createReferenceEditor,renderReferenceText,hydrateReferences,referenceToken} from './reference-editor.js';
 export {bindReferenceInput} from './reference-input.js';
 export {mountUsage} from './usage.js';
+
+export {mountChoices} from './choices.js';
+
+export {bindReferenceDetails} from './reference-details.js';
+
+export {mountRulings} from './rulings.js';

@@ -1,0 +1,15 @@
+{
+  "checkedAt": "2026-11-19T10:01:55.719211+08:00",
+  "passed": 6,
+  "checks": [
+    "empty library does not initialize a room; invalid names and path traversal are rejected",
+    "creating a named slot prepares its own real host; running locks slot management; minimizing keeps it alive and stopping releases ports",
+    "two slots use different directories, passwords and notes; duplicate names rejected and selection remembered",
+    "reopening remembers the selection; switching back restores the original save; incompatible versions show an actionable error and no connection address",
+    "same browser, account and port keep pending recovery isolated per slot; returning to the original slot restores only its action",
+    "closing the panel stops only its selected room and preserves both slots for later use"
+  ],
+  "realSaveModified": false,
+  "modelCalls": 0,
+  "data": "isolated test rooms"
+}

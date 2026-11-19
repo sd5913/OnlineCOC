@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="12" skipped="0" tests="89" time="151.823" timestamp="2026-11-17T10:38:37.294252+08:00" hostname="LAPTOP-BIFSL64A"><testcase classname="tests.test_context" name="test_default_excludes_room_and_pack_text" time="1.512" /><testcase classname="tests.test_context" name="test_public_context_strips_secret_and_never_reads_others_private_chat" time="1.226" /><testcase classname="tests.test_context" name="test_context_rechecks_source_and_policy_after_generation[edit]" time="1.186" /><testcase classname="tests.test_context" name="test_context_rechecks_source_and_policy_after_generation[delete]" time="1.632" /><testcase classname="tests.test_context" name="test_context_rechecks_source_and_policy_after_generation[policy]" time="1.440" /><testcase classname="tests.test_context" name="test_context_rechecks_source_and_policy_after_generation[revoke]" time="1.146" /><testcase classname="tests.test_context" name="test_context_rechecks_source_and_policy_after_generation[profile]" time="1.145" /><testcase classname="tests.test_context" name="test_manual_revision_keeps_original_source_authorization" time="1.165" /><testcase classname="tests.test_context" name="test_chat_source_requires_actual_current_text_and_external_permission" time="1.087" /><testcase classname="tests.test_context" name="test_unrelated_read_position_and_ai_history_do_not_change_world" time="1.142" /><testcase classname="tests.test_context" name="test_scope_mismatch_rejects_cross_room_context" time="1.105" /><testcase classname="tests.test_context" name="test_context_size_is_bounded" time="1.100" /><testcase classname="tests.test_context" name="test_two_actual_demo_directories_do_not_share_secrets_or_memory" time="1.878" /><testcase classname="tests.test_access_batches" name="test_defaults_binding_and_no_permission_escalation" time="1.182" /><testcase classname="tests.test_access_batches" name="test_player_auto_dispatch_context_output_and_revoke" time="1.144"><failure message="AssertionError: {'requestId': '028015dfc91b4b5ab0bd3a9d62c2729e', 'sessionId': '710bf89a390545f7b99a960bada7fd2f', 'dispatchError': 'KNOWLEDGE_UNAVAILABLE'}&#10;assert None&#10; +  where None = &lt;built-in method get of dict object at 0x000001FF3A213D40&gt;('taskId')&#10; +    where &lt;built-in method get of dict object at 0x000001FF3A213D40&gt; = {'requestId': '028015dfc91b4b5ab0bd3a9d62c2729e', 'sessionId': '710bf89a390545f7b99a960bada7fd2f', 'dispatchError': 'KNOWLEDGE_UNAVAILABLE'}.get">application = &lt;onlinecoc_ai.api.Application object at 0x000001FF39F2EAD0&gt;
+
+    def test_player_auto_dispatch_context_output_and_revoke(application):
+        app=application;access(app);enable(app.host,public=True,private=True,kp=True)
+        room=app.host.state();room['entities']['actor-one']['metadata']['secret']='NEVER_PLAYER_SECRET';app.host.commit(room)
+        async def callback(count,messages,tools):
+            assert 'NEVER_PLAYER_SECRET' not in str(messages)
+            assert 'room_manage_catalog' not in str(tools)
+            return completion({'kind':'plan','text':'玩家可见回答'})
+        async def run():
+            app.coordinator.provider_factory=lambda p:Fake(callback);await app.coordinator.start()
+            try:
+                s=session(app,'player1');r=submit(app,s,who='player1');assert r.get('taskId'),r
+                task=await wait_task(app.coordinator,r['taskId']);assert task['status']=='review_ready',task
+                result=app.sessions.get('player1',s['sessionId'])['items'][0]
+                assert result['response']=='玩家可见回答' and 'diagnostics' not in result
+                assert app.sessions.get('kp',s['sessionId'])['items'][0]['response']=='玩家可见回答'
+                context=app.repository.state()['contexts'][task['contextRef']]
+                assert context['facts']['sessionAccess']['owner']=='player1'
+                access(app,False)
+                with pytest.raises(AiError,match='PLAYER_AI_DISABLED'):app.sessions.get('player1',s['sessionId'])
+                assert command(app,'ai.session.submit',{'sessionId':s['sessionId'],'text':'停止后提交'},'player1')['code']=='PLAYER_AI_DISABLED'
+                assert app.sessions.get('kp',s['sessionId'])['items'][0]['status']=='stale'
+            finally:await app.coordinator.close()
+&gt;       asyncio.run(run())
+
+engineering\ai\tests\test_access_batches.py:78: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:204: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:127: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\base_events.py:719: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    async def run():
+        app.coordinator.provider_factory=lambda p:Fake(callback);await app.coordinator.start()
+        try:
+&gt;           s=session(app,'player1');r=submit(app,s,who='player1');assert r.get('taskId'),r
+                                                                   ^^^^^^^^^^^^^^^^^^^^^^^^
+E           AssertionError: {'requestId': '028015dfc91b4b5ab0bd3a9d62c2729e', 'sessionId': '710bf89a390545f7b99a960bada7fd2f', 'dispatchError': 'KNOWLEDGE_UNAVAILABLE'}
+E           assert None
+E            +  where None = &lt;built-in method get of dict object at 0x000001FF3A213D40&gt;('taskId')
+E            +    where &lt;built-in method get of dict object at 0x000001FF3A213D40&gt; = {'requestId': '028015dfc91b4b5ab0bd3a9d62c2729e', 'sessionId': '710bf89a390545f7b99a960bada7fd2f', 'dispatchError': 'KNOWLEDGE_UNAVAILABLE'}.get
+
+engineering\ai\tests\test_access_batches.py:66: AssertionError</failure></testcase><testcase classname="tests.test_access_batches" name="test_kp_player_session_has_player_ceiling_and_data_proof" time="1.164"><failure message="AssertionError: {'requestId': 'e20fe0e98adb41be97e9337031052a85', 'sessionId': 'e395b637cddd4118aa9db7a5696f489c', 'dispatchError': 'KNOWLEDGE_UNAVAILABLE'}&#10;assert None&#10; +  where None = &lt;built-in method get of dict object at 0x000001FF3856BC40&gt;('taskId')&#10; +    where &lt;built-in method get of dict object at 0x000001FF3856BC40&gt; = {'requestId': 'e20fe0e98adb41be97e9337031052a85', 'sessionId': 'e395b637cddd4118aa9db7a5696f489c', 'dispatchError': 'KNOWLEDGE_UNAVAILABLE'}.get">application = &lt;onlinecoc_ai.api.Application object at 0x000001FF39F2F250&gt;
+
+    def test_kp_player_session_has_player_ceiling_and_data_proof(application):
+        app=application;enable(app.host,public=True,private=True,kp=True)
+        s=session(app,accessLevel='player');r=submit(app,s)
+&gt;       assert r.get('taskId'),r
+E       AssertionError: {'requestId': 'e20fe0e98adb41be97e9337031052a85', 'sessionId': 'e395b637cddd4118aa9db7a5696f489c', 'dispatchError': 'KNOWLEDGE_UNAVAILABLE'}
+E       assert None
+E        +  where None = &lt;built-in method get of dict object at 0x000001FF3856BC40&gt;('taskId')
+E        +    where &lt;built-in method get of dict object at 0x000001FF3856BC40&gt; = {'requestId': 'e20fe0e98adb41be97e9337031052a85', 'sessionId': 'e395b637cddd4118aa9db7a5696f489c', 'dispatchError': 'KNOWLEDGE_UNAVAILABLE'}.get
+
+engineering\ai\tests\test_access_batches.py:84: AssertionError</failure></testcase><testcase classname="tests.test_access_batches" name="test_batch_human_approval_idempotence_and_player_denial" time="1.185" /><testcase classname="tests.test_access_batches" name="test_batch_stale_reject_auto_and_bypass_forbidden" time="1.355" /><testcase classname="tests.test_access_batches" name="test_batch_unknown_reconciles_without_reexecuting" time="1.171" /><testcase classname="tests.test_access_batches" name="test_batch_stops_after_partial_failure_and_restart_never_replays" time="1.200" /><testcase classname="tests.test_access_batches" name="test_delete_cancels_queue_hides_session_and_keeps_usage_audit" time="1.153" /><testcase classname="tests.test_access_batches" name="test_administrator_tools_respect_external_scope" time="1.173" /><testcase classname="tests.test_access_batches" name="test_player_contract_tool_and_batch_output_cannot_escalate" time="1.113"><failure message="KeyError: 'taskId'">application = &lt;onlinecoc_ai.api.Application object at 0x000001FF3A098250&gt;
+
+    def test_player_contract_tool_and_batch_output_cannot_escalate(application):
+        app=application;access(app);enable(app.host,public=True,private=True,kp=True)
+        async def callback(count,messages,tools):
+            if count==1:return tool_call('pack_read_contract')
+            if count==2:
+                contract=loads(messages[-1]['content'].encode())
+                assert all(s['visibility']=='public' for s in contract['sources'])
+            return completion({'kind':'batch','text':'尝试提权','actions':[{'target':'host','op':'entity.patch','args':{'id':'actor-one','name':'不应生效'}}]})
+        async def run():
+            app.coordinator.provider_factory=lambda p:Fake(callback);await app.coordinator.start()
+            try:
+                task=submit(app,session(app,'player1'),who='player1')
+                result=await wait_task(app.coordinator,task['taskId'])
+                assert result['status']=='failed' and result['error']=='MODEL_OUTPUT_INVALID',result
+                assert app.host.state()['entities']['actor-one']['name']!='不应生效'
+                assert not app.batches.list('kp')['items']
+            finally:await app.coordinator.close()
+&gt;       asyncio.run(run())
+
+engineering\ai\tests\test_access_batches.py:203: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:204: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:127: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\base_events.py:719: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    async def run():
+        app.coordinator.provider_factory=lambda p:Fake(callback);await app.coordinator.start()
+        try:
+            task=submit(app,session(app,'player1'),who='player1')
+&gt;           result=await wait_task(app.coordinator,task['taskId'])
+                                                   ^^^^^^^^^^^^^^
+E           KeyError: 'taskId'
+
+engineering\ai\tests\test_access_batches.py:198: KeyError</failure></testcase><testcase classname="tests.test_access_batches" name="test_delete_interrupts_active_generation" time="1.260" /><testcase classname="tests.test_access_batches" name="test_management_catalog_is_bounded_and_schema_complete" time="1.106" /><testcase classname="tests.test_access_batches" name="test_other_administrator_can_inspect_draft_without_taking_review_identity" time="1.219" /><testcase classname="tests.test_access_batches" name="test_player_history_rechecks_package_evidence_during_generation" time="1.242"><failure message="KeyError: 'taskId'">application = &lt;onlinecoc_ai.api.Application object at 0x000001FF39F46970&gt;
+
+    def test_player_history_rechecks_package_evidence_during_generation(application):
+        app=application;access(app);enable(app.host,public=True,private=True,kp=True)
+        class Evidence:
+            kinds=('event',)
+            value='已知事件'
+            def read(self,room,account):
+                return [{'sourceId':'fixture','kind':'event','id':'event-one','revision':digest(self.value),
+                    'label':'事件','data':{'text':self.value},'visibility':'private'}]
+        adapter=Evidence();app.host.ai_data_adapter=adapter
+        async def callback(count,messages,tools):
+            payload=loads(messages[1]['content'].encode())
+            if any(turn['role']=='assistant' for turn in payload['conversationHistory']):
+                adapter.value='证据已撤回或修改'
+                return completion({'kind':'plan','text':'不应返回的旧事件结论'})
+            if count==1:return tool_call('room_search_data',{'types':['event']})
+            return completion({'kind':'plan','text':'已读取个人经历'})
+        async def run():
+            app.coordinator.provider_factory=lambda p:Fake(callback);await app.coordinator.start()
+            try:
+                s=session(app,'player1');one=submit(app,s,who='player1')
+                assert (await wait_task(app.coordinator,one['taskId']))['status']=='review_ready'
+                two=submit(app,s,'继续解释经历',who='player1');result=await wait_task(app.coordinator,two['taskId'])
+                assert result['status']=='failed' and result['error']=='SOURCE_STALE',result
+                assert '不应返回' not in str(app.sessions.get('player1',s['sessionId']))
+            finally:await app.coordinator.close()
+&gt;       asyncio.run(run())
+
+engineering\ai\tests\test_access_batches.py:271: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:204: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:127: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\base_events.py:719: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    async def run():
+        app.coordinator.provider_factory=lambda p:Fake(callback);await app.coordinator.start()
+        try:
+            s=session(app,'player1');one=submit(app,s,who='player1')
+&gt;           assert (await wait_task(app.coordinator,one['taskId']))['status']=='review_ready'
+                                                    ^^^^^^^^^^^^^
+E           KeyError: 'taskId'
+
+engineering\ai\tests\test_access_batches.py:266: KeyError</failure></testcase><testcase classname="tests.test_sessions" name="test_history_reuses_valid_response_but_drops_stale_sources" time="1.349" /><testcase classname="tests.test_sessions" name="test_history_is_bounded_and_never_reads_other_sessions" time="1.219"><failure message="onlinecoc_ai.errors.AiError: KNOWLEDGE_UNAVAILABLE">application = &lt;onlinecoc_ai.api.Application object at 0x000001FF3A232F90&gt;
+
+    def test_history_is_bounded_and_never_reads_other_sessions(application):
+        app = application
+        committed(command(app,'ai.access.update',{'revision':1,'allowPlayerChat':True,'autoApproveBatches':False}))
+        sid = committed(command(app, 'ai.session.create', {'title': '我的会话'}, 'player1'))['sessionId']
+        other = committed(command(app, 'ai.session.create', {'title': '他人会话'}, 'player2'))['sessionId']
+        submit(app, other, '其他人的私密想法', 'player2')
+        for i in range(6):last = submit(app, sid, '需求' + str(i), 'player1')
+        request = app.repository.state()['requests'][last['requestId']]
+&gt;       snapshot, payload = Context(app.proposals).capture('kp', request)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+engineering\ai\tests\test_sessions.py:48: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+engineering\ai\src\onlinecoc_ai\context.py:28: in capture
+    if access and access['level'] == 'player':return self.capture_player(account, request, access)
+                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+engineering\ai\src\onlinecoc_ai\context.py:132: in capture_player
+    owner=access['owner'];port=service(self.host,owner,room)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+engineering\ai\src\onlinecoc_ai\knowledge.py:25: in service
+    require(capability.get('status') == 'ready', 'KNOWLEDGE_UNAVAILABLE')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+condition = False, code = 'KNOWLEDGE_UNAVAILABLE', message = '', path = ''
+
+    def require(condition, code="INPUT_INVALID", message="", path=""):
+        if not condition:
+&gt;           raise AiError(code, message, path)
+E           onlinecoc_ai.errors.AiError: KNOWLEDGE_UNAVAILABLE
+
+engineering\ai\src\onlinecoc_ai\errors.py:15: AiError</failure></testcase><testcase classname="tests.test_sessions" name="test_repository_rejects_broken_conversation_links[foreign]" time="1.175" /><testcase classname="tests.test_sessions" name="test_repository_rejects_broken_conversation_links[missing]" time="1.114" /><testcase classname="tests.test_sessions" name="test_repository_rejects_broken_conversation_links[duplicate]" time="1.167" /><testcase classname="tests.test_sessions" name="test_repository_rejects_broken_conversation_links[title]" time="1.121" /><testcase classname="tests.test_sessions" name="test_session_preferences_owner_conflict_and_persistence" time="1.167" /><testcase classname="tests.test_sessions" name="test_configured_history_bound_preserves_records[0]" time="1.212" /><testcase classname="tests.test_sessions" name="test_configured_history_bound_preserves_records[2]" time="1.183" /><testcase classname="tests.test_sessions" name="test_configured_history_bound_preserves_records[4]" time="1.191" /><testcase classname="tests.test_sessions" name="test_session_preferences_validate_command_and_stored_data[historyTurns--1]" time="1.122" /><testcase classname="tests.test_sessions" name="test_session_preferences_validate_command_and_stored_data[historyTurns-5]" time="1.136" /><testcase classname="tests.test_sessions" name="test_session_preferences_validate_command_and_stored_data[historyTurns-True]" time="1.161" /><testcase classname="tests.test_sessions" name="test_session_preferences_validate_command_and_stored_data[historyTurns-1.5]" time="1.083" /><testcase classname="tests.test_sessions" name="test_session_preferences_validate_command_and_stored_data[renderMode-html]" time="1.198" /><testcase classname="tests.test_sessions" name="test_session_preferences_validate_command_and_stored_data[pinned-1]" time="1.530" /><testcase classname="tests.test_sessions" name="test_session_preferences_validate_command_and_stored_data[showDiagnostics-false]" time="1.231" /><testcase classname="tests.test_coordinator" name="test_draft_is_checked_but_never_published" time="9.535" /><testcase classname="tests.test_coordinator" name="test_blocked_model_does_not_hold_host_lock_and_can_cancel" time="1.174" /><testcase classname="tests.test_coordinator" name="test_request_dedup_queue_and_budget" time="1.097" /><testcase classname="tests.test_coordinator" name="test_untrusted_model_and_retry_limits[forged-TOOL_FORBIDDEN]" time="1.196" /><testcase classname="tests.test_coordinator" name="test_untrusted_model_and_retry_limits[loop-TOOL_ROUND_LIMIT]" time="1.468" /><testcase classname="tests.test_coordinator" name="test_untrusted_model_and_retry_limits[retry-PROVIDER_UNAVAILABLE]" time="1.573" /><testcase classname="tests.test_coordinator" name="test_untrusted_model_and_retry_limits[repair-MODEL_OUTPUT_INVALID]" time="1.337" /><testcase classname="tests.test_coordinator" name="test_expired_task_and_authority_change_fail_closed" time="1.278" /><testcase classname="tests.test_coordinator" name="test_disabled_service_makes_no_provider_calls" time="1.147" /><testcase classname="tests.test_coordinator" name="test_retry_budget_records_each_attempt_once" time="1.551" /><testcase classname="tests.test_coordinator" name="test_restart_interrupts_queued_tasks_and_preserves_budget" time="1.146" /><testcase classname="tests.test_coordinator" name="test_permissions_changed_during_generation_discard_output" time="1.127" /><testcase classname="tests.test_coordinator" name="test_profile_changed_during_generation_discards_output_and_runner_survives" time="1.266" /><testcase classname="tests.test_coordinator" name="test_real_contract_is_exposed_and_repair_names_invalid_field" time="7.752" /><testcase classname="tests.test_entrypoints" name="test_requests_are_explicit_idempotent_redacted_and_paged" time="1.065"><failure message="AssertionError: assert {'createdAt',...esponse', ...} == {'createdAt',...Id', 'status'}&#10;  &#10;  Extra items in the left set:&#10;  'proposalId'&#10;  'initiator'&#10;  'taskId'&#10;  'response'&#10;  'error'&#10;  'text'&#10;  Use -v to get more diff">application = &lt;onlinecoc_ai.api.Application object at 0x000001FF3A3199F0&gt;
+
+    def test_requests_are_explicit_idempotent_redacted_and_paged(application):
+        app = application
+        committed(command(app,'ai.access.update',{'revision':1,'allowPlayerChat':True,'autoApproveBatches':False}))
+        one = command(app, 'ai.request.create', {'sourceKind': 'manual', 'text': 'secret request'}, 'player1', 'one')
+        assert command(app, 'ai.request.create', {'sourceKind': 'manual', 'text': 'secret request'}, 'player1', 'one') == one
+        committed(one)
+        with pytest.raises(AiError, match='COMMAND_ID_CONFLICT'):
+            command(app, 'ai.request.create', {'sourceKind': 'manual', 'text': 'changed'}, 'player1', 'one')
+        assert app.tasks('player2')['items'] == []
+&gt;       assert set(app.tasks('player1')['items'][0]) == {'requestId', 'status', 'createdAt'}
+E       AssertionError: assert {'createdAt',...esponse', ...} == {'createdAt',...Id', 'status'}
+E         
+E         Extra items in the left set:
+E         'proposalId'
+E         'initiator'
+E         'taskId'
+E         'response'
+E         'error'
+E         'text'
+E         Use -v to get more diff
+
+engineering\ai\tests\test_entrypoints.py:56: AssertionError</failure></testcase><testcase classname="tests.test_entrypoints" name="test_chat_forwarding_binds_original_and_policy" time="1.115"><failure message="AssertionError: assert 'SESSION_REQUIRED' == 'EXTERNAL_SCOPE_DISABLED'&#10;  &#10;  - EXTERNAL_SCOPE_DISABLED&#10;  + SESSION_REQUIRED">application = &lt;onlinecoc_ai.api.Application object at 0x000001FF3A31B390&gt;
+
+    def test_chat_forwarding_binds_original_and_policy(application):
+        app = application; message = add_message(app.host, 'player1', '!ai make item')
+        args = {'sourceKind': 'chat', 'channelId': 'general', 'sourceId': message['messageId'], 'sourceRevision': message['revision'], 'text': message['text']}
+        request = committed(command(app, 'ai.request.create', args))
+        assert committed(command(app, 'ai.request.create', {**args, 'sourceRevision': str(message['revision'])})) == request
+        assert app.tasks('kp')['items'][0]['text'] == message['text']  # review allowed before external consent
+&gt;       assert command(app, 'ai.request.dispatch', request)['code'] == 'EXTERNAL_SCOPE_DISABLED'
+E       AssertionError: assert 'SESSION_REQUIRED' == 'EXTERNAL_SCOPE_DISABLED'
+E         
+E         - EXTERNAL_SCOPE_DISABLED
+E         + SESSION_REQUIRED
+
+engineering\ai\tests\test_entrypoints.py:73: AssertionError</failure></testcase><testcase classname="tests.test_entrypoints" name="test_player_can_cancel_after_dispatching_kp_loses_role" time="1.117"><failure message="AssertionError: {'requestId': '804d192ca3fb4b2e96d7eb04270bff58', 'status': 'rejected', 'code': 'KNOWLEDGE_UNAVAILABLE'}&#10;assert 'rejected' == 'committed'&#10;  &#10;  - committed&#10;  + rejected">application = &lt;onlinecoc_ai.api.Application object at 0x000001FF3A31ADF0&gt;
+
+    def test_player_can_cancel_after_dispatching_kp_loses_role(application):
+        app = application
+        committed(command(app,'ai.access.update',{'revision':1,'allowPlayerChat':True,'autoApproveBatches':False}))
+        request = committed(command(app, 'ai.request.create', {'sourceKind': 'manual', 'text': 'my request'}, 'player1'))
+        request={'requestId':request['requestId']}
+&gt;       task = committed(command(app, 'ai.request.dispatch', request))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+engineering\ai\tests\test_entrypoints.py:88: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+receipt = {'requestId': '804d192ca3fb4b2e96d7eb04270bff58', 'status': 'rejected', 'code': 'KNOWLEDGE_UNAVAILABLE'}
+
+    def committed(receipt):
+&gt;       assert receipt['status'] == 'committed', receipt
+E       AssertionError: {'requestId': '804d192ca3fb4b2e96d7eb04270bff58', 'status': 'rejected', 'code': 'KNOWLEDGE_UNAVAILABLE'}
+E       assert 'rejected' == 'committed'
+E         
+E         - committed
+E         + rejected
+
+engineering\ai\tests\test_entrypoints.py:34: AssertionError</failure></testcase><testcase classname="tests.test_entrypoints" name="test_plan_without_proposal_rechecks_context_on_read" time="1.227" /><testcase classname="tests.test_entrypoints" name="test_auto_off_prefix_dedup_edits_withdrawal_and_role" time="1.112"><failure message="onlinecoc_ai.errors.AiError: SESSION_REQUIRED">application = &lt;onlinecoc_ai.api.Application object at 0x000001FF3A725C70&gt;
+
+    def test_auto_off_prefix_dedup_edits_withdrawal_and_role(application):
+        app = application
+        add_message(app.host, 'player1', '!ai old')
+        app.scan_auto(); assert not app.repository.state()['tasks']
+        committed(command(app, 'ai.settings.update', settings(True)))
+        app.scan_auto(); assert not app.repository.state()['tasks']
+        add_message(app.host, 'player1', 'ordinary chat')
+        message = add_message(app.host, 'player1', '!ai new')
+&gt;       app.scan_auto(); app.scan_auto()
+        ^^^^^^^^^^^^^^^
+
+engineering\ai\tests\test_entrypoints.py:124: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+engineering\ai\src\onlinecoc_ai\api.py:334: in scan_auto
+    self._execute(account, 'auto-dispatch', 'ai.request.dispatch', result)
+engineering\ai\src\onlinecoc_ai\api.py:191: in _execute
+    self.coordinator.context.capture(account, request)
+engineering\ai\src\onlinecoc_ai\context.py:30: in capture
+    require(self.host.state()['members'].get(request['initiator'],{}).get('role')=='kp','SESSION_REQUIRED')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+condition = False, code = 'SESSION_REQUIRED', message = '', path = ''
+
+    def require(condition, code="INPUT_INVALID", message="", path=""):
+        if not condition:
+&gt;           raise AiError(code, message, path)
+E           onlinecoc_ai.errors.AiError: SESSION_REQUIRED
+
+engineering\ai\src\onlinecoc_ai\errors.py:15: AiError</failure></testcase><testcase classname="tests.test_entrypoints" name="test_manual_revision_invalidates_approval_and_cancel_revokes" time="22.677" /><testcase classname="tests.test_entrypoints" name="test_receipt_rechecks_private_sources_and_restart_pending" time="1.069" /><testcase classname="tests.test_entrypoints" name="test_http_auth_limits_schema_capability_and_disabled_module" time="1.377" /><testcase classname="tests.test_entrypoints" name="test_cli_uses_same_three_engines" time="9.428" /><testcase classname="tests.test_references" name="test_search_resolve_privacy_and_revision" time="1.016"><failure message="onlinecoc_ai.errors.AiError: REFERENCE_NOT_VISIBLE">application = &lt;onlinecoc_ai.api.Application object at 0x000001FF3A318AF0&gt;
+
+    def test_search_resolve_privacy_and_revision(application):
+        app=application;refs=References(app.host)
+&gt;       token=refs.search('player1','config')['items'][0]['token']
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+engineering\ai\tests\test_references.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+engineering\ai\src\onlinecoc_ai\references.py:61: in search
+    matches = [x for x in self._items(room, account, kind) if q.casefold() in (x[0] + ' ' + str(x[1])).casefold()]
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+engineering\ai\src\onlinecoc_ai\references.py:28: in _items
+    require(kp,'REFERENCE_NOT_VISIBLE')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+condition = False, code = 'REFERENCE_NOT_VISIBLE', message = '', path = ''
+
+    def require(condition, code="INPUT_INVALID", message="", path=""):
+        if not condition:
+&gt;           raise AiError(code, message, path)
+E           onlinecoc_ai.errors.AiError: REFERENCE_NOT_VISIBLE
+
+engineering\ai\src\onlinecoc_ai\errors.py:15: AiError</failure></testcase><testcase classname="tests.test_references" name="test_context_references_are_bound_and_obey_external_policy" time="1.041" /><testcase classname="tests.test_references" name="test_session_mutation_and_receipt_use_one_durable_commit" time="1.029" /><testcase classname="tests.test_references" name="test_detail_does_not_scan_other_session_tasks" time="1.040" /><testcase classname="tests.test_references" name="test_runtime_data_cannot_be_requested_on_behalf_of_player" time="1.016" /><testcase classname="tests.test_references" name="test_reference_http_boundary" time="1.097"><failure message="KeyError: 'items'">application = &lt;onlinecoc_ai.api.Application object at 0x000001FF3A449310&gt;
+
+    def test_reference_http_boundary(application):
+        committed(command(application,'ai.access.update',{'revision':1,'allowPlayerChat':True,'autoApproveBatches':False}))
+        from fastapi.testclient import TestClient
+        from onlinecoc.server import create_app
+        from types import SimpleNamespace
+        async def idle():pass
+        app=create_app(application.host,ai_runtime=SimpleNamespace(application=application,start=idle,close=idle))
+        with TestClient(app,base_url='http://127.0.0.1:8765') as client:
+            assert client.get('/api/v1/ai/references').status_code==401
+            client.headers['Origin']='http://127.0.0.1:8765'
+            csrf=client.post('/api/v1/login',json={'loginName':'player1','password':'test-password'}).json()['csrf']
+&gt;           token=client.get('/api/v1/ai/references?kind=config').json()['items'][0]['token']
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           KeyError: 'items'
+
+engineering\ai\tests\test_references.py:78: KeyError</failure></testcase><testcase classname="tests.test_data_queries" name="test_search_detail_and_external_policy" time="1.006" /><testcase classname="tests.test_data_queries" name="test_query_rejects_unbounded_or_identity_input[args0]" time="1.003" /><testcase classname="tests.test_data_queries" name="test_query_rejects_unbounded_or_identity_input[args1]" time="0.996" /><testcase classname="tests.test_data_queries" name="test_query_rejects_unbounded_or_identity_input[args2]" time="0.976" /><testcase classname="tests.test_data_queries" name="test_query_rejects_unbounded_or_identity_input[args3]" time="0.998" /><testcase classname="tests.test_data_queries" name="test_query_rejects_unbounded_or_identity_input[args4]" time="0.996" /><testcase classname="tests.test_data_queries" name="test_query_rejects_unbounded_or_identity_input[args5]" time="1.022" /><testcase classname="tests.test_data_queries" name="test_query_rejects_unbounded_or_identity_input[args6]" time="1.013" /><testcase classname="tests.test_data_queries" name="test_chat_intersection_window_cursor_and_edit" time="1.064"><failure message="onlinecoc.errors.DomainError: KNOWLEDGE_UNAVAILABLE">setup = (&lt;onlinecoc.host.Host object at 0x000001FF3A86EE10&gt;, &lt;onlinecoc_ai.proposals.Proposals object at 0x000001FF3A7DB230&gt;, {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...})
+
+    def test_chat_intersection_window_cursor_and_edit(setup):
+        host,_,_=setup;q=DataQueryService(host);enable(host,public=True,private=True)
+        for text in ('first','second','third'):add_message(host,'player1',text)
+        state=host.state();state['chat']['channels']['secret']=chat.channel('secret','direct','secret',['player1','player2']);state['chat']['messages']['secret']=[];host.commit(state)
+        add_message(host,'player1','hidden','secret')
+        with pytest.raises(DomainError,match='NOT_VISIBLE'):q.execute('kp','chat',{'channelId':'secret'},initiator='player1')
+&gt;       page=q.execute('player1','chat',{'channelId':'general','limit':1})
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+engineering\ai\tests\test_data_queries.py:45: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+engineering\ai\src\onlinecoc_ai\data_queries.py:38: in execute
+    return query(self.host,state,account,operation,args,initiator=initiator,external=external,player=player)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+engineering\backend\src\onlinecoc\data_queries.py:112: in query
+    return knowledge_query(host,state,player or account,operation,args,external=external)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+engineering\backend\src\onlinecoc\data_queries.py:183: in knowledge_query
+    host.knowledge.capture(account,state=state,player=True)
+engineering\backend\src\onlinecoc\knowledge\service.py:362: in capture
+    s = self.host.state() if state is None else state; m = member(s, account); self.ready(s)
+                                                                               ^^^^^^^^^^^^^
+engineering\backend\src\onlinecoc\knowledge\service.py:65: in ready
+    require(s['knowledge']['policies'], 'KNOWLEDGE_UNAVAILABLE')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+condition = {}, code = 'KNOWLEDGE_UNAVAILABLE'
+
+    def require(condition, code="INPUT_INVALID"):
+&gt;       if not condition: raise DomainError(code)
+                          ^^^^^^^^^^^^^^^^^^^^^^^
+E       onlinecoc.errors.DomainError: KNOWLEDGE_UNAVAILABLE
+
+engineering\backend\src\onlinecoc\errors.py:7: DomainError</failure></testcase><testcase classname="tests.test_data_queries" name="test_dynamic_evidence_and_explicit_reference_recheck" time="1.047" /><testcase classname="tests.test_data_queries" name="test_tool_queries_never_read_kp_secret_for_player" time="1.014" /><testcase classname="tests.test_data_queries" name="test_model_search_read_then_result_keeps_evidence" time="1.207" /><testcase classname="tests.test_data_queries" name="test_http_query_auth_csrf_and_contract" time="1.097" /><testcase classname="tests.test_data_queries" name="test_result_limit_and_missing_adapter_are_fail_closed" time="1.041" /><testcase classname="tests.test_data_queries" name="test_query_evidence_prevents_publish_after_source_edit" time="1.058" /><testcase classname="tests.test_data_queries" name="test_per_round_multi_call_budget" time="1.320" /></testsuite></testsuites>

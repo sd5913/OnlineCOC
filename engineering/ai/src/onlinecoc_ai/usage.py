@@ -44,11 +44,11 @@ def summarize(app, account, options=None):
         state = app.repository.state()
         sessions = state['settings'].get('sessions', {})
         selected = sessions.get(options.get('sessionId'))
-        if 'sessionId' in options:require(selected and selected['owner'] == account, 'NOT_VISIBLE')
+        if 'sessionId' in options:require(selected and (selected['owner'] == account or principal['role'] == 'kp'), 'NOT_VISIBLE')
         # A dispatched task has its own request ID. Preserve the original owner
         # and session through dispatch rather than attributing all usage to KP.
         originals = {tid: rid for rid, tid in state['settings'].get('dispatch', {}).items()}
-        own_sessions = {rid: sid for sid, s in sessions.items() if s['owner'] == account for rid in s['requestIds']}
+        own_sessions = {rid: sid for sid, s in sessions.items() if s['owner'] == account or principal['role'] == 'kp' for rid in s['requestIds']}
         calls = {}
         for tid, task in state['tasks'].items():
             rid = originals.get(tid, task['requestId']);request = state['requests'].get(rid)

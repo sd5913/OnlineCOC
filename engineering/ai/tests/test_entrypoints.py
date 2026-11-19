@@ -46,16 +46,17 @@ def settings(auto=False):
 
 def test_requests_are_explicit_idempotent_redacted_and_paged(application):
     app = application
+    committed(command(app,'ai.access.update',{'revision':1,'allowPlayerChat':True,'autoApproveBatches':False}))
     one = command(app, 'ai.request.create', {'sourceKind': 'manual', 'text': 'secret request'}, 'player1', 'one')
     assert command(app, 'ai.request.create', {'sourceKind': 'manual', 'text': 'secret request'}, 'player1', 'one') == one
     committed(one)
     with pytest.raises(AiError, match='COMMAND_ID_CONFLICT'):
         command(app, 'ai.request.create', {'sourceKind': 'manual', 'text': 'changed'}, 'player1', 'one')
     assert app.tasks('player2')['items'] == []
-    assert set(app.tasks('player1')['items'][0]) == {'requestId', 'status', 'createdAt'}
+    assert app.tasks('player1')['items'][0]['text'] == 'secret request' and not app.tasks('player1')['items'][0].get('response')
     assert app.tasks('kp')['items'][0]['text'] == 'secret request'
-    assert not app.repository.state()['tasks']
-    denied = command(app, 'ai.request.dispatch', one['result'], 'player1')
+    assert not app.repository.state()['tasks']  # A pack without knowledge support cannot dispatch PL.
+    denied = command(app, 'ai.request.dispatch', {'requestId':one['result']['requestId']}, 'player1')
     assert denied['code'] == 'PERMISSION_DENIED'
     committed(command(app, 'ai.request.create', {'sourceKind': 'manual', 'text': 'second'}))
     page = app.tasks('kp', limit=1)
@@ -80,8 +81,11 @@ def test_chat_forwarding_binds_original_and_policy(application):
 
 
 def test_player_can_cancel_after_dispatching_kp_loses_role(application):
+    from test_known_runtime import install
+    install(application)
     app = application
     request = committed(command(app, 'ai.request.create', {'sourceKind': 'manual', 'text': 'my request'}, 'player1'))
+    request={'requestId':request['requestId']}
     task = committed(command(app, 'ai.request.dispatch', request))
     assert command(app, 'ai.request.cancel', request, 'player2')['code'] == 'PERMISSION_DENIED'
     state = app.host.state();state['members']['kp']['role'] = 'player';app.host.commit(state)
@@ -179,6 +183,7 @@ def test_receipt_rechecks_private_sources_and_restart_pending(application):
 
 def test_http_auth_limits_schema_capability_and_disabled_module(application):
     service = application
+    committed(command(service,'ai.access.update',{'revision':1,'allowPlayerChat':True,'autoApproveBatches':False}))
     async def idle():pass
     runtime = SimpleNamespace(application=service, start=idle, close=idle)
     app = create_app(service.host, ai_runtime=runtime)

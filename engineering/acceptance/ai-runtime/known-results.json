@@ -1,0 +1,52 @@
+{
+  "checkedAt": "2026-11-17T12:34:05.895497+08:00",
+  "passed": true,
+  "uniqueAiTests": 384,
+  "unresolvedFailures": 0,
+  "runs": [
+    {
+      "path": "known-full.xml",
+      "tests": 384,
+      "passed": 383,
+      "failed": [
+        "tests.test_ui::test_browser_requests_review_revision_publish_and_cache_clear"
+      ]
+    },
+    {
+      "path": "known-ui-retest.xml",
+      "tests": 2,
+      "passed": 2,
+      "failed": []
+    }
+  ],
+  "retestReason": "Legacy console test now submits as KP, explicitly dispatches, then reviews. The full-run failure was an omitted test interaction; both console tests pass after correction.",
+  "additionalEvidence": {
+    "runtimeTargeted": "known-runtime-final.xml",
+    "stumpsvilleStrictGroups": 12,
+    "stumpsvilleSceneGroups": 8,
+    "stumpsvillePresetActions": 18,
+    "secondPackage": "engineering/ai/examples/knowledge-investigation.py"
+  },
+  "provider": "deterministic local fixtures; no live provider calls",
+  "formalRoomModified": false,
+  "sha256": {
+    "engineering/ai/src/onlinecoc_ai/knowledge.py": "1fb90b8decccf024388187a80f59626e3aa7f91845a8b99d83610f5a10455a38",
+    "engineering/ai/src/onlinecoc_ai/known_answers.py": "a6bccc50f0bfa347fef1437398b7b35a2de018bceb1dc5c03da4bf45d078a763",
+    "engineering/ai/src/onlinecoc_ai/context.py": "ffbaf50fff1f6e368a7de63d0d4bdc14bd80053a471720586e5fadc865f442fe",
+    "engineering/ai/src/onlinecoc_ai/access.py": "94922dd25b884256a37e99bd826d60904b4865d138e582b0ab14b7d6e6d3ee13",
+    "engineering/ai/src/onlinecoc_ai/coordinator.py": "02a0dbf6236fdf752f54c7785ff97dbc4974501c58dab90f1725f8612d3f0e59",
+    "engineering/ai/src/onlinecoc_ai/references.py": "9beb0d84c0aa25f03df8d49cff836f038ca2d79c42b6eb13edf0e85fd916926a",
+    "engineering/ai/src/onlinecoc_ai/api.py": "bb4c9b798845156ee61f440d9ad61c7d868fd2467366bcccc7d71c108d0d7e2c",
+    "engineering/ai/src/onlinecoc_ai/sessions.py": "61f9c6f6e3f81953d631bd14f71e11885a02533700abedfe5b50156861b0c079",
+    "rulepacks/stumpsville/tools/knowledge_provider.py": "54e87d13d014067d6797f5e1377bd689b8ece53e42d7199d23ff5ce103f9ed9d",
+    "rulepacks/stumpsville/tools/knowledge_client.py": "34527adaf11fb8d17c2f91f826ebc561972781ad0bd3eb62a75328442d1b2284",
+    "rulepacks/stumpsville/tools/package.py": "166279409f9caada66b9cf7f0bc978818dfe0350bb4b5d420d4e5245d33fcc89",
+    "rulepacks/stumpsville/tools/ai_bridge.py": "e58b633dae8de7ca7ced62850a0be6e05aff6de2c5d520d0016121cf21efa473",
+    "engineering/ai/web/components/chat.js": "ba4a02b836b5aa02ba39e1e1f667d1bb789d157852d58df9618dcc2721b849b7",
+    "engineering/ai/web/components/reference-editor.js": "cd69936f18c2409b7dea240cf45102d34d02c4a7b0659c2f227a05a300a2e138",
+    "engineering/ai/web/components/reference-details.js": "8ab758008bb0c8142cd81ad4c79a75f20ec7b90cd3ddf607333093fb025c006d",
+    "engineering/ai/web/components/reference-commands.js": "1dde523702635a6afe17804265c68bab2a8860677d313603fe607cd49710e910",
+    "engineering/ai/web/components/markdown.js": "edca5e5941491f8ad7024970a86e4ff13ff07e53083620d1e16dd65ca8402c5f",
+    "engineering/ai/web/components/index.d.ts": "0e6700b1fa0499a41e51dde35b2a6dbe1b3161c0828028fb90194e524f84eb5c"
+  }
+}

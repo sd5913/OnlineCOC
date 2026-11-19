@@ -1,0 +1,19 @@
+{
+  "checkedAt": "2026-11-19T10:00:14.939864+08:00",
+  "passed": 12,
+  "checks": [
+    "old snapshots stay unknown; latest observation wins without revealing placeholder lore",
+    "real initial PL route is open; reverse-only routes render once and 03–08 avoids the expanded room 07 card",
+    "KP grants notify only the affected player, once; initial history and reload do not replay",
+    "consumption shows remaining uses; a pending transfer waits, then both owners see their own loss/gain",
+    "light-source changes and persistent burn progress notify their owner on exploration rounds",
+    "damage still notifies with dice disabled; direct host changes use the authorized snapshot without inventing a cause or log",
+    "opposite committed changes retain both queued notifications; polling and language changes do not add false inventory effects",
+    "committed injury roll precedes the effect summary; small screen fits and log link opens the notebook without a duplicate",
+    "PL sees observed door state, not hidden KP updates; revisiting refreshes the observation and reverse route",
+    "KP full map renders all 10 unique routes with current door truth",
+    "a queued preset does not hide direct host effects; room changes and logout clear visible notifications",
+    "no uncaught browser errors"
+  ],
+  "realSaveChanged": false
+}

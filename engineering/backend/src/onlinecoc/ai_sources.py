@@ -10,9 +10,18 @@ def check_sources(host, state, account, sources, memory_refs=(), seen=None):
     seen = set() if seen is None else seen
     for source in sources:
         kind, key = source['kind'], source['id']
+        if kind == 'knowledge':
+            import base64,json
+            try:ref=json.loads(base64.urlsafe_b64decode(key+'='*((-len(key))%4)))
+            except Exception:require(False,'SOURCE_STALE')
+            require(source['visibility']=='private','SOURCE_STALE')
+            value=host.knowledge.read(account,{'refs':[ref]},state=state,player=True)['items'][0]['data']
+            if source.get('digest'):require(digest(value)==source['digest'],'SOURCE_STALE')
+            continue
         if kind == 'entity':
             value = state['entities'].get(key)
             require(value and visible(state, account, value) and str(value['revision']) == str(source['revision']), 'SOURCE_STALE')
+            require(member(state,account)['role']=='kp' or not host.knowledge.managed(state,'entity',key,value),'SOURCE_STALE')
             require(source['visibility'] == ('private' if value['visibility'] == 'owner' else value['visibility']), 'SOURCE_STALE')
         elif kind == 'configuration':
             value = state['configurations'].get(key)

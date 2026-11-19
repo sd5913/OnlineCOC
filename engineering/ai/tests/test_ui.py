@@ -39,6 +39,8 @@ def live(tmp_path):
 
 
 def test_browser_requests_review_revision_publish_and_cache_clear(live):
+    from test_manager_ui import allow_players
+    allow_players(live)
     errors = []
     with sync_playwright() as p:
         browser = p.chromium.launch(channel='msedge', headless=True)
@@ -52,18 +54,22 @@ def test_browser_requests_review_revision_publish_and_cache_clear(live):
                 expect(page.locator('#ai-send')).to_be_enabled(timeout=15000)
             kp, player = pages
             expect(player.locator('#ai-kp')).to_be_hidden()
+            kp.locator('[data-tab=settings]').click()
             kp.get_by_text('服务与外发范围', exact=True).click()
             expect(kp.locator('#ai-save-settings')).to_be_enabled(timeout=15000)
             kp.locator('#ai-enabled').check();kp.locator('#ai-public').check();kp.locator('#ai-save-settings').click()
             expect(kp.locator('#ai-result')).to_have_text('设置已保存')
-            player.locator('#ai-request').fill('制作有限次数道具');player.locator('#ai-send').click()
-            expect(player.locator('#ai-result')).to_contain_text('需求已提交')
-            kp.locator('#ai-refresh').click();kp.get_by_role('button', name='转交 AI', exact=True).click()
+            kp.locator('[data-tab=requests]').click()
+            kp.locator('#ai-request').fill('制作有限次数道具');kp.locator('#ai-send').click()
+            expect(kp.locator('#ai-result')).to_contain_text('需求已提交')
+            kp.locator('[data-tab=requests]').click();kp.locator('#ai-refresh').click()
+            kp.get_by_role('button',name='转交 AI',exact=True).click()
             expect(kp.get_by_role('button', name='审核方案', exact=True)).to_be_visible(timeout=30000)
             kp.get_by_role('button', name='审核方案', exact=True).click()
             expect(kp.locator('#ai-summary')).to_contain_text('离线验收')
             assert 'changeSet' not in player.locator('#ai-tasks').inner_text()
             kp.locator('#ai-reject').click();expect(kp.locator('#ai-result')).to_have_text('已拒绝或撤销')
+            kp.locator('[data-tab=settings]').click()
             kp.get_by_text('导入人工草稿', exact=True).click()
             kp.locator('#ai-file').set_input_files(str(ROOT / 'ai/examples/bonus-15.json'));kp.locator('#ai-import').click()
             expect(kp.locator('#ai-summary')).to_have_text('人工配置草稿', timeout=30000)
@@ -91,7 +97,7 @@ def test_browser_requests_review_revision_publish_and_cache_clear(live):
             assert kp.locator('#ai-summary').text_content() == ''
             assert not errors, errors
             (ROOT / 'acceptance/ai-runtime/ai-5-browser.json').write_text(json.dumps({'browser': browser.version,
-                'provider': 'deterministic-offline', 'pageErrors': errors, 'verified': ['player-request', 'KP-forward', 'ABC-review', 'risk-reasons', 'manual-revision', 'approval', 'publication-receipt', 'reconnect', 'logout-clear']}, ensure_ascii=False, indent=2), encoding='utf-8')
+                'provider': 'deterministic-offline', 'pageErrors': errors, 'verified': ['KP-request', 'KP-forward', 'ABC-review', 'risk-reasons', 'manual-revision', 'approval', 'publication-receipt', 'reconnect', 'logout-clear']}, ensure_ascii=False, indent=2), encoding='utf-8')
         finally:
             for context in contexts:context.close()
             browser.close()

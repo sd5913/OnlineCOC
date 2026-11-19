@@ -130,7 +130,7 @@ def _semantic(kind, value):
             names = list(value[group])
             require(len(names) == len({n.casefold() for n in names}), "INPUT_INVALID", "Case-insensitive file collision")
             require(all(re.fullmatch(r"[A-Za-z0-9_.-]+", n) and n.endswith(suffix) and not n.startswith(".") for n in names),
-                    "INPUT_INVALID", "Invalid artifact filename")
+                    "INPUT_INVALID", "Artifact filenames must be basenames (no directories), using ASCII letters/digits/underscore/dot/hyphen and the .lua or .json suffix", "/"+group)
     elif kind == "Scenario":
         require(0 < len(value["steps"]) <= value["maxSteps"])
         policy = value["randomPolicy"]

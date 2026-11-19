@@ -1,5 +1,25 @@
 # 配置包验收
 
+2026-11-18提示3秒淡出与新线索／结果：[专项10组](notifications-results.json)由[脚本](verify_notifications.py)验证3秒停留与280毫秒淡出、轮询不延期、队列独立计时、手动关闭／减少动画／换房间清理、事件与观察线索合并、重复观察仍有结果、新线索定向揭示、KP拒绝回复及检定后结果提示；计时断言使用暂停的浏览器时钟，业务断言使用隔离真实宿主。同步重跑[持久影响／地图12组](effects-map-results.json)，合计22组。网页发行构建、生成脚本语法和527项中英文／目录一致性通过；未修改正式存档或调用真实模型。截图 `output/screenshots/clue-result-notice.png`。
+
+2026-11-18持久影响与地图：[专项脚本](verify_effects_map.py)的[12组隔离宿主／Edge记录](effects-map-results.json)覆盖获得／消耗／转交、伤害及宿主直接修改、燃烧进度、相反变化保留队列、刷新与语言切换去重、检定先后、390px布局、10条通路和观察隔离。同一脚本的 `presenter_lifecycle` 验证等待自动执行不阻挡其他变化、换房间／退出清空提示，已纳入12组记录。[知识12组](strict-known-results.json)、[场景8组](scene-results.json)、[反馈7组](feedback-results.json)同步通过（反馈脚本含预期的中断故障注入）。网页发行构建、脚本语法、524项中英文词条与目录校验通过。未改正式存档、未调用真实模型。截图：`output/screenshots/persistent-effects.png`、`persistent-effects-mobile.png`、`map-routes.png`。
+
+2026-11-18行动失败说明：[专项6组](action-reasons-results.json)由[脚本](verify_action_reasons.py)验证准备/失能/属性/开场、耗尽/槽位/多格布局、失败编号去重与玩家隔离、KP批准失败留队及修正后执行、自动任务执行前状态变化、未知原因不泄露诊断、Edge弹窗与刷新后持久日志。[反馈7组](feedback-results.json)及覆盖18预设的[场景8组](scene-results.json)同步通过，共21组。网页发行构建、生成脚本语法及513项中英文/词条目录一致性检查通过。测试使用隔离真实宿主，无真实模型或正式存档写入；截图 `output/screenshots/action-blocked.png`。
+
+2026-11-18统一KP裁决队列：[专项9组](keeper-queue-results.json)由[隔离验收脚本](verify_keeper_queue.py)验证真实宿主与Edge：角色草稿/行动/玩家辅助AI请求同页、AI任务分页、旧入口转向、配置风险输入保留与拒绝、原玩家转交及会话权限、响应丢失后按原回执恢复、宿主等待回应与异常流程取消。使用回环模型夹具，不调用真实服务商或修改正式存档。截图位于 `output/keeper-queue-*/unified-queue.png`。原[界面11组](ui-results.json)同步通过；旧测试对未探索目的地的名称假设改为目的地标识，遵守现行个人知识投影。网页发行构建、生成脚本语法、510项中英文/目录一致性与受影响文档链接检查通过；本轮不重跑公网/TURN。
+
+2026-11-17行动等待与检定动画：[专项11组](action-experience-results.json)覆盖独立浏览器上下文自动执行、无骰观察、实际检定／优势骰／重伤豁免、历史去重、人工批准、玩家隔离、设置持久化、减少动画、390px、同浏览器唤醒及迟到响应防回退；[脚本](verify_action_experience.py)使用真实隔离宿主。相同当前后端下，旧前端4次样例中位耗时3672ms，当前前端1802ms；样例加入不同操作间隔，不能当作所有机器或真实局域网的延迟保证。可选 `--baseline tests/output/中的旧app.js快照` 仅比较前端；普通执行只测当前代码。原始请求分段耗时随结果保存。另复验[18预设8组](scene-results.json)、[恢复6组](scene-recovery-results.json)、[行动反馈7组](feedback-results.json)，合计32组。网页发行构建及生成脚本语法检查通过，本轮未重跑公网／TURN联测。截图位于 `output/screenshots/action-check-popup.png` 和 `action-check-mobile.png`。
+
+2026-11-17房间槽位：[专项6组](slots-results.json)覆盖创建/选择、名称及路径约束、两套真实账号密码与进度隔离、运行锁定、最小化/停止/关闭、重开记住选择、旧版本明确报错、同浏览器/账号/端口下待恢复行动不串档；[面板6组](panel-results.json)复验AI加载、本地网页分享撤销、异常退出子进程清理及六个双击入口。脚本分别为[槽位](verify_slots.py)和[面板](verify_panel.py)，仅使用隔离目录与回环模型，不调用真实模型或部署云端。Tk验收需系统桌面；沙箱无法加载Tcl时转在桌面执行。截图在 `output/slots-*/slots-panel.png`；首次发现ASGI将宿主异常简化为通用失败并延迟退出，已改为面板后台先启动宿主，完整重跑通过。
+
+同日按用户明确要求关闭旧面板，永久移除正式 `runtime/` 根下旧host（含账号、AI会话和存档代链）、package.json/锁、integrations（含网页缓存）及旧运行日志；不存在的备份目录无需处理，未保留旧档副本。保留独立ai-manager和服务商配置、网络偏好。这是一次性授权清理，正常关闭与槽位切换均保留数据。正式槽位库目前为空，用户命名创建后才初始化新房间。
+
+2026-11-17 个人知识接入：[严格知识12组](strict-known-results.json)覆盖公开不披露、普通移动／身份揭示／撤回、不可变观察、实际模型载荷、旧档现在揭示、AI关闭重启和静态导出；[场景8组](scene-results.json)重跑全部18个预设与十地点流程。当前边界见[个人已知资料](../docs/current/player-knowledge.md)。以下旧日期的PL资料权限验收为当时规则，不替代本轮严格知识结果。
+
+2026-11-16 PL桌面调整：[布局专项](verify_player_layout.py)的[5组结果](player-layout-results.json)覆盖1920／1440／1366常驻三栏、390窄屏栏目切换、聊天/AI草稿、轮询更新、浮窗拖动阈值/键盘移动/边界/账号隔离/刷新恢复、手记保存和KP本人PL视窗；仅使用本机模型夹具，打开AI标签不会调用模型。[一屏6组](screen-results.json)、[原界面11组](ui-results.json)与[地图/AI 11组](map-ai-results.json)同步通过，保留真实行动骰点和结果、筛选滚动、本地化、两名真实WebRTC玩家的AI及引用权限回归。截图在 `output/player-layout-*/player-desktop.png` 与 `player-mobile-ai.png`；验收等待原生组件异步样式加载完成后截图。本轮未调用真实模型、修改正式存档或部署云端。
+
+2026-11-16 新增 [配置扩展验收](verify_ai_extensions.py) 与 [6 组结果](ai-extensions-results.json)，覆盖模板、动作／计算规则、一次裁决、自动配置策略、越界拒绝及重启。显式授权的 [真实 API 实验](verify_ai_rulings_live.py) 需 `--live`，实际通过／失败和用量统一见[实验记录](../../../docs/plans/ai-rulings-experiments.md)，不将首轮失败计为通过。
+
 2026-11-16 用量统计：更新后的[地图/AI专项](verify_map_ai.py)通过9组，[结果](map-ai-results.json)包含KP读取本房间确认用量40 Token、每日不限额状态；两名真实WebRTC网页玩家验证本人用量、空账户零用量、房间汇总越权与账号注入拒绝。保留原格式、会话、回执及重启回归。使用隔离存档/本机模型夹具，无真实模型调用或云端变更。截图 `output/map-ai-ee016c25/ai-usage.png`；工程122项验收见[记录](../../../engineering/acceptance/ai-runtime/usage-results.json)。
 
 2026-11-15 格式与会话管理：更新后的 [地图/AI 专项](verify_map_ai.py)通过 7 组，[结果](map-ai-results.json)记录本地 KP、旧咨询队列 Markdown 标题/表格、嵌入会话设置，以及两名真实 WebRTC 网页玩家的置顶、历史轮数、归档恢复和隔离。首次网页测试发现 Shadow DOM 表单事件被重定向到宿主节点，包桥改用 composedPath 后重跑通过；未放宽沙箱原生表单导航。工程侧 51 项回归及最后 4 项防重复提交复验见[证据](../../../engineering/acceptance/ai-runtime/rendering-sessions.json)。全部使用模拟服务和隔离存档；无真实模型调用、正式存档写入或云端变更。截图 `output/map-ai-6018c1a3/ai-markdown.png`。
@@ -71,6 +91,7 @@ $env:PYTHONDONTWRITEBYTECODE='1'
 $env:PYTHONUTF8='1'
 engineering/.venv/Scripts/python.exe -B rulepacks/stumpsville/tests/verify_package.py
 engineering/.venv/Scripts/python.exe -B rulepacks/stumpsville/tests/verify_panel.py
+engineering/.venv/Scripts/python.exe -B rulepacks/stumpsville/tests/verify_slots.py
 engineering/.venv/Scripts/python.exe -B rulepacks/stumpsville/tests/verify_web.py
 engineering/.venv/Scripts/python.exe -B rulepacks/stumpsville/tests/verify_web_startup.py
 engineering/.venv/Scripts/python.exe -B rulepacks/stumpsville/tests/verify_web_restart.py
@@ -80,8 +101,10 @@ engineering/.venv/Scripts/python.exe -B rulepacks/stumpsville/tests/verify_launc
 engineering/.venv/Scripts/python.exe -B rulepacks/stumpsville/tests/verify_ui.py
 engineering/.venv/Scripts/python.exe -B rulepacks/stumpsville/tests/verify_workspace.py
 engineering/.venv/Scripts/python.exe -B rulepacks/stumpsville/tests/verify_screen.py
+engineering/.venv/Scripts/python.exe -B rulepacks/stumpsville/tests/verify_player_layout.py
 engineering/.venv/Scripts/python.exe -B rulepacks/stumpsville/tests/verify_automation.py
 engineering/.venv/Scripts/python.exe -B rulepacks/stumpsville/tests/verify_feedback.py
+engineering/.venv/Scripts/python.exe -B rulepacks/stumpsville/tests/verify_action_experience.py
 engineering/.venv/Scripts/python.exe -B rulepacks/stumpsville/tests/verify_scenes.py
 engineering/.venv/Scripts/python.exe -B rulepacks/stumpsville/tests/verify_scene_recovery.py
 engineering/.venv/Scripts/python.exe -B rulepacks/stumpsville/tests/verify_scene_ui.py
@@ -104,7 +127,7 @@ engineering/.venv/Scripts/pythonw.exe -B rulepacks/stumpsville/tests/verify_lan.
 | [workspace-results.json](workspace-results.json) · [脚本](verify_workspace.py) | 6组KP独立PL视窗、场景／队伍／私聊权限与UI、多窗口草稿、本地化及重启恢复 |
 | [lan-results.json](lan-results.json) · [脚本](verify_lan.py) | 10组真实Tk窗口、LAN入口、房间／在线状态及权限、诊断、HTTP浏览器提交、冲突和生命周期；pythonw无控制台，完成情况查看结果文件，失败信息在output/lan-error.log |
 | [scene-results.json](scene-results.json) · [脚本](verify_scenes.py) | 全部18个预设的8组真实宿主结果、有限库存、失败后果与权限验收 |
-| [scene-recovery-results.json](scene-recovery-results.json) · [脚本](verify_scene_recovery.py) | 5组旧规则迁移、中断恢复、容量及手动开关验收 |
+| [scene-recovery-results.json](scene-recovery-results.json) · [脚本](verify_scene_recovery.py) | 6组当前格式、无变化同步、丢失回执、中断恢复、容量及手动开关验收 |
 | [scene-ui-results.json](scene-ui-results.json) · [脚本](verify_scene_ui.py) | 4组已有KP页面自动执行、玩家过程／结果、断线继续及主动人工裁决 |
 | [package-results.json](package-results.json) | 真实宿主业务、权限、幂等、回合/光源、物品碰撞、有限库存、公开/私密、聊天、版本、备份和重启/恢复 |
 | [ui-results.json](ui-results.json) | Edge/Playwright，规范页面及旧地址、浮层、控制台裁决、即时反馈、消息、独立会话、1440px与390px布局及JS错误 |
@@ -121,3 +144,5 @@ engineering/.venv/Scripts/pythonw.exe -B rulepacks/stumpsville/tests/verify_lan.
 验收记录包含检查时间和具体断言分组，不能把分组数量等同全部规则覆盖。跨设备LAN、防火墙、完整原版冒险内容、长时间多人压力场景未验收。目录中的运行账号和随机口令不入库；结果JSON与截图不包含口令。
 
 返回[当前实现](../docs/current/implementation.md)。
+
+- [verify_ai_knowledge.py](verify_ai_knowledge.py)：隔离两玩家验证个人进入记录、KP 定向揭示页面、公开不等于已知、复制引用越权、玩家指南及重启持久化；结果见 [ai-knowledge-results.json](ai-knowledge-results.json)。

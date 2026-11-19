@@ -1,0 +1,1991 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "contractVersion": 1,
+  "models": {
+    "ResourceKey": {
+      "type": "object",
+      "properties": {
+        "namespace": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "kind": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        }
+      },
+      "required": [
+        "namespace",
+        "kind",
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "Subject": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "account"
+        },
+        "accountId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "memberId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        }
+      },
+      "required": [
+        "kind",
+        "accountId",
+        "memberId"
+      ],
+      "additionalProperties": false
+    },
+    "Descriptor": {
+      "type": "object",
+      "properties": {
+        "policyId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "namespace": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "contractVersion": {
+          "const": 1
+        },
+        "mode": {
+          "const": "required-personal"
+        },
+        "providerId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "selectors": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "enum": [
+                  "entity",
+                  "asset",
+                  "package"
+                ]
+              },
+              "configurationId": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              },
+              "configurationPrefix": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              },
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              },
+              "resourceKind": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              }
+            },
+            "required": [
+              "kind"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1,
+          "maxItems": 32,
+          "uniqueItems": true
+        },
+        "facetSchemas": {
+          "type": "object",
+          "minProperties": 1,
+          "maxProperties": 32,
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "schema": {
+                "type": "object"
+              },
+              "modes": {
+                "type": "array",
+                "items": {
+                  "enum": [
+                    "observed_snapshot",
+                    "live_scope"
+                  ]
+                },
+                "minItems": 1,
+                "maxItems": 2,
+                "uniqueItems": true
+              },
+              "labelField": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              },
+              "entityProjection": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "schema",
+              "modes"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "egress": {
+          "type": "object",
+          "properties": {
+            "view": {
+              "enum": [
+                "filtered",
+                "denied"
+              ]
+            },
+            "query": {
+              "enum": [
+                "filtered",
+                "denied"
+              ]
+            },
+            "rules": {
+              "enum": [
+                "filtered",
+                "denied"
+              ]
+            },
+            "receipts": {
+              "enum": [
+                "filtered",
+                "denied"
+              ]
+            },
+            "assets": {
+              "enum": [
+                "filtered",
+                "denied"
+              ]
+            },
+            "export": {
+              "enum": [
+                "filtered",
+                "denied"
+              ]
+            },
+            "ai": {
+              "enum": [
+                "filtered",
+                "denied"
+              ]
+            }
+          },
+          "required": [
+            "view",
+            "query",
+            "rules",
+            "receipts",
+            "assets",
+            "export",
+            "ai"
+          ],
+          "additionalProperties": false
+        },
+        "descriptorDigest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "required": [
+        "policyId",
+        "namespace",
+        "contractVersion",
+        "mode",
+        "providerId",
+        "selectors",
+        "facetSchemas",
+        "egress"
+      ],
+      "additionalProperties": false
+    },
+    "PolicyBinding": {
+      "type": "object",
+      "properties": {
+        "policyId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "namespace": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "contractVersion": {
+          "const": 1
+        },
+        "mode": {
+          "const": "required-personal"
+        },
+        "providerId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "selectors": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "enum": [
+                  "entity",
+                  "asset",
+                  "package"
+                ]
+              },
+              "configurationId": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              },
+              "configurationPrefix": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              },
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              },
+              "resourceKind": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              }
+            },
+            "required": [
+              "kind"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1,
+          "maxItems": 32,
+          "uniqueItems": true
+        },
+        "facetSchemas": {
+          "type": "object",
+          "minProperties": 1,
+          "maxProperties": 32,
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "schema": {
+                "type": "object"
+              },
+              "modes": {
+                "type": "array",
+                "items": {
+                  "enum": [
+                    "observed_snapshot",
+                    "live_scope"
+                  ]
+                },
+                "minItems": 1,
+                "maxItems": 2,
+                "uniqueItems": true
+              },
+              "labelField": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              },
+              "entityProjection": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "schema",
+              "modes"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "egress": {
+          "type": "object",
+          "properties": {
+            "view": {
+              "enum": [
+                "filtered",
+                "denied"
+              ]
+            },
+            "query": {
+              "enum": [
+                "filtered",
+                "denied"
+              ]
+            },
+            "rules": {
+              "enum": [
+                "filtered",
+                "denied"
+              ]
+            },
+            "receipts": {
+              "enum": [
+                "filtered",
+                "denied"
+              ]
+            },
+            "assets": {
+              "enum": [
+                "filtered",
+                "denied"
+              ]
+            },
+            "export": {
+              "enum": [
+                "filtered",
+                "denied"
+              ]
+            },
+            "ai": {
+              "enum": [
+                "filtered",
+                "denied"
+              ]
+            }
+          },
+          "required": [
+            "view",
+            "query",
+            "rules",
+            "receipts",
+            "assets",
+            "export",
+            "ai"
+          ],
+          "additionalProperties": false
+        },
+        "descriptorDigest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "required": [
+        "policyId",
+        "namespace",
+        "contractVersion",
+        "mode",
+        "providerId",
+        "selectors",
+        "facetSchemas",
+        "egress",
+        "descriptorDigest",
+        "revision"
+      ],
+      "additionalProperties": false
+    },
+    "Observation": {
+      "type": "object",
+      "properties": {
+        "observationId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "resource": {
+          "type": "object",
+          "properties": {
+            "namespace": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "kind": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            }
+          },
+          "required": [
+            "namespace",
+            "kind",
+            "id"
+          ],
+          "additionalProperties": false
+        },
+        "policyId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "policyDigest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "sourceRevision": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "sourceGuard": {
+          "type": "object"
+        },
+        "observedAt": {
+          "type": "number"
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "facets": {
+          "type": "object",
+          "minProperties": 1,
+          "maxProperties": 8,
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "data": {},
+              "digest": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            },
+            "required": [
+              "data",
+              "digest"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "provenance": {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "enum": [
+                "kp-disclosure",
+                "host-command",
+                "import-current"
+              ]
+            },
+            "actor": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "at": {
+              "type": "number"
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 500
+            },
+            "eventKey": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            }
+          },
+          "required": [
+            "kind",
+            "actor",
+            "at",
+            "reason"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "observationId",
+        "resource",
+        "policyId",
+        "policyDigest",
+        "sourceRevision",
+        "sourceGuard",
+        "observedAt",
+        "sequence",
+        "facets",
+        "provenance"
+      ],
+      "additionalProperties": false
+    },
+    "Grant": {
+      "type": "object",
+      "properties": {
+        "grantId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "subject": {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "account"
+            },
+            "accountId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "memberId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            }
+          },
+          "required": [
+            "kind",
+            "accountId",
+            "memberId"
+          ],
+          "additionalProperties": false
+        },
+        "resource": {
+          "type": "object",
+          "properties": {
+            "namespace": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "kind": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            }
+          },
+          "required": [
+            "namespace",
+            "kind",
+            "id"
+          ],
+          "additionalProperties": false
+        },
+        "policyId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "facetIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "minItems": 1,
+          "maxItems": 8,
+          "uniqueItems": true
+        },
+        "mode": {
+          "enum": [
+            "observed_snapshot",
+            "live_scope"
+          ]
+        },
+        "observationId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "status": {
+          "enum": [
+            "active",
+            "revoked"
+          ]
+        },
+        "createdAt": {
+          "type": "number"
+        },
+        "createdBy": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "provenance": {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "enum": [
+                "kp-disclosure",
+                "host-command",
+                "import-current"
+              ]
+            },
+            "actor": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "at": {
+              "type": "number"
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 500
+            },
+            "eventKey": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            }
+          },
+          "required": [
+            "kind",
+            "actor",
+            "at",
+            "reason"
+          ],
+          "additionalProperties": false
+        },
+        "revokedAt": {
+          "type": "number"
+        },
+        "revokedBy": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        }
+      },
+      "required": [
+        "grantId",
+        "revision",
+        "subject",
+        "resource",
+        "policyId",
+        "facetIds",
+        "mode",
+        "observationId",
+        "status",
+        "createdAt",
+        "createdBy",
+        "provenance"
+      ],
+      "additionalProperties": false
+    },
+    "KnowledgeRef": {
+      "type": "object",
+      "properties": {
+        "schemaVersion": {
+          "const": 1
+        },
+        "scopeId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "revision": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "scopeId",
+        "id",
+        "revision",
+        "digest"
+      ],
+      "additionalProperties": false
+    },
+    "KnowledgeItem": {
+      "type": "object",
+      "properties": {
+        "ref": {
+          "type": "object",
+          "properties": {
+            "schemaVersion": {
+              "const": 1
+            },
+            "scopeId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "revision": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "digest": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          },
+          "required": [
+            "schemaVersion",
+            "scopeId",
+            "id",
+            "revision",
+            "digest"
+          ],
+          "additionalProperties": false
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "facetId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "mode": {
+          "enum": [
+            "observed_snapshot",
+            "live_scope"
+          ]
+        },
+        "observedAt": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "data": {},
+        "provenance": {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            }
+          },
+          "required": [
+            "kind"
+          ],
+          "additionalProperties": false
+        },
+        "visibility": {
+          "const": "private"
+        }
+      },
+      "required": [
+        "ref",
+        "label",
+        "facetId",
+        "mode",
+        "observedAt",
+        "provenance",
+        "visibility"
+      ],
+      "additionalProperties": false
+    },
+    "ReadProof": {
+      "type": "object",
+      "properties": {
+        "schemaVersion": {
+          "const": 1
+        },
+        "scopeId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "accountId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "memberId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "authorizationEpoch": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "player": {
+          "type": "boolean"
+        },
+        "policies": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          }
+        },
+        "refs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "schemaVersion": {
+                "const": 1
+              },
+              "scopeId": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              },
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              },
+              "revision": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              },
+              "digest": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            },
+            "required": [
+              "schemaVersion",
+              "scopeId",
+              "id",
+              "revision",
+              "digest"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 1000
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "scopeId",
+        "accountId",
+        "memberId",
+        "authorizationEpoch",
+        "player",
+        "policies",
+        "refs"
+      ],
+      "additionalProperties": false
+    },
+    "KnowledgeState": {
+      "type": "object",
+      "properties": {
+        "schemaVersion": {
+          "const": 1
+        },
+        "scopeId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "policies": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "policyId": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              },
+              "namespace": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              },
+              "contractVersion": {
+                "const": 1
+              },
+              "mode": {
+                "const": "required-personal"
+              },
+              "providerId": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              },
+              "selectors": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "kind": {
+                      "enum": [
+                        "entity",
+                        "asset",
+                        "package"
+                      ]
+                    },
+                    "configurationId": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 200
+                    },
+                    "configurationPrefix": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 200
+                    },
+                    "id": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 200
+                    },
+                    "resourceKind": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 200
+                    }
+                  },
+                  "required": [
+                    "kind"
+                  ],
+                  "additionalProperties": false
+                },
+                "minItems": 1,
+                "maxItems": 32,
+                "uniqueItems": true
+              },
+              "facetSchemas": {
+                "type": "object",
+                "minProperties": 1,
+                "maxProperties": 32,
+                "additionalProperties": {
+                  "type": "object",
+                  "properties": {
+                    "schema": {
+                      "type": "object"
+                    },
+                    "modes": {
+                      "type": "array",
+                      "items": {
+                        "enum": [
+                          "observed_snapshot",
+                          "live_scope"
+                        ]
+                      },
+                      "minItems": 1,
+                      "maxItems": 2,
+                      "uniqueItems": true
+                    },
+                    "labelField": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 200
+                    },
+                    "entityProjection": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "schema",
+                    "modes"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "egress": {
+                "type": "object",
+                "properties": {
+                  "view": {
+                    "enum": [
+                      "filtered",
+                      "denied"
+                    ]
+                  },
+                  "query": {
+                    "enum": [
+                      "filtered",
+                      "denied"
+                    ]
+                  },
+                  "rules": {
+                    "enum": [
+                      "filtered",
+                      "denied"
+                    ]
+                  },
+                  "receipts": {
+                    "enum": [
+                      "filtered",
+                      "denied"
+                    ]
+                  },
+                  "assets": {
+                    "enum": [
+                      "filtered",
+                      "denied"
+                    ]
+                  },
+                  "export": {
+                    "enum": [
+                      "filtered",
+                      "denied"
+                    ]
+                  },
+                  "ai": {
+                    "enum": [
+                      "filtered",
+                      "denied"
+                    ]
+                  }
+                },
+                "required": [
+                  "view",
+                  "query",
+                  "rules",
+                  "receipts",
+                  "assets",
+                  "export",
+                  "ai"
+                ],
+                "additionalProperties": false
+              },
+              "descriptorDigest": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "revision": {
+                "type": "integer",
+                "minimum": 1
+              }
+            },
+            "required": [
+              "policyId",
+              "namespace",
+              "contractVersion",
+              "mode",
+              "providerId",
+              "selectors",
+              "facetSchemas",
+              "egress",
+              "descriptorDigest",
+              "revision"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "observations": {
+          "type": "object",
+          "maxProperties": 10000,
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "observationId": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              },
+              "resource": {
+                "type": "object",
+                "properties": {
+                  "namespace": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  },
+                  "kind": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  },
+                  "id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  }
+                },
+                "required": [
+                  "namespace",
+                  "kind",
+                  "id"
+                ],
+                "additionalProperties": false
+              },
+              "policyId": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              },
+              "policyDigest": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "sourceRevision": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              },
+              "sourceGuard": {
+                "type": "object"
+              },
+              "observedAt": {
+                "type": "number"
+              },
+              "sequence": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "facets": {
+                "type": "object",
+                "minProperties": 1,
+                "maxProperties": 8,
+                "additionalProperties": {
+                  "type": "object",
+                  "properties": {
+                    "data": {},
+                    "digest": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{64}$"
+                    }
+                  },
+                  "required": [
+                    "data",
+                    "digest"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "provenance": {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "enum": [
+                      "kp-disclosure",
+                      "host-command",
+                      "import-current"
+                    ]
+                  },
+                  "actor": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  },
+                  "at": {
+                    "type": "number"
+                  },
+                  "reason": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 500
+                  },
+                  "eventKey": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  }
+                },
+                "required": [
+                  "kind",
+                  "actor",
+                  "at",
+                  "reason"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "observationId",
+              "resource",
+              "policyId",
+              "policyDigest",
+              "sourceRevision",
+              "sourceGuard",
+              "observedAt",
+              "sequence",
+              "facets",
+              "provenance"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "grants": {
+          "type": "object",
+          "maxProperties": 50000,
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "grantId": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              },
+              "revision": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "subject": {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "const": "account"
+                  },
+                  "accountId": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  },
+                  "memberId": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  }
+                },
+                "required": [
+                  "kind",
+                  "accountId",
+                  "memberId"
+                ],
+                "additionalProperties": false
+              },
+              "resource": {
+                "type": "object",
+                "properties": {
+                  "namespace": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  },
+                  "kind": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  },
+                  "id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  }
+                },
+                "required": [
+                  "namespace",
+                  "kind",
+                  "id"
+                ],
+                "additionalProperties": false
+              },
+              "policyId": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              },
+              "facetIds": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                },
+                "minItems": 1,
+                "maxItems": 8,
+                "uniqueItems": true
+              },
+              "mode": {
+                "enum": [
+                  "observed_snapshot",
+                  "live_scope"
+                ]
+              },
+              "observationId": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "status": {
+                "enum": [
+                  "active",
+                  "revoked"
+                ]
+              },
+              "createdAt": {
+                "type": "number"
+              },
+              "createdBy": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              },
+              "provenance": {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "enum": [
+                      "kp-disclosure",
+                      "host-command",
+                      "import-current"
+                    ]
+                  },
+                  "actor": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  },
+                  "at": {
+                    "type": "number"
+                  },
+                  "reason": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 500
+                  },
+                  "eventKey": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  }
+                },
+                "required": [
+                  "kind",
+                  "actor",
+                  "at",
+                  "reason"
+                ],
+                "additionalProperties": false
+              },
+              "revokedAt": {
+                "type": "number"
+              },
+              "revokedBy": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              },
+              "reason": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 500
+              }
+            },
+            "required": [
+              "grantId",
+              "revision",
+              "subject",
+              "resource",
+              "policyId",
+              "facetIds",
+              "mode",
+              "observationId",
+              "status",
+              "createdAt",
+              "createdBy",
+              "provenance"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "subjectEpochs": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "scopeId",
+        "revision",
+        "policies",
+        "observations",
+        "grants",
+        "subjectEpochs"
+      ],
+      "additionalProperties": false
+    },
+    "KnowledgePage": {
+      "type": "object",
+      "properties": {
+        "schemaVersion": {
+          "const": 1
+        },
+        "items": {
+          "type": "array",
+          "maxItems": 50,
+          "items": {
+            "type": "object",
+            "properties": {
+              "ref": {
+                "type": "object",
+                "properties": {
+                  "schemaVersion": {
+                    "const": 1
+                  },
+                  "scopeId": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  },
+                  "id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  },
+                  "revision": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  },
+                  "digest": {
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{64}$"
+                  }
+                },
+                "required": [
+                  "schemaVersion",
+                  "scopeId",
+                  "id",
+                  "revision",
+                  "digest"
+                ],
+                "additionalProperties": false
+              },
+              "label": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              },
+              "facetId": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              },
+              "mode": {
+                "enum": [
+                  "observed_snapshot",
+                  "live_scope"
+                ]
+              },
+              "observedAt": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "data": {},
+              "provenance": {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  }
+                },
+                "required": [
+                  "kind"
+                ],
+                "additionalProperties": false
+              },
+              "visibility": {
+                "const": "private"
+              }
+            },
+            "required": [
+              "ref",
+              "label",
+              "facetId",
+              "mode",
+              "observedAt",
+              "provenance",
+              "visibility"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "nextCursor": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 2048
+        },
+        "coverage": {
+          "const": "authorized-query"
+        },
+        "viewRevision": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "items",
+        "nextCursor",
+        "coverage",
+        "viewRevision"
+      ],
+      "additionalProperties": false
+    },
+    "Preview": {
+      "type": "object",
+      "properties": {
+        "policyRevision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "sourceRevision": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "preview": {
+          "type": "object",
+          "maxProperties": 8
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "capturedAt": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "policyRevision",
+        "sourceRevision",
+        "preview",
+        "digest",
+        "capturedAt"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "commands": {
+    "knowledge.policy.bind": {
+      "type": "object",
+      "properties": {
+        "policyId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "descriptorDigest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "expectedRevision": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "policyId",
+        "descriptorDigest",
+        "expectedRevision"
+      ],
+      "additionalProperties": false
+    },
+    "knowledge.observe": {
+      "type": "object",
+      "properties": {
+        "policyId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "expectedPolicyRevision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "subjectMemberId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "resource": {
+          "type": "object",
+          "properties": {
+            "namespace": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "kind": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            }
+          },
+          "required": [
+            "namespace",
+            "kind",
+            "id"
+          ],
+          "additionalProperties": false
+        },
+        "facetIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "minItems": 1,
+          "maxItems": 8,
+          "uniqueItems": true
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "expectedSourceRevision": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        }
+      },
+      "required": [
+        "policyId",
+        "expectedPolicyRevision",
+        "subjectMemberId",
+        "resource",
+        "facetIds",
+        "reason",
+        "expectedSourceRevision"
+      ],
+      "additionalProperties": false
+    },
+    "knowledge.subscribe": {
+      "type": "object",
+      "properties": {
+        "policyId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "expectedPolicyRevision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "subjectMemberId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "resource": {
+          "type": "object",
+          "properties": {
+            "namespace": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "kind": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            }
+          },
+          "required": [
+            "namespace",
+            "kind",
+            "id"
+          ],
+          "additionalProperties": false
+        },
+        "facetIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "minItems": 1,
+          "maxItems": 8,
+          "uniqueItems": true
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        }
+      },
+      "required": [
+        "policyId",
+        "expectedPolicyRevision",
+        "subjectMemberId",
+        "resource",
+        "facetIds",
+        "reason"
+      ],
+      "additionalProperties": false
+    },
+    "knowledge.revoke": {
+      "type": "object",
+      "properties": {
+        "grantId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "expectedRevision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        }
+      },
+      "required": [
+        "grantId",
+        "expectedRevision",
+        "reason"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "queries": {
+    "preview": {
+      "type": "object",
+      "properties": {
+        "policyId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "resource": {
+          "type": "object",
+          "properties": {
+            "namespace": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "kind": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            }
+          },
+          "required": [
+            "namespace",
+            "kind",
+            "id"
+          ],
+          "additionalProperties": false
+        },
+        "facetIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "minItems": 1,
+          "maxItems": 8,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "policyId",
+        "resource",
+        "facetIds"
+      ],
+      "additionalProperties": false
+    },
+    "search": {
+      "type": "object",
+      "properties": {
+        "namespace": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "kinds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "minItems": 1,
+          "maxItems": 16,
+          "uniqueItems": true
+        },
+        "query": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "includeHistory": {
+          "type": "boolean"
+        },
+        "limit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 50
+        },
+        "cursor": {
+          "type": "string",
+          "maxLength": 2048
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "read": {
+      "type": "object",
+      "properties": {
+        "refs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "schemaVersion": {
+                "const": 1
+              },
+              "scopeId": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              },
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              },
+              "revision": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              },
+              "digest": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            },
+            "required": [
+              "schemaVersion",
+              "scopeId",
+              "id",
+              "revision",
+              "digest"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1,
+          "maxItems": 12,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "refs"
+      ],
+      "additionalProperties": false
+    },
+    "grants": {
+      "type": "object",
+      "properties": {
+        "subjectMemberId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "policyId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "status": {
+          "enum": [
+            "active",
+            "revoked"
+          ]
+        },
+        "limit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 50
+        },
+        "cursor": {
+          "type": "string",
+          "maxLength": 2048
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    }
+  }
+}

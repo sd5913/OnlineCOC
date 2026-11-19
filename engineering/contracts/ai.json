@@ -100,13 +100,14 @@
             "rule",
             "contract",
             "memory",
-            "manual"
+            "manual",
+            "knowledge"
           ]
         },
         "id": {
           "type": "string",
           "minLength": 1,
-          "maxLength": 200
+          "maxLength": 1500
         },
         "revision": {
           "oneOf": [
@@ -240,7 +241,8 @@
             "maxRepairAttempts": {
               "type": "integer",
               "minimum": 0,
-              "maximum": 3
+              "maximum": 10,
+              "default": 5
             },
             "maxTransportRetries": {
               "type": "integer",
@@ -342,6 +344,9 @@
             "maxLength": 200
           },
           "maxItems": 50
+        },
+        "allowNamespaceReplace": {
+          "type": "boolean"
         }
       },
       "required": [
@@ -937,14 +942,20 @@
             "type": "string",
             "maxLength": 1048576
           },
-          "maxProperties": 64
+          "maxProperties": 64,
+          "propertyNames": {
+            "pattern": "^(?!\\.)[A-Za-z0-9_.-]+\\.lua$"
+          }
         },
         "data": {
           "type": "object",
           "additionalProperties": {
             "$ref": "#/$defs/JsonValue"
           },
-          "maxProperties": 100
+          "maxProperties": 100,
+          "propertyNames": {
+            "pattern": "^(?!\\.)[A-Za-z0-9_.-]+\\.json$"
+          }
         },
         "suggestions": {
           "type": "array",
@@ -1895,6 +1906,44 @@
         "args"
       ],
       "additionalProperties": false
+    },
+    "ExtensionValidation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "namespace",
+        "baseConfiguration",
+        "defaultsSchema",
+        "rulePrefix",
+        "fixtureRef"
+      ],
+      "properties": {
+        "namespace": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 240
+        },
+        "baseConfiguration": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 240
+        },
+        "defaultsSchema": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 240
+        },
+        "rulePrefix": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 240
+        },
+        "fixtureRef": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 240
+        }
+      }
     }
   }
 }

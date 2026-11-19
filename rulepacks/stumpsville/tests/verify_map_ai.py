@@ -13,11 +13,14 @@ from verify_web import owned_room, WebPlayer
 def main():
     output=PACK/'tests/output'/('map-ai-'+secrets.token_hex(4));output.mkdir(parents=True)
     checks=[];errors=[];saved_password=None
-    with provider(output,lambda request:{'role':'assistant','content':json.dumps({'kind':'plan','text':'OFFLINE_REPLY\n\n## 房间概览\n**查询结果**\n\n| 位置 | 可见性 |\n| --- | --- |\n| 入口隧道 | public |'})}) as (config,calls),directory(output,web=True) as (network,url):
+    with provider(output,lambda request:{'role':'assistant','content':json.dumps({'kind':'plan','choices':{'prompt':'接下来做什么','options':[{'id':'more','label':'继续了解','text':'请继续说明可见资料'},{'id':'later','label':'稍后再看','text':'先保留当前结论'}]},'text':'OFFLINE_REPLY\n\n## 房间概览\n**查询结果**\n\n| 位置 | 可见性 |\n| --- | --- |\n| 入口隧道 | public |'})}) as (config,calls),directory(output,web=True) as (network,url):
         with running('map-ai',data=output/'game',ai_config=config,web_config=network,no_browser=True) as (runtime,password):
             saved_password=password
             kp,p1,p2=provision(runtime,password)
+            assert ai(p1,'ai.session.create',{'title':'禁用时不可创建'},True)['code']=='PLAYER_AI_DISABLED'
+            result(ai(kp,'ai.access.update',{'revision':1,'allowPlayerChat':True,'autoApproveBatches':False}))
             kp.action('draft',{'preset':'mul','name':'KP自己的鼠'});kp.action('approve',{'account':'kp'})
+            assert kp.request('/api/v1/ai/references?kind=config&q=sv.npc')['items'][0]['label']=='NPC 模板'
             one=p1.state()['character']['instanceId'];two=p2.state()['character']['instanceId']
             def move(actor,place):
                 kp.command('entity.update',{'id':actor,'numbers':{'location':place}});kp.state()
@@ -69,6 +72,7 @@ def main():
                 gm.screenshot(path=str(output/'kp-map.png'))
                 gm.locator('a[href="#/gm/rulings"]').click()
                 gm.locator('#kp-ai-embedded .reference-editor').wait_for()
+                expect(gm.locator('#kp-ai-embedded .ai-view')).to_have_css('min-height','420px',timeout=15000)
                 expect(gm.locator('#chat-column .messenger')).to_be_visible()
                 assert not gm.locator('#room-network,.kp-map,.console-tabs').count()
                 p2.action('request',{'kind':'free','manual':True,'text':'请裁决门后的声音'})
@@ -82,10 +86,11 @@ def main():
                 assert not calls
                 for width,height in [(1600,1000),(1440,900),(1366,768)]:
                     gm.set_viewport_size({'width':width,'height':height})
+                    gm.evaluate('new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)))')
                     assert gm.evaluate('document.documentElement.scrollWidth<=innerWidth+1 && document.documentElement.scrollHeight<=innerHeight+1')
                     assert not gm.locator('#main .page-head').count()
                     outer=gm.locator('.ruling-ai').bounding_box();inner=gm.locator('#kp-ai-embedded .ai-view').bounding_box()
-                    assert abs(outer['height']-inner['height'])<3 and abs(outer['width']-inner['width'])<3
+                    assert abs(outer['height']-inner['height'])<3 and abs(outer['width']-inner['width'])<3,(width,height,outer,inner)
                 before=gm.locator('.rulings-grid').bounding_box()['height']
                 gm.get_by_role('button',name='收起顶栏',exact=True).click()
                 assert gm.locator('.rulings-grid').bounding_box()['height']>before+40
@@ -95,8 +100,8 @@ def main():
                 gm.get_by_role('button',name='展开顶栏',exact=True).click()
                 gm.screenshot(path=str(output/'kp-rulings.png'))
                 checks.append('independent room/map/rulings pages; KP map excludes NPCs; queues, pinned chat and embedded conversation coexist; drafts survive polling; desktop viewport fits')
-                gm.locator('#kp-ai-embedded .review-open').click();gm.locator('[data-settings]').wait_for()
-                gm.locator('[data-settings] [name=enabled]').check();gm.locator('[data-settings] button').click()
+                gm.locator('#kp-ai-embedded .review-open').click();gm.locator('.keeper-ai-queue [data-settings]').click()
+                gm.locator('.ai-dialog [data-settings] [name=enabled]').check();gm.locator('.ai-dialog [data-settings] button').click()
                 expect(gm.locator('[data-status]')).to_contain_text('已保存')
                 expect(gm.locator('[data-ai-readiness]')).to_contain_text('AI 查询将返回空列表')
                 gm.locator('[data-close]').click()
@@ -110,8 +115,11 @@ def main():
                 gm.locator('[name=pinned]').check();gm.locator('[name=historyTurns]').select_option('2');gm.locator('.session-manager .save').click()
                 expect(gm.locator('.session-manager .status')).to_have_text('设置已保存')
                 gm.locator('.session-close').click();gm.locator('#kp-ai-embedded .review-open').click()
-                expect(gm.locator('[data-tasks] h2')).to_contain_text('房间概览')
-                expect(gm.locator('[data-tasks] table')).to_have_count(1);gm.locator('[data-close]').click()
+                gm.locator('.keeper-ai-queue [data-history]').check()
+                gm.locator('.ai-assistance-list details summary').first.click()
+                expect(gm.locator('.ai-assistance-list .ai-markdown h2')).to_contain_text('房间概览',timeout=15000)
+                expect(gm.locator('.ai-assistance-list table')).to_have_count(1)
+                gm.locator('.keeper-ai-queue [data-history]').uncheck()
                 gm.screenshot(path=str(output/'ai-markdown.png'))
                 gm.locator('#kp-ai-embedded .usage-open').click();expect(gm.locator('.usage-status')).to_have_text('查询完成')
                 expect(gm.locator('.metric strong').first).to_have_text('40');expect(gm.locator('.budgets')).to_contain_text('每日不限额')
@@ -121,8 +129,8 @@ def main():
                 for path in ('pack.js','views.js','reference-editor.js','views.css','markdown.js','markdown.css','session-manager.js','session-manager.css','usage.js','usage.css'):
                     assert kp.http.get(kp.prefix+'/ai-ui/'+path).status_code==200
                 assert kp.http.get(kp.prefix+'/ai-ui/providers.js').status_code==404
-                assert kp.request('/api/v1/ai/drafts',{},True)['code']=='AI_CONSULTATION_ONLY'
-                checks.append('updated native AI component and semantic editor load through explicit public resources; KP send dispatches once; provider admin and config publication remain blocked')
+                assert kp.request('/api/v1/ai/drafts',{},True)['code']=='INPUT_INVALID'
+                checks.append('updated native AI component and semantic editor load through explicit public resources; KP send dispatches once; provider admin stays private; malformed drafts remain rejected')
                 players=[];games=[]
                 for i in (1,2):
                     context=browser.new_context(viewport={'width':1440,'height':900});page=context.new_page();page.goto(url)
@@ -140,13 +148,20 @@ def main():
                 expect(frame.locator('.player-map-contacts')).to_contain_text('Roquefort')
                 expect(frame.locator('.player-map-contacts')).not_to_contain_text('不得泄露')
                 assert 'mapNpcCatalog' not in a.state() and 'characters' not in a.state()
-                frame.locator('[data-action=ai-assistant]').click();frame.locator('#player-ai-embedded .reference-editor').wait_for()
+                frame.locator('#comm-tab-ai').click();frame.locator('#player-ai-embedded .reference-editor').wait_for()
                 editor=frame.locator('#player-ai-embedded .reference-editor')
                 editor.fill('/');frame.get_by_role('option',name='/entity',exact=False).click()
                 frame.get_by_role('option',name='木栗',exact=False).click()
                 expect(editor.locator('.reference-chip')).to_contain_text('木栗')
                 frame.locator('#player-ai-embedded #send').click()
                 expect(frame.locator('#player-ai-embedded #history')).to_contain_text('等待 KP',timeout=15000)
+                frame.locator('#player-ai-embedded #history .user .reference-chip').click()
+                expect(frame.locator('.reference-details dialog')).to_be_visible()
+                expect(frame.locator('.reference-details h2')).to_have_text('木栗')
+                expect(frame.locator('.reference-details .reference-value')).to_contain_text('数值')
+                expect(frame.locator('.reference-details dialog')).to_have_css('border-radius','16px')
+                frame.get_by_role('button',name='关闭引用详情').click()
+                checks.append('bundled reference inspector resolves authorized values over WebRTC with packaged CSS and close control')
                 assert len(calls)==1
                 def bridge(player,path,method='GET',body=None,error=False):
                     return player.request('package/ai',{'path':path,'method':method,**({'body':body} if body is not None else {})},error)
@@ -180,11 +195,24 @@ def main():
                 assert len(calls)==1
                 result(ai(kp,'ai.settings.update',{'enabled':True,'profileId':'offline','externalSources':{'public':True,'kp':False,'private':True},'auto':{'enabled':False,'channelIds':['general'],'prefix':'!ai '}}))
                 result(ai(kp,'ai.request.dispatch',{'requestId':task['requestId']}))
-                expect(frame.locator('#player-ai-embedded #history')).to_contain_text('待审核',timeout=30000)
-                expect(frame.locator('#player-ai-embedded #history')).not_to_contain_text('OFFLINE_REPLY')
+                expect(frame.locator('#player-ai-embedded #history')).to_contain_text('需要补充信息',timeout=30000)
+                expect(frame.locator('#player-ai-embedded #history')).to_contain_text('OFFLINE_REPLY')
                 assert len(calls)==2
+                editor.fill('玩家直接对话验收');frame.locator('#player-ai-embedded #send').click()
+                expect(frame.locator('#player-ai-embedded #history .assistant h2')).to_have_count(2,timeout=30000)
+                assert len(calls)==3
+                expect(frame.locator('.response-choices fieldset').last).to_have_css('border-radius','12px')
+                frame.get_by_role('button',name='继续了解',exact=True).last.click()
+                expect(frame.locator('#player-ai-embedded #text')).to_have_text('请继续说明可见资料')
+                assert len(calls)==3
+                frame.locator('#player-ai-embedded #text').fill('')
+                checks.append('bundled structured choices fill composer without extra calls or execution')
+                # The data API and semantic references use the same package knowledge projection.
+                visible_entities=bridge(a,'ai/data/search','POST',{'types':['entity'],'limit':50})['items']
+                assert all(v['label']!='不得泄露的暗哨' for v in visible_entities)
+                assert bridge(a,'ai/access')['defaultLevel']=='player'
                 frame.locator('#player-ai-embedded .usage-open').click();expect(frame.locator('.usage-status')).to_have_text('查询完成')
-                expect(frame.locator('.metric strong').first).to_have_text('40');expect(frame.locator('.scope option[value=room]')).to_be_hidden()
+                expect(frame.locator('.metric strong').first).to_have_text('80');expect(frame.locator('.scope option[value=room]')).to_be_hidden()
                 assert bridge(a,'ai/usage?scope=room',error=True)['code']=='PERMISSION_DENIED'
                 assert bridge(a,'ai/usage?scope=mine&accountId=kp',error=True)['code']=='AI_ROUTE_NOT_EXPOSED'
                 assert bridge(b,'ai/usage')['totals']['confirmedTokens']==0
@@ -198,13 +226,18 @@ def main():
                 frame.locator('.native-ai-recovery button').click()
                 expect(frame.locator('.native-ai-recovery')).to_be_hidden()
                 assert len(bridge(a,'ai/sessions?archived=false')['items'])==2
-                frame.locator('#dialog [data-action=close]').first.click();assert not frame.locator('.reference-editor').count()
+                frame.locator('#player-ai-embedded .manage-sessions').click();frame.locator('.session-manager .delete').click();frame.locator('.confirm-delete').click()
+                expect(frame.locator('.session-manager .status')).to_have_text('会话已删除')
+                assert len(bridge(a,'ai/sessions?archived=false')['items'])==1
+                frame.locator('[data-filter=archived]').click();expect(frame.locator('.session-manager .session-link')).to_have_count(0)
+                frame.locator('.session-close').click()
+                frame.locator('#comm-tab-chat').click();expect(frame.locator('#player-ai-embedded')).not_to_be_visible()
                 frame.get_by_role('button',name='收起顶栏',exact=True).click()
                 assert frame.locator('.topbar').bounding_box()['height']==30
                 assert b.frame.get_by_role('button',name='收起顶栏',exact=True).is_visible()
                 frame.get_by_role('button',name='展开顶栏',exact=True).click()
                 assert not errors,errors
-                checks.append('two real web players load bundled native components/CSS; semantic entity reference submits without auto-dispatch; account/hidden-reference/management isolation and KP-only reply; lost-response receipt recovery does not duplicate sessions; close clears editor')
+                checks.append('two real web players load bundled native components/CSS; player enable switch, direct dispatch and player-safe replies; account/known-data/hidden-reference/management isolation, archive view and deletion; lost-response receipt recovery does not duplicate sessions; tab switch hides AI while preserving its mounted conversation')
                 browser.close()
         with running('sight-restart',data=output/'game',ai_config=config,no_browser=True) as (runtime,_):
             p1=Account(runtime.origin,'player1',saved_password,'restart')

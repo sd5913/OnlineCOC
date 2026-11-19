@@ -4,8 +4,8 @@
 - 文档子类：工程
 - 状态：有效
 - 创建日期：2026-11-13
-- 最后更新：2026-11-16
-- 关联文档：[AI 运行时](ai-runtime.md)、[模块入口](../../../engineering/ai/README.md)、[Stumpsville 接入计划](../../plans/stumpsville-ai-integration.md)、[工程索引](README.md)
+- 最后更新：2026-11-17
+- 关联文档：[AI 运行时](ai-runtime.md)、[会话权限与执行批次](ai-session-access.md)、[模块入口](../../../engineering/ai/README.md)、[Stumpsville 接入计划](../../plans/stumpsville-ai-integration.md)、[工程索引](README.md)
 
 ## 使用入口
 
@@ -21,8 +21,12 @@ engineering/.venv/Scripts/python -B engineering/ai/scripts/manager.py --port 877
 
 1. **服务商**：编辑已有 DeepSeek 配置，或添加 DeepSeek / Chat Completions 兼容服务；设置地址、模型、凭据引用、启停、超时与可选额度；“启用每日用量限制”默认不勾选。完整参数保留在高级 JSON 中。保存密钥后可主动点击“测试连接”，这一步会产生实际服务用量。
 2. **房间与会话**：添加已运行的本机宿主地址，使用该房间真实 KP 或 PL 账号登录。宿主必须已通过 `serve --ai-config … --ai-pack …` 组合 AI；启动示例见[模块入口](../../../engineering/ai/README.md)。管理器不另开同一存档、不代替宿主加载包。
-3. **使用 AI**：左侧每个房间连接呈现为一个文件夹，内列当前登录账号的会话，支持搜索、新建、改名、归档/恢复；顶栏“会话管理”提供置顶、排序及会话设置。中间显示格式化回答，底部输入，切换会话分别保留页面内草稿。KP 在“KP 审核与设置”中选择服务商、开启调用及外发范围后，自己点击“发送”会提交并转交 AI；PL 的发送只记录需求，等待 KP 在队列转交。生成提案后查看 A/B/C、差异及风险，明确批准后再点击加载。
+3. **使用 AI**：左侧每个房间连接呈现为一个文件夹，KP 可列出房间全部会话，PL 仅授权会话；支持搜索、新建、改名、归档/恢复、删除；顶栏“会话管理”提供置顶、排序及会话设置。中间显示格式化回答，底部输入，切换会话分别保留页面内草稿。KP 在“KP 审核与设置”中选择服务商、开启调用及外发范围后，自己点击“发送”会提交并转交 AI；允许 PL 对话后，玩家需求直接转交，按绑定玩家权限生成回答；默认不开启。管理员运行时修改以执行批次提审，可显式开启自动批准。生成配置提案后查看 A/B/C、差异及风险，通过统一裁决“批准并执行”加载整批。
 4. **引用与原型**：输入 `/config`、`/entity` 或 `/data` 调出补全，选择后可“查看引用”。左下角“配置包交互原型”打开 `/prototype.html`，可体验 KP／PL 的对象引用及审核流程；使用固定演示数据，不连接游戏。设计和后续接线见[原型计划](../../plans/ai-pack-interaction.md)。
+
+当前聊天模板采用居中正文、底部圆角输入区、空白会话建议和紧凑会话目录；默认 Enter 发送、Shift+Enter 换行，也可在输入区切换 Ctrl+Enter。生成中提供停止按钮，阅读历史时提供“回到最新”，复制回答使用已显示的语义名称。输入失败、延迟回执和切换会话均保留对应草稿；完整交互和嵌入约束见[对话交互](ai-pack-embedding.md#对话交互)。这些前端改动没有缩短模型推理时间，也没有增加流式协议。
+
+另有独立的[会话管理原型](../../plans/ai-session-management-prototype.md)，侧栏“会话管理原型”可打开 `/session-prototype.html`，提供三栏／窄屏交互和演示数据；不修改正式会话。
 
 服务商模板默认关闭；已有配置以管理器保存状态为准。更改配置会自动递增修订，房间在读取设置和下一次调用前刷新同一配置文件；已开始任务仍使用原快照，不能静默换模型。停用只阻止后续调用；要中止正在生成的请求，应在房间取消该请求。
 
@@ -33,7 +37,7 @@ engineering/.venv/Scripts/python -B engineering/ai/scripts/manager.py --port 877
 | 服务商 | 新增、编辑、启停、停用后删除；JSON 导入预览、逐项保存、导出全部配置；连接探测 | 本机管理会话；Profile 修订 CAS 和文件锁防止并发覆盖 |
 | 密钥 | 输入新密钥、加密保存、移除、显示配置状态 | 不提供明文读取；配置导出只有 credentialRef |
 | 房间连接 | 登记名称与本机地址、登录、切换、断开和移除 | 保存名称/地址；密码不持久化，宿主 Cookie 仅在管理器内存中按管理会话及房间隔离 |
-| 房间文件夹与会话 | 当前房间下新建、改名、归档/恢复、查看历史、继续需求；搜索房间名和已加载会话标题 | 按 Room.scopeId 与真实账号隔离；KP 也不能直接列出另一账号的会话目录，但仍在房间队列处理玩家提交的需求 |
+| 房间文件夹与会话 | 当前房间下新建、改名、归档/恢复、查看历史、继续需求；搜索房间名和已加载会话标题 | 按 Room.scopeId 隔离；KP 管理本房间全部会话，PL 仅本人玩家级会话；等级与创建者固定绑定 |
 | 用量统计 | 日期、服务配置/模型、当前会话筛选；输入/输出、确认消耗、预留及分页调用明细 | KP 可查房间汇总，PL 仅本人需求；按当前房间 AI 仓库计数 |
 | 房间助手 | 需求队列、人工草稿、三检、编辑修订、风险审核、批准/加载、取消、回执、外发范围、确认记忆 | 全部沿用宿主鉴权；本机管理员身份不赋予 KP 权限 |
 
@@ -43,7 +47,7 @@ Windows 密钥经 DPAPI CurrentUser 加密存入 `%LOCALAPPDATA%/OnlineCOC/AI/cr
 
 ## 会话与记忆语义
 
-房间文件夹是管理器的连接分组，不额外复制存档或创建任意磁盘目录。会话仍存于对应宿主的独立 AI 仓库 `settings.sessions`，不写入游戏实体；目录按房间 scope 与真实账号隔离。重启宿主保留 scope 时可继续历史；更换存档或恢复为新 scope 不会沿用旧会话。最多每房间 200 个会话、每会话 100 个请求；归档保留历史及审批证据。会话提交与请求创建在同一 AI 仓库提交中完成，失败不产生孤立请求；改名/归档带 revision，重复 command ID 返回原回执。新建/更新/提交会话的业务变更和幂等回执在一次 AI 仓库事务中校验、落盘；失败不留下半成品。幂等重放不重复提交。仓库加载及最终提交仍完整验证结构、账号归属和引用；批准/发布等跨仓库操作不使用此合并事务。
+房间文件夹是管理器的连接分组，不额外复制存档或创建任意磁盘目录。会话仍存于对应宿主的独立 AI 仓库 `settings.sessions`，不写入游戏实体；目录按房间 scope 与会话权限隔离，规则见[会话权限](ai-session-access.md)。重启宿主保留 scope 时可继续历史；更换存档或恢复为新 scope 不会沿用旧会话。最多每房间 200 个未删除会话、每会话 100 个请求；归档保留历史及审批证据。会话提交与请求创建在同一 AI 仓库提交中完成，失败不产生孤立请求；改名/归档带 revision，重复 command ID 返回原回执。新建/更新/提交会话的业务变更和幂等回执在一次 AI 仓库事务中校验、落盘；失败不留下半成品。幂等重放不重复提交。仓库加载及最终提交仍完整验证结构、账号归属和引用；批准/发布等跨仓库操作不使用此合并事务。
 
 生成时按该会话 `historyTurns` 携带此前 0—4 个请求，默认 4，设为 0 不携带会话历史；原始记录仍保留。已取消请求跳过；历史玩家输入标记为非权威陈述。历史 AI 回答只在原审核者、当前授权、外发策略、房间基线及来源仍有效时加入，并标记为未批准回答；过期项列入遗漏清单，不作为事实。上下文仍受 96 KiB 总上限约束。这是有限轮次会话连续性，没有自动压缩或跨房间记忆。
 
@@ -53,7 +57,7 @@ Windows 密钥经 DPAPI CurrentUser 加密存入 `%LOCALAPPDATA%/OnlineCOC/AI/cr
 
 新服务配置和示例模板的 `limits.dailyTokenBudget` 默认为 `null`，表示不限制每日累计 Token；记账始终开启。正整数（1—10,000,000）表示显式启用日限额，已有正数配置仍按原额度执行。关闭/重新开启限额不会删除历史或重置当日用量。本次已将当前本机 `deepseek-main` 改为不限额；其他部署通过管理器的额度开关保存。输出长度、上下文大小、超时、工具轮数等仍独立受限。
 
-管理器连接房间后，左侧“用量统计”打开该房间面板；三种嵌入对话顶栏也有同名入口。支持今天/最近7天/最近30天/自定义日期、服务配置筛选，以及选中会话后的“仅当前会话”。KP 默认查看整个房间，可切换“我的需求”；PL 只查本人发起的需求，KP 转交调用也归到原玩家。API 默认 `scope=mine`，房间汇总仅真实 KP 可请求；会话筛选仍要求本人拥有。统计不包含需求/回答正文、工具参数、密钥或他人的会话标题。
+管理器连接房间后，左侧“用量统计”打开该房间面板；三种嵌入对话顶栏也有同名入口。支持今天/最近7天/最近30天/自定义日期、服务配置筛选，以及选中会话后的“仅当前会话”。KP 默认查看整个房间，可切换“我的需求”；PL 只查本人发起的需求，KP 转交调用也归到原玩家。API 默认 `scope=mine`，房间汇总仅真实 KP 可请求；会话筛选允许 KP 查询他人会话，PL 仅本人。统计不包含需求/回答正文、工具参数、密钥或他人的会话标题。
 
 | 指标 | 含义 |
 | --- | --- |
@@ -103,8 +107,8 @@ function dispose() {
 | `mountSessionManager(target,client,options?)` | 独立会话管理/设置；本机管理器与三种对话视图均已接入，详情见[嵌入指南](ai-pack-embedding.md#独立会话管理与显示组件) |
 | `mountMarkdown` / `renderMarkdown` | 安全格式渲染；支持标题、表格、列表、代码等子集，保留正文语义引用 |
 | `createAITools(client)` | 无界面会话/需求/引用/审核/设置/回执分组工具；返回原始回执，不自动批准或加载 |
-| `mountAI(client,{target,onReceipt?})` | 返回 `refresh/review/reloadSettings/destroy`；包含需求、审核、配置设置及长期记忆 |
-| `mountChat(target,client,{listTarget?,onReview?,onChange?})` | 对话区和可选外部会话列表；返回 `refresh/select/newChat/showArchived/setDraft/insertReference/suspend/resume/destroy`；KP 明确发送后转交生成，PL 仅提交需求 |
+| `mountAI(client,{target,onReceipt?})` | 返回 `refresh/review/showBatches/reloadSettings/destroy`；包含需求、审核、配置设置及长期记忆 |
+| `mountChat(target,client,{listTarget?,onReview?,onChange?})` | 对话区和可选外部会话列表；返回 `refresh/select/newChat/showArchived/applySessionChange/setDraft/insertReference/suspend/resume/destroy`；KP 明确发送后转交生成，允许后 PL 直接转交并读取玩家范围回答 |
 | `bindReferenceInput(input,container,client,{editor?})` | 两级指令/数据补全，返回 `reset/destroy`；传入 ReferenceEditor 时插入语义标签，旧 textarea 接法仍插入文本标记 |
 | `createReferenceEditor(element,{resolveReferences?})` | 创建语义引用编辑器；value 是底层标记文本，displayText 是可读名称；提供 setValue/insertReference/replace/cursor/destroy |
 | `renderReferenceText` / `hydrateReferences` | 将已提交文本呈现为标签；按当前授权解析名称，过期或不可访问时显示提示，不缓存跨身份私密名称 |
@@ -119,13 +123,15 @@ function dispose() {
 
 ## 数据引用与短指令
 
+PL 补全仅提供 `/knowledge`，语义标签及详情固定到本人已授权观察；管理页和开发者底层引用接口保持同一权限。新增细则见 [AI 玩家已知资料](ai-player-knowledge.md)。下面的原始配置／实体／聊天指令用于 KP。
+
 新增 `/chat /event /ruling` 语义引用、资料预览和四类只读查询；具体权限、HTTP、底层工具和包侧边界统一见[数据查询](ai-data-query.md)。
 
 
 | 输入 | 数据来源 | 权限 |
 | --- | --- | --- |
-| `/config 关键词` | 当前房间 Configuration 及其修订 | 房间成员可读；外发需 public |
-| `/entity 关键词` | 当前活动实体：角色、物品等 | 使用宿主 visible 投影，PL 去掉 metadata.secret；外发按 public/private/kp 及额外秘密策略 |
+| `/config 关键词` | 当前房间 Configuration 及其修订 | 仅 KP；PL 使用已披露的 knowledge 分面，不能直接读取模板 |
+| `/entity 关键词` | 当前活动实体：角色、物品等 | 仅 KP 原始实体；PL 使用 knowledge 引用，外发需 private |
 | `/data 关键词` | 当前活动工件的 JSON 数据文件 | 仅 KP；外发需 kp；不读取安装目录、包侧私有文件或任意路径 |
 
 补全分两级：输入 `/` 显示可用指令，输入 `/en` 等前缀筛选指令名称；用方向键、Enter/Tab 或鼠标选中后，继续补全该类数据对象。指令列表即时显示，数据查询等待输入稳定 180 ms；Escape 关闭。补全使用当前光标位置，在句子中间插入时保留后文。PL 不显示 `/data`，实际权限继续由服务端验证。
@@ -150,15 +156,15 @@ function dispose() {
 
 | op / 读取路径 | 参数或返回 |
 | --- | --- |
-| `ai.session.create` | `{title}`，1—120 字符；返回 sessionId、owner、title、revision、archived、createdAt、updatedAt |
+| `ai.session.create` | `{title,accessLevel?}`，1—120 字符；返回 sessionId、owner、accessLevel、title、revision、archived、createdAt、updatedAt |
 | `ai.session.update` | `{sessionId,revision,title?,archived?,pinned?,historyTurns?,renderMode?,showDiagnostics?}`；historyTurns 为 0—4，renderMode 为 formatted/plain，其余新增字段为布尔；owner 由真实会话限定，不能转移 |
-| `ai.session.submit` | `{sessionId,text}`，1—8000 字符；返回 requestId/sessionId，不自动绕过 KP 转发 |
-| `GET /api/v1/ai/sessions?archived=false` | `{items:[Session & {requestCount}]}`；只列当前账号 |
-| `GET /api/v1/ai/sessions/{id}` | `{session:Session,items:Task[]}`；PL 可见自己提交的需求文本，AI 响应沿用原权限过滤 |
+| `ai.session.submit` | `{sessionId,text}`，1—8000 字符；返回 requestId/sessionId；玩家级会话直接排队成功时另含 taskId，失败含 dispatchError |
+| `GET /api/v1/ai/sessions?archived=false` | `{items:[Session & {requestCount}],access}`；KP 全部／PL 本人 |
+| `GET /api/v1/ai/sessions/{id}` | `{session:Session,items:Task[]}`；PL 可见自己提交的需求及通过玩家来源复验的回答 |
 | `GET /api/v1/ai/usage` | 授权用量汇总、按日/服务配置分组与分页调用明细；参数见下文 |
 | `GET /api/v1/ai/contracts` | `{version:1,operations,$defs}`；需房间登录，供自建表单/生成器读取实际 JSON Schema |
 
-用量查询参数：`from` / `to` 为 UTC 日期 `YYYY-MM-DD`（含两端，最长366天，默认最近7天）；`scope=mine|room`（默认mine）；可选 `profileId`、本人 `sessionId`、`before`（上页nextBefore）、`limit`（1—100，默认50）。未知/重复参数和非法范围被拒绝。返回 `scopeId/scope/timezone/from/to`、`totals`、`byDay`、`byProfile`、`budgetsToday`、`items/nextBefore`；分页只影响调用明细，汇总仍覆盖整个筛选范围。历史未知模型/时间返回 null，不推测补齐。
+用量查询参数：`from` / `to` 为 UTC 日期 `YYYY-MM-DD`（含两端，最长366天，默认最近7天）；`scope=mine|room`（默认mine）；可选 `profileId`、授权 `sessionId`、`before`（上页nextBefore）、`limit`（1—100，默认50）。未知/重复参数和非法范围被拒绝。返回 `scopeId/scope/timezone/from/to`、`totals`、`byDay`、`byProfile`、`budgetsToday`、`items/nextBefore`；分页只影响调用明细，汇总仍覆盖整个筛选范围。历史未知模型/时间返回 null，不推测补齐。
 
 JS 使用 `client.aiUsage(options)` 或 `createAITools(client).usage(options)`；Python 使用 `Application.usage(account, options)`，参数按 HTTP 字符串形式提供。接口通过原房间 Cookie 鉴权，管理器及树桩镇网页桥只转发明确用量路由，不能传入账号伪造查询范围。
 
@@ -202,6 +208,8 @@ Python 直接集成使用 `Runtime` / `Application` / `Sessions` / `Proposals` /
 
 ## 验收与参考
 
+2026-11-17 聊天模板完成三轮迭代：第一轮 12 项既有回归通过；第二轮 5 项新交互测试通过；第三轮补充发送切换竞态，最终按测试 ID 去重 **27 项通过（含 6 项新增交互测试）**。末轮初跑 25 项通过、2 项旧定位断言失败；限定补全候选定位后，两项复测通过。见[逐轮结果与源码摘要](../../../engineering/acceptance/ai-runtime/chat-polish-results.json)。覆盖本机管理器、三种嵌入形态、390 px 窄容器/移动视口、引用详情与原子编辑、权限和归档删除；使用真实 Edge、隔离宿主及离线模型，无真实 API 消耗。前端优化不代表推理延迟优化。
+
 2026-11-16：日限额默认关闭、授权用量查询与可嵌入统计通过122项模块测试和9组树桩镇接入验收。证据见[用量验收](../../../engineering/acceptance/ai-runtime/usage-results.json)；覆盖额度重新启用、失败/取消/重启保留、旧记录、分页、原玩家归属、HTTP越权、真实Edge管理器及双网页玩家。全部为离线模型与隔离存档。
 
 2026-11-15：格式化回答、独立会话管理与设置已完成；51 项模块回归和 7 组树桩镇接入验收通过，细节及当前入口见[嵌入指南](ai-pack-embedding.md#验收)。结果、复验范围与源码摘要见[本轮记录](../../../engineering/acceptance/ai-runtime/rendering-sessions.json)。以下性能样本和阶段数字仍保留其原测量日期。
@@ -217,3 +225,13 @@ Python 直接集成使用 `Runtime` / `Application` / `Sessions` / `Proposals` /
 此前管理器 AM-0—AM-4 的 331 项去重验收及组件双挂载/迟到响应证据见[历史阶段记录](../../../engineering/acceptance/ai-runtime/manager.json)。此次浏览器使用离线确定性服务商，没有再次调用真实 DeepSeek；既有真实服务结果见 [deepseek-live.json](../../../engineering/acceptance/ai-runtime/deepseek-live.json)。配置包原型不写入树桩镇，真实 KP 试玩、完整本地化、非 Windows 保险库及跨设备完整配置发布未由此次测试证明。
 
 管理功能组织参考 [CC Switch 官方项目](https://github.com/farion1231/cc-switch)，查阅于 2026-11-13；2026-11-14 对话与房间分组参考 [ChatGPT Projects 官方说明](https://help.openai.com/en/articles/10169521-projects-in-chatgpt)，借鉴侧栏分组和独立会话的组织思路，不复制其代码或资源，也不把 ChatGPT 项目的功能直接作为本模块承诺。
+
+会话分级、玩家开关、批次动作／审批／原回执和删除语义统一维护于[会话权限与执行批次](ai-session-access.md)。本页不将配置删除、包侧独立状态或任意私聊读取描述为已支持。
+
+2026-11-16 验收：模块按测试 ID 去重 323 项、树桩镇 32 组通过，覆盖分级权限、直接排队、批次审批／恢复、归档／删除、双网页玩家及原生 KP。均使用隔离存档和离线服务，未调用真实模型或修改正式存档；[验收汇总](../../../engineering/acceptance/ai-runtime/session-access-results.json)保存逐项结果、复测关系和源码摘要。
+
+对话区现接入[语义引用与结构化选择](ai-responses.md)：精简正文，工具诊断单独展示，选择项填写输入框后再发送。
+
+输出修正次数默认 5，可在服务商编辑的调用限制中设置。运行时与配置自动批准分别配置；KP 的 AI 修改裁决队列统一处理批次与通过三检的配置。详细规则以[修改裁决](ai-rulings.md)和[输出修正](ai-responses.md#基础错误修正与用户决策)为准。
+
+2026-11-17 对话布局参照 [ChatGPT 网页入口](https://chatgpt.com/) 的清晰正文、底部输入区和新对话引导；本项目保留房间身份、数据引用和 KP 审核入口，使用自己的组件实现。

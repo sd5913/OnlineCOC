@@ -1,0 +1,51 @@
+{
+  "date": "2026-11-18T09:34:38.595885+08:00",
+  "scope": "synthetic inputs only; no room data or persisted game changes",
+  "calls": [
+    {
+      "case": "strict_player_prompt",
+      "httpStatus": 200,
+      "passed": true,
+      "usage": {
+        "prompt_tokens": 802,
+        "completion_tokens": 15,
+        "total_tokens": 817
+      },
+      "responseDigest": "120f7ce4da38eb4d80410df01483ddecec1d6b007a49522f69210aa5b9a7cc97"
+    },
+    {
+      "case": "generic_guard_example_initial",
+      "httpStatus": 200,
+      "passed": false,
+      "failure": "INPUT_INVALID: invalid JSON response",
+      "usage": null,
+      "note": "Initial direct probe aborted on parsing; tokens were not retained. HTTP request was accepted. No raw response saved."
+    },
+    {
+      "case": "legacy_player_prompt_guard",
+      "httpStatus": 200,
+      "usage": {
+        "prompt_tokens": 809,
+        "completion_tokens": 15,
+        "total_tokens": 824
+      },
+      "responseDigest": "143ddaa1326c59746144c06486e3820dc4cf093bbdf8bc5c879387f01323cbd5",
+      "passed": true
+    },
+    {
+      "case": "generic_guard_example_correction",
+      "correctionAttempt": 1,
+      "httpStatus": 200,
+      "usage": {
+        "prompt_tokens": 58,
+        "completion_tokens": 5,
+        "total_tokens": 63
+      },
+      "responseDigest": "2ae863e5ed9d31a6b127cc5ea9c14eeefce05acf7c233c2c502f5337631294e2",
+      "passed": true
+    }
+  ],
+  "model": "deepseek-flash",
+  "profileRevision": 5,
+  "realProviderCalls": 4
+}

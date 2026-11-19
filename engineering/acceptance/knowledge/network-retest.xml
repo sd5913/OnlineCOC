@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="2" failures="0" skipped="0" tests="17" time="13.770" timestamp="2026-11-17T10:34:20.736042+08:00" hostname="LAPTOP-BIFSL64A"><testcase classname="tests.test_sdk" name="test_existing_client_sdk_with_webrtc" time="6.981" /><testcase classname="tests.test_local_boundary" name="test_session_lock_is_exclusive_and_released" time="0.006" /><testcase classname="tests.test_local_boundary" name="test_local_capability_origin_and_one_use_sandbox" time="0.008" /><testcase classname="" name="test_code_only_join_shortcuts_no_game_connection" time="0.329" /><testcase classname="" name="test_approval_ban_unban_and_permanent_close" time="0.279" /><testcase classname="" name="test_sessions_csrf_recovery_and_other_device" time="0.074" /><testcase classname="" name="test_duplicate_seat_and_revoke_ticket" time="0.204" /><testcase classname="" name="test_persistent_store_lock_backup_and_no_silent_rollback" time="0.025" /><testcase classname="" name="test_resource_projection_and_unlisted_hash_denied" time="0.065" /><testcase classname="" name="test_cross_device_membership_and_offline_shortcut" time="0.235" /><testcase classname="" name="test_room_cannot_be_enumerated_by_changing_legacy_settings" time="0.179" /><testcase classname="" name="test_wrong_origin_and_page_security_headers" time="0.009" /><testcase classname="" name="test_expired_approval_requests_do_not_fill_room_forever" time="0.215" /><testcase classname="" name="test_server_restart_preserves_account_membership_and_bans" time="0.288" /><testcase classname="" name="test_p2p_upstream_knowledge_routes_and_isolated_peers" time="2.102"><error message="failed on setup with &quot;AssertionError: Traceback (most recent call last):&#10;    File &quot;D:\Studies\Art Programming\OnlineCOC\engineering\acceptance\knowledge\test_network_paths.py&quot;, line 9, in &lt;module&gt;&#10;      import aiohttp&#10;  ModuleNotFoundError: No module named 'aiohttp'&#10;  &#10;assert 1 is None&#10; +  where 1 = poll()&#10; +    where poll = &lt;Popen: returncode: 1 args: ['D:\\Studies\\Art Programming\\OnlineCOC\\engin...&gt;.poll&quot;">tmp_path = WindowsPath('C:/Users/26077/AppData/Local/Temp/pytest-of-26077/pytest-57/test_p2p_upstream_knowledge_ro0')
+
+    @pytest.fixture
+    async def live(tmp_path):
+        selected=port();url=f'http://127.0.0.1:{selected}'
+        log=(tmp_path/'host.log').open('w',encoding='utf-8')
+        process=subprocess.Popen([str(ROOT/'.venv/Scripts/python.exe'),'-B',str(Path(__file__)),'--serve',str(tmp_path/'host'),str(selected)],stdout=log,stderr=log)
+        try:
+            async with aiohttp.ClientSession() as client:
+                for _ in range(100):
+&gt;                   assert process.poll() is None,(tmp_path/'host.log').read_text(encoding='utf-8')
+E                   AssertionError: Traceback (most recent call last):
+E                       File "D:\Studies\Art Programming\OnlineCOC\engineering\acceptance\knowledge\test_network_paths.py", line 9, in &lt;module&gt;
+E                         import aiohttp
+E                     ModuleNotFoundError: No module named 'aiohttp'
+E                     
+E                   assert 1 is None
+E                    +  where 1 = poll()
+E                    +    where poll = &lt;Popen: returncode: 1 args: ['D:\\Studies\\Art Programming\\OnlineCOC\\engin...&gt;.poll
+
+engineering\acceptance\knowledge\test_network_paths.py:26: AssertionError</error></testcase><testcase classname="" name="test_lan_gateway_knowledge_and_csrf" time="2.133"><error message="failed on setup with &quot;AssertionError: Traceback (most recent call last):&#10;    File &quot;D:\Studies\Art Programming\OnlineCOC\engineering\acceptance\knowledge\test_network_paths.py&quot;, line 9, in &lt;module&gt;&#10;      import aiohttp&#10;  ModuleNotFoundError: No module named 'aiohttp'&#10;  &#10;assert 1 is None&#10; +  where 1 = poll()&#10; +    where poll = &lt;Popen: returncode: 1 args: ['D:\\Studies\\Art Programming\\OnlineCOC\\engin...&gt;.poll&quot;">tmp_path = WindowsPath('C:/Users/26077/AppData/Local/Temp/pytest-of-26077/pytest-57/test_lan_gateway_knowledge_and0')
+
+    @pytest.fixture
+    async def live(tmp_path):
+        selected=port();url=f'http://127.0.0.1:{selected}'
+        log=(tmp_path/'host.log').open('w',encoding='utf-8')
+        process=subprocess.Popen([str(ROOT/'.venv/Scripts/python.exe'),'-B',str(Path(__file__)),'--serve',str(tmp_path/'host'),str(selected)],stdout=log,stderr=log)
+        try:
+            async with aiohttp.ClientSession() as client:
+                for _ in range(100):
+&gt;                   assert process.poll() is None,(tmp_path/'host.log').read_text(encoding='utf-8')
+E                   AssertionError: Traceback (most recent call last):
+E                       File "D:\Studies\Art Programming\OnlineCOC\engineering\acceptance\knowledge\test_network_paths.py", line 9, in &lt;module&gt;
+E                         import aiohttp
+E                     ModuleNotFoundError: No module named 'aiohttp'
+E                     
+E                   assert 1 is None
+E                    +  where 1 = poll()
+E                    +    where poll = &lt;Popen: returncode: 1 args: ['D:\\Studies\\Art Programming\\OnlineCOC\\engin...&gt;.poll
+
+engineering\acceptance\knowledge\test_network_paths.py:26: AssertionError</error></testcase><testcase classname="" name="test_web_export_has_exact_knowledge_routes" time="0.068" /></testsuite></testsuites>

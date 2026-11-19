@@ -1,0 +1,21 @@
+{
+  "checkedAt": "2026-11-19T10:01:05.952285+08:00",
+  "passed": 12,
+  "checks": [
+    "initial entry observation and explicitly subscribed own sheet work through normal player UI",
+    "ordinary player travel uses disclosed navigation and updates personal scene actions",
+    "publishing does not disclose scenes and legacy /view excludes managed world data",
+    "trusted movement observes only for its owner; copied refs and legacy references fail",
+    "NPC identity disclosure is personal and legacy discover controls revoke the actual grant",
+    "fixed scene and UI remain byte-identical after current description publication",
+    "KP reveal UI issues a new personal snapshot without replacing another player old observation",
+    "actual provider payload omits package guides and supports only trusted known-answer choices",
+    "KP revoke invalidates detail and player scene projection without revealing new content",
+    "legacy location sets do not authorize reads; explicit import creates a current observation",
+    "knowledge survives host restart with AI disabled",
+    "player static export excludes package truth, configuration data and AI guide source files"
+  ],
+  "realSaveChanged": false,
+  "provider": "deterministic loopback fixture",
+  "output": "D:\\Studies\\Art Programming\\OnlineCOC\\rulepacks\\stumpsville\\tests\\output\\strict-known-e86f794e"
+}

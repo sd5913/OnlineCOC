@@ -6,6 +6,7 @@
 
 | 文档 | 归档日期 | 原因 / 后续文档 |
 | --- | --- | --- |
+| [AI 玩家知识接入计划](2026-11-17-ai-player-knowledge.md) | 2026-11-17 | A0—A3 首版完成；现行见 [AI 玩家已知资料](../current/engineering/ai-player-knowledge.md) |
 | [2026-11-09-room-manager](2026-11-09-room-manager.md) | 2026-11-09 | Python/LAN 迁移前材料；现行见[工程说明](../current/engineering/room-manager.md) |
 | [2026-11-09-room-manager-design](2026-11-09-room-manager-design.md) | 2026-11-09 | Python/LAN 迁移前材料；现行见[工程说明](../current/engineering/room-manager.md) |
 | [2026-11-09-room-manager-construction-plan](2026-11-09-room-manager-construction-plan.md) | 2026-11-09 | Python/LAN 迁移前材料；现行见[工程说明](../current/engineering/room-manager.md) |
@@ -20,3 +21,9 @@
 维护规则见 [文档维护标准](../standards/document-maintenance.md)。
 
 - [ISSUE-007 处理记录](2026-11-14-issue-007-room-version-policy.md)：旧格式自动迁移策略被后端 0.2.0 严格加载替代；[旧机器定义](2026-11-14-room-formats-before-0.2.0.json)仅供外部迁移参考，不作为运行时后备。
+
+## 2026-11-17 ISSUE-011首版
+
+- [工程设计归档](2026-11-17-player-knowledge-engineering-design.md)：已实现接口与原始决策，现行说明见个人知识服务。
+- [施工与验收归档](2026-11-17-player-knowledge-construction-plan.md)：K0—K5及K-01—K-27完成记录。
+- [ISSUE-011完成记录](2026-11-17-issue-011-player-knowledge-authorization.md)：跨入口资料授权问题及处理结果。

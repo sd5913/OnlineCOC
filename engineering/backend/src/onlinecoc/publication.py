@@ -10,6 +10,22 @@ from .model import member
 
 def check_context(host, state, account, context):
     control = state["aiControl"]
+    if context.get('facts',{}).get('strictPlayer'):
+        facts=context['facts']; access=facts.get('sessionAccess',{})
+        require(access.get('level')=='player' and access.get('owner')==context['reviewPrincipal'],'PERMISSION_DENIED')
+        owner=access['owner']; m=member(state,owner); member(state,account)
+        require(context['authorizationEpoch']==m['authorizationEpoch'],'PERMISSION_DENIED')
+        require(context['scopeId']==control['scopeId'],'SCOPE_MISMATCH')
+        require(context['authorityEpoch']==host.epoch,'STALE_AUTHORITY')
+        binding=control['packBinding']
+        require(binding and context['contractDigest']==binding['digest'],'SOURCE_STALE')
+        proofs=facts.get('knowledgeProofs')
+        require(isinstance(proofs,list) and 1<=len(proofs)<=100,'SOURCE_STALE')
+        for proof in proofs:
+            require(proof.get('accountId')==owner and proof.get('player') is True,'PERMISSION_DENIED')
+        host.knowledge.recheck_many(owner,proofs,state=state)
+        host.validate_ai_sources(state,owner,context)
+        return
     m = member(state, account)
     require(m["role"] == "kp" and context["reviewPrincipal"] == account, "PERMISSION_DENIED")
     require(context["authorizationEpoch"] == m["authorizationEpoch"], "PERMISSION_DENIED")
@@ -27,7 +43,7 @@ def check_context(host, state, account, context):
 def approve(host, state, account, args, prepared):
     require(prepared is not None, "AI_SERVICE_UNAVAILABLE")
     validate_bundle(prepared)
-    require(not prepared['context']['facts'].get('consultationOnly'), 'CONSULTATION_ONLY')
+    require(not prepared['context']['facts'].get('consultationOnly') and not prepared['context']['facts'].get('strictPlayer'), 'CONSULTATION_ONLY')
     require(prepared["proposalId"] == args["proposalId"] and prepared["proposalRevision"] == args["proposalRevision"], "PROPOSAL_STALE")
     control = state["aiControl"]
     require(control["proposalHeads"].get(args["proposalId"]) == args["proposalRevision"], "PROPOSAL_STALE")
@@ -72,6 +88,7 @@ def apply(host, state, account, args, command_id):
     require(member(state, account)["role"] == "kp", "PERMISSION_DENIED")
     approval = control["approvals"].get(args["approvalId"])
     require(approval is not None and approval["reviewer"] == account, "NOT_VISIBLE")
+    require(not approval['context']['facts'].get('strictPlayer'),'CONSULTATION_ONLY')
     if approval["status"] == "consumed":
         publication = next(p for p in control["publications"].values() if p["approvalId"] == approval["approvalId"])
         return copy.deepcopy(publication)
@@ -93,7 +110,7 @@ def apply(host, state, account, args, command_id):
         old = state["configurations"].get(change["id"])
         require((old is None if change["kind"] == "add" else old and old["revision"] == change["expectedRevision"] and
                 old["typeRef"] == change["value"]["typeRef"] and old["revision"] != change["value"]["revision"]), "VERSION_CONFLICT")
-        for ref in change["value"]["behaviors"].values():
+        for ref in change["value"].get("behaviors", {}).values():
             require(ref["ruleId"] in artifact["metadata"], "REFERENCE_CONFLICT")
         state["configurations"][change["id"]] = copy.deepcopy(change["value"])
         revisions[change["id"]] = change["value"]["revision"]

@@ -1,0 +1,187 @@
+{
+  "date": "2026-11-17T22:10:28.149865+08:00",
+  "passed": true,
+  "checks": [
+    "four distinct preset receipts settle through a KP browser in a separate context (no BroadcastChannel shortcut)",
+    "safe observations settle without dice popup",
+    "preset popup shows committed host roll and threshold; gameplay settlement is not delayed by animation",
+    "advantage shows both actual dice; polling and reload do not replay history or send extra commands",
+    "a delayed pre-action state response cannot overwrite the completed check",
+    "manual request has no premature dice; approved host result triggers popup",
+    "another player’s check never triggers this player’s popup",
+    "preference survives reload; reduced motion reveals results directly; popup fits 390px",
+    "same-origin player and KP tabs complete through the local wake channel without changing account ownership",
+    "KP damage with a critical-injury save displays the actual save and remaining threshold",
+    "browser has no uncaught JavaScript errors"
+  ],
+  "timingsMs": {
+    "before": [
+      3677,
+      4154,
+      3666,
+      3129
+    ],
+    "after": [
+      1800,
+      1815,
+      1771,
+      1804
+    ]
+  },
+  "medianMs": {
+    "before": 3672,
+    "after": 1802
+  },
+  "presetCheckMs": 1716,
+  "directScene": {
+    "elapsedMs": 1482,
+    "requests": [
+      {
+        "path": "/me",
+        "operation": null,
+        "ms": 2
+      },
+      {
+        "path": "/view",
+        "operation": null,
+        "ms": 20
+      },
+      {
+        "path": "/knowledge/search",
+        "operation": null,
+        "ms": 8
+      },
+      {
+        "path": "/knowledge/read",
+        "operation": null,
+        "ms": 8
+      },
+      {
+        "path": "/view",
+        "operation": null,
+        "ms": 19
+      },
+      {
+        "path": "/me",
+        "operation": null,
+        "ms": 2
+      },
+      {
+        "path": "/view",
+        "operation": null,
+        "ms": 12
+      },
+      {
+        "path": "/me",
+        "operation": null,
+        "ms": 12
+      },
+      {
+        "path": "/view",
+        "operation": null,
+        "ms": 12
+      },
+      {
+        "path": "/view",
+        "operation": null,
+        "ms": 12
+      },
+      {
+        "path": "/view",
+        "operation": null,
+        "ms": 13
+      },
+      {
+        "path": "/commands",
+        "operation": "action.invoke",
+        "ms": 510
+      },
+      {
+        "path": "/view",
+        "operation": null,
+        "ms": 12
+      },
+      {
+        "path": "/knowledge/capabilities",
+        "operation": null,
+        "ms": 6
+      },
+      {
+        "path": "/chat/members",
+        "operation": null,
+        "ms": 5
+      },
+      {
+        "path": "/knowledge/preview",
+        "operation": null,
+        "ms": 19
+      },
+      {
+        "path": "/view",
+        "operation": null,
+        "ms": 13
+      },
+      {
+        "path": "/commands",
+        "operation": "knowledge.observe",
+        "ms": 92
+      },
+      {
+        "path": "/knowledge/capabilities",
+        "operation": null,
+        "ms": 6
+      },
+      {
+        "path": "/chat/members",
+        "operation": null,
+        "ms": 5
+      },
+      {
+        "path": "/knowledge/preview",
+        "operation": null,
+        "ms": 26
+      },
+      {
+        "path": "/view",
+        "operation": null,
+        "ms": 12
+      },
+      {
+        "path": "/commands",
+        "operation": "knowledge.observe",
+        "ms": 118
+      },
+      {
+        "path": "/view",
+        "operation": null,
+        "ms": 13
+      },
+      {
+        "path": "/me",
+        "operation": null,
+        "ms": 2
+      },
+      {
+        "path": "/view",
+        "operation": null,
+        "ms": 14
+      },
+      {
+        "path": "/knowledge/capabilities",
+        "operation": null,
+        "ms": 13
+      },
+      {
+        "path": "/knowledge/search",
+        "operation": null,
+        "ms": 7
+      },
+      {
+        "path": "/knowledge/read",
+        "operation": null,
+        "ms": 7
+      }
+    ]
+  },
+  "note": "Isolated local host, separate browser contexts, four distinct no-roll presets with varied think time per phase. Optional before uses the supplied old frontend with the CURRENT backend; not a full prior-server, multi-device or load benchmark."
+}

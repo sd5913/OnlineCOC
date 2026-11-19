@@ -15,6 +15,8 @@ from test_entrypoints import application, command, committed
 
 
 def task_for(app, owner='kp', title='统计会话'):
+    if owner!='kp' and not app.sessions.access(owner)['canChat']:
+        committed(command(app,'ai.access.update',{'revision':app.sessions.access('kp')['revision'],'allowPlayerChat':True,'autoApproveBatches':False}))
     sid=committed(command(app,'ai.session.create',{'title':title},owner))['sessionId']
     rid=committed(command(app,'ai.session.submit',{'sessionId':sid,'text':'私密需求文字不进入统计'},owner))['requestId']
     tid=committed(command(app,'ai.request.dispatch',{'requestId':rid}))['taskId']
@@ -42,7 +44,8 @@ def test_unlimited_default_still_records_and_opt_in_reuses_ledger(application):
 
 
 def test_totals_owner_dispatch_session_filters_and_pagination(application):
-    app=application;s1,r1,t1=task_for(app,'player1');s2,_,t2=task_for(app,'player2')
+    from test_known_runtime import install
+    app=application;install(app);s1,r1,t1=task_for(app,'player1');s2,_,t2=task_for(app,'player2')
     app.coordinator._settle(t1,reserve(app,t1),completion({'kind':'plan','text':'private response'}))
     unknown=reserve(app,t1);app.coordinator._uncertain(unknown)
     pending=reserve(app,t2)

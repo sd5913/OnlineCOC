@@ -7,6 +7,6 @@
 
 文件顶层是 schema 名称到 JSON Schema Draft 2020-12 的映射。宿主同时检查语义不变量（权限、引用、循环、数量等），通过形状校验不等于可提交。Lua 短输入声明生成动态动作 schema，客户端表单直接消费该目录。
 
-完整接口与字段生命周期见 [首测工程](../../docs/current/engineering/first-test.md)。当前后端 0.2.0 只支持 Room v3，完整格式与各独立版本号见[房间格式说明](../../docs/current/engineering/room-format.md)。旧 Schema 仅在[历史快照](../../docs/history/2026-11-14-room-formats-before-0.2.0.json)保留，运行时不加载。`ExecutionSnapshot` 是规则/AI 验证的精简内部投影，不能作为 Room 加载。
+完整接口与字段生命周期见[首测工程](../../docs/current/engineering/first-test.md)。后端0.3.0只支持Room v4；`knowledge.json`定义持久策略、观察、授权、分面引用、只读证据、4项命令与5项读取/预览入口。完整格式、显式v3复制转换与独立版本号见[房间格式说明](../../docs/current/engineering/room-format.md)，使用方式见[个人知识服务](../../docs/current/engineering/player-knowledge.md)。旧Schema仅作历史资料，运行时不加载。ExecutionSnapshot是规则/AI验证的精简投影，不能作为Room加载。
 
 本机身份管理使用独立的 [host-control.json](host-control.json)，授权绑定启动实例的 Windows 用户，不属于普通房间命令或 KP 权限。操作说明见[主机账号维护](../../docs/current/engineering/host-accounts.md)。

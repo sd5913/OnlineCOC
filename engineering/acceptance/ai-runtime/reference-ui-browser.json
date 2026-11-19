@@ -2,7 +2,7 @@
   "passed": true,
   "provider": "deterministic-offline",
   "createSessionEndToEndMs": [
-    51.67
+    52.17
   ],
   "consoleErrors": [],
   "checks": [

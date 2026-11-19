@@ -57,3 +57,7 @@ engineering/.venv/Scripts/python -B engineering/ai/scripts/benchmark_local.py en
 ```
 
 目录必须尚不存在。测量和适用范围见[管理器性能说明](../../docs/current/engineering/ai-manager.md#本地延迟与测量)。
+
+会话权限与执行批次已接入：KP 默认管理员会话，PL 开关默认关闭；开启后玩家需求直接转交且限于绑定玩家资料。管理面板可审核运行时／会话批次、选择自动批准，嵌入管理支持归档目录与删除。配置发布仍需三检及单独批准。详见[权限与接口](../../docs/current/engineering/ai-session-access.md)。
+
+严格 PL 接入依赖后端 0.3.0 / Room v4 知识服务。包须注册受信提供方并绑定策略，KP 允许玩家对话及 private 外发后，玩家只查询本人固定观察或明确持续告知的内容；模型仅选择证据，服务端排版。未知内容通过选项向 KP 提交需求。详见[已知资料与验收](../../docs/current/engineering/ai-player-knowledge.md)，不同玩法示例见 [knowledge-investigation.py](examples/knowledge-investigation.py)。

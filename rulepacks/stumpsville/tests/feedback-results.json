@@ -1,6 +1,6 @@
 {
   "passed": true,
-  "checkedAt": "2026-11-10T19:38:38.431297+08:00",
+  "checkedAt": "2026-11-18T11:20:35.235130+08:00",
   "checks": [
     "automatic dice process and result persist once; feedback remains owner scoped",
     "inventory movements and light changes contain readable before/after values",

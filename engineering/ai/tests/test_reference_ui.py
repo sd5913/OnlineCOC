@@ -14,12 +14,12 @@ def test_prototype_commands_semantic_tokens_and_atomic_editing(services):
             page.goto(origin+'/prototype.html')
             editor=page.locator('#chat #text');chips=editor.locator('.reference-chip')
             editor.fill('/')
-            expect(page.locator('#chat').get_by_role('option')).to_have_count(6)
+            expect(page.locator('#chat').locator('#completion').get_by_role('option')).to_have_count(7)
             editor.fill('/en')
-            expect(page.locator('#chat').get_by_role('option')).to_have_count(1)
-            expect(page.locator('#chat').get_by_role('option')).to_contain_text('/entity')
+            expect(page.locator('#chat').locator('#completion').get_by_role('option')).to_have_count(1)
+            expect(page.locator('#chat').locator('#completion').get_by_role('option')).to_contain_text('/entity')
             editor.press('Tab')
-            expect(page.locator('#chat').get_by_role('option')).to_contain_text('旅行提灯')
+            expect(page.locator('#chat').locator('#completion').get_by_role('option')).to_contain_text('旅行提灯')
             editor.press('Enter')
             expect(chips).to_have_count(1)
             expect(chips.locator('.reference-label')).to_have_text('旅行提灯')
@@ -55,12 +55,12 @@ def test_prototype_commands_semantic_tokens_and_atomic_editing(services):
             # Completion replaces only the command at the cursor, preserving the suffix.
             editor.fill('前文 /en 后文')
             editor.evaluate("el=>{const text=[...el.childNodes].find(n=>n.nodeType===3&&n.data.includes('/en'));const r=document.createRange();r.setStart(text,6);r.collapse(true);const s=el.getRootNode().getSelection();s.removeAllRanges();s.addRange(r);el.dispatchEvent(new Event('mouseup'));}")
-            expect(page.locator('#chat').get_by_role('option')).to_have_count(1)
-            editor.press('Enter');expect(page.locator('#chat').get_by_role('option')).to_contain_text('旅行提灯')
+            expect(page.locator('#chat').locator('#completion').get_by_role('option')).to_have_count(1)
+            editor.press('Enter');expect(page.locator('#chat').locator('#completion').get_by_role('option')).to_contain_text('旅行提灯')
             editor.press('Enter');expect(chips).to_have_count(1)
             expect(editor).to_contain_text('后文')
             # IME composition must not accept an option or turn Enter into a command.
-            editor.fill('/en');expect(page.locator('#chat').get_by_role('option')).to_have_count(1)
+            editor.fill('/en');expect(page.locator('#chat').locator('#completion').get_by_role('option')).to_have_count(1)
             editor.evaluate("el=>{el.dispatchEvent(new CompositionEvent('compositionstart',{bubbles:true}));el.dispatchEvent(new KeyboardEvent('keydown',{key:'Enter',isComposing:true,bubbles:true,cancelable:true}));}")
             assert editor.inner_text()=='/en'
             editor.evaluate("el=>el.dispatchEvent(new CompositionEvent('compositionend',{bubbles:true,data:'实体'}))")
@@ -71,8 +71,8 @@ def test_prototype_commands_semantic_tokens_and_atomic_editing(services):
             page.locator('#insert').click()
             page.screenshot(path=str(Path(__file__).resolve().parents[2]/'acceptance/ai-runtime/reference-ui-semantic.png'),full_page=True)
             page.locator('#role').select_option('player')
-            editor.fill('/');expect(page.locator('#chat').get_by_role('option')).to_have_count(5)
-            assert page.locator('#chat').get_by_role('option').filter(has_text='/data').count()==0
+            editor.fill('/');expect(page.locator('#chat').locator('#completion').get_by_role('option')).to_have_count(1)
+            assert page.locator('#chat').locator('#completion').get_by_role('option').filter(has_text='/data').count()==0
             assert not errors,errors
         finally:browser.close()
 

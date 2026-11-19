@@ -1,6 +1,6 @@
 {
   "passed": true,
-  "checkedAt": "2026-11-15T18:20:42.317449+08:00",
+  "checkedAt": "2026-11-18T00:38:26.805351+08:00",
   "browser": "Microsoft Edge / Playwright",
   "checks": [
     "three same-browser session slots retain separate authenticated identities",
@@ -11,7 +11,7 @@
     "automatic move, explicit event request and KP automation toggle work in browser",
     "manual roll process and KP result update in-place without discarding unsaved notes",
     "resident player chat and pinned KP rulings chat receive live messages",
-    "character panels toggle, collapse, reopen and persist their layout after reload",
+    "notebook collapses and persists after reload while character and inventory remain resident",
     "390px player layout remains within viewport",
     "two root pages create independent login slots; reload and one-page logout leave other accounts signed in"
   ],

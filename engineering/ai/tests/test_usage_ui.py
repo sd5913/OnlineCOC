@@ -14,7 +14,7 @@ def test_room_usage_metrics_filters_account_scope_and_mobile(services):
         page.on('pageerror',lambda e:errors.append(str(e)))
         try:
             page.goto(origin+'/ai-ui/conversation.html');login(page,'kp')
-            page.locator('.review-open').click();page.get_by_text('服务与外发范围',exact=True).click()
+            page.locator('.review-open').click();page.locator('[data-tab=settings]').click();page.get_by_text('服务与外发范围',exact=True).click()
             page.locator('#ai-enabled').check();page.locator('#ai-profile').select_option('deepseek-main');page.locator('#ai-public').check();page.locator('#ai-save-settings').click()
             expect(page.locator('#ai-result')).to_have_text('设置已保存');page.locator('.review-close').click()
             page.locator('#text').fill('将新建技能初值改为 15。');page.locator('#send').click()

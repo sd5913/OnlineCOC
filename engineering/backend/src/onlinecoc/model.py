@@ -16,6 +16,7 @@ def entity(id,kind,name,owner=None,**numbers):
             "owner":owner,"visibility":"public","metadata":{},"tags":[],"numbers":numbers,"components":{},"rules":{}}
 
 def demo_state(accounts):
+    from .knowledge.models import initial
     entities={}
     relations={}
     members={}
@@ -36,7 +37,7 @@ def demo_state(accounts):
     secret=entity("secret-clue","item","隐藏线索",None,quantity=1,unitMass=0)
     secret["visibility"]="kp";entities["secret-clue"]=secret
     configs={"demo."+k:{"configurationId":"demo."+k,"revision":"1","typeRef":k,"defaults":({"hp":10,"maxHp":10,"armor":0,"attack":0} if k=="actor" else {"quantity":1,"unitMass":0} if k in ("item","weapon") else {"capacity":2000} if k=="bag" else {"value":0} if k=="skill" else {}),"behaviors":{}} for k in KINDS}
-    return {"schemaVersion":ROOM_SCHEMA_VERSION,"aiControl":initial_control(),"roomId":"demo","name":"首测调查室","runId":uid(),"status":"active",
+    return {"schemaVersion":ROOM_SCHEMA_VERSION,"knowledge":initial(),"aiControl":initial_control(),"roomId":"demo","name":"首测调查室","runId":uid(),"status":"active",
             "entities":entities,"relations":relations,"members":members,"progress":{},"configurations":configs,
             "commands":{},"flows":{},"waits":{},"artifacts":{},"activeRuleset":None,"assets":{},"chat":chat.initial_state(),"audit":[],"outbox":[],"collectionRevision":1}
 
@@ -53,6 +54,8 @@ def validate(state):
     validate_version(state)
     validate_model("Room", state)
     validate_model("AiControl", state["aiControl"])
+    from .knowledge.models import validate as validate_knowledge
+    validate_knowledge(state['knowledge'])
     from .ai_contracts import validate_artifact
     control=state["aiControl"]
     for key,approval in control["approvals"].items():

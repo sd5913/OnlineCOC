@@ -1,3 +1,4 @@
+import {mountStyle} from './styles.js';
 import {mountChat} from './chat.js';
 import {mountAI} from './room-panel.js';
 import {mountSessionManager} from './session-manager.js';
@@ -5,7 +6,7 @@ import {mountUsage} from './usage.js';
 
 function shell(target){
  const element=document.createElement('div');target.append(element);const root=element.attachShadow({mode:'open'});
- const css=document.createElement('link');css.rel='stylesheet';css.href=new URL('./views.css',import.meta.url);root.append(css);
+ mountStyle(root,new URL('./views.css',import.meta.url));
  return {element,root};
 }
 function mountView(target,client,options={},full=false){
@@ -17,35 +18,36 @@ function mountView(target,client,options={},full=false){
  const usageDialog=document.createElement('dialog');usageDialog.className='usage-dialog';usageDialog.innerHTML='<button class="usage-close">返回对话</button><div class="usage-container"></div>';page.append(usageDialog);
  const usageButton=document.createElement('button');usageButton.className='usage-open';usageButton.textContent='用量统计';$('.view-header').append(usageButton);
  let usagePanel=null;
- let dead=false,paused=false,chat=null,review=null,sessionManager=null,selectedSession=null,identity='';
+ let dead=false,paused=false,chat=null,review=null,sessionManager=null,selectedSession=null,identity='',listKey='';
  async function run(fn){try{$('.view-status').textContent='';await fn();}catch(error){if(!dead)$('.view-status').textContent=error.code||error.message;}}
  function closeReview(){if($('dialog').open)$('dialog').close();review?.destroy();review=null;}
- function closeSessions(){if(management.open)management.close();sessionManager?.destroy();sessionManager=null;}
+ function closeSessions(resume=true){if(management.open)management.close();sessionManager?.destroy();sessionManager=null;if(resume&&!paused&&!dead)chat?.resume().catch(()=>{});}
  async function manageSessions(){
-  ready();if(paused)return;
+  ready();if(paused)return;chat.suspend();
   if(!sessionManager)sessionManager=mountSessionManager($('.session-management'),client,{
-   onOpen:async id=>{await ready().select(id);closeSessions();},
-   onChange:session=>run(async()=>{await ready().refresh();if(session.sessionId===selectedSession)await ready().select(selectedSession);})
+   onOpen:async id=>{closeSessions(false);await ready().resume();await ready().select(id);},
+   onChange:session=>run(()=>ready().applySessionChange(session))
   });
   if(!management.open)management.showModal();
   if(selectedSession)await sessionManager.select(selectedSession);
  }
  function closeUsage(){if(usageDialog.open)usageDialog.close();usagePanel?.destroy();usagePanel=null;}
  async function showUsage(){ready();if(paused)return;usagePanel?.destroy();usagePanel=mountUsage($('.usage-container'),client,{sessionId:selectedSession});if(!usageDialog.open)usageDialog.showModal();}
- function disposePanels(){closeReview();closeSessions();closeUsage();chat?.destroy();chat=null;selectedSession=null;$('.session-list').replaceChildren();$('.session-select').replaceChildren(new Option('选择会话',''));}
+ function disposePanels(){listKey='';closeReview();closeSessions(false);closeUsage();chat?.destroy();chat=null;selectedSession=null;$('.session-list').replaceChildren();$('.session-select').replaceChildren(new Option('选择会话',''));}
  async function openReview(id){
   if(dead||paused||!client.connected||client.view?.role!=='kp')throw new Error('PERMISSION_DENIED');
   if(options.review===false)return;
   if(options.onReview)return options.onReview(id);
   if(!review)review=mountAI(client,{target:$('.view-review'),onReceipt:options.onReceipt});
   if(!$('dialog').open)$('dialog').showModal();
-  if(id)await review.review(id);
+  if(id)await review.review(id);else await review.showBatches();
  }
  function list(items){
+  options.onSessions?.(items);
+  const key=JSON.stringify(items.map(s=>[s.sessionId,s.title]));if(key===listKey)return;listKey=key;
   const selected=$('.session-select').value;
   $('.session-select').replaceChildren(new Option('选择会话',''),...items.map(s=>new Option(s.title,s.sessionId)));
   if(items.some(s=>s.sessionId===selected))$('.session-select').value=selected;
-  options.onSessions?.(items);
  }
  function ready(){if(dead||!client.connected||!chat)throw new Error('DISCONNECTED');return chat;}
  function update(){
@@ -60,10 +62,10 @@ function mountView(target,client,options={},full=false){
    $('.view-status').textContent='';
    chat=mountChat($('.view-chat'),client,{listTarget:full?$('.session-list'):undefined,
     onChange:list,onReview:options.review===false?null:id=>run(()=>openReview(id)),
-    onSelect:session=>{selectedSession=session.sessionId;$('.session-select').value=session.sessionId;options.onSession?.(session);}});
+    onSelect:session=>{selectedSession=session?.sessionId||null;$('.session-select').value=selectedSession||'';options.onSession?.(session);}});
   }
  }
- $('.new-chat').onclick=()=>run(()=>ready().newChat());$('.archived').onclick=()=>run(()=>ready().showArchived());
+ $('.new-chat').onclick=()=>run(()=>ready().newChat());$('.archived').onclick=()=>run(async()=>{$('.archived').textContent=await ready().showArchived()?'返回进行中':'归档会话';});
  $('.session-select').onchange=()=>run(()=>$('.session-select').value?ready().select($('.session-select').value):undefined);
  $('.review-open').onclick=()=>run(()=>openReview());$('.review-close').onclick=closeReview;$('dialog').addEventListener('cancel',closeReview);
  usageButton.onclick=()=>run(showUsage);$('.usage-close').onclick=closeUsage;usageDialog.addEventListener('cancel',closeUsage);

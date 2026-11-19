@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="14" time="6.438" timestamp="2026-11-17T10:32:57.970548+08:00" hostname="LAPTOP-BIFSL64A"><testcase classname="tests.test_sdk" name="test_existing_client_sdk_with_webrtc" time="3.926"><failure message="playwright._impl._errors.Error: BrowserType.launch: Executable doesn't exist at C:\Users\26077\AppData\Local\ms-playwright\chromium_headless_shell-1254\chrome-headless-shell-win64\chrome-headless-shell.exe&#10;╔════════════════════════════════════════════════════════════╗&#10;║ Looks like Playwright was just installed or updated.       ║&#10;║ Please run the following command to download new browsers: ║&#10;║                                                            ║&#10;[+4 more lines; full report in element text]">directory = (&lt;onlinecoc_p2p.directory.Directory object at 0x0000021EFC02C1A0&gt;, 'http://127.0.0.1:55145', 'f2m-si_WYBhdpRY37TL7kh1HeLQnmGpaNOHUrgSE5I0')
+real_upstream = ('http://127.0.0.1:55146', &lt;Popen: returncode: None args: ['D:\\Studies\\Art Programming\\OnlineCOC\\en...&gt;)
+tmp_path = WindowsPath('C:/Users/26077/AppData/Local/Temp/pytest-of-26077/pytest-55/test_existing_client_sdk_with_0')
+
+    async def test_existing_client_sdk_with_webrtc(directory,real_upstream,tmp_path):
+        from playwright.async_api import async_playwright
+        _,url,publisher=directory
+        host=Host({"directory":url,"publisherToken":publisher,"statePath":str(tmp_path/"sdk-host"),
+                   "upstream":real_upstream[0],"settings":{"visibility":"public","approvalRequired":False}})
+        await host.start()
+        shell,runner,entry=await start_local({"directory":url,"statePath":str(tmp_path/"shell")})
+        sdk=Path(__file__).resolve().parents[2]/"client-sdk/client.js"
+        try:
+            async with async_playwright() as p:
+&gt;               browser=await p.chromium.launch(headless=True)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+engineering\network-p2p\tests\test_sdk.py:24: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+engineering\network-p2p\.venv\Lib\site-packages\playwright\async_api\_generated.py:4185: in launch
+    await self._impl_obj.launch(
+engineering\network-p2p\.venv\Lib\site-packages\playwright\_impl\channel_owner.py:387: in finish
+    raise e from None
+engineering\network-p2p\.venv\Lib\site-packages\playwright\_impl\channel_owner.py:352: in finish
+    result = await zone.run_async(lambda: awaitable)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+engineering\network-p2p\.venv\Lib\site-packages\playwright\_impl\utils\zones.py:58: in run_async
+    return await func()
+           ^^^^^^^^^^^^
+engineering\network-p2p\.venv\Lib\site-packages\playwright\_impl\browser_type.py:176: in launch
+    await self._channel.launch(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+awaitable = &lt;Future finished exception=Error("Executable doesn't exist at C:\\Users\\26077\\AppData\\Local\\ms-playwright\\chromiu...right Team                                         ║\n╚════════════════════════════════════════════════════════════╝")&gt;
+mapper = &lt;function BrowserTypeChannel.launch.&lt;locals&gt;.&lt;lambda&gt; at 0x0000021EFC7064B0&gt;
+
+    async def _mapped(awaitable: Awaitable[Any], mapper: Callable[[Any], Any]) -&gt; Any:
+        # Python: the result of a channel call, mapped by the generated channel method.
+&gt;       return mapper(await awaitable)
+                      ^^^^^^^^^^^^^^^
+E       playwright._impl._errors.Error: BrowserType.launch: Executable doesn't exist at C:\Users\26077\AppData\Local\ms-playwright\chromium_headless_shell-1254\chrome-headless-shell-win64\chrome-headless-shell.exe
+E       ╔════════════════════════════════════════════════════════════╗
+E       ║ Looks like Playwright was just installed or updated.       ║
+E       ║ Please run the following command to download new browsers: ║
+E       ║                                                            ║
+E       ║     playwright install                                     ║
+E       ║                                                            ║
+E       ║ &lt;3 Playwright Team                                         ║
+E       ╚════════════════════════════════════════════════════════════╝
+
+engineering\network-p2p\.venv\Lib\site-packages\playwright\_impl\channel_owner.py:398: Error</failure></testcase><testcase classname="tests.test_local_boundary" name="test_session_lock_is_exclusive_and_released" time="0.006" /><testcase classname="tests.test_local_boundary" name="test_local_capability_origin_and_one_use_sandbox" time="0.008" /><testcase classname="" name="test_code_only_join_shortcuts_no_game_connection" time="0.276" /><testcase classname="" name="test_approval_ban_unban_and_permanent_close" time="0.262" /><testcase classname="" name="test_sessions_csrf_recovery_and_other_device" time="0.073" /><testcase classname="" name="test_duplicate_seat_and_revoke_ticket" time="0.205" /><testcase classname="" name="test_persistent_store_lock_backup_and_no_silent_rollback" time="0.039" /><testcase classname="" name="test_resource_projection_and_unlisted_hash_denied" time="0.071" /><testcase classname="" name="test_cross_device_membership_and_offline_shortcut" time="0.223" /><testcase classname="" name="test_room_cannot_be_enumerated_by_changing_legacy_settings" time="0.178" /><testcase classname="" name="test_wrong_origin_and_page_security_headers" time="0.018" /><testcase classname="" name="test_expired_approval_requests_do_not_fill_room_forever" time="0.206" /><testcase classname="" name="test_server_restart_preserves_account_membership_and_bans" time="0.289" /></testsuite></testsuites>
