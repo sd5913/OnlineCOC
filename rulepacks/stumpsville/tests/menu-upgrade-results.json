@@ -1,0 +1,15 @@
+{
+  "checkedAt": "2026-11-19T16:30:22.691292+08:00",
+  "passed": 6,
+  "checks": [
+    "isolated stock-v1 fixture reproduces unsafe raw menu evidence and AI reply before upgrade",
+    "new provider before explicit bind blocks old references, UI menus and prior AI answers",
+    "explicit bind preserves safe live sheet/play, invalidates all old fixed observations without automatically redisclosing any scene",
+    "explicit reveal produces a new safe snapshot; old knowledge handles and history remain unusable",
+    "new observation is byte-identical after restart",
+    "reinstalling the old provider without an explicit rebind cannot reopen old observations"
+  ],
+  "output": "D:\\Studies\\Art Programming\\OnlineCOC\\rulepacks\\stumpsville\\tests\\output\\menu-upgrade-23819c94",
+  "realSaveChanged": false,
+  "realProviderCalls": 0
+}

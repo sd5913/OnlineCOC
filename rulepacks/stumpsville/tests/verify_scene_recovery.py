@@ -56,6 +56,9 @@ def main():
             response = kp.http.post(kp.prefix+'/package/action', json={'id':task['commandId'], 'operation':'scene.autorun', 'args':{'jobId':task['id']}})
             assert response.status_code == 503, response.text
         assert runtime.package.state['autoSceneQueue'][task['id']]['status'] == 'finishing'
+        # An already committed pre-upgrade request must finish, not rerun or vanish.
+        runtime.package.state['autoSceneQueue'][task['id']].pop('menuVersion')
+        runtime.package.save()
         assert '恢复' in p1.action('check', {'attribute':'dex','mode':'normal'}, allow_error=True)['code']
         runtime.package = Package(runtime.package.path)
         assert kp.request('/package/scene-executor', {})['jobs'][0] == task
@@ -77,19 +80,25 @@ def main():
             assert response.status_code == 503, response.text
         committed = p1.state()['character']['numbers']
         assert committed['checks'] == old_checks+1
+        runtime.package.state['autoSceneQueue'][task['id']].pop('menuVersion')
+        runtime.package.state['jobs']['kp:'+task['commandId']]['steps']['scene-act'].pop('result')
+        runtime.package.save()
         runtime.package = Package(runtime.package.path)
         result = finish(task)
         assert result['checks'][0]['passed']
         assert p1.state()['character']['numbers'] == committed
         assert runtime.package.state['sceneState']['cheese1'] == 0
         assert p1.action('scene.action', args, key) == result
-        checks.append('interruption after the host transaction cannot reroll the save, duplicate cheese or lose the finite-stock decrement')
+        checks.append('pre-upgrade committed request with lost local result recovers the original host receipt without reroll, duplicate cheese or lost stock decrement')
 
         # Fill all normal and overflow cells; preflight must leave finite stock alone.
         full = {'location':10}
         full.update({'item'+str(i):6 for i in range(1,21)})
         full.update({'uses'+str(i):0 for i in range(1,21)})
         kp.command('entity.update', {'id':actor,'numbers':full})
+        # Discovery is personal even when another player already knows the stock.
+        _, _, discovery_task = submit('cave-cheese','inspect')
+        finish(discovery_task)
         key, args, task = submit('cave-cheese','take')
         result = finish(task)
         assert result['outcome'] == 'blocked' and result['checks'] == []

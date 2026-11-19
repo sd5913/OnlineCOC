@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="1" failures="0" skipped="0" tests="1" time="1.690" timestamp="2026-11-19T15:47:37.010762+08:00" hostname="LAPTOP-BIFSL64A"><testcase classname="" name="tests.test_player_requests" time="0.000"><error message="collection failure">engineering\.venv\Lib\site-packages\_pytest\python.py:528: in importtestmodule
+    mod = import_path(
+engineering\.venv\Lib\site-packages\_pytest\pathlib.py:640: in import_path
+    importlib.import_module(module_name)
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1398: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1371: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1342: in _find_and_load_unlocked
+    ???
+&lt;frozen importlib._bootstrap&gt;:938: in _load_unlocked
+    ???
+engineering\.venv\Lib\site-packages\_pytest\assertion\rewrite.py:185: in exec_module
+    exec(co, module.__dict__)
+engineering\ai\tests\test_player_requests.py:10: in &lt;module&gt;
+    from test_entrypoints import application, command, committed
+&lt;frozen importlib._bootstrap&gt;:1371: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1342: in _find_and_load_unlocked
+    ???
+&lt;frozen importlib._bootstrap&gt;:938: in _load_unlocked
+    ???
+engineering\.venv\Lib\site-packages\_pytest\assertion\rewrite.py:185: in exec_module
+    exec(co, module.__dict__)
+engineering\ai\tests\test_entrypoints.py:13: in &lt;module&gt;
+    from onlinecoc_ai.coordinator import Coordinator
+E     File "D:\Studies\Art Programming\OnlineCOC\engineering\ai\src\onlinecoc_ai\coordinator.py", line 514
+E       payload['playerRequestReview']={'intentOnly':True,'notice':'The user text is a player business request accepted for drafting only. Verify room facts; generate a concrete proposal or batch for separate manual KP approval. No modification or disclosure was authorized by accepting this request.'}
+E   IndentationError: expected an indented block after 'if' statement on line 513</error></testcase></testsuite></testsuites>

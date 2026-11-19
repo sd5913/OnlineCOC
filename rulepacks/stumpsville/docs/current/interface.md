@@ -4,12 +4,14 @@
 - 文档子类：设计
 - 状态：有效
 - 创建日期：2026-11-10
-- 最后更新：2026-11-18
+- 最后更新：2026-11-19
 - 关联文档：[实现](implementation.md)、[使用](usage.md)、[原始设计计划](../plans/interface-design.md)、[验收](../../tests/README.md)
 
 ## 导航
 
-0.5.0将KP管理与本人PL游玩分离为独立页面。管理台现提供独立房间管理、裁决、地图、控制台、地点、资料、场次页面；KP自己的PL视窗与普通玩家复用同一个桌面和游戏流程。2026-11-16玩家桌面改为左栏角色状态及背包、中栏地图及行动、右栏聊天与AI标签。线索和日志共用左上可拖动折叠浮窗。聊天保留消息气泡、输入区及多个私聊窗口。沿用纸色、墨线、苔绿及运行插画，聊天窗口使用浅蓝灰和青绿区分交谈区域。
+房间页是KP默认入口，集中全局统计、开场、时钟与备份。控制台专注角色与资源，场次页专注回顾。裁决队列仅列时间、来源、概要与动作，点击概要打开详情浮窗；直接执行和选择执行动作均保留，回复区默认折叠；AI信息请求在原队列打开定向揭示表单。页面不展示技术编号和重复使用说明，排查与授权明细按需展开。
+
+0.5.0将KP管理与本人PL游玩分离为独立页面。管理台现提供独立房间管理、裁决、地图、控制台、地点、资料、场次、AI设置页面；KP自己的PL视窗与普通玩家复用同一个桌面和游戏流程。2026-11-16玩家桌面改为左栏角色状态及背包、中栏地图及行动、右栏聊天与AI标签。线索和日志共用左上可拖动折叠浮窗。聊天保留消息气泡、输入区及多个私聊窗口。沿用纸色、墨线、苔绿及运行插画，聊天窗口使用浅蓝灰和青绿区分交谈区域。
 
 ```mermaid
 flowchart TB
@@ -25,7 +27,7 @@ flowchart TB
     LOBBY --> CREATE["创建小鼠"] --> READY["核对装备与准备"]
     LOBBY --> READY
     READY --> SCENE["玩家场景桌面 /play/scene"]
-    KP["KP管理台 /gm/console"] -->|新开独立页面| PL["KP本人PL视窗 ?view=player"]
+    KP["KP管理台 /gm/room"] -->|新开独立页面| PL["KP本人PL视窗 ?view=player"]
     PL --> LOBBY
     PL -->|另开管理页面| KP
     subgraph DESKTOP["玩家同一页面"]
@@ -41,10 +43,10 @@ flowchart TB
         CLUE & LOG -->|点击当前按钮折叠| NOTE
     end
     subgraph CONSOLE["主持独立页面"]
-        KP --> ROOM["房间管理 /gm/room：连接／成员／网页分享"]
+        KP --> ROOM["房间管理 /gm/room：总览／一键开场／连接／备份"]
         KP --> GMMAP["地图 /gm/map：仅玩家角色数量与名单"]
         GMMAP --> LOC
-        KP --> CONTROL["控制台：资源／回合／战斗"]
+        KP --> CONTROL["控制台：角色／资源／战斗"]
         KP --> QUEUE["裁决 /gm/rulings"]
         QUEUE --> MESSAGE["消息队列：未读频道"]
         MESSAGE --> GMCHAT["常驻聊天窗口"]
@@ -76,8 +78,9 @@ flowchart TB
     RESULT --> LOG
     LOG -->|申请复核| QUEUE
     KP --> LOC["地点：私密资料与发布"]
-    KP --> LIB["资料：规则与配置"]
-    KP --> SESSION["场次：备份与回顾"]
+    KP --> LIB["资料：按类型子标签／搜索／详情"]
+    KP --> AISETTINGS
+    KP --> SESSION["场次：回顾"]
     SESSION --> RECAP["公开回顾"]
     SCENE --> RECAP
     PL --> SCENE
@@ -86,11 +89,13 @@ flowchart TB
     AISESSION -->|请求KP说明／待转交／需补充| RULINGS
     AIKP -->|配置候选／运行时批次| RULINGS
     RULINGS -->|转交原AI需求| AIKP
-    RULINGS -->|打开服务设置| AISETTINGS["AI服务与访问策略"]
+    RULINGS -->|打开服务设置| AISETTINGS["独立AI设置 /gm/ai-settings"]
     HOSTWAIT["宿主等待KP／流程需关注"] --> RULINGS
 ```
 
 旧的 `/play/character` 回到常驻背包（窄屏切到角色栏）；`/play/journal` 和 `/play/records` 展开线索、日志浮窗；`/gm/overview` 回到控制台，`/gm/encounters` 进入独立裁决页。KP旧玩家记录入口进入裁决页。登录槽位和权限规则不变。
+
+裁决、资料和AI设置页使用剩余视口高度，长列表内部滚动；窄屏裁决切换队列、AI、聊天。房间总览与连接信息在桌面并排显示。
 
 ## 玩家界面组成
 

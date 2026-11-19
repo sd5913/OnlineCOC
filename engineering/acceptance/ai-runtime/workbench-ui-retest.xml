@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="14" time="90.585" timestamp="2026-11-19T13:03:36.354454+08:00" hostname="LAPTOP-BIFSL64A"><testcase classname="tests.test_workbench_ui" name="test_room_settings_page_saves_permissions_and_denies_player" time="4.656" /><testcase classname="tests.test_workbench_ui" name="test_compact_ruling_modal_retains_risks_and_decides_once" time="5.203" /><testcase classname="tests.test_workbench_ui" name="test_resume_loads_target_in_parallel_without_redundant_access_or_old_session" time="5.026" /><testcase classname="tests.test_session_ui" name="test_markdown_format_reference_security_and_mobile" time="5.903" /><testcase classname="tests.test_session_ui" name="test_embedded_management_settings_drafts_and_identity" time="7.164" /><testcase classname="tests.test_session_ui" name="test_standalone_manager_and_same_origin_frame" time="5.975" /><testcase classname="tests.test_session_ui" name="test_management_lost_response_and_version_conflict" time="5.766" /><testcase classname="tests.test_access_ui" name="test_permissions_archive_delete_batches_and_mobile" time="10.006"><failure message="AssertionError: Locator expected to contain text '尚未允许'&#10;Actual value: PLAYER_AI_DISABLED &#10;Call log:&#10;  - Expect &quot;to_contain_text&quot; locator(&quot;#status&quot;) with timeout 5000ms&#10;  - waiting for locator(&quot;#status&quot;)&#10;    14 × locator resolved to &lt;p id=&quot;status&quot; role=&quot;status&quot;&gt;PLAYER_AI_DISABLED&lt;/p&gt;&#10;       - unexpected value &quot;PLAYER_AI_DISABLED&quot;&#10;&#10;Aria snapshot:&#10;- status: PLAYER_AI_DISABLED">services = ('http://127.0.0.1:64262', {'key': 'D20KbrzvyOT1gBdndIrViWYgyZjAsbMFrC6QNjxpmTQ', 'roomPort': 64261, 'managerPort': 64.../Art Programming/OnlineCOC/engineering/acceptance/ai-runtime/workbench-ui-retest-tmp/test_permissions_archive_delet0'))
+
+    def test_permissions_archive_delete_batches_and_mobile(services):
+        _,entry,_=services;origin=f'http://127.0.0.1:{entry["roomPort"]}'
+        with sync_playwright() as p:
+            browser=p.chromium.launch(channel='msedge',headless=True);page=browser.new_page(viewport={'width':1380,'height':920});errors=[]
+            page.on('pageerror',lambda e:errors.append(str(e)))
+            try:
+                page.goto(origin+'/ai-ui/conversation.html');login(page,'player1')
+&gt;               expect(page.locator('#status')).to_contain_text('尚未允许')
+E               AssertionError: Locator expected to contain text '尚未允许'
+E               Actual value: PLAYER_AI_DISABLED 
+E               Call log:
+E                 - Expect "to_contain_text" locator("#status") with timeout 5000ms
+E                 - waiting for locator("#status")
+E                   14 × locator resolved to &lt;p id="status" role="status"&gt;PLAYER_AI_DISABLED&lt;/p&gt;
+E                      - unexpected value "PLAYER_AI_DISABLED"
+E               
+E               Aria snapshot:
+E               - status: PLAYER_AI_DISABLED
+
+engineering\ai\tests\test_access_ui.py:16: AssertionError</failure></testcase><testcase classname="tests.test_embeds" name="test_package_manifest_covers_public_runtime_dependencies" time="0.018" /><testcase classname="tests.test_embeds" name="test_real_room_page_variants[page]" time="20.353" /><testcase classname="tests.test_embeds" name="test_real_room_page_variants[conversation]" time="4.558" /><testcase classname="tests.test_embeds" name="test_real_room_page_variants[collapsible]" time="6.317" /><testcase classname="tests.test_embeds" name="test_same_origin_iframe_entry_and_csp_scope" time="4.727" /><testcase classname="tests.test_embeds" name="test_headless_tools_and_shared_client_ownership" time="4.291" /></testsuite></testsuites>

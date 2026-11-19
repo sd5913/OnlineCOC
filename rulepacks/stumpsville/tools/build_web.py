@@ -15,7 +15,7 @@ def ai_modules():
     """Compile the declared public component graph, with CSS inside shadow roots."""
     base=ROOT/'engineering/ai/web/components'
     declared=json.loads((base/'pack-manifest.json').read_text(encoding='utf-8'))['runtimeFiles']
-    names=['styles.js','client.js','guard.js','reference-commands.js','reference-editor.js','reference-details.js','markdown.js','reference-input.js','tools.js','choices.js','chat.js','rulings.js','room-panel.js','sessions.js','session-manager.js','usage.js','views.js']
+    names=['styles.js','client.js','guard.js','settings.js','reference-commands.js','reference-editor.js','reference-details.js','markdown.js','reference-input.js','tools.js','choices.js','chat.js','rulings.js','room-panel.js','sessions.js','session-manager.js','usage.js','views.js']
     output='const aiModules={};\n'
     for name in names:
         assert name in declared

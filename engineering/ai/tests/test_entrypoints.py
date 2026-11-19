@@ -149,7 +149,8 @@ def test_manual_revision_invalidates_approval_and_cancel_revokes(application):
     assert app.tasks('kp')['items'][0]['proposalId'] == proposal['proposalId']
     committed(command(app, 'ai.proposal.validate', {'proposalId': proposal['proposalId'], 'revision': 1}))
     args = {'proposalId': proposal['proposalId'], 'proposalRevision': 1,
-        'riskDecisions': {'choice-value': 'limited charges preserve choice', 'gameplay-risk': 'accept bounded gain'}}
+        'explicitHighRiskDigest': proposal['candidateDigest'],
+        'riskDecisions': {'choice-value': 'limited charges preserve choice', 'gameplay-risk': 'accept bounded gain','high-risk':'Explicitly reviewed complete item candidate'}}
     approval = committed(host_command(app, 'ai.proposal.approve', args, 'approve'))
     changed = delta(); changed['configurations'][0]['value']['defaults']['bonus'] = 5
     revised = committed(command(app, 'ai.proposal.revise', {'proposalId': proposal['proposalId'], 'revision': 1, 'changeSet': changed}))
@@ -157,6 +158,7 @@ def test_manual_revision_invalidates_approval_and_cancel_revokes(application):
     assert host_command(app, 'publication.apply', {'approvalId': approval['approvalId']}, 'old-load')['status'] == 'rejected'
     committed(command(app, 'ai.proposal.validate', {'proposalId': proposal['proposalId'], 'revision': 2}))
     args['proposalRevision'] = 2
+    args['explicitHighRiskDigest'] = revised['candidateDigest']
     args['riskDecisions'].pop('gameplay-risk')
     approval = committed(host_command(app, 'ai.proposal.approve', args, 'approve-new'))
     committed(command(app, 'ai.request.cancel', {'requestId': proposal['requestId']}))

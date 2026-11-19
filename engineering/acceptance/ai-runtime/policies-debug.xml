@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="2.462" timestamp="2026-11-19T13:57:52.247478+08:00" hostname="LAPTOP-BIFSL64A"><testcase classname="tests.test_policies" name="test_high_risk_requires_exact_manual_fingerprint_and_retains_diff" time="1.091"><failure message="onlinecoc_ai.errors.AiError: SESSION_STATE_INVALID">application = &lt;onlinecoc_ai.api.Application object at 0x0000027DF4802A50&gt;
+
+    def test_high_risk_requires_exact_manual_fingerprint_and_retains_diff(application):
+&gt;       app=application;access(app)
+                        ^^^^^^^^^^^
+
+engineering\ai\tests\test_policies.py:18: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+engineering\ai\tests\test_access_batches.py:23: in access
+    return committed(command(app,'ai.access.update',{'revision':app.sessions.access('kp')['revision'],
+engineering\ai\tests\test_entrypoints.py:29: in command
+    return app.command(account, {'requestId': identifier or uuid.uuid4().hex,
+engineering\ai\src\onlinecoc_ai\api.py:47: in command
+    with self.host.lock, self.lock, self.repository.transaction():
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\contextlib.py:148: in __exit__
+    next(self.gen)
+engineering\ai\src\onlinecoc_ai\repository.py:69: in transaction
+    self.verify(self.pending)
+engineering\ai\src\onlinecoc_ai\repository.py:82: in verify
+    require(type(access) is dict and not set(access)-{'revision','allowPlayerChat','autoApproveBatches','autoApproveConfigurations','principal'}, 'SESSION_STATE_INVALID')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+condition = False, code = 'SESSION_STATE_INVALID', message = '', path = ''
+
+    def require(condition, code="INPUT_INVALID", message="", path=""):
+        if not condition:
+&gt;           raise AiError(code, message, path)
+E           onlinecoc_ai.errors.AiError: SESSION_STATE_INVALID
+
+engineering\ai\src\onlinecoc_ai\errors.py:15: AiError</failure></testcase></testsuite></testsuites>

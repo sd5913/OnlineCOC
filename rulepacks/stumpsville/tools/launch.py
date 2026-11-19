@@ -236,7 +236,11 @@ def create_app(runtime):
     async def lifespan(app):
         try:
             await asyncio.to_thread(runtime.start)
-            yield
+            # Only public AI component assets use this pool; account API calls
+            # keep their own cookie/CSRF forwarding and authorization.
+            async with httpx.AsyncClient(timeout=10, trust_env=False) as resources:
+                app.state.ai_resources = resources
+                yield
         finally:
             await asyncio.to_thread(runtime.close)
 
@@ -363,11 +367,11 @@ def create_app(runtime):
                 return response({'code': 'NOT_FOUND'}, 404)
             if request.method != 'GET':
                 return response({'code': 'METHOD_NOT_ALLOWED'}, 405)
-            ai_files = json.loads((ROOT/'engineering/ai/web/components/pack-manifest.json').read_text(encoding='utf-8'))['runtimeFiles']
-            if path.startswith('ai-ui/') and path[6:] in ai_files and not path.endswith('.html') and runtime.modules.ai_config:
-                async with httpx.AsyncClient(timeout=10, trust_env=False) as upstream:
-                    result = await upstream.get(runtime.backend + '/' + path)
-                return response(result.content, result.status_code, 'text/css; charset=utf-8' if path.endswith('.css') else 'text/javascript; charset=utf-8')
+            if path.startswith('ai-ui/') and not path.endswith('.html') and runtime.modules.ai_config:
+                ai_files = json.loads((ROOT/'engineering/ai/web/components/pack-manifest.json').read_text(encoding='utf-8'))['runtimeFiles']
+                if path[6:] in ai_files:
+                    result = await request.app.state.ai_resources.get(runtime.backend + '/' + path)
+                    return response(result.content, result.status_code, 'text/css; charset=utf-8' if path.endswith('.css') else 'text/javascript; charset=utf-8')
             if path in STATIC:
                 filename, mime = STATIC[path]
                 return response((PACK / filename).read_bytes(), mime=mime)

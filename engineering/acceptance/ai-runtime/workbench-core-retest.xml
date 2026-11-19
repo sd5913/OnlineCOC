@@ -1,0 +1,1 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="0" skipped="0" tests="1" time="2.211" timestamp="2026-11-19T13:05:07.586415+08:00" hostname="LAPTOP-BIFSL64A"><testcase classname="tests.test_workbench" name="test_task_session_lookup_respects_owner_archive_and_delete" time="1.241" /></testsuite></testsuites>

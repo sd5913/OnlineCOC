@@ -4,7 +4,7 @@
 - 文档子类：工程
 - 状态：有效
 - 创建日期：2026-11-16
-- 最后更新：2026-11-18
+- 最后更新：2026-11-19
 - 关联文档：[嵌入接口](ai-pack-embedding.md)、[数据查询](ai-data-query.md)、[权限与批次](ai-session-access.md)、[包侧写入责任](../../plans/Issues/issue-010-ai-package-mutations.md)
 
 ## 基础错误修正与用户决策
@@ -13,9 +13,11 @@
 
 JSON 解析、非对象输出、缺失／错误字段、非法引用和选项会反馈错误代码与结构路径，要求模型返回完整正确对象。只接受完整 JSON 或唯一完整 JSON 围栏，不从任意解释文字中猜测提取。已生成配置的 A 检查若发现基础 Schema／Lua／引用错误，修订同一提案重检；不生成多份待批配置，不自动忽略 B/C 或风险决定。
 
+系统提示统一列出 plan、clarification、draft、batch 四种顶层格式；仅 draft 使用 changeSet，管理员运行时批次必须使用 actions。修正反馈附 requiredFields／allowedFields／missingFields／unexpectedFields，批次另附实际输出 Schema 与已成功工具名。格式失败后的批次不能改为 plan 或 draft 来绕过修正，返回 MODEL_REPAIR_KIND_CHANGED 后继续使用剩余额度；真实缺失决策仍可返回 clarification。不会将 changeSet.suggestions 自动转换为可执行动作，也不据格式错误宣称工具未开放。
+
 需要决定意图、风格、冲突目标或重大取舍时，模型返回 `clarification` 和简短问题，可附结构化选项；任务进入 `needs_input` 等待用户。兼容旧模型的 plan+choices 也进入 needs_input。未知偏好不能作为格式错误反复重试，已确认方向不能再次追问。
 
-`MODEL_OUTPUT_INVALID` 表示基础输出修正次数耗尽；诊断展开可查看 `MODEL_JSON_INVALID`、`MODEL_FIELDS_INVALID`、`MODEL_CHOICES_INVALID`、`REFERENCE_UNVERIFIED` 或 A 检查代码等具体原因及修正次数。只记录结构路径，不记录原异常文本。空响应、协议错误或输出截断也使用这项修正额度，但耗尽后保留对应 `PROVIDER_*` 原因；认证、连接、权限、基线或任务超时不包装成格式错误。本次没有读取用户截图对应旧任务的原始诊断，因此不能据截图断定那次错误的唯一原因。
+`MODEL_OUTPUT_INVALID` 表示基础输出修正次数耗尽；诊断展开可查看 `MODEL_JSON_INVALID`、`MODEL_FIELDS_INVALID`、`MODEL_CHOICES_INVALID`、`MODEL_REPAIR_KIND_CHANGED`、`REFERENCE_UNVERIFIED` 或 A 检查代码等具体原因及修正次数。只记录结构路径，不记录原异常文本。空响应、协议错误或输出截断也使用这项修正额度，但耗尽后保留对应 `PROVIDER_*` 原因；认证、连接、权限、基线或任务超时不包装成格式错误。本次没有读取用户截图对应旧任务的原始诊断，因此不能据截图断定那次错误的唯一原因。
 
 ## JSON 请求与服务商错误
 
@@ -49,7 +51,14 @@ HTTP 拒绝与模型回答格式错误分开处理：
 
 ## 引用详情与稳定渲染
 
-对话历史和 `mountMarkdown` 的引用标签支持点击／Enter／空格打开二级详情面板；Escape、关闭按钮或点击遮罩关闭并恢复焦点。面板显示授权名称、类型、修订、可见性及数据字段，生命／力量等常见字段有中文名称，其余保留真实字段名；原始数据默认折叠。只构造文本 DOM，不执行数据中的 HTML。编辑器仍保持引用的整块插入、删除行为。
+对话历史和 `mountMarkdown` 的引用标签支持点击／Enter／空格打开二级详情面板；Escape、关闭按钮或点击遮罩关闭并恢复焦点。对象使用字段列表、数组使用分层条目，常见字段显示中文名，深层／长资料提示部分未展开，不再回退为 JSON。只构造文本 DOM，不执行数据中的 HTML。编辑器仍保持引用的整块插入、删除行为。
+
+| 展示层级 | 内容 |
+| --- | --- |
+| 玩家（默认） | 已授权正文、名称、资料类型／观察时间；不展示技术标识、导航映射和原始 JSON 入口；未知字段用保守标签 |
+| 管理员 | 同样的可读排版，加修订／可见性、管理字段和原字段名；“技术详情（原始数据）”默认折叠 |
+
+对话自动按“真实 KP 且管理员会话”选择管理员展示；KP 查看玩家级会话仍使用玩家展示。输入区“查看引用”也按同样规则显示结构化数据。层级仅控制表现，不扩大服务端授权；不能靠字段隐藏补救源数据过度披露。严格 PL 正文由服务端固定排版，旧结构回复经来源复验后只读转换，详见[玩家已知资料](ai-player-knowledge.md#数据排版与角色差异)。
 
 每次打开及对话刷新时，通过 `aiResolve` 重新读取精确 token 的当前授权数据；过期显示“引用已过期”，失权／不可读清除旧详情，不静默跳到新版。只展示服务端投影，PL 不因此获得完整 NPC 属性。详情不缓存数据；身份切换、切换会话、暂停／删除／卸载时清空，乱序请求不得覆盖较新的面板。
 
@@ -67,7 +76,7 @@ await details.refresh();
 details.destroy();
 ```
 
-`container` 默认为 body 的父节点，可传 HTMLElement／ShadowRoot；返回 open(token, anchor?)、close、refresh、destroy。解析回调须返回与 token 相同 kind/id/revision 的授权对象及 value。自定义接入负责及时通知身份变化；不要使用不复验权限的全局数据缓存。资源清单和树桩镇构建图包含 `reference-details.js/css`。
+`container` 默认为 body 的父节点，可传 HTMLElement／ShadowRoot；返回 open(token, anchor?)、close、refresh、destroy。`audience` 可为 `player`（默认）、`administrator` 或返回这两个值的函数；`mountMarkdown` 对应选项只接受字符串。管理员展示需接入方根据真实身份及会话权限决定，不能使用用户传入的 URL 参数。解析回调须返回与 token 相同 kind/id/revision 的授权对象及 value。刷新时展示层级变化会重建详情；自定义接入仍负责及时清理换身份后的内容，不使用不复验权限的全局数据缓存。资源清单和树桩镇构建图包含 `reference-details.js/css`。
 
 ## 结构化选择项
 
@@ -89,7 +98,7 @@ details.destroy();
 
 一组 2—6 项，prompt 最长 200 字符，唯一 id 最长 40、label 最长 60、text 最长 800；拒绝未知字段、空白选项及命令参数。实际定义为模块 `answers.py`；任务接口返回可选 `Task.choices`，来源复验失败或取消后不返回可操作选项。
 
-三种对话视图及本地管理器共用 `mountChat`，直接展示选择卡片。只允许创建者选择当前最新回答的选项；归档、他人会话、旧轮次及暂停状态不可操作。点击把完整 follow-up text 填入输入框，保留已有草稿，可修改后再发送；不会提交请求、批准批次或写游戏状态。正文不重复 A/B/C 文本列表。
+三种对话视图及本地管理器共用 `mountChat`，直接展示选择卡片。只允许创建者选择当前最新回答的选项；归档、他人会话、旧轮次及暂停状态不可操作。普通选项点击后把完整 follow-up text 填入输入框，保留已有草稿，可修改后再发送；不会批准批次或写游戏状态。玩家的 ask_kp 选项直接提交资料披露申请，ask_kp_change 提交独立创作申请，均须用户明确点击并绑定原问题；不授权修改。正文不重复 A/B/C 文本列表。
 
 ## 自定义嵌入
 
@@ -110,8 +119,20 @@ panel.destroy();
 
 ## 验收
 
+2026-11-19 数据显示修复：最终 **134 项去重测试通过**（最终核心／权限 71 项、相关回归 63 项），覆盖结构排版、旧回答复验后转换、撤权、三类会话展示、预览与详情、390 px 窄屏、三种嵌入及 HTTP。最初一项转义断言误把安全的转义子串当作失败，修正断言后全部通过，原始记录保留。[结果与源码摘要](../../../engineering/acceptance/ai-runtime/data-presentation-results.json)、[PL 对话](../../../engineering/acceptance/ai-runtime/data-presentation-chat.png)、[玩家详情](../../../engineering/acceptance/ai-runtime/data-presentation-player.png)、[管理员技术详情](../../../engineering/acceptance/ai-runtime/data-presentation-keeper.png)。使用隔离宿主和确定性服务，未调用真实 API、修改正式存档或重建 Stumpsville 分发包；该批次未覆盖包侧安全投影；后续 Stumpsville ISSUE-001 已补充行动菜单投影，当前状态以包侧集成文档为准。
+
 2026-11-18 服务商兼容修复：**215 项离线测试通过**（核心 66 项、相关回归 149 项），包含严格 PL 的真实 HTTP 适配层模拟、知识查询／读取／回答、400 错误不重试、状态脱敏及 KP／PL 浏览器显示。真实 DeepSeek 共 4 次合成请求：玩家主路径和旧提示词兜底均通过；额外通用探针返回过 1 次无效 JSON，1 次纠正后通过。已确认用量合计 1704 tokens，另一次失败探针的用量未保留，不将其计作零。见[逐项验收](../../../engineering/acceptance/ai-runtime/capability-fix-results.json)与[真实 API 记录](../../../engineering/acceptance/ai-runtime/capability-fix-live.json)。未发送房间数据或修改正式存档；未重新构建 Stumpsville 分发包。
 
 2026-11-16：按测试 ID 去重 86 项模块测试、10 组树桩镇验收通过。覆盖服务端引用／选项约束、权限撤销、三种视图、独立装配、真实引用解析、草稿保留、无自动提交、CSP 样式及两名 WebRTC 玩家。均为隔离存档／离线服务；[结果和源码摘要](../../../engineering/acceptance/ai-runtime/ai-responses-results.json)，[界面截图](../../../engineering/acceptance/ai-runtime/answer-choices.png)。
 
 同日引用详情补验：65 项去重模块测试、11 组树桩镇验收通过，覆盖精确修订、失权清空、异步乱序、键盘／移动端、轮询及状态更新无标签闪回、先构造后插入节点、三种嵌入和打包网页双玩家。见[本轮结果及源码摘要](../../../engineering/acceptance/ai-runtime/reference-details-results.json)、[详情面板截图](../../../engineering/acceptance/ai-runtime/reference-details.png)。仍为隔离存档与离线模型，生成篇幅是提示约束，未宣称真实模型稳定达标。
+
+
+2026-11-19：管理员提示消费包作者 gameTerms，区分复活中的生命值、失能／死亡、归档及场景副作用；术语材料不是权限或执行证据。已明确意图不反复确认；真正语义分歧才用简短选项提问。PL 的 ask_kp 由服务端生成中性选项，用户点击后提交独立知识申请；模型不能选择未知资料或自行披露，完成状态来自真实宿主观察回执。
+
+通用 mountChoices 仍只通知 onSelect；可用 hintText 自定义说明。玩家聊天对服务端 ask_kp 选项明确说明“点击即提交申请”，其他选项继续只填入输入框；已有申请禁用重复选项。
+
+游戏术语只在 gameTerms 注入一次，不在 sources 重复；玩家回答含 ask_kp 时不再另外重复展示同名申请按钮。
+
+
+PL strict-known 增加固定 `next:ask_kp_change` 选项，不接受模型自由正文。查询空结果使用“暂未获得与问题匹配的本人已知资料”，不推断无权限；本人装备按已授权字段格式化，不输出 raw JSON。错误与 UI 提示见[已知查询](ai-player-knowledge.md#查询未命中与服务阻断)，申请流程见[会话权限](ai-session-access.md#玩家创作与配置申请)。

@@ -33,11 +33,17 @@ class Application:
         self.batches = Batches(self)
         from .rulings import Rulings
         self.rulings = Rulings(self)
+        from .knowledge_requests import KnowledgeRequests
+        self.knowledge_requests = KnowledgeRequests(self)
+        from .player_requests import PlayerRequests
+        self.player_requests = PlayerRequests(self)
+        from .access import policy
+        self.host.ai_room_read_authorizer = lambda account: member(self.host.state(),account)['role']=='kp' and policy(self.repository)['allowAdminRoomRead']
 
     def command(self, account, envelope):
         if type(envelope) is dict and envelope.get('op')=='ai.session.submit' and self.rulings.is_confirmation(str(envelope.get('args',{}).get('text',''))):
             return self._command(account,envelope)
-        if type(envelope) is dict and envelope.get('op') in ('ai.session.create', 'ai.session.update', 'ai.session.submit', 'ai.session.delete', 'ai.request.create', 'ai.access.update'):
+        if type(envelope) is dict and envelope.get('op') in ('ai.session.create', 'ai.session.update', 'ai.session.submit', 'ai.session.delete', 'ai.request.create', 'ai.access.update', 'ai.knowledge.request', 'ai.player.request'):
             # One durable commit for mutation + idempotency receipt. Lock order
             # stays host -> application -> repository, shared with context reads.
             with self.host.lock, self.lock, self.repository.transaction():
@@ -79,7 +85,7 @@ class Application:
         with self.host.lock:role = member(self.host.state(), account)['role']
         value = self.repository.state()['commands'].get('api:' + account + ':' + identifier)
         receipt = copy.deepcopy(value['receipt']) if value else {'requestId': identifier, 'status': 'unknown'}
-        if value and role != 'kp' and value.get('op') not in ('ai.request.create', 'ai.request.cancel', 'ai.session.create', 'ai.session.update', 'ai.session.submit', 'ai.session.delete'):receipt.pop('result', None)
+        if value and role != 'kp' and value.get('op') not in ('ai.request.create', 'ai.request.cancel', 'ai.session.create', 'ai.session.update', 'ai.session.submit', 'ai.session.delete', 'ai.knowledge.request', 'ai.player.request'):receipt.pop('result', None)
         result = receipt.get('result')
         if isinstance(result, dict):
             try:
@@ -95,7 +101,11 @@ class Application:
                 receipt['resultUnavailable'] = True
         return receipt
 
-    def _execute(self, account, identifier, op, args, *, session_id=None):
+    def _execute(self, account, identifier, op, args, *, session_id=None, dispatch=True):
+        if op=='ai.player.request':return self.player_requests.create(account,identifier,args)
+        if op=='ai.knowledge.request':return self.knowledge_requests.create(account,args)
+        if op=='ai.knowledge.reconcile':
+            with self.host.lock,self.rulings.lock:return self.knowledge_requests.reconcile(account,args)
         if op=='ai.ruling.decide':return self.rulings.decide(account,args)
         if op.startswith('ai.batch.'):
             return self.batches.execute(account, identifier, op, args)
@@ -154,8 +164,12 @@ class Application:
                 data['requests'][rid] = request
                 return {'requestId': rid, **({'sessionId': session_id} if session else {})}
             result = self.repository.update(save)
+            if not dispatch:return result
             player_session = session_id and self.repository.state()['settings']['sessions'][session_id].get('accessLevel') == 'player'
             if player_session and args['text'].strip()=='请 KP 说明本次问题中允许我获知的信息。':
+                ids=self.repository.state()['settings']['sessions'][session_id]['requestIds']
+                target=ids[-2] if len(ids)>1 else result['requestId']
+                self.knowledge_requests.create(account,{'sessionId':session_id,'requestId':target})
                 return {**result,'awaitingKnowledge':True}
             if role != 'kp' or player_session:
                 principal = account if role == 'kp' else policy(self.repository)['principal']
@@ -164,7 +178,9 @@ class Application:
                     dispatched = self._execute(principal, 'player-dispatch:' + rid, 'ai.request.dispatch', {'requestId': result['requestId']})
                     result['taskId'] = dispatched['taskId']
                 except Exception as exc:
-                    result['dispatchError'] = getattr(exc, 'code', 'RESULT_UNKNOWN')
+                    from .diagnostics import error_code
+                    result['dispatchError'] = error_code(exc)
+                    self.repository.update(lambda data:data['settings'].setdefault('requestErrors',{}).update({rid:result['dispatchError']}))
             return result
         if op == 'ai.request.cancel':
             state = self.repository.state();request = state['requests'].get(args['requestId'])
@@ -196,6 +212,7 @@ class Application:
             def save(data):
                 data['requests'][request['requestId']]['status'] = 'queued'
                 data['settings'].setdefault('dispatch', {})[request['requestId']] = task['taskId']
+                data['settings'].get('requestErrors',{}).pop(request['requestId'],None)
             self.repository.update(save)
             return {'requestId': request['requestId'], 'taskId': task['taskId']}
         if op == 'ai.draft.create':return self.proposals.create(account, args['text'], args['changeSet'])
@@ -232,16 +249,28 @@ class Application:
         from .access import can_use
         can_use(self.host, self.repository, account)
         sessions = {rid:s for s in state['settings'].get('sessions', {}).values() for rid in s['requestIds']}
-        for request in state['requests'].values():
+        dispatched = set(state['settings'].get('dispatch', {}).values())
+        proposals = {r['revisions'][str(r['currentRevision'])]['requestId']:r['revisions'][str(r['currentRevision'])]
+                     for r in state['proposals'].values()}
+        requests = (state['requests'][rid] for rid in request_ids if rid in state['requests']) if request_ids is not None else state['requests'].values()
+        for request in requests:
             session = sessions.get(request['requestId'])
             if session and (session.get('deleted') or not kp and session.get('accessLevel') != 'player'):continue
             if request_ids is not None and request['requestId'] not in request_ids:continue
-            if request['requestId'] in state['settings'].get('dispatch', {}).values():continue
+            if request['requestId'] in dispatched:continue
             if not kp and request['initiator'] != account:continue
             task = state['tasks'].get(state['settings'].get('dispatch', {}).get(request['requestId'], request['requestId']))
-            proposal = next((r['revisions'][str(r['currentRevision'])] for r in state['proposals'].values()
-                if r['revisions'][str(r['currentRevision'])]['requestId'] == (task['requestId'] if task else request['requestId'])), None)
-            item = {'requestId': request['requestId'], 'status': state['requests'][task['requestId']]['status'] if task else request['status'], 'createdAt': request['createdAt']}
+            proposal = proposals.get(task['requestId'] if task else request['requestId'])
+            item = {'requestId': request['requestId'], 'sessionId':session['sessionId'] if session else None,
+                    'status': state['requests'][task['requestId']]['status'] if task else request['status'], 'createdAt': request['createdAt']}
+            dispatch_error=state['settings'].get('requestErrors',{}).get(request['requestId']) if request['status']!='cancelled' else None
+            if dispatch_error:item.update(error=dispatch_error,status='blocked')
+            disclosure=next((r for r in state['settings'].get('knowledgeRequests',{}).values() if r['requestId']==request['requestId']),None)
+            if disclosure:item['knowledgeRequest']=self.knowledge_requests.public(disclosure)
+            creative=next((r for r in state['settings'].get('playerRequests',{}).values() if r['requestId']==request['requestId']),None)
+            if creative:
+                item['playerRequest']=self.player_requests.public(creative)
+                if not task:item['status']='request_'+item['playerRequest']['status']
             batch=state['settings'].get('batches',{}).get(task.get('batchId')) if task else None
             if batch:
                 item['ruling']={k:batch[k] for k in ('batchId','status','digest')}
@@ -250,6 +279,7 @@ class Application:
             player_reply = not kp and session and session['owner'] == account and session.get('accessLevel') == 'player'
             if kp or player_reply:
                 if player_reply and task and not task.get('contextRef'):
+                    if task.get('error'):item['error']=task['error']
                     results.append(item);continue
                 if task and task.get('contextRef'):
                     context = state['contexts'].get(task['contextRef'])
@@ -260,8 +290,9 @@ class Application:
                             (strict or member(room, principal)['role'] == 'kp') and context['authorizationEpoch'] == room['members'][principal]['authorizationEpoch'], 'PERMISSION_DENIED')
                         if player_reply:require(strict and context['facts'].get('sessionAccess', {}).get('owner') == account and context['facts']['sessionAccess']['level'] == 'player', 'PERMISSION_DENIED')
                         self.host.validate_ai_sources(room, principal, context)
-                    except Exception:
-                        results.append({**item, 'status': item['status'] if item['status'] in ('published','completed','rejected','partial','unknown') else 'stale'})
+                    except Exception as exc:
+                        from .diagnostics import error_code
+                        results.append({**item,'error':error_code(exc), 'status': item['status'] if item['status'] in ('published','completed','rejected','partial','unknown') else 'stale'})
                         continue
                 if request['sourceKind'] == 'chat':
                     matches = [(cid, m) for cid, messages in room['chat']['messages'].items() for m in messages if m['messageId'] == request['sourceId']]
@@ -270,12 +301,16 @@ class Application:
                     if not chat.can_read(room, account, room['chat']['channels'][cid]) or message['deleted'] or str(message['revision']) != str(request['sourceRevision']):continue
                 if proposal and kp:
                     try:self.proposals.get(task['account'] if task else account, proposal['proposalId'])
-                    except Exception:
-                        results.append({**item, 'status': item['status'] if item['status'] in ('published','completed','rejected','partial','unknown') else 'stale'})
+                    except Exception as exc:
+                        from .diagnostics import error_code
+                        results.append({**item,'error':error_code(exc), 'status': item['status'] if item['status'] in ('published','completed','rejected','partial','unknown') else 'stale'})
                         continue
                 item.update(text=request['text'], initiator=request['initiator'], taskId=task['taskId'] if task else None,
-                    proposalId=proposal['proposalId'] if proposal and kp else None, error=task['error'] if task else None,
+                    proposalId=proposal['proposalId'] if proposal and kp else None, error=task['error'] if task else dispatch_error,
                     response=task.get('text') if task else proposal['summary'] if proposal and kp else None)
+                if task and task.get('contextRef') and context and context['facts'].get('strictPlayer'):
+                    from .known_answers import format_legacy
+                    item['response'] = format_legacy(item.get('response'))
                 if kp and task and task.get('diagnostics'):item['diagnostics'] = copy.deepcopy(task['diagnostics'])
                 if kp and task and task.get('batchId'):item['batchId'] = task['batchId']
                 if task and task.get('choices') and item['status'] in ('review_ready','needs_input'):

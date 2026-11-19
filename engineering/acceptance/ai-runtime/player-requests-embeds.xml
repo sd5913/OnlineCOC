@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="3" skipped="0" tests="15" time="112.233" timestamp="2026-11-19T15:56:26.940928+08:00" hostname="LAPTOP-BIFSL64A"><testcase classname="tests.test_embeds" name="test_package_manifest_covers_public_runtime_dependencies" time="0.018" /><testcase classname="tests.test_embeds" name="test_real_room_page_variants[page]" time="29.393" /><testcase classname="tests.test_embeds" name="test_real_room_page_variants[conversation]" time="11.364"><failure message="AssertionError: Locator expected to contain text '等待 KP 处理'&#10;Actual value: 将新建技能初值改为 15，已有技能保持原值。检查未通过向 KP 申请披露错误：房间尚未允许向 AI 外发本人已知资料，请 KP 检查服务设置（EXTERNAL_SCOPE_DISABLED）提交创作／配置申请取消 &#10;Call log:&#10;  - Expect &quot;to_contain_text&quot; locator(&quot;#history&quot;) with timeout 5000ms&#10;  - waiting for locator(&quot;#history&quot;)&#10;    - locator resolved to &lt;div role=&quot;log&quot; id=&quot;history&quot; class=&quot;messages&quot; aria-label=&quot;对话记录&quot;&gt;…&lt;/div&gt;&#10;[+13 more lines; full report in element text]">services = ('http://127.0.0.1:55617', {'key': 'ty_iXVUHTqDQSZJkfgKfhvrfvlppkUk0tPZ2Dav0DHQ', 'roomPort': 55616, 'managerPort': 55...t Programming/OnlineCOC/engineering/acceptance/ai-runtime/player-requests-embeds-tmp/test_real_room_page_variants_c0'))
+variant = 'conversation'
+
+    @pytest.mark.parametrize('variant',['page','conversation','collapsible'])
+    def test_real_room_page_variants(services,variant):
+        _,entry,_=services;origin=f'http://127.0.0.1:{entry["roomPort"]}'
+        allow_players(origin)
+        with sync_playwright() as p:
+            browser=p.chromium.launch(channel='msedge',headless=True);page=browser.new_page(viewport={'width':1360,'height':940});errors=[];queries=[]
+            page.on('pageerror',lambda error:errors.append(str(error)))
+            page.on('request',lambda request:queries.append(request.url) if '/api/v1/ai/sessions' in request.url else None)
+            try:
+                response=page.goto(origin+'/ai-ui/'+variant+'.html')
+                assert "frame-ancestors 'self'" in response.headers['content-security-policy']
+                login(page,'kp' if variant=='page' else 'player1')
+                if variant=='collapsible':
+                    expect(page.locator('.collapse-toggle')).to_have_attribute('aria-expanded','false')
+                    assert page.locator('.view-chat').count()==0 and not queries
+                    page.locator('.collapse-toggle').click()
+                expect(page.locator('#text')).to_be_visible()
+                if variant=='page':expect(page.locator('.view-sidebar')).to_be_visible()
+                else:expect(page.locator('.session-select')).to_be_visible()
+                if variant=='page':
+                    page.locator('.review-open').click();page.locator('[data-tab=settings]').click();page.get_by_text('服务与外发范围',exact=True).click()
+                    expect(page.locator('#ai-save-settings')).to_be_enabled()
+                    page.locator('#ai-enabled').check();page.locator('#ai-profile').select_option('deepseek-main');page.locator('#ai-public').check();page.locator('#ai-save-settings').click()
+                    expect(page.locator('#ai-result')).to_have_text('设置已保存');page.locator('.review-close').click()
+                else:expect(page.locator('.review-open')).to_be_hidden()
+                page.locator('.new-chat').click();expect(page.locator('#status')).to_have_text('新会话已创建')
+                page.locator('#text').fill('将新建技能初值改为 15，已有技能保持原值。')
+                if variant=='collapsible':
+                    page.locator('.collapse-toggle').click();expect(page.locator('.collapse-body')).to_be_hidden()
+                    page.screenshot(path=str(OUTPUT/'embed-collapsed.png'),full_page=True)
+                    count=len(queries);page.wait_for_timeout(1600);assert len(queries)==count
+                    page.locator('.collapse-toggle').click();expect(page.locator('#text')).to_contain_text('已有技能保持原值')
+                page.locator('#send').click()
+                if variant=='page':
+                    button=page.get_by_role('button',name='查看配置裁决',exact=True);expect(button).to_be_enabled(timeout=40000);button.click()
+                    expect(page.get_by_role('button',name='批准并执行',exact=True)).to_be_enabled()
+                    for field in page.locator('.batch-card textarea').all():field.fill('验收接受新建技能收益，已有技能保持原值。')
+                    page.get_by_role('button',name='批准并执行',exact=True).click()
+                    expect(page.locator('.batch-card')).to_contain_text('已执行',timeout=40000);page.locator('.review-close').click()
+                else:
+&gt;                   expect(page.locator('#history')).to_contain_text('等待 KP 处理')
+E                   AssertionError: Locator expected to contain text '等待 KP 处理'
+E                   Actual value: 将新建技能初值改为 15，已有技能保持原值。检查未通过向 KP 申请披露错误：房间尚未允许向 AI 外发本人已知资料，请 KP 检查服务设置（EXTERNAL_SCOPE_DISABLED）提交创作／配置申请取消 
+E                   Call log:
+E                     - Expect "to_contain_text" locator("#history") with timeout 5000ms
+E                     - waiting for locator("#history")
+E                       - locator resolved to &lt;div role="log" id="history" class="messages" aria-label="对话记录"&gt;…&lt;/div&gt;
+E                       - unexpected value "✳从一个想法开始引用资料、梳理线索，或准备下一步方案。整理已知线索只使用本人已经获知的资料查找一份资料输入 /knowledge 选择引用向 KP 请求说明提交问题，由 KP 决定揭示范围"
+E                       13 × locator resolved to &lt;div role="log" id="history" class="messages" aria-label="对话记录"&gt;…&lt;/div&gt;
+E                          - unexpected value "将新建技能初值改为 15，已有技能保持原值。检查未通过向 KP 申请披露错误：房间尚未允许向 AI 外发本人已知资料，请 KP 检查服务设置（EXTERNAL_SCOPE_DISABLED）提交创作／配置申请取消"
+E                   
+E                   Aria snapshot:
+E                   - log "对话记录":
+E                     - article: 将新建技能初值改为 15，已有技能保持原值。
+E                     - article:
+E                       - text: AI 检查未通过
+E                       - button "向 KP 申请披露"
+E                       - paragraph: 错误：房间尚未允许向 AI 外发本人已知资料，请 KP 检查服务设置（EXTERNAL_SCOPE_DISABLED）
+E                       - button "提交创作／配置申请"
+E                       - button "取消"
+
+engineering\ai\tests\test_embeds.py:70: AssertionError</failure></testcase><testcase classname="tests.test_embeds" name="test_real_room_page_variants[collapsible]" time="12.588"><failure message="AssertionError: Locator expected to contain text '等待 KP 处理'&#10;Actual value: 将新建技能初值改为 15，已有技能保持原值。检查未通过向 KP 申请披露错误：房间尚未允许向 AI 外发本人已知资料，请 KP 检查服务设置（EXTERNAL_SCOPE_DISABLED）提交创作／配置申请取消 &#10;Call log:&#10;  - Expect &quot;to_contain_text&quot; locator(&quot;#history&quot;) with timeout 5000ms&#10;  - waiting for locator(&quot;#history&quot;)&#10;    - locator resolved to &lt;div role=&quot;log&quot; id=&quot;history&quot; class=&quot;messages&quot; aria-label=&quot;对话记录&quot;&gt;…&lt;/div&gt;&#10;[+13 more lines; full report in element text]">services = ('http://127.0.0.1:55710', {'key': 'VI7yeR83O5rX7IbklerPt6M6uJUJYv7Pic4qq43qrM4', 'roomPort': 55709, 'managerPort': 55...t Programming/OnlineCOC/engineering/acceptance/ai-runtime/player-requests-embeds-tmp/test_real_room_page_variants_c1'))
+variant = 'collapsible'
+
+    @pytest.mark.parametrize('variant',['page','conversation','collapsible'])
+    def test_real_room_page_variants(services,variant):
+        _,entry,_=services;origin=f'http://127.0.0.1:{entry["roomPort"]}'
+        allow_players(origin)
+        with sync_playwright() as p:
+            browser=p.chromium.launch(channel='msedge',headless=True);page=browser.new_page(viewport={'width':1360,'height':940});errors=[];queries=[]
+            page.on('pageerror',lambda error:errors.append(str(error)))
+            page.on('request',lambda request:queries.append(request.url) if '/api/v1/ai/sessions' in request.url else None)
+            try:
+                response=page.goto(origin+'/ai-ui/'+variant+'.html')
+                assert "frame-ancestors 'self'" in response.headers['content-security-policy']
+                login(page,'kp' if variant=='page' else 'player1')
+                if variant=='collapsible':
+                    expect(page.locator('.collapse-toggle')).to_have_attribute('aria-expanded','false')
+                    assert page.locator('.view-chat').count()==0 and not queries
+                    page.locator('.collapse-toggle').click()
+                expect(page.locator('#text')).to_be_visible()
+                if variant=='page':expect(page.locator('.view-sidebar')).to_be_visible()
+                else:expect(page.locator('.session-select')).to_be_visible()
+                if variant=='page':
+                    page.locator('.review-open').click();page.locator('[data-tab=settings]').click();page.get_by_text('服务与外发范围',exact=True).click()
+                    expect(page.locator('#ai-save-settings')).to_be_enabled()
+                    page.locator('#ai-enabled').check();page.locator('#ai-profile').select_option('deepseek-main');page.locator('#ai-public').check();page.locator('#ai-save-settings').click()
+                    expect(page.locator('#ai-result')).to_have_text('设置已保存');page.locator('.review-close').click()
+                else:expect(page.locator('.review-open')).to_be_hidden()
+                page.locator('.new-chat').click();expect(page.locator('#status')).to_have_text('新会话已创建')
+                page.locator('#text').fill('将新建技能初值改为 15，已有技能保持原值。')
+                if variant=='collapsible':
+                    page.locator('.collapse-toggle').click();expect(page.locator('.collapse-body')).to_be_hidden()
+                    page.screenshot(path=str(OUTPUT/'embed-collapsed.png'),full_page=True)
+                    count=len(queries);page.wait_for_timeout(1600);assert len(queries)==count
+                    page.locator('.collapse-toggle').click();expect(page.locator('#text')).to_contain_text('已有技能保持原值')
+                page.locator('#send').click()
+                if variant=='page':
+                    button=page.get_by_role('button',name='查看配置裁决',exact=True);expect(button).to_be_enabled(timeout=40000);button.click()
+                    expect(page.get_by_role('button',name='批准并执行',exact=True)).to_be_enabled()
+                    for field in page.locator('.batch-card textarea').all():field.fill('验收接受新建技能收益，已有技能保持原值。')
+                    page.get_by_role('button',name='批准并执行',exact=True).click()
+                    expect(page.locator('.batch-card')).to_contain_text('已执行',timeout=40000);page.locator('.review-close').click()
+                else:
+&gt;                   expect(page.locator('#history')).to_contain_text('等待 KP 处理')
+E                   AssertionError: Locator expected to contain text '等待 KP 处理'
+E                   Actual value: 将新建技能初值改为 15，已有技能保持原值。检查未通过向 KP 申请披露错误：房间尚未允许向 AI 外发本人已知资料，请 KP 检查服务设置（EXTERNAL_SCOPE_DISABLED）提交创作／配置申请取消 
+E                   Call log:
+E                     - Expect "to_contain_text" locator("#history") with timeout 5000ms
+E                     - waiting for locator("#history")
+E                       - locator resolved to &lt;div role="log" id="history" class="messages" aria-label="对话记录"&gt;…&lt;/div&gt;
+E                       - unexpected value "✳从一个想法开始引用资料、梳理线索，或准备下一步方案。整理已知线索只使用本人已经获知的资料查找一份资料输入 /knowledge 选择引用向 KP 请求说明提交问题，由 KP 决定揭示范围"
+E                       13 × locator resolved to &lt;div role="log" id="history" class="messages" aria-label="对话记录"&gt;…&lt;/div&gt;
+E                          - unexpected value "将新建技能初值改为 15，已有技能保持原值。检查未通过向 KP 申请披露错误：房间尚未允许向 AI 外发本人已知资料，请 KP 检查服务设置（EXTERNAL_SCOPE_DISABLED）提交创作／配置申请取消"
+E                   
+E                   Aria snapshot:
+E                   - log "对话记录":
+E                     - article: 将新建技能初值改为 15，已有技能保持原值。
+E                     - article:
+E                       - text: AI 检查未通过
+E                       - button "向 KP 申请披露"
+E                       - paragraph: 错误：房间尚未允许向 AI 外发本人已知资料，请 KP 检查服务设置（EXTERNAL_SCOPE_DISABLED）
+E                       - button "提交创作／配置申请"
+E                       - button "取消"
+
+engineering\ai\tests\test_embeds.py:70: AssertionError</failure></testcase><testcase classname="tests.test_embeds" name="test_same_origin_iframe_entry_and_csp_scope" time="6.127" /><testcase classname="tests.test_embeds" name="test_headless_tools_and_shared_client_ownership" time="5.780"><failure message="AssertionError: assert {'created': '...blocked', ...} == {'created': '...eceived', ...}&#10;  &#10;  Omitting 7 identical items, use -vv to show&#10;  Differing items:&#10;  {'status': 'blocked'} != {'status': 'received'}&#10;  Use -v to get more diff">services = ('http://127.0.0.1:55804', {'key': 'CCBKTm0EAJ1gfTI1lGiB_2LnyX2VvD-6nWsFjlfzkVI', 'roomPort': 55803, 'managerPort': 55...t Programming/OnlineCOC/engineering/acceptance/ai-runtime/player-requests-embeds-tmp/test_headless_tools_and_shared0'))
+
+    def test_headless_tools_and_shared_client_ownership(services):
+        _,entry,_=services;origin=f'http://127.0.0.1:{entry["roomPort"]}'
+        allow_players(origin)
+        with sync_playwright() as p:
+            browser=p.chromium.launch(channel='msedge',headless=True);page=browser.new_page()
+            try:
+                page.goto(origin+'/ai-ui/conversation.html')
+                result=page.evaluate("""async()=&gt;{
+                  const api=await import('/ai-ui/pack.js');if('mountProviders' in api)throw new Error('ADMIN_EXPORT_LEAK');const client=new api.AiClient();await client.login('player1','test-password');
+                  const tools=api.createAITools(client);const dataPage=await tools.data.search({types:['knowledge']});if(!dataPage.items.length)throw new Error('DATA_QUERY_EMPTY');await tools.data.read({refs:[dataPage.items[0].ref]});const created=await tools.sessions.create('开发者自行装配','tool-create');
+                  const replay=await tools.sessions.create('开发者自行装配','tool-create');
+                  const selected=(await tools.references.search('knowledge','')).items[0];
+                  const sent=await tools.sessions.submit(created.result.sessionId,'参考 '+tools.references.token(selected),'tool-submit');
+                  const detail=await tools.sessions.get(created.result.sessionId);
+                  const denied=await tools.requests.dispatch(sent.result.requestId);
+                  const one=document.createElement('div'),two=document.createElement('div');one.id='one';two.id='two';one.style.height=two.style.height='600px';document.body.append(one,two);
+                  const view=api.mountAIConversation(one,client,{review:false}),fold=api.mountAICollapsible(two,client,{open:true});
+                  view.setDraft('第一份草稿');fold.setDraft('第二份草稿');view.destroy();tools.destroy();
+                  window.embeddedClient=client;window.embeddedFold=fold;
+                  return {created:created.status,replay:replay.result.sessionId===created.result.sessionId,submitted:sent.status,status:detail.items[0].status,
+                    allowedCommands:api.referenceCommands(client.view.role).map(x=&gt;x.kind),denied:denied.status,connected:client.connected,
+                    contracts:!!(await client.aiContracts()).operations['ai.session.submit']};
+                }""")
+&gt;               assert result=={'created':'committed','replay':True,'submitted':'committed','status':'received','allowedCommands':['knowledge'],'denied':'rejected','connected':True,'contracts':True}
+E               AssertionError: assert {'created': '...blocked', ...} == {'created': '...eceived', ...}
+E                 
+E                 Omitting 7 identical items, use -vv to show
+E                 Differing items:
+E                 {'status': 'blocked'} != {'status': 'received'}
+E                 Use -v to get more diff
+
+engineering\ai\tests\test_embeds.py:124: AssertionError</failure></testcase><testcase classname="tests.test_known_ui" name="test_known_snapshot_completion_atomic_chip_and_revoked_inspector" time="5.440" /><testcase classname="tests.test_known_ui" name="test_data_views_separate_player_and_administrator_and_avoid_raw_fallback" time="5.535" /><testcase classname="tests.test_known_ui" name="test_chat_evidence_and_preview_use_session_audience[kp-administrator]" time="5.374" /><testcase classname="tests.test_known_ui" name="test_chat_evidence_and_preview_use_session_audience[kp-player]" time="5.237" /><testcase classname="tests.test_known_ui" name="test_chat_evidence_and_preview_use_session_audience[pl-player]" time="5.314" /><testcase classname="tests.test_workbench" name="test_task_session_lookup_respects_owner_archive_and_delete" time="1.423" /><testcase classname="tests.test_workbench_ui" name="test_room_settings_page_saves_permissions_and_denies_player" time="5.830" /><testcase classname="tests.test_workbench_ui" name="test_compact_ruling_modal_retains_risks_and_decides_once" time="5.453" /><testcase classname="tests.test_workbench_ui" name="test_resume_loads_target_in_parallel_without_redundant_access_or_old_session" time="4.883" /></testsuite></testsuites>

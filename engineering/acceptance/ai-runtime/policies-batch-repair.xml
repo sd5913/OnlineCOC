@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="3" skipped="0" tests="3" time="5.391" timestamp="2026-11-19T15:02:45.046523+08:00" hostname="LAPTOP-BIFSL64A"><testcase classname="tests.test_policies" name="test_malformed_batch_gets_exact_schema_and_cannot_escape_to_plan[correct-after-plan]" time="1.300"><failure message="AssertionError: {'taskId': 'b43ab2cc10ef494e9392ee53248f99d6', 'requestId': 'b43ab2cc10ef494e9392ee53248f99d6', 'account': 'kp', 'profile': {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...}, ...}&#10;assert ('failed' == 'review_ready'&#10;  &#10;  - review_ready&#10;  + failed)">application = &lt;onlinecoc_ai.api.Application object at 0x0000017D9D7BABA0&gt;
+repair = 'correct-after-plan'
+
+    @pytest.mark.parametrize('repair', ['correct-after-plan','clarification','exhausted'])
+    def test_malformed_batch_gets_exact_schema_and_cannot_escape_to_plan(application,repair):
+        import json
+        app=application;enable(app.host,public=True,private=True,kp=True)
+        for profile in app.coordinator.profiles.values():profile['limits']['maxRepairAttempts']=5
+        original=app.host.state()['entities']['actor-one']['name']
+        bad={'kind':'batch','text':'变更待审核','changeSet':{'schemaVersion':1,'configurations':[],'sources':{},'data':{},'suggestions':[{'rule':'action.invoke','input':{},'reason':'proposed'}]}}
+        action={'target':'host','op':'entity.patch','args':{'id':'actor-one','name':'修正后等待审核'}}
+        async def callback(count,messages,tools):
+            if count==1:return tool_call('room_manage_catalog',{'operations':['entity.patch']})
+            if count==2:return completion(bad)
+            feedback=json.loads(messages[-1]['content'])
+            assert not app.batches.list('kp')['items']
+            assert feedback['expectedKind']=='batch' and feedback['outputSchema']['required']==['kind','text','actions']
+            assert feedback['completedTools']==['room_manage_catalog']
+            if count==3:
+                assert feedback['missingFields']==['actions'] and feedback['unexpectedFields']==['changeSet']
+                if repair=='clarification':return completion({'kind':'clarification','text':'希望恢复到最低生命值，还是满生命值？'})
+                return completion({'kind':'plan','text':'管理接口没有开放。'})
+            assert feedback['error']['code']=='MODEL_REPAIR_KIND_CHANGED'
+            if repair=='exhausted':return completion({'kind':'plan','text':'无法提交。'})
+            return completion({'kind':'batch','text':'已按目录编写，等待审核。','actions':[action]})
+        provider=Fake(callback)
+        async def run():
+            app.coordinator.provider_factory=lambda _:provider;await app.coordinator.start()
+            try:
+                request=submit(app,session(app),'请修改角色名称')
+                dispatched=committed(command(app,'ai.request.dispatch',{'requestId':request['requestId']}))
+                result=await wait_task(app.coordinator,dispatched['taskId'])
+                if repair=='correct-after-plan':
+                    assert result['status']=='review_ready' and provider.calls==4,result
+                    saved=app.batches.list('kp')['items'];assert len(saved)==1 and saved[0]['actions']==[action] and saved[0]['status']=='pending'
+                    assert [v['code'] for v in result['diagnostics']['outputFailures']]==['MODEL_FIELDS_INVALID','MODEL_REPAIR_KIND_CHANGED']
+                elif repair=='clarification':assert result['status']=='needs_input' and provider.calls==3 and not app.batches.list('kp')['items']
+                else:assert result['error']=='MODEL_OUTPUT_INVALID' and provider.calls==7 and not app.batches.list('kp')['items']
+                assert app.host.state()['entities']['actor-one']['name']==original
+            finally:await app.coordinator.close()
+&gt;       asyncio.run(run())
+
+engineering\ai\tests\test_policies.py:279: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:204: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:127: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\base_events.py:719: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    async def run():
+        app.coordinator.provider_factory=lambda _:provider;await app.coordinator.start()
+        try:
+            request=submit(app,session(app),'请修改角色名称')
+            dispatched=committed(command(app,'ai.request.dispatch',{'requestId':request['requestId']}))
+            result=await wait_task(app.coordinator,dispatched['taskId'])
+            if repair=='correct-after-plan':
+&gt;               assert result['status']=='review_ready' and provider.calls==4,result
+E               AssertionError: {'taskId': 'b43ab2cc10ef494e9392ee53248f99d6', 'requestId': 'b43ab2cc10ef494e9392ee53248f99d6', 'account': 'kp', 'profile': {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...}, ...}
+E               assert ('failed' == 'review_ready'
+E                 
+E                 - review_ready
+E                 + failed)
+
+engineering\ai\tests\test_policies.py:272: AssertionError</failure></testcase><testcase classname="tests.test_policies" name="test_malformed_batch_gets_exact_schema_and_cannot_escape_to_plan[clarification]" time="1.278"><failure message="AssertionError: assert ('failed' == 'needs_input'&#10;  &#10;  - needs_input&#10;  + failed)">application = &lt;onlinecoc_ai.api.Application object at 0x0000017D9D97FD90&gt;
+repair = 'clarification'
+
+    @pytest.mark.parametrize('repair', ['correct-after-plan','clarification','exhausted'])
+    def test_malformed_batch_gets_exact_schema_and_cannot_escape_to_plan(application,repair):
+        import json
+        app=application;enable(app.host,public=True,private=True,kp=True)
+        for profile in app.coordinator.profiles.values():profile['limits']['maxRepairAttempts']=5
+        original=app.host.state()['entities']['actor-one']['name']
+        bad={'kind':'batch','text':'变更待审核','changeSet':{'schemaVersion':1,'configurations':[],'sources':{},'data':{},'suggestions':[{'rule':'action.invoke','input':{},'reason':'proposed'}]}}
+        action={'target':'host','op':'entity.patch','args':{'id':'actor-one','name':'修正后等待审核'}}
+        async def callback(count,messages,tools):
+            if count==1:return tool_call('room_manage_catalog',{'operations':['entity.patch']})
+            if count==2:return completion(bad)
+            feedback=json.loads(messages[-1]['content'])
+            assert not app.batches.list('kp')['items']
+            assert feedback['expectedKind']=='batch' and feedback['outputSchema']['required']==['kind','text','actions']
+            assert feedback['completedTools']==['room_manage_catalog']
+            if count==3:
+                assert feedback['missingFields']==['actions'] and feedback['unexpectedFields']==['changeSet']
+                if repair=='clarification':return completion({'kind':'clarification','text':'希望恢复到最低生命值，还是满生命值？'})
+                return completion({'kind':'plan','text':'管理接口没有开放。'})
+            assert feedback['error']['code']=='MODEL_REPAIR_KIND_CHANGED'
+            if repair=='exhausted':return completion({'kind':'plan','text':'无法提交。'})
+            return completion({'kind':'batch','text':'已按目录编写，等待审核。','actions':[action]})
+        provider=Fake(callback)
+        async def run():
+            app.coordinator.provider_factory=lambda _:provider;await app.coordinator.start()
+            try:
+                request=submit(app,session(app),'请修改角色名称')
+                dispatched=committed(command(app,'ai.request.dispatch',{'requestId':request['requestId']}))
+                result=await wait_task(app.coordinator,dispatched['taskId'])
+                if repair=='correct-after-plan':
+                    assert result['status']=='review_ready' and provider.calls==4,result
+                    saved=app.batches.list('kp')['items'];assert len(saved)==1 and saved[0]['actions']==[action] and saved[0]['status']=='pending'
+                    assert [v['code'] for v in result['diagnostics']['outputFailures']]==['MODEL_FIELDS_INVALID','MODEL_REPAIR_KIND_CHANGED']
+                elif repair=='clarification':assert result['status']=='needs_input' and provider.calls==3 and not app.batches.list('kp')['items']
+                else:assert result['error']=='MODEL_OUTPUT_INVALID' and provider.calls==7 and not app.batches.list('kp')['items']
+                assert app.host.state()['entities']['actor-one']['name']==original
+            finally:await app.coordinator.close()
+&gt;       asyncio.run(run())
+
+engineering\ai\tests\test_policies.py:279: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:204: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:127: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\base_events.py:719: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    async def run():
+        app.coordinator.provider_factory=lambda _:provider;await app.coordinator.start()
+        try:
+            request=submit(app,session(app),'请修改角色名称')
+            dispatched=committed(command(app,'ai.request.dispatch',{'requestId':request['requestId']}))
+            result=await wait_task(app.coordinator,dispatched['taskId'])
+            if repair=='correct-after-plan':
+                assert result['status']=='review_ready' and provider.calls==4,result
+                saved=app.batches.list('kp')['items'];assert len(saved)==1 and saved[0]['actions']==[action] and saved[0]['status']=='pending'
+                assert [v['code'] for v in result['diagnostics']['outputFailures']]==['MODEL_FIELDS_INVALID','MODEL_REPAIR_KIND_CHANGED']
+&gt;           elif repair=='clarification':assert result['status']=='needs_input' and provider.calls==3 and not app.batches.list('kp')['items']
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           AssertionError: assert ('failed' == 'needs_input'
+E             
+E             - needs_input
+E             + failed)
+
+engineering\ai\tests\test_policies.py:275: AssertionError</failure></testcase><testcase classname="tests.test_policies" name="test_malformed_batch_gets_exact_schema_and_cannot_escape_to_plan[exhausted]" time="1.281"><failure message="AssertionError: assert ('AI_TASK_FAILED' == 'MODEL_OUTPUT_INVALID'&#10;  &#10;  - MODEL_OUTPUT_INVALID&#10;  + AI_TASK_FAILED)">application = &lt;onlinecoc_ai.api.Application object at 0x0000017D9DAA60D0&gt;
+repair = 'exhausted'
+
+    @pytest.mark.parametrize('repair', ['correct-after-plan','clarification','exhausted'])
+    def test_malformed_batch_gets_exact_schema_and_cannot_escape_to_plan(application,repair):
+        import json
+        app=application;enable(app.host,public=True,private=True,kp=True)
+        for profile in app.coordinator.profiles.values():profile['limits']['maxRepairAttempts']=5
+        original=app.host.state()['entities']['actor-one']['name']
+        bad={'kind':'batch','text':'变更待审核','changeSet':{'schemaVersion':1,'configurations':[],'sources':{},'data':{},'suggestions':[{'rule':'action.invoke','input':{},'reason':'proposed'}]}}
+        action={'target':'host','op':'entity.patch','args':{'id':'actor-one','name':'修正后等待审核'}}
+        async def callback(count,messages,tools):
+            if count==1:return tool_call('room_manage_catalog',{'operations':['entity.patch']})
+            if count==2:return completion(bad)
+            feedback=json.loads(messages[-1]['content'])
+            assert not app.batches.list('kp')['items']
+            assert feedback['expectedKind']=='batch' and feedback['outputSchema']['required']==['kind','text','actions']
+            assert feedback['completedTools']==['room_manage_catalog']
+            if count==3:
+                assert feedback['missingFields']==['actions'] and feedback['unexpectedFields']==['changeSet']
+                if repair=='clarification':return completion({'kind':'clarification','text':'希望恢复到最低生命值，还是满生命值？'})
+                return completion({'kind':'plan','text':'管理接口没有开放。'})
+            assert feedback['error']['code']=='MODEL_REPAIR_KIND_CHANGED'
+            if repair=='exhausted':return completion({'kind':'plan','text':'无法提交。'})
+            return completion({'kind':'batch','text':'已按目录编写，等待审核。','actions':[action]})
+        provider=Fake(callback)
+        async def run():
+            app.coordinator.provider_factory=lambda _:provider;await app.coordinator.start()
+            try:
+                request=submit(app,session(app),'请修改角色名称')
+                dispatched=committed(command(app,'ai.request.dispatch',{'requestId':request['requestId']}))
+                result=await wait_task(app.coordinator,dispatched['taskId'])
+                if repair=='correct-after-plan':
+                    assert result['status']=='review_ready' and provider.calls==4,result
+                    saved=app.batches.list('kp')['items'];assert len(saved)==1 and saved[0]['actions']==[action] and saved[0]['status']=='pending'
+                    assert [v['code'] for v in result['diagnostics']['outputFailures']]==['MODEL_FIELDS_INVALID','MODEL_REPAIR_KIND_CHANGED']
+                elif repair=='clarification':assert result['status']=='needs_input' and provider.calls==3 and not app.batches.list('kp')['items']
+                else:assert result['error']=='MODEL_OUTPUT_INVALID' and provider.calls==7 and not app.batches.list('kp')['items']
+                assert app.host.state()['entities']['actor-one']['name']==original
+            finally:await app.coordinator.close()
+&gt;       asyncio.run(run())
+
+engineering\ai\tests\test_policies.py:279: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:204: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:127: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\base_events.py:719: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    async def run():
+        app.coordinator.provider_factory=lambda _:provider;await app.coordinator.start()
+        try:
+            request=submit(app,session(app),'请修改角色名称')
+            dispatched=committed(command(app,'ai.request.dispatch',{'requestId':request['requestId']}))
+            result=await wait_task(app.coordinator,dispatched['taskId'])
+            if repair=='correct-after-plan':
+                assert result['status']=='review_ready' and provider.calls==4,result
+                saved=app.batches.list('kp')['items'];assert len(saved)==1 and saved[0]['actions']==[action] and saved[0]['status']=='pending'
+                assert [v['code'] for v in result['diagnostics']['outputFailures']]==['MODEL_FIELDS_INVALID','MODEL_REPAIR_KIND_CHANGED']
+            elif repair=='clarification':assert result['status']=='needs_input' and provider.calls==3 and not app.batches.list('kp')['items']
+&gt;           else:assert result['error']=='MODEL_OUTPUT_INVALID' and provider.calls==7 and not app.batches.list('kp')['items']
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           AssertionError: assert ('AI_TASK_FAILED' == 'MODEL_OUTPUT_INVALID'
+E             
+E             - MODEL_OUTPUT_INVALID
+E             + AI_TASK_FAILED)
+
+engineering\ai\tests\test_policies.py:276: AssertionError</failure></testcase></testsuite></testsuites>

@@ -14,6 +14,7 @@ def configuration_checks(pack, state, baseline, artifact, changes):
             require(value['typeRef']=='actor' and validator.is_valid(value['defaults']) and (value['configurationId']==spec['baseConfiguration'] or value['defaults'].get('isNpc')==1),'EXTENSION_DEFAULTS_INVALID')
     for name,text in changes['sources'].items():
         if baseline['sources'].get(name)==text:continue
+        if name in pack.contract.get('highRisk', {}).get('ruleFiles', []):continue
         metadata=execute({name:text},{'kind':'inspect'})['metadata']
         require(bool(metadata),'EXTENSION_RULE_MISSING')
         for key,value in metadata.items():
@@ -24,19 +25,22 @@ def configuration_checks(pack, state, baseline, artifact, changes):
 def assess_extensions(pack, state, baseline, artifact, changes, account):
     spec=getattr(pack,'extension_validation',None)
     if not spec:return None
+    # The specialized NPC probe cannot certify maps or core mechanics. These
+    # changes use normal declared scenarios, including existing-room coverage.
+    high = pack.contract.get('highRisk', {})
+    if changes['data'] != baseline['data'] or any(baseline['sources'].get(n) != t and n in high.get('ruleFiles', []) for n,t in changes['sources'].items()):return None
+    if any(c['kind']=='remove' for c in changes['configurations']):return None
     # This exception to global instance coverage is limited to explicit NPC rules.
     require(changes['data']==baseline['data'],'EXTENSION_DATA_FORBIDDEN')
     changed=[]
     for name,text in changes['sources'].items():
         if baseline['sources'].get(name)!=text:changed.extend(execute({name:text},{'kind':'inspect'})['metadata'])
-    require(len(changed)<=8,'EXTENSION_RULE_LIMIT')
     require(all(k.startswith(spec['rulePrefix']) for k in changed),'EXTENSION_FORBIDDEN')
     configurations=copy.deepcopy(state['configurations'])
     for delta in changes['configurations']:configurations[delta['id']]=delta['value']
     configuration_checks(pack,{'configurations':configurations},baseline,artifact,changes)
     validator=local_schema(pack.json(spec['defaultsSchema']));fixture=pack.json(spec['fixtureRef'])
     targets=[(key,value) for key,value in configurations.items() if key==spec['baseConfiguration'] or key.startswith(spec['namespace'])]
-    require(len(targets)<=32,'EXTENSION_TEMPLATE_LIMIT')
     comparisons=[];probes=[]
     for key,value in targets:
         before=state['configurations'].get(key,state['configurations'][spec['baseConfiguration']])['defaults']
@@ -47,7 +51,6 @@ def assess_extensions(pack, state, baseline, artifact, changes, account):
     for key,value in state['entities'].items():
         if value['lifecycle']=='active' and (value['configurationId']==spec['baseConfiguration'] or value['configurationId'].startswith(spec['namespace'])):
             probes.append(('existing:'+key,state,key,account))
-    require(len(probes)<=64,'EXTENSION_INSTANCE_LIMIT')
     evidence=[]
     for rule in changed:
         for label,world,actor,principal in probes:

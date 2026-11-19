@@ -42,6 +42,8 @@ class Proposals:
             return context, state, artifact
 
     def create(self, account, text, delta, *, summary="人工配置草稿", snapshot=None, request=None, profile=None):
+        from .access import policy
+        require(policy(self.repository)['allowConfigurationChanges'], 'CONFIGURATION_CHANGES_DISABLED')
         context, state, artifact = snapshot or self.snapshot(account)
         with self.host.lock:
             check_context(self.host, self.host.state(), account, context)
@@ -88,6 +90,8 @@ class Proposals:
         return proposal
 
     def revise(self, account, proposal_id, expected_revision, delta, *, summary="修订配置草稿"):
+        from .access import policy
+        require(policy(self.repository)['allowConfigurationChanges'], 'CONFIGURATION_CHANGES_DISABLED')
         old = self.get(account, proposal_id)
         require(old["revision"] == expected_revision, "PROPOSAL_STALE")
         context, state, artifact = self.snapshot(account)
@@ -142,6 +146,8 @@ class Proposals:
         return self.repository.update(save)
 
     def prepared(self, account, proposal_id, revision):
+        from .access import policy
+        require(policy(self.repository)['allowConfigurationChanges'], 'CONFIGURATION_CHANGES_DISABLED')
         proposal = self.get(account, proposal_id, revision)
         state = self.repository.state()
         require(state['requests'][proposal['requestId']]['status'] not in ('cancelled', 'interrupted'), 'REQUEST_CANCELLED')

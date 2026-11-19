@@ -1,5 +1,11 @@
 # 配置包验收
 
+2026-11-19工作台收敛：[工作台8组](workbench-results.json)、[开场8组](room-workflow-results.json)、[统一裁决10组](keeper-queue-results.json)、[失败原因6组](action-reasons-results.json)共32组通过。新增[工作台脚本](verify_workbench.py)覆盖紧凑长文本与详情浮窗、原会话直达、跨页组件复用、资料全分类及搜索、独立AI权限页和390px单页布局。开场与裁决专项保留执行、隐私隔离及未知回执恢复。JavaScript/Python与隔离网页构建语法通过；截图在各报告的隔离输出目录。首轮测试修正了样例未准备、异步退出等待和嵌套浮窗定位；无产品失败被忽略。测试使用隔离存档、无头Edge和本机模拟AI，不改正式存档或调用真实模型。记录的加载时间仅是本机样例，不代表模型响应或跨设备耗时。
+
+2026-11-19 SV-ISSUE-001：[本轮52组汇总](menu-safety-results.json)，包含[菜单9组](menu-knowledge-results.json)、[旧观察升级6组](menu-upgrade-results.json)、[严格知识12组](strict-known-results.json)、[18预设业务8组](scene-results.json)、[恢复6组](scene-recovery-results.json)、[场景Edge4组](scene-ui-results.json)及[双WebRTC网页7组](web-results.json)。分组数量不代表独立规则或测试函数数量。两名玩家的不同发现、共享状态不解锁他人、隐藏选项直提、实际AI工具载荷、旧引用／历史失效、显式重新揭示、旧待执行请求拒绝及原已提交回执恢复均已覆盖。测试使用隔离本机宿主与确定性模型，无真实模型调用、正式存档写入或云端部署；网页测试的两浏览器在同一电脑，不代表公网／跨设备验收。
+
+复跑入口：`engineering/.venv/Scripts/python.exe -B rulepacks/stumpsville/tests/verify_menu_knowledge.py` 与 `verify_menu_upgrade.py`（后者同目录）。源码：[菜单专项](verify_menu_knowledge.py)、[升级专项](verify_menu_upgrade.py)。两者自建独立目录并关闭测试服务；截图在对应报告的 `output` 目录，含 KP 机制、PL 基础菜单及390px揭示后界面。初轮测试夹具／旧UI断言修正和预期中断日志见汇总；不把失败尝试覆盖成通过。现行声明、显示和升级步骤见[个人已知资料](../docs/current/player-knowledge.md)。
+
 2026-11-18提示3秒淡出与新线索／结果：[专项10组](notifications-results.json)由[脚本](verify_notifications.py)验证3秒停留与280毫秒淡出、轮询不延期、队列独立计时、手动关闭／减少动画／换房间清理、事件与观察线索合并、重复观察仍有结果、新线索定向揭示、KP拒绝回复及检定后结果提示；计时断言使用暂停的浏览器时钟，业务断言使用隔离真实宿主。同步重跑[持久影响／地图12组](effects-map-results.json)，合计22组。网页发行构建、生成脚本语法和527项中英文／目录一致性通过；未修改正式存档或调用真实模型。截图 `output/screenshots/clue-result-notice.png`。
 
 2026-11-18持久影响与地图：[专项脚本](verify_effects_map.py)的[12组隔离宿主／Edge记录](effects-map-results.json)覆盖获得／消耗／转交、伤害及宿主直接修改、燃烧进度、相反变化保留队列、刷新与语言切换去重、检定先后、390px布局、10条通路和观察隔离。同一脚本的 `presenter_lifecycle` 验证等待自动执行不阻挡其他变化、换房间／退出清空提示，已纳入12组记录。[知识12组](strict-known-results.json)、[场景8组](scene-results.json)、[反馈7组](feedback-results.json)同步通过（反馈脚本含预期的中断故障注入）。网页发行构建、脚本语法、524项中英文词条与目录校验通过。未改正式存档、未调用真实模型。截图：`output/screenshots/persistent-effects.png`、`persistent-effects-mobile.png`、`map-routes.png`。
@@ -145,4 +151,11 @@ engineering/.venv/Scripts/pythonw.exe -B rulepacks/stumpsville/tests/verify_lan.
 
 返回[当前实现](../docs/current/implementation.md)。
 
+- [AI 高危场景](verify_ai_scenarios.py) · [9 组通过记录](ai-scenarios-results.json)：真实公开 API、整包人工批准、新物品／入口、编号与引用校验、拒绝及重启恢复。
+- [AI 权限与资料申请](verify_ai_permissions.py) · [结果](ai-permissions-results.json)：玩家主动申请、KP 预览披露、接收人隔离、全部权限开关及窄屏。
+- [DeepSeek 场景实测](verify_ai_scenarios_live.py) · [结果与失败历史](ai-scenarios-live-results.json)：须显式 `--live`，隔离测试复活、新物品和未知资料申请；结果记录实际用量与失败，不修改正式房间。
+
 - [verify_ai_knowledge.py](verify_ai_knowledge.py)：隔离两玩家验证个人进入记录、KP 定向揭示页面、公开不等于已知、复制引用越权、玩家指南及重启持久化；结果见 [ai-knowledge-results.json](ai-knowledge-results.json)。
+
+- [PL 查询与创作申请](verify_ai_player_requests.py) · [结果](ai-player-requests-results.json)：12 组通过：本人装备语义、两玩家知识、网页与窄屏申请、KP 私有审阅、高危再批准与开关。
+- [PL 原句 DeepSeek 复测](verify_ai_player_requests_live.py) · [结果](ai-player-requests-live-results.json)：显式 `--live`，隔离房间重放当前行动、已有线索和火把＋针剑需求；3 句通过，本轮 6 次真实调用、28,259 tokens；正式存档未改动。

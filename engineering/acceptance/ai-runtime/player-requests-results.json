@@ -1,0 +1,1374 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-11-19",
+  "scope": "个人已知目录查询、独立玩家创作申请与KP私有方案/人工审批",
+  "status": "passed",
+  "tests": {
+    "unique": 190,
+    "passed": 190,
+    "failed": 0,
+    "skipped": 0,
+    "deduplication": "按 classname::name 取本轮最新执行结果；复验不累加"
+  },
+  "runs": [
+    {
+      "file": "engineering/acceptance/ai-runtime/player-requests-initial.xml",
+      "tests": 53,
+      "passed": 53,
+      "failed": 0,
+      "skipped": 0,
+      "sha256": "f65c1ebb589db2516071db510a8a349105d18ec4a7ff0afbd983dae85d8a6afa"
+    },
+    {
+      "file": "engineering/acceptance/ai-runtime/player-requests-core3.xml",
+      "tests": 12,
+      "passed": 7,
+      "failed": 5,
+      "skipped": 0,
+      "sha256": "893839c108df4bf9272e1c2f94f55a0a9647629d0f252c3bedf0121f9507303f"
+    },
+    {
+      "file": "engineering/acceptance/ai-runtime/player-requests-core4.xml",
+      "tests": 12,
+      "passed": 12,
+      "failed": 0,
+      "skipped": 0,
+      "sha256": "f3c4514a4833f9d4048c825cd11e3ee6dc3501cb4523ef86ee95f89ede89461b"
+    },
+    {
+      "file": "engineering/acceptance/ai-runtime/player-requests-validation.xml",
+      "tests": 22,
+      "passed": 22,
+      "failed": 0,
+      "skipped": 0,
+      "sha256": "9934ba812fc9af13b42774df558db36aeddf3b3543d1bf3318a5ce88c8d1a79f"
+    },
+    {
+      "file": "engineering/acceptance/ai-runtime/player-requests-regression.xml",
+      "tests": 150,
+      "passed": 149,
+      "failed": 1,
+      "skipped": 0,
+      "sha256": "bc3b0fa5a96d984ae87a46e380a37c3526f5ab51d9cde1e9e3e942af6e816e43"
+    },
+    {
+      "file": "engineering/acceptance/ai-runtime/player-requests-notice.xml",
+      "tests": 1,
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "sha256": "dcb48259697eaf4a08ae3ba321c347cf27cd3ea0dcb7cafbbefd982442cd7a4a"
+    },
+    {
+      "file": "engineering/acceptance/ai-runtime/player-requests-embeds.xml",
+      "tests": 15,
+      "passed": 12,
+      "failed": 3,
+      "skipped": 0,
+      "sha256": "1d11d1a6bd5852af08918d512621a13153f9fc439114e43f9ec8c18b3059889c"
+    },
+    {
+      "file": "engineering/acceptance/ai-runtime/player-requests-final.xml",
+      "tests": 24,
+      "passed": 24,
+      "failed": 0,
+      "skipped": 0,
+      "sha256": "08bc9a39b0189f5d2e775d8e7a92c312b8181d57c2040e73d3131f6431c2fd4f"
+    },
+    {
+      "file": "engineering/acceptance/ai-runtime/player-requests-boundaries.xml",
+      "tests": 30,
+      "passed": 30,
+      "failed": 0,
+      "skipped": 0,
+      "sha256": "9fd9ae38b18ba6ff3f57b0061c5007542d0132365148d26de593356a3aad17db"
+    }
+  ],
+  "results": [
+    {
+      "id": "tests.test_known_runtime::test_unconfigured_player_never_falls_back_or_calls_model",
+      "status": "passed",
+      "seconds": 1.042,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-boundaries.xml"
+    },
+    {
+      "id": "tests.test_known_runtime::test_initial_context_contains_no_pack_guide_world_or_old_model_history",
+      "status": "passed",
+      "seconds": 1.185,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-boundaries.xml"
+    },
+    {
+      "id": "tests.test_known_runtime::test_snapshot_reference_cannot_cross_account_or_follow_world_update",
+      "status": "passed",
+      "seconds": 1.121,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-boundaries.xml"
+    },
+    {
+      "id": "tests.test_known_runtime::test_model_secret_prose_is_repaired_and_never_stored_or_replayed",
+      "status": "passed",
+      "seconds": 1.338,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-boundaries.xml"
+    },
+    {
+      "id": "tests.test_known_runtime::test_inflight_revoke_suppresses_entire_response",
+      "status": "passed",
+      "seconds": 1.199,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-boundaries.xml"
+    },
+    {
+      "id": "tests.test_known_runtime::test_private_export_block_and_kp_player_session_ceiling",
+      "status": "passed",
+      "seconds": 1.132,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-boundaries.xml"
+    },
+    {
+      "id": "tests.test_known_runtime::test_second_package_witness_testimony_stays_personal_and_fixed",
+      "status": "passed",
+      "seconds": 1.134,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-boundaries.xml"
+    },
+    {
+      "id": "tests.test_known_runtime::test_ask_kp_option_is_queued_for_human_without_model_redispatch",
+      "status": "passed",
+      "seconds": 1.09,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-boundaries.xml"
+    },
+    {
+      "id": "tests.test_known_runtime::test_player_real_adapter_json_mode_and_http_error_projection[200]",
+      "status": "passed",
+      "seconds": 1.228,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-boundaries.xml"
+    },
+    {
+      "id": "tests.test_known_runtime::test_player_real_adapter_json_mode_and_http_error_projection[400]",
+      "status": "passed",
+      "seconds": 1.239,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-boundaries.xml"
+    },
+    {
+      "id": "tests.test_known_runtime::test_legacy_response_projection_still_requires_live_authorization",
+      "status": "passed",
+      "seconds": 1.338,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-boundaries.xml"
+    },
+    {
+      "id": "tests.test_known_answers::test_model_can_only_select_issued_evidence[<lambda>0]",
+      "status": "passed",
+      "seconds": 0.001,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_known_answers::test_model_can_only_select_issued_evidence[<lambda>1]",
+      "status": "passed",
+      "seconds": 0.001,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_known_answers::test_model_can_only_select_issued_evidence[<lambda>2]",
+      "status": "passed",
+      "seconds": 0.001,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_known_answers::test_model_can_only_select_issued_evidence[<lambda>3]",
+      "status": "passed",
+      "seconds": 0.001,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_known_answers::test_model_can_only_select_issued_evidence[<lambda>4]",
+      "status": "passed",
+      "seconds": 0.001,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_known_answers::test_model_can_only_select_issued_evidence[<lambda>5]",
+      "status": "passed",
+      "seconds": 0.001,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_known_answers::test_model_can_only_select_issued_evidence[<lambda>6]",
+      "status": "passed",
+      "seconds": 0.001,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_known_answers::test_reference_encodes_exact_snapshot_and_scope_without_current_entity_lookup",
+      "status": "passed",
+      "seconds": 0.001,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_known_answers::test_fixed_order_and_labels_use_only_captured_data",
+      "status": "passed",
+      "seconds": 0.001,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_known_answers::test_search_summary_cannot_be_rendered_as_read_evidence",
+      "status": "passed",
+      "seconds": 0.001,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_known_answers::test_malformed_answers_fail_closed[{\"kind\":\"known\",\"kind\":\"known\"}]",
+      "status": "passed",
+      "seconds": 0.001,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_known_answers::test_malformed_answers_fail_closed[{\"kind\":\"known\",\"evidence\":NaN,\"next\":\"none\"}]",
+      "status": "passed",
+      "seconds": 0.001,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_known_answers::test_malformed_answers_fail_closed[not json]",
+      "status": "passed",
+      "seconds": 0.001,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_known_answers::test_empty_result_does_not_assert_nonexistence_and_data_is_not_markup",
+      "status": "passed",
+      "seconds": 0.001,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_known_answers::test_structured_evidence_has_readable_labels_and_no_technical_ids",
+      "status": "passed",
+      "seconds": 0.001,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_known_answers::test_presentation_is_bounded_and_literal_with_deep_or_large_values",
+      "status": "passed",
+      "seconds": 0.002,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_known_answers::test_legacy_known_json_is_reformatted_without_touching_other_messages",
+      "status": "passed",
+      "seconds": 0.002,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_policies::test_high_risk_requires_exact_manual_fingerprint_and_retains_diff",
+      "status": "passed",
+      "seconds": 17.367,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_policies::test_more_than_eight_actions_execute_without_truncation",
+      "status": "passed",
+      "seconds": 1.84,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_policies::test_batch_storage_has_no_business_count_limit",
+      "status": "passed",
+      "seconds": 6.392,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_policies::test_policy_switches_are_enforced_for_new_and_pending_writes",
+      "status": "passed",
+      "seconds": 1.174,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_policies::test_ordinary_actor_configuration_still_supports_explicit_auto_policy",
+      "status": "passed",
+      "seconds": 12.524,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_policies::test_admin_room_scope_is_default_and_revocable_without_player_escalation",
+      "status": "passed",
+      "seconds": 1.275,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_policies::test_player_request_is_explicit_private_and_real_observation_is_required",
+      "status": "passed",
+      "seconds": 1.574,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_policies::test_rejected_request_has_no_disclosure_and_disabled_policy_blocks_new_request",
+      "status": "passed",
+      "seconds": 1.327,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_policies::test_remove_schema_and_no_configuration_count_limit",
+      "status": "passed",
+      "seconds": 0.042,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_policies::test_stable_array_uses_current_baseline_and_candidate_references",
+      "status": "passed",
+      "seconds": 0.001,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_policies::test_live_probes_bind_real_ids_and_do_not_hide_changed_or_unlisted_failures[success-True]",
+      "status": "passed",
+      "seconds": 0.001,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_policies::test_live_probes_bind_real_ids_and_do_not_hide_changed_or_unlisted_failures[declared-block-True]",
+      "status": "passed",
+      "seconds": 0.001,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_policies::test_live_probes_bind_real_ids_and_do_not_hide_changed_or_unlisted_failures[changed-error-False]",
+      "status": "passed",
+      "seconds": 0.001,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_policies::test_live_probes_bind_real_ids_and_do_not_hide_changed_or_unlisted_failures[unlisted-error-False]",
+      "status": "passed",
+      "seconds": 0.001,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_policies::test_cumulative_tool_budget_uses_transport_limit_and_reports_sizes[112640-review_ready]",
+      "status": "passed",
+      "seconds": 1.385,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_policies::test_cumulative_tool_budget_uses_transport_limit_and_reports_sizes[276480-failed]",
+      "status": "passed",
+      "seconds": 1.376,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_policies::test_management_catalog_indexes_before_returning_selected_schemas",
+      "status": "passed",
+      "seconds": 1.375,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_policies::test_unused_extension_remove_requires_policy_without_making_actor_edits_high_risk[True]",
+      "status": "passed",
+      "seconds": 0.001,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_policies::test_unused_extension_remove_requires_policy_without_making_actor_edits_high_risk[False]",
+      "status": "passed",
+      "seconds": 0.001,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_policies::test_malformed_batch_gets_exact_schema_and_cannot_escape_to_plan[correct-after-plan]",
+      "status": "passed",
+      "seconds": 1.516,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_policies::test_malformed_batch_gets_exact_schema_and_cannot_escape_to_plan[clarification]",
+      "status": "passed",
+      "seconds": 1.412,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_policies::test_malformed_batch_gets_exact_schema_and_cannot_escape_to_plan[exhausted]",
+      "status": "passed",
+      "seconds": 1.756,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_policies::test_batch_self_mutation_preserves_safe_execution_status_after_source_change_and_revocation[completed]",
+      "status": "passed",
+      "seconds": 1.384,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_policies::test_batch_self_mutation_preserves_safe_execution_status_after_source_change_and_revocation[partial]",
+      "status": "passed",
+      "seconds": 1.305,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_policies::test_batch_self_mutation_preserves_safe_execution_status_after_source_change_and_revocation[pending]",
+      "status": "passed",
+      "seconds": 1.241,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_player_requests::test_direct_intent_requires_no_provider_knowledge_or_egress_and_is_deduplicated",
+      "status": "passed",
+      "seconds": 1.548,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-boundaries.xml"
+    },
+    {
+      "id": "tests.test_player_requests::test_intent_owner_level_policy_and_input_cannot_be_forged",
+      "status": "passed",
+      "seconds": 1.431,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-boundaries.xml"
+    },
+    {
+      "id": "tests.test_player_requests::test_cancelled_and_deleted_intents_cannot_be_accepted",
+      "status": "passed",
+      "seconds": 1.399,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-boundaries.xml"
+    },
+    {
+      "id": "tests.test_player_requests::test_kp_accept_creates_private_review_once_without_state_changes",
+      "status": "passed",
+      "seconds": 1.406,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-boundaries.xml"
+    },
+    {
+      "id": "tests.test_player_requests::test_kp_reject_and_archive_do_not_create_review",
+      "status": "passed",
+      "seconds": 1.178,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-boundaries.xml"
+    },
+    {
+      "id": "tests.test_player_requests::test_accepted_request_batch_remains_manual_with_auto_approval_enabled",
+      "status": "passed",
+      "seconds": 1.228,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-boundaries.xml"
+    },
+    {
+      "id": "tests.test_player_requests::test_query_blockers_have_distinct_safe_errors_without_model_calls[unconfigured-KNOWLEDGE_UNAVAILABLE]",
+      "status": "passed",
+      "seconds": 1.049,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-boundaries.xml"
+    },
+    {
+      "id": "tests.test_player_requests::test_query_blockers_have_distinct_safe_errors_without_model_calls[private-EXTERNAL_SCOPE_DISABLED]",
+      "status": "passed",
+      "seconds": 1.135,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-boundaries.xml"
+    },
+    {
+      "id": "tests.test_player_requests::test_query_blockers_have_distinct_safe_errors_without_model_calls[queries-DATA_QUERIES_DISABLED]",
+      "status": "passed",
+      "seconds": 1.143,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-boundaries.xml"
+    },
+    {
+      "id": "tests.test_player_requests::test_query_blockers_have_distinct_safe_errors_without_model_calls[egress-KNOWLEDGE_EGRESS_DISABLED]",
+      "status": "passed",
+      "seconds": 1.064,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-boundaries.xml"
+    },
+    {
+      "id": "tests.test_player_requests::test_keyword_miss_returns_explicit_personal_index_and_never_other_players",
+      "status": "passed",
+      "seconds": 1.116,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-boundaries.xml"
+    },
+    {
+      "id": "tests.test_player_requests::test_preloaded_known_index_can_be_read_and_creative_choice_is_not_auto_submitted",
+      "status": "passed",
+      "seconds": 1.235,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-boundaries.xml"
+    },
+    {
+      "id": "tests.test_player_requests::test_recoverable_invalid_knowledge_query_can_retry_then_read_index",
+      "status": "passed",
+      "seconds": 1.267,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-boundaries.xml"
+    },
+    {
+      "id": "tests.test_player_requests::test_player_request_reference_is_label_only_in_kp_review",
+      "status": "passed",
+      "seconds": 1.12,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-boundaries.xml"
+    },
+    {
+      "id": "tests.test_player_requests::test_ordinary_configuration_from_player_review_cannot_auto_publish",
+      "status": "passed",
+      "seconds": 6.67,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-boundaries.xml"
+    },
+    {
+      "id": "tests.test_player_requests::test_restart_preserves_accepted_review_without_duplicate_dispatch",
+      "status": "passed",
+      "seconds": 1.143,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-boundaries.xml"
+    },
+    {
+      "id": "tests.test_player_requests_ui::test_real_player_direct_request_without_knowledge_then_kp_queue",
+      "status": "passed",
+      "seconds": 6.094,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-final.xml"
+    },
+    {
+      "id": "tests.test_player_requests_ui::test_player_error_is_visible_and_choice_forwards_original_request_once",
+      "status": "passed",
+      "seconds": 4.865,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-final.xml"
+    },
+    {
+      "id": "tests.test_player_requests_ui::test_kp_accept_label_and_open_private_review_session",
+      "status": "passed",
+      "seconds": 4.933,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-final.xml"
+    },
+    {
+      "id": "tests.test_policies_ui::test_permission_switches_save_and_high_risk_policy_is_fixed",
+      "status": "passed",
+      "seconds": 6.143,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-validation.xml"
+    },
+    {
+      "id": "tests.test_policies_ui::test_high_risk_click_binds_digest_and_knowledge_callback_does_not_auto_approve",
+      "status": "passed",
+      "seconds": 5.557,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-validation.xml"
+    },
+    {
+      "id": "tests.test_policies_ui::test_player_disclosure_requires_a_click_and_reports_pending",
+      "status": "passed",
+      "seconds": 5.242,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-validation.xml"
+    },
+    {
+      "id": "tests.test_entrypoints::test_requests_are_explicit_idempotent_redacted_and_paged",
+      "status": "passed",
+      "seconds": 1.443,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_entrypoints::test_chat_forwarding_binds_original_and_policy",
+      "status": "passed",
+      "seconds": 1.482,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_entrypoints::test_player_can_cancel_after_dispatching_kp_loses_role",
+      "status": "passed",
+      "seconds": 1.498,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_entrypoints::test_plan_without_proposal_rechecks_context_on_read",
+      "status": "passed",
+      "seconds": 1.544,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_entrypoints::test_auto_off_prefix_dedup_edits_withdrawal_and_role",
+      "status": "passed",
+      "seconds": 1.379,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_entrypoints::test_manual_revision_invalidates_approval_and_cancel_revokes",
+      "status": "passed",
+      "seconds": 24.056,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_entrypoints::test_receipt_rechecks_private_sources_and_restart_pending",
+      "status": "passed",
+      "seconds": 1.267,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_entrypoints::test_http_auth_limits_schema_capability_and_disabled_module",
+      "status": "passed",
+      "seconds": 1.669,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_entrypoints::test_cli_uses_same_three_engines",
+      "status": "passed",
+      "seconds": 10.034,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_access_batches::test_defaults_binding_and_no_permission_escalation",
+      "status": "passed",
+      "seconds": 1.071,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_access_batches::test_player_auto_dispatch_context_output_and_revoke",
+      "status": "passed",
+      "seconds": 1.674,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-notice.xml"
+    },
+    {
+      "id": "tests.test_access_batches::test_kp_player_session_has_player_ceiling_and_data_proof",
+      "status": "passed",
+      "seconds": 1.24,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_access_batches::test_batch_human_approval_idempotence_and_player_denial",
+      "status": "passed",
+      "seconds": 1.272,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_access_batches::test_batch_stale_reject_auto_and_bypass_forbidden",
+      "status": "passed",
+      "seconds": 1.275,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_access_batches::test_batch_unknown_reconciles_without_reexecuting",
+      "status": "passed",
+      "seconds": 1.344,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_access_batches::test_batch_stops_after_partial_failure_and_restart_never_replays",
+      "status": "passed",
+      "seconds": 1.342,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_access_batches::test_delete_cancels_queue_hides_session_and_keeps_usage_audit",
+      "status": "passed",
+      "seconds": 1.212,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_access_batches::test_administrator_tools_respect_external_scope",
+      "status": "passed",
+      "seconds": 1.368,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_access_batches::test_player_contract_tool_and_batch_output_cannot_escalate",
+      "status": "passed",
+      "seconds": 1.447,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_access_batches::test_delete_interrupts_active_generation",
+      "status": "passed",
+      "seconds": 1.417,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_access_batches::test_management_catalog_is_bounded_and_schema_complete",
+      "status": "passed",
+      "seconds": 1.139,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_access_batches::test_other_administrator_can_inspect_draft_without_taking_review_identity",
+      "status": "passed",
+      "seconds": 1.268,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_access_batches::test_player_history_rechecks_package_evidence_during_generation",
+      "status": "passed",
+      "seconds": 1.587,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_rulings::test_chat_approval_is_bound_to_batch_and_not_another_model_request",
+      "status": "passed",
+      "seconds": 1.406,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_rulings::test_config_is_one_checked_ruling_and_publishes_once",
+      "status": "passed",
+      "seconds": 19.159,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_rulings::test_high_risk_config_never_uses_auto_approval",
+      "status": "passed",
+      "seconds": 8.152,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_rulings::test_player_cannot_decide_and_stale_digest_cannot_execute",
+      "status": "passed",
+      "seconds": 1.328,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_rulings::test_consultation_only_evidence_cannot_enter_publish_queue_or_auto_approve",
+      "status": "passed",
+      "seconds": 8.276,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_rulings::test_invalid_model_output_has_specific_cause[[]-MODEL_OBJECT_REQUIRED]",
+      "status": "passed",
+      "seconds": 0.001,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_rulings::test_invalid_model_output_has_specific_cause[null-MODEL_OBJECT_REQUIRED]",
+      "status": "passed",
+      "seconds": 0.001,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_rulings::test_invalid_model_output_has_specific_cause[broken-MODEL_JSON_INVALID]",
+      "status": "passed",
+      "seconds": 0.001,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_rulings::test_invalid_model_output_has_specific_cause[{\"kind\":\"other\",\"text\":\"a\"}-MODEL_KIND_INVALID]",
+      "status": "passed",
+      "seconds": 0.001,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_rulings::test_single_json_fence_is_accepted_without_extracting_arbitrary_text",
+      "status": "passed",
+      "seconds": 0.001,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_rulings::test_five_repairs_do_not_consume_tool_rounds[True]",
+      "status": "passed",
+      "seconds": 1.664,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_rulings::test_five_repairs_do_not_consume_tool_rounds[False]",
+      "status": "passed",
+      "seconds": 1.742,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_rulings::test_user_decision_pauses_instead_of_retrying[clarification]",
+      "status": "passed",
+      "seconds": 1.325,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_rulings::test_user_decision_pauses_instead_of_retrying[plan]",
+      "status": "passed",
+      "seconds": 1.298,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_rulings::test_basic_lua_error_repairs_same_proposal_before_review",
+      "status": "passed",
+      "seconds": 10.717,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_answers::test_choices_are_bounded_text_only[<lambda>0]",
+      "status": "passed",
+      "seconds": 0.001,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_answers::test_choices_are_bounded_text_only[<lambda>1]",
+      "status": "passed",
+      "seconds": 0.001,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_answers::test_choices_are_bounded_text_only[<lambda>2]",
+      "status": "passed",
+      "seconds": 0.001,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_answers::test_choices_are_bounded_text_only[<lambda>3]",
+      "status": "passed",
+      "seconds": 0.001,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_answers::test_choices_are_bounded_text_only[<lambda>4]",
+      "status": "passed",
+      "seconds": 0.001,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_answers::test_choices_are_bounded_text_only[<lambda>5]",
+      "status": "passed",
+      "seconds": 0.001,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_answers::test_citations_require_issued_tokens_and_choices_cannot_approve",
+      "status": "passed",
+      "seconds": 0.001,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_answers::test_model_citations_are_exact_tokens_without_changing_evidence",
+      "status": "passed",
+      "seconds": 1.299,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_answers::test_player_model_choices_and_references_are_visible_only_while_authorized",
+      "status": "passed",
+      "seconds": 1.368,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_answers::test_fabricated_model_citation_is_repaired_or_rejected",
+      "status": "passed",
+      "seconds": 1.543,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_context::test_default_excludes_room_and_pack_text",
+      "status": "passed",
+      "seconds": 1.243,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_context::test_public_context_strips_secret_and_never_reads_others_private_chat",
+      "status": "passed",
+      "seconds": 1.298,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_context::test_context_rechecks_source_and_policy_after_generation[edit]",
+      "status": "passed",
+      "seconds": 1.166,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_context::test_context_rechecks_source_and_policy_after_generation[delete]",
+      "status": "passed",
+      "seconds": 1.208,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_context::test_context_rechecks_source_and_policy_after_generation[policy]",
+      "status": "passed",
+      "seconds": 1.267,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_context::test_context_rechecks_source_and_policy_after_generation[revoke]",
+      "status": "passed",
+      "seconds": 1.391,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_context::test_context_rechecks_source_and_policy_after_generation[profile]",
+      "status": "passed",
+      "seconds": 1.277,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_context::test_manual_revision_keeps_original_source_authorization",
+      "status": "passed",
+      "seconds": 1.255,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_context::test_chat_source_requires_actual_current_text_and_external_permission",
+      "status": "passed",
+      "seconds": 1.168,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_context::test_unrelated_read_position_and_ai_history_do_not_change_world",
+      "status": "passed",
+      "seconds": 1.301,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_context::test_scope_mismatch_rejects_cross_room_context",
+      "status": "passed",
+      "seconds": 1.243,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_context::test_context_size_is_bounded",
+      "status": "passed",
+      "seconds": 1.31,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_context::test_two_actual_demo_directories_do_not_share_secrets_or_memory",
+      "status": "passed",
+      "seconds": 2.374,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_task_diagnostics::test_failure_diagnostics_redact_messages_and_preserve_primary",
+      "status": "passed",
+      "seconds": 1.428,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_task_diagnostics::test_cleanup_error_does_not_replace_result_or_cancellation[False]",
+      "status": "passed",
+      "seconds": 1.409,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_task_diagnostics::test_cleanup_error_does_not_replace_result_or_cancellation[True]",
+      "status": "passed",
+      "seconds": 1.407,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_task_diagnostics::test_tool_metadata_is_bounded_and_contains_no_argument_values",
+      "status": "passed",
+      "seconds": 0.001,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_task_diagnostics::test_deepseek_wire_query_replay_and_parameter_repair[None]",
+      "status": "passed",
+      "seconds": 1.728,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_task_diagnostics::test_deepseek_wire_query_replay_and_parameter_repair[bad1]",
+      "status": "passed",
+      "seconds": 1.733,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_task_diagnostics::test_deepseek_wire_query_replay_and_parameter_repair[bad2]",
+      "status": "passed",
+      "seconds": 1.875,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_task_diagnostics::test_deepseek_wire_query_replay_and_parameter_repair[bad3]",
+      "status": "passed",
+      "seconds": 1.745,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_task_diagnostics::test_provider_error_and_cleanup_keep_stable_code",
+      "status": "passed",
+      "seconds": 1.394,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_task_diagnostics::test_model_page_counts_do_not_change_proofs_or_reveal_hidden_totals",
+      "status": "passed",
+      "seconds": 1.315,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_task_diagnostics::test_channel_reference_resolves_actual_id_before_chat",
+      "status": "passed",
+      "seconds": 1.81,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_task_diagnostics::test_last_round_closes_tools_and_returns_bounded_partial_answer",
+      "status": "passed",
+      "seconds": 1.652,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_task_diagnostics::test_http_diagnostics_keep_only_valid_status_without_remote_text[400]",
+      "status": "passed",
+      "seconds": 0.001,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_task_diagnostics::test_http_diagnostics_keep_only_valid_status_without_remote_text[422]",
+      "status": "passed",
+      "seconds": 0.001,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_task_diagnostics::test_http_diagnostics_keep_only_valid_status_without_remote_text[None]",
+      "status": "passed",
+      "seconds": 0.001,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_task_diagnostics::test_http_diagnostics_keep_only_valid_status_without_remote_text[private error]",
+      "status": "passed",
+      "seconds": 0.001,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_task_diagnostics::test_http_diagnostics_keep_only_valid_status_without_remote_text[True]",
+      "status": "passed",
+      "seconds": 0.001,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_task_diagnostics::test_http_diagnostics_keep_only_valid_status_without_remote_text[99]",
+      "status": "passed",
+      "seconds": 0.001,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_task_diagnostics::test_http_diagnostics_keep_only_valid_status_without_remote_text[600]",
+      "status": "passed",
+      "seconds": 0.002,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_sessions::test_history_reuses_valid_response_but_drops_stale_sources",
+      "status": "passed",
+      "seconds": 1.594,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_sessions::test_history_is_bounded_and_never_reads_other_sessions",
+      "status": "passed",
+      "seconds": 1.561,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_sessions::test_repository_rejects_broken_conversation_links[foreign]",
+      "status": "passed",
+      "seconds": 1.364,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_sessions::test_repository_rejects_broken_conversation_links[missing]",
+      "status": "passed",
+      "seconds": 1.552,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_sessions::test_repository_rejects_broken_conversation_links[duplicate]",
+      "status": "passed",
+      "seconds": 1.671,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_sessions::test_repository_rejects_broken_conversation_links[title]",
+      "status": "passed",
+      "seconds": 1.462,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_sessions::test_session_preferences_owner_conflict_and_persistence",
+      "status": "passed",
+      "seconds": 1.364,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_sessions::test_configured_history_bound_preserves_records[0]",
+      "status": "passed",
+      "seconds": 1.48,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_sessions::test_configured_history_bound_preserves_records[2]",
+      "status": "passed",
+      "seconds": 2.25,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_sessions::test_configured_history_bound_preserves_records[4]",
+      "status": "passed",
+      "seconds": 1.534,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_sessions::test_session_preferences_validate_command_and_stored_data[historyTurns--1]",
+      "status": "passed",
+      "seconds": 1.39,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_sessions::test_session_preferences_validate_command_and_stored_data[historyTurns-5]",
+      "status": "passed",
+      "seconds": 1.575,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_sessions::test_session_preferences_validate_command_and_stored_data[historyTurns-True]",
+      "status": "passed",
+      "seconds": 1.399,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_sessions::test_session_preferences_validate_command_and_stored_data[historyTurns-1.5]",
+      "status": "passed",
+      "seconds": 1.328,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_sessions::test_session_preferences_validate_command_and_stored_data[renderMode-html]",
+      "status": "passed",
+      "seconds": 1.466,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_sessions::test_session_preferences_validate_command_and_stored_data[pinned-1]",
+      "status": "passed",
+      "seconds": 1.548,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_sessions::test_session_preferences_validate_command_and_stored_data[showDiagnostics-false]",
+      "status": "passed",
+      "seconds": 1.559,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-regression.xml"
+    },
+    {
+      "id": "tests.test_embeds::test_package_manifest_covers_public_runtime_dependencies",
+      "status": "passed",
+      "seconds": 0.018,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-embeds.xml"
+    },
+    {
+      "id": "tests.test_embeds::test_real_room_page_variants[page]",
+      "status": "passed",
+      "seconds": 22.686,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-final.xml"
+    },
+    {
+      "id": "tests.test_embeds::test_real_room_page_variants[conversation]",
+      "status": "passed",
+      "seconds": 6.296,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-final.xml"
+    },
+    {
+      "id": "tests.test_embeds::test_real_room_page_variants[collapsible]",
+      "status": "passed",
+      "seconds": 8.034,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-final.xml"
+    },
+    {
+      "id": "tests.test_embeds::test_same_origin_iframe_entry_and_csp_scope",
+      "status": "passed",
+      "seconds": 6.127,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-embeds.xml"
+    },
+    {
+      "id": "tests.test_embeds::test_headless_tools_and_shared_client_ownership",
+      "status": "passed",
+      "seconds": 5.721,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-final.xml"
+    },
+    {
+      "id": "tests.test_known_ui::test_known_snapshot_completion_atomic_chip_and_revoked_inspector",
+      "status": "passed",
+      "seconds": 5.44,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-embeds.xml"
+    },
+    {
+      "id": "tests.test_known_ui::test_data_views_separate_player_and_administrator_and_avoid_raw_fallback",
+      "status": "passed",
+      "seconds": 5.535,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-embeds.xml"
+    },
+    {
+      "id": "tests.test_known_ui::test_chat_evidence_and_preview_use_session_audience[kp-administrator]",
+      "status": "passed",
+      "seconds": 5.374,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-embeds.xml"
+    },
+    {
+      "id": "tests.test_known_ui::test_chat_evidence_and_preview_use_session_audience[kp-player]",
+      "status": "passed",
+      "seconds": 5.237,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-embeds.xml"
+    },
+    {
+      "id": "tests.test_known_ui::test_chat_evidence_and_preview_use_session_audience[pl-player]",
+      "status": "passed",
+      "seconds": 5.314,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-embeds.xml"
+    },
+    {
+      "id": "tests.test_workbench::test_task_session_lookup_respects_owner_archive_and_delete",
+      "status": "passed",
+      "seconds": 1.423,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-embeds.xml"
+    },
+    {
+      "id": "tests.test_workbench_ui::test_room_settings_page_saves_permissions_and_denies_player",
+      "status": "passed",
+      "seconds": 5.83,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-embeds.xml"
+    },
+    {
+      "id": "tests.test_workbench_ui::test_compact_ruling_modal_retains_risks_and_decides_once",
+      "status": "passed",
+      "seconds": 5.453,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-embeds.xml"
+    },
+    {
+      "id": "tests.test_workbench_ui::test_resume_loads_target_in_parallel_without_redundant_access_or_old_session",
+      "status": "passed",
+      "seconds": 4.883,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-embeds.xml"
+    },
+    {
+      "id": "tests.test_player_requests::test_cancelled_query_failure_keeps_cancelled_status",
+      "status": "passed",
+      "seconds": 1.078,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-boundaries.xml"
+    },
+    {
+      "id": "tests.test_player_requests::test_review_context_identifies_original_player_for_my_character_intent",
+      "status": "passed",
+      "seconds": 1.238,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-boundaries.xml"
+    },
+    {
+      "id": "tests.test_player_requests::test_reference_label_cannot_bypass_disabled_private_egress_during_kp_accept",
+      "status": "passed",
+      "seconds": 1.166,
+      "evidence": "engineering/acceptance/ai-runtime/player-requests-boundaries.xml"
+    }
+  ],
+  "initialFailures": [
+    {
+      "files": [
+        "player-requests-core.xml",
+        "player-requests-core2.xml"
+      ],
+      "reason": "新增测试拼写与编排插入缩进造成收集错误，修复后进入专项复验"
+    },
+    {
+      "file": "player-requests-core3.xml",
+      "reason": "ai.ruling.decide的ID正则尚未纳入player前缀；补契约后12项通过"
+    },
+    {
+      "files": [
+        "player-requests-regression.xml",
+        "player-requests-embeds.xml"
+      ],
+      "reason": "4个旧断言仍期待资料不足/received；新行为明确显示空匹配或dispatch blocker，更新断言后全部复验通过"
+    }
+  ],
+  "coverage": [
+    "自动空query个人目录及关键词未命中回退，不转读世界/其他玩家",
+    "必须读取详情才能输出已签发证据；可恢复错误重试与撤权",
+    "4类知识/外发/查询阻断返回安全错误；PL无堆栈",
+    "无需模型与资料服务的纯文本创作申请、主体绑定、幂等及取消",
+    "KP独立私有审核会话、重复接收/拒绝/重启与引用转换",
+    "即使普通自动审批开启，玩家来源的批次和普通配置仍待人工",
+    "实际嵌入直提、错误提示、审核会话定位、三种形态、共享客户端SDK",
+    "取消状态优先、重复披露入口移除、390px按钮布局",
+    "KP审核明确requestedBy，第一人称归原申请人",
+    "玩家引用转换为标签时检查房间private外发；禁用则中性不可核验标记"
+  ],
+  "boundaries": {
+    "moduleTestsUseRealHostAndDeterministicProviders": true,
+    "modulePaidApiCalls": 0,
+    "productionRoomModified": false,
+    "engineChangesRequired": false,
+    "engineCoordination": "工程bro 1号确认沿用现有knowledge授权与宿主命令"
+  },
+  "packageLiveReportedByOwner": {
+    "cases": [
+      "P02",
+      "P03",
+      "P11"
+    ],
+    "passed": 3,
+    "calls": 6,
+    "totalTokens": 28259,
+    "evidenceRun": "ai-player-requests-live-0acb8e68",
+    "note": "配置包责任者单独执行的隔离实测；不计入模块pytest数量，最终包报告由责任者维护",
+    "report": "rulepacks/stumpsville/tests/ai-player-requests-live-results.json"
+  },
+  "sourceSha256": {
+    "engineering/contracts/ai-operations.json": "c75b057fdfd9e8fed4ed3eb7daa51c671518087191cbf2c4f5352ef397a3a5d6",
+    "engineering/ai/src/onlinecoc_ai/access.py": "e3c872622671c9aee75ea83b3b98194709b8cdddd9152c031dcd46c25216876f",
+    "engineering/ai/src/onlinecoc_ai/answers.py": "6ea3d4c5a7f988a4b0e538612e5692187ebdac811e2d83eb56445d6e2e5e209e",
+    "engineering/ai/src/onlinecoc_ai/api.py": "57b98602fbaf87d4d918e79593207b15a82797acbafcde16b418173fc1101a29",
+    "engineering/ai/src/onlinecoc_ai/batches.py": "4a29f375ba1afc608da79a86b0137c6bae513f9cf5be823f0ae676a0a71fd831",
+    "engineering/ai/src/onlinecoc_ai/change_policy.py": "a6da5036ee262283289336b071fd94c77faadf073948b98234c54dcb7d9a82ba",
+    "engineering/ai/src/onlinecoc_ai/cli.py": "9fd275ce87a8edff8c0e724a5b04fc1ce79bc0784b0d60bcfa750d09b23c1e9d",
+    "engineering/ai/src/onlinecoc_ai/context.py": "b210e9ecd9eccdb29ed7ae6e90b52ab37abc2ffcbddf30dfd18c0989813e50b3",
+    "engineering/ai/src/onlinecoc_ai/contracts.py": "1a1d77e43f0dbeeda22cfe7e7416210bf3b204f17768e8ad355acfbfd28c9a86",
+    "engineering/ai/src/onlinecoc_ai/coordinator.py": "85baa66eb3e3d5e77f3e79c2063bff84124287a2d1d07a65213508628f7c063a",
+    "engineering/ai/src/onlinecoc_ai/data_queries.py": "8193830e78557833ae7dd0b9770604f2e4ed09b1f47b60f25069ef18d30ab9f6",
+    "engineering/ai/src/onlinecoc_ai/diagnostics.py": "d4d0a34a68dc38d39869b5162d1387f1a1c2cda006468c7480b6b06012ac3ff1",
+    "engineering/ai/src/onlinecoc_ai/errors.py": "d082dda537453626acb6f3b8424aa4d73f85c00da42d762762fb23d2e7a384ce",
+    "engineering/ai/src/onlinecoc_ai/knowledge.py": "e21eac9de627e4afc2430b7532fe2223341406049e3b1cb9ea6e6c3341a0c96b",
+    "engineering/ai/src/onlinecoc_ai/knowledge_requests.py": "b53403b1b8da40715a5152b4ac257586278963ea46eb90688f5b7fc14f10a6f6",
+    "engineering/ai/src/onlinecoc_ai/known_answers.py": "3010f52e2f77b1e847078955ae7fb4f3eb04ed318f498305f74c8a0949f9dbc0",
+    "engineering/ai/src/onlinecoc_ai/local_lock.py": "163704bbe210e32da99510237931b116bc67ded4f16939625357aec8936fc1af",
+    "engineering/ai/src/onlinecoc_ai/manager.py": "6d6ecc0ecc733b3ec5b4e90cc216699dbca3fa5ef8747a3cb0b4c9fc453e29ce",
+    "engineering/ai/src/onlinecoc_ai/memory.py": "63c54933810330288c43e047d8f29e5eaf8befed1435d5e23bc63b500c97c235",
+    "engineering/ai/src/onlinecoc_ai/pack.py": "46271072cd2c5e607fd6ce74d196888887dada7f56eeabdd3bed7ef8666e3442",
+    "engineering/ai/src/onlinecoc_ai/player_requests.py": "cffe243995ff292754da46373dfd092685ae662b6860def8d8053d80b3720678",
+    "engineering/ai/src/onlinecoc_ai/policy.py": "75e0dbd30cbe7f5ecd5e4743b49d56a60f3eef0206c6621de200c531cb0e2b71",
+    "engineering/ai/src/onlinecoc_ai/profiles.py": "c2c13d549be93456d9ef7168b9fa19c1924aadb0524911729681887457ab7c6c",
+    "engineering/ai/src/onlinecoc_ai/proposals.py": "785a6487ea9eccb2ec3354927c0ee7889554cd6b5ddae6aee523ac51e69526b5",
+    "engineering/ai/src/onlinecoc_ai/references.py": "9beb0d84c0aa25f03df8d49cff836f038ca2d79c42b6eb13edf0e85fd916926a",
+    "engineering/ai/src/onlinecoc_ai/repository.py": "3cbe37b2524d56f4514233dda44ca103932f84de11b749d373e58b91412f6d18",
+    "engineering/ai/src/onlinecoc_ai/rulings.py": "f46dceec4e46d66698d93636e65ce87a2428ea159ae2260bfbed18c5c8f84690",
+    "engineering/ai/src/onlinecoc_ai/runtime.py": "5f4f13401189ee3e3a07e07b700417d2243a7ccaa7d0530b3d14eb1317f4103c",
+    "engineering/ai/src/onlinecoc_ai/sandbox.py": "30766603068ef36110b15a9add78c65282658cf9e0fe4fef1f24ae1785ceb407",
+    "engineering/ai/src/onlinecoc_ai/sessions.py": "2090672ce15d63f53661f8305dc2844924ee4a26395350927a1d3dd8215f9c0e",
+    "engineering/ai/src/onlinecoc_ai/usage.py": "e1b38804a341bf1f825daf2367938e5c8350ed46755d858089819c8cb4c644a6",
+    "engineering/ai/src/onlinecoc_ai/vault.py": "4bfa15671a968f2e8a917c7ccea0256970a3fd20ce08167b72d604ecac810bca",
+    "engineering/ai/src/onlinecoc_ai/__init__.py": "45a5eef692b3ff17f5451ed03348f091061741b46e352d2f560a77735f28b1c8",
+    "engineering/ai/src/onlinecoc_ai/providers/base.py": "3fff53664eb2acb40a7658f2b5d026a2e5bfc53e633527353d53bf156ee07d05",
+    "engineering/ai/src/onlinecoc_ai/providers/compatible.py": "e6d74996519452d89edd926d9da52a951eae8bf6823e671b1c8207f241ff8d27",
+    "engineering/ai/src/onlinecoc_ai/providers/deepseek.py": "5fd1a82a519ce8835cc407755182884598cabbbe845988d3f5354aa4b2dd1f57",
+    "engineering/ai/src/onlinecoc_ai/providers/transport.py": "e962909ad7eee0ae05655926ff42ab6e581166725a7e54afac08a4a14bb236e0",
+    "engineering/ai/src/onlinecoc_ai/providers/__init__.py": "853b4a7ef469f37005ca2b6cd3cfda46a02a4d2cc709b4317e976ce41d0d038d",
+    "engineering/ai/src/onlinecoc_ai/validation/base.py": "5c247432ca6362244ec78b28c98dc7e61195dc518e8f11cdedcca0b11e27e38d",
+    "engineering/ai/src/onlinecoc_ai/validation/common.py": "524e6a28b52e880483310fd3f04e540582502276eb53f232bf97160ea38f692c",
+    "engineering/ai/src/onlinecoc_ai/validation/extensions.py": "94298df880066f8a66faaed227b6f2f519f382680b8227fd8a00088dbf8c5461",
+    "engineering/ai/src/onlinecoc_ai/validation/gameplay.py": "a2daef832d54b6e46cf50c1481e8707676bb7839ba97755276c9214b057f2be2",
+    "engineering/ai/src/onlinecoc_ai/validation/live.py": "058054b2a9a558fa404aabac855b8c448e5bc87dcb37ad797711a98b9bdc9bc3",
+    "engineering/ai/src/onlinecoc_ai/validation/rules.py": "073024fbc8593b367cf1b97e69bba101a469f69145680913d61e89f19d477c8e",
+    "engineering/ai/src/onlinecoc_ai/validation/__init__.py": "c6f6e326c479f9eb78c920e80b8abf304731ac3305687a127cdcda2ac894f932",
+    "engineering/ai/web/components/chat.css": "62ceef7439f52b2267cae0e3bcb29a6835524490826cd703b3477d8ba3cc63a6",
+    "engineering/ai/web/components/chat.js": "d0e76304225fdf10ff0ad7b9477871553968b17562582f4f8b4e4fabc0c62825",
+    "engineering/ai/web/components/choices.css": "ba30e313516516cfd0ff4e1cede2ade8ca5265534b6f7bbdc90860737e0c98c6",
+    "engineering/ai/web/components/choices.js": "dff5b42432dd828ba296ee300d01eb9b653fc86d39613be72e4ad49ff319ed95",
+    "engineering/ai/web/components/client.js": "35c641732ffce0677ce207debd0280dde72b25bf55d8b2ff353a838ca9a2c971",
+    "engineering/ai/web/components/guard.js": "f928d77f35afdadb9fd77db627d5c37d198fc73dea0c3cc0105a2a6995799bed",
+    "engineering/ai/web/components/index.d.ts": "092f68a884394f5967eb3512970a57c80c4ab95655799020a2dab2e5b42b6f7f",
+    "engineering/ai/web/components/index.js": "4464519cf98905085c80e588167df212ad0a1994a401757c5990fd4d31a4ccc0",
+    "engineering/ai/web/components/markdown.css": "8c5609113a5cf9cc98b6a501a0e1bdf797224a73a47025868ce6fe357e2e8b40",
+    "engineering/ai/web/components/markdown.js": "31e81e74cc6349e5fe448163bef35a15108fb23aa65e48809ee0546e5c43b573",
+    "engineering/ai/web/components/pack.d.ts": "f391d394f8c2ecb5a33bbedefbc4626b227b5c8f8c4effab064a4a81c987a7ee",
+    "engineering/ai/web/components/pack.js": "600531997d7a87a74891ca49b569a8b8c76c6d594cf6793132455047686abb71",
+    "engineering/ai/web/components/page-entry.css": "868732ccb9bde4b0e1fecd3c17b3bc92c2ef1265724e7f92cd6409d7c480ac84",
+    "engineering/ai/web/components/page-entry.js": "6fe175d9bcd64db41a517aa7329db9512ef0de68c4bcbefd7b2504b76cb4f964",
+    "engineering/ai/web/components/panel.css": "0c1dd83f2355b7bf4f7a171c4939383bf9320f4a39210a97caf254402c848ea8",
+    "engineering/ai/web/components/providers.js": "e7cdc63f2a4fc889e37fe2caf48d32cb15af2aeb2e6246d93df890f9d789e75e",
+    "engineering/ai/web/components/reference-commands.js": "1dde523702635a6afe17804265c68bab2a8860677d313603fe607cd49710e910",
+    "engineering/ai/web/components/reference-details.css": "b48adb88a532d1bef5feb2aace9d52eb303debf9dbf97993242cafb80bcd49a1",
+    "engineering/ai/web/components/reference-details.js": "61f74597fe7afc0b2c428a6cfa8158e51019e5f9aa2868dbc439e9e8a287f800",
+    "engineering/ai/web/components/reference-editor.js": "cd69936f18c2409b7dea240cf45102d34d02c4a7b0659c2f227a05a300a2e138",
+    "engineering/ai/web/components/reference-input.js": "2ee610229a8ab5758d28ff8db702289a5c62467c527b883e544d9348a5fe3215",
+    "engineering/ai/web/components/room-panel.js": "64fd0e05ed88eb9b822a0708e606eafd7951308e98ec1bc4ad76cf2f7514a470",
+    "engineering/ai/web/components/rulings.css": "94c765c7e0e667f7bd8b75c1e417994de43f4e79fa28f96a35eff2b441bcd2a8",
+    "engineering/ai/web/components/rulings.js": "c8bbca6785251317dcc38a7b55d0658a43330c5fa8f72383bc8aab733a808b62",
+    "engineering/ai/web/components/session-manager.css": "546311842e0ef5385710a5a71b77ae2975b7be60a470213706460ad904905819",
+    "engineering/ai/web/components/session-manager.js": "9c88f72dc2bae019f8931ea822c11c29a3f21467863eea0416d02ef488bab86c",
+    "engineering/ai/web/components/sessions.js": "9dd5b59228e769003275695d256f4febeef831b60f63a6ada584287608b945a9",
+    "engineering/ai/web/components/settings.css": "b940f97a3fa23387b9fdc26bd5c92c2dc33f0f6d79ab9bba756baad68e7a2542",
+    "engineering/ai/web/components/settings.js": "3c8fc63a14ce4bd16a21f1db2ff41281fd7c285eacb91315bbb56f6a0db37466",
+    "engineering/ai/web/components/styles.js": "2da73e4f1c3cd43f0a723275c8a2671cccfc85775a64d21d2500250f8843a48b",
+    "engineering/ai/web/components/tools.js": "424ea8a991329cca0f085079786b78ed21c97c0ea17d5929bf4e1abd956bb722",
+    "engineering/ai/web/components/usage.css": "fd4876d0d045ab3bcd96191a6040a6b09a23fa90959d861d5594ae85dcfc4826",
+    "engineering/ai/web/components/usage.js": "f2682739b4ddb8703954768135d914fdc35602778b43c462e726c758be40339e",
+    "engineering/ai/web/components/views.css": "e3fdf0cc2bdc280d11e09965d816fbf68c95401ed08f6d71064613bb1d2d1b70",
+    "engineering/ai/web/components/views.js": "9c0164e41787aba1d43c53863177b77bfa71da07afe4b1e2f345327b81c628e9",
+    "engineering/ai/tests/test_player_requests.py": "f3bf7bb5499300cd146c493d6d54e00ce4fdca4610752baea47624c7004759ea",
+    "engineering/ai/tests/test_player_requests_ui.py": "430fc91be65065a8801990de8870a430b0c811ec60d64e779e9bf54aa07778de",
+    "engineering/ai/tests/test_access_batches.py": "0bdffe271b6d490d702e9a1543d6c82b76dfb77343b124ba6cc3f8c26a79ba78",
+    "engineering/ai/tests/test_embeds.py": "6dd21d63c3d3e27fd4002fb47d46dacfbebeb2b060eef1bedd95dce5b6097f62"
+  },
+  "packageValidationReportedByOwner": {
+    "groups": 12,
+    "passed": 12,
+    "report": "rulepacks/stumpsville/tests/ai-player-requests-results.json",
+    "evidenceRun": "ai-player-requests-c951625b",
+    "note": "配置包责任者独立隔离验收，模块末轮requestedBy与外发边界另由30项定向回归验证；不重复付费模型调用"
+  }
+}

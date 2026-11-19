@@ -6,12 +6,14 @@
 
 | 文档 | 说明 |
 | --- | --- |
+| [开发者参考](developer-reference/README.md) | 基于实际配置包的面板树、通知、规则定义与数据管理速查 |
 | [AI 回答、语义引用与选择项](ai-responses.md) | 简洁分段、授权引用详情、稳定渲染、结构化选择及独立嵌入组件 |
 | [AI 数据查询与聊天裁决资料](ai-data-query.md) | 按需工具、来源复验、语义引用、包侧只读适配、Room v4与个人知识边界 |
 | [网页房间与按需游戏页](network-web.md) | 可选 network-web：开房串、创建/管理/加入三页、可选公开与密码、成员/黑名单及按需游戏页 |
 | [配置包 AI 工具、嵌入视图与会话管理](ai-pack-embedding.md) | pack.js 无界面工具、三种对话视图、独立会话管理/设置、用量统计、Markdown 显示、同源 iframe 与资源清单 |
 | [AI 管理器、嵌入组件与开发接口](ai-manager.md) | 房间文件夹与对话界面、服务商/加密密钥、可选日限额与用量统计、只读数据引用、可嵌入组件/API、性能测量与包侧原型 |
 | [房间 AI 模块](ai-runtime.md) | AI-0—AI-5、实际 demo 工程试点与真实 DeepSeek 联调已验收；三检、上下文/记忆、服务商、KP 面板及原子发布，人工试玩待补 |
+| [高危配置发布与 KP 全房间读取](high-risk-publication.md) | 完整候选明确批准、配置删除依赖、发布回执及受授权的 Room 分片读取 |
 | [独立本地化工具](localization.md) | 独立 Electron/CLI 骨架、共享 ICU 与便携试打包；L10N-0 的 3/4 条件通过，原生目录确认待验收 |
 | [本机主机账号维护](host-accounts.md) | 工程外账号工具、运行实例选择、主机用户授权和在线密码重设 |
 | [公网房间与 P2P 联机](network-p2p.md) | 短房间码、本机宿主识别、玩家分发、腾讯 CVM 运维和验收；开房/加入见[快速使用](../../../engineering/network-p2p/README.md) |

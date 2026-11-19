@@ -1,11 +1,11 @@
 {
   "passed": true,
-  "checkedAt": "2026-11-17T22:05:06.210895+08:00",
+  "checkedAt": "2026-11-19T12:10:38.670568+08:00",
   "checks": [
     "unchanged numeric sync creates no revision; changes commit; lost step result recovers the same receipt without another write",
     "current rooms include scene rules; removed upgrade operation has no effects",
     "interrupted feedback resumes after reload; the original waiting card becomes one completed result; duplicate executor delivery is idempotent",
-    "interruption after the host transaction cannot reroll the save, duplicate cheese or lose the finite-stock decrement",
+    "pre-upgrade committed request with lost local result recovers the original host receipt without reroll, duplicate cheese or lost stock decrement",
     "full inventory blocks before rolling or reducing shared stock",
     "deliberate global manual mode remains manual when automation is re-enabled"
   ]

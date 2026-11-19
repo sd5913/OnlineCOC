@@ -1,0 +1,19 @@
+{
+  "checkedAt": "2026-11-19T16:29:31.638484+08:00",
+  "passed": 9,
+  "checks": [
+    "18 definitions: initial menus omit hidden names/outcomes; explicit discoveries unlock every declared choice without mutating sources",
+    "stock v1 definitions use exact-match safe wording; changed legacy definitions and malformed declarations fail closed",
+    "KP receives full mechanism; PL raw DTO contains only known choices; hidden and forged submissions share a neutral rejection",
+    "one player discovering treasure and changing global poolKnown does not unlock another player, even on a fresh basic disclosure",
+    "actual AI search/read/evidence HTTP path sees only the player-safe observation and renders semantic lists",
+    "uncommitted pre-upgrade automatic and manual requests cannot execute through the current KP executor",
+    "Edge: KP mechanism panel, unchecked explicit per-player disclosure, newly unlocked PL dialog and 390px layout; old snapshot unchanged",
+    "revoking all scene grants clears menus, blocks submissions and removes prior AI history response",
+    "current static webpage build includes safe UI logic but no gameplay definitions or private mechanism data"
+  ],
+  "output": "D:\\Studies\\Art Programming\\OnlineCOC\\rulepacks\\stumpsville\\tests\\output\\menu-knowledge-59a756a5",
+  "realSaveChanged": false,
+  "realProviderCalls": 0,
+  "browserErrors": []
+}

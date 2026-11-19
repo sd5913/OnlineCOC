@@ -1,0 +1,496 @@
+{
+  "checkedAt": "2026-11-19T15:07:43.282209+08:00",
+  "cases": [
+    {
+      "id": "K08",
+      "sessionId": "4b3f19b3a5c24a9c89c170af5898839e",
+      "prompt": "将 player1 的角色复活：生命、力量、敏捷、意志恢复到各自上限，解除失能，传送到入口。保留背包、财富和剧情数据。请查询当前状态后直接提交执行指令包供 KP 审批。",
+      "task": {
+        "requestId": "35f8be3bc09448198ab44a2f5dd7d87b",
+        "sessionId": "4b3f19b3a5c24a9c89c170af5898839e",
+        "status": "review_ready",
+        "createdAt": 1795072086.12927,
+        "ruling": {
+          "batchId": "3d039d3a2b8c40d08b9b5d9205a33255",
+          "status": "pending",
+          "digest": "38f1029b5290dddf2b58ade3a5b0e05530f1f2765ac2df6cfeb01bb2f2ba4f8a"
+        },
+        "text": "将 player1 的角色复活：生命、力量、敏捷、意志恢复到各自上限，解除失能，传送到入口。保留背包、财富和剧情数据。请查询当前状态后直接提交执行指令包供 KP 审批。",
+        "initiator": "kp",
+        "taskId": "680a17237f0b4f4e89706417d75114cc",
+        "proposalId": null,
+        "error": null,
+        "response": "已核实 player1 的树桩镇角色为「木栗」，当前生命 0/4、力量 0/10、敏捷 12/12、意志 9/9，失能标记为 1，位于地点 3。拟提交三项待审操作：恢复数值、解除失能、传送到入口（地点索引 1）。背包（物品 2、3、5、6 等）、财富、等级与剧情进度不改动，休息与档案规则不用于此次复活。",
+        "diagnostics": {
+          "schemaVersion": 1,
+          "stage": "output_validate",
+          "turn": 3,
+          "toolCalls": [
+            {
+              "name": "room_search_data",
+              "status": "completed",
+              "argumentsDigest": "97b53926c007bda412cebd7573dde53b451fcaf637aecfbacedc3b583211bef2",
+              "keys": [
+                "limit",
+                "query",
+                "types"
+              ],
+              "unknownKeys": false,
+              "turn": 0,
+              "types": [
+                "entity"
+              ],
+              "hasQuery": true
+            },
+            {
+              "name": "room_search_data",
+              "status": "completed",
+              "argumentsDigest": "620907e95775c9a522a37358e3de060f50c724385a1d1312ce52920ed4c2f033",
+              "keys": [
+                "limit",
+                "query",
+                "types"
+              ],
+              "unknownKeys": false,
+              "turn": 0,
+              "types": [
+                "config",
+                "room"
+              ],
+              "hasQuery": false
+            },
+            {
+              "name": "room_read_data",
+              "status": "completed",
+              "argumentsDigest": "05819c48dcbb91f4116286ad0bf844e96d1e905cb9d51271371912a81acc1eaf",
+              "keys": [
+                "refs"
+              ],
+              "unknownKeys": false,
+              "turn": 1,
+              "referenceCount": 1
+            },
+            {
+              "name": "room_manage_catalog",
+              "status": "completed",
+              "argumentsDigest": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+              "keys": [],
+              "unknownKeys": false,
+              "turn": 1
+            },
+            {
+              "name": "room_manage_catalog",
+              "status": "completed",
+              "argumentsDigest": "78f874d90e53ec80d712644a4ae881455a09f9cca8f1aa8d98468369127749f9",
+              "keys": [
+                "operations"
+              ],
+              "unknownKeys": false,
+              "turn": 2
+            }
+          ],
+          "errors": [],
+          "outputFailures": [],
+          "contextBudget": {
+            "bytes": 72075,
+            "limitBytes": 262144,
+            "toolSchemaBytes": 4779,
+            "toolMessageBytes": 32819
+          }
+        },
+        "batchId": "3d039d3a2b8c40d08b9b5d9205a33255"
+      },
+      "seconds": 11.65,
+      "passed": true,
+      "ruling": {
+        "kind": "runtime",
+        "summary": "已核实 player1 的树桩镇角色为「木栗」，当前生命 0/4、力量 0/10、敏捷 12/12、意志 9/9，失能标记为 1，位于地点 3。拟提交三项待审操作：恢复数值、解除失能、传送到入口（地点索引 1）。背包（物品 2、3、5、6 等）、财富、等级与剧情进度不改动，休息与档案规则不用于此次复活。",
+        "actions": [
+          {
+            "target": "host",
+            "op": "entity.update",
+            "args": {
+              "id": "8601d38f66f5463b932952b8e8275be9",
+              "numbers": {
+                "hp": 4,
+                "str": 10,
+                "dex": 12,
+                "wil": 9,
+                "incapacitated": 0
+              }
+            }
+          },
+          {
+            "target": "host",
+            "op": "action.invoke",
+            "args": {
+              "actionId": "sv.travel",
+              "input": {
+                "actor": "8601d38f66f5463b932952b8e8275be9",
+                "location": 1
+              }
+            }
+          }
+        ]
+      },
+      "decision": {
+        "sessionId": "4b3f19b3a5c24a9c89c170af5898839e",
+        "requestId": "680a17237f0b4f4e89706417d75114cc",
+        "summary": "来源权限或资料已变化，请重新生成。",
+        "status": "completed",
+        "createdAt": 1795072098.312097,
+        "digest": "38f1029b5290dddf2b58ade3a5b0e05530f1f2765ac2df6cfeb01bb2f2ba4f8a",
+        "actions": [],
+        "receipts": [],
+        "rulingId": "batch:3d039d3a2b8c40d08b9b5d9205a33255",
+        "kind": "runtime",
+        "canDecide": false,
+        "risks": [],
+        "initiator": "kp"
+      },
+      "actual": {
+        "hp": 4,
+        "maxHp": 4,
+        "str": 10,
+        "strMax": 10,
+        "dex": 12,
+        "dexMax": 12,
+        "wil": 9,
+        "wilMax": 9,
+        "incapacitated": 0,
+        "location": 1
+      }
+    }
+  ],
+  "calls": [
+    {
+      "injected": false,
+      "httpStatus": 200,
+      "seconds": 1.65,
+      "usage": {
+        "prompt_tokens": 9165,
+        "completion_tokens": 152,
+        "total_tokens": 9317,
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        },
+        "prompt_cache_hit_tokens": 128,
+        "prompt_cache_miss_tokens": 9037
+      },
+      "finishReasons": [
+        "tool_calls"
+      ]
+    },
+    {
+      "injected": false,
+      "httpStatus": 200,
+      "seconds": 2.27,
+      "usage": {
+        "prompt_tokens": 13045,
+        "completion_tokens": 180,
+        "total_tokens": 13225,
+        "prompt_tokens_details": {
+          "cached_tokens": 9088
+        },
+        "prompt_cache_hit_tokens": 9088,
+        "prompt_cache_miss_tokens": 3957
+      },
+      "finishReasons": [
+        "tool_calls"
+      ]
+    },
+    {
+      "injected": false,
+      "httpStatus": 200,
+      "seconds": 1.39,
+      "usage": {
+        "prompt_tokens": 16390,
+        "completion_tokens": 48,
+        "total_tokens": 16438,
+        "prompt_tokens_details": {
+          "cached_tokens": 13184
+        },
+        "prompt_cache_hit_tokens": 13184,
+        "prompt_cache_miss_tokens": 3206
+      },
+      "finishReasons": [
+        "tool_calls"
+      ]
+    },
+    {
+      "injected": false,
+      "httpStatus": 200,
+      "seconds": 2.28,
+      "usage": {
+        "prompt_tokens": 18916,
+        "completion_tokens": 225,
+        "total_tokens": 19141,
+        "prompt_tokens_details": {
+          "cached_tokens": 16384
+        },
+        "prompt_cache_hit_tokens": 16384,
+        "prompt_cache_miss_tokens": 2532
+      },
+      "finishReasons": [
+        "stop"
+      ]
+    }
+  ],
+  "model": "deepseek-flash",
+  "realSaveChanged": false,
+  "evidenceDirectory": "tests/output/ai-scenarios-live-49211501",
+  "previousRuns": [
+    {
+      "checkedAt": "2026-11-19T14:18:21.260976+08:00",
+      "evidenceDirectory": "tests/output/ai-scenarios-live-3e4f233e",
+      "passed": false,
+      "realCalls": 10,
+      "confirmedTokens": 155201,
+      "cases": [
+        {
+          "id": "K08",
+          "passed": false,
+          "error": "CONTEXT_LIMIT_EXCEEDED"
+        },
+        {
+          "id": "K12",
+          "passed": false,
+          "error": "CONTEXT_LIMIT_EXCEEDED"
+        },
+        {
+          "id": "P04",
+          "passed": true,
+          "error": null
+        }
+      ]
+    },
+    {
+      "checkedAt": "2026-11-19T14:36:01.150887+08:00",
+      "evidenceDirectory": "tests/output/ai-scenarios-live-78d88fcc",
+      "passed": false,
+      "realCalls": 19,
+      "confirmedTokens": 259170,
+      "cases": [
+        {
+          "id": "K08",
+          "passed": false,
+          "error": null
+        },
+        {
+          "id": "K12",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "P04",
+          "passed": true,
+          "error": null
+        }
+      ]
+    },
+    {
+      "checkedAt": "2026-11-19T14:39:54.413624+08:00",
+      "evidenceDirectory": "tests/output/ai-scenarios-live-58777023",
+      "passed": false,
+      "realCalls": 6,
+      "confirmedTokens": 98261,
+      "cases": [
+        {
+          "id": "K08",
+          "passed": false,
+          "error": null
+        }
+      ]
+    },
+    {
+      "checkedAt": "2026-11-19T14:54:43.506701+08:00",
+      "evidenceDirectory": "tests/output/ai-scenarios-live-7c943ff3",
+      "passed": false,
+      "realCalls": 0,
+      "confirmedTokens": 0,
+      "cases": []
+    },
+    {
+      "checkedAt": "2026-11-19T14:56:26.709200+08:00",
+      "evidenceDirectory": "tests/output/ai-scenarios-live-1b4a8cf9",
+      "passed": false,
+      "realCalls": 7,
+      "confirmedTokens": 115454,
+      "cases": [
+        {
+          "id": "K08",
+          "passed": false,
+          "error": null
+        }
+      ]
+    }
+  ],
+  "roleSearchVerified": true,
+  "passed": true,
+  "usage": {
+    "schemaVersion": 1,
+    "scopeId": "e75df6258a3a4cbf909cfc556c5865a1",
+    "scope": "room",
+    "timezone": "UTC",
+    "from": "2026-11-13",
+    "to": "2026-11-19",
+    "totals": {
+      "calls": 4,
+      "settledCalls": 4,
+      "pendingCalls": 0,
+      "uncertainCalls": 0,
+      "confirmedTokens": 58121,
+      "promptTokens": 57516,
+      "completionTokens": 605,
+      "missingBreakdownCalls": 0,
+      "pendingReservedTokens": 0,
+      "uncertainReservedTokens": 0,
+      "accountedTokens": 58121
+    },
+    "byDay": [
+      {
+        "date": "2026-11-19",
+        "calls": 4,
+        "settledCalls": 4,
+        "pendingCalls": 0,
+        "uncertainCalls": 0,
+        "confirmedTokens": 58121,
+        "promptTokens": 57516,
+        "completionTokens": 605,
+        "missingBreakdownCalls": 0,
+        "pendingReservedTokens": 0,
+        "uncertainReservedTokens": 0,
+        "accountedTokens": 58121
+      }
+    ],
+    "byProfile": [
+      {
+        "profileId": "deepseek-main",
+        "model": "deepseek-flash",
+        "calls": 4,
+        "settledCalls": 4,
+        "pendingCalls": 0,
+        "uncertainCalls": 0,
+        "confirmedTokens": 58121,
+        "promptTokens": 57516,
+        "completionTokens": 605,
+        "missingBreakdownCalls": 0,
+        "pendingReservedTokens": 0,
+        "uncertainReservedTokens": 0,
+        "accountedTokens": 58121
+      }
+    ],
+    "budgetsToday": [
+      {
+        "profileId": "deepseek-main",
+        "date": "2026-11-19",
+        "dailyTokenBudget": null,
+        "enabled": false,
+        "accountedTokens": 58121,
+        "remainingTokens": null
+      }
+    ],
+    "items": [
+      {
+        "callId": "f6e50b25efef44d2afc38df20c430cc8",
+        "date": "2026-11-19",
+        "profileId": "deepseek-main",
+        "model": "deepseek-flash",
+        "requestId": "35f8be3bc09448198ab44a2f5dd7d87b",
+        "sessionId": "4b3f19b3a5c24a9c89c170af5898839e",
+        "status": "confirmed",
+        "taskStatus": "review_ready",
+        "createdAt": 1795072095.401686,
+        "calls": 1,
+        "settledCalls": 1,
+        "pendingCalls": 0,
+        "uncertainCalls": 0,
+        "confirmedTokens": 19141,
+        "promptTokens": 18916,
+        "completionTokens": 225,
+        "missingBreakdownCalls": 0,
+        "pendingReservedTokens": 0,
+        "uncertainReservedTokens": 0,
+        "accountedTokens": 19141
+      },
+      {
+        "callId": "bd54259fe774479e9ebd187f1d1cfb9d",
+        "date": "2026-11-19",
+        "profileId": "deepseek-main",
+        "model": "deepseek-flash",
+        "requestId": "35f8be3bc09448198ab44a2f5dd7d87b",
+        "sessionId": "4b3f19b3a5c24a9c89c170af5898839e",
+        "status": "confirmed",
+        "taskStatus": "review_ready",
+        "createdAt": 1795072093.143068,
+        "calls": 1,
+        "settledCalls": 1,
+        "pendingCalls": 0,
+        "uncertainCalls": 0,
+        "confirmedTokens": 16438,
+        "promptTokens": 16390,
+        "completionTokens": 48,
+        "missingBreakdownCalls": 0,
+        "pendingReservedTokens": 0,
+        "uncertainReservedTokens": 0,
+        "accountedTokens": 16438
+      },
+      {
+        "callId": "6b05e623eb274d49b6424d37c5cb0fc0",
+        "date": "2026-11-19",
+        "profileId": "deepseek-main",
+        "model": "deepseek-flash",
+        "requestId": "35f8be3bc09448198ab44a2f5dd7d87b",
+        "sessionId": "4b3f19b3a5c24a9c89c170af5898839e",
+        "status": "confirmed",
+        "taskStatus": "review_ready",
+        "createdAt": 1795072089.770597,
+        "calls": 1,
+        "settledCalls": 1,
+        "pendingCalls": 0,
+        "uncertainCalls": 0,
+        "confirmedTokens": 13225,
+        "promptTokens": 13045,
+        "completionTokens": 180,
+        "missingBreakdownCalls": 0,
+        "pendingReservedTokens": 0,
+        "uncertainReservedTokens": 0,
+        "accountedTokens": 13225
+      },
+      {
+        "callId": "74c1cc70f06d4d33ae5ab60bb85d68bb",
+        "date": "2026-11-19",
+        "profileId": "deepseek-main",
+        "model": "deepseek-flash",
+        "requestId": "35f8be3bc09448198ab44a2f5dd7d87b",
+        "sessionId": "4b3f19b3a5c24a9c89c170af5898839e",
+        "status": "confirmed",
+        "taskStatus": "review_ready",
+        "createdAt": 1795072087.289881,
+        "calls": 1,
+        "settledCalls": 1,
+        "pendingCalls": 0,
+        "uncertainCalls": 0,
+        "confirmedTokens": 9317,
+        "promptTokens": 9165,
+        "completionTokens": 152,
+        "missingBreakdownCalls": 0,
+        "pendingReservedTokens": 0,
+        "uncertainReservedTokens": 0,
+        "accountedTokens": 9317
+      }
+    ],
+    "nextBefore": null
+  },
+  "persistentProviderConfigUnchanged": true,
+  "realCalls": 4,
+  "confirmedTokens": 58121,
+  "totalCalls": 46,
+  "totalTokens": 686207,
+  "latestCaseStatus": {
+    "K08": true,
+    "K12": true,
+    "P04": true
+  },
+  "allPlannedCasesPassed": true
+}

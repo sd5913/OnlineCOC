@@ -28,6 +28,8 @@ Python/Tkinter 独立桌面房间管理工具已位于 [`tools/room-manager/`](t
 
 从 [文档索引](docs/README.md) 开始阅读。
 
+配置包实现可查阅[开发者参考](docs/current/engineering/developer-reference/README.md)：以 Stumpsville 为例说明面板层级、通知、规则与数据管理。
+
 | 类型 | 入口 | 内容 |
 | --- | --- | --- |
 | 当前 | [当前文档](docs/current/README.md) | 分为设计文档与工程文档，工程内容与当前代码对齐 |

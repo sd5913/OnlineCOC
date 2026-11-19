@@ -70,10 +70,9 @@ def main():
             page.screenshot(path=str(output/'unified-queue.png'), full_page=True)
 
             queue.locator('[data-settings]').click()
-            expect(page.locator('.ai-dialog')).to_contain_text('统一在裁决队列处理')
-            assert page.locator('.ai-dialog [data-tasks]').count() == 0
-            page.locator('.ai-dialog [data-queue]').click()
+            expect(page.locator('#kp-ai-settings')).to_be_visible()
             expect(page.locator('.ai-dialog')).to_have_count(0)
+            page.locator('.sidebar a[href="#/gm/rulings"]').click()
             page.goto(runtime.origin + '/sessions/kp/#/gm/console')
             expect(page.locator('[data-action=approve]')).to_have_count(0)
             page.get_by_role('button', name='打开裁决队列', exact=True).click()
@@ -91,9 +90,11 @@ def main():
             proposal = result(ai(kp, 'ai.draft.create', {'text': '队列内配置裁决', 'changeSet': delta}))
             validation = result(ai(kp, 'ai.proposal.validate', {'proposalId': proposal['proposalId'], 'revision': 1}))
             assert validation['proposal']['status'] == 'review_ready', [(r['level'],r['status'],r['findings']) for r in validation['reports']]
-            card = queue.locator('.batch-card').filter(has_text='sv.ext.npc.queue')
+            card = queue.locator('dialog[aria-label="AI 修改裁决详情"]').filter(has_text='sv.ext.npc.queue').locator('..')
             expect(card).to_be_visible(timeout=15000)
             expect(card).to_contain_text('等待 KP 裁决')
+            card.get_by_role('button',name='查看并裁决',exact=True).click()
+            expect(card.locator('.ruling-dialog')).to_be_visible()
             expect(card.locator('textarea')).to_have_count(2)
             for textarea in card.locator('textarea').all():
                 textarea.fill('隔离样例中确认此项风险')
@@ -105,16 +106,26 @@ def main():
             assert next(i for i in kp.request('/api/v1/ai/rulings')['items'] if i['rulingId']=='proposal:'+proposal['proposalId'])['status'] == 'rejected'
             checks.append('AI configuration ruling shares the queue; polling preserves risk input and rejection uses the authoritative digest')
 
-            queue.locator('#ruling-form [name=reason]').fill('同意检查，请保持安全距离。')
+            queue.locator('[data-request-id="'+game_request['requestId']+'"] [data-action=console-request]').last.click()
+            page.locator('#ruling-form summary').click()
+            page.locator('#ruling-form [name=reason]').fill('同意检查，请保持安全距离。')
             page.wait_for_timeout(3000)
-            expect(queue.locator('#ruling-form [name=reason]')).to_have_value('同意检查，请保持安全距离。')
-            queue.locator('#ruling-form button[type=submit]').click()
-            expect(queue.locator('#ruling-form')).to_have_count(0)
+            expect(page.locator('#ruling-form [name=reason]')).to_have_value('同意检查，请保持安全距离。')
+            page.locator('#ruling-form button[type=submit]').click()
+            expect(page.locator('#ruling-form')).to_have_count(0)
             request = next(r for r in p1.state()['requests'] if r['id'] == game_request['requestId'])
             assert request['status']=='approved' and '安全距离' in request['reason']
             checks.append('ordinary ruling preserves text during refresh and delivers the persisted decision to the original player')
 
             expect(pl_row).to_be_visible()
+            before_other = p2.state()['locations']
+            pl_row.get_by_role('button', name='执行信息揭示', exact=True).click()
+            expect(page.locator('#dialog')).to_contain_text('木栗')
+            page.locator('#dialog button[type=submit]').click()
+            expect(page.locator('#dialog')).not_to_be_visible()
+            assert any(p['index']==1 for p in p1.state()['locations'])
+            assert p2.state()['locations']==before_other
+            checks.append('information request opens an executable disclosure form for its original player only')
             pl_row.get_by_role('button', name='查看对应会话', exact=True).click()
             expect(page.locator('#kp-ai-embedded #session-access')).to_contain_text('player1')
             pl_row.get_by_role('button', name='转交 AI', exact=True).click()
@@ -142,7 +153,7 @@ def main():
             expect(page.locator('.ruling-work [data-recovery]')).to_be_hidden()
             assert next(i for i in kp.request('/api/v1/ai/tasks?limit=100')['items'] if i['requestId']==keeper_request['requestId'])['status']=='cancelled'
             page.locator('.ruling-work [data-history]').check()
-            expect(queue.locator('.batch-card').filter(has_text='sv.ext.npc.queue')).to_contain_text('已拒绝')
+            expect(queue.locator('dialog[aria-label="AI 修改裁决详情"]').filter(has_text='sv.ext.npc.queue').locator('..')).to_contain_text('已拒绝')
             checks.append('lost AI response persists its original receipt ID across reload; recovery does not repeat the command; finished rulings remain in history')
             bundle = kp.request('/package/bundle')
             bundle['sources']['queue-wait.lua'] = "return flow('sv.queue.wait', {}, {ask('decision',{role='kp',seconds=300,yes='end',no='end',timeout='end'})})"
@@ -154,7 +165,7 @@ def main():
             wait_card = queue.locator('[data-wait="'+waiting['id']+'"]')
             expect(wait_card).to_be_visible()
             assert 'keeperWaits' not in p1.state()
-            wait_card.locator('button').first.click()
+            wait_card.locator('[data-action=host-flow]').first.click()
             expect(wait_card).to_have_count(0)
             assert kp.request('/api/v1/view')['flows'][flow['flowId']]['status']=='completed'
             failure = result(kp.command('action.invoke', {'actionId':'sv.queue.failure','input':{}}))

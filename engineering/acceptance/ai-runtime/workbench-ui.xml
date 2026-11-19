@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="3" time="18.563" timestamp="2026-11-19T13:01:42.462479+08:00" hostname="LAPTOP-BIFSL64A"><testcase classname="tests.test_workbench_ui" name="test_room_settings_page_saves_permissions_and_denies_player" time="9.061"><failure message="AssertionError: Locator expected to be visible&#10;Actual value: None&#10;Error: element(s) not found &#10;Call log:&#10;  - Expect &quot;to_be_visible&quot; locator(&quot;#allow-player&quot;) with timeout 5000ms&#10;  - waiting for locator(&quot;#allow-player&quot;)&#10;&#10;Aria snapshot:&#10;- banner:&#10;  - strong: AI 服务与权限&#10;  - text: kp&#10;  - button &quot;退出房间登录&quot;&#10;- status: mounts[document.body.dataset.variant] is not a function&#10;- main">services = ('http://127.0.0.1:63665', {'key': '5xEQ3m4QMqaxzERudhiphbxDqYw8Lsk0K6JJZp8-y3o', 'roomPort': 63664, 'managerPort': 63...Studies/Art Programming/OnlineCOC/engineering/acceptance/ai-runtime/workbench-ui-tmp/test_room_settings_page_saves_0'))
+
+    def test_room_settings_page_saves_permissions_and_denies_player(services):
+        _,entry,_=services;origin=f'http://127.0.0.1:{entry["roomPort"]}'
+        with sync_playwright() as p:
+            browser=p.chromium.launch(channel='msedge',headless=True);page=browser.new_page(viewport={'width':1100,'height':820});calls=[];errors=[]
+            page.on('request',lambda r:calls.append(r.url));page.on('pageerror',lambda e:errors.append(str(e)))
+            try:
+                page.goto(origin+'/ai-ui/settings.html');login(page,'kp')
+&gt;               expect(page.locator('#allow-player')).to_be_visible()
+E               AssertionError: Locator expected to be visible
+E               Actual value: None
+E               Error: element(s) not found 
+E               Call log:
+E                 - Expect "to_be_visible" locator("#allow-player") with timeout 5000ms
+E                 - waiting for locator("#allow-player")
+E               
+E               Aria snapshot:
+E               - banner:
+E                 - strong: AI 服务与权限
+E                 - text: kp
+E                 - button "退出房间登录"
+E               - status: mounts[document.body.dataset.variant] is not a function
+E               - main
+
+engineering\ai\tests\test_workbench_ui.py:17: AssertionError</failure></testcase><testcase classname="tests.test_workbench_ui" name="test_compact_ruling_modal_retains_risks_and_decides_once" time="3.848"><failure message="playwright._impl._errors.Error: Locator.press: Error: strict mode violation: locator(&quot;dialog&quot;) resolved to 2 elements:&#10;    1) &lt;dialog open=&quot;&quot; class=&quot;ruling-dialog&quot; aria-label=&quot;AI 修改裁决详情&quot;&gt;…&lt;/dialog&gt; aka get_by_role(&quot;dialog&quot;, name=&quot;AI 修改裁决详情&quot;)&#10;    2) &lt;dialog aria-labelledby=&quot;reference-title&quot;&gt;…&lt;/dialog&gt; aka get_by_label(&quot;引用详情&quot;, exact=True)&#10;&#10;Call log:&#10;  - waiting for locator(&quot;dialog&quot;)">services = ('http://127.0.0.1:63701', {'key': 'DqqkrTqDbFFqZB5pc9aRUhYuZPSwkUIUt8u4wFiqfXI', 'roomPort': 63700, 'managerPort': 63...Studies/Art Programming/OnlineCOC/engineering/acceptance/ai-runtime/workbench-ui-tmp/test_compact_ruling_modal_reta0'))
+
+    def test_compact_ruling_modal_retains_risks_and_decides_once(services):
+        _,entry,_=services;origin=f'http://127.0.0.1:{entry["roomPort"]}'
+        with sync_playwright() as p:
+            browser=p.chromium.launch(channel='msedge',headless=True);page=browser.new_page(viewport={'width':1000,'height':800})
+            try:
+                page.goto(origin+'/ai-ui/conversation.html')
+                page.evaluate('''async()=&gt;{
+                  const {mountRulings}=await import('/ai-ui/pack.js');document.body.replaceChildren();
+                  window.item={rulingId:'r1',kind:'configuration',sessionId:'s1',requestId:'q1',initiator:'kp',summary:'添加一名 NPC。'+ '补充说明。'.repeat(60),status:'pending',digest:'digest',createdAt:1000,canDecide:true,risks:[{id:'risk',question:'接受风险的理由',required:true}],receipts:[],changeSet:{configurations:[]},reports:[]};
+                  window.commands=[];window.client={connected:true,generation:1,view:{accountId:'kp',role:'kp',authorityEpoch:'epoch'},subscribe(fn){window.changed=fn;return ()=&gt;{};},aiRulings:async()=&gt;({items:[structuredClone(item)]}),aiResolve:async()=&gt;({items:[]}),aiCommand:async(op,args)=&gt;{commands.push({op,args});item.status='completed';return {status:'committed',result:structuredClone(item)};}};
+                  window.panel=mountRulings(document.body,client,{compact:true,onOpenSession:id=&gt;window.opened=id});
+                }''')
+                expect(page.locator('.ruling-row')).to_have_count(1)
+                expect(page.locator('textarea')).to_be_hidden()
+                assert len(page.locator('.ruling-summary').inner_text())&lt;180
+                page.get_by_role('button',name='打开对话').click();assert page.evaluate('opened')=='s1'
+                page.get_by_role('button',name='查看并裁决').click();page.locator('textarea').fill('接受已核对影响')
+                page.evaluate('panel.refresh()');expect(page.locator('textarea')).to_have_value('接受已核对影响')
+                expect(page.locator('details')).not_to_have_attribute('open','')
+                page.screenshot(path=str(OUTPUT/'workbench-ruling-detail.png'))
+                page.get_by_role('button',name='批准并执行').click();expect(page.locator('.ruling-summary')).to_contain_text('已执行')
+                sent=page.evaluate('commands');assert len(sent)==1 and sent[0]['args']['riskDecisions']=={'risk':'接受已核对影响'}
+&gt;               page.get_by_role('button',name='查看详情').click();page.locator('dialog').press('Escape');expect(page.locator('dialog')).not_to_be_visible()
+                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+engineering\ai\tests\test_workbench_ui.py:58: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+engineering\.venv\Lib\site-packages\playwright\sync_api\_generated.py:12896: in press
+    self._sync(
+engineering\.venv\Lib\site-packages\playwright\_impl\_locator.py:582: in press
+    return await self._frame.press(self._selector, strict=True, **params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+engineering\.venv\Lib\site-packages\playwright\_impl\_frame.py:900: in press
+    await self._channel.send("press", self._timeout, locals_to_params(locals()))
+engineering\.venv\Lib\site-packages\playwright\_impl\_connection.py:78: in send
+    return await self._connection.wrap_api_call(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;playwright._impl._connection.Connection object at 0x000002371EFD9450&gt;
+cb = &lt;function Channel.send.&lt;locals&gt;.&lt;lambda&gt; at 0x000002371EF678A0&gt;
+is_internal = False, title = None
+
+    async def wrap_api_call(
+        self, cb: Callable[[], Any], is_internal: bool = False, title: str = None
+    ) -&gt; Any:
+        if self._api_zone.get():
+            return await cb()
+        task = asyncio.current_task(self._loop)
+        parsed_st = _attach_api_call_information(
+            getattr(task, "__pw_stack__", None) or _capture_stack_trace(),
+            is_internal,
+            title,
+        )
+        self._api_zone.set(parsed_st)
+        try:
+            return await cb()
+        except Exception as error:
+&gt;           raise rewrite_error(error, f"{parsed_st['apiName']}: {error}") from None
+E           playwright._impl._errors.Error: Locator.press: Error: strict mode violation: locator("dialog") resolved to 2 elements:
+E               1) &lt;dialog open="" class="ruling-dialog" aria-label="AI 修改裁决详情"&gt;…&lt;/dialog&gt; aka get_by_role("dialog", name="AI 修改裁决详情")
+E               2) &lt;dialog aria-labelledby="reference-title"&gt;…&lt;/dialog&gt; aka get_by_label("引用详情", exact=True)
+E           
+E           Call log:
+E             - waiting for locator("dialog")
+
+engineering\.venv\Lib\site-packages\playwright\_impl\_connection.py:636: Error</failure></testcase><testcase classname="tests.test_workbench_ui" name="test_resume_loads_target_in_parallel_without_redundant_access_or_old_session" time="4.956" /></testsuite></testsuites>

@@ -16,17 +16,28 @@ SCHEMA = {'type': 'object', 'additionalProperties': False,
         'kind': {'const': 'known'},
         'evidence': {'type': 'array', 'maxItems': 12, 'uniqueItems': True,
             'items': {'type': 'string', 'pattern': '^k[0-9a-f]{64}$'}},
-        'next': {'enum': ['none', 'ask_kp']}}}
+        'next': {'enum': ['none', 'ask_kp', 'ask_kp_change']}}}
 
 INSTRUCTIONS = '''You assist one player using only their verified personal knowledge.
+knownIndex supplies an initial empty-query index of your personal authorized records.
+Start by reading relevant refs from it; do not claim lack of permission merely because
+a keyword search misses an inventory or clue nested in a known record. A fallback=personal-index
+result is an explicitly unfiltered personal index, not a match for the original keyword.
 Use the supplied knowledge search/read tools to answer the request. A search label is
 not a detail: read the selected references before answering. Never call another data
 source, infer discoveries, use module lore or invent narrative facts.
+query is a literal filter, not semantic search. For broad requests to show existing known
+information or inventory, search with query="" and follow nextCursor. If a name filter
+has no matches, try an empty query before concluding there is no relevant known record.
 Return only a valid JSON object: {"kind":"known","evidence":["issued evidenceId"],"next":"none"}.
 Select at most 12 distinct evidenceId values actually issued in a detail read.
 The server renders their exact authorized observations; do not return text, titles,
 choices, conclusions, suspicions or commands. Select next="ask_kp" to offer the neutral
 option to request a KP disclosure; it does not grant access or execute anything.
+For combining items, inventing content, changing configurations or requesting an action,
+select next="ask_kp_change" to offer a separate business request to the KP. Read relevant
+known evidence when useful, but do not reject a creative request merely because players
+cannot publish configurations. This option is only an offer; the player must click to submit.
 If there is no relevant readable evidence, return an empty evidence list. Empty search
 results say nothing about whether an object exists. Old observations are not current
 world state. Provider failures must not be bypassed with previous model text.
@@ -104,20 +115,84 @@ def _literal(value):
     return re.sub(r'([\\`*_{}\[\]()<>#!|])', r'\\\1', text).replace('\r', '')
 
 
+# Presentation only: these fields have already passed knowledge authorization.
+# Technical identifiers remain in the immutable evidence, not in player prose.
+FIELD_LABELS = {
+    'name':'名称','label':'名称','text':'内容','description':'说明','features':'环境特征',
+    'clues':'已知线索','actions':'已记录行动','choices':'行动选项','hint':'提示','process':'处理说明',
+    'exits':'出口编号','doors':'观察时的门状态','numbers':'数值','metadata':'补充资料',
+    'tags':'标签','hp':'生命','maxHp':'生命上限','str':'力量','dex':'敏捷','wil':'意志','armor':'护甲',
+    'location':'位置编号','round':'回合','phase':'阶段','autoResolve':'自动裁决','pips':'钱币',
+    'testimony':'证词','note':'备注','reason':'原因','status':'状态','uses':'剩余用量',
+    'slot':'携带槽位','itemIndex':'物品编号','kind':'类别','slots':'占用槽位','damage':'伤害','light':'照明','useDie':'用量骰','maxUses':'用量上限','ticks':'刻度','inventory':'携带物品','title':'标题','value':'数值','count':'数量','known':'已获知'}
+TECHNICAL_FIELDS = frozenset({'id','entityId','instanceId','configurationId','typeRef','revision',
+    'digest','scopeId','navigation','rules','components','sourceGuard','ref','provenance','owner','visibility','lifecycle','index'})
+
+
+def format_data(data, limit=4000):
+    """Deterministic player prose, without querying, inferring or executing data."""
+    lines=[];nodes=0;omitted=False
+    def walk(value, depth=0, label=None):
+        nonlocal nodes,omitted
+        nodes+=1
+        if nodes>180 or depth>10:omitted=True;return
+        prefix='  '*depth+'- '
+        if isinstance(value,(dict,list)):
+            entries=[(k,v) for k,v in value.items() if k not in TECHNICAL_FIELDS] if isinstance(value,dict) else list(enumerate(value))
+            if label:lines.append(prefix+'**'+_literal(label)+'**'+('：无可展示条目' if not entries else ''));depth+=1
+            if not entries and not label:lines.append(prefix+'无可展示条目')
+            for key,item in entries:
+                title=(FIELD_LABELS.get(key,key if re.search(r'[\u4e00-\u9fff]',str(key)) else '编号 '+str(key) if str(key).isdigit() else '其他已知资料') if isinstance(value,dict) else '条目 '+str(key+1))
+                walk(item,depth,title)
+        else:
+            text='未记录' if value is None else '是' if value is True else '否' if value is False else str(value)
+            lines.append(prefix+('**'+_literal(label)+'**：' if label else '')+_literal(text).replace('\n',' '))
+    walk(data)
+    selected=[];size=0
+    for line in lines:
+        if size+len(line)+1>max(0,limit-60):omitted=True;break
+        selected.append(line);size+=len(line)+1
+    if omitted:selected.append('部分内容未展开，请打开引用详情查看。')
+    return '\n'.join(selected) or '暂无可展示的已知内容。'
+
+
+def format_legacy(text):
+    """Reformat only our old escaped-JSON evidence blocks, after source recheck.
+
+    No current-room lookups and no persistent migration of historical answers.
+    """
+    if not isinstance(text,str):return text
+    pattern=r'((?:观察记录|持续告知资料) · \[\[knowledge:[A-Za-z0-9_.-]+@1\]\])\n\n(.*?)(?=\n\n(?:观察记录|持续告知资料) · |\Z)'
+    matches=list(re.finditer(pattern,text,flags=re.S))
+    budget=max(120,(7800-sum(len(m[1])+4 for m in matches))//max(1,len(matches)))
+    def replace(match):
+        raw=re.sub(r'\\([\\`*_{}\[\]()<>#!|])',r'\1',match[2])
+        try:value=json.loads(raw)
+        except (ValueError,RecursionError):return match[0]
+        if not isinstance(value,(dict,list)):return match[0]
+        return match[1]+'\n\n'+format_data(value,limit=budget)
+    return re.sub(pattern,replace,text,flags=re.S)
+
 def render(output, pool):
     # Fixed order avoids a model-provided priority/suspicion ranking.
     selected = sorted((pool[key] for key in output['evidence']), key=lambda v: (v.get('observedAt') or 0, v['ref']['id'], v['facetId']))
     parts = []
+    budget=max(120,(7800-sum(len(reference_token(i['ref']))+30 for i in selected))//max(1,len(selected)))
     for item in selected:
         heading = '观察记录' if item['mode'] == 'observed_snapshot' else '持续告知资料'
         data = item['data']
-        text = data['text'] if type(data) is dict and set(data) == {'text'} else data
-        parts.append(heading + ' · ' + reference_token(item['ref']) + '\n\n' + _literal(text))
-    text = '\n\n'.join(parts) or '当前可核验的本人已知资料不足，无法据此提供更多信息。'
+        text = format_data(data,limit=budget)
+        parts.append(heading + ' · ' + reference_token(item['ref']) + '\n\n' + text)
+    text = '\n\n'.join(parts) or '暂未获得与问题匹配的本人已知资料。可换个关键词查询，或向 KP 申请资料。'
     require(len(text) <= 8000, 'MODEL_KNOWN_ANSWER_LIMIT')
     choices = None
     if output['next'] == 'ask_kp':
         choices = {'prompt': '需要向 KP 请求说明吗？', 'options': [
-            {'id':'ask_kp','label':'请 KP 说明','text':'请 KP 说明本次问题中允许我获知的信息。'},
+            {'id':'ask_kp','label':'向 KP 申请披露','text':'请 KP 说明本次问题中允许我获知的信息。'},
             {'id':'known_only','label':'仅整理已知资料','text':'只整理当前已经核验的本人已知资料。'}]}
+    if output['next']=='ask_kp_change':
+        choices={'prompt':'需要由 KP 评估并准备方案吗？','options':[
+            {'id':'ask_kp_change','label':'提交创作／配置申请','text':'请 KP 评估这次创作或组合需求。'},
+            {'id':'known_only','label':'继续查看已知资料','text':'继续整理本人已经获知的相关资料。'}]}
+        if not selected:text='可以将这次创作或组合需求提交给 KP。接收申请后由 KP 准备方案，修改仍需另行审核。'
     return {'kind': 'plan', 'text': text, **({'choices': choices} if choices else {})}

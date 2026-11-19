@@ -4,7 +4,7 @@
 - 文档子类：工程
 - 状态：有效
 - 创建日期：2026-11-15
-- 最后更新：2026-11-18
+- 最后更新：2026-11-19
 - 关联文档：[AI 运行时](ai-runtime.md)、[嵌入组件](ai-pack-embedding.md)、[房间格式](room-format.md)、[剩余计划](../../plans/ai-data-query-adjudication.md)、[通用请求与决定规划](../../plans/interaction-records.md)
 
 ## 当前能力
@@ -45,13 +45,13 @@ coverage: { status: complete | partial, within: requested-authorized-scope }
 
 AI Runtime 给模型的列表结果另附 `pageSummary`：`returnedItems`、`countsByType`、`hasMore`、`isFirstPage`，只统计当前已授权返回页，不提供隐藏数据总数。请求的 `limit` 是数量上限，不是实际条数；只有第一页且无下一页时可据此报告该查询的完整数量，否则须分页去重。该摘要只用于模型阅读，不改变 HTTP EvidencePage、原始查询摘要或来源复验证据。读取聊天前应先读取频道引用，取详情的 `data.channelId`；猜测 ID 后得到 NOT_VISIBLE 不能推导为需要扩大权限。
 
-每页默认 20、最多 50 项；详情最多 12 个引用；输入和单次结果各不超过 16 KiB；每次生成最多 24 次工具调用，并受 Profile 回合数、总期限及每日用量限制。完整模型消息历史不超过 96 KiB。超限明确失败，可缩小窗口/页数；不静默丢弃资料。分页游标绑定授权结果和筛选条件，数据变化后须从第一页重查。
+每页默认 20、最多 50 项；详情最多 12 个引用；输入和单次结果各不超过 16 KiB；每次生成最多 24 次工具调用，并受 Profile 回合数、总期限及每日用量限制。初始资料快照不超过 96 KiB；累计消息与工具 Schema 共用现有传输请求的 256 KiB 预算，最终序列化请求仍须满足传输上限。超限明确失败，可缩小窗口/页数；不静默丢弃资料。分页游标绑定授权结果和筛选条件，数据变化后须从第一页重查。
 
 模型工具执行中的 `INPUT_INVALID`、`QUERY_INPUT_LIMIT`、`QUERY_RESULT_LIMIT`、`SOURCE_STALE`、`NOT_VISIBLE` 在尚未附加新查询证明时，作为 `{error:{code},notice}` 返回，让模型按原额度缩小请求或重新搜索；并非成功的空列表。未知工具、权限/策略变化、查询次数超限及附加证明后复验失败仍终止任务。HTTP查询接口仍使用原错误响应，不改变其成功EvidencePage结构。拒绝的工具尝试计入配额与脱敏诊断，不伪造dataQueries成功证明。
 
 ## 来源、权限与发布
 
-模型查询使用审核者与原发起者的共同可见投影，再取房间允许外发类别的交集。KP 不自动获得未参与私聊；包侧场景权限按当前位置计算。HTTP 预览可见不等于允许外发，生成时重新检查。搜索先授权再匹配和分页，不返回隐藏计数。
+模型查询使用审核者与原发起者的共同可见投影，再取房间允许外发类别的交集。普通查询不扩大未参与私聊范围；管理员 AI 的受信 kp-room 通道及包侧 read_scoped 另行传递全读授权，见下节。HTTP 预览可见不等于允许外发，生成时重新检查。搜索先授权再匹配和分页，不返回隐藏计数。
 
 每次查询的 operation、args、scopeId、initiator 和结果摘要保存在任务上下文 `facts.dataQueries`；上下文摘要随新增资料更新。发送前、响应后、读回、审批及发布复用宿主校验。消息编辑/撤回、引用变化、权限变化或恢复分叉使旧依据失效；查询权限不会通过缓存绕过。审批/发布时主机查询复验不依赖 AI 仓库开启。
 
@@ -61,7 +61,7 @@ AI Runtime 给模型的列表结果另附 `pageSummary`：`returnedItems`、`cou
 
 EventBundle 是只读投影，包含 messages、actions、rulings、executions、links、coverage。决定内容与执行状态分开：否决是已确认决定、outcome=deny，叙事裁决无需执行；没有完整回执时执行状态为 unknown。未记录的决定者、时间或聊天关联保持缺失，不由 AI 推断补齐。
 
-宿主已分享的行动结果卡可构成 event，附同频道有效 replyTo 消息；卡片不授予原始命令权限，也不虚构 KP 决定。树桩镇适配器读取本包场景/队伍聊天、原 requests 和逐玩家事件投影，使用真实 requestId 与命令回执关联。该 adapter 仅供 KP 管理员通路；严格 PL 因缺少聊天／裁决历史受众证明不读取此类事件。原始命令参数和整个 package.json 均不直接发送给模型。
+宿主已分享的行动结果卡可构成 event，附同频道有效 replyTo 消息；卡片不授予原始命令权限，也不虚构 KP 决定。树桩镇适配器读取本包场景/队伍聊天、原 requests 和逐玩家事件投影，使用真实 requestId 与命令回执关联。该 adapter 仅供 KP 管理员通路；严格 PL 因缺少聊天／裁决历史受众证明不读取此类事件。普通查询不直接返回原始命令参数和整个 package.json；显式 KP 全读例外见下文，PL 不使用该通道。
 
 树桩镇发起业务行动时可在 args 中加入 `sourceMessages`，最多 12 条，每条为 `{channelId, messageId, revision, sequence}`。包服务通过既有授权历史接口核验，申请和后续裁决沿用这些引用；新裁决记录真实决定者和时间。历史无关联记录仍标为不完整。当前没有自动语义配对或历史回填；界面可手选多个聊天/事件标签共同咨询。
 
@@ -100,3 +100,29 @@ if (found.items.length) {
 玩家会话统一绑定 owner，使用知识查询、不可变引用与 knowledgeProofs；即使实际账号为 KP 也使用 player=True。HTTP／模型参数不能指定主体。PL 不复用原实体／模板 adapter，缺少知识提供方时不降级。管理员会话的资料管理及修改批次维持原权限与基线，严格只读证明不能用于批准或执行。
 
 模型结果额外携带 citation.token/label，原 HTTP EvidencePage 和来源摘要不变。标记只从授权条目生成；正文引用按已提供标记校验，显示由真实权限解析。模板显示名可由包侧 reference_label 映射，见[回答与选择项](ai-responses.md)。
+
+
+## KP 全房间查询
+
+管理员上下文可带 `facts.aiReadScope='kp-room'` 与 `aiPolicyRevision`；查询传 `read_scope='kp-room'`，证据记录 readScope。宿主实际审核者和发起者均须为 KP、player 为空，且本机 AI 注册的 ai_room_read_authorizer 明确许可。PL／KP 的玩家级会话不使用此通道；普通聊天 API 不扩权。
+
+新增 `room` 类别以 `sourceId=host-room` 返回按 JSON path 分片的宿主游戏状态，包含历史规则、关系、流程、知识记录等；长文本带 textOffset/textLength。按 ref 小批读取，结果预算仍生效。外发 room 混合分片要求 public/private/kp 三开关全部开启；不包含 Identity、本机配置、密钥或任意文件。关闭 allowAdminRoomRead 后旧上下文和新读取均拒绝。
+
+包独立资料必须由包适配器投影；新增类别可使用已有 config/memory，但不能仅以 KP 角色判断已获得全读授权。包来源仍 consultationOnly，与 host-room 可发布来源不同。
+
+受信包适配器可实现 `read_scoped(state,account,*,read_scope=None)`。宿主先完成账号、发起者与全读开关校验，才传入 kp-room；普通路径传 None，旧 read(state,account) 保持兼容。包侧必须再次确认实际 KP，并仅在 kp-room 时追加全包状态和全场景聊天；关闭开关后旧证据复验失败。
+
+管理工具 `room_manage_catalog({})` 先返回操作名称索引；用 `{operations:["entity.patch"]}` 按需取精确参数 Schema。原库接口 `Batches.catalog()` 不变。模型应先取目标参数再提交批次，避免反复注入完整操作目录。KP 任务诊断的 `contextBudget` 只含累计字节、上限、工具 Schema 和工具消息字节数，不记录资料内容；容量失败会在聊天中显示可操作的缩小查询提示。
+
+读取活动游戏配置时，先用 room_read_management 的 room 节取得 activeRuleset，再按 `/artifacts/<revision>/data/game.json` 搜索 room 标签并按原样 ref 分批读。小文件可能合在父片，精确路径无结果时按 `/artifacts/<revision>` 查父片。宽 room 查询的证明绑定全部匹配记录，无关业务记录变化也可能使其失效；不能把最后一次 read 的 SOURCE_STALE 自动判定为该分片改变。查询过的每份证明都会复验。
+
+## 配置包提供实体检索标签
+
+KP 的实体搜索可调用受信适配器 `reference_label('entity', key, fallback)`；先完成实体投影、接收者交集和外发可见性校验，且实际审核者与发起者均为 KP 才使用该钩子。返回去除首尾空白后非空、不超过 160 字符且能编码为 UTF-8 的字符串，否则回退实体原名；异常也回退。PL 仍走个人知识查询，KP 与 PL 混合接收场景不调用该扩展。
+
+该钩子只用于检索展示，资料必须与实体处于同一可见范围，不能夹带未授权剧情。标签可能注明角色所属玩家，帮助定位随机角色名；标签本身不是授权或执行证据，修改前仍须读取实际实体的 owner、configurationId 和 lifecycle。正文引用继续使用角色原名。实体原文、六字段 ref、数据摘要和可见性不变；标签变化会使旧搜索快照及查询证明失效，调用方须重新查询。
+
+2026-11-19 实体标签与相关查询回归共 76 项去重通过（包含 15 项新增专项），覆盖检索、回退、外发过滤、玩家隔离、引用不变和分页复验，另验既有高危读取、知识与 AI 引用。见[验收说明与证据](../../../engineering/acceptance/entity-search-label/README.md)。不与此前模块或引擎阶段数累加；真实模型效果由 Stumpsville 的独立实测记录维护。
+
+
+PL 在生成前自动预载本人空 query 目录，计入 24 次查询；非空关键词无匹配明确回退个人目录。目录不是详情证据，模型仍须读取引用。错误分类、已知目录和证据边界见[玩家已知资料](ai-player-knowledge.md#查询未命中与服务阻断)。创作申请无需数据查询，不借申请扩大已知范围。

@@ -1,12 +1,13 @@
 {
   "passed": true,
-  "checkedAt": "2026-11-18T00:39:43.434603+08:00",
+  "checkedAt": "2026-11-19T16:28:46.746531+08:00",
   "checks": [
     "KP queue data and flow operations remain host-authorized; player AI request retains player ownership",
     "game request, character draft, player assistance and pending AI handoff appear in the ruling page, including older pages",
     "character approval executes in ruling queue; console and AI settings point to the same queue",
     "AI configuration ruling shares the queue; polling preserves risk input and rejection uses the authoritative digest",
     "ordinary ruling preserves text during refresh and delivers the persisted decision to the original player",
+    "information request opens an executable disclosure form for its original player only",
     "forwarding from the queue runs the original player request once and keeps the response in that player’s conversation",
     "lost AI response persists its original receipt ID across reload; recovery does not repeat the command; finished rulings remain in history",
     "real host KP waits and needs-attention flows appear in the same queue and resolve through revision-checked host commands",

@@ -1,0 +1,13 @@
+{
+  "initial": [
+    "list",
+    "a"
+  ],
+  "concurrent": [
+    "list",
+    "b"
+  ],
+  "elapsed": 2.400000000372529,
+  "draft": "未发送的草稿",
+  "connected": true
+}

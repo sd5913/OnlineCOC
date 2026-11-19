@@ -28,25 +28,28 @@ TOOLS=[{'type':'function','function':{'name':name,'description':description,
 class DataQueryService:
     def __init__(self, host):self.host=host
 
-    def execute(self, account, operation, args, *, initiator=None, external=False, player=None):
+    def execute(self, account, operation, args, *, initiator=None, external=False, player=None, read_scope=None):
         from jsonschema import Draft202012Validator
         require(operation in PARAMETERS,'INPUT_INVALID')
         schema=next(t['function']['parameters'] for t in TOOLS if NAMES[t['function']['name']]==operation)
         require(not list(Draft202012Validator(schema).iter_errors(args)),'INPUT_INVALID')
         require(len(canonical(args))<=16*1024,'QUERY_INPUT_LIMIT')
         with self.host.lock:state=self.host.state()
-        return query(self.host,state,account,operation,args,initiator=initiator,external=external,player=player)
+        options={'read_scope':read_scope} if read_scope else {}
+        return query(self.host,state,account,operation,args,initiator=initiator,external=external,player=player,**options)
 
     def attach(self, account, operation, args, snapshot, initiator=None):
         player = snapshot[0]['facts'].get('sessionAccess', {})
         player = player.get('owner') if player.get('level') == 'player' else None
-        result=self.execute(account,operation,args,initiator=initiator,external=True,player=player)
+        scope=snapshot[0]['facts'].get('aiReadScope')
+        result=self.execute(account,operation,args,initiator=initiator,external=True,player=player,read_scope=scope)
         context=snapshot[0]
         proofs=context['facts'].setdefault('dataQueries',[])
         require(len(proofs)<24,'QUERY_LIMIT')
         proof={'scopeId':context['scopeId'],'operation':operation,'args':args,'initiator':initiator,'player':player,'digest':digest(result)}
+        if scope:proof['readScope']=scope
         if proof not in proofs:proofs.append(proof)
-        if any(item['ref']['sourceId']!='host' for item in result['items']):context['facts']['consultationOnly']=True
+        if any(item['ref']['sourceId'] not in ('host','host-room') for item in result['items']):context['facts']['consultationOnly']=True
         # Recheck also catches changes between reading the snapshot and obtaining evidence.
         with self.host.lock:self.host.validate_ai_sources(self.host.state(),account,context)
         return result

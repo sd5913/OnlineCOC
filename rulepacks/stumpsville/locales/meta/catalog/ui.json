@@ -6141,7 +6141,7 @@
       "extensions": {}
     },
     "queue.disclose": {
-      "description": "Stumpsville keeper queue: Open knowledge disclosure",
+      "description": "Stumpsville keeper queue: Reveal information",
       "tags": [
         "ui"
       ],

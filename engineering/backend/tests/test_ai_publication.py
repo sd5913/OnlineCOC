@@ -3,7 +3,7 @@ from concurrent.futures import ThreadPoolExecutor
 import pytest
 
 from onlinecoc.errors import DomainError
-from ai_helpers import ai_message,approve_case
+from ai_helpers import ai_message,approve_case,approval_args
 
 
 def test_load_once_after_ai_store_is_closed_and_restart(ai_case):
@@ -57,7 +57,7 @@ def test_two_kps_cannot_publish_against_the_same_old_baseline(ai_case):
     for account in ('kp','kp2'):
         proposal=service.create(account,'有限次数道具',delta)
         service.validate(account,proposal['proposalId'],1)
-        args={'proposalId':proposal['proposalId'],'proposalRevision':1,'riskDecisions':{'choice-value':'保留其他道具选择','gameplay-risk':'接受有限次数加成'}}
+        args=approval_args(host,service,proposal,account)
         approval=host.command(account,ai_message(host,'ai.proposal.approve',args,'approve-'+account,account))
         assert approval['status']=='committed',approval
         messages.append((account,ai_message(host,'publication.apply',{'approvalId':approval['result']['approvalId']},'publish-'+account,account)))
@@ -75,7 +75,7 @@ def test_resolving_prepared_bundle_does_not_hold_room_lock(ai_case):
     def delayed(*args):
         result=original(*args);entered.set();assert release.wait(5);return result
     host.ai_prepared_resolver=delayed
-    args={'proposalId':proposal['proposalId'],'proposalRevision':1,'riskDecisions':{'choice-value':'保留其他道具选择','gameplay-risk':'接受有限次数加成'}}
+    args=approval_args(host,service,proposal)
     with ThreadPoolExecutor(max_workers=2) as pool:
         pending=pool.submit(host.command,'kp',ai_message(host,'ai.proposal.approve',args,'delayed-approval'))
         try:

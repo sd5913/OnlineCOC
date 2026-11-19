@@ -7,9 +7,10 @@ from .contracts import canonical, digest
 
 LOG = logging.getLogger(__name__)
 TOOLS = {'room_read_context', 'pack_read_contract', 'room_search_data',
-         'room_read_data', 'room_read_chat', 'room_read_case', 'room_search_knowledge','room_read_knowledge'}
-KEYS = {'types', 'query', 'limit', 'cursor', 'refs', 'fields', 'channelId', 'after', 'before','includeHistory'}
-KINDS = {'entity', 'config', 'rule', 'memory', 'channel', 'chat', 'event', 'ruling'}
+         'room_read_data', 'room_read_chat', 'room_read_case', 'room_search_knowledge','room_read_knowledge',
+         'room_manage_catalog','room_read_management','room_read_sessions'}
+KEYS = {'types', 'query', 'limit', 'cursor', 'refs', 'fields', 'channelId', 'after', 'before','includeHistory','operations','section','offset','sessionId','archived'}
+KINDS = {'entity', 'config', 'rule', 'memory', 'channel', 'chat', 'event', 'ruling','room','knowledge'}
 
 
 def error_code(exc):
@@ -27,6 +28,12 @@ class TaskTrace:
         self.tools = []
         self.errors = []
         self.output_failures = []
+        self.context_budget = None
+
+    def context_usage(self, messages, tools, limit):
+        self.context_budget={'bytes':len(canonical({'messages':messages,'tools':tools})),
+            'limitBytes':limit,'toolSchemaBytes':len(canonical(tools)),
+            'toolMessageBytes':sum(len(canonical(m)) for m in messages if m.get('role')=='tool')}
 
     def output_failure(self, exc, attempt):
         # Paths may contain generated object IDs; retain only structural segments.
@@ -68,7 +75,8 @@ class TaskTrace:
 
     def snapshot(self):
         return {'schemaVersion': 1, 'stage': self.stage, 'turn': self.turn,
-                'toolCalls': self.tools[-24:], 'errors': self.errors[:3], 'outputFailures':self.output_failures[-3:]}
+                'toolCalls': self.tools[-24:], 'errors': self.errors[:3], 'outputFailures':self.output_failures[-3:],
+                **({'contextBudget':self.context_budget} if self.context_budget else {})}
 
     def log(self, task_id):
         # No exc_info: logging a traceback would also print the exception text.

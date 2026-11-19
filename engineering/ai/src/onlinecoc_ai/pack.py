@@ -155,6 +155,10 @@ def apply_configurations(state, changes):
             require(old is None, "VERSION_CONFLICT")
         else:
             require(old and old["revision"] == change["expectedRevision"], "VERSION_CONFLICT")
+            if change['kind'] == 'remove':
+                require(not any(e['configurationId'] == change['id'] for e in result['entities'].values()), 'REFERENCE_CONFLICT')
+                del result['configurations'][change['id']]
+                continue
             require(old["typeRef"] == change["value"]["typeRef"], "TYPE_CHANGE_FORBIDDEN")
             require(old["revision"] != change["value"]["revision"], "VERSION_CONFLICT")
         result["configurations"][change["id"]] = copy.deepcopy(change["value"])

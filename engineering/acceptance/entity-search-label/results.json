@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-11-19T14:56:30.234892+08:00",
+  "uniqueTests": 76,
+  "passed": 76,
+  "runs": [
+    {
+      "file": "core.xml",
+      "tests": 15,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0
+    },
+    {
+      "file": "regression.xml",
+      "tests": 76,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0
+    }
+  ],
+  "sourceSha256": {
+    "engineering/backend/src/onlinecoc/data_queries.py": "d5f7b0cbc53d6fd83bd50b1ee26f46dced7a8bb4bfbbd98fb57c43d337b09790",
+    "engineering/backend/tests/test_entity_labels.py": "543212db806253079eb9aafb4866ac372a61e3b422fd2282278ca1531da449b1",
+    "engineering/ai/src/onlinecoc_ai/data_queries.py": "8193830e78557833ae7dd0b9770604f2e4ed09b1f47b60f25069ef18d30ab9f6",
+    "engineering/ai/src/onlinecoc_ai/references.py": "9beb0d84c0aa25f03df8d49cff836f038ca2d79c42b6eb13edf0e85fd916926a"
+  },
+  "scope": "KP-only authorized entity search display labels; no change to entity data, evidence refs or player knowledge access",
+  "warnings": [
+    "Existing Starlette TestClient httpx deprecation warning; dependencies unchanged."
+  ],
+  "limits": [
+    "Isolated deterministic tests only; no paid provider calls or formal room writes.",
+    "Package K08 live model selection is evaluated independently; engine pass alone does not prove model selection.",
+    "These 76 cases include the 15 core cases and overlap previous host/AI regressions; do not add prior totals."
+  ],
+  "deduplication": "regression.xml is the verified superset: all 15 parameterized core test names occur exactly once among its 76 unique test names. Cross-root pytest leaves some backend classnames empty, so classname prefixes are not counted as separate tests."
+}

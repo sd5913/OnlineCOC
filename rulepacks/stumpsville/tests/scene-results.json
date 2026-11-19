@@ -1,6 +1,6 @@
 {
   "passed": true,
-  "checkedAt": "2026-11-18T11:18:53.615014+08:00",
+  "checkedAt": "2026-11-19T11:11:53.135178+08:00",
   "authority": "existing authenticated KP-page executor; no service identity or stored KP credential",
   "presetActions": [
     "cage-gate",

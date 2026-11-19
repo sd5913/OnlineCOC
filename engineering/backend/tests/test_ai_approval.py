@@ -3,7 +3,7 @@ import pytest
 
 from onlinecoc.errors import DomainError
 from onlinecoc_ai.errors import AiError
-from ai_helpers import ai_message,approve_case
+from ai_helpers import ai_message,approve_case,approval_args
 
 
 def test_approval_stages_evidence_without_loading(ai_case):
@@ -26,8 +26,8 @@ def test_player_and_forged_pass_are_rejected(ai_case):
 
 
 def test_required_risk_reasons_are_enforced(ai_case):
-    host,_,proposal,_=ai_case
-    args={'proposalId':proposal['proposalId'],'proposalRevision':1,'riskDecisions':{}}
+    host,service,proposal,_=ai_case
+    args=approval_args(host,service,proposal);args['riskDecisions']={}
     result=host.command('kp',ai_message(host,'ai.proposal.approve',args,'no-risk'))
     assert result['status']=='rejected' and result['code']=='RISK_REVIEW_REQUIRED'
 

@@ -1,0 +1,16 @@
+{
+  "passed": true,
+  "checkedAt": "2026-11-19T16:27:07.159555+08:00",
+  "checks": [
+    "uninstalled room opens and initializes through one room-page action",
+    "opening is repeat-safe and KP-only",
+    "resume preserves round and player readiness; does not auto-approve or ready players",
+    "lost opening response recovers the original persisted command without repeating effects",
+    "global controls and statistics are centralized in room page",
+    "free request executes configured rule, preserves reply, isolates effects and cannot execute twice",
+    "structured request executes directly from its queue card",
+    "Edge desktop/mobile and JavaScript error checks passed"
+  ],
+  "output": "D:\\Studies\\Art Programming\\OnlineCOC\\rulepacks\\stumpsville\\tests\\output\\room-workflow-46c67189",
+  "scope": "isolated local host; no real model calls"
+}

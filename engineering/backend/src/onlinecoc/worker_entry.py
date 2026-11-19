@@ -63,6 +63,12 @@ def sequence(request):
     from onlinecoc.model import member
     policy = request["policy"]
     trials = request["trials"]
+    # Only the trusted author-side scenario runner supplies this whitelist.
+    # It applies to isolated sequences, never to live Host action permissions.
+    private_ids = request.get("privateRuleIds", [])
+    require(type(private_ids) is list and all(type(key) is str and key in request["metadata"] for key in private_ids), "INPUT_INVALID")
+    require(len(set(private_ids)) == len(private_ids), "INPUT_INVALID")
+    private_ids = set(private_ids)
     require(0 < len(trials) <= 10000 and 0 < len(request["steps"]) <= 32, "LIMIT_EXCEEDED")
     results = []
     for values in trials:
@@ -82,7 +88,8 @@ def sequence(request):
             try:
                 m = member(state, request["account"])
                 meta = request["metadata"].get(step["rule"])
-                require(meta and meta["public"] and (not meta["kp"] or m["role"] == "kp"), "PERMISSION_DENIED")
+                allowed_private = m["role"] == "kp" and step["rule"] in private_ids
+                require(meta and (meta["public"] or allowed_private) and (not meta["kp"] or m["role"] == "kp"), "PERMISSION_DENIED")
                 require(meta["mode"] != "flow", "SCENARIO_UNSUPPORTED")
                 try:
                     Draft202012Validator(meta["schema"]).validate(step["input"])

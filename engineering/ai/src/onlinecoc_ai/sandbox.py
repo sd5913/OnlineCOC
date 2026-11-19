@@ -4,8 +4,14 @@ from onlinecoc.registry import stage
 from onlinecoc.worker_process import POLICY_VERSION, execute_request
 
 
-def run_scenario(artifact, state, scenario, trials, timeout=30):
+def author_private_rules(artifact, scenario):
+    """Only pass author-authored scenario steps here, never model invocations."""
+    return tuple(sorted({step['rule'] for step in scenario['steps'] if step['rule'] in artifact['metadata'] and not artifact['metadata'][step['rule']]['public']}))
+
+
+def run_scenario(artifact, state, scenario, trials, timeout=30, *, private_rule_ids=()):
     return execute_request({"kind": "sequence", "sources": artifact["sources"],
         "data": artifact["data"], "metadata": artifact["metadata"], "state": state,
         "account": scenario["account"], "steps": scenario["steps"],
-        "policy": scenario["randomPolicy"], "trials": trials}, timeout=timeout)["trials"]
+        "policy": scenario["randomPolicy"], "trials": trials,
+        **({'privateRuleIds':list(private_rule_ids)} if private_rule_ids else {})}, timeout=timeout)["trials"]

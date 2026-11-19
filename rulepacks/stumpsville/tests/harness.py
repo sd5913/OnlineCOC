@@ -57,11 +57,10 @@ def running(label='verify', data=None, **modules):
     thread = threading.Thread(target=server.run, daemon=True)
     thread.start()
     try:
-        for _ in range(200):
-            if server.started:
-                break
+        deadline = time.monotonic() + 90
+        while not server.started and thread.is_alive() and time.monotonic() < deadline:
             time.sleep(.05)
-        assert server.started, 'adapter did not start'
+        assert server.started, 'adapter did not start within 90 seconds'
         password = secrets.token_urlsafe(18)
         with httpx.Client(base_url=runtime.origin, headers={'Origin': runtime.origin}, timeout=90, trust_env=False) as http:
             status = http.get('/setup/status').json()

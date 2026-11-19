@@ -18,12 +18,20 @@ def known_locations(state, entities, account):
 
 
 class Adapter:
-    kinds=("channel","chat","event","ruling")
+    kinds=("channel","chat","event","ruling","config")
     def __init__(self,path):self.path=Path(path)
 
     def reference_label(self,kind,key,fallback):
         labels={'sv.npc':'NPC 模板','sv.character':'角色模板','sv.location':'地点模板','sv.scene':'场景状态模板'}
-        return labels.get(key,fallback) if kind=='config' else fallback
+        if kind=='config':return labels.get(key,fallback)
+        if kind=='entity' and self.path.exists():
+            with self.path.open('rb') as stream:raw=stream.read(8*1024*1024+1)
+            if len(raw)>8*1024*1024:raise ValueError('PACKAGE_DATA_LIMIT')
+            state=json.loads(raw)
+            if state.get('format')==2:
+                owner=next((account for account,actor in state.get('bindings',{}).items() if actor==key),None)
+                if owner:return f'{fallback}（{owner} 的树桩镇角色）'[:160]
+        return fallback
 
     def known_configurations(self,room,account):
         # Seeing a contact's name never discloses its NPC template or default stats.
@@ -58,6 +66,9 @@ class Adapter:
         return result
 
     def read(self,room,account):
+        return self.read_scoped(room,account)
+
+    def read_scoped(self,room,account,*,read_scope=None):
         if not self.path.exists():return []
         with self.path.open('rb') as stream:raw=stream.read(8*1024*1024+1)
         if len(raw)>8*1024*1024:raise ValueError('PACKAGE_DATA_LIMIT')
@@ -67,15 +78,37 @@ class Adapter:
         if state.get('sceneId') not in room['entities']:return []
         member=room['members'].get(account,{})
         kp=member.get('role')=='kp'
+        full=kp and read_scope=='kp-room'
         actors=[v for v in room['entities'].values() if v['configurationId']=='sv.character' and v['lifecycle']=='active']
         mine=[v for v in actors if v['owner']==account]
         locations={v['numbers']['location'] for v in (actors if kp else mine)}
         channels={'sv-scene-'+str(n) for n in locations}
         if kp or mine:channels.add('sv-party')
+        if full:channels.update(state.get('scopedChat',{}).get('messages',{}))
         values=[]
         def add(kind,key,label,data):
             values.append({'sourceId':'stumpsville','kind':kind,'id':key,'revision':fingerprint(data),
                            'label':label,'data':data,'visibility':'private'})
+        if full:
+            labels={'locations':'地图地点与主持秘密','published':'已发布地点资料','notes':'玩家手记',
+                'discoveries':'玩家个人线索','actorDiscoveries':'人物发现记录','jobs':'行动指令与恢复回执',
+                'requests':'行动申请与裁决','receipts':'行动执行回执','ruleRevisions':'规则与配置修订',
+                'scopedChat':'场景与队伍聊天','doors':'地图通道状态','recapPrivate':'主持私密回顾',
+                'sceneState':'场景机关状态','encounters':'遭遇表','roster':'人物名册','npcs':'主持生物'}
+            def emit(path,value,label):
+                raw=json.dumps(value,ensure_ascii=False)
+                if len(raw)>5000 and isinstance(value,(dict,list)):
+                    entries=value.items() if isinstance(value,dict) else enumerate(value)
+                    for key,child in entries:emit(path+'/'+str(key),child,label+' / '+str(key))
+                    return
+                if isinstance(value,str) and len(raw)>5000:
+                    for offset in range(0,len(value),750):
+                        emit(path+'/text:'+str(offset),{'offset':offset,'text':value[offset:offset+750],'totalCharacters':len(value)},label+' 正文片段 '+str(offset))
+                    return
+                values.append({'sourceId':'stumpsville','kind':'config','id':'package-state:'+hashlib.sha256(path.encode()).hexdigest(),
+                    'revision':fingerprint(value),'label':label,'data':{'path':path,'value':copy.deepcopy(value)},'visibility':'kp'})
+            for key,value in state.items():
+                emit('/'+key,value,labels.get(key,'包内资料 '+key))
         for cid,messages in state.get('scopedChat',{}).get('messages',{}).items():
             if cid not in channels:continue
             add('channel',cid,cid,{'channelId':cid,'lastSequence':messages[-1]['sequence'] if messages else 0})
@@ -112,7 +145,7 @@ class Adapter:
                     messages=state.get('scopedChat',{}).get('messages',{}).get(cid,[])
                 else:
                     channel=room['chat']['channels'].get(cid)
-                    if not channel or not (channel['kind']=='room' or account in channel['participants']):continue
+                    if not channel or not (full or channel['kind']=='room' or account in channel['participants']):continue
                     messages=room['chat']['messages'].get(cid,[])
                 message=next((m for m in messages if m['messageId']==ref['messageId'] and not m['deleted'] and str(m['revision'])==str(ref['revision'])),None)
                 if message:

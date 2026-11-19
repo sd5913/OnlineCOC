@@ -19,5 +19,6 @@
 | ISSUE-009 | 真实AI查询失败与异常诊断缺口 | 工程缺陷修复、87项回归及真实查询通过；完整答案语义待验收 | [正文](issue-009-ai-live-query-diagnostics.md) |
 | ISSUE-010 | AI 配置删除与包侧事务边界 | 11-17复核；建议业务命令／回执独立于AI，删除及包事务待实施 | [正文](issue-010-ai-package-mutations.md) |
 | ISSUE-011 | 通用个人知识记录与跨入口授权投影 | 首版已实现并验收，已归档 | [完成记录](../../history/2026-11-17-issue-011-player-knowledge-authorization.md) · [当前服务](../../current/engineering/player-knowledge.md) · [验收](../../../engineering/acceptance/knowledge/README.md) |
+| ISSUE-012 | 已授权资料的语义展示契约 | 待引擎责任者评估；AI 通用排版兜底已实现 | [正文](issue-012-authorized-data-presentation.md) |
 
-ISSUE-001 的正文仍在原位置，本目录只链接它，不复制成第二份。后续新问题统一从本目录登记；编号从 ISSUE-012 继续。配置包作者仅记录证据与需求，由工程责任者判断并处理工程侧问题。与当前功能、版本和运行相关的事实见 [工程索引](../../current/engineering/README.md)。
+ISSUE-001 的正文仍在原位置，本目录只链接它，不复制成第二份。后续新问题统一从本目录登记；编号从 ISSUE-013 继续。配置包作者仅记录证据与需求，由工程责任者判断并处理工程侧问题。与当前功能、版本和运行相关的事实见 [工程索引](../../current/engineering/README.md)。

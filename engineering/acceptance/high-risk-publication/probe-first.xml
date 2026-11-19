@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="36" time="11.394" timestamp="2026-11-19T14:13:31.174335+08:00" hostname="LAPTOP-BIFSL64A"><testcase classname="tests.test_private_probe" name="test_only_explicit_kp_probe_runs_private_rule_in_isolated_state[kp-None-False]" time="0.741" /><testcase classname="tests.test_private_probe" name="test_only_explicit_kp_probe_runs_private_rule_in_isolated_state[kp-whitelist1-False]" time="0.366" /><testcase classname="tests.test_private_probe" name="test_only_explicit_kp_probe_runs_private_rule_in_isolated_state[kp-whitelist2-True]" time="0.357"><failure message="AssertionError: {'ok': False, 'code': 'RULE_CYCLE_OR_MISSING'}&#10;assert False is True">artifact = {'sources': {'probe.lua': "return rule('probe.private', {'actor'}, function(r, actor)\n  r.damage(actor, 5)\n  return ...'id': 'probe.private', 'inputs': {'actor': 'actor'}, 'mode': 'action', 'dependencies': [], ...}}, 'apiVersion': 1, ...}
+account = 'kp', whitelist = ['probe.private'], allowed = True
+
+    @pytest.mark.parametrize('account,whitelist,allowed',[
+        ('kp',None,False),('kp',[],False),('kp',['probe.private'],True),('p1',['probe.private'],False)])
+    def test_only_explicit_kp_probe_runs_private_rule_in_isolated_state(artifact,account,whitelist,allowed):
+        payload=request(artifact,account)
+        if whitelist is not None:payload['privateRuleIds']=whitelist
+        before=copy.deepcopy(payload['state'])
+        result=execute_request(payload)['trials'][0]['steps'][0]
+&gt;       assert result['ok'] is allowed,result
+E       AssertionError: {'ok': False, 'code': 'RULE_CYCLE_OR_MISSING'}
+E       assert False is True
+
+engineering\backend\tests\test_private_probe.py:36: AssertionError</failure></testcase><testcase classname="tests.test_private_probe" name="test_only_explicit_kp_probe_runs_private_rule_in_isolated_state[p1-whitelist3-False]" time="0.352" /><testcase classname="tests.test_private_probe" name="test_probe_whitelist_is_strictly_validated[True]" time="0.354" /><testcase classname="tests.test_private_probe" name="test_probe_whitelist_is_strictly_validated[probe.private]" time="0.349" /><testcase classname="tests.test_private_probe" name="test_probe_whitelist_is_strictly_validated[invalid2]" time="0.365" /><testcase classname="tests.test_private_probe" name="test_probe_whitelist_is_strictly_validated[invalid3]" time="0.354" /><testcase classname="tests.test_private_probe" name="test_another_whitelisted_rule_does_not_enable_private_target" time="0.692" /><testcase classname="tests.test_private_probe" name="test_live_host_keeps_private_rules_unavailable_even_for_kp" time="0.987"><failure message="onlinecoc.errors.DomainError: STALE_CATALOG">tmp_path = WindowsPath('C:/Users/26077/AppData/Local/Temp/pytest-of-26077/pytest-90/test_live_host_keeps_private_r0')
+
+    def test_live_host_keeps_private_rules_unavailable_even_for_kp(tmp_path):
+        host=Host(tmp_path/'host',bootstrap='test-password')
+        try:
+            state=host.state();sources=copy.deepcopy(state['artifacts'][state['activeRuleset']]['sources']);sources['probe.lua']=SOURCE
+            artifact=stage(sources,state['artifacts'][state['activeRuleset']]['data'])
+            state['artifacts'][artifact['revision']]=artifact;state['activeRuleset']=artifact['revision'];host.commit(state)
+            before=host.state()['entities']
+            for account in ('kp','player1'):
+&gt;               response=host.command(account,ai_message(host,'action.invoke',{'actionId':'probe.private','input':{'actor':'actor-player1'}},'private-'+account,account))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+engineering\backend\tests\test_private_probe.py:64: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+engineering\backend\src\onlinecoc\host.py:154: in command
+    cat=self.catalog(account);require(p.get('catalogRevision')==cat['revision'] and p.get('rulesetRevision')==s['activeRuleset'],'STALE_CATALOG')
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+condition = False, code = 'STALE_CATALOG'
+
+    def require(condition, code="INPUT_INVALID"):
+&gt;       if not condition: raise DomainError(code)
+                          ^^^^^^^^^^^^^^^^^^^^^^^
+E       onlinecoc.errors.DomainError: STALE_CATALOG
+
+engineering\backend\src\onlinecoc\errors.py:7: DomainError</failure></testcase><testcase classname="tests.test_high_risk_host" name="test_add_replace_remove_projection_is_atomic_and_does_not_mutate_input" time="0.001" /><testcase classname="tests.test_high_risk_host" name="test_delete_referenced_configuration_never_cascades[active]" time="0.001" /><testcase classname="tests.test_high_risk_host" name="test_delete_referenced_configuration_never_cascades[archived]" time="0.001" /><testcase classname="tests.test_high_risk_host" name="test_new_ruleset_must_preserve_all_existing_behavior_bindings[configuration]" time="0.000" /><testcase classname="tests.test_high_risk_host" name="test_new_ruleset_must_preserve_all_existing_behavior_bindings[entity]" time="0.000" /><testcase classname="tests.test_high_risk_host" name="test_rule_dependencies_and_stale_configuration_changes_fail" time="0.000" /><testcase classname="tests.test_high_risk_host" name="test_inflight_flow_keeps_old_artifact_and_does_not_require_old_rule_in_new_catalog" time="0.000" /><testcase classname="tests.test_high_risk_host" name="test_item_family_configuration_changes_are_high_risk[item]" time="0.000" /><testcase classname="tests.test_high_risk_host" name="test_item_family_configuration_changes_are_high_risk[weapon]" time="0.000" /><testcase classname="tests.test_high_risk_host" name="test_item_family_configuration_changes_are_high_risk[bag]" time="0.000" /><testcase classname="tests.test_high_risk_host" name="test_core_source_data_remove_and_declared_maps_are_high_risk" time="0.000" /><testcase classname="tests.test_high_risk_host" name="test_full_room_requires_actual_kp_explicit_scope_and_authorizer" time="0.004" /><testcase classname="tests.test_high_risk_host" name="test_kp_room_private_chat_is_explicit_and_external_policy_still_applies" time="0.001" /><testcase classname="tests.test_high_risk_host" name="test_room_read_proof_rechecks_grant_and_original_content" time="0.003" /><testcase classname="tests.test_high_risk_host" name="test_large_room_source_splits_without_omission_or_local_identity_access" time="0.002" /><testcase classname="tests.test_high_risk_host" name="test_package_scoped_reader_only_receives_host_authorized_scope[None]" time="0.001" /><testcase classname="tests.test_high_risk_host" name="test_package_scoped_reader_only_receives_host_authorized_scope[kp-room]" time="0.001" /><testcase classname="tests.test_high_risk_host" name="test_legacy_package_reader_remains_compatible" time="0.000" /><testcase classname="tests.test_high_risk_commands" name="test_high_risk_requires_explicit_candidate_digest_and_reason" time="0.769" /><testcase classname="tests.test_high_risk_commands" name="test_remove_apply_returns_null_and_is_exactly_once" time="0.765" /><testcase classname="tests.test_high_risk_commands" name="test_referenced_remove_rejected_before_approval[active]" time="0.616" /><testcase classname="tests.test_high_risk_commands" name="test_referenced_remove_rejected_before_approval[archived]" time="0.606" /><testcase classname="tests.test_high_risk_commands" name="test_core_rule_and_data_replacement_waits_for_explicit_publish" time="0.954" /><testcase classname="tests.test_high_risk_commands" name="test_old_approval_without_manual_fingerprint_cannot_be_loaded" time="0.733" /><testcase classname="tests.test_high_risk_commands" name="test_partial_configuration_failure_leaves_no_commit_and_can_reconcile_receipt" time="0.795" /><testcase classname="tests.test_high_risk_commands" name="test_player_cannot_approve_or_publish_high_risk" time="0.684" /></testsuite></testsuites>

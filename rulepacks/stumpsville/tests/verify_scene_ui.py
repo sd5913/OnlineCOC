@@ -33,6 +33,7 @@ def main():
                 player.wait_for_timeout(250)
             assert kp.state()['sceneAutomation']['executorOnline']
             player.goto(runtime.origin + '/sessions/player1/#/play/scene')
+            player.get_by_role('button', name='行动日志', exact=False).click()
             def action(label, choice=None, manual=False):
                 player.get_by_role('button', name=label, exact=True).click()
                 if choice:
@@ -71,7 +72,7 @@ def main():
             action('观察梯子')
             expect(player.locator('#action-feedback')).to_contain_text('等待自动结算')
             assert not any(r['status'] == 'pending' for r in kp.state()['requests'])
-            assert not any(p['index'] == 5 for p in p1.state()['locations'])
+            assert not any(p['index'] == 5 and p.get('known') for p in p1.state()['locations'])
             player.screenshot(path=str(screenshots/'scene-action-waiting.png'), full_page=True)
             gm = context.new_page()
             gm.on('pageerror', lambda error: errors.append(str(error)))

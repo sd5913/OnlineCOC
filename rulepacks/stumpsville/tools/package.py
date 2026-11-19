@@ -15,6 +15,8 @@ from visibility import MapVisibility
 from ai_data import known_locations
 import knowledge_client
 import action_errors
+import scene_knowledge
+import publication_sync
 
 PACK = Path(__file__).resolve().parents[1]
 
@@ -118,12 +120,29 @@ class Package:
         return bool(session and 'autoResolve' in session['numbers'] and 'auto-travel.lua' in sources)
 
     def scene_definitions(self):
+        return self.scene_content().get('actions', [])
+
+    def scene_content(self):
         content = self.state['ruleRevisions'].get(self.state.get('activeRevision'), {})
-        return content.get('data', {}).get('scene-actions.json', {}).get('actions', [])
+        return content.get('data', {}).get('scene-actions.json', {})
 
     def scene_ready(self):
         content = self.state['ruleRevisions'].get(self.state.get('activeRevision'), {})
         return 'scene.lua' in content.get('sources', {}) and bool(self.state.get('sceneId')) and bool(self.scene_definitions())
+
+    def current_scene_request(self, job, version):
+        if version == scene_knowledge.VERSION:
+            return True
+        step = job.record['steps'].get('scene-act', {})
+        if 'result' in step:
+            return True
+        if 'envelope' in step:
+            receipt = job.client.request('/receipts/' + step['envelope']['payload']['commandId'])
+            if receipt.get('status') == 'committed':
+                step['result'] = receipt.get('result')
+                self.save()
+                return True
+        return False
 
     def scene_executor(self, client):
         with self.lock:
@@ -141,6 +160,7 @@ class Package:
         require(not any(t['account'] == view['accountId'] and t['status'] in {'queued', 'running', 'finishing'}
                         for t in self.state['autoSceneQueue'].values()), '请等待当前预设行动自动完成')
         task = {'id': key, 'account': view['accountId'], 'actor': character['instanceId'],
+                'menuVersion': scene_knowledge.VERSION,
                 'action': definition['id'], 'choice': choice, 'title': definition['label'], 'status': 'queued',
                 'time': time.time(), 'commandId': 'scene-auto-' + hashlib.sha256(key.encode()).hexdigest()[:40]}
         self.state['autoSceneQueue'][key] = task
@@ -161,6 +181,8 @@ class Package:
         task.update(status='running', executor=view['accountId'])
         self.save()
         try:
+            require(self.current_scene_request(job,task.get('menuVersion')),
+                    '行动菜单已更新，请按本人已知选项重新提交')
             require(actor and actor['owner'] == task['account'] and actor['lifecycle'] == 'active', '角色归属或状态已改变')
             result = self.execute_scene(job, view, actor, task['action'], task['choice'])
         except (PackageError, HostError) as error:
@@ -225,6 +247,13 @@ class Package:
         for field in ('narrative', 'checks', 'rolls', 'stateChanges', 'clues'):
             if public.get(field) == {}:
                 public[field] = []
+        existing = {c['id'] for c in public['clues']}
+        executed_revision = job.record['steps']['scene-act']['envelope']['payload']['rulesetRevision']
+        executed = self.state['ruleRevisions'].get(executed_revision, {})
+        public['clues'].extend(c for c in scene_knowledge.outcome_clues(
+                               executed.get('data', {}).get('scene-actions.json', {}), action, choice, public,
+                               executed.get('sources', {}).get('scene.lua'))
+                               if c['id'] not in existing)
         owner = actual['owner']
         discovery = self.state['discoveries'].setdefault(owner, {})
         for clue in public['clues']:
@@ -291,10 +320,15 @@ class Package:
         data = content['data'].get('game.json', {})
         # Slot identities are save-game schema. Text/rules may change; migrations are separate work.
         require(isinstance(data, dict) and isinstance(data.get('items'), list), '缺少物品资料')
-        identity = lambda items: [(x.get('id'), x.get('kind'), x.get('slots'), x.get('uses')) for x in items]
-        require(identity(data['items']) == identity(self.game['items']), '现有存档不支持改变物品编号、槽位或用量上限')
         for key in ('presets', 'rules', 'locations', 'npcs', 'encounters', 'sourceStatus'):
             require(key in data, '缺少资料字段：' + key)
+        try:publication_sync.validate_game(self.game, data)
+        except (publication_sync.SyncConflict,KeyError,TypeError) as error:
+            raise PackageError('数据引用无效：'+str(error)) from error
+        # This manual import path has no AI A/B/C validation of existing actors.
+        identity=lambda item:tuple(item.get(k) for k in ('id','kind','slots','uses'))
+        require([identity(x) for x in data['items'][:len(self.game['items'])]]==[identity(x) for x in self.game['items']],
+                '手动导入不能迁移既有物品槽位和用量；请使用带存量校验的高危提案')
         return copy.deepcopy({'sources': content['sources'], 'data': content['data']})
 
     def save(self):
@@ -333,17 +367,43 @@ class Package:
         """Recover publication bookkeeping from the authoritative host artifact."""
         revision=view['catalog']['rulesetRevision']
         if not self.state['initialized'] or revision==self.state.get('activeRevision'):return
-        artifact=client.request('/admin/artifacts/'+revision)['artifact']
-        self.state['ruleRevisions'][revision]={'sources':artifact['sources'],'data':artifact['data']}
-        self.state['activeRevision']=revision
-        self.game=artifact['data']['game.json']
-        self.save()
+        previous_game=self.game;previous_revision=self.state.get('activeRevision')
+        key='publication-sync:'+revision
+        record=self.state['jobs'].setdefault(key,{'steps':{},'requestKey':key})
+        work=Job(self,client,record)
+        try:
+            artifact=client.request('/admin/artifacts/'+revision)['artifact']
+            candidate=artifact['data']['game.json']
+            merged=publication_sync.projection(self.state,self.game,candidate)
+            existing={e['numbers']['index']:e for e in self.entities(view,'sv.location')}
+            for place in candidate['locations']:
+                step='location-'+str(place['index'])
+                if step in record['steps'] or place['index'] not in existing:
+                    work.command(step,'entity.create',{'configurationId':'sv.location',
+                        'name':place['name'],'owner':view['accountId'],'visibility':'kp','numbers':{'index':place['index']}})
+            self.state.update(merged)
+            self.state['ruleRevisions'][revision]={'sources':artifact['sources'],'data':artifact['data']}
+            self.state['activeRevision']=revision
+            self.game=candidate
+            self.state['publicationSync']={'status':'completed','revision':revision}
+            self.save()
+            return True
+        except (publication_sync.SyncConflict,HostError,OSError) as error:
+            # A host publication is final. Only its package projection is pending;
+            # the same durable envelopes recover partially created map instances.
+            pending={'status':'conflict' if isinstance(error,publication_sync.SyncConflict) else 'pending',
+                'revision':revision,'message':str(error),'hostCommitted':True}
+            self.game=previous_game;self.state['activeRevision']=previous_revision
+            if self.state.get('publicationSync')!=pending:
+                self.state['publicationSync']=pending
+                self.save()
 
     def projection(self, client, preview=None, player_mode=False):
         with self.lock:
             view = client.request('/view')
             is_kp = view['role'] == 'kp'
-            if is_kp:self.sync_rules(client,view)
+            if is_kp:
+                if self.sync_rules(client,view):view=client.request('/view')
             if preview:
                 require(is_kp, '需要主持权限')
             account = preview or view['accountId']
@@ -416,10 +476,13 @@ class Package:
                               recapDraft=self.state['recapDraft'], recapPrivate=self.state['recapPrivate'],
                               sourceStatus=self.game['sourceStatus'], encounters=self.state['encounters'], loot=self.state['loot'],
                               npcTemplates=self.game['npcs'], doors=self.state['doors'], catalog=view['catalog'],
-                              ruleRevisions=list(self.state['ruleRevisions']), published=self.state['published'])
+                              ruleRevisions=list(self.state['ruleRevisions']), published=self.state['published'],
+                              publicationSync=self.state.get('publicationSync'))
                 result['keeperWaits'] = [copy.deepcopy(w) for w in view.get('waits', {}).values() if w['role'] == 'kp' and w['status'] == 'waiting']
                 result['keeperFlows'] = [copy.deepcopy(f) for f in view.get('flows', {}).values() if f['status'] == 'needs_attention']
                 result['sceneDefinitions'] = self.scene_definitions()
+                result['sceneKnowledge'] = scene_knowledge.catalog(self.scene_content())
+                result['scenePlayerDefinitions'] = scene_knowledge.definitions(self.scene_content())
                 result['mapNpcCatalog'] = list(sight.catalog().values())
                 result['actorDiscoveries'] = copy.deepcopy(self.state.get('actorDiscoveries', {}))
             elif player_mode:
@@ -475,7 +538,7 @@ class Package:
                     require(message and not message['deleted'] and str(message['revision'])==str(ref['revision']),'聊天来源已变化')
                     checked.append(copy.deepcopy(ref))
                 record['sourceMessages']=checked
-            feedback_ops = {'ready', 'check', 'inventory', 'request', 'resolve', 'world', 'actor.update', 'scene.action', 'scene.autorun',
+            feedback_ops = {'session.start', 'ready', 'check', 'inventory', 'request', 'resolve', 'world', 'actor.update', 'scene.action', 'scene.autorun',
                             'rest', 'grant', 'damage', 'remove', 'stock.take', 'approve',
                             'automation.configure', 'room', 'location.publish'}
             feedback = body['operation'] in feedback_ops
@@ -571,9 +634,9 @@ class Package:
         audience.update(owner for owner in after if after[owner] != before.get(owner))
         if request:
             audience.add(request['account'])
-        if op in {'world', 'automation.configure', 'room', 'location.publish'}:
+        if op in {'session.start', 'world', 'automation.configure', 'room', 'location.publish'}:
             audience.update(after)
-        titles = {'ready': '准备状态', 'check': '属性检定', 'inventory': '物品操作', 'request': '行动申请',
+        titles = {'session.start': '房间开场', 'ready': '准备状态', 'check': '属性检定', 'inventory': '物品操作', 'request': '行动申请',
                   'scene.action': '场景行动',
                   'scene.autorun': '场景行动自动结果',
                   'resolve': 'KP 裁决回复', 'world': '探索进度', 'actor.update': '主持调整数值', 'rest': '休息恢复',
@@ -594,9 +657,9 @@ class Package:
                 if target.get('configurationId') == 'sv.character' and target.get('owner') == owner:
                     own_result = {key: copy.deepcopy(result[key]) for key in
                         ('damage', 'hp', 'overflow', 'attribute', 'remaining', 'save', 'critical', 'dead') if key in result}
-            if owner != caller and op in {'world', 'automation.configure', 'room', 'location.publish'}:
+            if owner != caller and op in {'session.start', 'world', 'automation.configure', 'room', 'location.publish'}:
                 session = next(iter(self.entities(after_view, 'sv.session')), None)
-                message = {'world': '探索进度已更新 · 第 ' + str(session['numbers']['round']) + ' 回合',
+                message = {'session.start': '房间已开场', 'world': '探索进度已更新 · 第 ' + str(session['numbers']['round']) + ' 回合',
                            'automation.configure': '自动裁决' + ('已开启' if session['numbers'].get('autoResolve', 1) else '已关闭'),
                            'room': '房间' + ('已暂停' if after_view['status'] == 'paused' else '已恢复'),
                            'location.publish': '主持发布了地点与线索，请查看已知地图和线索面板'}[op]
@@ -611,7 +674,7 @@ class Package:
                      'result': own_result, 'changes': self.character_changes(before.get(owner), after.get(owner)),
                      'time': time.time(), 'submittedAt': request.get('time', record['created'])}
             # Narrative approval records an answer; it does not imply a rule was run.
-            event['mechanical'] = bool(record['steps']) and (not request or kind in {'check', 'inventory', 'travel', 'transfer'})
+            event['mechanical'] = bool(record['steps']) and (not request or bool(request.get('resolution')) or kind in {'check', 'inventory', 'travel', 'transfer'})
             event['sourceMessageRefs']=copy.deepcopy(request.get('sourceMessageRefs',record.get('sourceMessages',[])))
             if op=='resolve':
                 event['decider']=caller
@@ -679,6 +742,23 @@ class Package:
         require(op in player_ops or gm, '需要主持权限')
         if op == 'initialize':
             return self.initialize(job)
+        if op == 'session.start':
+            require(not args, '开场不接受额外参数')
+            require(view['status'] in {'active', 'paused'}, '归档房间不能开场')
+            if session and session['numbers']['phase'] == 1 and view['status'] == 'active':
+                return {'message': '房间已开场', 'phase': 1, 'round': session['numbers']['round']}
+            require(not session or session['numbers']['phase'] != 2, '本场已结束，请使用新的房间槽位')
+            if view['status'] == 'paused':
+                job.command('opening-resume', 'room.status', {'status': 'active'})
+            if not self.state['initialized']:
+                self.initialize(job)
+            current = job.client.request('/view')
+            session = next(iter(self.entities(current, 'sv.session')))
+            # Binding only restores sheet/play subscriptions; old scene observations stay sealed.
+            self.execute(job, current, 'knowledge.enable', {}, request_id)
+            if session['numbers']['phase'] != 1:
+                job.invoke('opening-start', 'sv.world', actor=session['instanceId'], operation='start', value=0)
+            return {'message': '房间已开场', 'phase': 1, 'round': session['numbers']['round']}
         require(self.state['initialized'], '请主持先安装配置包')
         if op == 'knowledge.enable':
             knowledge_client.bind(job)
@@ -693,10 +773,18 @@ class Package:
         require(view['status'] != 'archived', '房间已经归档，只能阅读')
         require(view['status'] == 'active' or op in {'note', 'draft', 'draft.roll', 'room', 'recap', 'backup', 'chat', 'automation.configure', 'request'}, '房间暂停或已归档')
         if op == 'location.reveal':
-            require(set(args)=={'index','accounts'} and str(args['index']) in self.state['published'], '地点尚未发布或参数无效')
+            require({'index','accounts'} <= set(args) <= {'index','accounts','knowledge'} and str(args['index']) in self.state['published'], '地点尚未发布或参数无效')
             owners={a['owner'] for a in self.entities(view,'sv.character')}
             require(isinstance(args['accounts'],list) and args['accounts'] and all(a in owners for a in args['accounts']), '受众无效')
+            facts = {c['id']:c for c in scene_knowledge.catalog(self.scene_content()) if c['location']==args['index']}
+            selected = args.get('knowledge',[])
+            require(isinstance(selected,list) and all(isinstance(k,str) and k in facts for k in selected), '揭示内容无效')
             for owner in args['accounts']:
+                # Explicit KP disclosure is a trusted source change, then an
+                # idempotent host observation. It is never performed on reads.
+                if selected:
+                    self.state['discoveries'].setdefault(owner,{}).update({k:copy.deepcopy(facts[k]) for k in selected})
+                    self.save()
                 entity=next(x for x in self.entities(view,'sv.location') if x['numbers']['index']==args['index'])
                 knowledge_client.disclose(job,owner,entity['instanceId'],'scene',key='scene-'+owner)
             return {'message':'已向指定玩家揭示地点'}
@@ -735,15 +823,22 @@ class Package:
             return self.run_scene_queue(job, view, args['jobId'])
         if op == 'scene.action':
             require(set(args) <= {'action', 'choice', 'manual'} and {'action', 'choice'} <= set(args), '场景行动参数不正确')
+            require(all(isinstance(args[k],str) and 0 < len(args[k]) <= 100 for k in ('action','choice')), '场景行动参数不正确')
             require(isinstance(args.get('manual', False), bool), '裁决方式无效')
-            definition = next((x for x in self.scene_definitions() if x['id'] == args['action']), None)
-            require(definition and args['choice'] in {c['id'] for c in definition['choices']}, '预设行动不存在')
             if not character: action_errors.blocked('NOT_APPROVED')
+            available = self.scene_definitions()
+            if not gm:
+                places = knowledge_client.locations(knowledge_client.records(job.client))
+                current = next((p for p in places if p['index']==character['numbers']['location'] and p.get('known')),None)
+                available = current.get('actions',[]) if current else []
+            definition = next((x for x in available if x['id'] == args['action']), None)
+            require(definition and args['choice'] in {c['id'] for c in definition['choices']},
+                    '此做法不在本人已知行动中，请先探索或向 KP 请求说明' if not gm else '预设行动不存在')
             if character['numbers']['ready'] != 1: action_errors.blocked('NOT_READY')
             if not session or session['numbers']['phase'] != 1: action_errors.blocked('NOT_STARTED')
             require('sceneContext' in job.record or character['numbers']['location'] == definition['location'], '只能执行当前地点的预设行动')
             if args.get('manual') or session['numbers'].get('autoResolve', 1) == 0:
-                return self.queue_request(view, character, request_id, 'scene', {'action': args['action'], 'choice': args['choice']},
+                return self.queue_request(view, character, request_id, 'scene', {'action': args['action'], 'choice': args['choice'], 'menuVersion':scene_knowledge.VERSION},
                     definition['label'], '玩家主动申请' if args.get('manual') else '主持已关闭自动裁决')
             return self.queue_scene(view, character, job, definition, args['choice'])
         if op == 'automation.configure':
@@ -798,7 +893,7 @@ class Package:
                     a, b = swap.split('-')
                     preset[a], preset[b] = preset[b], preset[a]
             require(preset is not None, '请选择预设或随机草稿')
-            self.state['drafts'][account] = {**copy.deepcopy(preset), 'name': name, 'account': account, 'status': 'submitted', 'requestId': request_id}
+            self.state['drafts'][account] = {**copy.deepcopy(preset), 'name': name, 'account': account, 'status': 'submitted', 'requestId': request_id, 'time': time.time()}
             return {'message': '角色草稿已提交主持审核'}
         if op == 'note':
             text = args.get('text', '')
@@ -863,6 +958,7 @@ class Package:
                 return self.queue_request(view, character, request_id, op, args, '请求裁决：' + op, '自动裁决已关闭')
             return job.invoke('action', 'sv.' + op, actor=character['instanceId'], **args)
         if op == 'resolve':
+            require(type(args.get('approve')) is bool, '请选择批准或拒绝')
             request = self.state['requests'].get(args.get('requestId'))
             require(request is not None, '请求不存在')
             if request['status'] != 'pending':
@@ -872,7 +968,24 @@ class Package:
             if args.get('approve'):
                 current_actor = view['entities'].get(request['actor'])
                 require(current_actor and current_actor['lifecycle'] == 'active' and current_actor['owner'] == request['account'], '角色归属已经改变')
+                resolution = args.get('resolution')
+                if resolution is not None:
+                    require(request['kind'] in {'free', 'interact', 'review'}, '结构化申请必须执行原行动')
+                    require(isinstance(resolution, dict) and set(resolution) == {'operation', 'input'}, '执行配置无效')
+                    operation, inputs = resolution['operation'], resolution['input']
+                    fields = {'check': {'attribute', 'mode'}, 'damage': {'amount', 'attribute'},
+                              'rest': {'kind', 'attribute'}, 'grant': {'item', 'slot', 'uses'}}
+                    require(isinstance(operation, str) and operation in fields and isinstance(inputs, dict) and set(inputs) == fields[operation], '不支持的裁决执行动作')
+                    if operation == 'check':
+                        outcome = job.invoke('resolution', 'sv.adjudicate', actor=request['actor'], kind='check',
+                                             operation='move', slot=0, value=0, **inputs)
+                    else:
+                        outcome = job.invoke('resolution', 'sv.' + operation, actor=request['actor'], **inputs)
+                    request['result'] = outcome
+                    request['resolution'] = copy.deepcopy(resolution)
                 if request['kind'] == 'scene':
+                    require(self.current_scene_request(job,request['args'].get('menuVersion')),
+                            '行动菜单已更新，请让玩家按本人已知选项重新提交')
                     request['result'] = self.execute_scene(job, view, current_actor, request['args']['action'], request['args']['choice'])
                 if request['kind'] in {'check', 'inventory'}:
                     params = {'attribute': 'dex', 'mode': 'normal', 'operation': 'move', 'slot': 0, 'value': 0, **request['args']}
@@ -974,7 +1087,7 @@ class Package:
             require(1 <= len(name) <= 60, '名称应为1至60字')
             numbers = args.get('numbers', {})
             require(set(numbers) == {'str', 'dex', 'wil', 'hp', 'armor', 'location'}, '请填写完整数值')
-            require(all(isinstance(x, int) and not isinstance(x, bool) and 0 <= x <= 100 for x in numbers.values()) and 1 <= numbers['location'] <= 10, 'NPC 数值无效')
+            require(all(isinstance(x, int) and not isinstance(x, bool) and 0 <= x <= 100 for x in numbers.values()) and str(numbers['location']) in self.state['locations'], 'NPC 数值无效')
             numbers = {**numbers, 'strMax': numbers['str'], 'dexMax': numbers['dex'], 'wilMax': numbers['wil'], 'maxHp': numbers['hp']}
             entity = job.command('npc', 'entity.create', {'configurationId': 'sv.npc', 'name': name, 'owner': 'kp', 'visibility': 'kp', 'numbers': numbers})
             return {'message': '主持生物已创建', 'id': entity}
@@ -1020,9 +1133,8 @@ class Package:
             revision = args.get('revision')
             require(revision in self.state['ruleRevisions'], '修订不存在')
             job.command('activate', 'rule.activate', {'revision': revision})
-            self.state['activeRevision'] = revision
-            self.game = self.state['ruleRevisions'][revision]['data']['game.json']
-            return {'revision': revision, 'message': '规则修订已激活'}
+            self.sync_rules(job.client,job.client.request('/view'))
+            return {'revision': revision, 'message': '规则修订已激活', 'packageSync':self.state.get('publicationSync')}
         raise PackageError('未知行动')
 
     def initialize(self, job):

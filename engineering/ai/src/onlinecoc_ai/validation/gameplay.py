@@ -7,7 +7,7 @@ from onlinecoc.errors import DomainError
 
 from ..errors import AiError, require
 from ..pack import apply_configurations, fixture_state
-from ..sandbox import run_scenario
+from ..sandbox import run_scenario, author_private_rules
 from .base import check_base
 from .common import finding, report
 from .rules import pointer
@@ -80,7 +80,7 @@ def assess(pack, state, baseline, context, changes, artifact=None):
                 for variant, configurations, rules in (("baseline", state["configurations"], baseline), ("candidate", candidate["configurations"], artifact)):
                     world = fixture_state(fixture, configurations)
                     trials, algorithm = random_trials(scenario, variant)
-                    results = run_scenario(rules, world, scenario, trials)
+                    results = run_scenario(rules, world, scenario, trials, private_rule_ids=author_private_rules(rules,scenario))
                     check_steps(scenario, results)
                     outputs[variant] = results
                     policies[variant] = {"algorithm": algorithm, "seed": scenario["randomPolicy"]["seed"], "trials": len(trials),
@@ -124,11 +124,17 @@ def assess(pack, state, baseline, context, changes, artifact=None):
         code_changed = changes["sources"] != baseline["sources"] or changes["data"] != baseline["data"]
         from .extensions import assess_extensions
         extension_evidence=assess_extensions(pack,state,baseline,artifact,changes,context['reviewPrincipal'])
+        from .live import assess_live
+        live_evidence=assess_live(pack,state,baseline,artifact,changes,context['reviewPrincipal']) if code_changed and extension_evidence is None else None
+        if live_evidence:
+            executions.append({'liveValidation':live_evidence})
+            risk='high'
+            findings.append(finding('LIVE_GAMEPLAY_REVIEW',severity='warning',suggestion='Review author-declared compatibility coverage and remaining gameplay changes'))
         if extension_evidence and (extension_evidence['changedRules'] or changes['configurations']):
             risk='high'
             findings.append(finding('EXTENSION_GAMEPLAY_REVIEW',severity='warning',suggestion='Review NPC template deltas and explicit rule effects before publication'))
             executions.append({'extensionValidation':extension_evidence})
-        if code_changed and state["entities"] and extension_evidence is None:
+        if code_changed and state["entities"] and extension_evidence is None and live_evidence is None:
             covered_entities = set()
             for scenario in pack.scenarios:
                 ids = {v for step in scenario["steps"] for v in step["input"].values() if isinstance(v, str) and v in state["entities"]}
@@ -137,7 +143,7 @@ def assess(pack, state, baseline, context, changes, artifact=None):
                 try:
                     for variant, rules in (("existing-baseline", baseline), ("existing-candidate", artifact)):
                         trials, _ = random_trials(scenario, variant)
-                        results = run_scenario(rules, state, scenario, trials)
+                        results = run_scenario(rules, state, scenario, trials, private_rule_ids=author_private_rules(rules,scenario))
                         check_steps(scenario, results)
                     covered_entities |= ids
                 except (AiError, DomainError):

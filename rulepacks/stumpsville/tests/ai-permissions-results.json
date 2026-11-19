@@ -1,0 +1,11 @@
+{
+  "checkedAt": "2026-11-19T15:55:02.913355+08:00",
+  "passed": 3,
+  "checks": [
+    "PL 主动点击后才入队，重复申请复用同一请求",
+    "KP 先预览具体分面再执行 observe；只有申请者获得内容与完成状态",
+    "独立设置页显示全部 14 个服务、外发、读取和执行开关，390px 可操作且无横向溢出"
+  ],
+  "realSaveChanged": false,
+  "evidenceDirectory": "tests/output/ai-permissions-702c2010"
+}

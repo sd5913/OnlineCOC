@@ -3,7 +3,9 @@ import copy
 from onlinecoc.model import member
 from .errors import require
 
-DEFAULT_POLICY = {'revision': 1, 'allowPlayerChat': False, 'autoApproveBatches': False, 'autoApproveConfigurations': False, 'principal': None}
+DEFAULT_POLICY = {'revision': 1, 'allowPlayerChat': False, 'autoApproveBatches': False, 'autoApproveConfigurations': False,
+    'allowAdminRoomRead': True, 'allowDataQueries': True, 'allowRuntimeChanges': True,
+    'allowConfigurationChanges': True, 'allowKnowledgeRequests': True, 'allowPlayerRequests': True, 'principal': None}
 
 
 def policy(repository):
@@ -36,6 +38,13 @@ def binding(host, repository, request):
 
 
 def validate_context(host, repository, room, context):
+    current = policy(repository)
+    facts = context.get('facts', {})
+    if 'aiPolicyRevision' in facts:
+        require(facts['aiPolicyRevision'] == current['revision'], 'SESSION_ACCESS_CHANGED')
+    if facts.get('aiReadScope') == 'kp-room':
+        require(current['allowAdminRoomRead'] and member(room, context['reviewPrincipal'])['role'] == 'kp'
+            and facts.get('sessionAccess', {}).get('level') != 'player', 'PERMISSION_DENIED')
     # Assistant history can depend on package queries or older conversations.
     # Revalidate its complete provenance, with bounded traversal and no recursion.
     from onlinecoc.publication import check_context

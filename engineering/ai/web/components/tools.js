@@ -24,6 +24,8 @@ export function createAITools(rawClient){
    validate:(proposalId,revision,id)=>ai('ai.proposal.validate',{proposalId,revision},id),
    approve:(proposalId,proposalRevision,riskDecisions,id)=>host('ai.proposal.approve',{proposalId,proposalRevision,riskDecisions},id),
    apply:(approvalId,id)=>host('publication.apply',{approvalId},id),revoke:(approvalId,id)=>host('ai.proposal.revoke',{approvalId},id)},
+  playerRequests:{submit:(value,id)=>ai('ai.player.request',value,id)},
+  knowledgeRequests:{submit:(sessionId,requestId,id)=>ai('ai.knowledge.request',{sessionId,requestId},id),reconcile:(value,id)=>ai('ai.knowledge.reconcile',value,id)},
   access:{get:()=>client.aiAccess(),update:(value,id)=>ai('ai.access.update',value,id)},
   rulings:{list:()=>client.aiRulings(),decide:(value,id)=>ai('ai.ruling.decide',value,id)},
   batches:{list:()=>client.aiBatches(),approve:(batchId,digest,id)=>ai('ai.batch.approve',{batchId,digest},id),reject:(batchId,digest,id)=>ai('ai.batch.reject',{batchId,digest},id),reconcile:(batchId,digest,id)=>ai('ai.batch.reconcile',{batchId,digest},id)},

@@ -72,7 +72,7 @@ export function renderMarkdown(target,text,{plainText=false}={}){
 export function markdownStyle(root){mountStyle(root,new URL('./markdown.css',import.meta.url));}
 export function mountMarkdown(target,text,options={}){
  const element=document.createElement('div');target.append(element);const root=element.attachShadow({mode:'open'});markdownStyle(root);const body=document.createElement('div');root.append(body);let revision=0,dead=false;
- const details=bindReferenceDetails(body,tokens=>options.resolveReferences?.(tokens),{container:root,valid:()=>element.isConnected});
+ const details=bindReferenceDetails(body,tokens=>options.resolveReferences?.(tokens),{container:root,valid:()=>element.isConnected,audience:()=>options.audience||'player'});
  let previous;
  function update(value,next=options){if(dead)return;const unchanged=value===previous&&next.plainText===options.plainText&&next.resolveReferences===options.resolveReferences;options=next;if(unchanged){details.refresh();return;}previous=value;details.close();const stamp=++revision;renderMarkdown(body,value,next);hydrateReferences(body,next.resolveReferences,()=>!dead&&stamp===revision);}
  update(text);return {update,destroy(){dead=true;revision++;details.destroy();element.remove();}};

@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-11-19T10:01:05.952285+08:00",
+  "checkedAt": "2026-11-19T11:03:22.019572+08:00",
   "passed": 12,
   "checks": [
     "initial entry observation and explicitly subscribed own sheet work through normal player UI",
@@ -17,5 +17,5 @@
   ],
   "realSaveChanged": false,
   "provider": "deterministic loopback fixture",
-  "output": "D:\\Studies\\Art Programming\\OnlineCOC\\rulepacks\\stumpsville\\tests\\output\\strict-known-e86f794e"
+  "output": "D:\\Studies\\Art Programming\\OnlineCOC\\rulepacks\\stumpsville\\tests\\output\\strict-known-93eec307"
 }

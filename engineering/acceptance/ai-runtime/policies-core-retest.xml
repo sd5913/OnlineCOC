@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="6" time="26.182" timestamp="2026-11-19T13:59:25.720478+08:00" hostname="LAPTOP-BIFSL64A"><testcase classname="tests.test_policies" name="test_high_risk_requires_exact_manual_fingerprint_and_retains_diff" time="14.508" /><testcase classname="tests.test_policies" name="test_more_than_eight_actions_execute_without_truncation" time="1.598" /><testcase classname="tests.test_policies" name="test_batch_storage_has_no_business_count_limit" time="5.233" /><testcase classname="tests.test_policies" name="test_policy_switches_are_enforced_for_new_and_pending_writes" time="1.097" /><testcase classname="tests.test_policies" name="test_admin_room_scope_is_default_and_revocable_without_player_escalation" time="1.092" /><testcase classname="tests.test_policies" name="test_player_request_is_explicit_private_and_real_observation_is_required" time="1.130"><failure message="AssertionError: assert 'PERMISSION_DENIED' == 'DISCLOSURE_REQUIRED'&#10;  &#10;  - DISCLOSURE_REQUIRED&#10;  + PERMISSION_DENIED">application = &lt;onlinecoc_ai.api.Application object at 0x00000141B0D60950&gt;
+
+    def test_player_request_is_explicit_private_and_real_observation_is_required(application):
+        app=application;s,r,args,req=request_disclosure(app)
+        assert committed(command(app,'ai.knowledge.request',args,'player1'))==req
+        assert command(app,'ai.knowledge.request',args,'player2')['status']=='rejected'
+        assert len(app.rulings.list('kp')['items'])==1
+        decision={'rulingId':req['rulingId'],'digest':req['digest'],'decision':'approve'}
+        assert command(app,'ai.ruling.decide',decision,'player1')['code']=='PERMISSION_DENIED'
+&gt;       assert command(app,'ai.ruling.decide',decision)['code']=='DISCLOSURE_REQUIRED'
+E       AssertionError: assert 'PERMISSION_DENIED' == 'DISCLOSURE_REQUIRED'
+E         
+E         - DISCLOSURE_REQUIRED
+E         + PERMISSION_DENIED
+
+engineering\ai\tests\test_policies.py:105: AssertionError</failure></testcase></testsuite></testsuites>

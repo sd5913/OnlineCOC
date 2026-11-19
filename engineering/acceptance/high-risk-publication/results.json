@@ -1,0 +1,134 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-11-19T14:18:54.776997+08:00",
+  "scope": "host high-risk publication, authorized room reads and trusted KP private probes",
+  "runs": [
+    {
+      "file": "core.xml",
+      "tests": 15,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 14,
+      "seconds": 0.034
+    },
+    {
+      "file": "core-retest.xml",
+      "tests": 15,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 15,
+      "seconds": 0.028
+    },
+    {
+      "file": "host-transactions.xml",
+      "tests": 23,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 23,
+      "seconds": 5.796
+    },
+    {
+      "file": "backend-regression.xml",
+      "tests": 122,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 122,
+      "seconds": 111.13
+    },
+    {
+      "file": "host-final.xml",
+      "tests": 26,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 26,
+      "seconds": 6.19
+    },
+    {
+      "file": "ai-host-regression.xml",
+      "tests": 28,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 28,
+      "seconds": 223.679
+    },
+    {
+      "file": "probe-first.xml",
+      "tests": 36,
+      "failures": 2,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 34,
+      "seconds": 10.854
+    },
+    {
+      "file": "probe-second.xml",
+      "tests": 36,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 35,
+      "seconds": 11.275
+    },
+    {
+      "file": "probe-final.xml",
+      "tests": 36,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 36,
+      "seconds": 10.835
+    },
+    {
+      "file": "post-probe-integration.xml",
+      "tests": 17,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 17,
+      "seconds": 33.298
+    }
+  ],
+  "uniqueTests": 188,
+  "latestStatusCounts": {
+    "passed": 188,
+    "failure": 0,
+    "error": 0,
+    "skipped": 0
+  },
+  "sourceSha256": {
+    "engineering/backend/src/onlinecoc/publication.py": "ced1ada06d97fa272a3867ffa8df79478ca4d053c64e7ed7e021be5485b771e2",
+    "engineering/backend/src/onlinecoc/ai_contracts.py": "eb4c5a5cdedeb02398f9bf08e6c8713308cffb373007c8e569e735f7f4e94678",
+    "engineering/backend/src/onlinecoc/room_read.py": "541f3b4ec00f98ed843800cca0240e1b1cb44867cc0ce3fdbbb6d911ae600154",
+    "engineering/backend/src/onlinecoc/data_queries.py": "80af0bf8406a19d668afcf739f93ad0cfd8ad0d4e4d60bfae50d8fb1dc201246",
+    "engineering/backend/src/onlinecoc/ai_sources.py": "5be3cbe061bd99a0be5a7387a3b575c21c74d27f80d6f54c9309150df4a6aec0",
+    "engineering/backend/src/onlinecoc/host.py": "9e64dd57711b5cc576e70ce5ff43c8e6be4a25e4c7f89b9fe348ab4ade0e4b6a",
+    "engineering/backend/src/onlinecoc/worker_entry.py": "686f0f86e5c523edcb25ca69cae78e3264e6778accf197aa11aa92300373635e",
+    "engineering/contracts/ai.json": "be3678aacf0a545ca00b65ceb50d5650bbec079310cd106be8135517b97db06d",
+    "engineering/contracts/ai-operations.json": "722763a2e8b407adef90e0c0edf54bc3c7491ed17d5ca4324837fe59da17b563",
+    "engineering/contracts/models.json": "23e76c62823c405827ba31f24f0750379e0f372ff2fdd61b3baf633c531b2ee2",
+    "engineering/contracts/operations.json": "ff1c320b83f73fbbd83976883ac352919f94834f392572189feca3328c065f9e",
+    "engineering/backend/tests/test_high_risk_host.py": "6a68007ab8289070ecfe05543dbf4aad3c252b7b852511c5e7134646d01d9206",
+    "engineering/backend/tests/test_high_risk_commands.py": "71fd745bad959f7a32cca7c4f8d93a0c7eb731bf408432e36798b12ac65c4c86",
+    "engineering/backend/tests/test_private_probe.py": "3fd73e6900a85c06d5ddefc635fd3f990e6a3fa95cc96d080b0e2f165d43c1df",
+    "engineering/backend/tests/ai_helpers.py": "a0d78d5e016ebcb474fdbfb254f6348d36cf1b3dde8c0a4d950162d3b9f4290e",
+    "engineering/backend/tests/test_ai_approval.py": "ee271a5ae5aa57013b20649fc69695c55a6ca54dcb774bde9d8953b37cef1eaf",
+    "engineering/backend/tests/test_ai_publication.py": "b48ad02e81b0274638a5fa8348905fa55ad5033c3535b09c3c92053f1db8f70c"
+  },
+  "validatorSetDigest": "2cbfa1d54fcbf37bb4129160136f1c950942d505113f8b21bd0990ac7585d053",
+  "limitations": [
+    "Synthetic resolver is used only by test_high_risk_commands; actual A/B/C is covered separately by ai-host-regression and post-probe-integration.",
+    "The full 28-case AI host regression predates the private-probe patch. The final 17-case integration run covers changed worker/sandbox paths and three actual AI publication checks.",
+    "No live rooms, deployments, paid provider calls or package-owned test results are included."
+  ],
+  "initialFailures": {
+    "core.xml": "Proof fixture used mismatched initiator; corrected test input.",
+    "probe-first.xml": "Test damage helper required an absent rule and live command omitted catalog revisions; corrected fixtures.",
+    "probe-second.xml": "Live permission denial raises DomainError before receipt creation; corrected test assertion."
+  }
+}

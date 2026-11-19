@@ -23,7 +23,12 @@ def service(host, account, room=None):
     require(port is not None, 'KNOWLEDGE_UNAVAILABLE')
     capability = port.capabilities(account, state=room, player=True)
     require(capability.get('status') == 'ready', 'KNOWLEDGE_UNAVAILABLE')
-    port.require_egress(account,'ai',state=room)
+    from onlinecoc.errors import DomainError
+    from .errors import AiError
+    try:port.require_egress(account,'ai',state=room)
+    except DomainError as exc:
+        if exc.code=='PERMISSION_DENIED':raise AiError('KNOWLEDGE_EGRESS_DISABLED') from None
+        raise
     return port
 
 
@@ -38,6 +43,10 @@ def attach(host, context, name, args, pool):
         require(room['aiControl']['settings']['externalSources']['private'], 'EXTERNAL_SCOPE_DISABLED')
         operation=port.search if name=='room_search_knowledge' else port.read
         page=operation(owner,args,state=room,player=True)
+        if name=='room_search_knowledge' and args.get('query') and not page['items']:
+            page=port.search(owner,{k:v for k,v in args.items() if k in ('limit','includeHistory')},state=room,player=True)
+            page={**page,'queryMatch':'none','fallback':'personal-index',
+                'notice':'The literal keyword had no matches. These are the authorized personal index entries, not keyword matches; read relevant refs to inspect known item names or clues. No broader permission was granted.'}
         refs=[item['ref'] for item in page['items']]
         proofs=context['facts']['knowledgeProofs']
         require(len(proofs)<26,'QUERY_LIMIT')

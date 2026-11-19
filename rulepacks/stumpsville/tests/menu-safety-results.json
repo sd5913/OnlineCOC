@@ -1,0 +1,124 @@
+{
+  "issue": "SV-ISSUE-001",
+  "checkedAt": "2026-11-19T12:12:59.586824+08:00",
+  "passed": true,
+  "groups": 52,
+  "counting": "Assertion groups; not unique rule branches or test functions. Engine collaborator checks excluded.",
+  "suites": [
+    {
+      "report": "menu-knowledge-results.json",
+      "checkedAt": "2026-11-19T12:11:46.712044+08:00",
+      "groups": 9,
+      "passed": true
+    },
+    {
+      "report": "menu-upgrade-results.json",
+      "checkedAt": "2026-11-19T11:10:33.286069+08:00",
+      "groups": 6,
+      "passed": true
+    },
+    {
+      "report": "strict-known-results.json",
+      "checkedAt": "2026-11-19T11:03:22.019572+08:00",
+      "groups": 12,
+      "passed": true
+    },
+    {
+      "report": "scene-results.json",
+      "checkedAt": "2026-11-19T11:11:53.135178+08:00",
+      "groups": 8,
+      "passed": true
+    },
+    {
+      "report": "scene-recovery-results.json",
+      "checkedAt": "2026-11-19T12:10:38.670568+08:00",
+      "groups": 6,
+      "passed": true
+    },
+    {
+      "report": "scene-ui-results.json",
+      "checkedAt": "2026-11-19T12:08:55.473914+08:00",
+      "groups": 4,
+      "passed": true
+    },
+    {
+      "report": "web-results.json",
+      "checkedAt": "2026-11-19T11:16:44.676097+08:00",
+      "groups": 7,
+      "passed": true
+    }
+  ],
+  "firstAttempts": [
+    {
+      "check": "provider smoke",
+      "result": "failed",
+      "cause": "Host loads the plugin by absolute file path without adding the sibling directory to sys.path.",
+      "resolution": "Fixed provider to load the trusted fixed sibling with importlib; smoke and all following HTTP tests passed."
+    },
+    {
+      "check": "menu-knowledge",
+      "result": "failed",
+      "cause": "Broad d4 substring assertion matched opaque hashes.",
+      "resolution": "Assert specific concealed damage phrase and forbidden facts in actual provider requests instead; full test rerun passed."
+    },
+    {
+      "check": "menu-upgrade",
+      "result": "failed",
+      "cause": "Runtime.start with an alive host is a no-op, so fixture did not actually install the new provider.",
+      "resolution": "Stop the owned test process before starting; full upgrade and rollback probe passed."
+    },
+    {
+      "check": "scene-ui",
+      "result": "failed twice",
+      "cause": "Legacy test assumed an expanded log and treated an unknown map placeholder as a disclosed location.",
+      "resolution": "Explicitly open the log and test known=true; all 4 browser groups passed."
+    }
+  ],
+  "expectedFaults": [
+    "Recovery test deliberately injects ConnectionError after host commit and during feedback publication; HTTP 503 logs are expected. Both resume the same receipts."
+  ],
+  "validation": [
+    "Python AST for changed Python files, scene-actions JSON parse and node --check ui/app.js passed.",
+    "All 18 initial and disclosed menu definitions audited; hidden submissions tested through authenticated HTTP.",
+    "Two real Edge clients exercised all 18 presets over local WebRTC; no JavaScript errors.",
+    "Actual AI HTTP search/read/evidence path exercised with deterministic local provider, not a live model quality evaluation.",
+    "Old uncommitted automatic and manual requests denied; already committed pre-upgrade request with lost local result recovers the original host receipt."
+  ],
+  "engineCoordination": {
+    "thread": "工程bro 1号",
+    "engineChanges": false,
+    "confirmed": "Descriptor binding, schema digest, sourceGuard and read-proof revalidation suffice; audience-independent sourceRevision. ISSUE-012 remains a separate presentation-contract proposal."
+  },
+  "realProviderCalls": 0,
+  "realSaveChanged": false,
+  "cloudDeployment": false,
+  "limits": [
+    "Same physical computer; no new cloud TURN, independent household, mobile Safari or long duration load test.",
+    "Formal running rooms not automatically upgraded; stop/restart, explicit KP rebind and new disclosure required.",
+    "Previously read/exported content cannot be retracted.",
+    "New safe-menu wording and KP upgrade/disclosure text currently Chinese; unmatched English falls back to source text."
+  ],
+  "screenshots": "D:\\Studies\\Art Programming\\OnlineCOC\\rulepacks\\stumpsville\\tests\\output\\menu-knowledge-de6a4c16",
+  "sourceSha256": {
+    "tools/scene_knowledge.py": "0f411e00a878396c1e96390d07285430d30072709e50447fd6828940b549c6be",
+    "tools/knowledge_provider.py": "800abac4c4ac666a9d16a838854c7f1d32ab709c696a645559c79381fc364a7e",
+    "tools/package.py": "e20f14bb8f32c300ba433c22e32bb612219c2bacc7ec7952d03dd0c3a3311349",
+    "ui/app.js": "9cc6df8e17f4f11927ccfb0aa6630d32c2629d552fa5ca330b71bc6f3ed64a58",
+    "config/scene-actions.json": "a7adee0a366fbd84b4f316e8a5a539c726168b28cc6f4263746366308e56bd7a",
+    "rules/scene.lua": "70b60d8a55804c753ec56a476d27393cff2a7466a8b83693db30fafa67e5897d",
+    "tests/verify_menu_knowledge.py": "2051ba7014e7d5b45794356a9f27ef5311422f386df0073cae3f98b3dcc2490b",
+    "tests/verify_menu_upgrade.py": "1dd6e5d81f5754f779d9392619588cbb19585545ca70e5271c3ee4314fa75c7a",
+    "tests/verify_scene_recovery.py": "2ec829a61c448763c0c67a72a289232787f7b7bc91f05bfad954fbf878c536b1",
+    "tests/verify_scene_ui.py": "a7266ea052e15089f5746aa1e3ec5c2e3553c08f125728eaa949e3a19462b43d",
+    "tests/verify_scenes.py": "d0e9892e5b6295fbce4d10410ddbc90c3c056c65631075649421ed71aefe7f82",
+    "tests/verify_strict_known.py": "ff283046a385e8bde9c5725157eb1fb101f02e71b622b1927134f1d4ef5340ab",
+    "tests/verify_web.py": "b33c91ae623c2c7aa4583c0f7a12d57088dc570e2544fe939dd1939094218ec2"
+  },
+  "documentationValidation": {
+    "relativeLinksChecked": 322,
+    "missing": 0,
+    "inventoryMatched": true,
+    "sourceHashesMatched": true,
+    "gitDiffCheck": "passed"
+  }
+}

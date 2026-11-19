@@ -1,0 +1,1 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="0" skipped="0" tests="1" time="4.359" timestamp="2026-11-19T13:09:08.193195+08:00" hostname="LAPTOP-BIFSL64A"><testcase classname="tests.test_workbench_ui" name="test_compact_ruling_modal_retains_risks_and_decides_once" time="4.074" /></testsuite></testsuites>

@@ -41,6 +41,8 @@ class Repository:
                     interrupted = True
             for batch in state['settings'].get('batches',{}).values():
                 if batch['status']=='executing':batch['status']='unknown';interrupted=True
+            for request in state['settings'].get('knowledgeRequests',{}).values():
+                if request['status']=='executing':request['status']='unknown';interrupted=True
             for request in state["requests"].values():
                 if request["status"] in ("generating", "validating", "publishing"):
                     request["status"] = "interrupted"
@@ -79,18 +81,43 @@ class Repository:
             if task.get('choices') is not None:validate_choices(task['choices'])
         require(type(sessions) is dict and len(sessions) <= 5000, 'SESSION_STATE_INVALID')
         access = state['settings'].get('accessPolicy', {})
-        require(type(access) is dict and not set(access)-{'revision','allowPlayerChat','autoApproveBatches','autoApproveConfigurations','principal'}, 'SESSION_STATE_INVALID')
-        require(type(access.get('revision',1)) is int and access.get('revision',1)>0 and all(type(access.get(k,False)) is bool for k in ('allowPlayerChat','autoApproveBatches','autoApproveConfigurations')), 'SESSION_STATE_INVALID')
+        from .access import DEFAULT_POLICY
+        require(type(access) is dict and not set(access)-set(DEFAULT_POLICY), 'SESSION_STATE_INVALID')
+        require(type(access.get('revision',1)) is int and access.get('revision',1)>0 and all(type(access.get(k,v)) is bool for k,v in DEFAULT_POLICY.items() if type(v) is bool), 'SESSION_STATE_INVALID')
         require(access.get('principal') is None or type(access['principal']) is str, 'SESSION_STATE_INVALID')
         batches=state['settings'].get('batches',{})
-        require(type(batches) is dict and len(batches)<=1000,'BATCH_STATE_INVALID')
+        require(type(batches) is dict,'BATCH_STATE_INVALID')
         for key,batch in batches.items():
             require(type(batch) is dict and key==batch.get('batchId') and re.fullmatch('[a-f0-9]{32}',key) and
                 batch.get('status') in ('pending','executing','completed','rejected','partial','unknown') and
-                type(batch.get('actions')) is list and 1<=len(batch['actions'])<=8 and type(batch.get('receipts')) is list and
+                type(batch.get('actions')) is list and 1<=len(batch['actions']) and type(batch.get('receipts')) is list and
                 len(batch['receipts'])<=len(batch['actions']),'BATCH_STATE_INVALID')
             require(batch['digest']==digest({k:batch[k] for k in ('batchId','sessionId','requestId','creator','actions','context','baseline','authorityEpoch')}),'BATCH_STATE_INVALID')
             validate('ContextSnapshot',batch['context'])
+        for key,request in state['settings'].get('knowledgeRequests',{}).items():
+            require(type(request) is dict and request.get('rulingId')==key and re.fullmatch('knowledge:[a-f0-9]{32}',key) and
+                request.get('kind')=='knowledge_request' and request.get('status') in ('pending','executing','completed','rejected','partial','unknown') and
+                request.get('sessionId') in sessions and request.get('requestId') in state['requests'] and
+                request.get('initiator')==sessions[request['sessionId']]['owner'], 'KNOWLEDGE_REQUEST_STATE_INVALID')
+            bound={k:request[k] for k in ('rulingId','kind','sessionId','requestId','initiator','summary','createdAt','authorityEpoch')}
+            require(request['digest']==digest({**bound,'status':'pending','receipts':[]}), 'KNOWLEDGE_REQUEST_STATE_INVALID')
+        from .player_requests import BOUND
+        requests=state['settings'].get('playerRequests',{})
+        require(type(requests) is dict,'PLAYER_REQUEST_STATE_INVALID')
+        for key,request in requests.items():
+            require(type(request) is dict and request.get('rulingId')==key and re.fullmatch('player:[a-f0-9]{32}',key) and
+                request.get('kind')=='player_request' and request.get('status') in ('pending','accepted','rejected') and
+                request.get('sessionId') in sessions and request.get('requestId') in state['requests'] and
+                request.get('initiator')==sessions[request['sessionId']]['owner'] and
+                request['requestId'] in sessions[request['sessionId']]['requestIds'] and
+                request.get('summary')==state['requests'][request['requestId']]['text'],'PLAYER_REQUEST_STATE_INVALID')
+            require(request['digest']==digest({k:request[k] for k in BOUND}),'PLAYER_REQUEST_STATE_INVALID')
+            if request['status']=='accepted':
+                review=sessions.get(request.get('reviewSessionId'),{})
+                require(review.get('accessLevel')=='administrator' and review.get('owner')==request.get('decidedBy') and
+                    request.get('reviewRequestId') in review.get('requestIds',[]),'PLAYER_REQUEST_STATE_INVALID')
+        errors=state['settings'].get('requestErrors',{})
+        require(type(errors) is dict and all(k in state['requests'] and isinstance(v,str) and re.fullmatch('[A-Z][A-Z0-9_]{0,100}',v) for k,v in errors.items()),'REQUEST_STATE_INVALID')
         linked = set()
         for key, session in sessions.items():
             required={'sessionId', 'owner', 'title', 'revision', 'archived', 'createdAt', 'updatedAt', 'requestIds'}

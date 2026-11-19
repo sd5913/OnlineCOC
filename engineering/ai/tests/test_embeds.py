@@ -67,7 +67,8 @@ def test_real_room_page_variants(services,variant):
                 page.get_by_role('button',name='批准并执行',exact=True).click()
                 expect(page.locator('.batch-card')).to_contain_text('已执行',timeout=40000);page.locator('.review-close').click()
             else:
-                expect(page.locator('#history')).to_contain_text('等待 KP 处理')
+                expect(page.locator('#history')).to_contain_text('EXTERNAL_SCOPE_DISABLED')
+                expect(page.locator('.task-error')).to_contain_text('尚未允许向 AI 外发本人已知资料')
                 assert page.get_by_role('button',name='转交 AI',exact=True).count()==0
                 expect(page.locator('.session-select')).not_to_have_value('')
             page.screenshot(path=str(OUTPUT/f'embed-{variant}.png'),full_page=True)
@@ -121,7 +122,7 @@ def test_headless_tools_and_shared_client_ownership(services):
                 allowedCommands:api.referenceCommands(client.view.role).map(x=>x.kind),denied:denied.status,connected:client.connected,
                 contracts:!!(await client.aiContracts()).operations['ai.session.submit']};
             }""")
-            assert result=={'created':'committed','replay':True,'submitted':'committed','status':'received','allowedCommands':['knowledge'],'denied':'rejected','connected':True,'contracts':True}
+            assert result=={'created':'committed','replay':True,'submitted':'committed','status':'blocked','allowedCommands':['knowledge'],'denied':'rejected','connected':True,'contracts':True}
             expect(page.locator('#two #text')).to_have_text('第二份草稿')
             late=page.evaluate("""async()=>{
               const {AiClient,createAITools}=await import('/ai-ui/pack.js');let release,calls=0;

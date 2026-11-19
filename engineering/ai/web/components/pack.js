@@ -17,3 +17,4 @@ export {mountChoices} from './choices.js';
 export {bindReferenceDetails} from './reference-details.js';
 
 export {mountRulings} from './rulings.js';
+export {mountAISettings} from './settings.js';

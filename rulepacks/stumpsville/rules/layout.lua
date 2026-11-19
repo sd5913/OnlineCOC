@@ -1,5 +1,15 @@
 return rule('sv.layout', {'actor'}, function(r, actor)
   local data = r.readData('game.json')
+  -- Numeric indices are persistent inventory/location identities.
+  for index, place in ipairs(data.locations) do
+    assert(place.index == index, 'SV_LOCATION_INDEX')
+    for _, target in ipairs(place.exits) do
+      assert(target ~= index and data.locations[target], 'SV_LOCATION_EXIT')
+    end
+    for _, stock in ipairs(place.stock) do
+      assert(data.items[stock.item] and stock.count >= 0, 'SV_LOCATION_STOCK')
+    end
+  end
   local occupied, cards = {}, {}
   local overloaded, armor, injured = false, 0, false
   for slot = 1, 20 do

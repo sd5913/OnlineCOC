@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="52" time="84.911" timestamp="2026-11-19T14:32:03.769741+08:00" hostname="LAPTOP-BIFSL64A"><testcase classname="tests.test_policies" name="test_high_risk_requires_exact_manual_fingerprint_and_retains_diff" time="14.886" /><testcase classname="tests.test_policies" name="test_more_than_eight_actions_execute_without_truncation" time="1.611" /><testcase classname="tests.test_policies" name="test_batch_storage_has_no_business_count_limit" time="5.268" /><testcase classname="tests.test_policies" name="test_policy_switches_are_enforced_for_new_and_pending_writes" time="1.154" /><testcase classname="tests.test_policies" name="test_ordinary_actor_configuration_still_supports_explicit_auto_policy" time="10.603" /><testcase classname="tests.test_policies" name="test_admin_room_scope_is_default_and_revocable_without_player_escalation" time="1.071" /><testcase classname="tests.test_policies" name="test_player_request_is_explicit_private_and_real_observation_is_required" time="1.163" /><testcase classname="tests.test_policies" name="test_rejected_request_has_no_disclosure_and_disabled_policy_blocks_new_request" time="1.106" /><testcase classname="tests.test_policies" name="test_remove_schema_and_no_configuration_count_limit" time="0.035" /><testcase classname="tests.test_policies" name="test_stable_array_uses_current_baseline_and_candidate_references" time="0.001" /><testcase classname="tests.test_policies" name="test_live_probes_bind_real_ids_and_do_not_hide_changed_or_unlisted_failures[success-True]" time="0.001" /><testcase classname="tests.test_policies" name="test_live_probes_bind_real_ids_and_do_not_hide_changed_or_unlisted_failures[declared-block-True]" time="0.001" /><testcase classname="tests.test_policies" name="test_live_probes_bind_real_ids_and_do_not_hide_changed_or_unlisted_failures[changed-error-False]" time="0.001" /><testcase classname="tests.test_policies" name="test_live_probes_bind_real_ids_and_do_not_hide_changed_or_unlisted_failures[unlisted-error-False]" time="0.001" /><testcase classname="tests.test_policies" name="test_cumulative_tool_budget_uses_transport_limit_and_reports_sizes[112640-review_ready]" time="1.072"><failure message="KeyError: 'taskId'">application = &lt;onlinecoc_ai.api.Application object at 0x0000020DFF587650&gt;
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000020DFF60F9B0&gt;
+size = 112640, expected = 'review_ready'
+
+    @pytest.mark.parametrize('size,expected', [(110*1024,'review_ready'),(270*1024,'failed')])
+    def test_cumulative_tool_budget_uses_transport_limit_and_reports_sizes(application,monkeypatch,size,expected):
+        app=application;enable(app.host,public=True,private=True,kp=True)
+        monkeypatch.setattr(app.batches,'catalog_query',lambda *args: {'notice':'x'*size})
+        async def callback(count,messages,tools):
+            return tool_call('room_manage_catalog') if count==1 else completion({'kind':'plan','text':'已读取目录，等待具体需求。'})
+        provider=Fake(callback)
+        async def run():
+            app.coordinator.provider_factory=lambda _:provider;await app.coordinator.start()
+            try:
+                request=submit(app,session(app),'读取管理目录')
+                result=await wait_task(app.coordinator,request['taskId'])
+                assert result['status']==expected,result
+                budget=result['diagnostics']['contextBudget']
+                assert budget['limitBytes']==256*1024 and budget['toolMessageBytes']&gt;=size
+                assert 'x'*100 not in str(result['diagnostics'])
+                if expected=='failed':assert result['error']=='CONTEXT_LIMIT_EXCEEDED' and provider.calls==1
+                else:assert provider.calls==2 and 96*1024&lt;budget['bytes']&lt;budget['limitBytes']
+            finally:await app.coordinator.close()
+&gt;       asyncio.run(run())
+
+engineering\ai\tests\test_policies.py:214: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:204: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:127: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\base_events.py:719: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    async def run():
+        app.coordinator.provider_factory=lambda _:provider;await app.coordinator.start()
+        try:
+            request=submit(app,session(app),'读取管理目录')
+&gt;           result=await wait_task(app.coordinator,request['taskId'])
+                                                   ^^^^^^^^^^^^^^^^^
+E           KeyError: 'taskId'
+
+engineering\ai\tests\test_policies.py:206: KeyError</failure></testcase><testcase classname="tests.test_policies" name="test_cumulative_tool_budget_uses_transport_limit_and_reports_sizes[276480-failed]" time="1.050"><failure message="KeyError: 'taskId'">application = &lt;onlinecoc_ai.api.Application object at 0x0000020DFF541350&gt;
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000020DFF541850&gt;
+size = 276480, expected = 'failed'
+
+    @pytest.mark.parametrize('size,expected', [(110*1024,'review_ready'),(270*1024,'failed')])
+    def test_cumulative_tool_budget_uses_transport_limit_and_reports_sizes(application,monkeypatch,size,expected):
+        app=application;enable(app.host,public=True,private=True,kp=True)
+        monkeypatch.setattr(app.batches,'catalog_query',lambda *args: {'notice':'x'*size})
+        async def callback(count,messages,tools):
+            return tool_call('room_manage_catalog') if count==1 else completion({'kind':'plan','text':'已读取目录，等待具体需求。'})
+        provider=Fake(callback)
+        async def run():
+            app.coordinator.provider_factory=lambda _:provider;await app.coordinator.start()
+            try:
+                request=submit(app,session(app),'读取管理目录')
+                result=await wait_task(app.coordinator,request['taskId'])
+                assert result['status']==expected,result
+                budget=result['diagnostics']['contextBudget']
+                assert budget['limitBytes']==256*1024 and budget['toolMessageBytes']&gt;=size
+                assert 'x'*100 not in str(result['diagnostics'])
+                if expected=='failed':assert result['error']=='CONTEXT_LIMIT_EXCEEDED' and provider.calls==1
+                else:assert provider.calls==2 and 96*1024&lt;budget['bytes']&lt;budget['limitBytes']
+            finally:await app.coordinator.close()
+&gt;       asyncio.run(run())
+
+engineering\ai\tests\test_policies.py:214: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:204: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:127: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\base_events.py:719: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    async def run():
+        app.coordinator.provider_factory=lambda _:provider;await app.coordinator.start()
+        try:
+            request=submit(app,session(app),'读取管理目录')
+&gt;           result=await wait_task(app.coordinator,request['taskId'])
+                                                   ^^^^^^^^^^^^^^^^^
+E           KeyError: 'taskId'
+
+engineering\ai\tests\test_policies.py:206: KeyError</failure></testcase><testcase classname="tests.test_policies" name="test_management_catalog_indexes_before_returning_selected_schemas" time="1.047" /><testcase classname="tests.test_policies" name="test_unused_extension_remove_requires_policy_without_making_actor_edits_high_risk[True]" time="0.001" /><testcase classname="tests.test_policies" name="test_unused_extension_remove_requires_policy_without_making_actor_edits_high_risk[False]" time="0.001" /><testcase classname="tests.test_task_diagnostics" name="test_failure_diagnostics_redact_messages_and_preserve_primary" time="1.090" /><testcase classname="tests.test_task_diagnostics" name="test_cleanup_error_does_not_replace_result_or_cancellation[False]" time="1.079" /><testcase classname="tests.test_task_diagnostics" name="test_cleanup_error_does_not_replace_result_or_cancellation[True]" time="1.123" /><testcase classname="tests.test_task_diagnostics" name="test_tool_metadata_is_bounded_and_contains_no_argument_values" time="0.001" /><testcase classname="tests.test_task_diagnostics" name="test_deepseek_wire_query_replay_and_parameter_repair[None]" time="1.302" /><testcase classname="tests.test_task_diagnostics" name="test_deepseek_wire_query_replay_and_parameter_repair[bad1]" time="1.350" /><testcase classname="tests.test_task_diagnostics" name="test_deepseek_wire_query_replay_and_parameter_repair[bad2]" time="1.324" /><testcase classname="tests.test_task_diagnostics" name="test_deepseek_wire_query_replay_and_parameter_repair[bad3]" time="1.335" /><testcase classname="tests.test_task_diagnostics" name="test_provider_error_and_cleanup_keep_stable_code" time="1.074" /><testcase classname="tests.test_task_diagnostics" name="test_model_page_counts_do_not_change_proofs_or_reveal_hidden_totals" time="1.073" /><testcase classname="tests.test_task_diagnostics" name="test_channel_reference_resolves_actual_id_before_chat" time="1.285" /><testcase classname="tests.test_task_diagnostics" name="test_last_round_closes_tools_and_returns_bounded_partial_answer" time="1.108" /><testcase classname="tests.test_task_diagnostics" name="test_http_diagnostics_keep_only_valid_status_without_remote_text[400]" time="0.001" /><testcase classname="tests.test_task_diagnostics" name="test_http_diagnostics_keep_only_valid_status_without_remote_text[422]" time="0.001" /><testcase classname="tests.test_task_diagnostics" name="test_http_diagnostics_keep_only_valid_status_without_remote_text[None]" time="0.001" /><testcase classname="tests.test_task_diagnostics" name="test_http_diagnostics_keep_only_valid_status_without_remote_text[private error]" time="0.001" /><testcase classname="tests.test_task_diagnostics" name="test_http_diagnostics_keep_only_valid_status_without_remote_text[True]" time="0.001" /><testcase classname="tests.test_task_diagnostics" name="test_http_diagnostics_keep_only_valid_status_without_remote_text[99]" time="0.001" /><testcase classname="tests.test_task_diagnostics" name="test_http_diagnostics_keep_only_valid_status_without_remote_text[600]" time="0.001" /><testcase classname="tests.test_coordinator" name="test_draft_is_checked_but_never_published" time="7.867" /><testcase classname="tests.test_coordinator" name="test_blocked_model_does_not_hold_host_lock_and_can_cancel" time="1.137" /><testcase classname="tests.test_coordinator" name="test_request_dedup_queue_and_budget" time="1.023" /><testcase classname="tests.test_coordinator" name="test_untrusted_model_and_retry_limits[forged-TOOL_FORBIDDEN]" time="1.479" /><testcase classname="tests.test_coordinator" name="test_untrusted_model_and_retry_limits[loop-TOOL_ROUND_LIMIT]" time="1.285" /><testcase classname="tests.test_coordinator" name="test_untrusted_model_and_retry_limits[retry-PROVIDER_UNAVAILABLE]" time="1.440" /><testcase classname="tests.test_coordinator" name="test_untrusted_model_and_retry_limits[repair-MODEL_OUTPUT_INVALID]" time="1.351" /><testcase classname="tests.test_coordinator" name="test_expired_task_and_authority_change_fail_closed" time="1.355" /><testcase classname="tests.test_coordinator" name="test_disabled_service_makes_no_provider_calls" time="1.020" /><testcase classname="tests.test_coordinator" name="test_retry_budget_records_each_attempt_once" time="1.376" /><testcase classname="tests.test_coordinator" name="test_restart_interrupts_queued_tasks_and_preserves_budget" time="1.068" /><testcase classname="tests.test_coordinator" name="test_permissions_changed_during_generation_discard_output" time="1.061" /><testcase classname="tests.test_coordinator" name="test_profile_changed_during_generation_discards_output_and_runner_survives" time="1.124" /><testcase classname="tests.test_coordinator" name="test_real_contract_is_exposed_and_repair_names_invalid_field" time="7.341" /></testsuite></testsuites>

@@ -7,6 +7,13 @@ import copy
 import hashlib
 import json
 from pathlib import Path
+import importlib.util
+
+# The host loads trusted plugins by absolute file path, without adding their
+# directory to sys.path. Load only this fixed sibling, not a caller-supplied path.
+_spec = importlib.util.spec_from_file_location('stumpsville_scene_knowledge', Path(__file__).with_name('scene_knowledge.py'))
+scene_knowledge = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(scene_knowledge)
 
 POLICY='stumpsville-personal-v1'
 NAMESPACE='stumpsville'
@@ -19,12 +26,12 @@ def digest(value):
 
 def descriptor():
     return {'policyId':POLICY,'namespace':NAMESPACE,'contractVersion':1,'mode':'required-personal',
-        'providerId':'stumpsville-known-v1','selectors':[{'kind':'entity','configurationPrefix':'sv.'}],
+        'providerId':'stumpsville-known-v2-'+scene_knowledge.POLICY_DIGEST,'selectors':[{'kind':'entity','configurationPrefix':'sv.'}],
         'facetSchemas':{
-            'scene':{'schema':{'type':'object'},'modes':['observed_snapshot'],'labelField':'name'},
-            'identity':{'schema':{'type':'object'},'modes':['observed_snapshot'],'labelField':'name'},
-            'play':{'schema':{'type':'object'},'modes':['live_scope'],'labelField':'name'},
-            'sheet':{'schema':{'type':'object'},'modes':['live_scope'],'labelField':'name','entityProjection':True}},
+            'scene':{'schema':scene_knowledge.SCENE,'modes':['observed_snapshot'],'labelField':'name'},
+            'identity':{'schema':scene_knowledge.IDENTITY,'modes':['observed_snapshot'],'labelField':'name'},
+            'play':{'schema':scene_knowledge.PLAY,'modes':['live_scope'],'labelField':'name'},
+            'sheet':{'schema':scene_knowledge.SHEET,'modes':['live_scope'],'labelField':'name','entityProjection':True}},
         'egress':{key:'filtered' for key in ('view','query','rules','receipts','assets','export','ai')}}
 
 
@@ -32,12 +39,16 @@ class Provider:
     def __init__(self,path):self.path=Path(path) if path else None
 
     def package(self,context):
+        cache=context.setdefault('cache',{})
+        cache_key=('stumpsville-package',str(self.path))
+        if cache_key in cache:return cache[cache_key]
         if self.path is None:raise ValueError('PACKAGE_DATA_REQUIRED')
         with self.path.open('rb') as stream:raw=stream.read(8*1024*1024+1)
         if len(raw)>8*1024*1024:raise ValueError('PACKAGE_DATA_LIMIT')
         data=json.loads(raw)
         if data.get('format')!=2 or data.get('sceneId') not in context['state']['entities']:
             raise ValueError('PACKAGE_ROOM_MISMATCH')
+        cache[cache_key]=data
         return data
 
     def pin(self,resource,facets,context):
@@ -57,8 +68,9 @@ class Provider:
                 value['clues'].extend(copy.deepcopy(c) for c in data.get('discoveries',{}).get(context['accountId'],{}).values()
                     if str(c.get('location'))==index and c['id'] not in known_ids)
                 artifact=context['state']['artifacts'][context['state']['activeRuleset']]
-                definitions=artifact['data'].get('scene-actions.json',{}).get('actions',[])
-                value['actions']=[copy.deepcopy(a) for a in definitions if str(a['location'])==index]
+                definitions=artifact['data'].get('scene-actions.json',{})
+                value['actions']=scene_knowledge.menu(definitions,int(index),value['clues'])
+                value['features']=[a['label'] for a in value['actions']]
                 value['entityId']=entity['instanceId']
                 value['doors']={str(target):data.get('doors',{}).get('-'.join(map(str,sorted((int(index),target)))),'unknown')
                     for target in value['exits']}
@@ -70,19 +82,35 @@ class Provider:
                 # their projections, including personal discoveries but not
                 # volatile job/receipt writes between preview and command.
                 versions[facet]={'place':place,'discoveries':data.get('discoveries',{}),
-                    'definitions':definitions,'navigation':value['navigation'],'doors':value['doors']}
+                    'definitions':definitions,'presentation':scene_knowledge.POLICY_DIGEST,
+                    'navigation':value['navigation'],'doors':value['doors']}
             elif facet=='identity' and (entity['configurationId'] in ('sv.character','sv.npc') or entity['configurationId'].startswith('sv.ext.npc.')):
                 values[facet]={'name':entity['name'],'location':entity['numbers'].get('location'),'entityId':entity['instanceId']}
             elif facet=='sheet' and entity['configurationId'] in ('sv.character','sv.draft') and entity['owner']==context['accountId']:
                 value=copy.deepcopy(entity)
                 value.update(metadata={},tags=[],components={},rules={})
+                if entity['configurationId']=='sv.character':
+                    # Intrinsic descriptions of held items only; never export the item catalog
+                    # or copy caller-controlled entity metadata into personal knowledge.
+                    artifact=context['state']['artifacts'][context['state']['activeRuleset']]
+                    definitions=artifact['data'].get('game.json',{}).get('items',[])
+                    inventory=[]
+                    for slot in range(1,21):
+                        index=entity['numbers'].get('item'+str(slot),0)
+                        if type(index) not in (int,float) or index!=int(index) or not 1<=index<=len(definitions):continue
+                        item=definitions[int(index)-1]
+                        shown={k:copy.deepcopy(item[k]) for k in ('id','name','kind','slots','description','damage','armor','light','useDie') if k in item}
+                        shown.update(slot=slot,itemIndex=int(index),uses=entity['numbers'].get('uses'+str(slot),0),maxUses=item.get('uses',0),ticks=entity['numbers'].get('ticks'+str(slot),0))
+                        inventory.append(shown)
+                    value['metadata']['inventory']=inventory
                 values[facet]=value
             elif facet=='play' and entity['configurationId']=='sv.session':
                 values[facet]={'name':'场次状态','entityId':entity['instanceId'],
                     'numbers':{k:v for k,v in entity['numbers'].items() if k in ('phase','round','autoResolve')}}
             else:raise ValueError('FACET_UNAVAILABLE')
         return {'sourceRevision':digest({k:versions.get(k,v) for k,v in values.items()}),'facets':values,
-            'sourceGuard':{'entityId':entity['instanceId'],'configurationId':entity['configurationId']}}
+            'sourceGuard':{'entityId':entity['instanceId'],'configurationId':entity['configurationId'],
+                           'projectionVersion':scene_knowledge.VERSION,'presentation':scene_knowledge.POLICY_DIGEST}}
 
     def read_live(self,resource,facets,context):
         if facets not in (['sheet'],['play']):raise ValueError('LIVE_SCENE_NOT_SUPPORTED')
@@ -90,7 +118,8 @@ class Provider:
 
     def check_guard(self,guard,context):
         value=context['state']['entities'].get(guard.get('entityId'))
-        return bool(value and value['configurationId']==guard.get('configurationId') and not value['metadata'].get('knowledgeRevoked'))
+        return bool(guard.get('projectionVersion')==scene_knowledge.VERSION and guard.get('presentation')==scene_knowledge.POLICY_DIGEST
+                    and value and value['configurationId']==guard.get('configurationId') and not value['metadata'].get('knowledgeRevoked'))
 
     def derive_observations(self,outcome,context):
         operation=outcome['operation'];inputs=outcome.get('input',{})

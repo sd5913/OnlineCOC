@@ -17,19 +17,21 @@ def test_config_is_one_checked_ruling_and_publishes_once(application):
     result=committed(command(app,'ai.proposal.validate',{'proposalId':p['proposalId'],'revision':1}))
     assert result['proposal']['status']=='review_ready'
     item=app.rulings.list('kp')['items'][0];assert item['status']=='pending' and item['risks']
-    args={'rulingId':item['rulingId'],'digest':item['digest'],'decision':'approve'}
+    args={'rulingId':item['rulingId'],'digest':item['digest'],'decision':'approve','explicitHighRiskDigest':item['digest']}
     assert command(app,'ai.ruling.decide',args)['code']=='RISK_REVIEW_REQUIRED'
     args['riskDecisions']={r['id']:'验收接受该项风险' for r in item['risks']}
     assert committed(command(app,'ai.ruling.decide',args))['status']=='completed'
     assert committed(command(app,'ai.ruling.decide',args))['status']=='completed'
     assert len(app.host.state()['aiControl']['publications'])==1
 
-def test_config_auto_approval_requires_separate_setting(application):
+def test_high_risk_config_never_uses_auto_approval(application):
     app=application
     committed(command(app,'ai.access.update',{'revision':1,'allowPlayerChat':False,'autoApproveBatches':False,'autoApproveConfigurations':True}))
     p=committed(command(app,'ai.draft.create',{'text':'自动配置','changeSet':delta()}))
     committed(command(app,'ai.proposal.validate',{'proposalId':p['proposalId'],'revision':1}))
-    assert app.rulings.list('kp')['items'][0]['status']=='completed'
+    assert app.rulings.list('kp')['items'][0]['status']=='pending'
+    assert app.rulings.list('kp')['items'][0]['highRisk']
+    assert not app.host.state()['aiControl']['publications']
 
 def test_player_cannot_decide_and_stale_digest_cannot_execute(application):
     app=application;b=batch(app);args={'rulingId':'batch:'+b['batchId'],'digest':b['digest'],'decision':'approve'}

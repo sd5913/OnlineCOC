@@ -14,8 +14,9 @@ export interface AiReceipt<T = Json> {
   resultUnavailable?: boolean;
 }
 export interface SessionAccess {
-  knowledge: {mode: 'strict-known'; status: 'ready' | 'blocked' | 'unavailable'; notice: string};
+  knowledge: {mode: 'strict-known'; status: 'ready' | 'blocked' | 'unavailable'; code?: string; notice: string};
   role: 'kp' | 'player'; canChat: boolean; defaultLevel: 'administrator' | 'player'; revision: number;
+  allowAdminRoomRead: boolean; allowDataQueries: boolean; allowRuntimeChanges: boolean; allowConfigurationChanges: boolean; allowKnowledgeRequests: boolean; allowPlayerRequests: boolean;
   allowPlayerChat: boolean; autoApproveBatches: boolean; autoApproveConfigurations: boolean;
 }
 export interface Session {
@@ -26,8 +27,12 @@ export interface Session {
 }
 export interface ResponseOption {id: string; label: string; text: string}
 export interface ResponseChoices {prompt: string; options: ResponseOption[]}
-export function mountChoices(target: HTMLElement, choices: ResponseChoices | null, options?: {onSelect?: ((option: ResponseOption) => void) | null; disabled?: boolean}): {update(choices: ResponseChoices | null, options?: {onSelect?: ((option: ResponseOption) => void) | null; disabled?: boolean}): void; destroy(): void};
+export function mountChoices(target: HTMLElement, choices: ResponseChoices | null, options?: {onSelect?: ((option: ResponseOption) => void) | null; disabled?: boolean; hintText?: string | null}): {update(choices: ResponseChoices | null, options?: {onSelect?: ((option: ResponseOption) => void) | null; disabled?: boolean; hintText?: string | null}): void; destroy(): void};
+export interface KnowledgeRequest {rulingId: string; sessionId: string; requestId: string; status: string; createdAt: number; digest: string}
 export interface Task {
+  knowledgeRequest?: KnowledgeRequest;
+  playerRequest?: KnowledgeRequest;
+  sessionId?: string | null;
   choices?: ResponseChoices;
   requestId: string; status: string; createdAt: number;
   text?: string; response?: string; proposalId?: string; batchId?: string; taskId?: string; error?: string;
@@ -76,7 +81,12 @@ export function mountSessionManager(target: HTMLElement, client: AiClient, optio
   title?: string; onOpen?: ((id: string) => void | Promise<void>) | null;
   onChange?: (session: Session) => void | Promise<void>;
 }): SessionManager;
-export interface MarkdownOptions {plainText?: boolean; resolveReferences?: (tokens: string[]) => Promise<{items: DataReference[]}>}
+export interface MarkdownOptions {
+  /** Display mode only; data must already be authorized. Default: player. */
+  audience?: "player" | "administrator";
+  plainText?: boolean;
+  resolveReferences?: (tokens: string[]) => Promise<{items: DataReference[]}>;
+}
 /** DOM-only Markdown subset; use hydrateReferences after rendering to resolve labels. */
 export function renderMarkdown(target: HTMLElement, text: string, options?: MarkdownOptions): void;
 export function mountMarkdown(target: HTMLElement, text: string, options?: MarkdownOptions): {update(text: string, options?: MarkdownOptions): void; destroy(): void};
@@ -90,7 +100,7 @@ export function mountSessions(target: HTMLElement, client: AiClient, options?: {
 export function mountProviders(target: HTMLElement, api: {request(path: string, body?: Json): Promise<any>}, options?: {onChange?: () => void}): Panel;
 export function requestId(): string;
 export interface DataReference {kind: 'config' | 'entity' | 'data' | 'chat' | 'event' | 'ruling' | 'knowledge'; id: string; label: string; revision: string; visibility: string; token?: string}
-export function mountChat(target: HTMLElement, client: AiClient, options?: {listTarget?: HTMLElement; onReview?: ((id: string | null) => void | Promise<void>) | null; onChange?: (sessions: Session[]) => void; onSelect?: (session: Session | null) => void}): Panel & {newChat(): Promise<void>; select(id: string): Promise<void>; showArchived(): Promise<boolean>; applySessionChange(session: Session): Promise<void>; suspend(): void; resume(): Promise<void>; setDraft(text: string, references?: DataReference[]): void; insertReference(item: DataReference): void};
+export function mountChat(target: HTMLElement, client: AiClient, options?: {listTarget?: HTMLElement; onReview?: ((id: string | null) => void | Promise<void>) | null; onChange?: (sessions: Session[]) => void; onSelect?: (session: Session | null) => void}): Panel & {newChat(): Promise<void>; select(id: string): Promise<void>; showArchived(): Promise<boolean>; applySessionChange(session: Session): Promise<void>; suspend(): void; resume(options?: {sessionId?: string}): Promise<void>; setDraft(text: string, references?: DataReference[]): void; insertReference(item: DataReference): void};
 export function bindReferenceInput(input: HTMLTextAreaElement | HTMLElement, container: HTMLElement, client: AiClient, options?: {editor?: ReferenceEditor}): {reset(): void; destroy(): void};
 
 export interface ReferenceEditor {
@@ -116,7 +126,7 @@ export interface AIViewOptions {
 export interface AIView extends Panel {
   select(id: string): Promise<void>; newChat(): Promise<void>;
   setDraft(text: string, references?: DataReference[]): void; insertReference(item: DataReference): void;
-  review(id?: string): Promise<void>; manageSessions(): Promise<void>; showUsage(): Promise<void>; suspend(): void; resume(): Promise<void>;
+  review(id?: string): Promise<void>; manageSessions(): Promise<void>; showUsage(): Promise<void>; suspend(): void; resume(options?: {sessionId?: string}): Promise<void>;
 }
 export interface AICollapsible extends AIView {open(): void; close(): void; toggle(): void; readonly isOpen: boolean}
 export function mountAIPage(target: HTMLElement, client: AiClient, options?: AIViewOptions): AIView;
@@ -153,7 +163,9 @@ export interface AITools {
     apply(approvalId: string, commandId?: string): Promise<AiReceipt>; revoke(approvalId: string, commandId?: string): Promise<AiReceipt>};
   settings: {get(): Promise<any>; update(settings: Json, commandId?: string): Promise<AiReceipt>};
   receipts: {ai(id: string): Promise<AiReceipt>; host(id: string): Promise<any>};
-  access: {get(): Promise<SessionAccess>; update(value: Pick<SessionAccess, 'revision' | 'allowPlayerChat' | 'autoApproveBatches'> & {autoApproveConfigurations?: boolean}, commandId?: string): Promise<AiReceipt>};
+  access: {get(): Promise<SessionAccess>; update(value: Pick<SessionAccess, 'revision' | 'allowPlayerChat' | 'autoApproveBatches'> & Partial<Pick<SessionAccess,'autoApproveConfigurations' | 'allowAdminRoomRead' | 'allowDataQueries' | 'allowRuntimeChanges' | 'allowConfigurationChanges' | 'allowKnowledgeRequests' | 'allowPlayerRequests'>>, commandId?: string): Promise<AiReceipt>};
+  playerRequests: {submit(value: {sessionId: string} & ({text: string; requestId?: never} | {requestId: string; text?: never}), commandId?: string): Promise<AiReceipt<KnowledgeRequest>>};
+  knowledgeRequests: {submit(sessionId: string, requestId: string, commandId?: string): Promise<AiReceipt<KnowledgeRequest>>; reconcile(value: {rulingId: string; digest: string}, commandId?: string): Promise<AiReceipt<KnowledgeRequest>>};
   rulings: {list(): ReturnType<AiClient["aiRulings"]>; decide(value: RulingDecision, commandId?: string): Promise<AiReceipt<AIRuling>>};
   batches: {list(): Promise<{items: ExecutionBatch[]}>; approve(batchId: string, digest: string, commandId?: string): Promise<AiReceipt>; reject(batchId: string, digest: string, commandId?: string): Promise<AiReceipt>; reconcile(batchId: string, digest: string, commandId?: string): Promise<AiReceipt>};
   usage(options?: UsageQuery): Promise<UsageReport>;
@@ -177,8 +189,9 @@ export function mountUsage(target: HTMLElement, client: AiClient, options?: {ses
 export interface ExecutionBatch {batchId: string; sessionId: string; requestId: string; creator: string; summary: string; revision: number; digest: string; status: string; actions: {target: "host" | "ai"; op: string; args: Json}[]; receipts: Json[]; createdAt: number}
 
 /** Resolve on every open; close/destroy when the caller changes identity. */
-export function bindReferenceDetails(target: HTMLElement, resolveReferences: NonNullable<MarkdownOptions["resolveReferences"]>, options?: {container?: HTMLElement | ShadowRoot; valid?: () => boolean}): {open(token: string, anchor?: HTMLElement | null): Promise<void> | undefined; refresh(): Promise<void>; close(): void; destroy(): void};
+export function bindReferenceDetails(target: HTMLElement, resolveReferences: NonNullable<MarkdownOptions["resolveReferences"]>, options?: {container?: HTMLElement | ShadowRoot; valid?: () => boolean; audience?: "player" | "administrator" | (() => "player" | "administrator")}): {open(token: string, anchor?: HTMLElement | null): Promise<void> | undefined; refresh(): Promise<void>; close(): void; destroy(): void};
 
-export interface AIRuling {rulingId: string; blockingReason?: string; kind: "runtime" | "configuration"; sessionId: string | null; requestId: string; summary: string; status: string; digest: string; canDecide: boolean; risks: {id: string; question: string; required: boolean}[]; receipts: Json[]; actions?: Json[]; changeSet?: Json; reports?: Json[]; publications?: Json[]}
-export interface RulingDecision {rulingId: string; digest: string; decision: "approve" | "reject"; riskDecisions?: Record<string,string>}
-export function mountRulings(target: HTMLElement, client: AiClient, options?: {onChange?: (ruling: AIRuling) => void}): Panel;
+export interface AIRuling {reviewSessionId?: string; generationError?: string;createdAt: number; initiator?: string; rulingId: string; blockingReason?: string; kind: "runtime" | "configuration" | "knowledge_request" | "player_request"; highRisk?: boolean; riskTags?: string[]; diff?: Json[]; sessionId: string | null; requestId: string; summary: string; status: string; digest: string; canDecide: boolean; risks: {id: string; question: string; required: boolean}[]; receipts: Json[]; actions?: Json[]; changeSet?: Json; reports?: Json[]; publications?: Json[]}
+export interface RulingDecision {rulingId: string; digest: string; decision: "approve" | "reject"; riskDecisions?: Record<string,string>; explicitHighRiskDigest?: string; disclosures?: {op: 'knowledge.observe'; args: Record<string,Json>}[]}
+export function mountRulings(target: HTMLElement, client: AiClient, options?: {compact?: boolean; onKnowledgeRequest?: (item: AIRuling) => void | Promise<void>; onOpenSession?: (sessionId: string) => void | Promise<void>; onChange?: (ruling: AIRuling) => void}): Panel;
+export function mountAISettings(target: HTMLElement, client: AiClient, options?: {onChange?: (result: Json) => void; onReceipt?: (aiRequestId: string) => void}): Panel;

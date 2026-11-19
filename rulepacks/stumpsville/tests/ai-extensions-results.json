@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-11-19T10:03:17.595610+08:00",
+  "checkedAt": "2026-11-19T14:56:12.236354+08:00",
   "passed": 6,
   "checks": [
     "A/B/C validate a new NPC template, action and calculation with actual existing NPC sandbox coverage",

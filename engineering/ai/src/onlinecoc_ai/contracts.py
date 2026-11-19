@@ -119,7 +119,7 @@ def _semantic(kind, value):
             require(len(value[field]) == len(set(value[field])), "INPUT_INVALID", "Duplicate " + field)
         require(len({s["id"] for s in value["sources"]}) == len(value["sources"]))
     elif kind == "ConfigurationChange":
-        require(value["id"] == value["value"]["configurationId"], "INPUT_INVALID", "Configuration IDs disagree")
+        if value['kind'] != 'remove':require(value["id"] == value["value"]["configurationId"], "INPUT_INVALID", "Configuration IDs disagree")
         require((value["kind"] == "add") == (value["expectedRevision"] is None), "INPUT_INVALID", "Invalid change precondition")
     elif kind == "ChangeSet":
         ids = [v["id"] for v in value["configurations"]]

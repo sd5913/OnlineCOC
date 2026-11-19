@@ -4,66 +4,66 @@
 - 文档子类：工程
 - 状态：有效
 - 创建日期：2026-11-16
-- 最后更新：2026-11-16
-- 关联文档：[会话权限](ai-session-access.md)、[回答与修正](ai-responses.md)、[嵌入组件](ai-pack-embedding.md)、[实验用例](../../plans/ai-rulings-experiments.md)
+- 最后更新：2026-11-19
+- 关联文档：[会话权限](ai-session-access.md)、[回答约定](ai-responses.md)、[嵌入组件](ai-pack-embedding.md)、[数据查询](ai-data-query.md)
 
 ## 一次提交，一次裁决
 
-AI 的 `batch` 和 `draft` 分别表示运行时动作批次与配置候选。两者都出现在 **AI 修改裁决** 队列中；KP 查看整批内容后批准或拒绝。模型返回文字不能批准或执行修改。
+模型的 `batch` 与 `draft` 分别提交运行时动作和配置候选，均进入 KP 队列。模型文字不能授权执行；批准不可顺便修改候选。
 
-| 类型 | 待裁决条件 | 批准后的行为 |
-| --- | --- | --- |
-| runtime | 最多 8 个白名单动作，固定参数、来源、权限与房间基线 | 按顺序执行；失败即停，保留逐项回执，已执行项不自动回滚 |
-| configuration | 同一 ChangeSet 的 A/B/C 全部通过，且来源允许发布 | 保存风险决定后，在宿主事务中加载整批配置与规则；原实例数值不迁移 |
-
-“整批裁决”不把运行时多命令变成数据库原子事务，也不把模板发布与之后创建实体合成一个事务。新增模板须先发布，再提交使用该模板的实例批次。权限、来源、版本或基线变化仍可使执行停止。
-
-管理员会话中的明确短句“批准”“批准执行”“确认执行”“同意执行”“approve”，只绑定该会话最新需求对应的唯一裁决，不另发模型请求。重复批准已完成项返回原结果；多项待处理、目标不明确、基线失效或需填写配置风险决定时，转到裁决队列。没有对应裁决时保留正常对话，用于确认尚在设计中的方案。PL 的回复不取得裁决权。
-
-模型上下文携带本会话最近裁决的 ID、类型和状态，要求避免重复生成已待审／已完成修改。该摘要仅在管理员会话且允许外发 KP 信息时提供，不附带历史动作明细。队列资料读取仍复验来源权限；失效时清除正文与敏感详情，保留状态供核对。
-
-## 策略与接口
-
-`allowPlayerChat`、`autoApproveBatches`、`autoApproveConfigurations` 分别控制玩家使用、运行时自动批准、配置自动批准，默认均为 false。KP 保存策略时绑定执行人；配置自动批准仅由该执行人负责的提案触发。配置仍须通过 A/B/C，自动为必填风险项记录“KP 已开启通过三检后的配置自动批准”。开启即接受检查报告中的风险与覆盖限制，不能跳过失败检查。
-
-| 入口 | 参数／返回 |
+| 类型 | 校验与执行 |
 | --- | --- |
-| `GET /api/v1/ai/rulings` | KP 队列；rulingId、kind、status、digest、sessionId、summary、risks、动作或 ChangeSet／报告、回执 |
-| `ai.ruling.decide` | `{rulingId,digest,decision:"approve"|"reject",riskDecisions?:{风险ID:理由}}` |
-| `AiClient.aiRulings()` | 同一队列的 SDK 读取 |
-| `createAITools(client).rulings` | `list()`、`decide(value,commandId?)` |
-| `mountRulings(container,client,{onChange})` | 可独立嵌入；`refresh()`、`destroy()`；身份变化清除内容 |
+| runtime | 白名单 `actions:[{target,op,args}]`，固定来源、会话、权限与基线；逐项保存回执、顺序执行，失败即停，已成功项不自动回滚 |
+| configuration | 完整 ChangeSet 通过 A/B/C 后，在宿主事务发布；保留旧工件供在途流程，原实例数值不迁移 |
+| player_request | KP 接收玩家原需求，在自己的私有管理员会话准备方案；不写游戏状态、不授予新知识，后续修改另行人工裁决 |
+| knowledge_request | 玩家明确点击申请，KP 选择真实可披露分面；执行 `knowledge.observe` 成功才标记已披露，申请本身不扩大权限 |
 
-命令使用现有 AI 封套、Origin/CSRF 与登录身份。配置裁决绑定原审核人、提案修订、候选摘要及必填风险项；批准时不能修改内容。完整底层提案／宿主发布接口继续保留，自定义接入可使用。
+运行时单批动作数量及存量批次数量不设业务上限；配置变更数组也不设数量上限。仍有明确的传输和存储容量约束：运行时动作参数总量 32 KiB、初始上下文 96 KiB、累计请求 256 KiB、模型输出预算、JSON 文档 8 MiB。超限明确拒绝，不截断动作、不另设隐藏的条数上限。批次不是跨命令原子事务；模板发布与随后创建实例仍是两次裁决。
 
-配置执行使用固定宿主命令 ID `ai-ruling:<proposalId>:<revision>:approve/apply`，在动作前保存执行意图。网络异常先用原 AI requestId 查询回执；宿主原命令回执可继续核对。未知／执行中状态不会自动重放。运行时队列提供“核对原执行回执”，只查询、不继续剩余动作；配置是否完成以宿主 publication 为准。批准成功而加载未完成的配置保留原 approval，可由开发接口核对或撤销，不能把未知结果当作新批准重新执行。
+管理员短句“批准／批准执行／确认执行／同意执行／approve”只绑定当前会话最新需求的唯一裁决，不另发模型请求。高危或有风险项时转到队列填写决定，不能凭一句确认省略风险审核。重复完成项返回原结果。
 
-引用包侧聊天／事件等 `consultationOnly` 证据的版本只可咨询，即使三检通过也不进入可批准状态。队列显示来源限制；需要基于可发布的宿主证据重新生成，或后续完善包侧来源发布契约。此限制同样约束自动批准。
+## 高危与普通自动批准
 
-## Stumpsville 当前扩展范围
+服务端从完整候选和活动基线计算 `highRisk/riskTags/diff`：规则源码、地图或游戏数据的实际变化、物品／武器／容器模板、配置删除，以及包声明的关键配置 ID／前缀均为高危。模型不能自报低风险以绕过判断。
 
-作者材料由 `tools/ai_extensions.py` 随 companion 生成并计入摘要。两个游戏数据文件仍使用固定值 Schema，核心规则与流程不在扩展范围。
+高危**始终人工确认**。`ai.ruling.decide` 除 `{rulingId,digest,decision,riskDecisions}` 外，批准须传 `explicitHighRiskDigest:digest`，并填写 `riskDecisions['high-risk']`。宿主 `ai.proposal.approve` 独立重算风险，将指纹纳入批准记录；`publication.apply` 再次复核。指纹不符返回 `HIGH_RISK_REVIEW_REQUIRED`，风险理由缺失返回 `RISK_REVIEW_REQUIRED`。旧批准、重复自然语言确认、普通自动审批都不能绕过。
 
-| 对象 | 当前支持与限制 |
+`autoApproveBatches` 和 `autoApproveConfigurations` 默认关闭，只控制允许范围内的普通变更，执行人为保存策略的 KP。配置自动批准仍需 A/B/C 和可发布来源。来自 player_request 的审核会话始终人工批准，普通修改也不适用自动策略。`allowRuntimeChanges`、`allowConfigurationChanges` 可关闭对应写入，待执行内容同样受校验。
+
+配置删除使用 `{kind:'remove',id,expectedRevision,value:null}`。所有活动或归档实例都不能仍引用目标；拒绝时返回 `REFERENCE_CONFLICT`，不自动级联。`Publication.configurationRevisions[id]=null` 表示已删除。规则替换仍校验现存行为引用、接口与工件完整性。
+
+## 接口和回执
+
+`GET ai/rulings` / `AiClient.aiRulings()` 返回 KP 队列，包括来源、会话、概要、状态、digest、风险、完整动作或 ChangeSet、diff、报告和回执。`createAITools(client).rulings` 提供 list/decide。`mountRulings(...,{compact:true,onOpenSession,onKnowledgeRequest})` 支持紧凑摘要、详情浮窗和宿主披露选择器。知识申请的批准由选择器一次提交；未装选择器不能直接批准。创作申请按钮为“接收并生成方案”，接收后返回 KP 专用 reviewSessionId，onOpenSession 优先打开该审核会话；accepted 仅表示接收。接口和取消规则见[玩家创作申请](ai-session-access.md#玩家创作与配置申请)。
+
+配置宿主命令 ID 固定为 `ai-ruling:<proposalId>:<revision>:approve/apply`。运行时与披露操作同样先保存执行意图再执行。未知结果只核对原回执，不自动换 ID 或重放：运行时用 `ai.batch.reconcile`，知识申请用 `ai.knowledge.reconcile {rulingId,digest}`。部分完成不等于全批成功。已批准未加载的配置保留原 approval，由公开接口核对或撤销。
+
+执行会改变此前读取的实体修订。来源复验失败时，completed 仍显示“已执行完成，请勿重复执行”，partial 显示“部分操作已执行，请核对原回执”，unknown／executing 提示核对结果；仅待执行内容提示重新读取并生成方案。权限撤销时仍隐藏原摘要、动作、候选、报告、差异和回执内容，只保留裁决状态及脱敏 receipt.status，不输出命令 ID、参数或结果。重复批准已完成项返回完成状态，不重新执行。
+
+包侧独立状态等 `consultationOnly` 来源仍只供咨询；宿主与包文件尚无跨存储原子快照。读取这些来源不能据此执行配置发布。宿主 `host-room` 查询属于宿主可信基线，保持来源与权限复验。
+
+## 包作者声明
+
+以下材料必须来自本机管理员选择的不可变包快照，不能来自模型命令。引用文件加入 `sources`（KP 可见）以纳入摘要。
+
+| 声明 | 格式与作用 |
 | --- | --- |
-| NPC 模板 | 替换 `sv.npc` 的 defaults；新增／替换 `sv.ext.npc.*` actor 模板，替换只允许 defaults。扩展模板必须有 `isNpc=1` |
-| 默认字段 | hp 0—40、maxHp 1—40；三属性及其上限 1—20；armor 0—3、location 1—10、incapacitated 0—1、lastRoll 0—20；最多 32 个数值字段，额外数字范围 -100—100 |
-| 规则 | 每个独立 Lua 文件 return 一个 `sv.ext.*` 规则；只允许 action/calculation、一个 actor 输入、public=true、kp=true；不支持生成 flow |
-| 效果 | 探测中只接受绑定 NPC 的数值效果，出现其他实体／关系效果或越界数字则拒绝；有限探测不能证明任意输入路径都安全，运行时仍受宿主权限约束 |
-| 游戏性检查 | 作者提供 B 正反例、士气与权限 C 场景及指标；新增／修改规则对模板和现有 NPC 探测 d20=1、10、20，并比较旧规则。最多 8 个规则、32 个 NPC 模板、64 个探测对象 |
+| `PackContract.highRisk` | `{configurationIds,configurationPrefixes,ruleFiles,dataFiles,allowRemove}`；显式高危扩展目标，不免除结构、引用或三检。普通扩展仍用 extensionPoints |
+| `contextMapping.gameTerms` | JSON 文件路径；仅 KP 在允许外发 KP 信息时加载到模型 gameTerms，解释复活等术语、前提与歧义。不是执行授权，不进入 PL 隐藏资料 |
+| `contextMapping.stableArrays` | JSON 数组 `[{dataRef:'game.json',pointer:'/items',idKey:'id',appendOnly:true}]`；B 对比当时活动基线逐位 ID，禁止删减、重排和重复，覆盖后续已发布项 |
+| `contextMapping.dataReferences` | `[{dataRef:'game.json',pointer:'/locations',idKey:'index',referencesKey:'exits',contiguousFrom:1,allowSelf:false}]`；最后两项可选，检查候选引用完整、连续编号及自引用 |
+| `contextMapping.liveScenarios` | `[{configurationId,rule,actorInput,input,coversData:[],coversRules:[],expectedErrors:[]}]`；expectedErrors 可选，C 自动用匹配的真实活动实体 ID 跑基线／候选，不硬编码存档 ID |
 
-探测不是穷尽概率证明；未覆盖玩家角色、自动剧情联动及全部随机组合。报告明确记录覆盖边界，交 KP 决定。NPC 敌友立场、剧情风格等不可从数据推导的偏好交用户选择；字段或 Lua 基础错误走自动修正。
+存量场景仅运行与实际 changed_data/changed_rules 相交的声明，其他记录 skipped-unaffected；相关声明的每个匹配实体都运行 d20=1/10/20 探针。声明覆盖的数据和变更文件导出的规则必须完整；`coversRules` 只可覆盖本条实际调用的 rule。两侧同一错误且在 expectedErrors 中才记录 blocked-compatible，不冒充执行成功；一侧成功、不同错误或未声明错误均失败。零匹配明确记录零样本。仍需包 fixture、必需指标及 A/B 校验，不代表剧情平衡的穷尽证明。
 
-发布后，包侧按宿主当前工件同步活动规则修订和导出内容；扩展 NPC 纳入 KP 名册与同样的玩家发现过滤。公开实体不等于玩家已发现。`actor.reveal`、独立剧情、场景队列和聊天互动仍走包侧业务操作，尚未注册为 AI package 目标。
+NPC 专项 `contextMapping.extensionValidation` 保留；其已完整验证的 NPC 规则不会再要求静态核心场景重复覆盖。核心或地图变更转用通用及存量场景，不以 NPC 探测冒充覆盖。模板、规则、探测对象不再设置 32/8/64 条业务上限。
 
-更新需重启后台以生成新 companion，刷新管理器／嵌入页；网页模式重新导出资源。已有房间的活动核心规则不会因重启自动替换：KP 应在规则管理导入当前包规则，使伤害与士气支持 `isNpc`；导入前检查其自定义规则，保留需继续使用的扩展文件。不要重置正式房间。
+Stumpsville 的实际材料、发布后的包状态同步及限制由[包侧集成文档](../../../rulepacks/stumpsville/docs/current/integrations.md)维护，避免在模块文档复制过期清单。配置包默认应提供结构 Schema、稳定 ID、引用约束、B 正反例、C 场景与未覆盖范围、高危名单及回执恢复；空扩展点不表示任意修改获准。
 
-## 后续配置包的默认建议
+作者 fixture/live/B 场景可经 `sandbox.run_scenario(...,private_rule_ids=())` 的精确名单验收私有计算；名单仅从不可变作者场景及规则 metadata 提取，私有调用的 scenario.account 必须为真实模拟 KP。默认无名单、PL account、未列规则仍拒绝；全部在 worker 的隔离副本运行，不提供任何线上私有规则调用权限。
 
-建议作者默认提供明确的模板命名空间、允许替换范围、字段 Schema、B 正反例、C 场景／指标／未覆盖范围、语义名称、KP 队列和回执恢复。运行时与配置自动批准分别设置，默认关闭。不要以空扩展点表达“什么都能改”，也不要把前端隐藏当作玩家权限。
+删除配置还须开启包契约 highRisk.allowRemove；目标可以是 highRisk 显式名单，或原 extensionPoints 允许的类型和命名空间／既有 ID。删除始终按高危审核，普通 NPC 数值替换不会仅因允许删除而成为高危；仍被实体引用的模板不能删除。
 
-NPC 家族可显式使用 `contextMapping.extensionValidation` 约定，其定义包含 namespace、baseConfiguration、defaultsSchema、rulePrefix、fixtureRef；材料本地读取并计入包摘要。非 NPC 模型沿用通用 A/B/C 与作者场景，不应套用此特定探测器。配置删除与包侧跨账本事务仍待实现，见 [ISSUE-010](../../plans/Issues/issue-010-ai-package-mutations.md)。
+2026-11-19 模块验收按测试 ID 取最新结果去重：281 项通过、0 失败、0 跳过。覆盖真实宿主执行、人工高危指纹、普通自动审批、个人披露、存量实体探针、容量边界和 Edge 嵌入界面；初跑失败与复验关系保存在[验收报告](../../../engineering/acceptance/ai-runtime/policies-results.json)。模块测试使用隔离房间与离线服务；引擎和真实 DeepSeek 记录分别由报告中的关联验收维护，不将不同阶段次数相加。
 
-## 验收
-
-本轮离线工程与真实浏览器验收、包侧公开 HTTP 和真实模型实验分别记账，避免重复计数。用例、实际用量、通过与未通过项见[实验文档](../../plans/ai-rulings-experiments.md)；正式游戏存档不参与实验。
+同日 Stumpsville 隔离联调：包侧 18 组确定性验收通过，选定的 K08 复活、K12 新物品、P04 玩家自愿资料申请三个真实 DeepSeek 用例均通过。复活生成待审批次后由 KP 批准执行，物品和财富保留；新物品经高危提案审批落库。累计 46 次 API 调用、686207 tokens，包括失败调试；另保留一次未调用模型的测试前置失败。最终复活用例为 4 次调用，单次验收的 11.65 秒模型耗时不代表普遍延迟。详见[包侧实测](../../../rulepacks/stumpsville/tests/ai-scenarios-live-results.json)与[包侧确定性验收](../../../rulepacks/stumpsville/tests/ai-scenarios-results.json)；53 项草稿场景并未全部实测。没有修改正式存档或服务商配置。

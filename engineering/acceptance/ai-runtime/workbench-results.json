@@ -1,0 +1,188 @@
+{
+  "checkedAt": "2026-11-19T13:11:02.728510+08:00",
+  "passed": true,
+  "uniqueTests": 81,
+  "runs": [
+    {
+      "file": "workbench-core.xml",
+      "tests": 42,
+      "failures": [
+        "tests.test_workbench::test_task_session_lookup_respects_owner_archive_and_delete"
+      ]
+    },
+    {
+      "file": "workbench-ui.xml",
+      "tests": 3,
+      "failures": [
+        "tests.test_workbench_ui::test_room_settings_page_saves_permissions_and_denies_player",
+        "tests.test_workbench_ui::test_compact_ruling_modal_retains_risks_and_decides_once"
+      ]
+    },
+    {
+      "file": "workbench-core-retest.xml",
+      "tests": 1,
+      "failures": []
+    },
+    {
+      "file": "workbench-access.xml",
+      "tests": 25,
+      "failures": []
+    },
+    {
+      "file": "workbench-ui-retest.xml",
+      "tests": 14,
+      "failures": [
+        "tests.test_access_ui::test_permissions_archive_delete_batches_and_mobile"
+      ]
+    },
+    {
+      "file": "workbench-ui-final.xml",
+      "tests": 4,
+      "failures": []
+    },
+    {
+      "file": "workbench-compact.xml",
+      "tests": 1,
+      "failures": []
+    }
+  ],
+  "finalByTest": {
+    "tests.test_workbench::test_task_session_lookup_respects_owner_archive_and_delete": "passed",
+    "tests.test_sessions::test_history_reuses_valid_response_but_drops_stale_sources": "passed",
+    "tests.test_sessions::test_history_is_bounded_and_never_reads_other_sessions": "passed",
+    "tests.test_sessions::test_repository_rejects_broken_conversation_links[foreign]": "passed",
+    "tests.test_sessions::test_repository_rejects_broken_conversation_links[missing]": "passed",
+    "tests.test_sessions::test_repository_rejects_broken_conversation_links[duplicate]": "passed",
+    "tests.test_sessions::test_repository_rejects_broken_conversation_links[title]": "passed",
+    "tests.test_sessions::test_session_preferences_owner_conflict_and_persistence": "passed",
+    "tests.test_sessions::test_configured_history_bound_preserves_records[0]": "passed",
+    "tests.test_sessions::test_configured_history_bound_preserves_records[2]": "passed",
+    "tests.test_sessions::test_configured_history_bound_preserves_records[4]": "passed",
+    "tests.test_sessions::test_session_preferences_validate_command_and_stored_data[historyTurns--1]": "passed",
+    "tests.test_sessions::test_session_preferences_validate_command_and_stored_data[historyTurns-5]": "passed",
+    "tests.test_sessions::test_session_preferences_validate_command_and_stored_data[historyTurns-True]": "passed",
+    "tests.test_sessions::test_session_preferences_validate_command_and_stored_data[historyTurns-1.5]": "passed",
+    "tests.test_sessions::test_session_preferences_validate_command_and_stored_data[renderMode-html]": "passed",
+    "tests.test_sessions::test_session_preferences_validate_command_and_stored_data[pinned-1]": "passed",
+    "tests.test_sessions::test_session_preferences_validate_command_and_stored_data[showDiagnostics-false]": "passed",
+    "tests.test_entrypoints::test_requests_are_explicit_idempotent_redacted_and_paged": "passed",
+    "tests.test_entrypoints::test_chat_forwarding_binds_original_and_policy": "passed",
+    "tests.test_entrypoints::test_player_can_cancel_after_dispatching_kp_loses_role": "passed",
+    "tests.test_entrypoints::test_plan_without_proposal_rechecks_context_on_read": "passed",
+    "tests.test_entrypoints::test_auto_off_prefix_dedup_edits_withdrawal_and_role": "passed",
+    "tests.test_entrypoints::test_manual_revision_invalidates_approval_and_cancel_revokes": "passed",
+    "tests.test_entrypoints::test_receipt_rechecks_private_sources_and_restart_pending": "passed",
+    "tests.test_entrypoints::test_http_auth_limits_schema_capability_and_disabled_module": "passed",
+    "tests.test_entrypoints::test_cli_uses_same_three_engines": "passed",
+    "tests.test_rulings::test_chat_approval_is_bound_to_batch_and_not_another_model_request": "passed",
+    "tests.test_rulings::test_config_is_one_checked_ruling_and_publishes_once": "passed",
+    "tests.test_rulings::test_config_auto_approval_requires_separate_setting": "passed",
+    "tests.test_rulings::test_player_cannot_decide_and_stale_digest_cannot_execute": "passed",
+    "tests.test_rulings::test_consultation_only_evidence_cannot_enter_publish_queue_or_auto_approve": "passed",
+    "tests.test_rulings::test_invalid_model_output_has_specific_cause[[]-MODEL_OBJECT_REQUIRED]": "passed",
+    "tests.test_rulings::test_invalid_model_output_has_specific_cause[null-MODEL_OBJECT_REQUIRED]": "passed",
+    "tests.test_rulings::test_invalid_model_output_has_specific_cause[broken-MODEL_JSON_INVALID]": "passed",
+    "tests.test_rulings::test_invalid_model_output_has_specific_cause[{\"kind\":\"other\",\"text\":\"a\"}-MODEL_KIND_INVALID]": "passed",
+    "tests.test_rulings::test_single_json_fence_is_accepted_without_extracting_arbitrary_text": "passed",
+    "tests.test_rulings::test_five_repairs_do_not_consume_tool_rounds[True]": "passed",
+    "tests.test_rulings::test_five_repairs_do_not_consume_tool_rounds[False]": "passed",
+    "tests.test_rulings::test_user_decision_pauses_instead_of_retrying[clarification]": "passed",
+    "tests.test_rulings::test_user_decision_pauses_instead_of_retrying[plan]": "passed",
+    "tests.test_rulings::test_basic_lua_error_repairs_same_proposal_before_review": "passed",
+    "tests.test_workbench_ui::test_room_settings_page_saves_permissions_and_denies_player": "passed",
+    "tests.test_workbench_ui::test_compact_ruling_modal_retains_risks_and_decides_once": "passed",
+    "tests.test_workbench_ui::test_resume_loads_target_in_parallel_without_redundant_access_or_old_session": "passed",
+    "tests.test_access_batches::test_defaults_binding_and_no_permission_escalation": "passed",
+    "tests.test_access_batches::test_player_auto_dispatch_context_output_and_revoke": "passed",
+    "tests.test_access_batches::test_kp_player_session_has_player_ceiling_and_data_proof": "passed",
+    "tests.test_access_batches::test_batch_human_approval_idempotence_and_player_denial": "passed",
+    "tests.test_access_batches::test_batch_stale_reject_auto_and_bypass_forbidden": "passed",
+    "tests.test_access_batches::test_batch_unknown_reconciles_without_reexecuting": "passed",
+    "tests.test_access_batches::test_batch_stops_after_partial_failure_and_restart_never_replays": "passed",
+    "tests.test_access_batches::test_delete_cancels_queue_hides_session_and_keeps_usage_audit": "passed",
+    "tests.test_access_batches::test_administrator_tools_respect_external_scope": "passed",
+    "tests.test_access_batches::test_player_contract_tool_and_batch_output_cannot_escalate": "passed",
+    "tests.test_access_batches::test_delete_interrupts_active_generation": "passed",
+    "tests.test_access_batches::test_management_catalog_is_bounded_and_schema_complete": "passed",
+    "tests.test_access_batches::test_other_administrator_can_inspect_draft_without_taking_review_identity": "passed",
+    "tests.test_access_batches::test_player_history_rechecks_package_evidence_during_generation": "passed",
+    "tests.test_known_runtime::test_unconfigured_player_never_falls_back_or_calls_model": "passed",
+    "tests.test_known_runtime::test_initial_context_contains_no_pack_guide_world_or_old_model_history": "passed",
+    "tests.test_known_runtime::test_snapshot_reference_cannot_cross_account_or_follow_world_update": "passed",
+    "tests.test_known_runtime::test_model_secret_prose_is_repaired_and_never_stored_or_replayed": "passed",
+    "tests.test_known_runtime::test_inflight_revoke_suppresses_entire_response": "passed",
+    "tests.test_known_runtime::test_private_export_block_and_kp_player_session_ceiling": "passed",
+    "tests.test_known_runtime::test_second_package_witness_testimony_stays_personal_and_fixed": "passed",
+    "tests.test_known_runtime::test_ask_kp_option_is_queued_for_human_without_model_redispatch": "passed",
+    "tests.test_known_runtime::test_player_real_adapter_json_mode_and_http_error_projection[200]": "passed",
+    "tests.test_known_runtime::test_player_real_adapter_json_mode_and_http_error_projection[400]": "passed",
+    "tests.test_known_runtime::test_legacy_response_projection_still_requires_live_authorization": "passed",
+    "tests.test_session_ui::test_markdown_format_reference_security_and_mobile": "passed",
+    "tests.test_session_ui::test_embedded_management_settings_drafts_and_identity": "passed",
+    "tests.test_session_ui::test_standalone_manager_and_same_origin_frame": "passed",
+    "tests.test_session_ui::test_management_lost_response_and_version_conflict": "passed",
+    "tests.test_access_ui::test_permissions_archive_delete_batches_and_mobile": "passed",
+    "tests.test_embeds::test_package_manifest_covers_public_runtime_dependencies": "passed",
+    "tests.test_embeds::test_real_room_page_variants[page]": "passed",
+    "tests.test_embeds::test_real_room_page_variants[conversation]": "passed",
+    "tests.test_embeds::test_real_room_page_variants[collapsible]": "passed",
+    "tests.test_embeds::test_same_origin_iframe_entry_and_csp_scope": "passed",
+    "tests.test_embeds::test_headless_tools_and_shared_client_ownership": "passed"
+  },
+  "firstAttempts": [
+    "Initial command referenced nonexistent test_access.py and ran zero tests; corrected to existing suites.",
+    "Settings HTML mount map lacked the settings key; corrected and real browser save/PL denial passed.",
+    "Compact test used a generic dialog selector, colliding with the reference-details dialog; scoped selector fixed.",
+    "Session lookup test used pre-submit revision=1; updated to read the current revision before archive.",
+    "Removing redundant access request initially exposed PLAYER_AI_DISABLED as raw UI text; restored friendly denial and cleared session selectors.",
+    "Visual review found a 140-character summary could still occupy six lines; added a two-line clamp and viewport-height assertion."
+  ],
+  "performance": {
+    "initial": [
+      "list",
+      "a"
+    ],
+    "concurrent": [
+      "list",
+      "b"
+    ],
+    "elapsed": 3.2999999998137355,
+    "draft": "未发送的草稿",
+    "connected": true
+  },
+  "performanceScope": "Request-count and concurrency barriers, not a real provider latency benchmark. List returns access in one request; resume reads only target session in parallel; task metadata removes client-side session-detail scanning.",
+  "limits": [
+    "No real model calls, formal room writes, external deployment or cross-device network latency measurement.",
+    "settings.html opens directly; current engine CSP still denies framing that new HTML. Native mountAISettings is embeddable.",
+    "Provider credentials remain in the local manager, not the room settings page.",
+    "Stumpsville integration is owned and separately tested by the workbench chat."
+  ],
+  "coordination": "During the temporary read-window transition, the occupancy assertion failed but subsequent batched tool mutations still ran. The peer confirmed no build/test had begun and released its entry; ownership was then rechecked and the final compact UI retested. No peer-owned package files were changed.",
+  "validation": [
+    "node --check on modified JS passed",
+    "git diff --check passed",
+    "Desktop and 390px screenshots visually reviewed"
+  ],
+  "sourceSha256": {
+    "src/onlinecoc_ai/api.py": "f9c2719b993c809bfb91fa0bb87360bed9888f29c9f0cf8d8d56dd49d39ea4b4",
+    "src/onlinecoc_ai/rulings.py": "000e0af28427e0a07f9acaff28e6648fa69a1bf8651086e262dc8ac52aa80176",
+    "web/components/settings.js": "2e27731714a0b5762849491434a2ed4c6ada0947ae73a95bf841188eccdbd21e",
+    "web/components/settings.css": "b940f97a3fa23387b9fdc26bd5c92c2dc33f0f6d79ab9bba756baad68e7a2542",
+    "web/components/settings.html": "607439426c9b87f343fb1669de7fd43859686cb711bbd2ada2c56eaab060796b",
+    "web/components/rulings.js": "94f94a27508d654bed5a8d7c991767cbd22fba29e91ef24269ac2b5e0aafa3b6",
+    "web/components/rulings.css": "94c765c7e0e667f7bd8b75c1e417994de43f4e79fa28f96a35eff2b441bcd2a8",
+    "web/components/chat.js": "ba5b8b3092d7df8136d3d97afadbd014a5b99547b2fff499b6e92920a48a5b14",
+    "web/components/views.js": "9c0164e41787aba1d43c53863177b77bfa71da07afe4b1e2f345327b81c628e9",
+    "web/components/page-entry.js": "6fe175d9bcd64db41a517aa7329db9512ef0de68c4bcbefd7b2504b76cb4f964",
+    "web/components/pack.js": "600531997d7a87a74891ca49b569a8b8c76c6d594cf6793132455047686abb71",
+    "web/components/pack.d.ts": "f3f7e222c743a6a11bdce24cb51f0a69c48be18205adecdcfce1c87a669a78dd",
+    "web/components/index.d.ts": "4c99d6cb0c0fc4c16bca3428575c6a1665d44ce7ff4da39d8d340619aaee8bca",
+    "web/components/pack-manifest.json": "f3e09c592b2bf288075a6999630090aa532ef09863a57f750bb42ebfa364d671",
+    "tests/test_workbench.py": "5ab67dadcc4a2421c2715f5807e35ca2be80cf72a8b3032896090c1e42ffd949",
+    "tests/test_workbench_ui.py": "27bec3bdda4ea4eb597e6c1d0d81ecb114dc685f19878147c0fd1905ae622b57"
+  },
+  "documentationValidation": {
+    "linksChecked": 112,
+    "missingLinks": []
+  }
+}

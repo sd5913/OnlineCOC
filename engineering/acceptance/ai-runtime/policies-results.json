@@ -1,0 +1,1312 @@
+{
+  "date": "2026-11-19T14:37:40.767755+08:00",
+  "scope": "AI高危审批、权限、玩家主动披露、作者校验和请求容量修复",
+  "status": "module-regression-passed",
+  "counts": {
+    "passed": 281,
+    "failed": 0,
+    "skipped": 0
+  },
+  "runs": [
+    {
+      "file": "policies-debug.xml",
+      "passed": 0,
+      "failed": 1,
+      "skipped": 0
+    },
+    {
+      "file": "policies-core-retest.xml",
+      "passed": 5,
+      "failed": 1,
+      "skipped": 0
+    },
+    {
+      "file": "policies-core-final.xml",
+      "passed": 111,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "file": "policies-ui.xml",
+      "passed": 33,
+      "failed": 1,
+      "skipped": 0
+    },
+    {
+      "file": "policies-validation.xml",
+      "passed": 97,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "file": "policies-ui-final.xml",
+      "passed": 14,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "file": "policies-context.xml",
+      "passed": 50,
+      "failed": 2,
+      "skipped": 0
+    },
+    {
+      "file": "policies-ui-dedup.xml",
+      "passed": 3,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "file": "policies-budget-retest.xml",
+      "passed": 5,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "file": "policies-batch-repair.xml",
+      "passed": 0,
+      "failed": 3,
+      "skipped": 0
+    },
+    {
+      "file": "policies-batch-repair-regression.xml",
+      "passed": 65,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "file": "policies-batch-repair-final.xml",
+      "passed": 3,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "file": "policies-receipts.xml",
+      "passed": 3,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "file": "policies-receipts-regression.xml",
+      "passed": 29,
+      "failed": 0,
+      "skipped": 0
+    }
+  ],
+  "latestTests": {
+    "tests.test_policies::test_high_risk_requires_exact_manual_fingerprint_and_retains_diff": {
+      "status": "passed",
+      "source": "policies-batch-repair-regression.xml"
+    },
+    "tests.test_policies::test_more_than_eight_actions_execute_without_truncation": {
+      "status": "passed",
+      "source": "policies-batch-repair-regression.xml"
+    },
+    "tests.test_policies::test_batch_storage_has_no_business_count_limit": {
+      "status": "passed",
+      "source": "policies-batch-repair-regression.xml"
+    },
+    "tests.test_policies::test_policy_switches_are_enforced_for_new_and_pending_writes": {
+      "status": "passed",
+      "source": "policies-batch-repair-regression.xml"
+    },
+    "tests.test_policies::test_admin_room_scope_is_default_and_revocable_without_player_escalation": {
+      "status": "passed",
+      "source": "policies-batch-repair-regression.xml"
+    },
+    "tests.test_policies::test_player_request_is_explicit_private_and_real_observation_is_required": {
+      "status": "passed",
+      "source": "policies-batch-repair-regression.xml"
+    },
+    "tests.test_policies::test_rejected_request_has_no_disclosure_and_disabled_policy_blocks_new_request": {
+      "status": "passed",
+      "source": "policies-batch-repair-regression.xml"
+    },
+    "tests.test_policies::test_remove_schema_and_no_configuration_count_limit": {
+      "status": "passed",
+      "source": "policies-batch-repair-regression.xml"
+    },
+    "tests.test_policies::test_stable_array_uses_current_baseline_and_candidate_references": {
+      "status": "passed",
+      "source": "policies-batch-repair-regression.xml"
+    },
+    "tests.test_rulings::test_chat_approval_is_bound_to_batch_and_not_another_model_request": {
+      "status": "passed",
+      "source": "policies-receipts-regression.xml"
+    },
+    "tests.test_rulings::test_config_is_one_checked_ruling_and_publishes_once": {
+      "status": "passed",
+      "source": "policies-receipts-regression.xml"
+    },
+    "tests.test_rulings::test_high_risk_config_never_uses_auto_approval": {
+      "status": "passed",
+      "source": "policies-receipts-regression.xml"
+    },
+    "tests.test_rulings::test_player_cannot_decide_and_stale_digest_cannot_execute": {
+      "status": "passed",
+      "source": "policies-receipts-regression.xml"
+    },
+    "tests.test_rulings::test_consultation_only_evidence_cannot_enter_publish_queue_or_auto_approve": {
+      "status": "passed",
+      "source": "policies-receipts-regression.xml"
+    },
+    "tests.test_rulings::test_invalid_model_output_has_specific_cause[[]-MODEL_OBJECT_REQUIRED]": {
+      "status": "passed",
+      "source": "policies-receipts-regression.xml"
+    },
+    "tests.test_rulings::test_invalid_model_output_has_specific_cause[null-MODEL_OBJECT_REQUIRED]": {
+      "status": "passed",
+      "source": "policies-receipts-regression.xml"
+    },
+    "tests.test_rulings::test_invalid_model_output_has_specific_cause[broken-MODEL_JSON_INVALID]": {
+      "status": "passed",
+      "source": "policies-receipts-regression.xml"
+    },
+    "tests.test_rulings::test_invalid_model_output_has_specific_cause[{\"kind\":\"other\",\"text\":\"a\"}-MODEL_KIND_INVALID]": {
+      "status": "passed",
+      "source": "policies-receipts-regression.xml"
+    },
+    "tests.test_rulings::test_single_json_fence_is_accepted_without_extracting_arbitrary_text": {
+      "status": "passed",
+      "source": "policies-receipts-regression.xml"
+    },
+    "tests.test_rulings::test_five_repairs_do_not_consume_tool_rounds[True]": {
+      "status": "passed",
+      "source": "policies-receipts-regression.xml"
+    },
+    "tests.test_rulings::test_five_repairs_do_not_consume_tool_rounds[False]": {
+      "status": "passed",
+      "source": "policies-receipts-regression.xml"
+    },
+    "tests.test_rulings::test_user_decision_pauses_instead_of_retrying[clarification]": {
+      "status": "passed",
+      "source": "policies-receipts-regression.xml"
+    },
+    "tests.test_rulings::test_user_decision_pauses_instead_of_retrying[plan]": {
+      "status": "passed",
+      "source": "policies-receipts-regression.xml"
+    },
+    "tests.test_rulings::test_basic_lua_error_repairs_same_proposal_before_review": {
+      "status": "passed",
+      "source": "policies-receipts-regression.xml"
+    },
+    "tests.test_entrypoints::test_requests_are_explicit_idempotent_redacted_and_paged": {
+      "status": "passed",
+      "source": "policies-core-final.xml"
+    },
+    "tests.test_entrypoints::test_chat_forwarding_binds_original_and_policy": {
+      "status": "passed",
+      "source": "policies-core-final.xml"
+    },
+    "tests.test_entrypoints::test_player_can_cancel_after_dispatching_kp_loses_role": {
+      "status": "passed",
+      "source": "policies-core-final.xml"
+    },
+    "tests.test_entrypoints::test_plan_without_proposal_rechecks_context_on_read": {
+      "status": "passed",
+      "source": "policies-core-final.xml"
+    },
+    "tests.test_entrypoints::test_auto_off_prefix_dedup_edits_withdrawal_and_role": {
+      "status": "passed",
+      "source": "policies-core-final.xml"
+    },
+    "tests.test_entrypoints::test_manual_revision_invalidates_approval_and_cancel_revokes": {
+      "status": "passed",
+      "source": "policies-core-final.xml"
+    },
+    "tests.test_entrypoints::test_receipt_rechecks_private_sources_and_restart_pending": {
+      "status": "passed",
+      "source": "policies-core-final.xml"
+    },
+    "tests.test_entrypoints::test_http_auth_limits_schema_capability_and_disabled_module": {
+      "status": "passed",
+      "source": "policies-core-final.xml"
+    },
+    "tests.test_entrypoints::test_cli_uses_same_three_engines": {
+      "status": "passed",
+      "source": "policies-core-final.xml"
+    },
+    "tests.test_access_batches::test_defaults_binding_and_no_permission_escalation": {
+      "status": "passed",
+      "source": "policies-receipts-regression.xml"
+    },
+    "tests.test_access_batches::test_player_auto_dispatch_context_output_and_revoke": {
+      "status": "passed",
+      "source": "policies-receipts-regression.xml"
+    },
+    "tests.test_access_batches::test_kp_player_session_has_player_ceiling_and_data_proof": {
+      "status": "passed",
+      "source": "policies-receipts-regression.xml"
+    },
+    "tests.test_access_batches::test_batch_human_approval_idempotence_and_player_denial": {
+      "status": "passed",
+      "source": "policies-receipts-regression.xml"
+    },
+    "tests.test_access_batches::test_batch_stale_reject_auto_and_bypass_forbidden": {
+      "status": "passed",
+      "source": "policies-receipts-regression.xml"
+    },
+    "tests.test_access_batches::test_batch_unknown_reconciles_without_reexecuting": {
+      "status": "passed",
+      "source": "policies-receipts-regression.xml"
+    },
+    "tests.test_access_batches::test_batch_stops_after_partial_failure_and_restart_never_replays": {
+      "status": "passed",
+      "source": "policies-receipts-regression.xml"
+    },
+    "tests.test_access_batches::test_delete_cancels_queue_hides_session_and_keeps_usage_audit": {
+      "status": "passed",
+      "source": "policies-receipts-regression.xml"
+    },
+    "tests.test_access_batches::test_administrator_tools_respect_external_scope": {
+      "status": "passed",
+      "source": "policies-receipts-regression.xml"
+    },
+    "tests.test_access_batches::test_player_contract_tool_and_batch_output_cannot_escalate": {
+      "status": "passed",
+      "source": "policies-receipts-regression.xml"
+    },
+    "tests.test_access_batches::test_delete_interrupts_active_generation": {
+      "status": "passed",
+      "source": "policies-receipts-regression.xml"
+    },
+    "tests.test_access_batches::test_management_catalog_is_bounded_and_schema_complete": {
+      "status": "passed",
+      "source": "policies-receipts-regression.xml"
+    },
+    "tests.test_access_batches::test_other_administrator_can_inspect_draft_without_taking_review_identity": {
+      "status": "passed",
+      "source": "policies-receipts-regression.xml"
+    },
+    "tests.test_access_batches::test_player_history_rechecks_package_evidence_during_generation": {
+      "status": "passed",
+      "source": "policies-receipts-regression.xml"
+    },
+    "tests.test_contracts::test_valid_model[Profile]": {
+      "status": "passed",
+      "source": "policies-core-final.xml"
+    },
+    "tests.test_contracts::test_valid_model[PackContract]": {
+      "status": "passed",
+      "source": "policies-core-final.xml"
+    },
+    "tests.test_contracts::test_valid_model[ContextSnapshot]": {
+      "status": "passed",
+      "source": "policies-core-final.xml"
+    },
+    "tests.test_contracts::test_valid_model[Request]": {
+      "status": "passed",
+      "source": "policies-core-final.xml"
+    },
+    "tests.test_contracts::test_valid_model[Proposal]": {
+      "status": "passed",
+      "source": "policies-core-final.xml"
+    },
+    "tests.test_contracts::test_valid_model[ChangeSet]": {
+      "status": "passed",
+      "source": "policies-core-final.xml"
+    },
+    "tests.test_contracts::test_valid_model[ValidationReport]": {
+      "status": "passed",
+      "source": "policies-core-final.xml"
+    },
+    "tests.test_contracts::test_valid_model[PreparedBundle]": {
+      "status": "passed",
+      "source": "policies-core-final.xml"
+    },
+    "tests.test_contracts::test_valid_model[Approval]": {
+      "status": "passed",
+      "source": "policies-core-final.xml"
+    },
+    "tests.test_contracts::test_valid_model[Publication]": {
+      "status": "passed",
+      "source": "policies-core-final.xml"
+    },
+    "tests.test_contracts::test_valid_model[MemoryEntry]": {
+      "status": "passed",
+      "source": "policies-core-final.xml"
+    },
+    "tests.test_contracts::test_valid_model[Scenario]": {
+      "status": "passed",
+      "source": "policies-core-final.xml"
+    },
+    "tests.test_contracts::test_valid_model[CheckSpec]": {
+      "status": "passed",
+      "source": "policies-core-final.xml"
+    },
+    "tests.test_contracts::test_valid_model[Metric]": {
+      "status": "passed",
+      "source": "policies-core-final.xml"
+    },
+    "tests.test_contracts::test_valid_model[AiCommand]": {
+      "status": "passed",
+      "source": "policies-core-final.xml"
+    },
+    "tests.test_contracts::test_unknown_authority_fields_rejected[Profile]": {
+      "status": "passed",
+      "source": "policies-core-final.xml"
+    },
+    "tests.test_contracts::test_unknown_authority_fields_rejected[PackContract]": {
+      "status": "passed",
+      "source": "policies-core-final.xml"
+    },
+    "tests.test_contracts::test_unknown_authority_fields_rejected[ContextSnapshot]": {
+      "status": "passed",
+      "source": "policies-core-final.xml"
+    },
+    "tests.test_contracts::test_unknown_authority_fields_rejected[Request]": {
+      "status": "passed",
+      "source": "policies-core-final.xml"
+    },
+    "tests.test_contracts::test_unknown_authority_fields_rejected[Proposal]": {
+      "status": "passed",
+      "source": "policies-core-final.xml"
+    },
+    "tests.test_contracts::test_unknown_authority_fields_rejected[ChangeSet]": {
+      "status": "passed",
+      "source": "policies-core-final.xml"
+    },
+    "tests.test_contracts::test_unknown_authority_fields_rejected[ValidationReport]": {
+      "status": "passed",
+      "source": "policies-core-final.xml"
+    },
+    "tests.test_contracts::test_unknown_authority_fields_rejected[PreparedBundle]": {
+      "status": "passed",
+      "source": "policies-core-final.xml"
+    },
+    "tests.test_contracts::test_unknown_authority_fields_rejected[Approval]": {
+      "status": "passed",
+      "source": "policies-core-final.xml"
+    },
+    "tests.test_contracts::test_unknown_authority_fields_rejected[Publication]": {
+      "status": "passed",
+      "source": "policies-core-final.xml"
+    },
+    "tests.test_contracts::test_unknown_authority_fields_rejected[MemoryEntry]": {
+      "status": "passed",
+      "source": "policies-core-final.xml"
+    },
+    "tests.test_contracts::test_unknown_authority_fields_rejected[Scenario]": {
+      "status": "passed",
+      "source": "policies-core-final.xml"
+    },
+    "tests.test_contracts::test_unknown_authority_fields_rejected[CheckSpec]": {
+      "status": "passed",
+      "source": "policies-core-final.xml"
+    },
+    "tests.test_contracts::test_unknown_authority_fields_rejected[Metric]": {
+      "status": "passed",
+      "source": "policies-core-final.xml"
+    },
+    "tests.test_contracts::test_unknown_authority_fields_rejected[AiCommand]": {
+      "status": "passed",
+      "source": "policies-core-final.xml"
+    },
+    "tests.test_contracts::test_negative_fixtures[case0]": {
+      "status": "passed",
+      "source": "policies-core-final.xml"
+    },
+    "tests.test_contracts::test_negative_fixtures[case1]": {
+      "status": "passed",
+      "source": "policies-core-final.xml"
+    },
+    "tests.test_contracts::test_negative_fixtures[case2]": {
+      "status": "passed",
+      "source": "policies-core-final.xml"
+    },
+    "tests.test_contracts::test_negative_fixtures[case3]": {
+      "status": "passed",
+      "source": "policies-core-final.xml"
+    },
+    "tests.test_contracts::test_negative_fixtures[case4]": {
+      "status": "passed",
+      "source": "policies-core-final.xml"
+    },
+    "tests.test_contracts::test_negative_fixtures[case5]": {
+      "status": "passed",
+      "source": "policies-core-final.xml"
+    },
+    "tests.test_contracts::test_every_schema_is_valid": {
+      "status": "passed",
+      "source": "policies-core-final.xml"
+    },
+    "tests.test_contracts::test_ambiguous_or_invalid_json_rejected[{\"x\":1,\"x\":2}]": {
+      "status": "passed",
+      "source": "policies-core-final.xml"
+    },
+    "tests.test_contracts::test_ambiguous_or_invalid_json_rejected[{\"nested\":{\"x\":1,\"x\":2}}]": {
+      "status": "passed",
+      "source": "policies-core-final.xml"
+    },
+    "tests.test_contracts::test_ambiguous_or_invalid_json_rejected[{\"x\":NaN}]": {
+      "status": "passed",
+      "source": "policies-core-final.xml"
+    },
+    "tests.test_contracts::test_ambiguous_or_invalid_json_rejected[{\"x\":Infinity}]": {
+      "status": "passed",
+      "source": "policies-core-final.xml"
+    },
+    "tests.test_contracts::test_ambiguous_or_invalid_json_rejected[\"\\ud800\"]": {
+      "status": "passed",
+      "source": "policies-core-final.xml"
+    },
+    "tests.test_contracts::test_ambiguous_or_invalid_json_rejected[\\xff]": {
+      "status": "passed",
+      "source": "policies-core-final.xml"
+    },
+    "tests.test_contracts::test_non_json_or_unsafe_numbers_rejected[nan]": {
+      "status": "passed",
+      "source": "policies-core-final.xml"
+    },
+    "tests.test_contracts::test_non_json_or_unsafe_numbers_rejected[inf]": {
+      "status": "passed",
+      "source": "policies-core-final.xml"
+    },
+    "tests.test_contracts::test_non_json_or_unsafe_numbers_rejected[9007199254740992]": {
+      "status": "passed",
+      "source": "policies-core-final.xml"
+    },
+    "tests.test_contracts::test_non_json_or_unsafe_numbers_rejected[1044388881413152506691752710716624382579964249047383780384233483283953907971557456848826811934997558340890106714439262837987573438185793607263236087851365277945956976543709998340361590134383718314428070011855946226376318839397712745672334684344586617496807908705803704071284048740118609114467977783598029006686938976881787785946905630190260940599579453432823469303026696443059025015972399867714215541693835559885291486318237914434496734087811872639496475100189041349008417061675093668333850551032972088269550769983616369411933015213796825837188091833656751221318492846368125550225998300412344784862595674492194617023806505913245610825731835380087608622102834270197698202313169017678006675195485079921636419370285375124784014907159135459982790513399611551794271106831134090584272884279791554849782954323534517065223269061394905987693002122963395687782878948440616007412945674919823050571642377154816321380631045902916136926708342856440730447899971901781465763473223850267253059899795996090799469201774624817718449867455659250178329070473119433165550807568221846571746373296884912819520317457002440926616910874148385078411929804522981857338977648103126085903001302413467189726673216491511131602920781738033436090243804708340403154190336]": {
+      "status": "passed",
+      "source": "policies-core-final.xml"
+    },
+    "tests.test_contracts::test_non_json_or_unsafe_numbers_rejected[value4]": {
+      "status": "passed",
+      "source": "policies-core-final.xml"
+    },
+    "tests.test_contracts::test_non_json_or_unsafe_numbers_rejected[value5]": {
+      "status": "passed",
+      "source": "policies-core-final.xml"
+    },
+    "tests.test_contracts::test_cycles_and_depth_are_bounded": {
+      "status": "passed",
+      "source": "policies-core-final.xml"
+    },
+    "tests.test_contracts::test_golden_digests_and_host_interop": {
+      "status": "passed",
+      "source": "policies-core-final.xml"
+    },
+    "tests.test_contracts::test_baseline_binds_every_precondition[scopeId]": {
+      "status": "passed",
+      "source": "policies-core-final.xml"
+    },
+    "tests.test_contracts::test_baseline_binds_every_precondition[baseRuleset]": {
+      "status": "passed",
+      "source": "policies-core-final.xml"
+    },
+    "tests.test_contracts::test_baseline_binds_every_precondition[configDigest]": {
+      "status": "passed",
+      "source": "policies-core-final.xml"
+    },
+    "tests.test_contracts::test_baseline_binds_every_precondition[contractDigest]": {
+      "status": "passed",
+      "source": "policies-core-final.xml"
+    },
+    "tests.test_contracts::test_baseline_binds_every_precondition[validatorSetDigest]": {
+      "status": "passed",
+      "source": "policies-core-final.xml"
+    },
+    "tests.test_contracts::test_baseline_binds_every_precondition[worldDigest]": {
+      "status": "passed",
+      "source": "policies-core-final.xml"
+    },
+    "tests.test_contracts::test_candidate_binds_complete_artifact_and_configuration": {
+      "status": "passed",
+      "source": "policies-core-final.xml"
+    },
+    "tests.test_contracts::test_mismatched_report_or_candidate_cannot_be_reused[PreparedBundle]": {
+      "status": "passed",
+      "source": "policies-core-final.xml"
+    },
+    "tests.test_contracts::test_mismatched_report_or_candidate_cannot_be_reused[Approval]": {
+      "status": "passed",
+      "source": "policies-core-final.xml"
+    },
+    "tests.test_contracts::test_change_identity_and_expected_revision": {
+      "status": "passed",
+      "source": "policies-core-final.xml"
+    },
+    "tests.test_contracts::test_model_tools_do_not_include_approval_or_mutation": {
+      "status": "passed",
+      "source": "policies-core-final.xml"
+    },
+    "tests.test_contracts::test_pack_materials_are_present_and_typed": {
+      "status": "passed",
+      "source": "policies-core-final.xml"
+    },
+    "tests.test_contracts::test_provider_template_is_disabled_and_contains_only_secret_reference": {
+      "status": "passed",
+      "source": "policies-core-final.xml"
+    },
+    "tests.test_policies_ui::test_permission_switches_save_and_high_risk_policy_is_fixed": {
+      "status": "passed",
+      "source": "policies-ui-dedup.xml"
+    },
+    "tests.test_policies_ui::test_high_risk_click_binds_digest_and_knowledge_callback_does_not_auto_approve": {
+      "status": "passed",
+      "source": "policies-ui-dedup.xml"
+    },
+    "tests.test_policies_ui::test_player_disclosure_requires_a_click_and_reports_pending": {
+      "status": "passed",
+      "source": "policies-ui-dedup.xml"
+    },
+    "tests.test_workbench_ui::test_room_settings_page_saves_permissions_and_denies_player": {
+      "status": "passed",
+      "source": "policies-ui.xml"
+    },
+    "tests.test_workbench_ui::test_compact_ruling_modal_retains_risks_and_decides_once": {
+      "status": "passed",
+      "source": "policies-ui.xml"
+    },
+    "tests.test_workbench_ui::test_resume_loads_target_in_parallel_without_redundant_access_or_old_session": {
+      "status": "passed",
+      "source": "policies-ui.xml"
+    },
+    "tests.test_known_runtime::test_unconfigured_player_never_falls_back_or_calls_model": {
+      "status": "passed",
+      "source": "policies-ui.xml"
+    },
+    "tests.test_known_runtime::test_initial_context_contains_no_pack_guide_world_or_old_model_history": {
+      "status": "passed",
+      "source": "policies-ui.xml"
+    },
+    "tests.test_known_runtime::test_snapshot_reference_cannot_cross_account_or_follow_world_update": {
+      "status": "passed",
+      "source": "policies-ui.xml"
+    },
+    "tests.test_known_runtime::test_model_secret_prose_is_repaired_and_never_stored_or_replayed": {
+      "status": "passed",
+      "source": "policies-ui.xml"
+    },
+    "tests.test_known_runtime::test_inflight_revoke_suppresses_entire_response": {
+      "status": "passed",
+      "source": "policies-ui.xml"
+    },
+    "tests.test_known_runtime::test_private_export_block_and_kp_player_session_ceiling": {
+      "status": "passed",
+      "source": "policies-ui.xml"
+    },
+    "tests.test_known_runtime::test_second_package_witness_testimony_stays_personal_and_fixed": {
+      "status": "passed",
+      "source": "policies-ui.xml"
+    },
+    "tests.test_known_runtime::test_ask_kp_option_is_queued_for_human_without_model_redispatch": {
+      "status": "passed",
+      "source": "policies-ui.xml"
+    },
+    "tests.test_known_runtime::test_player_real_adapter_json_mode_and_http_error_projection[200]": {
+      "status": "passed",
+      "source": "policies-ui.xml"
+    },
+    "tests.test_known_runtime::test_player_real_adapter_json_mode_and_http_error_projection[400]": {
+      "status": "passed",
+      "source": "policies-ui.xml"
+    },
+    "tests.test_known_runtime::test_legacy_response_projection_still_requires_live_authorization": {
+      "status": "passed",
+      "source": "policies-ui.xml"
+    },
+    "tests.test_known_answers::test_model_can_only_select_issued_evidence[<lambda>0]": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_known_answers::test_model_can_only_select_issued_evidence[<lambda>1]": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_known_answers::test_model_can_only_select_issued_evidence[<lambda>2]": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_known_answers::test_model_can_only_select_issued_evidence[<lambda>3]": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_known_answers::test_model_can_only_select_issued_evidence[<lambda>4]": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_known_answers::test_model_can_only_select_issued_evidence[<lambda>5]": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_known_answers::test_model_can_only_select_issued_evidence[<lambda>6]": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_known_answers::test_reference_encodes_exact_snapshot_and_scope_without_current_entity_lookup": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_known_answers::test_fixed_order_and_labels_use_only_captured_data": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_known_answers::test_search_summary_cannot_be_rendered_as_read_evidence": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_known_answers::test_malformed_answers_fail_closed[{\"kind\":\"known\",\"kind\":\"known\"}]": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_known_answers::test_malformed_answers_fail_closed[{\"kind\":\"known\",\"evidence\":NaN,\"next\":\"none\"}]": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_known_answers::test_malformed_answers_fail_closed[not json]": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_known_answers::test_empty_result_does_not_assert_nonexistence_and_data_is_not_markup": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_known_answers::test_structured_evidence_has_readable_labels_and_no_technical_ids": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_known_answers::test_presentation_is_bounded_and_literal_with_deep_or_large_values": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_known_answers::test_legacy_known_json_is_reformatted_without_touching_other_messages": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_policies::test_ordinary_actor_configuration_still_supports_explicit_auto_policy": {
+      "status": "passed",
+      "source": "policies-batch-repair-regression.xml"
+    },
+    "tests.test_policies::test_live_probes_bind_real_ids_and_do_not_hide_changed_or_unlisted_failures[success-True]": {
+      "status": "passed",
+      "source": "policies-batch-repair-regression.xml"
+    },
+    "tests.test_policies::test_live_probes_bind_real_ids_and_do_not_hide_changed_or_unlisted_failures[declared-block-True]": {
+      "status": "passed",
+      "source": "policies-batch-repair-regression.xml"
+    },
+    "tests.test_policies::test_live_probes_bind_real_ids_and_do_not_hide_changed_or_unlisted_failures[changed-error-False]": {
+      "status": "passed",
+      "source": "policies-batch-repair-regression.xml"
+    },
+    "tests.test_policies::test_live_probes_bind_real_ids_and_do_not_hide_changed_or_unlisted_failures[unlisted-error-False]": {
+      "status": "passed",
+      "source": "policies-batch-repair-regression.xml"
+    },
+    "tests.test_base::test_real_load_and_full_merge": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_base::test_configuration_without_optional_behaviors[False]": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_base::test_configuration_without_optional_behaviors[True]": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_base::test_load_rejects_invalid_candidates[<lambda>-INCOMPLETE_CANDIDATE]": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_base::test_load_rejects_invalid_candidates[<lambda>-PACK_SCHEMA_INVALID]": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_base::test_load_rejects_invalid_candidates[<lambda>-SCHEMA_MISSING]": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_base::test_load_rejects_invalid_candidates[<lambda>-VERSION_CONFLICT]": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_base::test_load_rejects_invalid_candidates[<lambda>-TYPE_CHANGE_FORBIDDEN]": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_base::test_load_rejects_invalid_candidates[<lambda>-REFERENCE_CONFLICT]": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_base::test_load_rejects_invalid_candidates[<lambda>-RULE_CYCLE_OR_MISSING0]": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_base::test_load_rejects_invalid_candidates[<lambda>-RULE_CYCLE_OR_MISSING1]": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_base::test_load_rejects_invalid_candidates[<lambda>-RULE_INVALID]": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_base::test_load_rejects_invalid_candidates[<lambda>-RULE_FAILED]": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_base::test_path_rejection[../x]": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_base::test_path_rejection[/x]": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_base::test_path_rejection[C:/x]": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_base::test_path_rejection[x\\\\y]": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_base::test_path_rejection[a//b]": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_base::test_path_rejection[a/../b]": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_base::test_path_rejection[a./b]": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_base::test_path_rejection[CON.json]": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_base::test_path_rejection[a:b]": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_base::test_path_rejection[.hidden]": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_base::test_junction_or_symlink_escape": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_base::test_pack_bad_json_and_limits[{\"x\":1,\"x\":2}-INPUT_INVALID]": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_base::test_pack_bad_json_and_limits[{\"x\":NaN}-INPUT_INVALID]": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_base::test_pack_bad_json_and_limits[{-INPUT_INVALID]": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_base::test_pack_bad_json_and_limits[content3-LIMIT_EXCEEDED]": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_base::test_schema_cannot_resolve_external_resources[https://example.invalid/schema]": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_base::test_schema_cannot_resolve_external_resources[file:///secrets]": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_base::test_schema_cannot_resolve_external_resources[../schema.json]": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_base::test_pack_snapshot_and_baseline_changes_are_detected": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_pack_rules::test_valid_constraints_and_old_instances_preserved": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_pack_rules::test_out_of_range_is_traced_to_rule_clause": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_pack_rules::test_cost_change_outside_extension_is_rejected": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_pack_rules::test_missing_or_unknown_required_evidence_never_passes[<lambda>0]": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_pack_rules::test_missing_or_unknown_required_evidence_never_passes[<lambda>1]": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_pack_rules::test_missing_or_unknown_required_evidence_never_passes[<lambda>2]": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_pack_rules::test_missing_or_unknown_required_evidence_never_passes[<lambda>3]": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_pack_rules::test_missing_or_unknown_required_evidence_never_passes[<lambda>4]": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_pack_rules::test_old_flow_is_not_assumed_to_use_old_configs": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_pack_rules::test_versioned_reference_and_unique_checkers": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_pack_rules::test_missing_numeric_field_is_not_zero": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_pack_rules::test_scenario_checker_covers_permission_and_cost": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_gameplay::test_exact_d100_probability_and_cost_no_live_effects": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_gameplay::test_wrong_owner_and_repeated_use_are_exercised": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_gameplay::test_missing_cost_guard_fails_resource_exhaustion": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_gameplay::test_positive_fixture_cannot_replace_negative_assertion": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_gameplay::test_missing_required_metric_blocks": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_gameplay::test_extra_random_call_is_not_paired_with_old_trace": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_gameplay::test_sampling_uses_replayable_independent_streams": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_gameplay::test_zero_baseline_is_not_divided": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_sandbox::test_ai_and_host_share_execution_policy": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_sandbox::test_top_level_loop_is_bounded": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_sandbox::test_memory_and_output_limits[local t={} while true do table.insert(t, string.format('%08000d',1)) end]": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_sandbox::test_memory_and_output_limits[return rule('huge', {}, function(r) return string.format('%09000000d',1) end)]": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_sandbox::test_lua_cannot_access_host_bridges[os.getenv('ONLINECOC_DEEPSEEK_API_KEY')]": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_sandbox::test_lua_cannot_access_host_bridges[io.open('save.json','w')]": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_sandbox::test_lua_cannot_access_host_bridges[require('socket')]": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_sandbox::test_lua_cannot_access_host_bridges[python.eval('1')]": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_sandbox::test_lua_cannot_access_host_bridges[debug.getregistry()]": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_sandbox::test_lua_cannot_access_host_bridges[_G.os]": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_sandbox::test_lua_cannot_access_host_bridges[r.read.__globals__]": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_sandbox::test_lua_cannot_access_host_bridges[r.read['__self__']]": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_sandbox::test_secrets_are_removed_before_process_creation": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_sandbox::test_worker_failure_is_not_success": {
+      "status": "passed",
+      "source": "policies-validation.xml"
+    },
+    "tests.test_answers_ui::test_answer_choices_in_all_embeds[page]": {
+      "status": "passed",
+      "source": "policies-ui-final.xml"
+    },
+    "tests.test_answers_ui::test_answer_choices_in_all_embeds[conversation]": {
+      "status": "passed",
+      "source": "policies-ui-final.xml"
+    },
+    "tests.test_answers_ui::test_answer_choices_in_all_embeds[collapsible]": {
+      "status": "passed",
+      "source": "policies-ui-final.xml"
+    },
+    "tests.test_answers_ui::test_standalone_choices_and_inline_citation": {
+      "status": "passed",
+      "source": "policies-ui-final.xml"
+    },
+    "tests.test_access_ui::test_permissions_archive_delete_batches_and_mobile": {
+      "status": "passed",
+      "source": "policies-ui-final.xml"
+    },
+    "tests.test_embeds::test_package_manifest_covers_public_runtime_dependencies": {
+      "status": "passed",
+      "source": "policies-ui-final.xml"
+    },
+    "tests.test_embeds::test_real_room_page_variants[page]": {
+      "status": "passed",
+      "source": "policies-ui-final.xml"
+    },
+    "tests.test_embeds::test_real_room_page_variants[conversation]": {
+      "status": "passed",
+      "source": "policies-ui-final.xml"
+    },
+    "tests.test_embeds::test_real_room_page_variants[collapsible]": {
+      "status": "passed",
+      "source": "policies-ui-final.xml"
+    },
+    "tests.test_embeds::test_same_origin_iframe_entry_and_csp_scope": {
+      "status": "passed",
+      "source": "policies-ui-final.xml"
+    },
+    "tests.test_embeds::test_headless_tools_and_shared_client_ownership": {
+      "status": "passed",
+      "source": "policies-ui-final.xml"
+    },
+    "tests.test_policies::test_cumulative_tool_budget_uses_transport_limit_and_reports_sizes[112640-review_ready]": {
+      "status": "passed",
+      "source": "policies-batch-repair-regression.xml"
+    },
+    "tests.test_policies::test_cumulative_tool_budget_uses_transport_limit_and_reports_sizes[276480-failed]": {
+      "status": "passed",
+      "source": "policies-batch-repair-regression.xml"
+    },
+    "tests.test_policies::test_management_catalog_indexes_before_returning_selected_schemas": {
+      "status": "passed",
+      "source": "policies-batch-repair-regression.xml"
+    },
+    "tests.test_policies::test_unused_extension_remove_requires_policy_without_making_actor_edits_high_risk[True]": {
+      "status": "passed",
+      "source": "policies-batch-repair-regression.xml"
+    },
+    "tests.test_policies::test_unused_extension_remove_requires_policy_without_making_actor_edits_high_risk[False]": {
+      "status": "passed",
+      "source": "policies-batch-repair-regression.xml"
+    },
+    "tests.test_task_diagnostics::test_failure_diagnostics_redact_messages_and_preserve_primary": {
+      "status": "passed",
+      "source": "policies-batch-repair-regression.xml"
+    },
+    "tests.test_task_diagnostics::test_cleanup_error_does_not_replace_result_or_cancellation[False]": {
+      "status": "passed",
+      "source": "policies-batch-repair-regression.xml"
+    },
+    "tests.test_task_diagnostics::test_cleanup_error_does_not_replace_result_or_cancellation[True]": {
+      "status": "passed",
+      "source": "policies-batch-repair-regression.xml"
+    },
+    "tests.test_task_diagnostics::test_tool_metadata_is_bounded_and_contains_no_argument_values": {
+      "status": "passed",
+      "source": "policies-batch-repair-regression.xml"
+    },
+    "tests.test_task_diagnostics::test_deepseek_wire_query_replay_and_parameter_repair[None]": {
+      "status": "passed",
+      "source": "policies-batch-repair-regression.xml"
+    },
+    "tests.test_task_diagnostics::test_deepseek_wire_query_replay_and_parameter_repair[bad1]": {
+      "status": "passed",
+      "source": "policies-batch-repair-regression.xml"
+    },
+    "tests.test_task_diagnostics::test_deepseek_wire_query_replay_and_parameter_repair[bad2]": {
+      "status": "passed",
+      "source": "policies-batch-repair-regression.xml"
+    },
+    "tests.test_task_diagnostics::test_deepseek_wire_query_replay_and_parameter_repair[bad3]": {
+      "status": "passed",
+      "source": "policies-batch-repair-regression.xml"
+    },
+    "tests.test_task_diagnostics::test_provider_error_and_cleanup_keep_stable_code": {
+      "status": "passed",
+      "source": "policies-batch-repair-regression.xml"
+    },
+    "tests.test_task_diagnostics::test_model_page_counts_do_not_change_proofs_or_reveal_hidden_totals": {
+      "status": "passed",
+      "source": "policies-batch-repair-regression.xml"
+    },
+    "tests.test_task_diagnostics::test_channel_reference_resolves_actual_id_before_chat": {
+      "status": "passed",
+      "source": "policies-batch-repair-regression.xml"
+    },
+    "tests.test_task_diagnostics::test_last_round_closes_tools_and_returns_bounded_partial_answer": {
+      "status": "passed",
+      "source": "policies-batch-repair-regression.xml"
+    },
+    "tests.test_task_diagnostics::test_http_diagnostics_keep_only_valid_status_without_remote_text[400]": {
+      "status": "passed",
+      "source": "policies-batch-repair-regression.xml"
+    },
+    "tests.test_task_diagnostics::test_http_diagnostics_keep_only_valid_status_without_remote_text[422]": {
+      "status": "passed",
+      "source": "policies-batch-repair-regression.xml"
+    },
+    "tests.test_task_diagnostics::test_http_diagnostics_keep_only_valid_status_without_remote_text[None]": {
+      "status": "passed",
+      "source": "policies-batch-repair-regression.xml"
+    },
+    "tests.test_task_diagnostics::test_http_diagnostics_keep_only_valid_status_without_remote_text[private error]": {
+      "status": "passed",
+      "source": "policies-batch-repair-regression.xml"
+    },
+    "tests.test_task_diagnostics::test_http_diagnostics_keep_only_valid_status_without_remote_text[True]": {
+      "status": "passed",
+      "source": "policies-batch-repair-regression.xml"
+    },
+    "tests.test_task_diagnostics::test_http_diagnostics_keep_only_valid_status_without_remote_text[99]": {
+      "status": "passed",
+      "source": "policies-batch-repair-regression.xml"
+    },
+    "tests.test_task_diagnostics::test_http_diagnostics_keep_only_valid_status_without_remote_text[600]": {
+      "status": "passed",
+      "source": "policies-batch-repair-regression.xml"
+    },
+    "tests.test_coordinator::test_draft_is_checked_but_never_published": {
+      "status": "passed",
+      "source": "policies-batch-repair-regression.xml"
+    },
+    "tests.test_coordinator::test_blocked_model_does_not_hold_host_lock_and_can_cancel": {
+      "status": "passed",
+      "source": "policies-batch-repair-regression.xml"
+    },
+    "tests.test_coordinator::test_request_dedup_queue_and_budget": {
+      "status": "passed",
+      "source": "policies-batch-repair-regression.xml"
+    },
+    "tests.test_coordinator::test_untrusted_model_and_retry_limits[forged-TOOL_FORBIDDEN]": {
+      "status": "passed",
+      "source": "policies-batch-repair-regression.xml"
+    },
+    "tests.test_coordinator::test_untrusted_model_and_retry_limits[loop-TOOL_ROUND_LIMIT]": {
+      "status": "passed",
+      "source": "policies-batch-repair-regression.xml"
+    },
+    "tests.test_coordinator::test_untrusted_model_and_retry_limits[retry-PROVIDER_UNAVAILABLE]": {
+      "status": "passed",
+      "source": "policies-batch-repair-regression.xml"
+    },
+    "tests.test_coordinator::test_untrusted_model_and_retry_limits[repair-MODEL_OUTPUT_INVALID]": {
+      "status": "passed",
+      "source": "policies-batch-repair-regression.xml"
+    },
+    "tests.test_coordinator::test_expired_task_and_authority_change_fail_closed": {
+      "status": "passed",
+      "source": "policies-batch-repair-regression.xml"
+    },
+    "tests.test_coordinator::test_disabled_service_makes_no_provider_calls": {
+      "status": "passed",
+      "source": "policies-batch-repair-regression.xml"
+    },
+    "tests.test_coordinator::test_retry_budget_records_each_attempt_once": {
+      "status": "passed",
+      "source": "policies-batch-repair-regression.xml"
+    },
+    "tests.test_coordinator::test_restart_interrupts_queued_tasks_and_preserves_budget": {
+      "status": "passed",
+      "source": "policies-batch-repair-regression.xml"
+    },
+    "tests.test_coordinator::test_permissions_changed_during_generation_discard_output": {
+      "status": "passed",
+      "source": "policies-batch-repair-regression.xml"
+    },
+    "tests.test_coordinator::test_profile_changed_during_generation_discards_output_and_runner_survives": {
+      "status": "passed",
+      "source": "policies-batch-repair-regression.xml"
+    },
+    "tests.test_coordinator::test_real_contract_is_exposed_and_repair_names_invalid_field": {
+      "status": "passed",
+      "source": "policies-batch-repair-regression.xml"
+    },
+    "tests.test_policies::test_malformed_batch_gets_exact_schema_and_cannot_escape_to_plan[correct-after-plan]": {
+      "status": "passed",
+      "source": "policies-batch-repair-final.xml"
+    },
+    "tests.test_policies::test_malformed_batch_gets_exact_schema_and_cannot_escape_to_plan[clarification]": {
+      "status": "passed",
+      "source": "policies-batch-repair-final.xml"
+    },
+    "tests.test_policies::test_malformed_batch_gets_exact_schema_and_cannot_escape_to_plan[exhausted]": {
+      "status": "passed",
+      "source": "policies-batch-repair-final.xml"
+    },
+    "tests.test_answers::test_choices_are_bounded_text_only[<lambda>0]": {
+      "status": "passed",
+      "source": "policies-batch-repair-regression.xml"
+    },
+    "tests.test_answers::test_choices_are_bounded_text_only[<lambda>1]": {
+      "status": "passed",
+      "source": "policies-batch-repair-regression.xml"
+    },
+    "tests.test_answers::test_choices_are_bounded_text_only[<lambda>2]": {
+      "status": "passed",
+      "source": "policies-batch-repair-regression.xml"
+    },
+    "tests.test_answers::test_choices_are_bounded_text_only[<lambda>3]": {
+      "status": "passed",
+      "source": "policies-batch-repair-regression.xml"
+    },
+    "tests.test_answers::test_choices_are_bounded_text_only[<lambda>4]": {
+      "status": "passed",
+      "source": "policies-batch-repair-regression.xml"
+    },
+    "tests.test_answers::test_choices_are_bounded_text_only[<lambda>5]": {
+      "status": "passed",
+      "source": "policies-batch-repair-regression.xml"
+    },
+    "tests.test_answers::test_citations_require_issued_tokens_and_choices_cannot_approve": {
+      "status": "passed",
+      "source": "policies-batch-repair-regression.xml"
+    },
+    "tests.test_answers::test_model_citations_are_exact_tokens_without_changing_evidence": {
+      "status": "passed",
+      "source": "policies-batch-repair-regression.xml"
+    },
+    "tests.test_answers::test_player_model_choices_and_references_are_visible_only_while_authorized": {
+      "status": "passed",
+      "source": "policies-batch-repair-regression.xml"
+    },
+    "tests.test_answers::test_fabricated_model_citation_is_repaired_or_rejected": {
+      "status": "passed",
+      "source": "policies-batch-repair-regression.xml"
+    },
+    "tests.test_policies::test_batch_self_mutation_preserves_safe_execution_status_after_source_change_and_revocation[completed]": {
+      "status": "passed",
+      "source": "policies-receipts.xml"
+    },
+    "tests.test_policies::test_batch_self_mutation_preserves_safe_execution_status_after_source_change_and_revocation[partial]": {
+      "status": "passed",
+      "source": "policies-receipts.xml"
+    },
+    "tests.test_policies::test_batch_self_mutation_preserves_safe_execution_status_after_source_change_and_revocation[pending]": {
+      "status": "passed",
+      "source": "policies-receipts.xml"
+    }
+  },
+  "notes": [
+    "按测试类名和名称取最新结果去重；保留原失败XML。",
+    "最初核心初跑因仓库策略字段和旧批次数量校验失败而中断；修复后111项通过。",
+    "旧UI断言仍使用请KP说明文案，已改为明确的申请披露标签。",
+    "容量测试初跑遗漏KP显式转交，修正测试流程后两种容量边界通过。",
+    "Edge移动端截图已检查，PL申请按钮不再重复。",
+    "本模块验收使用隔离房间和离线服务，无真实API调用；付费DeepSeek由Stumpsville责任者独立维护。",
+    "未改凭据、正式服务商配置、正式游戏存档或部署包。",
+    "真实K08暴露SYSTEM三格式与后置batch矛盾、修正反馈缺字段细节；统一四格式并补准确字段/Schema。新回放初次因require参数名detail错误而失败，改为message后65项回归及最终3条回放通过。",
+    "真实K08最后发现已完成批次因自身修改来源而提示重新生成；用3条新增实际宿主路径与29项裁决/权限回归修复展示，没有新增付费调用。"
+  ],
+  "coverage": [
+    "高危精确指纹及人工审批，普通角色扩展自动审批仍可用。",
+    "19项真实宿主动作完整执行，已有超过1000批次后仍可新增。",
+    "KP全房间读取、玩家级会话上限和策略撤销。",
+    "PL自愿申请、真实knowledge.observe、跨玩家隔离、拒绝及关闭策略。",
+    "稳定数组以当前发布基线校验，地图悬空引用拒绝。",
+    "存量实体实际ID探针；仅作者声明的同类失败可记录blocked-compatible。",
+    "累计工具资料超过96 KiB成功、超过256 KiB在下次模型调用前停止，诊断仅记大小。",
+    "操作目录按需取Schema；允许删除的普通扩展目标仍需高危人工审核。",
+    "设置、指纹确认、选项、披露队列的实际浏览器交互。",
+    "拒绝batch+changeSet.suggestions格式混用；准确反馈actions缺失及changeSet多余，禁止错误后退plan/draft，保留真实clarification；5次修正耗尽明确失败，所有未批准动作保持未执行。",
+    "真实批次更新自身已读实体后completed/partial状态准确；待执行失效来源仍阻止执行；撤销外发权限继续隐藏原始内容，仅保留脱敏回执状态，重复批准不重做。"
+  ],
+  "limits": [
+    "动作32 KiB、初始上下文96 KiB、请求256 KiB、JSON文档8 MiB；属于明确字节限制，不是隐藏条数限制。",
+    "C探针不是游戏平衡穷尽证明。",
+    "包独立状态仍consultation-only，不绕过跨存储授权。",
+    "首次SOURCE_STALE缺原始refs不能归因为引擎缺陷；K08角色缺失已对照证据排除缓存，后续检索标签和输出格式分别修复，真实结果由包报告维护。"
+  ],
+  "relatedReports": {
+    "engine": "engineering/acceptance/high-risk-publication/results.json",
+    "package": "rulepacks/stumpsville/tests/ai-scenarios-results.json",
+    "live": "rulepacks/stumpsville/tests/ai-scenarios-live-results.json",
+    "packageBrowser": "rulepacks/stumpsville/tests/ai-permissions-results.json",
+    "entityLabels": "engineering/acceptance/entity-search-label/results.json"
+  },
+  "sha256": {
+    "engineering/ai/src/onlinecoc_ai/access.py": "2ebd0ceb463b605c050ebaf1ccf2af7cd2357bc767d02cec12ba7ee764d7f8bb",
+    "engineering/ai/src/onlinecoc_ai/api.py": "37fdbee6b303f1a7ae2d6b75ab650941fcf0f8ff2598fec1f9d83352a04d9510",
+    "engineering/ai/src/onlinecoc_ai/batches.py": "b303a56b3b5de01b0ecf1e15c1b358a5e61321dc7880a3885edc5c4435d5bc40",
+    "engineering/ai/src/onlinecoc_ai/change_policy.py": "a6da5036ee262283289336b071fd94c77faadf073948b98234c54dcb7d9a82ba",
+    "engineering/ai/src/onlinecoc_ai/context.py": "cb548c9d037c26ca1089a4f4ad06d2c8246c689a4ed703a645cedf3231ab2d40",
+    "engineering/ai/src/onlinecoc_ai/coordinator.py": "181dd7aaf0494f62ae0ea1977d7b2859289b7e6700004905b688c094abe8d2bf",
+    "engineering/ai/src/onlinecoc_ai/data_queries.py": "8193830e78557833ae7dd0b9770604f2e4ed09b1f47b60f25069ef18d30ab9f6",
+    "engineering/ai/src/onlinecoc_ai/diagnostics.py": "d4d0a34a68dc38d39869b5162d1387f1a1c2cda006468c7480b6b06012ac3ff1",
+    "engineering/ai/src/onlinecoc_ai/knowledge_requests.py": "b53403b1b8da40715a5152b4ac257586278963ea46eb90688f5b7fc14f10a6f6",
+    "engineering/ai/src/onlinecoc_ai/repository.py": "911790677c315645511000bfd265f10ac874e94a8ce22c9effdf54df94678118",
+    "engineering/ai/src/onlinecoc_ai/rulings.py": "c328ab007f2d36495be0fd17091e8876fe257239eba19cb874bd793153a6ddaa",
+    "engineering/ai/src/onlinecoc_ai/sandbox.py": "30766603068ef36110b15a9add78c65282658cf9e0fe4fef1f24ae1785ceb407",
+    "engineering/ai/src/onlinecoc_ai/validation/rules.py": "073024fbc8593b367cf1b97e69bba101a469f69145680913d61e89f19d477c8e",
+    "engineering/ai/src/onlinecoc_ai/validation/live.py": "058054b2a9a558fa404aabac855b8c448e5bc87dcb37ad797711a98b9bdc9bc3",
+    "engineering/ai/src/onlinecoc_ai/validation/gameplay.py": "a2daef832d54b6e46cf50c1481e8707676bb7839ba97755276c9214b057f2be2",
+    "engineering/ai/src/onlinecoc_ai/validation/base.py": "5c247432ca6362244ec78b28c98dc7e61195dc518e8f11cdedcca0b11e27e38d",
+    "engineering/ai/web/components/chat.js": "0d16188f753200f28b76a27cb5a826070f8c9a9950fd3f14ee96cc6dee3b218f",
+    "engineering/ai/web/components/choices.js": "dff5b42432dd828ba296ee300d01eb9b653fc86d39613be72e4ad49ff319ed95",
+    "engineering/ai/web/components/settings.js": "5247709dc041da0724099c08698b8ece7afe2c78ee19301b35ccb82f2253f317",
+    "engineering/ai/web/components/rulings.js": "1a952c9c0264c5e5157c4a173087b64f8f9e4a87c45948f22094e7b6d548ac69",
+    "engineering/ai/web/components/tools.js": "7a4091c9340ca76a8b043e404cbee398a6e7c97f7ba4754d25622a5806c0d52f",
+    "engineering/ai/web/components/index.d.ts": "2b9c0d85a6a6059f53fce99b54d62cb3d74fbd491c2d4bd0495f88df6ec53a7c",
+    "engineering/ai/web/components/pack.d.ts": "f391d394f8c2ecb5a33bbedefbc4626b227b5c8f8c4effab064a4a81c987a7ee",
+    "engineering/contracts/ai.json": "be3678aacf0a545ca00b65ceb50d5650bbec079310cd106be8135517b97db06d",
+    "engineering/contracts/ai-operations.json": "722763a2e8b407adef90e0c0edf54bc3c7491ed17d5ca4324837fe59da17b563",
+    "engineering/ai/tests/test_policies.py": "165bd16df68ea89df1ba7bd12500e0450194b76052626704fccf244d77b91b92",
+    "engineering/ai/tests/test_policies_ui.py": "f69a9b25fa59a14f738251370160b228ea6003869fed0d62d4f4bcba0bf0ee3c"
+  },
+  "relatedLiveAcceptance": {
+    "sourceReport": "rulepacks/stumpsville/tests/ai-scenarios-live-results.json",
+    "confirmedBy": "Stumpsville integration owner, 2026-11-19",
+    "selectedCases": [
+      "K08 revival",
+      "K12 new item",
+      "P04 voluntary disclosure"
+    ],
+    "latestSelectedCasesPassed": true,
+    "actualApiCallsIncludingFailedDebugRuns": 46,
+    "actualTokensIncludingFailedDebugRuns": 686207,
+    "zeroCallSetupFailuresRetained": 1,
+    "finalK08": {
+      "passed": true,
+      "apiCalls": 4,
+      "tokens": 58121,
+      "modelSeconds": 11.65,
+      "batchApproved": true,
+      "inventoryAndWealthPreserved": true
+    },
+    "packageDeterministicGroupsPassed": 18,
+    "scope": "Three selected live cases; the 53-case draft matrix is not claimed fully tested. Isolated rooms; no formal saves or provider settings modified."
+  },
+  "lastVerifiedAt": "2026-11-19T15:15:44.255657+08:00"
+}

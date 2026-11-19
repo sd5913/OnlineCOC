@@ -5,7 +5,7 @@ from .errors import require
 from .model import member, visible
 from . import chat
 
-KINDS = ('entity', 'config', 'rule', 'memory', 'channel', 'chat', 'event', 'ruling', 'knowledge')
+KINDS = ('entity', 'config', 'rule', 'memory', 'channel', 'chat', 'event', 'ruling', 'knowledge', 'room')
 
 
 def entity_projection(host, state, account):
@@ -40,11 +40,15 @@ def row(state, source, kind, key, revision, label, data, visibility, authority):
             'label': str(label)[:160], 'visibility': visibility, 'authority': authority, 'data': value}
 
 
-def rows(host, state, account, initiator=None, external=False, kinds=KINDS):
+def rows(host, state, account, initiator=None, external=False, kinds=KINDS, *, read_scope=None):
     principals = list(dict.fromkeys([account, initiator or account]))
     members = [member(state, p) for p in principals]
     policy = state['aiControl']['settings']['externalSources']
     kp = all(m['role'] == 'kp' for m in members)
+    full_room = read_scope == 'kp-room'
+    if full_room:
+        from .room_read import authorize
+        authorize(host, state, account, initiator)
     result = []
 
     def add(kind, key, revision, label, data, visibility='public', authority='host-state', source='host'):
@@ -57,10 +61,23 @@ def rows(host, state, account, initiator=None, external=False, kinds=KINDS):
     entities={k:v for k,v in entities.items() if all(k in other and digest(other[k])==digest(v) for other in projections[1:])}
     for key, value in (entities.items() if 'entity' in kinds else []):
         if value['lifecycle'] != 'active' and not kp:continue
+        visibility = 'private' if value['visibility'] == 'owner' else value['visibility']
+        if external and not policy[visibility]:continue
         data = copy.deepcopy(value)
         if not kp or (external and not policy['kp']):data['metadata'].pop('secret', None)
-        add('entity', key, value['revision'], value['name'], data,
-            'private' if value['visibility'] == 'owner' else value['visibility'])
+        label = value['name']
+        if kp:
+            # A trusted package can clarify a candidate's binding, never its
+            # identity or audience. Player knowledge does not use this hook.
+            try:
+                labeler = getattr(getattr(host, 'ai_data_adapter', None), 'reference_label', None)
+                custom = labeler('entity', key, label) if callable(labeler) else None
+                if type(custom) is str and 1 <= len(custom.strip()) <= 160:
+                    custom = custom.strip();custom.encode('utf-8')
+                    label = custom
+            except Exception:
+                pass
+        add('entity', key, value['revision'], label, data, visibility)
     known_configs = set(state['configurations'])
     if 'config' in kinds:
         for p in audience:known_configs &= set(configuration_projection(host,state,p))
@@ -72,11 +89,11 @@ def rows(host, state, account, initiator=None, external=False, kinds=KINDS):
     from .ai_sources import check_memory
     for key, value in (state['aiControl'].get('memoryFacts', {}).items() if 'memory' in kinds else []):
         try:
-            for p in principals:check_memory(host, state, p, key, value['revision'], set())
+            for p in principals:check_memory(host, state, p, key, value['revision'], set(), read_scope=read_scope)
         except Exception:continue
         add('memory', key, value['revision'], value['content'][:80], value, value['visibility'], 'kp-confirmed-memory')
     for cid, channel in (state['chat']['channels'].items() if set(kinds)&{'channel','chat','event'} else []):
-        if not all(chat.can_read(state, p, channel) for p in principals):continue
+        if not full_room and not all(chat.can_read(state, p, channel) for p in principals):continue
         visibility = 'public' if channel['kind'] == 'room' else 'private'
         add('channel', cid, channel['revision'], channel['name'], {'channelId':cid, 'lastSequence':channel['lastSequence']}, visibility)
         for message in (state['chat']['messages'][cid] if set(kinds)&{'chat','event'} else []):
@@ -93,10 +110,20 @@ def rows(host, state, account, initiator=None, external=False, kinds=KINDS):
                     bundle['messages'].insert(0, copy.deepcopy(reply))
                     bundle['links'].append({'type':'replies-to','from':message['messageId'],'to':reply['messageId'], 'authority':'host-chat'})
                 add('event', message['messageId'], digest(bundle), '行动：'+card['ruleId'], bundle, visibility, 'published-action-card')
+    if full_room and 'room' in kinds and (not external or all(policy.get(k) for k in ('public','kp','private'))):
+        from .room_read import fragments
+        for data in fragments(state):
+            key = digest([data['path'],data.get('textOffset')])
+            label = '/' + '/'.join(str(p).replace('~','~0').replace('/','~1') for p in data['path'])
+            if 'textOffset' in data:label += ' ['+str(data['textOffset'])+']'
+            add('room',key,digest(data),label,data,'kp','host-room','host-room')
     adapter = getattr(host, 'ai_data_adapter', None)
     if adapter and set(getattr(adapter,'kinds',KINDS))&set(kinds):
         # Administrator-installed local adapter. Model input never selects executable code or paths.
-        try:projections = [adapter.read(state, p) for p in principals]
+        try:
+            scoped_reader = getattr(adapter, 'read_scoped', None)
+            projections = [scoped_reader(state, p, read_scope='kp-room' if full_room else None)
+                           if callable(scoped_reader) else adapter.read(state, p) for p in principals]
         except Exception:
             require(False, 'DATA_SOURCE_UNAVAILABLE')
         allowed = [{(v['sourceId'],v['kind'],v['id']):v for v in projection} for projection in projections]
@@ -107,7 +134,12 @@ def rows(host, state, account, initiator=None, external=False, kinds=KINDS):
     return result
 
 
-def query(host, state, account, operation, args, *, initiator=None, external=False, player=None):
+def query(host, state, account, operation, args, *, initiator=None, external=False, player=None, read_scope=None):
+    require(read_scope in (None,'kp-room'),'INPUT_INVALID')
+    if read_scope == 'kp-room':
+        from .room_read import authorize
+        require(player is None, 'PERMISSION_DENIED')
+        authorize(host,state,account,initiator)
     if player is not None or member(state, account)['role'] != 'kp':
         return knowledge_query(host,state,player or account,operation,args,external=external)
     if player is not None:
@@ -124,9 +156,11 @@ def query(host, state, account, operation, args, *, initiator=None, external=Fal
     require(type(limit) is int and 1 <= limit <= 50, 'INPUT_INVALID')
     needle = args.get('query','')
     require(type(needle) is str and len(needle)<=120, 'INPUT_INVALID')
-    requested=args.get('types',list(KINDS)) if operation=='search' else ['channel','chat'] if operation=='chat' else [r.get('kind') for r in args.get('refs',[]) if type(r) is dict]
+    defaults=[kind for kind in KINDS if kind!='room' or read_scope=='kp-room']
+    requested=args.get('types',defaults) if operation=='search' else ['channel','chat'] if operation=='chat' else [r.get('kind') for r in args.get('refs',[]) if type(r) is dict]
     require(type(requested) is list and all(type(k) is str and k in KINDS for k in requested),'INPUT_INVALID')
-    values = rows(host,state,account,initiator,external,requested)
+    require('room' not in requested or read_scope=='kp-room','PERMISSION_DENIED')
+    values = rows(host,state,account,initiator,external,requested,read_scope=read_scope)
     if operation == 'search':
         kinds=args.get('types',list(KINDS))
         require(type(kinds) is list and 1<=len(kinds)<=len(KINDS) and all(k in KINDS for k in kinds), 'INPUT_INVALID')
@@ -156,7 +190,7 @@ def query(host, state, account, operation, args, *, initiator=None, external=Fal
                 require(all(k in value['data'] for k in fields),'INPUT_INVALID')
                 value['data']={k:value['data'][k] for k in fields}
     # Cursor binds the authorized result and policy, never a global or hidden record count.
-    snapshot=digest([state['aiControl']['scopeId'],account,initiator,external,player,
+    snapshot=digest([state['aiControl']['scopeId'],account,initiator,external,player,read_scope,
                      getattr(host,'ai_data_adapter_digest',None),
                      state['aiControl']['settings']['externalSources'],operation,
                      {k:v for k,v in args.items() if k!='cursor'},values])
@@ -213,5 +247,5 @@ def recheck(host, state, account, context):
     require(type(proofs) is list and len(proofs)<=24,'INPUT_INVALID')
     for proof in proofs:
         require(proof['scopeId']==state['aiControl']['scopeId'],'SCOPE_MISMATCH')
-        result=query(host,state,account,proof['operation'],proof['args'],initiator=proof['initiator'],external=True,player=proof.get('player'))
+        result=query(host,state,account,proof['operation'],proof['args'],initiator=proof['initiator'],external=True,player=proof.get('player'),read_scope=proof.get('readScope'))
         require(digest(result)==proof['digest'],'SOURCE_STALE')

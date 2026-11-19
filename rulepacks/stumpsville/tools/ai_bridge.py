@@ -43,6 +43,6 @@ def consultation(client, payload):
         body = payload.get('body')
         if not isinstance(body, dict) or set(body) != {'requestId', 'authorityEpoch', 'op', 'args'}:
             reject()
-        if body['op'] in {'ai.session.create', 'ai.session.update', 'ai.session.submit', 'ai.session.delete', 'ai.request.cancel'}:
+        if body['op'] in {'ai.session.create', 'ai.session.update', 'ai.session.submit', 'ai.session.delete', 'ai.request.cancel', 'ai.knowledge.request', 'ai.player.request'}:
             return client.request('/ai/commands', body)
     reject()

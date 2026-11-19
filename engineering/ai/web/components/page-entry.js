@@ -1,6 +1,6 @@
-import {AiClient,mountAIPage,mountAIConversation,mountAICollapsible,mountSessionManager} from './pack.js';
+import {AiClient,mountAIPage,mountAIConversation,mountAICollapsible,mountSessionManager,mountAISettings} from './pack.js';
 const $=id=>document.getElementById(id),client=new AiClient();let panel=null,dead=false;
-const mounts={page:mountAIPage,conversation:mountAIConversation,collapsible:mountAICollapsible,sessions:mountSessionManager};
+const mounts={page:mountAIPage,conversation:mountAIConversation,collapsible:mountAICollapsible,sessions:mountSessionManager,settings:mountAISettings};
 async function connected(){
  if(dead)return;panel?.destroy();
  const generation=client.generation;
@@ -10,7 +10,7 @@ async function connected(){
  $('login').hidden=true;$('room').hidden=false;$('account-label').textContent=client.view.accountId;
  panel=mounts[document.body.dataset.variant]($('panel'),client,{onOpen:id=>{location.href='conversation.html?session='+encodeURIComponent(id);}});
  const session=new URLSearchParams(location.search).get('session');
- if(session){if(!/^[a-f0-9]{32}$/.test(session))throw new Error('会话参数格式不正确');await panel.select(session);}
+ if(session&&panel.select){if(!/^[a-f0-9]{32}$/.test(session))throw new Error('会话参数格式不正确');await panel.select(session);}
 }
 function fail(error){$('entry-status').textContent=error.code||error.message;}
 $('login').onsubmit=async event=>{event.preventDefault();$('entry-status').textContent='';const password=$('password').value;$('password').value='';$('connect').disabled=true;

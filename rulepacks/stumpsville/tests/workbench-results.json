@@ -1,0 +1,21 @@
+{
+  "passed": true,
+  "checkedAt": "2026-11-19T16:26:26.305889+08:00",
+  "checks": [
+    "desktop room overview and member summary fit one viewport",
+    "long game requests stay compact; full content opens in a modal with reply folded",
+    "AI request opens its own session directly without scanning other sessions",
+    "warm KP navigation preserves the AI component and selected session",
+    "dedicated AI settings saves real player permissions; desktop and mobile controls remain accessible",
+    "all current configuration definitions, source files and data categories are reachable; search and full detail work",
+    "390px ruling tabs show queue, AI and chat within one viewport without horizontal overflow",
+    "KP-only data remains denied to players; logout removes the retained UI; browser has no script errors"
+  ],
+  "timing": {
+    "coldQueueReadyMs": 3544,
+    "requestToSessionMs": 1896,
+    "warmNavigationMs": 30
+  },
+  "output": "D:\\Studies\\Art Programming\\OnlineCOC\\rulepacks\\stumpsville\\tests\\output\\workbench-d63673b2",
+  "scope": "isolated loopback host, headless Edge; no real provider or live room"
+}

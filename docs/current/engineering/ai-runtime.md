@@ -4,10 +4,12 @@
 - 文档子类：工程
 - 状态：有效
 - 创建日期：2026-11-12
-- 最后更新：2026-11-17
+- 最后更新：2026-11-19
 - 关联文档：[工程索引](README.md)、[模块入口](../../../engineering/ai/README.md)、[设计](../../plans/ai-runtime-design.md)、[施工计划](../../plans/ai-runtime-construction-plan.md)
 
 ## 当前阶段
+
+2026-11-19 宿主增加核心规则／数据、物品配置及删除配置的明确高危批准，发布前验证完整候选依赖；KP 全房间读取通过单独授权范围提供。接口、回执、权限边界与本轮测试见[高危发布与读取](high-risk-publication.md)。
 
 2026-11-17 的个人知识接入已完成，严格玩家辅助只消费宿主可复验的固定资料及显式持续授权，见[已知资料实现](ai-player-knowledge.md)。本轮384项AI模块测试已通过；下述早期阶段数字保留为交付背景，不累加为本轮数量。
 
@@ -62,11 +64,11 @@ Windows 上已验证顶层死循环、内存/输出膨胀、文件/网络与 Pyt
 
 | 操作 | args | 实际行为 |
 | --- | --- | --- |
-| `ai.proposal.approve` | `proposalId`、`proposalRevision`、`riskDecisions` | 仅当前 KP；把候选工件暂存并复制报告/配置变更到 Room，不激活配置；按包清单填写理由，中高风险另填 `gameplay-risk` |
+| `ai.proposal.approve` | `proposalId`、`proposalRevision`、`riskDecisions`，高危另需 `explicitHighRiskDigest` | 仅当前 KP；把候选工件暂存并复制报告/配置变更到 Room，不激活配置；按包清单填写理由，中高报告风险另填 `gameplay-risk`，宿主判定高危另填 `high-risk` 并批准本次候选摘要 |
 | `ai.proposal.revoke` | `approvalId` | KP 撤销尚未消费的批准；已发布不能用撤销回滚 |
 | `publication.apply` | `approvalId` | 当前批准者仍为有效 KP，且批准未过期、未撤销、基线与证据未变时，一次提交配置、活动工件、消费标记、发布记录、审计和回执 |
 
-批准由 `approvalDigest` 绑定全部不可变审核证据；此摘要用于检测改动，授权仍由受信提案解析与主机权限检查提供。发布仅读取 Room；独立 AI 仓库关闭后有效批准仍可加载。相同 commandId 返回原回执，相同 approvalId 最多生效一次；相同 commandId 的不同内容拒绝。提交后异常会按已落盘回执返回成功，不改写为拒绝。`reconcile` 只对账 AI 状态，不重复应用配置。
+批准由 `approvalDigest` 绑定全部不可变审核证据；此摘要用于检测改动，授权仍由受信提案解析与主机权限检查提供。候选与批准证据保存在 Room；不依赖动态 AI 授权的有效批准，在独立 AI 仓库关闭后仍可加载。使用 `kp-room` 资料的批准还需其授权回调可用并通过实时复验，不能因关闭 AI 服务而跳过权限检查。相同 commandId 返回原回执，相同 approvalId 最多生效一次；相同 commandId 的不同内容拒绝。提交后异常会按已落盘回执返回成功，不改写为拒绝。`reconcile` 只对账 AI 状态，不重复应用配置。
 
 审核及发布会保守检查整个游戏快照摘要。两名 KP 审核同一基线时，先发布者生效，后者得到 `BASELINE_STALE`。批准暂存和 AI 历史变化不会改变游戏摘要。当前按原批准 KP 发布；旧实例数值和已发生的随机/伤害不回滚。
 

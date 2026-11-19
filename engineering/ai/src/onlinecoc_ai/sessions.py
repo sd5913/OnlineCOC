@@ -39,10 +39,20 @@ class Sessions:
             from .knowledge import service
             port=service(self.host,account)
             knowledge=port.capabilities(account,player=True)
-        except Exception:knowledge={'status':'unavailable'}
+            from .errors import require
+            require(self.host.state()['aiControl']['settings']['externalSources']['private'],'EXTERNAL_SCOPE_DISABLED')
+            require(p['allowDataQueries'],'DATA_QUERIES_DISABLED')
+        except Exception as exc:
+            code=getattr(exc,'code','KNOWLEDGE_UNAVAILABLE')
+            knowledge={'status':'unavailable' if code=='KNOWLEDGE_UNAVAILABLE' else 'blocked','code':code}
+        notices={'KNOWLEDGE_UNAVAILABLE':'本房间尚未提供可用的个人知识服务，请 KP 检查配置包接入。',
+            'KNOWLEDGE_EGRESS_DISABLED':'配置包禁止个人已知资料外发给 AI，请 KP 检查知识策略。',
+            'EXTERNAL_SCOPE_DISABLED':'房间未允许向 AI 外发本人已知资料（私密信息），请 KP 检查服务设置。',
+            'DATA_QUERIES_DISABLED':'KP 已停用 AI 资料查询；仍可提交创作申请供 KP 处理。'}
         return {'role': role, 'canChat': role == 'kp' or p['allowPlayerChat'],
             'knowledge':{'mode':'strict-known','status':knowledge['status'],
-                'notice':'玩家会话只使用本人已知记录；观察记录不代表当前场景，未知内容可请 KP 揭示。' if knowledge['status']=='ready' else '知识服务尚未就绪，玩家 AI 暂不读取游戏资料。'},
+                **({'code':knowledge['code']} if 'code' in knowledge else {}),
+                'notice':notices.get(knowledge.get('code'),'玩家会话只使用本人已知记录；观察记录不代表当前场景，未知内容可请 KP 揭示。' if knowledge['status']=='ready' else '个人资料暂不可用，请 KP 检查当前会话与知识服务。')},
             'defaultLevel': 'administrator' if role == 'kp' else 'player',
             **{k: v for k, v in p.items() if k != 'principal'}}
 

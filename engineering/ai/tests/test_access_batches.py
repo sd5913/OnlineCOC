@@ -68,7 +68,7 @@ def test_player_auto_dispatch_context_output_and_revoke(application):
             s=session(app,'player1');r=submit(app,s,who='player1');assert r.get('taskId'),r
             task=await wait_task(app.coordinator,r['taskId']);assert task['status']=='review_ready',task
             result=app.sessions.get('player1',s['sessionId'])['items'][0]
-            assert '本人已知资料不足' in result['response'] and 'diagnostics' not in result
+            assert '暂未获得与问题匹配的本人已知资料' in result['response'] and 'diagnostics' not in result
             assert app.sessions.get('kp',s['sessionId'])['items'][0]['response']==result['response']
             context=app.repository.state()['contexts'][task['contextRef']]
             assert context['facts']['sessionAccess']['owner']=='player1'

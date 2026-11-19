@@ -10,10 +10,10 @@ from verify_integrations import ai, result
 
 
 @contextmanager
-def observed_provider(profile, observations, observations_output):
+def observed_provider(profile, observations, observations_output, *, inject_fault=True, call_limit=24, tool_evidence=None):
     assert profile['adapter']=='deepseek-chat' and profile['baseUrl'].rstrip('/')=='https://api.deepseek.com'
     class Handler(BaseHTTPRequestHandler):
-        injected=False
+        injected=not inject_fault
         def log_message(self,*args):pass
         def do_POST(self):
             body=self.rfile.read(int(self.headers.get('Content-Length','0')))
@@ -22,7 +22,7 @@ def observed_provider(profile, observations, observations_output):
                 value={'choices':[{'message':{'role':'assistant','content':'{broken JSON'},'finish_reason':'stop'}],
                     'usage':{'prompt_tokens':0,'completion_tokens':0,'total_tokens':0}}
                 code=200;observations.append({'injected':True,'reason':'synthetic invalid JSON','usage':value['usage']})
-            elif sum(not c.get('injected') for c in observations)>=24:
+            elif sum(not c.get('injected') for c in observations)>=call_limit:
                 code=429;value={'error':{'message':'EXPERIMENT_CALL_LIMIT'}}
             else:
                 start=time.monotonic()
@@ -30,6 +30,8 @@ def observed_provider(profile, observations, observations_output):
                     response=httpx.post('https://api.deepseek.com/chat/completions',content=body,
                         headers={'Authorization':self.headers.get('Authorization',''),'Content-Type':'application/json'},timeout=180,trust_env=False)
                     code=response.status_code;value=response.json()
+                    if tool_evidence is not None:
+                        tool_evidence.append({'request':json.loads(body),'response':value})
                     outputs=[c.get('message',{}).get('content') for c in value.get('choices',[]) if c.get('message',{}).get('content')]
                     if outputs:observations_output.extend(outputs)
                     observations.append({'injected':False,'httpStatus':code,'seconds':round(time.monotonic()-start,2),

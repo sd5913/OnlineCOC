@@ -116,9 +116,9 @@ def main():
         checks.append('failed risky preset exposes raw save/damage rolls, applies HP loss and leaves its intended door closed')
 
         bad = p1.action('scene.action', {'action': 'cave-cheese', 'choice': 'take'}, allow_error=True)
-        assert '当前地点' in bad['code']
+        assert '本人已知' in bad['code']
         bad = p1.action('scene.action', {'action': 'cage-listen', 'choice': 'award-everything'}, allow_error=True)
-        assert '不存在' in bad['code']
+        assert '本人已知' in bad['code']
         private_id = runtime.package.state['sceneId']
         world_id = kp.state()['world']['instanceId']
         denied = p1.command('action.invoke', {'actionId': 'sv.scene.resolve', 'input': {'actor': actor, 'scene': private_id, 'world': world_id, 'action': 'cage-listen', 'choice': 'listen'}}, True)
@@ -138,6 +138,7 @@ def main():
         # Competing clients cannot claim the last shared cheese twice.
         for account in (p1, p2):
             kp.command('entity.update', {'id': account.state()['character']['instanceId'], 'numbers': {'location': 10}})
+            act('cave-cheese', 'inspect', account)
         for _ in range(6): act('cave-cheese', 'take')
         with ThreadPoolExecutor(2) as pool:
             results = list(pool.map(lambda account: act('cave-cheese', 'take', account), (p1, p2)))

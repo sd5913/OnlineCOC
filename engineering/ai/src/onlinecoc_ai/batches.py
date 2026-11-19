@@ -15,7 +15,7 @@ HOST_OPS = ('entity.create','entity.patch','entity.update','entity.archive','rel
 AI_OPS = ('ai.session.create','ai.session.update','ai.session.delete','ai.memory.create','ai.memory.confirm','ai.memory.revoke')
 ACTION = {'type':'object','additionalProperties':False,'required':['target','op','args'],
     'properties':{'target':{'enum':['host','ai']},'op':{'type':'string','maxLength':80},'args':{'type':'object'}}}
-ACTIONS = {'type':'array','minItems':1,'maxItems':8,'items':ACTION}
+ACTIONS = {'type':'array','minItems':1,'items':ACTION}
 
 
 def world(host, repository):
@@ -64,11 +64,23 @@ class Batches:
             'notice':'Propose immutable actions as kind=batch; every change awaits administrator approval. Configuration/rule edits use kind=draft and A/B/C review. No filesystem, credentials or permission-setting commands.'}
 
     def validate_actions(self, account, actions):
-        require(Draft202012Validator(ACTIONS).is_valid(actions) and len(canonical(actions)) <= 32*1024, 'INPUT_INVALID')
+        require(policy(self.repository)['allowRuntimeChanges'], 'RUNTIME_CHANGES_DISABLED')
+        require(Draft202012Validator(ACTIONS).is_valid(actions), 'INPUT_INVALID')
+        require(len(canonical(actions)) <= 32*1024, 'BATCH_PAYLOAD_TOO_LARGE')
         catalog = self.catalog(account)
         for action in actions:
             schema = catalog[action['target']].get(action['op'])
             require(schema is not None and Draft202012Validator(schema).is_valid(action['args']), 'BATCH_OPERATION_FORBIDDEN')
+
+    def catalog_query(self, account, operations=None):
+        catalog=self.catalog(account)
+        if operations is None:
+            return {'mode':'index','host':list(catalog['host']),'ai':list(catalog['ai']),
+                'actions':catalog['actions'],
+                'notice':'Call room_manage_catalog with operations:[exact operation names] for the required parameter schemas before proposing actions. No command has been executed.'}
+        require(set(operations)<=set(catalog['host'])|set(catalog['ai']), 'INPUT_INVALID')
+        return {'mode':'schemas',**{target:{op:schema for op,schema in catalog[target].items() if op in operations} for target in ('host','ai')},
+            'actions':catalog['actions'],'notice':catalog['notice']}
 
     def create(self, account, request, actions, summary, context):
         with self.host.lock, self.lock:
@@ -84,9 +96,9 @@ class Batches:
             record['digest'] = digest({k:record[k] for k in ('batchId','sessionId','requestId','creator','actions','context','baseline','authorityEpoch')})
             def save(state):
                 batches=state['settings'].setdefault('batches',{})
-                require(len(batches)<1000,'LIMIT_EXCEEDED');batches[identifier]=record
+                batches[identifier]=record
             self.repository.update(save)
-            if policy(self.repository)['autoApproveBatches']:
+            if policy(self.repository)['autoApproveBatches'] and not self.app.player_requests.review_required(access['sessionId']):
                 principal = policy(self.repository)['principal']
                 self.execute(principal,'auto:'+identifier,'ai.batch.approve',{'batchId':identifier,'digest':record['digest']})
             return identifier

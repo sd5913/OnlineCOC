@@ -35,15 +35,18 @@ let busy = false;
 let lastFocus = null;
 let connection = t('ui.m066');
 let desktop = null, desktopAccount = '', consoleTab = 'control', selectedRequest = '', localAction = null, renderDeferred = false;
-let executorBusy = false, aiQueuePending=0;
+let executorBusy = false, aiQueuePending=0, rulingPane='queue';
 let statePollRunning=false,lastStatePoll=0,stateGeneration=0;
+const replyOpen=new Set();
+let libraryCache=null,libraryLoading=false,libraryError='',libraryTab='configurations',libraryQuery='',libraryType='';
+const libraryKey=()=>JSON.stringify([state?.accountId,state?.storageScope,state?.catalog?.revision,state?.catalog?.rulesetRevision]);
 let roomVisitsOpen=false, mobileColumn='scene', logFilter='all', notebookDrag=null;
 const expandedLogs=new Map();
 const fieldName=key=>t('field.'+String(key).toLowerCase(),{},key);
 const displayValue=value=>typeof value==='boolean'?t(value?'state.yes':'state.no'):String(value??'—');
-document.addEventListener('toggle',event=>{if(event.target.id==='room-visits')roomVisitsOpen=event.target.open;},true);
+document.addEventListener('toggle',event=>{if(event.target.id==='room-visits')roomVisitsOpen=event.target.open;if(event.target.dataset.rulingReply){if(event.target.open)replyOpen.add(event.target.dataset.rulingReply);else replyOpen.delete(event.target.dataset.rulingReply);}},true);
 const playerNav = () => [['play/scene',t('ui.m005')]];
-const gmNav = () => [['gm/room',t('nav.room')],['gm/rulings',t('nav.rulings')],['gm/map',t('nav.map')],['gm/console',t('ui.m001')],['gm/locations',t('ui.m002')],['gm/library',t('ui.m003')],['gm/session',t('ui.m004')]];
+const gmNav = () => [['gm/room',t('nav.room')],['gm/rulings',t('nav.rulings')],['gm/map',t('nav.map')],['gm/console',t('ui.m001')],['gm/locations',t('ui.m002')],['gm/library',t('ui.m003')],['gm/session',t('ui.m004')],['gm/ai-settings','AI 设置']];
 const icons = {weapon:'⚔',item:'◇',armor:'♧',condition:'✧',spell:'▤'};
 const escape = value => String(value ?? '').replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 const number = value => Number(value);
@@ -53,7 +56,7 @@ const link = (label, path) => `<a href="#/${path}">${label}</a>`;
 const field = (label, name, value = '', type = 'text') => `<label>${label}<input name="${name}" type="${type}" value="${escape(value)}" ${type==='password'?'autocomplete="current-password"':''}></label>`;
 const area = (label,name,value='') => `<label>${label}<textarea name="${name}">${escape(value)}</textarea></label>`;
 const select = (label,name,options,value) => `<label>${label}<select name="${name}">${options.map(([key,text])=>`<option value="${escape(key)}" ${String(key)===String(value)?'selected':''}>${escape(text)}</option>`).join('')}</select></label>`;
-const heading = (id,title,actions='') => `<div class="page-head"><div><div class="eyebrow">${id} · STUMPSVILLE</div><h1>${title}</h1></div><div class="actions">${actions}</div></div>`;
+const heading = (id,title,actions='') => `<div class="page-head"><div><h1>${title}</h1></div><div class="actions">${actions}</div></div>`;
 const panel = (title,body,kind='') => `<section class="panel ${kind}"><h2>${title}</h2>${body}</section>`;
 const empty = text => `<div class="empty">${escape(text)}</div>`;
 const actorOptions = () => (state.characters || [state.character].filter(Boolean)).map(x=>[x.instanceId,x.name]);
@@ -164,15 +167,49 @@ async function perform(operation,args,existing) {
 function openDialog(title,body,onSubmit,label=t('ui.m062'),id='S14') {
   lastFocus = document.activeElement;
   dialogSubmit = onSubmit;
-  dialog.innerHTML = `<div class="dialog-head"><h2 id="dialog-title"><span class="eyebrow">${id}</span> ${title}</h2>${button(t('ui.m058'),'close',{},'quiet')}</div><form id="dialog-form"><div class="dialog-body">${body}<div data-action-error role="alert"></div><div class="dialog-actions">${button(t('ui.m061'),'close')}${onSubmit?`<button class="primary" type="submit">${label}</button>`:''}</div></div></form>`;
+  dialog.innerHTML = `<div class="dialog-head"><h2 id="dialog-title">${title}</h2>${button(t('ui.m058'),'close',{},'quiet')}</div><form id="dialog-form"><div class="dialog-body">${body}<div data-action-error role="alert"></div><div class="dialog-actions">${button(t('ui.m061'),'close')}${onSubmit?`<button class="primary" type="submit">${label}</button>`:''}</div></div></form>`;
   if (!dialog.open) dialog.showModal();
 }
 
+dialog.addEventListener('close',()=>{if(!dialog.open){if(dirtyForm==='ruling-form')dirtyForm=null;dialog.replaceChildren();}});
 function closeDialog() {
   if(dialog.open&&dialog.querySelector('#player-ai-embedded'))embeddedAI.close();
+  if(dirtyForm==='ruling-form')dirtyForm=null;
   dialog.close();
+  dialog.replaceChildren();
   dialogSubmit = null;
   if (lastFocus?.isConnected) lastFocus.focus();
+}
+
+async function chooseAIKnowledge(item,decide){
+  const [view,capabilities,members]=await Promise.all([api('api/v1/view'),api('api/v1/knowledge/capabilities'),api('api/v1/chat/members')]);
+  const policy=capabilities.policies.find(p=>p.policyId==='stumpsville-personal-v1');
+  const member=members.items.find(m=>m.accountId===item.initiator);
+  if(!policy||!member)throw Error('资料策略或申请玩家已变化，请刷新');
+  const candidates=Object.values(view.entities).filter(e=>e.lifecycle==='active'&&(e.configurationId==='sv.location'||e.configurationId==='sv.character'||e.configurationId==='sv.npc'||e.configurationId.startsWith('sv.ext.npc.')));
+  let selected=null,generation=0;
+  openDialog('批准资料申请',`<p>${escape(item.initiator)} · ${escape(item.summary||'')}</p>${select('选择披露资料','disclose-resource',[['','请选择'],...candidates.map(e=>[e.instanceId,e.name+' · '+(e.configurationId==='sv.location'?'地点描述与已发布线索':'身份与位置')])],'')}<div data-knowledge-preview></div>`,async()=>{
+    if(!selected)throw Error('请先选择并查看披露内容');
+    const result=await decide([{op:'knowledge.observe',args:{policyId:policy.policyId,expectedPolicyRevision:policy.revision,subjectMemberId:member.memberId,resource:selected.resource,facetIds:selected.facetIds,expectedSourceRevision:selected.preview.sourceRevision,reason:'KP 批准玩家 AI 资料申请'}}]);
+    if(result.status!=='completed')throw Error('资料披露尚未全部完成，请在原申请中核对回执');
+    closeDialog();toast('已向申请玩家披露所选资料');
+    await refresh(false);
+  },'批准并披露');
+  dialog.querySelector('[name=disclose-resource]').onchange=async event=>{
+    const ticket=++generation;selected=null;
+    const target=dialog.querySelector('[data-knowledge-preview]');target.textContent='';
+    const entity=candidates.find(e=>e.instanceId===event.target.value);if(!entity)return;
+    const resource={namespace:'stumpsville',kind:'entity',id:entity.instanceId},facetIds=[entity.configurationId==='sv.location'?'scene':'identity'];
+    target.textContent='读取披露预览…';
+    try{
+      const preview=await api('api/v1/knowledge/preview',{policyId:policy.policyId,resource,facetIds});
+      if(ticket!==generation||!target.isConnected)return;
+      selected={resource,facetIds,preview};
+      const shown=(preview.preview||preview.facets||{})[facetIds[0]]||{};
+      const placeName=index=>Object.values(view.entities).find(e=>e.configurationId==='sv.location'&&e.numbers.index===index)?.name||String(index);
+      target.innerHTML='<section><h3>将披露给该玩家的内容</h3><strong>'+escape(shown.name||entity.name)+'</strong>'+(shown.description?'<p>'+escape(shown.description)+'</p>':'')+(shown.location?'<p>位置：'+escape('地点 '+shown.location)+'</p>':'')+(shown.exits?.length?'<p>通路：'+shown.exits.map(i=>escape('地点 '+i)).join('、')+'</p>':'')+(shown.clues||[]).map(c=>'<p><strong>'+escape(c.title)+'</strong> '+escape(c.text)+'</p>').join('')+(shown.actions?.length?'<p>可见行动：'+shown.actions.map(a=>escape(a.label)).join('、')+'</p>':'')+'</section>';
+    }catch(error){if(ticket===generation&&target.isConnected)target.textContent=error.message;}
+  };
 }
 
 function statCards(character){
@@ -200,10 +237,15 @@ function discoveryControls(index){
   return `<section class="discovery-controls"><h3>${t('map.revealTitle')}</h3><p>${t('map.revealHint')}</p>${actors.map(a=>`<div class="row"><span>${escape(a.name)}</span>${button(t('map.reveal'),'actor-reveal',{id:a.id},'small')}</div>`).join('')}</section>`;
 }
 
+function roomOverview(){
+  const characters=state.characters||[],phase=state.session?.numbers.phase||0,active=phase===1&&state.roomStatus==='active';
+  const stats=[['状态',state.roomStatus==='paused'?'暂停':phase===1?'进行中':phase===2?'已结束':'待开场'],['回合',state.session?.numbers.round||0],['在线玩家',state.network?.players.filter(p=>p.role==='player'&&p.status==='online').length??'—'],['已准备角色',characters.filter(c=>c.numbers.ready).length+' / '+characters.length],['游戏待办',keeperLocalPending()],['已发布地点',Object.keys(state.published||{}).length]];
+  return `<section class="panel" id="room-overview"><h2>房间总览</h2><div class="room-stats">${stats.map(([label,value])=>`<div><span>${label}</span><strong>${value}</strong></div>`).join('')}</div><div class="actions"><button type="button" class="primary" data-action="start" ${active||phase===2?'disabled':''}>${active?'已开场':state.roomStatus==='paused'?'恢复开场':'一键开场'}</button>${state.initialized?`${button(t('ui.m026'),'round')}${button(state.roomStatus==='paused'?t('ui.m028'):t('ui.m027'),'room',{status:state.roomStatus==='paused'?'active':'paused'})}${button(state.automation.enabled?t('ui.m029'):t('ui.m030'),'automation-console')}${button(t('ui.m143'),'backup')}`:''}${button('处理裁决','navigate',{path:'gm/rulings'})}</div><p class="room-readiness">规则 ${state.initialized?'已安装':'待初始化'} · 个人资料 ${state.knowledge?.status==='ready'?'已就绪':'待启用'} · 自动裁决 ${state.automation.enabled?'开启':'关闭'}</p></section>`;
+}
 function roomPage(){
   const grants=state.knowledgeGrants?.items||[];
-  const knowledge=panel('个人已知资料',`<p>${state.knowledge?.status==='ready'?'已启用：进入或向本人揭示产生观察记录；发布地点不会向所有玩家披露。':'知识服务尚未启用。旧存档需要显式启用，再选择现在揭示。'}</p>${button('启用个人知识服务','knowledge-enable')}${button('处理旧地点记录','knowledge-import')}<div class="stack">${grants.map(g=>`<div class="row"><span>${escape(g.label)} · ${escape(g.subject.accountId)} · ${g.mode==='live_scope'?'持续告知':'观察记录'}</span>${button('撤回','knowledge-revoke',{grantId:g.grantId,revision:g.revision},'small')}</div>`).join('')||'<p>暂无授权记录。</p>'}</div>${state.knowledgeGrants?.nextCursor?'<p>这里只展示前 50 项；更多记录可通过知识管理接口分页查询。</p>':''}`);
-  return heading('P15',t('nav.room'),button(t('room.share'),'web-room',{},'primary'))+roomNetworkPanel()+knowledge;
+  const knowledge=state.initialized?`<details class="panel"><summary>个人资料授权管理</summary>${state.knowledge?.status!=='ready'?button('启用个人知识服务','knowledge-enable'):''}${button('处理旧地点记录','knowledge-import')}<div class="stack">${grants.map(g=>`<div class="row"><span>${escape(g.label)} · ${escape(g.subject.accountId)} · ${g.mode==='live_scope'?'持续告知':'观察记录'}</span>${button('撤回','knowledge-revoke',{grantId:g.grantId,revision:g.revision},'small')}</div>`).join('')||'<p>暂无授权记录。</p>'}</div>${state.knowledgeGrants?.nextCursor?'<p>当前显示前50项。</p>':''}</details>`:'';
+  return heading('P15',t('nav.room'),button(t('room.share'),'web-room',{},'primary'))+'<div class="room-dashboard">'+roomOverview()+roomNetworkPanel()+'</div>'+knowledge;
 }
 function mapPage(){
   return heading('P16',t('nav.map'))+panel(t('ui.m105'),mapView(Object.values(state.allLocations),selectedLocation,true));
@@ -220,18 +262,30 @@ function updateKeeperQueue(){
     const node=document.querySelector(selector);if(!node)continue;
     const markup=render();if(node._queueMarkup!==markup){node.innerHTML=markup;node._queueMarkup=markup;}
   }
-  const detail=document.querySelector('.ruling-detail');
-  if(detail&&!detail.querySelector('form')&&!dirtyForm)detail.innerHTML=rulingDetail();
   updateQueueCount();
 }
+function queueTime(value){
+  if(!value)return '—';const date=new Date(typeof value==='number'?value*1000:value);
+  return Number.isNaN(date.getTime())?'—':date.toLocaleTimeString(locale(),{hour:'2-digit',minute:'2-digit'});
+}
+function compactQueue(time,source,summary,action,args,actions='',attrs=''){
+  return `<article class="queue-item compact-queue" ${attrs}><time>${escape(queueTime(time))}</time><span class="queue-source" title="${escape(source)}">${escape(source)}</span><button type="button" class="queue-summary quiet" data-action="${action}" data-args="${escape(JSON.stringify(args))}">${escape(summary)}</button><div class="actions">${actions}</div></article>`;
+}
 function characterApprovalQueue(){
-  return Object.values(state.drafts||{}).filter(d=>d.status==='submitted').map(d=>`<article class="queue-item character-approval" data-draft="${escape(d.account)}"><small>${escape(d.account)}</small><strong>${t('queue.characterApproval')} · ${escape(d.name)}</strong><p>${fieldName('str')} ${d.str} / ${fieldName('dex')} ${d.dex} / ${fieldName('wil')} ${d.wil} · ${fieldName('hp')} ${d.hp}</p><div class="actions">${button(t('ui.m114'),'approve',{account:d.account},'primary small')}${button(t('ui.m115'),'reject',{account:d.account},'small')}</div></article>`).join('');
+  return Object.values(state.drafts||{}).filter(d=>d.status==='submitted').map(d=>compactQueue(d.time,d.account,t('queue.characterApproval')+' · '+d.name,'queue-detail',{kind:'draft',id:d.account},button(t('ui.m114'),'approve',{account:d.account},'primary small')+button(t('ui.m115'),'reject',{account:d.account},'small'),`data-draft="${escape(d.account)}"`)).join('');
 }
 function hostFlowQueue(){
-  return (state.keeperWaits||[]).map(w=>`<article class="queue-item host-wait" data-wait="${escape(w.id)}"><small>${escape(w.account)} · ${escape(w.flowId)}</small><strong>${t('queue.flowWait')}</strong><p>${escape(w.options?.question||w.options?.prompt||w.node)}</p><div class="actions">${button(t('ui.m099'),'host-flow',{operation:'flow.respond',input:{waitId:w.id,revision:w.revision,answer:true}},'primary small')}${button(t('ui.m100'),'host-flow',{operation:'flow.respond',input:{waitId:w.id,revision:w.revision,answer:false}},'small')}</div></article>`).join('')+(state.keeperFlows||[]).map(f=>`<article class="queue-item" data-flow="${escape(f.id)}"><small>${escape(f.rule)} · ${escape(f.id)}</small><strong>${t('queue.flowAttention')}</strong><p>${escape(f.error||f.status)}</p><div class="actions">${button(t('queue.retryFlow'),'host-flow',{operation:'flow.retry',input:{flowId:f.id}},'small')}${button(t('queue.cancelFlow'),'host-flow',{operation:'flow.cancel',input:{flowId:f.id}},'small')}</div></article>`).join('');
+  return (state.keeperWaits||[]).map(w=>compactQueue(w.createdAt||w.created,w.account||'宿主',w.options?.question||w.options?.prompt||t('queue.flowWait'),'queue-detail',{kind:'wait',id:w.id},button(t('ui.m099'),'host-flow',{operation:'flow.respond',input:{waitId:w.id,revision:w.revision,answer:true}},'primary small')+button(t('ui.m100'),'host-flow',{operation:'flow.respond',input:{waitId:w.id,revision:w.revision,answer:false}},'small'),`data-wait="${escape(w.id)}"`)).join('')+(state.keeperFlows||[]).map(f=>compactQueue(f.updatedAt||f.createdAt,f.rule,f.error||t('queue.flowAttention'),'queue-detail',{kind:'flow',id:f.id},button(t('queue.retryFlow'),'host-flow',{operation:'flow.retry',input:{flowId:f.id}},'small')+button(t('queue.cancelFlow'),'host-flow',{operation:'flow.cancel',input:{flowId:f.id}},'small'),`data-flow="${escape(f.id)}"`)).join('');
+}
+function queueDetail({kind,id}){
+  const item=kind==='draft'?state.drafts[id]:kind==='wait'?state.keeperWaits.find(x=>x.id===id):state.keeperFlows.find(x=>x.id===id);
+  if(!item)return;
+  const title=kind==='draft'?t('queue.characterApproval'):kind==='wait'?t('queue.flowWait'):t('queue.flowAttention');
+  const body=kind==='draft'?`<h3>${escape(item.name)}</h3><p>${escape(item.account)} · ${fieldName('str')} ${item.str} / ${fieldName('dex')} ${item.dex} / ${fieldName('wil')} ${item.wil} · ${fieldName('hp')} ${item.hp}</p>`:`<p>${escape(item.options?.question||item.options?.prompt||item.error||item.status||'')}</p>`;
+  openDialog(title,body+`<pre class="data-detail">${escape(JSON.stringify(item,null,2))}</pre>`,null);
 }
 function rulingsPage(){
-  return `<div class="rulings-grid"><div class="ruling-queues"><section class="panel message-queue"><h2>${t('ruling.messages')}</h2><div id="message-queue-list" class="ruling-scroll">${messageQueue()}</div></section><section class="panel ruling-work"><h2>${t('ruling.queue')} <span class="tag" id="keeper-pending-count">${keeperLocalPending()+aiQueuePending}</span></h2><div class="ruling-scroll"><div id="keeper-character-approvals">${characterApprovalQueue()}</div><div id="keeper-host-flows">${hostFlowQueue()}</div><div id="keeper-game-requests">${rulingQueue()}</div><div class="ruling-detail">${rulingDetail()}</div><div id="kp-ai-rulings"></div><details><summary>${t('ruling.history')}</summary>${activityFeed()}</details></div></section></div><section class="panel ruling-ai" aria-label="${t('ai.title')}"><div id="kp-ai-embedded"></div></section><aside id="chat-column" class="ruling-chat" aria-label="${t('chat.title')}"></aside></div>`;
+  return `<nav class="ruling-switch" aria-label="裁决工作区">${[['queue','裁决队列'],['ai','AI 对话'],['chat','聊天']].map(([pane,label])=>button(label,'ruling-pane',{pane},pane===rulingPane?'primary small':'small')).join('')}</nav><div class="rulings-grid" data-pane="${rulingPane}"><div class="ruling-queues"><section class="panel message-queue"><h2>${t('ruling.messages')}</h2><div id="message-queue-list" class="ruling-scroll">${messageQueue()}</div></section><section class="panel ruling-work"><h2>${t('ruling.queue')} <span class="tag" id="keeper-pending-count">${keeperLocalPending()+aiQueuePending}</span></h2><div class="ruling-scroll"><div id="keeper-character-approvals">${characterApprovalQueue()}</div><div id="keeper-host-flows">${hostFlowQueue()}</div><div id="keeper-game-requests">${rulingQueue()}</div><div id="kp-ai-rulings"></div><details><summary>${t('ruling.history')}</summary>${activityFeed()}</details></div></section></div><section class="panel ruling-ai" aria-label="${t('ai.title')}"><div id="kp-ai-embedded"></div></section><aside id="chat-column" class="ruling-chat" aria-label="${t('chat.title')}"></aside></div>`;
 }
 
 function mapView(locations,current,rosters=false) {
@@ -251,7 +305,7 @@ function renderEntry() {
   if(webMode){app.innerHTML=empty('连接已断开，请在网页上方退出并重新连接房主。');return;}
   aiUI.update(null);embeddedAI.close();
   chatUI.mount(null);document.body.classList.remove('scene-workspace','rulings-workspace','player-ui','topbar-collapsed');
-  app.innerHTML = `<section class="entry"><div class="entry-card"><div class="eyebrow">${t('entry.tagline')}</div><h1>${t('app.name')}</h1><div class="subtitle">STUMPSVILLE</div><p>${t('entry.intro')}</p><div class="notice">${setup?.canSetup?t('entry.setup'):t('entry.login')}</div><form id="entry-form">${setup?.canSetup?'':field(t('ui.m157'),'loginName','kp')}${field(setup?.canSetup?t('entry.password'):t('ui.m158'),'password','','password')}${setup?.canSetup?`<p class="muted">${t('entry.accounts')}</p>`:''}<button class="primary" type="submit">${setup?.canSetup?t('entry.prepare'):t('ui.m156')}</button><div id="entry-error" role="alert"></div></form><p>${independentLogin()}</p><p class="muted">${t('entry.sessions')}</p><p class="muted">Mausritter · OnlineCOC 配置包</p></div></section>`;
+  app.innerHTML = `<section class="entry"><div class="entry-card"><div class="eyebrow">${t('entry.tagline')}</div><h1>${t('app.name')}</h1><div class="subtitle">STUMPSVILLE</div><p>${t('entry.intro')}</p><div class="notice">${setup?.canSetup?t('entry.setup'):t('entry.login')}</div><form id="entry-form">${setup?.canSetup?'':field(t('ui.m157'),'loginName','kp')}${field(setup?.canSetup?t('entry.password'):t('ui.m158'),'password','','password')}${setup?.canSetup?`<p class="muted">${t('entry.accounts')}</p>`:''}<button class="primary" type="submit">${setup?.canSetup?t('entry.prepare'):t('ui.m156')}</button><div id="entry-error" role="alert"></div></form><p>${independentLogin()}</p></div></section>`;
 }
 
 function renderPage() {
@@ -271,19 +325,21 @@ function renderPage() {
   if(/^gm\/locations\/\d+$/.test(path)){selectedLocation=Number(path.split('/')[2]);path='gm/locations';}
   const gm = state.role === 'kp';
   aiUI.update(state,gm,locale());
-  if(gm&&(!path.startsWith('gm/'))){path='gm/console';historyReplace('#/'+path);}
+  if(gm&&(!path.startsWith('gm/'))){path='gm/room';historyReplace('#/'+path);}
   const navigation = gm ? gmNav() : [...playerNav(),['lobby',t('ui.m033')],['recap',t('ui.m034')]];
   const workspace=!gm&&path==='play/scene';
   document.body.classList.toggle('scene-workspace',workspace);
   document.body.classList.toggle('rulings-workspace',gm&&path==='gm/rulings');
   document.body.classList.toggle('player-ui',!gm);
+  document.body.classList.toggle('library-workspace',gm&&path==='gm/library');
+  document.body.classList.toggle('ai-settings-workspace',gm&&path==='gm/ai-settings');
   const pending = localStorage.getItem(pendingKey());
   const folded=localStorage.getItem('sv.desktop.topbar.'+base.pathname+'.'+state.accountId)==='1';
   document.body.classList.toggle('topbar-collapsed',folded);
-  app.innerHTML = `<header class="topbar"><div class="brand"><span class="brand-symbol">♧</span><span>${t('app.name')}<small>STUMPSVILLE</small></span></div>${!gm?`<nav class="top-nav" aria-label="${t('nav.main')}">${navigation.map(([url,label])=>`<a href="#/${url}" class="${path===url?'active':''}">${label}</a>`).join('')}</nav>`:''}<div class="toptools"><span class="identity">${gm?t('ui.m015'):t('ui.m016')} · ${escape(state.accountId)}</span><span class="tag" id="connection">${connection}</span>${state.canManage?`<a class="account-link" target="_blank" rel="noopener" href="${base.pathname}${gm?'?view=player#/play/scene':'#/gm/console'}">${gm?t('ui.m017'):t('ui.m018')}</a>`:''}${gm||workspace?'':button(t('ai.title'),'ai-assistant',{},'quiet')}${button(t('ui.m011'),'rules',{},'quiet')}${button(t('ui.m012'),'preferences',{},'quiet')}${button(t('ui.m013'),'logout',{},'quiet')}${select(t('ui.m014'),'locale',[['zh-CN','简体中文'],['en','English']],locale())}</div><button class="topbar-toggle quiet" data-action="topbar-toggle" aria-expanded="${!folded}" aria-label="${t(folded?'nav.expandTop':'nav.collapseTop')}" title="${t(folded?'nav.expandTop':'nav.collapseTop')}">${folded?t('nav.expandTop')+' ▾':'▴'}</button></header>${pending?`<div class="pendingbar">${t('status.pendingcommand')} ${button(t('action.recover'),'recover',{},'small')}</div>`:''}<div class="shell ${gm?'':'player-shell'}">${gm?`<nav class="sidebar" aria-label="${t('nav.main')}">${navigation.map(([url,label])=>`<a href="#/${url}" class="${path.startsWith(url)?'active':''}">${label}</a>`).join('')}</nav>`:''}<main id="main"></main></div>`;
+  app.innerHTML = `<header class="topbar"><div class="brand"><span class="brand-symbol">♧</span><span>${t('app.name')}<small>STUMPSVILLE</small></span></div>${!gm?`<nav class="top-nav" aria-label="${t('nav.main')}">${navigation.map(([url,label])=>`<a href="#/${url}" class="${path===url?'active':''}">${label}</a>`).join('')}</nav>`:''}<div class="toptools"><span class="identity">${gm?t('ui.m015'):t('ui.m016')} · ${escape(state.accountId)}</span><span class="tag" id="connection">${connection}</span>${state.canManage?`<a class="account-link" target="_blank" rel="noopener" href="${base.pathname}${gm?'?view=player#/play/scene':'#/gm/room'}">${gm?t('ui.m017'):t('ui.m018')}</a>`:''}${gm||workspace?'':button(t('ai.title'),'ai-assistant',{},'quiet')}${button(t('ui.m011'),'rules',{},'quiet')}${button(t('ui.m012'),'preferences',{},'quiet')}${button(t('ui.m013'),'logout',{},'quiet')}${select(t('ui.m014'),'locale',[['zh-CN','简体中文'],['en','English']],locale())}</div><button class="topbar-toggle quiet" data-action="topbar-toggle" aria-expanded="${!folded}" aria-label="${t(folded?'nav.expandTop':'nav.collapseTop')}" title="${t(folded?'nav.expandTop':'nav.collapseTop')}">${folded?t('nav.expandTop')+' ▾':'▴'}</button></header>${pending?`<div class="pendingbar">${t('status.pendingcommand')} ${button(t('action.recover'),'recover',{},'small')}</div>`:''}<div class="shell ${gm?'':'player-shell'}">${gm?`<nav class="sidebar" aria-label="${t('nav.main')}">${navigation.map(([url,label])=>`<a href="#/${url}" class="${path.startsWith(url)?'active':''}">${label}</a>`).join('')}</nav>`:''}<main id="main"></main></div>`;
   const main = document.querySelector('#main');
   if (!state.initialized) {
-    chatUI.mount(null);main.innerHTML = heading('准备',t('ui.m073')) + panel(t('ui.m074'),gm?button(t('ui.m075'),'initialize',{},'primary'):empty(t('ui.m076')));
+    chatUI.mount(null);main.innerHTML = gm?roomPage():empty(t('ui.m076'));
     return;
   }
   if (path.startsWith('gm/') && !gm) {
@@ -294,12 +350,13 @@ function renderPage() {
     'lobby':lobbyPage,'character/new':creationPage,'ready':readyPage,
     'play/scene':workspacePage,'gm/console':consolePage,'gm/locations':locationsPage,
     'gm/room':roomPage,'gm/rulings':rulingsPage,'gm/map':mapPage,
-    'gm/library':libraryPage,'gm/session':sessionPage,'recap':recapPage
+    'gm/library':libraryPage,'gm/ai-settings':()=>heading('P18','AI 设置')+'<section id="kp-ai-settings" aria-label="AI 设置"></section>','gm/session':sessionPage,'recap':recapPage
   };
   main.innerHTML = (routes[path] || (()=>heading('S16',t('ui.m070'))+link(t('ui.m071'),'lobby')))();
+  if(gm&&state.publicationSync&&state.publicationSync.status!=='completed')main.insertAdjacentHTML('afterbegin','<div class="notice error" role="status">规则发布已提交；包侧'+(state.publicationSync.status==='conflict'?'同步冲突':'等待同步')+'：'+escape(state.publicationSync.message)+'</div>');
   chatUI.update(state);
   chatUI.mount(workspace||path==='gm/rulings'?document.querySelector('#chat-column'):null);
-  embeddedAI.mount(path==='gm/rulings'?document.querySelector('#kp-ai-embedded'):workspace?document.querySelector('#player-ai-embedded'):null,{base,manager:gm,account:state.accountId,scope:state.storageScope,rulingsTarget:document.querySelector('#kp-ai-rulings'),onQueueCount:updateQueueCount,onSettings:()=>aiUI.open({base,manager:gm,language:locale(),onQueue:()=>{aiUI.close();location.hash='/gm/rulings';}}),onReveal:()=>{location.hash='/gm/locations';},onReview:()=>{location.hash='/gm/rulings';}});
+  embeddedAI.mount(path==='gm/ai-settings'?document.querySelector('#kp-ai-settings'):path==='gm/rulings'?document.querySelector('#kp-ai-embedded'):workspace?document.querySelector('#player-ai-embedded'):null,{base,manager:gm,account:state.accountId,scope:state.storageScope,settings:path==='gm/ai-settings',rulingsTarget:document.querySelector('#kp-ai-rulings'),onQueueCount:updateQueueCount,onSettings:()=>{location.hash='/gm/ai-settings';},onReveal:account=>actions['knowledge-ruling']({account}),onKnowledgeRequest:chooseAIKnowledge,onReview:()=>{location.hash='/gm/rulings';}});
   updateActivity();
   if(workspace){const log=document.querySelector('#action-feedback');if(log)log.scrollTop=logScroll;document.querySelector('.scene-column').scrollTop=sceneScroll;document.querySelector('.character-column').scrollTop=characterScroll;positionNotebook();}
 }
@@ -307,7 +364,7 @@ function renderPage() {
 function lobbyPage() {
   const character = state.character;
   return heading('P02',t('ui.m033'),state.role==='kp'?button(t('ui.m035'),'navigate',{path:'gm/console'},'primary'):'')+
-    `<div class="grid2">${panel(t('ui.m038'),character?`<img class="portrait" src="art/mouse.png" alt="小鼠冒险者"><h2>${escape(character.name)}</h2>${statCards(character)}${button(t('ui.m040'),'navigate',{path:'ready'},'primary')}`:empty(t('ui.m037')))}${panel(t('ui.m039'),`<p>${t('lobby.intro')}</p>${state.draft?`<div class="notice">${t('lobby.draft')} · ${escape(state.draft.name)} · ${t('state.'+state.draft.status)}<br>${escape(state.draft.reason||'')}</div>`:''}${!character?button(t('ui.m036'),'navigate',{path:'character/new'},'primary'):''}<p class="muted">${t('lobby.ready')}</p>`)}</div>`;
+    `<div class="grid2">${panel(t('ui.m038'),character?`<img class="portrait" src="art/mouse.png" alt="小鼠冒险者"><h2>${escape(character.name)}</h2>${statCards(character)}${button(t('ui.m040'),'navigate',{path:'ready'},'primary')}`:empty(t('ui.m037')))}${panel(t('ui.m039'),`<p>${t('lobby.intro')}</p>${state.draft?`<div class="notice">${t('lobby.draft')} · ${escape(state.draft.name)} · ${t('state.'+state.draft.status)}<br>${escape(state.draft.reason||'')}</div>`:''}${!character?button(t('ui.m036'),'navigate',{path:'character/new'},'primary'):''}`)}</div>`;
 }
 
 function creationPage() {
@@ -329,6 +386,7 @@ function readyPage() {
 }
 
 function scenePage(){
+  if(state.knowledge?.status!=='ready')return empty('个人资料暂不可用，请联系 KP 确认知识服务或重新揭示。');
   const c=state.character;
   if(!c)return `<div class="scene-empty">${empty(t('scene.nocharacter'))}${link(t('ui.m033'),'lobby')}</div>`;
   if(!c.numbers.ready||state.session?.numbers.phase!==1)return `<div class="scene-empty">${empty(t('ui.m041'))}${link(t('ui.m040'),'ready')}</div>`;
@@ -364,19 +422,66 @@ function charactersTable() {
   return `<table><thead><tr><th>角色</th><th>资源</th><th>状态</th><th>管理</th></tr></thead><tbody>${state.characters.map(c=>`<tr><td><strong>${escape(c.name)}</strong><br><small>${escape(c.owner)}</small></td><td>${fieldName('hp')} ${c.numbers.hp}/${c.numbers.maxHp}<br>${fieldName('str')} ${c.numbers.str} · ${fieldName('dex')} ${c.numbers.dex} · ${fieldName('wil')} ${c.numbers.wil}</td><td>${c.numbers.ready?t('ui.m089'):t('ui.m090')}<br>地点 ${c.numbers.location}</td><td>${button(t('ui.m109'),'actor-edit',{id:c.instanceId},'small')}${button(t('ui.m110'),'grant',{actor:c.instanceId},'small')}${button(t('ui.m111'),'rest',{actor:c.instanceId},'small')}</td></tr>`).join('')}</tbody></table>`;
 }
 
+function keeperSceneMenu(index){
+  const facts=state.sceneKnowledge||[],label=id=>facts.find(f=>f.id===id)?.title||'包定义的个人发现';
+  const actions=(state.scenePlayerDefinitions||[]).filter(a=>a.location===index);
+  return `<section class="keeper-scene-menu"><h3>行动说明 · KP</h3><p class="muted">主持机制仅在本管理页展示。玩家只收到自己的观察和已解锁选项；这些规则说明不是玩家预览。</p>${actions.map(a=>`<details><summary>${escape(a.label)}</summary><p>${escape(a.hint)}</p>${a.choices.map(c=>`<div class="receipt"><strong>${escape(c.label)}</strong><p>${escape(c.process)}</p><small>玩家显示：${escape(c.player?.label||'未提供')} · ${[...(a.player?.requiresAny||[]),...(c.player?.requiresAny||[])].map(label).map(escape).join(' / ')||'基础探索选项'}</small></div>`).join('')}</details>`).join('')||'<p>没有可用行动定义。</p>'}</section>`;
+}
 function locationsPage() {
   const place=state.allLocations[String(selectedLocation)]||Object.values(state.allLocations)[0];
   const doors=place.exits.map(x=>{const edge=[place.index,x].sort((a,b)=>a-b).join('-');return button(`通往 ${x} · ${{open:'开启',closed:t('ui.m058'),locked:'锁住'}[state.doors[edge]]}`,'door',{edge});}).join('');
   const stock=place.stock.map(x=>`<div class="row"><span>${escape(state.items[String(x.item)]?.name)} × ${x.count}</span>${x.count?button('领取','take-stock',{index:place.index,item:x.item},'small'):''}</div>`).join('');
-  return heading('P10',t('ui.m128'),button(t('ui.m127'),'preview',{index:place.index}))+`<div class="layout-aside"><div>${panel(`${place.index} ${escape(place.name)}`,`<form id="location-form"><input type="hidden" name="index" value="${place.index}"><input type="hidden" name="revision" value="${place.revision||0}"><div class="grid2"><div>${area('公开描述','description',place.description)}</div><div>${area('KP 主持真相','truth',place.truth)}</div></div><div class="actions"><button class="primary">保存草稿</button>${button(t('ui.m126'),'publish',{index:place.index})}${state.published[String(place.index)]?button('向玩家揭示','location-reveal',{index:place.index}):''}</div></form><h3>通路与门</h3><div class="actions">${doors}</div><h3>库存</h3>${stock||'<p class="muted">无固定物品</p>'}${place.index===4?button('首次生成铜锅盘','generate',{kind:'pots'}):''}${place.index===7?button('首次生成鼠帮人数','generate',{kind:'rats'}):''}${roomRoster(place.index,true)}${discoveryControls(place.index)}`,'private')}</div><aside>${panel('地点索引',`<div class="stack">${Object.values(state.allLocations).map(x=>button(`${String(x.index).padStart(2,'0')} ${escape(x.name)}`,'select-location',{index:x.index},x.index===place.index?'primary':'')).join('')}</div>`)}</aside></div>`;
+  return heading('P10',t('ui.m128'),button(t('ui.m127'),'preview',{index:place.index}))+`<div class="layout-aside"><div>${panel(`${place.index} ${escape(place.name)}`,`<form id="location-form"><input type="hidden" name="index" value="${place.index}"><input type="hidden" name="revision" value="${place.revision||0}"><div class="grid2"><div>${area('公开描述','description',place.description)}</div><div>${area('KP 主持真相','truth',place.truth)}</div></div><div class="actions"><button class="primary">保存草稿</button>${button(t('ui.m126'),'publish',{index:place.index})}${state.published[String(place.index)]?button('向玩家揭示','location-reveal',{index:place.index}):''}</div></form><h3>通路与门</h3><div class="actions">${doors}</div><h3>库存</h3>${stock||'<p class="muted">无固定物品</p>'}${place.index===4?button('首次生成铜锅盘','generate',{kind:'pots'}):''}${place.index===7?button('首次生成鼠帮人数','generate',{kind:'rats'}):''}${roomRoster(place.index,true)}${discoveryControls(place.index)}${keeperSceneMenu(place.index)}`,'private')}</div><aside>${panel('地点索引',`<div class="stack">${Object.values(state.allLocations).map(x=>button(`${String(x.index).padStart(2,'0')} ${escape(x.name)}`,'select-location',{index:x.index},x.index===place.index?'primary':'')).join('')}</div>`)}</aside></div>`;
 }
 
-function libraryPage() {
-  return heading('P12',t('ui.m129'),button(t('ui.m131'),'export'))+panel(t('ui.m130'),`<p>${escape(state.sourceStatus)}</p><div class="actions">${button(t('ui.m132'),'stage',{},'primary')}${button(t('ui.m133'),'install')}${button(t('ui.m134'),'rules')}${button(t('ui.m135'),'tables')}</div>`)+panel(t('ui.m136'),state.ruleRevisions.map(r=>`<div class="receipt"><code>${escape(r)}</code> ${r===state.catalog.rulesetRevision?'<span class="tag">当前</span>':''}<div class="actions">${button(t('ui.m137'),'rules-preview',{revision:r})}${button(t('ui.m138'),'rules-activate',{revision:r})}</div></div>`).join(''))+panel(t('ui.m139'),`<div class="grid3">${Object.entries(state.items).map(([index,item])=>`<article class="receipt"><h3>${icons[item.kind]||'◇'} ${escape(item.name)}</h3><p>${escape(item.description)}</p><small>${item.slots} 槽 · ${item.uses} 格用量</small></article>`).join('')}</div>`)+panel(t('ui.m140'),state.encounters.map((x,i)=>`<p>${i+1} · ${escape(x)}</p>`).join(''));
+function libraryGroups(){
+  if(!libraryCache||libraryCache.key!==libraryKey())return [];
+  const {admin,bundle,contracts,view}=libraryCache;
+  const groups=[{id:'configurations',label:'配置定义',value:admin.configurations},{id:'rules',label:'规则与流程',value:bundle.sources}];
+  const labels={items:'物品',locations:'地点定义',presets:'角色预设',npcs:'NPC 模板',encounters:'遭遇表',loot:'战利品',actions:'场景行动',knowledge:'场景知识',rules:'规则参数',playerKnowledge:'个人知识定义'};
+  for(const [file,data] of Object.entries(bundle.data||{})){
+    if(data&&typeof data==='object'&&!Array.isArray(data)){
+      const notes={};
+      for(const [key,value] of Object.entries(data)){if(value&&typeof value==='object')groups.push({id:'data:'+file+':'+key,label:labels[key]||file+' / '+key,value,source:file+' / '+key});else notes[key]=value;}
+      if(Object.keys(notes).length)groups.push({id:'data:'+file+':about',label:({'game.json':'游戏说明','scene-actions.json':'场景说明'}[file]||file+' 说明'),value:notes});
+    }else groups.push({id:'data:'+file,label:file,value:data});
+  }
+  groups.push({id:'room-scenes',label:'房间场景',value:{locations:state.allLocations,doors:state.doors,published:state.published,sceneKnowledge:state.sceneKnowledge}},
+    {id:'contracts',label:'类型与接口',value:contracts},{id:'entities',label:'活动实例',value:view.entities},
+    {id:'relations',label:'关系与进度',value:{relations:view.relations,progress:view.progress,waits:view.waits}},
+    {id:'members-assets',label:'成员与素材',value:{members:admin.members,assets:admin.assets}},
+    {id:'package',label:'包信息',value:bundle.manifest});
+  return groups;
+}
+function libraryRows(value){
+  if(Array.isArray(value))return value.map((value,index)=>[String(index+1),value]);
+  if(value&&typeof value==='object')return Object.entries(value);
+  return [['值',value]];
+}
+function libraryContent(){
+  const groups=libraryGroups();if(!groups.length)return libraryError?`<p role="alert">${escape(libraryError)}</p>${button('重试','library-refresh')}`:empty('加载资料…');
+  const group=groups.find(g=>g.id===libraryTab)||groups[0];libraryTab=group.id;
+  const types=group.id==='configurations'?[...new Set(Object.values(group.value).map(c=>c.typeRef))]:[];
+  const rows=libraryRows(group.value).filter(([,v])=>group.id!=='configurations'||!libraryType||v.typeRef===libraryType).map(([id,value])=>{const obj=value&&typeof value==='object'?value:{};const name=obj.name||obj.label||obj.configurationId||obj.id||id;const summary=typeof value==='string'?value:typeof value!=='object'?String(value):obj.description||obj.hint||obj.process||obj.typeRef||Object.keys(obj).join(' · ');return {id,name,summary,value};}).filter(r=>!libraryQuery||JSON.stringify(r).toLocaleLowerCase().includes(libraryQuery.toLocaleLowerCase()));
+  const tabs=`<nav class="library-tabs" role="tablist" aria-label="资料类型">${groups.map(g=>`<button type="button" role="tab" aria-selected="${g.id===group.id}" data-action="library-tab" data-args="${escape(JSON.stringify({id:g.id}))}">${escape(g.label)}</button>`).join('')}</nav>`;
+  const tools=group.id==='rules'?`<div class="actions">${button(t('ui.m132'),'stage',{},'primary small')}${button(t('ui.m134'),'rules',{},'small')}${button(t('ui.m135'),'tables',{},'small')}${select('规则版本','library-revision',state.ruleRevisions.map(r=>[r,r]),state.catalog.rulesetRevision)}${button(t('ui.m137'),'library-revision',{},'small')}${button(t('ui.m138'),'library-activate',{},'small')}</div>`:'';
+  return tabs+`<section class="panel library-content" role="tabpanel" aria-label="${escape(group.label)}"><div class="library-toolbar"><strong>${escape(group.label)} · ${rows.length}</strong>${types.length?select('配置类型','library-type',[['','全部'],...types.map(type=>[type,type])],libraryType):''}<input type="search" name="library-search" aria-label="搜索资料" placeholder="搜索资料" value="${escape(libraryQuery)}"></div>${tools}<div class="library-table"><table><thead><tr><th>名称</th><th>概要</th><th>操作</th></tr></thead><tbody>${rows.map(r=>`<tr><td>${escape(r.name)}</td><td class="library-summary"><span>${escape(r.summary)}</span></td><td>${button('查看','library-detail',{group:group.id,id:r.id},'small')}</td></tr>`).join('')||'<tr><td colspan="3">没有匹配资料</td></tr>'}</tbody></table></div></section>`;
+}
+function libraryPage(){
+  if(!libraryCache||libraryCache.key!==libraryKey())queueMicrotask(loadLibrary);
+  return heading('P12',t('ui.m129'),button('刷新资料','library-refresh',{},'small')+button(t('ui.m131'),'export',{},'small'))+'<div id="library-browser">'+libraryContent()+'</div>';
+}
+async function loadLibrary(force=false){
+  if(state?.role!=='kp'||libraryLoading||!force&&libraryCache?.key===libraryKey())return;
+  const key=libraryKey();libraryLoading=true;libraryError='';
+  try{
+    const [admin,bundle,contracts,view]=await Promise.all([api('api/v1/admin'),api('package/bundle'),api('api/v1/contracts'),api('api/v1/view')]);
+    if(state?.role==='kp'&&key===libraryKey())libraryCache={key,admin,bundle,contracts,view};
+  }catch(e){libraryError=e.message;toast(e.message);}finally{libraryLoading=false;const target=document.querySelector('#library-browser');if(target&&state?.role==='kp'){target.innerHTML=libraryContent();if(key!==libraryKey())queueMicrotask(loadLibrary);}}
 }
 
 function sessionPage() {
-  return heading('P13',t('ui.m141'))+panel(t('ui.m142'),`<p>房间状态 · ${t('state.'+state.roomStatus)}</p>${button(t('ui.m143'),'backup',{},'primary')}<p class="muted">账号密码通过本机账号工具维护。回合、角色审核、自动裁决与暂停控制统一在主持控制台。</p>${link(t('ui.m144'),'gm/console')}`)+panel(t('ui.m034'),`<form id="recap-form">${area('拟公开回顾','recapDraft',state.recapDraft)}${area('KP 私密备注','recapPrivate',state.recapPrivate)}<label><input type="checkbox" name="publish">同时发布公开回顾</label><button class="primary">保存回顾</button></form>`);
+  return heading('P13',t('ui.m141'))+panel(t('ui.m034'),`<form id="recap-form">${area('拟公开回顾','recapDraft',state.recapDraft)}${area('KP 私密备注','recapPrivate',state.recapPrivate)}<label><input type="checkbox" name="publish">同时发布公开回顾</label><button class="primary">保存回顾</button></form>`);
 }
 
 function recapPage() {
@@ -404,7 +509,7 @@ function unreadMessages(){return Object.values(state.channels||{}).reduce((n,c)=
 function markEventsRead(){desktop.seen=(state.events||[]).map(e=>e.account+':'+e.id);saveDesktop();}
 function sceneButtons(place){
   if(!state.sceneAutomation?.ready)return `<p class="notice">${t('scene.rulesmissing')}</p>`;
-  return (!state.sceneAutomation.executorOnline?`<p class="notice">${t('scene.executoroffline')}</p>`:'')+(state.autoSceneTasks?.length?`<p class="notice">${t('scene.queued')}</p>`:'')+(state.sceneActions||[]).map(a=>button(escape(a.label),'scene-action',{id:a.id})).join('');
+  return '<p class="muted">以下为该次观察中已知的做法；实际条件和资源在执行时检查。未列出的想法可自由描述并申请裁决。</p>'+(!state.sceneAutomation.executorOnline?`<p class="notice">${t('scene.executoroffline')}</p>`:'')+(state.autoSceneTasks?.length?`<p class="notice">${t('scene.queued')}</p>`:'')+(state.sceneActions||[]).map(a=>button(escape(a.label),'scene-action',{id:a.id})).join('');
 }
 function sceneStatusPanel(){
   const data=state.sceneStatus||{};if(!data.facts?.length&&!data.supplies?.length)return '';
@@ -532,32 +637,49 @@ function requestDescription(r){
   return `${kind}${detail?' · '+detail:''}`;
 }
 function rulingQueue(){
-  return state.requests.filter(r=>r.status==='pending').map(r=>`<article class="queue-item ${selectedRequest===r.id?'selected':''}"><small>${escape(r.account)} · ${new Date(r.time*1000).toLocaleTimeString()}</small><strong>${escape(requestDescription(r))}</strong><p>${escape(r.text||'等待主持处理')}</p>${r.failure?failurePanel(r.failure):''}${button(t('ui.m097'),'console-request',{id:r.id},'primary small')}</article>`).join('');
+  return state.requests.filter(r=>r.status==='pending').map(r=>compactQueue(r.time,r.account,requestDescription(r)+(r.failure?' · '+r.failure.reason:r.text?' · '+r.text:''),'console-request',{id:r.id},(['check','inventory','travel','transfer','scene'].includes(r.kind)?button('执行','ruling-execute',{id:r.id},'primary small'):'')+button('处理','console-request',{id:r.id},'small'),`data-request-id="${escape(r.id)}"`)).join('');
+}
+function rulingResolutionFields(kind){
+  if(kind==='check')return select('属性','resolution-attribute',[['str',fieldName('str')],['dex',fieldName('dex')],['wil',fieldName('wil')]],'dex')+select('模式','resolution-mode',[['normal','普通'],['advantage','优势'],['disadvantage','劣势']],'normal');
+  if(kind==='damage')return field('伤害（减甲前）','resolution-amount',1,'number')+select('溢出属性','resolution-attribute',[['str',fieldName('str')],['dex',fieldName('dex')]],'str');
+  if(kind==='rest')return select('休息','resolution-kind',[['short','短休'],['long','长休'],['full','完整休整']],'short')+select('恢复属性','resolution-attribute',[['str',fieldName('str')],['dex',fieldName('dex')],['wil',fieldName('wil')]],'str');
+  if(kind==='grant')return select('物品','resolution-item',Object.entries(state.items).map(([id,x])=>[id,x.name]))+field('起始槽位','resolution-slot',5,'number');
+  return '';
+}
+function rulingResolution(data){
+  const operation=data.get('resolution');if(!operation)return undefined;
+  const get=name=>data.get('resolution-'+name);
+  const input=operation==='check'?{attribute:get('attribute'),mode:get('mode')}:operation==='damage'?{amount:number(get('amount')),attribute:get('attribute')}:operation==='rest'?{kind:get('kind'),attribute:get('attribute')}:{item:number(get('item')),slot:number(get('slot')),uses:state.items[get('item')].uses};
+  return {operation,input};
 }
 function rulingDetail(){
-  const r=state.requests.find(r=>r.id===selectedRequest&&r.status==='pending')||state.requests.find(r=>r.status==='pending');
-  if(!r)return '';
-  selectedRequest=r.id;
-  const actor=state.characters.find(c=>c.instanceId===r.actor);
-  return `<h3>${escape(requestDescription(r))}</h3><p>${escape(r.account)} · ${escape(actor?.name||'角色')} · ${escape(state.allLocations[String(r.location)]?.name||'')}</p><blockquote>${escape(r.text||'')}</blockquote><p>转交原因：${escape(r.reason||'玩家申请')}</p>${actor?`<p>当前资源：${fieldName('hp')} ${actor.numbers.hp}/${actor.numbers.maxHp} · ${fieldName('str')} ${actor.numbers.str} / ${fieldName('dex')} ${actor.numbers.dex} / ${fieldName('wil')} ${actor.numbers.wil}</p>`:''}${r.status==='pending'?`<form id="ruling-form"><input type="hidden" name="requestId" value="${escape(r.id)}">${select(t('ui.m101'),'approve',[['yes',t('ui.m099')],['no',t('ui.m100')]],'yes')}${area(t('ui.m102'),'reason')}<p class="muted">${['check','inventory','travel','transfer','scene'].includes(r.kind)?'批准后执行规则，结算结果与资源变化会送达相关玩家。':'此类申请记录主持回复，数值影响请使用控制台工具另行结算。'}</p><button class="primary" type="submit">保存裁决并通知玩家</button></form>`:`<span class="tag">${r.status==='approved'?'已批准':t('ui.m093')}</span><p>${escape(r.reason||'未附说明')}</p>`}`;
+  const r=state.requests.find(r=>r.id===selectedRequest&&r.status==='pending');
+  if(!r)return '';selectedRequest=r.id;
+  const actor=state.characters.find(c=>c.instanceId===r.actor),mechanical=['check','inventory','travel','transfer','scene'].includes(r.kind);
+  return `<h3>${escape(requestDescription(r))}</h3><p>${escape(actor?.name||r.account)} · ${escape(state.allLocations[String(r.location)]?.name||'')}</p><p class="full-request">${escape(r.text||'')}</p>${r.failure?failurePanel(r.failure):''}<input type="hidden" name="requestId" value="${escape(r.id)}">${select('决定','approve',[['yes','批准'],['no','拒绝']],'yes')}${!mechanical?select('执行动作','resolution',[['','仅回复'],['check','属性检定'],['damage','伤害结算'],['rest','休息恢复'],['grant','授予物品']],'')+'<div data-resolution-fields></div>':''}<details data-ruling-reply="${escape(r.id)}" ${replyOpen.has(r.id)?'open':''}><summary>回复（可选）</summary>${area('回复内容','reason')}</details><button class="primary" type="submit" data-ruling-submit>${mechanical?'批准并执行':'批准并回复'}</button>`;
 }
 function roomNetworkPanel(){
-  const n=state.network;
-  if(!n)return '';
-  const rows=n.players.map(p=>`<tr><td>${escape(p.name)}<br><small>${escape(p.accountId)} · ${p.role==='kp'?'KP':p.role==='player'?'PL':'旁观'}</small></td><td>${escape(p.character||'尚未建角')}</td><td><span class="tag">${{online:t('ui.m153'),stale:t('ui.m155'),offline:t('ui.m154')}[p.status]}</span></td><td>${p.pages}</td><td>${p.ips.map(escape).join('、')||'—'}</td><td>${p.lastSeen?new Date(p.lastSeen*1000).toLocaleTimeString():'本次启动尚未连接'}</td></tr>`).join('');
-  const visits=n.visits.slice(-8).reverse().map(v=>`<li>${new Date(v.time*1000).toLocaleTimeString()} · ${escape(v.ip)}${v.local?'（本机）':''} · ${escape(v.kind)} · HTTP ${v.status}</li>`).join('');
-  return `<section class="panel room-network" id="room-network"><h2>房间信息与连线玩家</h2><p><strong>树桩镇 ${escape(n.version)}</strong> · 房间 ${escape(state.roomId)} · ${{active:'运行中',paused:'已暂停',archived:'已归档'}[state.roomStatus]} · ${n.players.filter(p=>p.role==='player'&&p.status==='online').length} 位玩家在线</p><label>玩家连接地址<input id="room-url" readonly value="${escape(n.url)}"></label><div class="actions">${button(t('ui.m055'),'copy-room-address',{},'small')}<span>监听 ${escape(n.bind)}:${n.port} · 本次启动 ${new Date(n.startedAt*1000).toLocaleString()}</span></div>${n.bind==='127.0.0.1'?'<p class="notice">当前仅本机可访问。局域网游玩请用 start-lan.cmd 启动并选择 Wi-Fi 网卡。</p>':''}<p class="muted">朋友只需浏览器打开完整地址并登录自己的账号。在线按最近30秒的页面心跳判断，关闭页面后会延迟变为失联／离线；多个页面合并到同一账号。</p><table aria-label="连线玩家"><thead><tr><th>账号／身份</th><th>角色</th><th>连接状态</th><th>在线页面</th><th>来源 IP</th><th>最后心跳</th></tr></thead><tbody>${rows}</tbody></table><details id="room-visits" ${roomVisitsOpen?'open':''}><summary>最近访问与连接排查</summary><p>看不到朋友的访问记录时，请在局域网启动窗口点击“检查连接 / 启动问题”，核对地址、端口、防火墙和 Wi-Fi 设备隔离。本机可以打开页面，不代表其他设备一定可达。</p><ul>${visits||'<li>本次启动尚无页面／登录访问记录。</li>'}</ul><small>仅记录最近60次页面、登录及异常请求；此记录不是在线人数，不保存密码或令牌。</small></details></section>`;
+  const n=state.network;if(!n)return '';
+  const status=p=>({online:t('ui.m153'),stale:t('ui.m155'),offline:t('ui.m154')}[p.status]);
+  const rows=n.players.map(p=>`<tr><td>${escape(p.name)}</td><td>${escape(p.character||'尚未建角')}</td><td><span class="tag">${status(p)}</span></td></tr>`).join('');
+  const diagnostics=n.players.map(p=>`<tr><td>${escape(p.accountId)}</td><td>${p.pages}</td><td>${p.ips.map(escape).join('、')||'—'}</td><td>${p.lastSeen?new Date(p.lastSeen*1000).toLocaleTimeString():'—'}</td></tr>`).join('');
+  const visits=n.visits.slice(-8).reverse().map(v=>`<li>${new Date(v.time*1000).toLocaleTimeString()} · ${escape(v.ip)} · ${escape(v.kind)} · HTTP ${v.status}</li>`).join('');
+  return `<section class="panel room-network" id="room-network"><h2>连接与成员</h2><label>玩家连接地址<input id="room-url" readonly value="${escape(n.url)}"></label>${button(t('ui.m055'),'copy-room-address',{},'small')}${n.bind==='127.0.0.1'?'<p class="notice">仅本机可访问</p>':''}<table aria-label="连线玩家"><thead><tr><th>玩家</th><th>角色</th><th>状态</th></tr></thead><tbody>${rows}</tbody></table><details id="room-visits" ${roomVisitsOpen?'open':''}><summary>连接排查</summary><p>房间 ${escape(state.roomId)} · 版本 ${escape(n.version)} · 监听 ${escape(n.bind)}:${n.port} · 在线心跳窗口30秒</p><table><thead><tr><th>账号</th><th>页面</th><th>来源IP</th><th>最后心跳</th></tr></thead><tbody>${diagnostics}</tbody></table><ul>${visits||'<li>暂无访问记录</li>'}</ul></details></section>`;
 }
 function consolePage(){
   const pending=state.requests.filter(r=>r.status==='pending').length;
   const drafts=Object.values(state.drafts).filter(d=>d.status==='submitted');
-  const controls=`<div class="console-controls"><div><small>探索时钟</small><strong>第 ${state.session?.numbers.round||0} 回合</strong></div><div class="actions">${button(t('ui.m025'),'start',{},'primary')}${button(t('ui.m026'),'round')}${button(state.roomStatus==='paused'?t('ui.m028'):t('ui.m027'),'room',{status:state.roomStatus==='paused'?'active':'paused'})}${button(state.automation.enabled?t('ui.m029'):t('ui.m030'),'automation-console')}</div></div>`;
+  const controls=`<div class="console-controls">${link('房间总览与开场','gm/room')}</div>`;
   let content='';
-  content=`<div class="console-columns"><div>${panel(t('ui.m103'),charactersTable())}${panel(t('ui.m104'),`<div class="actions">${button('掷遭遇检查','generate',{kind:'encounter'})}${button('抽取遭遇内容','generate',{kind:'encounter-table'})}${button('反应骰','generate',{kind:'reaction'})}${button('战利品骰','generate',{kind:'loot'})}${button('角色伤害','damage')}${button('创建生物','npc-create')}</div>${(state.npcs||[]).map(n=>`<div class="row"><span>${escape(n.name)} · ${fieldName('hp')} ${n.numbers.hp}/${n.numbers.maxHp}</span><div>${button(t('ui.m112'),'damage',{actor:n.instanceId},'small')}${button(t('ui.m113'),'morale',{actor:n.instanceId},'small')}${button(t('ui.m109'),'actor-edit',{id:n.instanceId},'small')}</div></div>`).join('')}`)}</div><aside>${panel(t('queue.characterApproval'),`<p>${t('queue.approvalsMoved',{count:drafts.length})}</p>${button(t('queue.open'),'navigate',{path:'gm/rulings'},'primary')}`)}</aside></div>`;
+  content=`<div class="console-columns"><div>${panel(t('ui.m103'),charactersTable())}${panel(t('ui.m104'),`<div class="actions">${button('掷遭遇检查','generate',{kind:'encounter'})}${button('抽取遭遇内容','generate',{kind:'encounter-table'})}${button('反应骰','generate',{kind:'reaction'})}${button('战利品骰','generate',{kind:'loot'})}${button('角色伤害','damage')}${button('创建生物','npc-create')}</div>${(state.npcs||[]).map(n=>`<div class="row"><span>${escape(n.name)} · ${fieldName('hp')} ${n.numbers.hp}/${n.numbers.maxHp}</span><div>${button(t('ui.m112'),'damage',{actor:n.instanceId},'small')}${button(t('ui.m113'),'morale',{actor:n.instanceId},'small')}${button(t('ui.m109'),'actor-edit',{id:n.instanceId},'small')}</div></div>`).join('')}`)}</div><aside>${panel(t('queue.characterApproval'),`<p>${drafts.length} 项待审核</p>${button(t('queue.open'),'navigate',{path:'gm/rulings'},'primary')}`)}</aside></div>`;
   return heading('P09',t('ui.m019'))+`<section class="kp-console">${controls}<div class="console-content">${content}</div></section>`;
 }
 
 function updateRoomNetwork(){
+  const overview=document.querySelector('#room-overview');
+  if(overview&&!overview.contains(document.activeElement)){
+    const template=document.createElement('template');template.innerHTML=roomOverview();overview.replaceWith(template.content.firstElementChild);
+  }
   const panel=document.querySelector('#room-network');
   if(!panel||panel.contains(document.activeElement))return;
   const template=document.createElement('template');template.innerHTML=roomNetworkPanel();
@@ -566,6 +688,15 @@ function updateRoomNetwork(){
 
 
 const actions = {
+  'knowledge-ruling':({account})=>{
+    const character=state.characters.find(c=>c.owner===account);
+    if(!character)return toast('该玩家尚无已审核角色');
+    const places=Object.values(state.published),index=places.find(p=>p.index===character.numbers.location)?.index||places[0]?.index;
+    if(!index)return toast('请先发布可揭示的地点');
+    const choices=index=>(state.sceneKnowledge||[]).filter(c=>c.location===Number(index)).map(c=>`<label><input type="checkbox" name="knowledge" value="${escape(c.id)}">${escape(c.title)}</label>`).join('');
+    openDialog('执行信息揭示',`<p>接收玩家：${escape(character.name)}</p>${select('地点','knowledge-ruling-location',places.map(p=>[p.index,p.name]),index)}<p>将向该玩家揭示所选地点当前的公开描述。</p><details><summary>附加线索</summary><div data-disclosure-choices>${choices(index)}</div></details>`,data=>perform('location.reveal',{index:number(data.get('knowledge-ruling-location')),accounts:[account],knowledge:data.getAll('knowledge')}),'执行揭示');
+    dialog.querySelector('[name=knowledge-ruling-location]').onchange=e=>{dialog.querySelector('[data-disclosure-choices]').innerHTML=choices(e.target.value);};
+  },
   'topbar-toggle':()=>{requestAnimationFrame(positionNotebook);const folded=document.body.classList.toggle('topbar-collapsed');localStorage.setItem('sv.desktop.topbar.'+base.pathname+'.'+state.accountId,folded?'1':'0');const b=document.querySelector('.topbar-toggle');b.setAttribute('aria-expanded',String(!folded));b.setAttribute('aria-label',t(folded?'nav.expandTop':'nav.collapseTop'));b.title=t(folded?'nav.expandTop':'nav.collapseTop');b.textContent=folded?t('nav.expandTop')+' ▾':'▴';},
   'communication-tab':({tab})=>communicationTab(tab),
   'notebook-toggle':({name})=>{if(dirtyForm)return toast(t('status.savefirst'));const was=desktop.front===name&&desktop[name].open&&!desktop[name].collapsed;for(const key of Object.keys(paneNames()))desktop[key].open=false;desktop[name]={open:!was,collapsed:false};desktop.front=name;saveDesktop();renderPage();},
@@ -595,13 +726,21 @@ const actions = {
   },
   'events-read':()=>{markEventsRead();renderPage();},
   'console-tab':({tab})=>{if(dirtyForm)return toast('请先保存当前表单。');location.hash=tab==='control'?'/gm/console':'/gm/rulings';renderPage();},
-  'console-request':({id})=>{if(dirtyForm)return toast('请先完成当前裁决。');selectedRequest=id;location.hash='/gm/rulings';renderPage();},
+  'ruling-execute':({id})=>dirtyForm?toast(t('status.savefirst')):perform('resolve',{requestId:id,approve:true,reason:''}),
+  'ruling-pane':({pane})=>{rulingPane=pane;const grid=document.querySelector('.rulings-grid');if(grid)grid.dataset.pane=pane;document.querySelectorAll('.ruling-switch button').forEach(b=>b.classList.toggle('primary',JSON.parse(b.dataset.args).pane===pane));},
+  'library-tab':({id})=>{libraryTab=id;libraryQuery='';document.querySelector('#library-browser').innerHTML=libraryContent();},
+  'library-refresh':()=>loadLibrary(true),
+  'library-detail':({group,id})=>{const value=libraryRows(libraryGroups().find(g=>g.id===group)?.value).find(r=>r[0]===id)?.[1];openDialog('资料详情',`<pre class="data-detail">${escape(typeof value==='string'?value:JSON.stringify(value,null,2))}</pre>`,null);},
+  'library-activate':()=>actions['rules-activate']({revision:document.querySelector('[name=library-revision]').value}),
+  'library-revision':()=>actions['rules-preview']({revision:document.querySelector('[name=library-revision]').value}),
+  'queue-detail':queueDetail,
+  'console-request':({id})=>{if(dirtyForm)return toast('请先完成当前裁决。');selectedRequest=id;replyOpen.delete(id);const body=rulingDetail();if(!body)return toast('该申请已处理。');openDialog('裁决详情',body,null);dialog.querySelector('form').id='ruling-form';},
   'automation-console':()=>actions.automation({enabled:!state.automation.enabled}),
   close:closeDialog,
   navigate:({path})=>{location.hash='/'+path;},
   initialize:()=>perform('initialize',{}),
   recover:()=>{const body=JSON.parse(localStorage.getItem(pendingKey())); return perform(body.operation,body.args,body);},
-  logout:async()=>{await api('api/v1/logout',{});state=null;chatUI.update(null);csrf='';history=[];closeDialog();location.hash='/entry';renderEntry();},
+  logout:async()=>{await api('api/v1/logout',{});embeddedAI.close();libraryCache=null;state=null;chatUI.update(null);csrf='';history=[];closeDialog();location.hash='/entry';renderEntry();},
   draft:args=>openDialog('为小鼠取个名字',field('名字','name',args.name),data=>perform('draft',{preset:args.preset,name:data.get('name')}),t('create.submit'),'P03'),
   'choose-preset':args=>{creation={...args,step:1,swap:''};renderPage();},
   'create-roll':async()=>{await perform('draft.roll',{});creation={step:1,preset:'random',name:'',swap:''};renderPage();},
@@ -617,7 +756,7 @@ const actions = {
   'map-room':args=>{selectedLocation=args.index;renderPage();},
   location:args=>{if(state.role==='kp'){selectedLocation=args.index;location.hash='/gm/locations/'+args.index;renderPage();}else{const p=state.locations.find(x=>x.index===args.index);openDialog(p.name,'<p>'+escape(p.description)+'</p>',null,'','S07');}},
   'select-location':args=>{selectedLocation=args.index;location.hash='/gm/locations/'+args.index;renderPage();},
-  start:()=>perform('world',{operation:'start',round:state.session.numbers.round}),
+  start:()=>perform('session.start',{}),
   round:()=>openDialog('推进一个探索回合',`<p>当前为第 ${state.session.numbers.round} 回合。确认后同步更新所有角色的燃烧计时。</p>`,()=>perform('world',{operation:'round',round:state.session.numbers.round}),'推进一次','S12'),
   generate:args=>perform('generate',args),
   'host-flow':args=>perform('host-flow',args),
@@ -625,8 +764,8 @@ const actions = {
   reject:args=>openDialog('退回角色草稿',area('修改建议','reason'),data=>perform('approve',{...args,reject:true,reason:data.get('reason')}),'退回','S10'),
   resolve:args=>{const request=state.requests.find(x=>x.id===args.id);openDialog('主持裁定','<p>'+escape(request.text||request.kind)+'</p><p>'+escape(request.reason||'')+'</p>'+(request.kind==='review'?'<p>复核只记录裁定说明，必要的数值修正请另用主持管理工具执行。</p>':'')+select('决定','approve',[['yes',t('ui.m099')],['no',t('ui.m100')]],'yes')+area('裁定依据','reason'),data=>perform('resolve',{requestId:args.id,approve:data.get('approve')==='yes',reason:data.get('reason')}),'保存裁定','S10');},
   publish:args=>{const p=state.allLocations[String(args.index)];const old=state.published[String(args.index)];openDialog(t('ui.m126'),`<span class="tag">受众 · 已进入或已被揭示的玩家</span><h3>${escape(p.name)}</h3><div class="grid2"><div><h3>当前公开</h3><p>${escape(old?.description||'尚未发布')}</p></div><div><h3>拟发布</h3><p>${escape(p.description)}</p></div></div>${p.clues.map(x=>`<label><input type="checkbox" name="clue" value="${escape(x.id)}" ${old?.clues.some(c=>c.id===x.id)?'checked':''}> ${escape(x.title)}<br>${escape(x.text)}</label>`).join('')}<p class="muted">发布已保存的描述和勾选线索；未进入的玩家仍只见导航占位。可再使用“向玩家揭示”，主持真相保持私密。</p>`,data=>perform('location.publish',{...args,clues:data.getAll('clue')}),'公开此地点','S08');},
-  'location-reveal':args=>openDialog('向指定玩家揭示地点',`<p>保存当前已发布内容的固定观察。之后修改地点不会更新这次观察；不会公开主持真相。</p>${state.characters.map(c=>`<label><input type="checkbox" name="account" value="${escape(c.owner)}"> ${escape(c.name)} · ${escape(c.owner)}</label>`).join('')}`,data=>perform('location.reveal',{index:args.index,accounts:data.getAll('account')}),'揭示地点'),
-  'knowledge-enable':()=>perform('knowledge.enable',{}),
+  'location-reveal':args=>openDialog('向指定玩家揭示地点',`<p>保存当前已发布内容的固定观察。之后修改地点不会更新这次观察；不会公开主持真相。</p><h3>接收玩家</h3>${state.characters.map(c=>`<label><input type="checkbox" name="account" value="${escape(c.owner)}"> ${escape(c.name)} · ${escape(c.owner)}</label>`).join('')}<h3>额外揭示的已知内容</h3><p class="muted">默认不勾选。勾选会向选中玩家明确披露下方事实，并解锁相关行动；不执行行动，也不改变库存或机关。</p>${(state.sceneKnowledge||[]).filter(c=>c.location===args.index).map(c=>`<label><input type="checkbox" name="knowledge" value="${escape(c.id)}"> ${escape(c.title)}<p>${escape(c.text)}</p></label>`).join('')}`,data=>perform('location.reveal',{index:args.index,accounts:data.getAll('account'),knowledge:data.getAll('knowledge')}),'揭示地点'),
+  'knowledge-enable':()=>openDialog('启用个人知识服务',`<p>确认当前安全投影。若投影版本已升级，旧地点及人物观察将保持不可读，需要到地点或人物页明确重新揭示。不会自动重建过去的观察。</p><p>本人角色与公共回合仍按明确的持续告知规则提供。</p>`,()=>perform('knowledge.enable',{}),'确认启用'),
   'knowledge-revoke':args=>openDialog('撤回知识授权','<p>撤回后会复验引用及 AI 历史。若同内容仍有其他有效授权，仍可读取。</p>',()=>perform('knowledge.revoke',args),'撤回授权'),
   'knowledge-import':()=>openDialog('旧地点记录：现在揭示',`<p>旧记录没有当时内容。只对勾选项创建现在的观察；未发布地点需先由 KP 编辑和发布。</p>${Object.entries(state.legacyKnowledge||{}).flatMap(([account,indices])=>indices.map(index=>`<label><input type="checkbox" name="legacy" value="${escape(JSON.stringify({account,index:Number(index)}))}" ${state.published[index]?'':'disabled'}> ${escape(account)} · ${escape(state.allLocations[index]?.name||index)}</label>`)).join('')||'<p>没有待处理的旧地点记录。</p>'}`,data=>perform('knowledge.import-current',{items:data.getAll('legacy').map(JSON.parse)}),'现在揭示所选内容'),
   preview:async args=>{const account=state.members.find(x=>x.role==='player')?.accountId;if(!account)return toast('房间内还没有玩家');const data=await api('package/state?preview='+encodeURIComponent(account));openDialog('玩家公开预览',`<div class="notice">只读 · ${escape(account)} · 包侧公开投影</div>${mapView(data.locations,1)}<p>${escape(data.locations.find(x=>x.index===args.index)?.description||'该地点尚未公开')}</p>`,null,'','S09');},
@@ -637,14 +776,14 @@ const actions = {
   room:args=>openDialog('确认房间状态','<p>将房间设为 '+escape(args.status==='paused'?'暂停':'运行')+'。</p>',()=>perform('room',args),t('ui.m062'),'S14'),
   backup:()=>openDialog(t('ui.m143'),'<p>保存宿主房间备份与包侧手记、草稿和请求记录。</p>',()=>perform('backup',{}),'创建备份','S14'),
   rules:()=>openDialog(t('rules.title'),state.rules.map(x=>`<h3>${escape(x.title)}</h3><p>${escape(x.text)}</p><a href="${escape(x.source)}" target="_blank" rel="noreferrer">${t('rules.source')}</a>`).join('<hr>'),null,'','S13'),
-  preferences:()=>openDialog(t('ui.m146'),select(t('ui.m147'),'font',[['16',t('ui.m148')],['18',t('ui.m149')],['20',t('ui.m150')]],localStorage.getItem('sv.font')||'16')+`<label><input type="checkbox" name="reduce" ${diceUI.reduced?'checked':''}>${t('preferences.reduce')}</label><label><input type="checkbox" name="dice" ${diceUI.enabled?'checked':''}>${t('dice.preference')}</label><p>${t('preferences.help')}</p><p>${independentLogin()}</p>`,data=>{localStorage.setItem('sv.font',data.get('font'));document.documentElement.style.fontSize=data.get('font')+'px';diceUI.setReduced(data.has('reduce'));diceUI.setEnabled(data.has('dice'));closeDialog();},t('ui.m063'),'S17'),
+  preferences:()=>openDialog(t('ui.m146'),select(t('ui.m147'),'font',[['16',t('ui.m148')],['18',t('ui.m149')],['20',t('ui.m150')]],localStorage.getItem('sv.font')||'16')+`<label><input type="checkbox" name="reduce" ${diceUI.reduced?'checked':''}>${t('preferences.reduce')}</label><label><input type="checkbox" name="dice" ${diceUI.enabled?'checked':''}>${t('dice.preference')}</label><p>${independentLogin()}</p>`,data=>{localStorage.setItem('sv.font',data.get('font'));document.documentElement.style.fontSize=data.get('font')+'px';diceUI.setReduced(data.has('reduce'));diceUI.setEnabled(data.has('dice'));closeDialog();},t('ui.m063'),'S17'),
   export:async()=>{const data=await api('package/bundle');const url=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download='stumpsville-bundle.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);},
   item:({slot})=>{const n=state.character.numbers;const def=state.items[String(n['item'+slot])];openDialog(def.name,`<p>${escape(def.description)}</p><p>${t('inventory.details',{slots:def.slots,uses:n['uses'+slot],max:def.uses})}</p><div class="actions">${def.uses&&def.kind!=='spell'?button(t('ui.m120'),'use',{slot}):''}${def.kind==='spell'?button(t('spell.request'),'request',{kind:'free',text:t('spell.text',{name:def.name})}):''}${def.light?button(n.litSlot===slot?t('ui.m122'):t('ui.m121'),'light',{slot,operation:n.litSlot===slot?'extinguish':'light'}):''}${button(t('ui.m123'),'move-item',{slot})}${button(t('ui.m124'),'transfer',{slot})}</div>`,null,'','S01');},
   use:({slot})=>openDialog(t('inventory.use'),`<p>${t('inventory.usehelp')}</p>`+rulingMode(),data=>submitAction('inventory',{operation:'use',slot,value:0},data),t('inventory.confirmuse'),'S03'),
   light:({slot,operation})=>perform('inventory',{operation,slot,value:0}),
   'move-item':({slot})=>openDialog(t('inventory.move'),field(t('inventory.destination'),'value',5,'number')+rulingMode(),data=>submitAction('inventory',{operation:'move',slot,value:number(data.get('value'))},data),'移动','S04'),
   transfer:({slot})=>openDialog(t('inventory.transfer'),select(t('inventory.receiver'),'targetAccount',state.team.filter(x=>x.account!==state.accountId).map(x=>[x.account,x.name]))+field(t('inventory.receiverslot'),'destination',5,'number'),data=>perform('request',{kind:'transfer',slot,targetAccount:data.get('targetAccount'),destination:number(data.get('destination')),text:t('transfer.text',{count:slot})}),t('inventory.submit'),'S05'),
-  share:({id})=>{const receipt=state.receipts.find(x=>x.id===id);openDialog(t('share.title'),`<p>${escape(resultText(receipt.result))}</p>`+select(t('share.channel'),'channelId',Object.values(state.channels).filter(x=>x.canPost).map(x=>[x.channelId,x.name]),currentChannel)+`<p class="muted">${t('share.help')}</p>`,data=>perform('share.receipt',{receiptId:id,channelId:data.get('channelId')}),t('share.submit'),'S06');},
+  share:({id})=>{const receipt=state.receipts.find(x=>x.id===id);openDialog(t('share.title'),`<p>${escape(resultText(receipt.result))}</p>`+select(t('share.channel'),'channelId',Object.values(state.channels).filter(x=>x.canPost).map(x=>[x.channelId,x.name]),currentChannel)+``,data=>perform('share.receipt',{receiptId:id,channelId:data.get('channelId')}),t('share.submit'),'S06');},
   'channel-create':()=>openDialog(t('ui.m024'),field('频道名称','name')+select('范围','kind',[['room','公共'],['group','分组']],'room')+state.members.filter(x=>x.accountId!==state.accountId).map(x=>`<label><input type="checkbox" name="member" value="${escape(x.accountId)}"> ${escape(x.nickname)}</label>`).join(''),data=>rawCommand('chat.channel.create',{name:data.get('name'),kind:data.get('kind'),...(data.get('kind')==='group'?{participants:[state.accountId,...data.getAll('member')]}:{})}),'创建','S06'),
   'door':args=>openDialog('通路状态',select('门或通路','status',[['open','开启'],['closed',t('ui.m058')],['locked','锁住']],state.doors[args.edge]),data=>perform('door',{edge:args.edge,status:data.get('status')}),t('ui.m063'),'S14'),
   'take-stock':args=>openDialog('从地点领取',select('接收角色','actor',state.characters.filter(x=>x.numbers.location===args.index).map(x=>[x.instanceId,x.name]))+field('放入槽位','slot',7,'number'),data=>perform('stock.take',{...args,actor:data.get('actor'),slot:number(data.get('slot'))}),'确认领取','S01'),
@@ -669,6 +808,9 @@ document.addEventListener('click',async event=>{
 });
 document.addEventListener('change',async event=>{
   if(event.target.name==='locale'){if(dirtyForm){event.target.value=locale();toast(t('status.savefirst'));return;}await setLocale(event.target.value);connection=t('ui.m065');await refresh();chatUI.redraw();}
+  if(event.target.name==='library-type'){libraryType=event.target.value;document.querySelector('#library-browser').innerHTML=libraryContent();}
+  if(event.target.name==='resolution'){document.querySelector('[data-resolution-fields]').innerHTML=rulingResolutionFields(event.target.value);}
+  if(['resolution','approve'].includes(event.target.name)){const form=event.target.form;form.querySelector('[data-ruling-submit]').textContent=form.elements.approve.value==='no'?'拒绝并回复':!form.elements.resolution||form.elements.resolution.value?'批准并执行':'批准并回复';}
   if(event.target.name==='log-filter'){logFilter=event.target.value;updateActivity();}
   if(event.target.name==='scene-choice'){
     const a=state.sceneActions.find(x=>x.id===dialog.dataset.sceneAction);
@@ -676,6 +818,7 @@ document.addEventListener('change',async event=>{
   }
 });
 document.addEventListener('input',event=>{
+  if(event.target.name==='library-search'){libraryQuery=event.target.value;document.querySelector('#library-browser').innerHTML=libraryContent();const search=document.querySelector('[name=library-search]');search.focus();return;}
   const form=event.target.closest('form');
   if(form&&['note-form','location-form','recap-form','creation-form','ruling-form'].includes(form.id))dirtyForm=form.id;
   if(event.target.name==='clue-search'){const q=event.target.value.toLocaleLowerCase();document.querySelectorAll('.clue').forEach(x=>x.hidden=!x.textContent.toLocaleLowerCase().includes(q));}
@@ -694,7 +837,7 @@ document.addEventListener('submit',async event=>{
     }else if(form.id==='dialog-form'&&dialogSubmit){await dialogSubmit(data);}
     else if(form.id==='creation-form'){creation.name=data.get('name');creation.swap=data.get('swap')||'';creation.step=2;renderPage();}
     else if(form.id==='note-form'){await perform('note',{text:data.get('text')});}
-    else if(form.id==='ruling-form'){await perform('resolve',{requestId:data.get('requestId'),approve:data.get('approve')==='yes',reason:data.get('reason')});}
+    else if(form.id==='ruling-form'){await perform('resolve',{requestId:data.get('requestId'),approve:data.get('approve')==='yes',reason:data.get('reason'),...(data.get('approve')==='yes'&&data.get('resolution')?{resolution:rulingResolution(data)}:{})});}
     else if(form.id==='location-form'){await perform('location.save',{index:number(data.get('index')),revision:number(data.get('revision')),description:data.get('description'),truth:data.get('truth')});}
     else if(form.id==='recap-form'){await perform('recap',{recapDraft:data.get('recapDraft'),recapPrivate:data.get('recapPrivate'),publish:data.has('publish')});}
 
@@ -782,7 +925,7 @@ async function pollState(){
     chatUI.update(null);aiUI.update(null);embeddedAI.close();
     connection=t('ui.m067');
     const label=document.querySelector('#connection');if(label)label.textContent=connection;
-    if(error.status===401){state=null;chatUI.update(null);csrf='';history=[];closeDialog();renderEntry();}
+    if(error.status===401){embeddedAI.close();libraryCache=null;state=null;chatUI.update(null);csrf='';history=[];closeDialog();renderEntry();}
   }
   finally{statePollRunning=false;lastStatePoll=performance.now();}
 }

@@ -1,0 +1,212 @@
+{
+  "checkedAt": "2026-11-19T15:56:04.236750+08:00",
+  "cases": [
+    {
+      "id": "P02",
+      "sessionId": "e6e22cde441d49539f2ee3ceed528468",
+      "requestId": "f5638695e30a45fcbc6142c7f194fb30",
+      "prompt": "我现在应该做什么",
+      "task": {
+        "requestId": "f5638695e30a45fcbc6142c7f194fb30",
+        "sessionId": "e6e22cde441d49539f2ee3ceed528468",
+        "status": "review_ready",
+        "createdAt": 1795074999.660658,
+        "text": "我现在应该做什么",
+        "initiator": "player1",
+        "taskId": "f800d212a1954989beb681a36ea9d652",
+        "proposalId": null,
+        "error": null,
+        "response": "持续告知资料 · [[knowledge:eyJkaWdlc3QiOiI0YWJmNjgyNDYzZjFhZTgzMDU0YmZlZWI3OGViZjdlZWQ2YTFhNWFjNGI4YmU3Yzc5MmQxMjJkYzFiYWQ5NTA1IiwiaWQiOiIyYjkwZTVlODNkZGMzMWMzZDEyNGUxMTRkNzRjNmMwNzQ3M2RjOTRlZWE3YzJiMDAxMTQ3MTU0MzBjOGMzZTg4IiwicmV2aXNpb24iOiI2NzExNmYwNGM3NjllMWVlYjRmYWJlN2E4ZDYyNWU1OWIxMjVlYTlkNDNmZjE3YTUyZGRjZDk4NDlhOWMyYmI1Iiwic2NoZW1hVmVyc2lvbiI6MSwic2NvcGVJZCI6ImZlNGRiM2M3LWZmOTktNDFkNS1hZWFiLWNhMDhjZDM0NzNkZSJ9@1]]\n\n- **名称**：场次状态\n- **数值**\n  - **阶段**：1\n  - **回合**：0\n  - **自动裁决**：1\n\n持续告知资料 · [[knowledge:eyJkaWdlc3QiOiIxMGI4MmE1MGQ4YTZmMjVkNDZjYzlmZmU5MWFlMDI2Y2IxYjY1ZWQ2ZWY0YTAwOGY4MDA1ZjVkMGI1NzhiMmQ3IiwiaWQiOiI5NTc3YzA5MmZiNmU2YjUyNDc0ZTBmNTJhOTI0ZDY1MmRhZGIyOWU3YzFiMGNlZDA1NzA0MTZmNjQyYjU1ZjkyIiwicmV2aXNpb24iOiIzMGZjZTQxNmI5MmI0MmI3MzhkNjM5OWZjMzg5ZTE5ZjFhMGQwN2U2ODc2ZDdjYjBiZWU2NmUwODdlZWUwNjM0Iiwic2NoZW1hVmVyc2lvbiI6MSwic2NvcGVJZCI6ImZlNGRiM2M3LWZmOTktNDFkNS1hZWFiLWNhMDhjZDM0NzNkZSJ9@1]]\n\n- **其他已知资料**：demo\n- **其他已知资料**：1\n- **其他已知资料**：1\n- **名称**：建角骰盘\n- **补充资料**：无可展示条目\n- **标签**：无可展示条目\n- **数值**\n  - **力量**：0\n  - **敏捷**：0\n  - **意志**：0\n  - **生命**：0\n  - **钱币**：0\n  - **其他已知资料**：0\n  - **生命上限**：6\n  - **其他已知资料**：12\n  - **其他已知资料**：12\n  - **其他已知资料**：12\n\n持续告知资料 · [[knowledge:eyJkaWdlc3QiOiI4YTkxNjMyOGVjN2QwYWQxYjc3Y2ZkZDE5NjNkNDY1ZGRjZjY0YTk1ZjJiYTllN2UxMjBkNjE5M2Y3ZDE3YzFjIiwiaWQiOiJiMmRjYjczZjAwZmM3ZWIwNDJkNTViNzU3ZDQ2OTVhZjRmNWVhNjkwMDNjOGVjMTk3NWE1YjBmM2E2YzVjM2I2IiwicmV2aXNpb24iOiJmNTcyOWM3MTdjNTc0NzcxZmM3NDg0MTEwOTdjYzAzZTYwM2Q5MjAxZjUzNzFiZGVjZDkxNjAzYmQwZDNlNTE5Iiwic2NoZW1hVmVyc2lvbiI6MSwic2NvcGVJZCI6ImZlNGRiM2M3LWZmOTktNDFkNS1hZWFiLWNhMDhjZDM0NzNkZSJ9@1]]\n\n- **其他已知资料**：demo\n- **其他已知资料**：1\n- **其他已知资料**：1\n- **名称**：木栗\n- **补充资料**\n  - **携带物品**\n    - **条目 1**\n      - **名称**：针剑\n      - **类别**：weapon\n      - **占用槽位**：1\n      - **说明**：轻型单手武器。战斗结束后检查用量。\n      - **伤害**：d6\n      - **用量骰**：是\n      - **携带槽位**：1\n      - **物品编号**：1\n      - **剩余用量**：3\n      - **用量上限**：3\n      - **刻度**：0\n    - **条目 2**\n      - **名称**：火把\n      - **类别**：item\n      - **占用槽位**：1\n      - **说明**：每燃烧六个探索轮，消耗一格用量。\n      - **照明**：是\n      - **携带槽位**：2\n      - **物品编号**：2\n      - **剩余用量**：3\n      - **用量上限**：3\n      - **刻度**：0\n    - **条目 3**\n      - **名称**：口粮\n      - **类别**：item\n      - **占用槽位**：1\n      - **说明**：每次食用消耗一格用量。\n      - **携带槽位**：5\n      - **物品编号**：3\n      - **剩余用量**：3\n      - **用量上限**：3\n      - **刻度**：0\n    - **条目 4**\n      - **名称**：绳索\n      - **类别**：item\n      - **占用槽位**：1\n      - **说明**：用于攀爬与固定，危险使用后由主持决定是否检查用量。\n      - **用量骰**：是\n      - **携带槽位**：6\n      - **物品编号**：4\n      - **剩余用量**：3\n      - **用量上限**：3\n      - **刻度**：0\n- **标签**：无可展示条目\n- **数值**\n  - **力量**：10\n  - **其他已知资料**：10\n  - **敏捷**：12\n  - **其他已知资料**：12\n  - **意志**：9\n部分内容未展开，请打开引用详情查看。\n\n观察记录 · [[knowledge:eyJkaWdlc3QiOiI5OWI0YzZiNjhjNzFkMDhmYjkwZTEyOGMyM2Y5YzUwYzlmMWU1NjBmMGM4YmQzNjYyY2FiMjhjZGIxMTVlMDVlIiwiaWQiOiJiMTkwNjQ0ZjRiOGE4Y2FiZWZlMmFkNDlmZDg3OGExNDhkNDZkMzE4ODEzOWZjZTQ2Y2FkMWU2NjAxZmE2MWNiIiwicmV2aXNpb24iOiIxOTg4ODdlNzYxZGYzZTUxNDY1ZDg1MzYzZTJlZWI2ODJmOGI1NWJmYTgxNmI3YTQwNjkxMjg4ZjA1OGQxYTJlIiwic2NoZW1hVmVyc2lvbiI6MSwic2NvcGVJZCI6ImZlNGRiM2M3LWZmOTktNDFkNS1hZWFiLWNhMDhjZDM0NzNkZSJ9@1]]\n\n- **名称**：入口隧道\n- **说明**：一条狭窄隧道通向树桩深处，前方可见一轮奶酪。\n- **出口编号**\n  - **条目 1**：2\n- **环境特征**\n  - **条目 1**：观察地面\n  - **条目 2**：检查奶酪\n- **已知线索**：无可展示条目\n- **已记录行动**\n  - **条目 1**\n    - **位置编号**：1\n    - **名称**：观察地面\n    - **提示**：不触碰物件，查看地面痕迹。\n    - **行动选项**\n      - **条目 1**\n        - **名称**：仔细观察\n        - **处理说明**：记录当时看见的痕迹。\n  - **条目 2**\n    - **位置编号**：1\n    - **名称**：检查奶酪\n    - **提示**：观察眼前的奶酪，或尝试取用。\n    - **行动选项**\n      - **条目 1**\n        - **名称**：检查周围，不触碰\n        - **处理说明**：观察周围环境。\n      - **条目 2**\n        - **名称**：直接拿取\n        - **处理说明**：消耗一探索轮；结果由现场判定。\n- **观察时的门状态**\n  - **编号 2**：open\n\n观察记录 · [[knowledge:eyJkaWdlc3QiOiJmOGNhMzhmMjViZDEzOTE4YmVkZmQ1MGE4MDI3NGI3NjEzZTdlZTg2YmYxNjI2M2RhOWI5MzY4MTk4ZmYzNmFhIiwiaWQiOiJlNTZlNTJjYmIzY2U1OTQxMGVlNTZkMWFkMDAwNjliNTdhN2NhMDMzN2E4Yjk1MWVkNWJjOGZjZGJlYzMwOGM0IiwicmV2aXNpb24iOiI5YjQ0NjJjNGVlYTliMDcwNDlmNmViMWYzM2ZjY2JlMDA0ZmMyM2QzODlkYWYxYmNkZWQyZTdkMjFhYmMyZTZjIiwic2NoZW1hVmVyc2lvbiI6MSwic2NvcGVJZCI6ImZlNGRiM2M3LWZmOTktNDFkNS1hZWFiLWNhMDhjZDM0NzNkZSJ9@1]]\n\n- **名称**：庭院\n- **说明**：庭院中央有池塘，梯子通往树桩上的房屋。\n- **出口编号**\n  - **条目 1**：2\n  - **条目 2**：4\n  - **条目 3**：5\n  - **条目 4**：6\n  - **条目 5**：7\n  - **条目 6**：8\n- **环境特征**\n  - **条目 1**：调查池塘\n  - **条目 2**：观察梯子\n- **已知线索**\n  - **条目 1**\n    - **位置编号**：3\n    - **标题**：池底的宝物\n    - **内容**：池底有钱袋和四格金叶鼠像；领取以现场情况为准。\n- **已记录行动**\n  - **条目 1**\n    - **位置编号**：3\n    - **名称**：调查池塘\n    - **提示**：观察池塘和水下可见之处。\n    - **行动选项**\n      - **条目 1**\n        - **名称**：查看池底\n        - **处理说明**：记录当时看见的事物。\n      - **条目 2**\n        - **名称**：打捞已发现的钱袋\n        - **处理说明**：敏捷检定；消耗一探索轮，领取以现场情况为准。\n      - **条目 3**\n        - **名称**：打捞已发现的鼠像\n        - **处理说明**：敏捷检定；需四格空间，消耗一探索轮。\n  - **条目 2**\n    - **位置编号**：3\n    - **名称**：观察梯子\n    - **提示**：查看梯子周围的路线。\n    - **行动选项**\n      - **条目 1**\n        - **名称**：辨认路线\n        - **处理说明**：记录观察到的通路。\n- **观察时的门状态**\n  - **编号 2**：closed\n  - **编号 4**：open\n  - **编号 5**：open\n  - **编号 6**：open\n  - **编号 7**：open\n  - **编号 8**：open"
+      },
+      "passed": true,
+      "seconds": 7.43
+    },
+    {
+      "id": "P03",
+      "sessionId": "b844a42cc8164d9b9276eab8c782f38d",
+      "requestId": "919a8f53218b441c95c2d0ff6d5ae40e",
+      "prompt": "现在有什么线索",
+      "task": {
+        "requestId": "919a8f53218b441c95c2d0ff6d5ae40e",
+        "sessionId": "b844a42cc8164d9b9276eab8c782f38d",
+        "status": "review_ready",
+        "createdAt": 1795075010.1284645,
+        "text": "现在有什么线索",
+        "initiator": "player1",
+        "taskId": "98eb34c869ac4db68fc50db72b7f6584",
+        "proposalId": null,
+        "error": null,
+        "response": "持续告知资料 · [[knowledge:eyJkaWdlc3QiOiI0YWJmNjgyNDYzZjFhZTgzMDU0YmZlZWI3OGViZjdlZWQ2YTFhNWFjNGI4YmU3Yzc5MmQxMjJkYzFiYWQ5NTA1IiwiaWQiOiIyYjkwZTVlODNkZGMzMWMzZDEyNGUxMTRkNzRjNmMwNzQ3M2RjOTRlZWE3YzJiMDAxMTQ3MTU0MzBjOGMzZTg4IiwicmV2aXNpb24iOiI2NzExNmYwNGM3NjllMWVlYjRmYWJlN2E4ZDYyNWU1OWIxMjVlYTlkNDNmZjE3YTUyZGRjZDk4NDlhOWMyYmI1Iiwic2NoZW1hVmVyc2lvbiI6MSwic2NvcGVJZCI6ImZlNGRiM2M3LWZmOTktNDFkNS1hZWFiLWNhMDhjZDM0NzNkZSJ9@1]]\n\n- **名称**：场次状态\n- **数值**\n  - **阶段**：1\n  - **回合**：0\n  - **自动裁决**：1\n\n观察记录 · [[knowledge:eyJkaWdlc3QiOiI5OWI0YzZiNjhjNzFkMDhmYjkwZTEyOGMyM2Y5YzUwYzlmMWU1NjBmMGM4YmQzNjYyY2FiMjhjZGIxMTVlMDVlIiwiaWQiOiJiMTkwNjQ0ZjRiOGE4Y2FiZWZlMmFkNDlmZDg3OGExNDhkNDZkMzE4ODEzOWZjZTQ2Y2FkMWU2NjAxZmE2MWNiIiwicmV2aXNpb24iOiIxOTg4ODdlNzYxZGYzZTUxNDY1ZDg1MzYzZTJlZWI2ODJmOGI1NWJmYTgxNmI3YTQwNjkxMjg4ZjA1OGQxYTJlIiwic2NoZW1hVmVyc2lvbiI6MSwic2NvcGVJZCI6ImZlNGRiM2M3LWZmOTktNDFkNS1hZWFiLWNhMDhjZDM0NzNkZSJ9@1]]\n\n- **名称**：入口隧道\n- **说明**：一条狭窄隧道通向树桩深处，前方可见一轮奶酪。\n- **出口编号**\n  - **条目 1**：2\n- **环境特征**\n  - **条目 1**：观察地面\n  - **条目 2**：检查奶酪\n- **已知线索**：无可展示条目\n- **已记录行动**\n  - **条目 1**\n    - **位置编号**：1\n    - **名称**：观察地面\n    - **提示**：不触碰物件，查看地面痕迹。\n    - **行动选项**\n      - **条目 1**\n        - **名称**：仔细观察\n        - **处理说明**：记录当时看见的痕迹。\n  - **条目 2**\n    - **位置编号**：1\n    - **名称**：检查奶酪\n    - **提示**：观察眼前的奶酪，或尝试取用。\n    - **行动选项**\n      - **条目 1**\n        - **名称**：检查周围，不触碰\n        - **处理说明**：观察周围环境。\n      - **条目 2**\n        - **名称**：直接拿取\n        - **处理说明**：消耗一探索轮；结果由现场判定。\n- **观察时的门状态**\n  - **编号 2**：open\n\n观察记录 · [[knowledge:eyJkaWdlc3QiOiJmOGNhMzhmMjViZDEzOTE4YmVkZmQ1MGE4MDI3NGI3NjEzZTdlZTg2YmYxNjI2M2RhOWI5MzY4MTk4ZmYzNmFhIiwiaWQiOiJlNTZlNTJjYmIzY2U1OTQxMGVlNTZkMWFkMDAwNjliNTdhN2NhMDMzN2E4Yjk1MWVkNWJjOGZjZGJlYzMwOGM0IiwicmV2aXNpb24iOiI5YjQ0NjJjNGVlYTliMDcwNDlmNmViMWYzM2ZjY2JlMDA0ZmMyM2QzODlkYWYxYmNkZWQyZTdkMjFhYmMyZTZjIiwic2NoZW1hVmVyc2lvbiI6MSwic2NvcGVJZCI6ImZlNGRiM2M3LWZmOTktNDFkNS1hZWFiLWNhMDhjZDM0NzNkZSJ9@1]]\n\n- **名称**：庭院\n- **说明**：庭院中央有池塘，梯子通往树桩上的房屋。\n- **出口编号**\n  - **条目 1**：2\n  - **条目 2**：4\n  - **条目 3**：5\n  - **条目 4**：6\n  - **条目 5**：7\n  - **条目 6**：8\n- **环境特征**\n  - **条目 1**：调查池塘\n  - **条目 2**：观察梯子\n- **已知线索**\n  - **条目 1**\n    - **位置编号**：3\n    - **标题**：池底的宝物\n    - **内容**：池底有钱袋和四格金叶鼠像；领取以现场情况为准。\n- **已记录行动**\n  - **条目 1**\n    - **位置编号**：3\n    - **名称**：调查池塘\n    - **提示**：观察池塘和水下可见之处。\n    - **行动选项**\n      - **条目 1**\n        - **名称**：查看池底\n        - **处理说明**：记录当时看见的事物。\n      - **条目 2**\n        - **名称**：打捞已发现的钱袋\n        - **处理说明**：敏捷检定；消耗一探索轮，领取以现场情况为准。\n      - **条目 3**\n        - **名称**：打捞已发现的鼠像\n        - **处理说明**：敏捷检定；需四格空间，消耗一探索轮。\n  - **条目 2**\n    - **位置编号**：3\n    - **名称**：观察梯子\n    - **提示**：查看梯子周围的路线。\n    - **行动选项**\n      - **条目 1**\n        - **名称**：辨认路线\n        - **处理说明**：记录观察到的通路。\n- **观察时的门状态**\n  - **编号 2**：closed\n  - **编号 4**：open\n  - **编号 5**：open\n  - **编号 6**：open\n  - **编号 7**：open\n  - **编号 8**：open"
+      },
+      "passed": true,
+      "seconds": 7.08
+    },
+    {
+      "id": "P11",
+      "sessionId": "8b6b7dcb77d744d8adc2ccf2c875d0a4",
+      "requestId": "b6df084b134048b9a0fe5a3010b10583",
+      "prompt": "我想用火把给针剑附魔，变成火焰针剑",
+      "task": {
+        "requestId": "b6df084b134048b9a0fe5a3010b10583",
+        "sessionId": "8b6b7dcb77d744d8adc2ccf2c875d0a4",
+        "status": "needs_input",
+        "createdAt": 1795075020.0157597,
+        "text": "我想用火把给针剑附魔，变成火焰针剑",
+        "initiator": "player1",
+        "taskId": "e715bdec9eae45dba5b8897a08926930",
+        "proposalId": null,
+        "error": null,
+        "response": "持续告知资料 · [[knowledge:eyJkaWdlc3QiOiI0YWJmNjgyNDYzZjFhZTgzMDU0YmZlZWI3OGViZjdlZWQ2YTFhNWFjNGI4YmU3Yzc5MmQxMjJkYzFiYWQ5NTA1IiwiaWQiOiIyYjkwZTVlODNkZGMzMWMzZDEyNGUxMTRkNzRjNmMwNzQ3M2RjOTRlZWE3YzJiMDAxMTQ3MTU0MzBjOGMzZTg4IiwicmV2aXNpb24iOiI2NzExNmYwNGM3NjllMWVlYjRmYWJlN2E4ZDYyNWU1OWIxMjVlYTlkNDNmZjE3YTUyZGRjZDk4NDlhOWMyYmI1Iiwic2NoZW1hVmVyc2lvbiI6MSwic2NvcGVJZCI6ImZlNGRiM2M3LWZmOTktNDFkNS1hZWFiLWNhMDhjZDM0NzNkZSJ9@1]]\n\n- **名称**：场次状态\n- **数值**\n  - **阶段**：1\n  - **回合**：0\n  - **自动裁决**：1\n\n持续告知资料 · [[knowledge:eyJkaWdlc3QiOiIxMGI4MmE1MGQ4YTZmMjVkNDZjYzlmZmU5MWFlMDI2Y2IxYjY1ZWQ2ZWY0YTAwOGY4MDA1ZjVkMGI1NzhiMmQ3IiwiaWQiOiI5NTc3YzA5MmZiNmU2YjUyNDc0ZTBmNTJhOTI0ZDY1MmRhZGIyOWU3YzFiMGNlZDA1NzA0MTZmNjQyYjU1ZjkyIiwicmV2aXNpb24iOiIzMGZjZTQxNmI5MmI0MmI3MzhkNjM5OWZjMzg5ZTE5ZjFhMGQwN2U2ODc2ZDdjYjBiZWU2NmUwODdlZWUwNjM0Iiwic2NoZW1hVmVyc2lvbiI6MSwic2NvcGVJZCI6ImZlNGRiM2M3LWZmOTktNDFkNS1hZWFiLWNhMDhjZDM0NzNkZSJ9@1]]\n\n- **其他已知资料**：demo\n- **其他已知资料**：1\n- **其他已知资料**：1\n- **名称**：建角骰盘\n- **补充资料**：无可展示条目\n- **标签**：无可展示条目\n- **数值**\n  - **力量**：0\n  - **敏捷**：0\n  - **意志**：0\n  - **生命**：0\n  - **钱币**：0\n  - **其他已知资料**：0\n  - **生命上限**：6\n  - **其他已知资料**：12\n  - **其他已知资料**：12\n  - **其他已知资料**：12\n\n持续告知资料 · [[knowledge:eyJkaWdlc3QiOiI4YTkxNjMyOGVjN2QwYWQxYjc3Y2ZkZDE5NjNkNDY1ZGRjZjY0YTk1ZjJiYTllN2UxMjBkNjE5M2Y3ZDE3YzFjIiwiaWQiOiJiMmRjYjczZjAwZmM3ZWIwNDJkNTViNzU3ZDQ2OTVhZjRmNWVhNjkwMDNjOGVjMTk3NWE1YjBmM2E2YzVjM2I2IiwicmV2aXNpb24iOiJmNTcyOWM3MTdjNTc0NzcxZmM3NDg0MTEwOTdjYzAzZTYwM2Q5MjAxZjUzNzFiZGVjZDkxNjAzYmQwZDNlNTE5Iiwic2NoZW1hVmVyc2lvbiI6MSwic2NvcGVJZCI6ImZlNGRiM2M3LWZmOTktNDFkNS1hZWFiLWNhMDhjZDM0NzNkZSJ9@1]]\n\n- **其他已知资料**：demo\n- **其他已知资料**：1\n- **其他已知资料**：1\n- **名称**：木栗\n- **补充资料**\n  - **携带物品**\n    - **条目 1**\n      - **名称**：针剑\n      - **类别**：weapon\n      - **占用槽位**：1\n      - **说明**：轻型单手武器。战斗结束后检查用量。\n      - **伤害**：d6\n      - **用量骰**：是\n      - **携带槽位**：1\n      - **物品编号**：1\n      - **剩余用量**：3\n      - **用量上限**：3\n      - **刻度**：0\n    - **条目 2**\n      - **名称**：火把\n      - **类别**：item\n      - **占用槽位**：1\n      - **说明**：每燃烧六个探索轮，消耗一格用量。\n      - **照明**：是\n      - **携带槽位**：2\n      - **物品编号**：2\n      - **剩余用量**：3\n      - **用量上限**：3\n      - **刻度**：0\n    - **条目 3**\n      - **名称**：口粮\n      - **类别**：item\n      - **占用槽位**：1\n      - **说明**：每次食用消耗一格用量。\n      - **携带槽位**：5\n      - **物品编号**：3\n      - **剩余用量**：3\n      - **用量上限**：3\n      - **刻度**：0\n    - **条目 4**\n      - **名称**：绳索\n      - **类别**：item\n      - **占用槽位**：1\n      - **说明**：用于攀爬与固定，危险使用后由主持决定是否检查用量。\n      - **用量骰**：是\n      - **携带槽位**：6\n      - **物品编号**：4\n      - **剩余用量**：3\n      - **用量上限**：3\n      - **刻度**：0\n- **标签**：无可展示条目\n- **数值**\n  - **力量**：10\n  - **其他已知资料**：10\n  - **敏捷**：12\n  - **其他已知资料**：12\n  - **意志**：9\n部分内容未展开，请打开引用详情查看。\n\n观察记录 · [[knowledge:eyJkaWdlc3QiOiI5OWI0YzZiNjhjNzFkMDhmYjkwZTEyOGMyM2Y5YzUwYzlmMWU1NjBmMGM4YmQzNjYyY2FiMjhjZGIxMTVlMDVlIiwiaWQiOiJiMTkwNjQ0ZjRiOGE4Y2FiZWZlMmFkNDlmZDg3OGExNDhkNDZkMzE4ODEzOWZjZTQ2Y2FkMWU2NjAxZmE2MWNiIiwicmV2aXNpb24iOiIxOTg4ODdlNzYxZGYzZTUxNDY1ZDg1MzYzZTJlZWI2ODJmOGI1NWJmYTgxNmI3YTQwNjkxMjg4ZjA1OGQxYTJlIiwic2NoZW1hVmVyc2lvbiI6MSwic2NvcGVJZCI6ImZlNGRiM2M3LWZmOTktNDFkNS1hZWFiLWNhMDhjZDM0NzNkZSJ9@1]]\n\n- **名称**：入口隧道\n- **说明**：一条狭窄隧道通向树桩深处，前方可见一轮奶酪。\n- **出口编号**\n  - **条目 1**：2\n- **环境特征**\n  - **条目 1**：观察地面\n  - **条目 2**：检查奶酪\n- **已知线索**：无可展示条目\n- **已记录行动**\n  - **条目 1**\n    - **位置编号**：1\n    - **名称**：观察地面\n    - **提示**：不触碰物件，查看地面痕迹。\n    - **行动选项**\n      - **条目 1**\n        - **名称**：仔细观察\n        - **处理说明**：记录当时看见的痕迹。\n  - **条目 2**\n    - **位置编号**：1\n    - **名称**：检查奶酪\n    - **提示**：观察眼前的奶酪，或尝试取用。\n    - **行动选项**\n      - **条目 1**\n        - **名称**：检查周围，不触碰\n        - **处理说明**：观察周围环境。\n      - **条目 2**\n        - **名称**：直接拿取\n        - **处理说明**：消耗一探索轮；结果由现场判定。\n- **观察时的门状态**\n  - **编号 2**：open\n\n观察记录 · [[knowledge:eyJkaWdlc3QiOiJmOGNhMzhmMjViZDEzOTE4YmVkZmQ1MGE4MDI3NGI3NjEzZTdlZTg2YmYxNjI2M2RhOWI5MzY4MTk4ZmYzNmFhIiwiaWQiOiJlNTZlNTJjYmIzY2U1OTQxMGVlNTZkMWFkMDAwNjliNTdhN2NhMDMzN2E4Yjk1MWVkNWJjOGZjZGJlYzMwOGM0IiwicmV2aXNpb24iOiI5YjQ0NjJjNGVlYTliMDcwNDlmNmViMWYzM2ZjY2JlMDA0ZmMyM2QzODlkYWYxYmNkZWQyZTdkMjFhYmMyZTZjIiwic2NoZW1hVmVyc2lvbiI6MSwic2NvcGVJZCI6ImZlNGRiM2M3LWZmOTktNDFkNS1hZWFiLWNhMDhjZDM0NzNkZSJ9@1]]\n\n- **名称**：庭院\n- **说明**：庭院中央有池塘，梯子通往树桩上的房屋。\n- **出口编号**\n  - **条目 1**：2\n  - **条目 2**：4\n  - **条目 3**：5\n  - **条目 4**：6\n  - **条目 5**：7\n  - **条目 6**：8\n- **环境特征**\n  - **条目 1**：调查池塘\n  - **条目 2**：观察梯子\n- **已知线索**\n  - **条目 1**\n    - **位置编号**：3\n    - **标题**：池底的宝物\n    - **内容**：池底有钱袋和四格金叶鼠像；领取以现场情况为准。\n- **已记录行动**\n  - **条目 1**\n    - **位置编号**：3\n    - **名称**：调查池塘\n    - **提示**：观察池塘和水下可见之处。\n    - **行动选项**\n      - **条目 1**\n        - **名称**：查看池底\n        - **处理说明**：记录当时看见的事物。\n      - **条目 2**\n        - **名称**：打捞已发现的钱袋\n        - **处理说明**：敏捷检定；消耗一探索轮，领取以现场情况为准。\n      - **条目 3**\n        - **名称**：打捞已发现的鼠像\n        - **处理说明**：敏捷检定；需四格空间，消耗一探索轮。\n  - **条目 2**\n    - **位置编号**：3\n    - **名称**：观察梯子\n    - **提示**：查看梯子周围的路线。\n    - **行动选项**\n      - **条目 1**\n        - **名称**：辨认路线\n        - **处理说明**：记录观察到的通路。\n- **观察时的门状态**\n  - **编号 2**：closed\n  - **编号 4**：open\n  - **编号 5**：open\n  - **编号 6**：open\n  - **编号 7**：open\n  - **编号 8**：open",
+        "choices": {
+          "prompt": "需要由 KP 评估并准备方案吗？",
+          "options": [
+            {
+              "id": "ask_kp_change",
+              "label": "提交创作／配置申请",
+              "text": "请 KP 评估这次创作或组合需求。"
+            },
+            {
+              "id": "known_only",
+              "label": "继续查看已知资料",
+              "text": "继续整理本人已经获知的相关资料。"
+            }
+          ]
+        }
+      },
+      "passed": true,
+      "seconds": 6.54,
+      "application": {
+        "rulingId": "player:3bd6fe2fd4a447078564a05c459df489",
+        "sessionId": "8b6b7dcb77d744d8adc2ccf2c875d0a4",
+        "requestId": "b6df084b134048b9a0fe5a3010b10583",
+        "status": "pending",
+        "createdAt": 1795075028.8223155,
+        "digest": "9c520488da8f7c4a2a7a50a570560943d2069d28c81aeba754ba90feb761d3b8"
+      }
+    }
+  ],
+  "calls": [
+    {
+      "injected": false,
+      "httpStatus": 200,
+      "seconds": 4.51,
+      "usage": {
+        "prompt_tokens": 2198,
+        "completion_tokens": 903,
+        "total_tokens": 3101,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 2198
+      },
+      "finishReasons": [
+        "tool_calls"
+      ]
+    },
+    {
+      "injected": false,
+      "httpStatus": 200,
+      "seconds": 2.25,
+      "usage": {
+        "prompt_tokens": 6036,
+        "completion_tokens": 221,
+        "total_tokens": 6257,
+        "prompt_tokens_details": {
+          "cached_tokens": 2176
+        },
+        "prompt_cache_hit_tokens": 2176,
+        "prompt_cache_miss_tokens": 3860
+      },
+      "finishReasons": [
+        "stop"
+      ]
+    },
+    {
+      "injected": false,
+      "httpStatus": 200,
+      "seconds": 4.07,
+      "usage": {
+        "prompt_tokens": 2198,
+        "completion_tokens": 935,
+        "total_tokens": 3133,
+        "prompt_tokens_details": {
+          "cached_tokens": 1920
+        },
+        "prompt_cache_hit_tokens": 1920,
+        "prompt_cache_miss_tokens": 278
+      },
+      "finishReasons": [
+        "tool_calls"
+      ]
+    },
+    {
+      "injected": false,
+      "httpStatus": 200,
+      "seconds": 1.98,
+      "usage": {
+        "prompt_tokens": 6130,
+        "completion_tokens": 138,
+        "total_tokens": 6268,
+        "prompt_tokens_details": {
+          "cached_tokens": 2176
+        },
+        "prompt_cache_hit_tokens": 2176,
+        "prompt_cache_miss_tokens": 3954
+      },
+      "finishReasons": [
+        "stop"
+      ]
+    },
+    {
+      "injected": false,
+      "httpStatus": 200,
+      "seconds": 3.94,
+      "usage": {
+        "prompt_tokens": 2209,
+        "completion_tokens": 922,
+        "total_tokens": 3131,
+        "prompt_tokens_details": {
+          "cached_tokens": 1920
+        },
+        "prompt_cache_hit_tokens": 1920,
+        "prompt_cache_miss_tokens": 289
+      },
+      "finishReasons": [
+        "tool_calls"
+      ]
+    },
+    {
+      "injected": false,
+      "httpStatus": 200,
+      "seconds": 1.95,
+      "usage": {
+        "prompt_tokens": 6145,
+        "completion_tokens": 224,
+        "total_tokens": 6369,
+        "prompt_tokens_details": {
+          "cached_tokens": 3072
+        },
+        "prompt_cache_hit_tokens": 3072,
+        "prompt_cache_miss_tokens": 3073
+      },
+      "finishReasons": [
+        "stop"
+      ]
+    }
+  ],
+  "model": "deepseek-flash",
+  "realSaveChanged": false,
+  "evidenceDirectory": "tests/output/ai-player-requests-live-0acb8e68",
+  "passed": true,
+  "persistentProviderConfigUnchanged": true,
+  "realCalls": 6,
+  "confirmedTokens": 28259,
+  "totalCalls": 6,
+  "totalTokens": 28259,
+  "caseStatus": {
+    "P02": true,
+    "P03": true,
+    "P11": true
+  }
+}

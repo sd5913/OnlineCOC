@@ -6,7 +6,7 @@ from onlinecoc.errors import DomainError
 
 from ..errors import AiError, require
 from ..pack import apply_configurations, fixture_state
-from ..sandbox import run_scenario
+from ..sandbox import run_scenario, author_private_rules
 from .base import check_base
 from .common import finding, report
 
@@ -56,7 +56,7 @@ def constraint(check, state, pack=None, artifact=None):
         scenario = next((s for s in pack.scenarios if s["scenarioId"] == params["scenarioId"]), None)
         require(scenario is not None and scenario["randomPolicy"]["mode"] == "fixed", "CHECK_SCENARIO_MISSING")
         world = fixture_state(pack.json(scenario["fixtureRef"]), state["configurations"])
-        trials = run_scenario(artifact, world, scenario, [scenario["randomPolicy"]["values"]])
+        trials = run_scenario(artifact, world, scenario, [scenario["randomPolicy"]["values"]],private_rule_ids=author_private_rules(artifact,scenario))
         require(params["stepIndex"] < len(trials[0]["steps"]), "CHECK_ASSERTION_FAILED")
         step = trials[0]["steps"][params["stepIndex"]]
         passed = step.get("code") == params["expectedError"] if "expectedError" in params else step["ok"] and pointer(step, params["pointer"]) == params["equals"]
@@ -86,8 +86,49 @@ def changed_paths(old, new, prefix=""):
 
 def extension_check(pack, state, baseline, artifact, changes):
     extensions = pack.contract["extensionPoints"]
+    from ..change_policy import configuration_allowed
+    high = pack.contract.get('highRisk', {})
+    reference_path=pack.contract['contextMapping'].get('dataReferences')
+    if reference_path:
+        declarations=pack.json(reference_path)
+        require(isinstance(declarations,list), 'DATA_REFERENCE_POLICY_INVALID')
+        for declaration in declarations:
+            required={'dataRef','pointer','idKey','referencesKey'}
+            require(isinstance(declaration,dict) and required<=set(declaration)<=required|{'contiguousFrom','allowSelf'} and all(isinstance(declaration[k],str) and declaration[k] for k in required), 'DATA_REFERENCE_POLICY_INVALID')
+            name=declaration['dataRef'];require(name in changes['data'], 'DATA_REFERENCE_POLICY_INVALID')
+            values=pointer(changes['data'][name],declaration['pointer']);key=declaration['idKey'];refs=declaration['referencesKey']
+            require(isinstance(values,list) and all(isinstance(v,dict) and key in v and isinstance(v.get(refs),list) for v in values), 'DATA_REFERENCE_POLICY_INVALID')
+            from ..contracts import digest
+            identifiers=[digest(v[key]) for v in values]
+            require(len(set(identifiers))==len(identifiers) and all(digest(ref) in identifiers for v in values for ref in v[refs]), 'DATA_REFERENCE_CONFLICT',path='/data/'+name+declaration['pointer'])
+            if 'contiguousFrom' in declaration:
+                start=declaration['contiguousFrom'];require(type(start) is int,'DATA_REFERENCE_POLICY_INVALID')
+                require([v[key] for v in values]==list(range(start,start+len(values))), 'DATA_REFERENCE_CONFLICT',path='/data/'+name+declaration['pointer'])
+            if 'allowSelf' in declaration:
+                require(type(declaration['allowSelf']) is bool, 'DATA_REFERENCE_POLICY_INVALID')
+                if not declaration['allowSelf']:require(all(v[key] not in v[refs] for v in values), 'DATA_REFERENCE_CONFLICT',path='/data/'+name+declaration['pointer'])
+    stable_path=pack.contract['contextMapping'].get('stableArrays')
+    if stable_path:
+        declarations=pack.json(stable_path)
+        require(isinstance(declarations,list), 'STABLE_ARRAY_POLICY_INVALID')
+        for declaration in declarations:
+            require(isinstance(declaration,dict) and set(declaration)=={'dataRef','pointer','idKey','appendOnly'} and declaration['appendOnly'] is True, 'STABLE_ARRAY_POLICY_INVALID')
+            require(all(isinstance(declaration[k],str) and declaration[k] for k in ('dataRef','pointer','idKey')), 'STABLE_ARRAY_POLICY_INVALID')
+            name=declaration['dataRef'];key=declaration['idKey']
+            require(name in baseline['data'] and name in changes['data'], 'STABLE_ARRAY_POLICY_INVALID')
+            old=pointer(baseline['data'][name],declaration['pointer']);new=pointer(changes['data'][name],declaration['pointer'])
+            require(isinstance(old,list) and isinstance(new,list) and all(isinstance(v,dict) and key in v for v in old+new), 'STABLE_ARRAY_POLICY_INVALID')
+            from ..contracts import digest
+            old_ids=[digest(v[key]) for v in old];new_ids=[digest(v[key]) for v in new]
+            require(len(new_ids)>=len(old_ids) and new_ids[:len(old_ids)]==old_ids and len(set(new_ids))==len(new_ids), 'STABLE_ARRAY_ID_CONFLICT', path='/data/'+name+declaration['pointer'])
     for change in changes["configurations"]:
         identifier, value = change["id"], change["value"]
+        if change['kind'] == 'remove':
+            old=state['configurations'].get(identifier,{})
+            extension_allowed=any(old.get('typeRef') in e['typeRefs'] and (identifier in e['allowExistingIds'] or identifier.startswith(e['namespace'])) for e in extensions)
+            require(high.get('allowRemove') and (configuration_allowed(pack.contract, identifier) or extension_allowed), 'EXTENSION_FORBIDDEN', path='/configurations/'+identifier)
+            continue
+        if configuration_allowed(pack.contract, identifier):continue
         matches = [e for e in extensions if value["typeRef"] in e["typeRefs"] and
                    ((identifier in e["allowExistingIds"] or e.get("allowNamespaceReplace",False) and identifier.startswith(e["namespace"])) if change["kind"] == "replace" else identifier.startswith(e["namespace"]))]
         require(matches, "EXTENSION_FORBIDDEN", path="/configurations/" + identifier)
@@ -98,9 +139,9 @@ def extension_check(pack, state, baseline, artifact, changes):
     changed_code = any(baseline["sources"].get(n) != v for n, v in changes["sources"].items())
     changed_meta = {}
     if changed_code:
-        owning_sources = [name for name, text in changes["sources"].items() if baseline["sources"].get(name) != text]
+        owning_sources = [name for name, text in changes["sources"].items() if baseline["sources"].get(name) != text and name not in high.get('ruleFiles', [])]
         from ..sandbox import execute
-        changed_meta = execute({name: changes["sources"][name] for name in owning_sources}, {"kind": "inspect"})["metadata"]
+        if owning_sources:changed_meta = execute({name: changes["sources"][name] for name in owning_sources}, {"kind": "inspect"})["metadata"]
     for key, meta in artifact["metadata"].items():
         old = baseline["metadata"].get(key)
         # Existing unrelated source files may remain verbatim. A changed source

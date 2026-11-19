@@ -180,3 +180,28 @@ def test_player_real_adapter_json_mode_and_http_error_projection(application,htt
                 assert '观察记录' in pl['response'] and not task['diagnostics']['errors']
         finally:await app.coordinator.close()
     asyncio.run(run())
+
+
+def test_legacy_response_projection_still_requires_live_authorization(application):
+    from onlinecoc_ai.known_answers import _literal,reference_token
+    app=application;install(app);grant=observe(app)
+    async def callback(count,messages,tools):
+        if count==1:return tool_call('room_search_knowledge',{})
+        if count==2:return tool_call('room_read_knowledge',{'refs':[json.loads(messages[-1]['content'])['items'][0]['ref']]})
+        evidence=json.loads(messages[-1]['content'])['items'][0]
+        return completion({'kind':'known','evidence':[evidence['evidenceId']],'next':'none'})
+    async def run():
+        app.coordinator.provider_factory=lambda _:Fake(callback);await app.coordinator.start()
+        try:
+            s=session(app,'player1');r=submit(app,s,who='player1');await wait_task(app.coordinator,r['taskId'])
+            ref=app.host.knowledge.search('player1',{})['items'][0]['ref']
+            old='观察记录 · '+reference_token(ref)+'\n\n'+_literal({'text':'当时看见的线索','entityId':'INTERNAL_ID'})
+            app.repository.update(lambda state:state['tasks'][r['taskId']].update(text=old))
+            for account in ['kp','player1']:
+                response=app.sessions.get(account,s['sessionId'])['items'][0]['response']
+                assert '当时看见的线索' in response and 'INTERNAL_ID' not in response
+            assert app.repository.state()['tasks'][r['taskId']]['text']==old
+            host_call(app,'knowledge.revoke',{'grantId':grant['grantId'],'expectedRevision':1,'reason':'撤回'})
+            assert not app.sessions.get('player1',s['sessionId'])['items'][0].get('response')
+        finally:await app.coordinator.close()
+    asyncio.run(run())

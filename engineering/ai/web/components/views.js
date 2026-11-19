@@ -25,7 +25,7 @@ function mountView(target,client,options={},full=false){
  async function manageSessions(){
   ready();if(paused)return;chat.suspend();
   if(!sessionManager)sessionManager=mountSessionManager($('.session-management'),client,{
-   onOpen:async id=>{closeSessions(false);await ready().resume();await ready().select(id);},
+   onOpen:async id=>{closeSessions(false);await ready().resume({sessionId:id});},
    onChange:session=>run(()=>ready().applySessionChange(session))
   });
   if(!management.open)management.showModal();
@@ -76,7 +76,7 @@ function mountView(target,client,options={},full=false){
   setDraft:(text,references=[])=>ready().setDraft(text,references),insertReference:item=>ready().insertReference(item),
   review:openReview,manageSessions,showUsage,
   suspend(){paused=true;chat?.suspend();closeReview();closeSessions();closeUsage();},
-  async resume(){if(dead)return;const previous=chat;paused=false;update();if(previous===chat)await chat?.resume();},
+  async resume({sessionId}={}){if(dead)return;const previous=chat;paused=false;update();if(previous===chat)await chat?.resume({sessionId});else if(sessionId)await chat?.select(sessionId);},
   destroy(){dead=true;unsubscribe();disposePanels();element.remove();}
  };
 }
@@ -90,16 +90,16 @@ export function mountAICollapsible(target,client,options={}){
  const button=document.createElement('button');button.className='collapse-toggle';button.textContent=options.title||'AI 助手';button.setAttribute('aria-expanded','false');
  const body=document.createElement('div');body.className='collapse-body';body.hidden=true;body.id='ai-fold-'+Math.random().toString(36).slice(2);button.setAttribute('aria-controls',body.id);section.append(button,body);
  let panel=null,opened=false,dead=false;
- function open(){if(dead)return;opened=true;body.hidden=false;button.setAttribute('aria-expanded','true');
-  if(!panel)panel=mountAIConversation(body,client,options);else panel.resume().catch(()=>{});options.onToggle?.(true);
+ function open(sessionId){if(dead)return Promise.resolve();opened=true;body.hidden=false;button.setAttribute('aria-expanded','true');
+  let loaded;if(!panel){panel=mountAIConversation(body,client,options);loaded=sessionId?panel.select(sessionId):Promise.resolve();}else loaded=panel.resume({sessionId});options.onToggle?.(true);return loaded;
  }
  function close(){if(dead)return;opened=false;body.hidden=true;button.setAttribute('aria-expanded','false');panel?.suspend();options.onToggle?.(false);}
- button.onclick=()=>opened?close():open();if(options.open)open();
+ button.onclick=()=>opened?close():open().catch(()=>{});if(options.open)open().catch(()=>{});
  return {open,close,toggle(){opened?close():open();},get isOpen(){return opened;},
   refresh:()=>opened?panel.refresh():Promise.resolve(),
-  select(id){open();return panel.select(id);},newChat(){open();return panel.newChat();},
+  select(id){return open(id);},newChat(){open();return panel.newChat();},
   setDraft(text,references=[]){open();panel.setDraft(text,references);},insertReference(item){open();panel.insertReference(item);},
-  review(id){open();return panel.review(id);},manageSessions(){open();return panel.manageSessions();},showUsage(){open();return panel.showUsage();},suspend:close,resume(){open();return Promise.resolve();},
+  review(id){open();return panel.review(id);},manageSessions(){open();return panel.manageSessions();},showUsage(){open();return panel.showUsage();},suspend:close,resume({sessionId}={}){return open(sessionId);},
   destroy(){dead=true;panel?.destroy();panel=null;element.remove();}
  };
 }

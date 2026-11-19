@@ -1,4 +1,4 @@
-export const mapPositions={1:[90,280],2:[90,180],3:[270,180],4:[120,65],5:[290,65],6:[460,65],7:[460,180],8:[640,180],9:[640,280],10:[460,280]};
+export const mapPositions=new Proxy({1:[90,280],2:[90,180],3:[270,180],4:[120,65],5:[290,65],6:[460,65],7:[460,180],8:[640,180],9:[640,280],10:[460,280]},{get(base,key){if(key in base)return base[key];if(typeof key!=='string')return undefined;const index=Number(key);return Number.isInteger(index)&&index>10?[90+((index-11)%4)*180,420+Math.floor((index-11)/4)*140]:undefined;}});
 export function mapRoutes(locations,doors=null){
   const present=new Set(locations.map(l=>l.index)),routes=new Map();
   for(const place of locations)for(const exit of place.exits||[]){

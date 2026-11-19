@@ -8,6 +8,64 @@ from .errors import require
 from .model import member
 
 
+def is_high_risk(state, changes, contract):
+    current = state['artifacts'][state['activeRuleset']]
+    if changes['sources'] != current['sources'] or changes['data'] != current['data']:
+        return True
+    policy = contract.get('highRisk', {})
+    identifiers = set(policy.get('configurationIds', []))
+    prefixes = tuple(policy.get('configurationPrefixes', []))
+    for change in changes['configurations']:
+        value = change.get('value') or state['configurations'].get(change['id'], {})
+        if (change['kind'] == 'remove' or value.get('typeRef') in ('item', 'weapon', 'bag')
+                or change['id'] in identifiers or (prefixes and change['id'].startswith(prefixes))):
+            return True
+    return False
+
+
+def candidate_configurations(state, changes, artifact):
+    """Validate the entire resulting graph before staging or publishing it.
+
+    Existing instances keep their own values/revisions. Deletes never cascade,
+    including references held by archived instances. In-flight flows keep their
+    original artifact; only current object bindings target the new artifact.
+    """
+    from .contracts import validate_model
+    from .registry import check_graph
+    configurations = copy.deepcopy(state['configurations'])
+    seen = set()
+    for change in changes['configurations']:
+        key, kind = change['id'], change['kind']
+        require(key not in seen, 'AI_INPUT_INVALID'); seen.add(key)
+        old = configurations.get(key)
+        if kind == 'add':
+            require(old is None and change['expectedRevision'] is None, 'VERSION_CONFLICT')
+        else:
+            require(kind in ('replace', 'remove'), 'AI_INPUT_INVALID')
+            require(old is not None and old['revision'] == change['expectedRevision'], 'VERSION_CONFLICT')
+        if kind == 'remove':
+            require(not any(e['configurationId'] == key for e in state['entities'].values()), 'REFERENCE_CONFLICT')
+            del configurations[key]
+            continue
+        value = change['value']
+        validate_model('Configuration', value)
+        require(value['configurationId'] == key, 'AI_INPUT_INVALID')
+        if old:
+            require(value['typeRef'] == old['typeRef'], 'REFERENCE_CONFLICT')
+            require(value['revision'] != old['revision'], 'VERSION_CONFLICT')
+        configurations[key] = copy.deepcopy(value)
+    metadata = artifact['metadata']
+    check_graph({key:list(value.get('dependencies', [])) for key,value in metadata.items()})
+    for configuration in configurations.values():
+        for binding in configuration.get('behaviors', {}).values():
+            require(binding['ruleId'] in metadata, 'REFERENCE_CONFLICT')
+    for entity in state['entities'].values():
+        require(entity['configurationId'] in configurations, 'REFERENCE_CONFLICT')
+        for binding in entity.get('rules', {}).values():
+            require(binding['ruleId'] in metadata, 'REFERENCE_CONFLICT')
+    return configurations
+
+
 def check_context(host, state, account, context):
     control = state["aiControl"]
     if context.get('facts',{}).get('strictPlayer'):
@@ -48,10 +106,18 @@ def approve(host, state, account, args, prepared):
     control = state["aiControl"]
     require(control["proposalHeads"].get(args["proposalId"]) == args["proposalRevision"], "PROPOSAL_STALE")
     check_context(host, state, account, prepared["context"])
+    candidate_configurations(state, prepared['changeSet'], prepared['artifact'])
+    high_risk = is_high_risk(state, prepared['changeSet'], control['packBinding']['contract'])
+    if high_risk:
+        require(args.get('explicitHighRiskDigest') == prepared['candidateDigest'], 'HIGH_RISK_REVIEW_REQUIRED')
+    elif 'explicitHighRiskDigest' in args:
+        require(args['explicitHighRiskDigest'] == prepared['candidateDigest'], 'DIGEST_MISMATCH')
     policy = control["packBinding"]["contract"]["reviewPolicy"]
     items = {item["id"]: item for item in policy["items"]}
     needed = {key for key, value in items.items() if value["required"]}
     allowed = set(items)
+    if high_risk:
+        needed.add('high-risk'); allowed.add('high-risk')
     if any(r["risk"] in ("medium", "high", "unknown") for r in prepared["reports"]):
         needed.add("gameplay-risk")
         allowed.add("gameplay-risk")
@@ -67,6 +133,8 @@ def approve(host, state, account, args, prepared):
         "status": "approved", "artifactRevision": prepared["artifact"]["revision"],
         "changeSet": copy.deepcopy(prepared["changeSet"]), "context": copy.deepcopy(context),
         "reports": copy.deepcopy(prepared["reports"]), "createdAt": host.clock()}
+    if high_risk:
+        value['explicitHighRiskDigest'] = args['explicitHighRiskDigest']
     value["approvalDigest"] = approval_digest(value)
     validate_ai("Approval", value)
     state["artifacts"][value["artifactRevision"]] = copy.deepcopy(prepared["artifact"])
@@ -104,16 +172,19 @@ def apply(host, state, account, args, command_id):
     require(approval["contextDigest"] == digest(approval["context"]) and approval["contractDigest"] == approval["context"]["contractDigest"] and
             approval["validatorSetDigest"] == approval["context"]["validatorSetDigest"], "DIGEST_MISMATCH")
     check_context(host, state, account, approval["context"])
+    if is_high_risk(state, approval['changeSet'], control['packBinding']['contract']):
+        require(approval.get('explicitHighRiskDigest') == approval['candidateDigest'], 'HIGH_RISK_REVIEW_REQUIRED')
+        require(len(approval['riskDecisions'].get('high-risk', '').strip()) >= 3, 'RISK_REVIEW_REQUIRED')
     previous = state["activeRuleset"]
+    configurations = candidate_configurations(state, approval['changeSet'], artifact)
     revisions = {}
     for change in approval["changeSet"]["configurations"]:
-        old = state["configurations"].get(change["id"])
-        require((old is None if change["kind"] == "add" else old and old["revision"] == change["expectedRevision"] and
-                old["typeRef"] == change["value"]["typeRef"] and old["revision"] != change["value"]["revision"]), "VERSION_CONFLICT")
-        for ref in change["value"].get("behaviors", {}).values():
-            require(ref["ruleId"] in artifact["metadata"], "REFERENCE_CONFLICT")
-        state["configurations"][change["id"]] = copy.deepcopy(change["value"])
-        revisions[change["id"]] = change["value"]["revision"]
+        if change['kind'] == 'remove':
+            del state['configurations'][change['id']]
+            revisions[change['id']] = None
+        else:
+            state['configurations'][change['id']] = configurations[change['id']]
+            revisions[change['id']] = change['value']['revision']
         host.hit("after_publication_configuration")
     state["activeRuleset"] = artifact["revision"]
     approval["status"] = "consumed"

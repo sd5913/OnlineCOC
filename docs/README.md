@@ -11,6 +11,7 @@
 | `current/` | 当前文档入口，下分设计与工程 | [当前文档索引](current/README.md) |
 | `current/design/` | 当前有效的项目目标、设计与约束 | [设计文档索引](current/design/README.md) |
 | `current/engineering/` | 与当前代码、配置和文件结构一致的工程说明 | [工程文档索引](current/engineering/README.md) |
+| `current/engineering/developer-reference/` | 基于实际配置包的精简开发速查 | [开发者参考](current/engineering/developer-reference/README.md) |
 | `plans/` | 尚待讨论、验证或实施的需求、调研与方案 | [计划文档索引](plans/README.md) |
 | `history/` | 已被替代、取消或完成归档的材料 | [历史文档索引](history/README.md) |
 | `standards/` | 跨阶段适用的通用规则和标准 | [通用标准索引](standards/README.md) |

@@ -4,7 +4,7 @@
 - 文档子类：工程
 - 状态：有效
 - 创建日期：2026-11-14
-- 最后更新：2026-11-17
+- 最后更新：2026-11-19
 - 关联文档：[管理器与 API](ai-manager.md)、[会话权限与执行批次](ai-session-access.md)、[AI 运行时](ai-runtime.md)、[配置包开发指南](../../../rulepacks/README.md)、[包侧交互计划](../../plans/ai-pack-interaction.md)
 
 ## 入口与选择
@@ -19,6 +19,7 @@
 | AI 修改裁决 | `mountRulings`、`AiClient.aiRulings` / `createAITools.rulings` | KP 整批审批，完整内容／三检／风险决定及回执；[接口与恢复](ai-rulings.md) |
 | 用量统计 | `mountUsage`、`AiClient.aiUsage` / `createAITools.usage` | 可独立挂载，三种对话页内置入口；授权范围内的消费/预留统计 |
 | 会话管理 | `mountSessionManager` / `/ai-ui/sessions.html` | 授权会话搜索、排序、置顶、归档恢复、删除及会话权限显示；可独立挂载 |
+| 独立设置 | `mountAISettings` / `/ai-ui/settings.html` | KP 服务选择、外发范围、自动接收、PL 权限与两类自动审批；不加载任务队列，不含本机密钥管理 |
 | 可折叠页面 | `mountAICollapsible` / `/ai-ui/collapsible.html` | 默认收起，首次展开时挂载；收起保留草稿与选中会话，暂停面板自身轮询 |
 
 三种对话视图均提供“会话管理”入口，与独立管理组件共用真实房间登录、会话存储、引用校验和 KP 审核流程；不会另外创建游戏宿主、存档或服务商配置。KP 明确发送后可转交 AI；允许玩家对话后 PL 直接转交，使用绑定玩家数据；不能因为选用了某种视图而获得 KP 权限。配置包自己的布局、术语和翻译仍由包作者维护。
@@ -164,7 +165,8 @@ const sessions = mountSessionManager(container, client, {
 });
 // 可调用 refresh / select(id) / suspend / resume / destroy；不销毁共享 client。
 const answer = mountMarkdown(answerContainer, modelText, {
-  resolveReferences: tokens => client.aiResolve(tokens)
+  resolveReferences: tokens => client.aiResolve(tokens),
+  audience: 'player' // 默认；仅真实 KP 的管理员视图按需设置为 administrator
 });
 // answer.update(nextText); answer.destroy(); sessions.destroy();
 ```
@@ -191,13 +193,15 @@ const report = await createAITools(client).usage({ scope: 'mine', limit: 30 });
 
 ## 资源和服务桥接
 
-机器清单为 [pack-manifest.json](../../../engineering/ai/web/components/pack-manifest.json)：列出运行文件、类型文件、四个页面、读取/提交路由和审核所需的宿主操作。包作者可以据此准备自己的静态分发及精确路由白名单。清单不含管理器路由或服务商密钥接口，也不是宿主授权策略的替代品。
+机器清单为 [pack-manifest.json](../../../engineering/ai/web/components/pack-manifest.json)：列出运行文件、类型文件、五个页面、读取/提交路由和审核所需的宿主操作。包作者可以据此准备自己的静态分发及精确路由白名单。清单不含管理器路由或服务商密钥接口，也不是宿主授权策略的替代品。
 
 保留清单内模块/CSS 的相对目录，不能只复制 HTML 或入口 JS。`pack.d.ts` 依赖声明文件 `index.d.ts`；运行入口 `pack.js` 不依赖管理员组件。iframe 入口需在包自己的同源服务中保留正确的 Content-Type、Origin/CSRF、身份 Cookie 及 CSP；跨服务 Native Transport 由包作者按现有会话桥实现。
 
 Stumpsville 的本地 KP、PL 与网页玩家已接入原生对话和会话管理；旧咨询队列也使用相同格式渲染。包侧按清单分发资源，网页构建内联新增模块与样式，并以 composedPath 转发 Shadow DOM 表单事件；响应丢失恢复与包桥共用原命令回执。PL 在房间允许后直接提交并查看本人权限内的回答，KP 可查全部会话；受限配置生成发布及嵌入 KP 队列见[修改裁决](ai-rulings.md)。
 
 ## 验收
+
+2026-11-19 数据排版与角色分层更新通过 134 项相关测试，含真实 Edge 的预览／引用详情和既有三种嵌入回归；[结果与范围](../../../engineering/acceptance/ai-runtime/data-presentation-results.json)。本次未重建树桩镇分发网页，也未实施包侧行动内容投影。
 
 2026-11-17 聊天模板完成三轮迭代：第一轮 12 项既有回归通过；第二轮 5 项新交互测试通过；第三轮补充发送切换竞态，最终按测试 ID 去重 **27 项通过（含 6 项新增交互测试）**。末轮初跑 25 项通过、2 项旧定位断言失败；限定补全候选定位后，两项复测通过。见[逐轮结果与源码摘要](../../../engineering/acceptance/ai-runtime/chat-polish-results.json)。覆盖本机管理器、三种嵌入形态、390 px 窄容器/移动视口、引用详情与原子编辑、权限和归档删除；使用真实 Edge、隔离宿主及离线模型，无真实 API 消耗。前端优化不代表推理延迟优化。
 
@@ -217,4 +221,52 @@ Stumpsville 的本地 KP、PL 与网页玩家已接入原生对话和会话管�
 
 引用详情可用 `bindReferenceDetails(target, resolveReferences, options)` 单独装配；三种嵌入对话和 `mountMarkdown` 已接入，点击标签即时复验精确版本。未变化的历史消息保留 DOM，避免轮询重复解析标签；生命周期和接口见[回答与引用详情](ai-responses.md#引用详情与稳定渲染)。
 
+2026-11-19 数据显示更新：对话、预览和引用详情将嵌套数据排成中文字段与列表；玩家视图不提供技术原文，真实 KP 的管理员会话可展开技术详情。独立装配的 `audience` 默认 `player`，只决定显示，不代替后端权限过滤。Stumpsville 已按个人发现生成安全行动菜单，并提供 KP 完整机制和显式披露界面，见[包侧规则与旧证据升级](../../../rulepacks/stumpsville/docs/current/player-knowledge.md)。包专有标题、单位仍由包提供方明确；[引擎通用展示契约](../../plans/Issues/issue-012-authorized-data-presentation.md)尚待评估。后端变化需重启宿主；已导出的网页须重新构建分发资源，隔离构建／网页验收不代表正式房间已升级。
+
 独立裁决队列：`const queue = mountRulings(container, client, {onChange});`；卸载调用 `queue.destroy()`。分发包含 `rulings.js/css`；仅为 KP 开放 `GET ai/rulings` 与 `ai.ruling.decide`，不能把管理路由加入 PL 桥。聊天 `onReview(null)` 表示打开统一裁决；其他审核设置入口仍由宿主处理。
+
+
+## 独立设置与紧凑裁决
+
+```javascript
+import {mountAISettings, mountRulings} from '/ai-ui/pack.js';
+const settings = mountAISettings(settingsTarget, client, {onChange, onReceipt});
+const queue = mountRulings(queueTarget, client, {
+  compact: true,
+  onChange,
+  onOpenSession: sessionId => conversation.resume({sessionId})
+});
+// 卸载调用 settings.destroy() / queue.destroy()，不销毁宿主 client。
+```
+
+`mountAISettings` 只读取 `ai/settings`，不轮询任务、裁决或对话；账户／权限／代际变化立即清除旧字段，迟到响应作废。只允许真实 KP，后端继续校验管理命令；权限保存携带当前 revision，冲突需刷新，不自动覆盖。`onReceipt` 接收保存失败或结果不明确时的 **AI 请求 ID**，供宿主查询原回执。服务商密钥仍由本机管理器设置。设置保存后由 `onChange` 通知宿主；未保存输入不会被普通宿主轮询重绘。
+
+`/ai-ui/settings.html` 为可直接打开的独立入口；当前宿主 iframe CSP 只允许原四个页面，新设置 HTML 尚未开放 iframe。需要内嵌时使用原生 `mountAISettings`，不绕过 CSP。分发新增 `settings.js/css/html`；固定拓扑构建中 `settings.js` 在 `styles.js`、`guard.js` 之后及 `pack.js` 之前，HTML 由 `page-entry.js` 的 settings 模式加载。
+
+`mountRulings(...,{compact:true})` 显示时间、来源、概要及操作，详情在模态浮窗中展开；完整修改默认折叠，风险填写、批准／拒绝及原回执核对沿用现有命令。未变化的轮询保留输入；裁决摘要／版本变化会替换详情，禁止沿用旧风险输入。`compact` 默认 false，原装配行为兼容。可见裁决增加 `initiator`；既有 `sessionId` 可直接用于打开关联会话。
+
+## 会话打开性能
+
+`GET ai/tasks` 可见条目增加 `sessionId: string | null`，与请求本身一起受权限、删除和角色过滤；无会话请求返回 null。配置包先用此字段直接定位，避免遍历所有会话详情；无需新增管理路由。没有扩大玩家读取范围。
+
+`mountChat` 的列表刷新直接使用 `aiSessions()` 同时返回的 access，不再先串行查询 `aiAccess()`；仅旧自定义客户端缺少 access 时回退一次。`mountChat`、三种视图的 `resume({sessionId})` 并行读取列表与目标会话，不先拉取旧会话。无参数仍恢复当前会话。包侧可按房间、账号、代际保留并移挂同一个组件，暂离时 suspend，回到指定会话时 resume；身份变化须销毁，不能把旧授权响应当永久缓存。
+
+服务端按选中会话的 requestIds 读取任务，单次构建派发／提案索引，保留每次来源复验与撤权处理。此优化减少网络往返、列表查找和重复扫描，不缩短模型推理时间。专项通过明确的请求次数与并行屏障验证；测量数值及适用范围见[工作台验收](../../../engineering/acceptance/ai-runtime/workbench-results.json)，不作为公网延迟保证。
+
+2026-11-19 工作台验收：81 项按测试 ID 去重通过，包含42项会话／请求／裁决、25项权限／知识、14项浏览器检查；复测不累加。桌面与390px截图、初跑失败原因、请求并行屏障、源码摘要和包侧独立验收边界见[结果记录](../../../engineering/acceptance/ai-runtime/workbench-results.json)。测试不调用真实模型、不改正式房间。
+
+
+## 高危裁决与资料申请
+
+设置组件和本机审核面板提供完整的查询、写入、外发、PL 及普通自动审批开关，字段见[会话权限](ai-session-access.md)。高危策略不可自动通过。`mountRulings` 详情展示服务端 diff/riskTags，人工批准绑定 explicitHighRiskDigest。
+
+`mountRulings` 可传 `onKnowledgeRequest(item)`：宿主打开披露分面选择器，用真实 knowledge preview 取得参数，再以 `digest:item.digest`（不是 expectedDigest）提交 ai.ruling.decide。无回调时禁止直接批准知识申请。底层 `createAITools(client).knowledgeRequests.submit(sessionId,requestId,id?)` 与 reconcile 可独立装配；命令走现有 ai/commands 路由，无需新增管理路由。玩家聊天已内置明确申请按钮及状态显示，点击前不创建申请。
+
+
+## 玩家创作申请接入
+
+三种嵌入视图及本机聊天共用 `mountChat`：输入区“提交创作申请”直接发送原输入；回答选项 `ask_kp_change` 和逐条申请按钮转交原 requestId。成功显示申请状态并防止重复点击；不会先调用模型或等个人资料查询成功。查询阻断原因对 PL 可见，堆栈／诊断仍仅 KP 可见。
+
+底层 `createAITools(client).playerRequests.submit({sessionId,text}, commandId?)` 或 `.submit({sessionId,requestId}, commandId?)` 返回安全申请回执。配置包桥需将 **ai.player.request** 加入本人命令白名单，不放行 ai.ruling.decide 或管理员命令。`mountAISettings` 新增 `allowPlayerRequests`（控件 id=player-requests），旧策略缺失时默认 true。通路、错误和权限见[会话权限](ai-session-access.md#玩家创作与配置申请)。
+
+KP 的 `mountRulings` 已支持 player_request 和“接收并生成方案”；既有 `onOpenSession` 收到审核会话 ID，无需额外业务批准回调。资料披露仍独立通过 onKnowledgeRequest 选择分面。配置包不得把“接收创作申请”显示成“修改已执行”或自动向 PL 复制 KP 生成内容。

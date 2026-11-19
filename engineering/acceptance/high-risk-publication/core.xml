@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="15" time="0.461" timestamp="2026-11-19T13:50:03.030497+08:00" hostname="LAPTOP-BIFSL64A"><testcase classname="tests.test_high_risk_host" name="test_add_replace_remove_projection_is_atomic_and_does_not_mutate_input" time="0.014" /><testcase classname="tests.test_high_risk_host" name="test_delete_referenced_configuration_never_cascades[active]" time="0.001" /><testcase classname="tests.test_high_risk_host" name="test_delete_referenced_configuration_never_cascades[archived]" time="0.001" /><testcase classname="tests.test_high_risk_host" name="test_new_ruleset_must_preserve_all_existing_behavior_bindings[configuration]" time="0.001" /><testcase classname="tests.test_high_risk_host" name="test_new_ruleset_must_preserve_all_existing_behavior_bindings[entity]" time="0.001" /><testcase classname="tests.test_high_risk_host" name="test_rule_dependencies_and_stale_configuration_changes_fail" time="0.001" /><testcase classname="tests.test_high_risk_host" name="test_inflight_flow_keeps_old_artifact_and_does_not_require_old_rule_in_new_catalog" time="0.001" /><testcase classname="tests.test_high_risk_host" name="test_item_family_configuration_changes_are_high_risk[item]" time="0.001" /><testcase classname="tests.test_high_risk_host" name="test_item_family_configuration_changes_are_high_risk[weapon]" time="0.001" /><testcase classname="tests.test_high_risk_host" name="test_item_family_configuration_changes_are_high_risk[bag]" time="0.001" /><testcase classname="tests.test_high_risk_host" name="test_core_source_data_remove_and_declared_maps_are_high_risk" time="0.001" /><testcase classname="tests.test_high_risk_host" name="test_full_room_requires_actual_kp_explicit_scope_and_authorizer" time="0.005" /><testcase classname="tests.test_high_risk_host" name="test_kp_room_private_chat_is_explicit_and_external_policy_still_applies" time="0.001" /><testcase classname="tests.test_high_risk_host" name="test_room_read_proof_rechecks_grant_and_original_content" time="0.002"><failure message="onlinecoc.errors.DomainError: SOURCE_STALE">def test_room_read_proof_rechecks_grant_and_original_content():
+        state=world();host=types.SimpleNamespace(ai_room_read_authorizer=lambda account:True)
+        args={'types':['room'],'query':'chat','limit':1}
+        page=query(host,state,'kp','search',args,read_scope='kp-room',external=True)
+        assert page['items']
+        reference=page['items'][0]['ref']
+        result=query(host,state,'kp','read',{'refs':[reference]},read_scope='kp-room',external=True)
+        proof={'scopeId':'scope-one','operation':'read','args':{'refs':[reference]},'initiator':'kp','readScope':'kp-room','digest':digest(result)}
+        context={'facts':{'dataQueries':[proof]}}
+&gt;       recheck(host,state,'kp',context)
+
+engineering\backend\tests\test_high_risk_host.py:122: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+engineering\backend\src\onlinecoc\data_queries.py:235: in recheck
+    require(digest(result)==proof['digest'],'SOURCE_STALE')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+condition = False, code = 'SOURCE_STALE'
+
+    def require(condition, code="INPUT_INVALID"):
+&gt;       if not condition: raise DomainError(code)
+                          ^^^^^^^^^^^^^^^^^^^^^^^
+E       onlinecoc.errors.DomainError: SOURCE_STALE
+
+engineering\backend\src\onlinecoc\errors.py:7: DomainError</failure></testcase><testcase classname="tests.test_high_risk_host" name="test_large_room_source_splits_without_omission_or_local_identity_access" time="0.002" /></testsuite></testsuites>

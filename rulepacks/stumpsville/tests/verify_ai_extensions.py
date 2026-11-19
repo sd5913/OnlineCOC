@@ -29,6 +29,7 @@ def main():
             assert item['status']=='pending' and len(item['changeSet']['configurations'])==1
             assert p1.request('/api/v1/ai/rulings',allow_error=True)['code']=='PERMISSION_DENIED'
             decision={'rulingId':item['rulingId'],'digest':item['digest'],'decision':'approve','riskDecisions':{r['id']:'验收接受该风险与覆盖限制' for r in item['risks']}}
+            if item.get('highRisk'):decision['explicitHighRiskDigest']=item['digest']
             assert result(ai(kp,'ai.ruling.decide',decision))['status']=='completed'
             assert result(ai(kp,'ai.ruling.decide',decision))['status']=='completed'
             checks.append('one whole configuration ruling publishes atomically; repeated approval is idempotent; PL cannot access the queue')

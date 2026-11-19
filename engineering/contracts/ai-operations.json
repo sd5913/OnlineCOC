@@ -391,6 +391,24 @@
       },
       "autoApproveConfigurations": {
         "type": "boolean"
+      },
+      "allowAdminRoomRead": {
+        "type": "boolean"
+      },
+      "allowDataQueries": {
+        "type": "boolean"
+      },
+      "allowRuntimeChanges": {
+        "type": "boolean"
+      },
+      "allowConfigurationChanges": {
+        "type": "boolean"
+      },
+      "allowKnowledgeRequests": {
+        "type": "boolean"
+      },
+      "allowPlayerRequests": {
+        "type": "boolean"
       }
     },
     "required": [
@@ -467,7 +485,7 @@
     "properties": {
       "rulingId": {
         "type": "string",
-        "pattern": "^(batch|proposal):[a-f0-9]{32}$"
+        "pattern": "^(batch|proposal|knowledge|player):[a-f0-9]{32}$"
       },
       "digest": {
         "type": "string",
@@ -487,7 +505,111 @@
           "minLength": 3,
           "maxLength": 1000
         }
+      },
+      "explicitHighRiskDigest": {
+        "type": "string",
+        "pattern": "^[a-f0-9]{64}$"
+      },
+      "disclosures": {
+        "type": "array",
+        "minItems": 1,
+        "items": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "op",
+            "args"
+          ],
+          "properties": {
+            "op": {
+              "const": "knowledge.observe"
+            },
+            "args": {
+              "type": "object"
+            }
+          }
+        }
       }
     }
+  },
+  "ai.knowledge.request": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "sessionId",
+      "requestId"
+    ],
+    "properties": {
+      "sessionId": {
+        "type": "string",
+        "pattern": "^[a-f0-9]{32}$"
+      },
+      "requestId": {
+        "type": "string",
+        "pattern": "^[a-f0-9]{32}$"
+      }
+    }
+  },
+  "ai.knowledge.reconcile": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "rulingId",
+      "digest"
+    ],
+    "properties": {
+      "rulingId": {
+        "type": "string",
+        "pattern": "^knowledge:[a-f0-9]{32}$"
+      },
+      "digest": {
+        "type": "string",
+        "pattern": "^[a-f0-9]{64}$"
+      }
+    }
+  },
+  "ai.player.request": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "sessionId"
+    ],
+    "properties": {
+      "sessionId": {
+        "type": "string",
+        "pattern": "^[a-f0-9]{32}$"
+      },
+      "requestId": {
+        "type": "string",
+        "pattern": "^[a-f0-9]{32}$"
+      },
+      "text": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 8000
+      }
+    },
+    "oneOf": [
+      {
+        "required": [
+          "requestId"
+        ],
+        "not": {
+          "required": [
+            "text"
+          ]
+        }
+      },
+      {
+        "required": [
+          "text"
+        ],
+        "not": {
+          "required": [
+            "requestId"
+          ]
+        }
+      }
+    ]
   }
 }

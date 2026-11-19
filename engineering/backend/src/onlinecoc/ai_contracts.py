@@ -45,7 +45,7 @@ def validator_digest():
     files = {p.name: p.read_text(encoding="utf-8") for p in sorted(directory.glob("*.py"))}
     for name in ("pack.py", "sandbox.py", "contracts.py"):
         files[name] = (directory.parent / name).read_text(encoding="utf-8")
-    for name in ("lua_runtime.py", "worker_process.py", "worker_entry.py", "registry.py", "execution.py", "model.py", "contracts.py", "version.py", "room_lifecycle.py", "ai_contracts.py", "ai_sources.py", "data_queries.py", "data_adapter.py"):
+    for name in ("lua_runtime.py", "worker_process.py", "worker_entry.py", "registry.py", "execution.py", "model.py", "contracts.py", "version.py", "room_lifecycle.py", "ai_contracts.py", "ai_sources.py", "data_queries.py", "data_adapter.py", "publication.py", "room_read.py"):
         files["host/" + name] = Path(__file__).with_name(name).read_text(encoding="utf-8")
     for name in ("models.json", "ai.json", "operations.json", "ai-operations.json"):
         files["contracts/" + name] = (ROOT / "contracts" / name).read_text(encoding="utf-8")
@@ -64,7 +64,10 @@ def validate_bundle(bundle):
     require(bundle["candidateDigest"] == candidate_digest(context, changes), "DIGEST_MISMATCH")
     require(len({c["id"] for c in changes["configurations"]}) == len(changes["configurations"]), "AI_INPUT_INVALID")
     for change in changes["configurations"]:
-        require(change["id"] == change["value"]["configurationId"] and ((change["kind"] == "add") == (change["expectedRevision"] is None)), "AI_INPUT_INVALID")
+        if change['kind'] == 'remove':
+            require(change['value'] is None and isinstance(change['expectedRevision'], str) and change['expectedRevision'], 'AI_INPUT_INVALID')
+        else:
+            require(change["id"] == change["value"]["configurationId"] and ((change["kind"] == "add") == (change["expectedRevision"] is None)), "AI_INPUT_INVALID")
     artifact = bundle["artifact"]
     validate_artifact(artifact)
     require(artifact["sources"] == changes["sources"] and artifact["data"] == changes["data"], "DIGEST_MISMATCH")

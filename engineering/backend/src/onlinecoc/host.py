@@ -436,7 +436,10 @@ class Host:
         validator = getattr(self, 'ai_access_validator', None)
         if validator:validator(state,context)
         from .ai_sources import check_sources
-        check_sources(self,state,account,context['sourceRefs'],context['memoryRefs'])
+        read_scope=context.get('facts',{}).get('aiReadScope')
+        if read_scope=='kp-room':
+            require(not context['facts'].get('strictPlayer') and context['facts'].get('sessionAccess',{}).get('level')!='player','PERMISSION_DENIED')
+        check_sources(self,state,account,context['sourceRefs'],context['memoryRefs'],read_scope=read_scope)
         from .data_queries import recheck
         recheck(self,state,account,context)
         if 'externalPolicyDigest' in context['facts']:
