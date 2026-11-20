@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-11-19T16:55:16.023135+08:00",
+  "uniqueTests": 17,
+  "passed": 17,
+  "runs": [
+    {
+      "file": "routes.xml",
+      "tests": 17,
+      "failure": 1,
+      "error": 0,
+      "skipped": 0
+    },
+    {
+      "file": "routes-retest.xml",
+      "tests": 16,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0
+    },
+    {
+      "file": "lan.xml",
+      "tests": 1,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0
+    }
+  ],
+  "deduplication": "Final runs routes-retest.xml and lan.xml contain 17 distinct test names; initial routes.xml is not accumulated.",
+  "sourceSha256": {
+    "engineering/backend/src/onlinecoc/ai_api.py": "33fe9003a971d37367c12c62f6cb020c56ea63df88701f01fafd49e807ae953a",
+    "engineering/client-sdk/client.js": "65f58610e6e44ffa44ebe83720bba8326ac05271a56abd23cb7bdc849e2f22fb",
+    "engineering/network-lan/src/onlinecoc_lan/gateway.py": "be312c2ea80ed4ce3471de12121f2c784c7bff28f43d1afa411c3da15b906d67",
+    "engineering/backend/tests/test_ai_debug_route.py": "cbfd86194530b820e34d4914bb1669777d9226b8dfa347b4b3e571790076c699",
+    "engineering/acceptance/ai-debug-route/test_lan.py": "189459e6af7125939a895ef07ca379b2ee9cc2add5d01871cdfa88ca7044a6f4"
+  },
+  "initialFailure": "LAN case initially ran in backend environment without aiohttp; moved unchanged assertions to test_lan.py and used existing networking environment. No dependency changes.",
+  "scope": [
+    "HTTP parameter and authenticated-account forwarding with synthetic AI ports",
+    "Actual SDK serialization/session-generation checks using Node",
+    "Actual loopback LAN HTTP and original Cookie/query/no-store forwarding"
+  ],
+  "limits": [
+    "AI Application permission/content projection uses a test double here; real AI module and package integration are separate.",
+    "No formal rooms, paid model calls, deployments or generic P2P/iframe allowlist changes."
+  ]
+}

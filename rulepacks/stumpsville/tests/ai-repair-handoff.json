@@ -1,0 +1,170 @@
+{
+  "checkedAt": "2026-11-20T01:22:41.213872+08:00",
+  "status": "Package repair and offline evidence ready; real API execution transferred to authorizing root chat.",
+  "newActualFiles": [
+    {
+      "path": "rulepacks/stumpsville/ui/ai-recovery.js",
+      "purpose": "HTTP error classification and status-preserving package transport"
+    },
+    {
+      "path": "rulepacks/stumpsville/tests/verify_ai_recovery.mjs",
+      "purpose": "Package transport and queue recovery regression"
+    },
+    {
+      "path": "rulepacks/stumpsville/tests/verify_ai_recovery_ui.py",
+      "purpose": "Actual package browser recovery, debug dialog and exported component validation"
+    },
+    {
+      "path": "rulepacks/stumpsville/tests/verify_ai_config_matrix.py",
+      "purpose": "Public HTTP configuration matrix and isolated restart batches"
+    },
+    {
+      "path": "rulepacks/stumpsville/tests/verify_ai_config_live.py",
+      "purpose": "Opt-in bounded three-batch DeepSeek matrix"
+    },
+    {
+      "path": "rulepacks/stumpsville/tests/ai-recovery-results.json",
+      "purpose": "Initial and final 15-case recovery evidence"
+    },
+    {
+      "path": "rulepacks/stumpsville/tests/ai-recovery-ui-results.json",
+      "purpose": "Six browser checks and preserved initial fixture failures"
+    },
+    {
+      "path": "rulepacks/stumpsville/tests/ai-config-matrix-results.json",
+      "purpose": "First cumulative room matrix, timeouts and storage exhaustion"
+    },
+    {
+      "path": "rulepacks/stumpsville/tests/ai-config-matrix-items-results.json",
+      "purpose": "Item batch and initial order-sensitive restart assertion"
+    },
+    {
+      "path": "rulepacks/stumpsville/tests/ai-config-matrix-map-results.json",
+      "purpose": "Map batch, scene coverage gap and restart"
+    },
+    {
+      "path": "rulepacks/stumpsville/tests/ai-config-matrix-rules-results.json",
+      "purpose": "Rule batch, unsupported source removal and restart"
+    },
+    {
+      "path": "rulepacks/stumpsville/tests/ai-config-matrix-restart-results.json",
+      "purpose": "Published item plus two/three loopback plans across restart"
+    },
+    {
+      "path": "rulepacks/stumpsville/tests/ai-config-matrix-summary.json",
+      "purpose": "Deduplicated latest results without erasing cumulative storage failure"
+    },
+    {
+      "path": "rulepacks/stumpsville/tests/ai-config-live-npc-results.json",
+      "purpose": "First live precondition failure before any external request; coordinator owns updates"
+    },
+    {
+      "path": "rulepacks/stumpsville/tests/ai-repair-handoff.json",
+      "purpose": "Root coordinator handoff and new actual file list"
+    },
+    {
+      "path": "rulepacks/stumpsville/docs/plans/ai-restart-configuration-matrix.md",
+      "purpose": "Coverage, failures, limits and live handoff commands"
+    },
+    {
+      "path": "rulepacks/stumpsville/docs/history/2026-11-20-development-records.md",
+      "purpose": "Archived development history replaced by concise current documentation"
+    }
+  ],
+  "modifiedExistingFiles": [
+    "rulepacks/stumpsville/README.md",
+    "rulepacks/stumpsville/tools/launch.py",
+    "rulepacks/stumpsville/tools/build_web.py",
+    "rulepacks/stumpsville/ui/ai-embedded.js",
+    "rulepacks/stumpsville/ui/keeper-queue.js",
+    "rulepacks/stumpsville/tests/README.md",
+    "rulepacks/stumpsville/docs/current/implementation.md",
+    "rulepacks/stumpsville/docs/current/integrations.md",
+    "rulepacks/stumpsville/docs/current/usage.md",
+    "rulepacks/stumpsville/docs/current/interface.md",
+    "rulepacks/stumpsville/docs/current/web.md",
+    "rulepacks/stumpsville/docs/current/ai-debugging.md",
+    "rulepacks/stumpsville/docs/plans/README.md",
+    "rulepacks/stumpsville/docs/history/README.md"
+  ],
+  "checks": {
+    "recovery": {
+      "passed": 15,
+      "total": 15,
+      "firstPassed": 5,
+      "firstTotal": 11
+    },
+    "browser": {
+      "passed": 6,
+      "total": 6
+    },
+    "offlineConfiguration": {
+      "passed": 20,
+      "total": 21,
+      "rates": {
+        "supported": {
+          "passed": 13,
+          "total": 14
+        },
+        "expected-rejection": {
+          "passed": 7,
+          "total": 7
+        }
+      }
+    },
+    "externalModelCallsThisChat": 0
+  },
+  "liveHandoff": {
+    "script": "rulepacks/stumpsville/tests/verify_ai_config_live.py",
+    "batches": [
+      "npc",
+      "items",
+      "map-rules"
+    ],
+    "callLimitPerBatch": 24,
+    "outputRoot": "rulepacks/stumpsville/tests/output/ai-live-current",
+    "resultPaths": [
+      "rulepacks/stumpsville/tests/ai-config-live-npc-results.json",
+      "rulepacks/stumpsville/tests/ai-config-live-items-results.json",
+      "rulepacks/stumpsville/tests/ai-config-live-map-rules-results.json"
+    ],
+    "httpTimeoutSeconds": 180,
+    "taskTimeoutSeconds": 300,
+    "pollDeadlineSeconds": 320,
+    "preconditionFix": "ai.access.update requires allowPlayerChat; supplied explicitly",
+    "payloadCategories": [
+      "author guides and API schemas",
+      "queried game definitions and Lua",
+      "isolated room entities and scene data",
+      "test conversation"
+    ],
+    "details": "rulepacks/stumpsville/docs/plans/ai-restart-configuration-matrix.md"
+  },
+  "followups": [
+    {
+      "id": "scene-player-text-update",
+      "code": "LIVE_SCENARIO_COVERAGE_MISSING",
+      "state": "blocked; not published",
+      "handling": "Retain authored C coverage guard; current live probes bind one entity only and do not execute the Python personal-menu projection."
+    },
+    {
+      "id": "cumulative-ai-storage",
+      "code": "STORE_FULL",
+      "publicCode": "STORAGE_UNAVAILABLE",
+      "generations": 158,
+      "usedBytes": 527106299,
+      "latestBytes": 7019617,
+      "maxBytes": 536870912,
+      "evidenceDirectory": "tests/output/ai-config-matrix-dbe1cfea",
+      "handling": "Root coordinator to register engineering issue; no store edits, pruning or bypass."
+    }
+  ],
+  "sourceSha256": {
+    "ui/ai-recovery.js": "c01ff6d34108de089e11ad87569f62158e4257974ff79a4c9c3e50cbc64c916a",
+    "ui/ai-embedded.js": "09dd1e85b832e9ee04d2b5902fa799b63fa074e51f169185f6adff17468f3e7b",
+    "ui/keeper-queue.js": "32f66edcbc16310b6097c4b0198d6b56b2c5f98ae8fe4b6e8e261217c14de961",
+    "tools/launch.py": "e05dd94f35492571f562df4c230a78d70533f8d418c8a2c9d96f72109b782380",
+    "tools/build_web.py": "6d998363e821aa325c19a0e0cedc1d2426ef82b2c891c267ed386a5759aaa813"
+  },
+  "hierarchyAction": "Root coordinator owns hierarchy prose and must add newActualFiles; ignored tests/output directories need no per-file entries."
+}

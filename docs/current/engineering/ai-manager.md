@@ -4,7 +4,7 @@
 - 文档子类：工程
 - 状态：有效
 - 创建日期：2026-11-13
-- 最后更新：2026-11-19
+- 最后更新：2026-11-20
 - 关联文档：[AI 运行时](ai-runtime.md)、[会话权限与执行批次](ai-session-access.md)、[模块入口](../../../engineering/ai/README.md)、[Stumpsville 接入计划](../../plans/stumpsville-ai-integration.md)、[工程索引](README.md)
 
 ## 使用入口
@@ -188,57 +188,18 @@ Python 直接集成使用 `Runtime` / `Application` / `Sessions` / `Proposals` /
 
 ## 本地延迟与测量
 
-此次定位到创建会话会为 pending、业务状态和回执重复校验/提交整个 AI 仓库；会话详情还会遍历无关请求及其提案。已将自包含会话命令合并为一次持久事务，并在任务查询前按本会话 requestIds 过滤。没有关闭最终校验或磁盘同步。
+会话命令将业务状态与幂等回执合并为一次 AI 仓库事务；详情按当前会话 requestIds 过滤。前端复用提交回执，仅轮询选中会话，生成中约 1.2 秒、空闲约 12 秒，后台标签暂停。
 
-前端创建成功直接使用 committed 回执渲染，不串行重读列表和详情；服务商和 KP 审核按需挂载，关闭审核即销毁。只轮询选中会话，生成中约 0.9—1.2 秒、空闲约 12 秒，后台标签不查询；不为全部房间后台加载历史。搜索仅覆盖房间名称及已加载会话，不是跨账号全文搜索。
-
-同机隔离存档，251 条请求（250 条无关历史＋1 条当前需求），每项 7 次样本：
-
-| 服务层调用 | 优化前中位数 | 优化后中位数 |
-| --- | --- | --- |
-| 新建会话 | 158.58 ms | 57.53 ms |
-| 当前会话详情 | 6.76 ms | 3.16 ms |
-| 会话列表 | 1.08 ms | 1.14 ms |
-
-创建约减少 64%，详情约减少 53%；列表没有明显改善。脚本新建 Host＋Runtime 为 724 ms，计时从 Python 导入后开始；它不代表整个服务启动。完整管理器进程到 HTTP 就绪的单样本为 1572.88 ms（约 1.57 秒），见[启动测量](../../../engineering/acceptance/ai-runtime/chat-startup.json)，包含解释器与导入，不含浏览器启动、旧存档和模型请求。没有充分证据宣称冷启动本身获得同等幅度优化。
-
-最终真实 Edge 浏览器中的新建会话单样本 50.24 ms，包含点击、HTTP 代理、宿主提交与界面更新；该样本为空的隔离测试房间，不可与 250 条历史的服务层样本混为同一负载。生成采用离线确定性服务商。DeepSeek 网络推理、三检执行、历史规模扩大后的完整仓库校验仍可能耗时；本轮没有改变为流式输出，也没有宣称缩短真实模型生成时间。
-
-证据：[优化前](../../../engineering/acceptance/ai-runtime/chat-performance-before.json)、[优化后](../../../engineering/acceptance/ai-runtime/chat-performance-after.json)、[浏览器](../../../engineering/acceptance/ai-runtime/chat-browser.json)。复测用 [benchmark_local.py](../../../engineering/ai/scripts/benchmark_local.py) 指向一个尚不存在的临时目录；不打开现有游戏存档、不调用模型。小样本是当前机器定位结果，不是高并发或长期负载保证。
+历史测量与负载条件见[开发记录](../../history/2026-11-20-ai-development-records.md)，复测脚本为 `engineering/ai/scripts/benchmark_local.py`。这些优化不代表真实模型推理提速。
 
 ## 验收与参考
 
-2026-11-17 聊天模板完成三轮迭代：第一轮 12 项既有回归通过；第二轮 5 项新交互测试通过；第三轮补充发送切换竞态，最终按测试 ID 去重 **27 项通过（含 6 项新增交互测试）**。末轮初跑 25 项通过、2 项旧定位断言失败；限定补全候选定位后，两项复测通过。见[逐轮结果与源码摘要](../../../engineering/acceptance/ai-runtime/chat-polish-results.json)。覆盖本机管理器、三种嵌入形态、390 px 窄容器/移动视口、引用详情与原子编辑、权限和归档删除；使用真实 Edge、隔离宿主及离线模型，无真实 API 消耗。前端优化不代表推理延迟优化。
+阶段测试、失败复验和早期决策已移入[开发记录](../../history/2026-11-20-ai-development-records.md)。各阶段计数不相加为当前全量结果。
 
-2026-11-16：日限额默认关闭、授权用量查询与可嵌入统计通过122项模块测试和9组树桩镇接入验收。证据见[用量验收](../../../engineering/acceptance/ai-runtime/usage-results.json)；覆盖额度重新启用、失败/取消/重启保留、旧记录、分页、原玩家归属、HTTP越权、真实Edge管理器及双网页玩家。全部为离线模型与隔离存档。
+权限和自动审批的当前规则统一见[会话权限](ai-session-access.md)，配置与来源审核统一见[裁决](ai-rulings.md)。
 
-2026-11-15：格式化回答、独立会话管理与设置已完成；51 项模块回归和 7 组树桩镇接入验收通过，细节及当前入口见[嵌入指南](ai-pack-embedding.md#验收)。结果、复验范围与源码摘要见[本轮记录](../../../engineering/acceptance/ai-runtime/rendering-sessions.json)。以下性能样本和阶段数字仍保留其原测量日期。
+## 2026-11-19 来源审核与调试
 
-2026-11-14 新增配置包专用入口、无界面工具和三种视图/HTML 入口，并对三条房间页面开放同源 iframe。生命周期、分发与验收见[嵌入说明](ai-pack-embedding.md)，证据见[嵌入阶段](../../../engineering/acceptance/ai-runtime/embeds.json)。
+聊天和裁决提供定位复制与显式调试导出；服务商面板区分 API 模型 ID、人工核验版本备注和响应标识，权限页明确外发缺口。详见[来源审核与调试](ai-debug-review.md)。
 
-2026-11-14 追加指令名称补全与语义引用编辑。最终 9 项专项全部通过，结果见[引用交互验收](../../../engineering/acceptance/ai-runtime/reference-ui.json)及[原型截图](../../../engineering/acceptance/ai-runtime/reference-ui-semantic.png)；覆盖原子增删/替换、撤销重做、剪贴板、光标中段补全、IME 组合事件边界、名称安全渲染、过期/迟到响应及原管理器生成审核流程。本次没有改动后端存储协议，也没有重新执行全部宿主测试；下述 337 项属于前一轮回归。
-
-2026-11-14 完整 AI＋宿主回归 335 项通过，末轮引用/事务/HTTP/会话/真实管理器浏览器专项 22 项通过；原操作台及真实启动复验 3 项通过；按测试 ID 去重共 337 项，无失败/跳过。按测试 ID 去重的最终结果见[本轮验收摘要](../../../engineering/acceptance/ai-runtime/chat.json)，各轮不相加当作新增测试。
-
-本轮覆盖真实 Windows DPAPI、管理器 CLI、房间文件夹、快捷引用与预览、版本及外发边界、提交/回执单次落盘和失败回滚、KP 生成→三检→批准→加载、归档重开、PL 隔离、锁定及原型角色切换。界面截图见[管理器](../../../engineering/acceptance/ai-runtime/chat-room.png)和[配置包原型](../../../engineering/acceptance/ai-runtime/chat-pack-prototype.png)。
-
-此前管理器 AM-0—AM-4 的 331 项去重验收及组件双挂载/迟到响应证据见[历史阶段记录](../../../engineering/acceptance/ai-runtime/manager.json)。此次浏览器使用离线确定性服务商，没有再次调用真实 DeepSeek；既有真实服务结果见 [deepseek-live.json](../../../engineering/acceptance/ai-runtime/deepseek-live.json)。配置包原型不写入树桩镇，真实 KP 试玩、完整本地化、非 Windows 保险库及跨设备完整配置发布未由此次测试证明。
-
-管理功能组织参考 [CC Switch 官方项目](https://github.com/farion1231/cc-switch)，查阅于 2026-11-13；2026-11-14 对话与房间分组参考 [ChatGPT Projects 官方说明](https://help.openai.com/en/articles/10169521-projects-in-chatgpt)，借鉴侧栏分组和独立会话的组织思路，不复制其代码或资源，也不把 ChatGPT 项目的功能直接作为本模块承诺。
-
-会话分级、玩家开关、批次动作／审批／原回执和删除语义统一维护于[会话权限与执行批次](ai-session-access.md)。配置删除、高危审批与管理员全读采用新版公开契约；包侧跨账本写入仍需另行适配。
-
-2026-11-16 验收：模块按测试 ID 去重 323 项、树桩镇 32 组通过，覆盖分级权限、直接排队、批次审批／恢复、归档／删除、双网页玩家及原生 KP。均使用隔离存档和离线服务，未调用真实模型或修改正式存档；[验收汇总](../../../engineering/acceptance/ai-runtime/session-access-results.json)保存逐项结果、复测关系和源码摘要。
-
-对话区现接入[语义引用与结构化选择](ai-responses.md)：精简正文，工具诊断单独展示，普通选择项填写输入框后再发送；玩家明确点击资料／创作申请按钮则提交对应原问题。
-
-输出修正次数默认 5，可在服务商编辑的调用限制中设置。运行时与配置自动批准分别配置；KP 的 AI 修改裁决队列统一处理批次与通过三检的配置。详细规则以[修改裁决](ai-rulings.md)和[输出修正](ai-responses.md#基础错误修正与用户决策)为准。
-
-2026-11-17 对话布局参照 [ChatGPT 网页入口](https://chatgpt.com/) 的清晰正文、底部输入区和新对话引导；本项目保留房间身份、数据引用和 KP 审核入口，使用自己的组件实现。
-
-2026-11-19：新增可独立挂载的 KP 服务／权限设置页、紧凑裁决详情弹窗；任务列表直接返回会话定位，恢复会话减少串行读取。接口、分发、iframe 限制与性能证据统一见[嵌入指南](ai-pack-embedding.md#独立设置与紧凑裁决)。
-
-
-2026-11-19：服务与权限面板及独立设置组件显式提供管理员全房间读取、AI 查询工具、运行时／配置写入、PL 使用／自愿申请、外发三范围及普通自动审批开关。高危修改固定要求人工核对完整候选和指纹，不能自动通过；具体默认值和申请流程以[会话权限](ai-session-access.md)及[裁决契约](ai-rulings.md)为准。
-
-玩家创作申请与资料披露分别设开关；输入区可直接提交创作需求，KP 接收后打开私有审核会话，后续变更仍人工批准。详见[申请规则](ai-session-access.md#玩家创作与配置申请)与[嵌入接口](ai-pack-embedding.md#玩家创作申请接入)。
+任务历史中的 sourceState/sourceError/sourceNotice/historicalReadOnly 由服务端给出；包侧自绘会话应展示 sourceNotice，并保留实际已完成状态。来源版本变化与授权失效的区别见[历史读取边界](ai-session-access.md#同房间重启与历史)。

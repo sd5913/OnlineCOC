@@ -17,6 +17,7 @@ import knowledge_client
 import action_errors
 import scene_knowledge
 import publication_sync
+import ai_review
 
 PACK = Path(__file__).resolve().parents[1]
 
@@ -464,6 +465,7 @@ class Package:
                       'channels': {} if preview else {**view['chatChannels'], **ScopedChat(self).channels(view if gm else {**view, 'role': 'player'})},
                       'canManage': is_kp and not preview,
                       'preview': bool(preview), 'previewKind': '包侧公开投影' if preview else None}
+            result['notifications'] = client.request('/notifications?after=0&limit=50')['items'] if not gm and not preview else []
             if gm:
                 result['knowledgeGrants']=client.request('/knowledge/grants/query',{'policyId':knowledge_client.POLICY,'status':'active','limit':50})
                 for grant in result['knowledgeGrants']['items']:
@@ -500,6 +502,13 @@ class Package:
                     for i in known_items if i['facetId']!='sheet']
             return result
 
+    def review_source(self, client, args):
+        with self.lock:
+            try:
+                return ai_review.source(self.state, client.request('/view'), args)
+            except ValueError as error:
+                raise PackageError(str(error)) from error
+
     def action(self, client, body):
         require(isinstance(body, dict) and set(body) == {'id', 'operation', 'args'}, '行动格式不正确')
         require(isinstance(body['id'], str) and re.fullmatch(r'[a-zA-Z0-9-]{8,80}', body['id']), '行动编号不正确')
@@ -510,7 +519,7 @@ class Package:
             account = view['accountId']
             key = account + ':' + body['id']
             require(not self.state.get('scenePending') or self.state['scenePending'] == key or
-                    body['operation'] in {'chat', 'note', 'draft', 'draft.roll', 'recap', 'share.receipt'},
+                    body['operation'] in {'chat', 'note', 'draft', 'draft.roll', 'recap', 'share.receipt', 'ai.review'},
                     '有场景结算尚待恢复，请发起者恢复原行动后再继续')
             fingerprint = hashlib.sha256(json.dumps(body, sort_keys=True, ensure_ascii=False).encode()).hexdigest()
             record = self.state['jobs'].get(key)
@@ -581,6 +590,7 @@ class Package:
             if after_view is not None:
                 MapVisibility(self).sync(after_view)
             if feedback:
+                self.notify_character_changes(job, view, after_view, body, record)
                 self.record_feedback(view, after_view, body, record, result)
             record.update(done=True, result=result)
             if body['operation'] == 'scene.autorun':
@@ -592,6 +602,37 @@ class Package:
                                                                  'commandIds': command_ids, 'time': time.time()})
             self.save()
             return result
+
+    def notify_character_changes(self, job, before_view, after_view, body, record):
+        """A reviewed KP action includes a durable, receipt-bound recipient notice."""
+        if before_view['role'] != 'kp' or 'before' not in record:
+            return
+        after = {x['owner']: {'name': x['name'], 'numbers': x['numbers']}
+                 for x in self.entities(after_view, 'sv.character')}
+        recipients = sorted(owner for owner, value in after.items()
+                            if owner != before_view['accountId'] and value != record['before'].get(owner))
+        sources = [s for key, s in record['steps'].items() if not key.startswith('notify-') and 'result' in s
+                   and s['envelope']['payload']['op'] in {'action.invoke','entity.create','entity.update','entity.patch','behavior.invoke'}
+                   and not (isinstance(s['result'],dict) and 'flowId' in s['result'])]
+        if not recipients or not sources:
+            return
+        source = sources[-1]['envelope']['payload']
+        title = {'grant':'发放装备','actor.update':'调整属性','remove':'移除物品','rest':'恢复状态','damage':'伤害结算','approve':'角色审核','resolve':'执行裁决'}.get(body['operation'],'角色变更')
+        args = {'recipientAccountIds':recipients,'text':'主持已完成'+title+'，请查看你的角色与行动记录。',
+                'sourceCommandId':source['commandId'],'sourceOp':source['op']}
+        if 'notificationPlan' not in record:
+            record['notificationPlan'] = args
+            self.save()
+        args = record['notificationPlan']
+        try:
+            delivered = job.command('notify-characters', 'notification.send', args)
+        except HostError as error:
+            # Keep the original durable job for recovery. Its completed steps are never replayed.
+            raise HostError({'httpStatus':503,'status':'unknown','code':'原修改已执行，通知发送未确认；请恢复原行动核对通知，不要重复发放',
+                             'sourceCommandId':source['commandId'],'notificationError':error.response.get('code')}) from error
+        record['notificationId'] = delivered['notificationId']
+        record['notificationRecipients'] = args['recipientAccountIds']
+        self.save()
 
     def failure_detail(self, error, record):
         if isinstance(error, HostError):
@@ -673,6 +714,8 @@ class Package:
                      'reason': request.get('reason', '') if owner in {caller, request.get('account')} else '',
                      'result': own_result, 'changes': self.character_changes(before.get(owner), after.get(owner)),
                      'time': time.time(), 'submittedAt': request.get('time', record['created'])}
+            if owner in record.get('notificationRecipients', []):
+                event['notificationId'] = record['notificationId']
             # Narrative approval records an answer; it does not imply a rule was run.
             event['mechanical'] = bool(record['steps']) and (not request or bool(request.get('resolution')) or kind in {'check', 'inventory', 'travel', 'transfer'})
             event['sourceMessageRefs']=copy.deepcopy(request.get('sourceMessageRefs',record.get('sourceMessages',[])))
@@ -730,6 +773,9 @@ class Package:
 
     def execute(self, job, view, op, args, request_id):
         account = view['accountId']
+        if op == 'notification.ack':
+            require(set(args) == {'notificationId'}, '通知确认参数无效')
+            return job.command('ack-notification', 'notification.ack', args)
         gm = view['role'] == 'kp'
         character = self.own_character(view)
         session = next(iter(self.entities(view, 'sv.session')), None)
@@ -740,6 +786,16 @@ class Package:
         job.view, job.session = view, session
         player_ops = {'draft', 'draft.roll', 'note', 'request', 'ready', 'check', 'inventory', 'chat', 'share.receipt', 'scene.action'}
         require(op in player_ops or gm, '需要主持权限')
+        if op == 'ai.review':
+            # Keep the original immutable source when recovering an already-sent envelope.
+            if job.record.get('aiReview'):
+                source = job.record['aiReview']['envelope']['args']['source']
+            else:
+                try:
+                    source = ai_review.source(self.state, view, args)
+                except ValueError as error:
+                    raise PackageError(str(error)) from error
+            return ai_review.submit(job, view, source)
         if op == 'initialize':
             return self.initialize(job)
         if op == 'session.start':

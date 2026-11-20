@@ -8,8 +8,8 @@ from .contracts import canonical, digest
 LOG = logging.getLogger(__name__)
 TOOLS = {'room_read_context', 'pack_read_contract', 'room_search_data',
          'room_read_data', 'room_read_chat', 'room_read_case', 'room_search_knowledge','room_read_knowledge',
-         'room_manage_catalog','room_read_management','room_read_sessions'}
-KEYS = {'types', 'query', 'limit', 'cursor', 'refs', 'fields', 'channelId', 'after', 'before','includeHistory','operations','section','offset','sessionId','archived'}
+         'pack_read_config_data','room_manage_catalog','room_read_management','room_read_sessions'}
+KEYS = {'file','path','types', 'query', 'limit', 'cursor', 'refs', 'fields', 'channelId', 'after', 'before','includeHistory','operations','section','offset','sessionId','archived'}
 KINDS = {'entity', 'config', 'rule', 'memory', 'channel', 'chat', 'event', 'ruling','room','knowledge'}
 
 

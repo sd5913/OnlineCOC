@@ -1016,5 +1016,67 @@
       "reason"
     ],
     "additionalProperties": false
+  },
+  "notification.send": {
+    "type": "object",
+    "properties": {
+      "recipientAccountIds": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "minItems": 1,
+        "maxItems": 100,
+        "uniqueItems": true
+      },
+      "text": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 2000
+      },
+      "sourceCommandId": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 200
+      },
+      "sourceOp": {
+        "enum": [
+          "entity.create",
+          "entity.update",
+          "entity.patch",
+          "entity.archive",
+          "relation.set",
+          "relation.remove",
+          "progress.set",
+          "asset.attach",
+          "asset.remove",
+          "action.invoke",
+          "behavior.invoke",
+          "publication.apply"
+        ]
+      }
+    },
+    "required": [
+      "recipientAccountIds",
+      "text",
+      "sourceCommandId",
+      "sourceOp"
+    ],
+    "additionalProperties": false
+  },
+  "notification.ack": {
+    "type": "object",
+    "properties": {
+      "notificationId": {
+        "type": "string",
+        "pattern": "^[a-f0-9]{64}$"
+      }
+    },
+    "required": [
+      "notificationId"
+    ],
+    "additionalProperties": false
   }
 }

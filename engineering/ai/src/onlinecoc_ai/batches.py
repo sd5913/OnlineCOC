@@ -11,7 +11,7 @@ from .access import policy, binding
 # Configuration/rule publication must use the existing A/B/C proposal path.
 HOST_OPS = ('entity.create','entity.patch','entity.update','entity.archive','relation.set','relation.remove',
     'progress.set','asset.attach','asset.remove','flow.respond','flow.retry','flow.cancel','room.status',
-    'member.add','member.update','action.invoke','behavior.invoke','chat.direct.open','chat.channel.create','chat.channel.update','chat.message.send','chat.message.share','chat.message.edit','chat.message.retract')
+    'member.add','member.update','notification.send','action.invoke','behavior.invoke','chat.direct.open','chat.channel.create','chat.channel.update','chat.message.send','chat.message.share','chat.message.edit','chat.message.retract')
 AI_OPS = ('ai.session.create','ai.session.update','ai.session.delete','ai.memory.create','ai.memory.confirm','ai.memory.revoke')
 ACTION = {'type':'object','additionalProperties':False,'required':['target','op','args'],
     'properties':{'target':{'enum':['host','ai']},'op':{'type':'string','maxLength':80},'args':{'type':'object'}}}
@@ -32,7 +32,7 @@ class Batches:
     def read(self, account, section, offset=0, limit=20):
         self.host.kp(account)
         state=self.host.state()
-        require(section in ('members','relations','progress','flows','waits','assets','room') and
+        require(section in ('members','relations','progress','flows','waits','assets','room','configurations') and
             type(offset) is int and offset>=0 and type(limit) is int and 1<=limit<=50,'INPUT_INVALID')
         value={k:state[k] for k in ('roomId','name','runId','status','activeRuleset')} if section=='room' else state[section]
         keys=sorted(value)
@@ -58,7 +58,13 @@ class Batches:
                     for item in value:visit(item)
             visit(schema)
             return {**schema,**({'$defs':definitions} if definitions else {})}
-        return {'host':{op:HOST_OPERATIONS[op] for op in HOST_OPS if op in HOST_OPERATIONS},
+        host_operations={op:copy.deepcopy(HOST_OPERATIONS[op]) for op in HOST_OPS if op in HOST_OPERATIONS}
+        if 'notification.send' in host_operations:
+            schema=host_operations['notification.send']
+            for field in ('sourceCommandId','sourceOp'):schema['properties'].pop(field,None)
+            schema['required']=[field for field in schema['required'] if field not in ('sourceCommandId','sourceOp')]+['sourceActionIndex']
+            schema['properties']['sourceActionIndex']={'type':'integer','minimum':0,'description':'Zero-based index of an earlier non-notification host action in this same reviewed batch. The server supplies its command ID and operation only after a committed receipt.'}
+        return {'host':host_operations,
             'ai':{op:local_schema(OPERATIONS[op]) for op in AI_OPS},
             'actions':self.host.catalog(account),
             'notice':'Propose immutable actions as kind=batch; every change awaits administrator approval. Configuration/rule edits use kind=draft and A/B/C review. No filesystem, credentials or permission-setting commands.'}
@@ -68,12 +74,16 @@ class Batches:
         require(Draft202012Validator(ACTIONS).is_valid(actions), 'INPUT_INVALID')
         require(len(canonical(actions)) <= 32*1024, 'BATCH_PAYLOAD_TOO_LARGE')
         catalog = self.catalog(account)
-        for action in actions:
+        for index,action in enumerate(actions):
             schema = catalog[action['target']].get(action['op'])
             require(schema is not None and Draft202012Validator(schema).is_valid(action['args']), 'BATCH_OPERATION_FORBIDDEN')
+            if action['op']=='notification.send':
+                source=action['args']['sourceActionIndex']
+                require(action['target']=='host' and type(source) is int and 0<=source<index and actions[source]['target']=='host' and actions[source]['op'] in HOST_OPERATIONS['notification.send']['properties']['sourceOp']['enum'],'NOTIFICATION_SOURCE_ACTION_INVALID')
 
-    def catalog_query(self, account, operations=None):
+    def catalog_query(self, account, operations=None, *, public_only=False):
         catalog=self.catalog(account)
+        if public_only:catalog['actions']={'omitted':True,'code':'EXTERNAL_SCOPE_DISABLED','requiredScope':'kp'}
         if operations is None:
             return {'mode':'index','host':list(catalog['host']),'ai':list(catalog['ai']),
                 'actions':catalog['actions'],
@@ -87,6 +97,8 @@ class Batches:
             access = binding(self.host, self.repository, request)
             require(access and access['level'] == 'administrator', 'PERMISSION_DENIED')
             self.validate_actions(account, actions)
+            from .history import require_current_evidence
+            require_current_evidence(context,{'kind':'batch','actions':actions})
             self.host.validate_ai_sources(self.host.state(), account, context)
             identifier = uuid.uuid4().hex
             record = {'batchId':identifier, 'sessionId':access['sessionId'], 'requestId':request['requestId'],
@@ -146,9 +158,16 @@ class Batches:
                         receipt=self.app.command(account,{'requestId':cid,'authorityEpoch':self.host.epoch,'op':action['op'],'args':action['args']})
                     else:
                         state=self.host.state();cat=self.host.catalog(account)
+                        host_args=copy.deepcopy(action['args'])
+                        if action['op']=='notification.send':
+                            source_index=host_args.pop('sourceActionIndex')
+                            source_id='ai-batch:'+record['batchId']+':'+str(source_index)
+                            source_entry=record['receipts'][source_index]
+                            require(source_entry['id']==source_id and source_entry['target']=='host' and source_entry['receipt']['status']=='committed','NOTIFICATION_SOURCE_NOT_COMMITTED')
+                            host_args.update(sourceCommandId=source_id,sourceOp=record['actions'][source_index]['op'])
                         receipt=self.host.command(account,{'protocolVersion':1,'type':'command','requestId':cid,'roomId':state['roomId'],
                             'payload':{'commandId':cid,'authorityEpoch':self.host.epoch,'runId':state['runId'],'catalogRevision':cat['revision'],
-                                'rulesetRevision':cat['rulesetRevision'],'op':action['op'],'args':action['args']}})
+                                'rulesetRevision':cat['rulesetRevision'],'op':action['op'],'args':host_args}})
                     entry['receipt']=receipt
                 except Exception as exc:
                     entry['receipt']={'status':'unknown','code':getattr(exc,'code','RESULT_UNKNOWN')}

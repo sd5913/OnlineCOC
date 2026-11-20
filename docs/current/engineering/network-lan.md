@@ -4,7 +4,7 @@
 - 文档子类：工程
 - 状态：有效
 - 创建日期：2026-11-09
-- 最后更新：2026-11-09
+- 最后更新：2026-11-19
 - 关联文档：[模块入口](../../../engineering/network-lan/README.md)、[Python 管理器](room-manager.md)、[验收](../../../tools/room-manager/docs/acceptance.md)
 
 ## 目标与模块边界
@@ -27,6 +27,8 @@ flowchart LR
 
 仅公开现有游戏/管理 API 白名单及通用操作台静态文件。`/api/v1/host-control/*` 始终不公开，该接口属于本机专用账号控制。拒绝编码路径歧义、路径穿越、跨来源请求、任意上游地址和上游重定向。KP 经网关拥有宿主原有的管理权限；普通玩家的权限仍由宿主决定。
 
+AI 调试增加单独的只读 `GET /api/v1/ai/debug` 白名单。必须提供至少一个 `sessionId`、`requestId` 或 `rulingId`（非空、最多 200 字符）；`includeContent` 默认 false，HTTP 仅接受字面 `true`／`false`。网关转发原账号 Cookie 与查询参数，宿主拒绝重复／未知参数并由 AI Application 复验当前访问权限；不生成导出命令或持久化回执。响应 `Cache-Control: no-store`，POST 同路径及其他 AI 路径不会随之开放。公开网页和 P2P 的 AI 接入仍通过配置包声明的服务桥，与本 LAN 白名单分别维护。SDK 对应 `Client.aiDebug(options)`；正文开关使用 JavaScript 布尔值。
+
 HTTP 请求体一般最多 64 KiB、素材 10 MiB；响应最多 16 MiB。默认最多 32 个并发 HTTP 请求和 32 个 WS 连接，构造 Config 可在 1—128 范围设置。WS 上行消息最多 64 KiB、下行分片 256 KiB，慢端发送超时 5 秒；宿主保持完整快照 2 MiB 限制。转发不提供缓存回放、离线提交或计算结果合并。
 
 网关使用独立事件循环线程；启动校验宿主协议 1、绑定失败返回错误。停止关闭远端 WS 和自身监听，不关闭宿主，不修改存档。客户端自动退避重连，恢复后建立新观察段，不能推断断线期间的完整历史。
@@ -42,3 +44,5 @@ Python 管理器的“局域网联机”页和 `RoomManager.exe --lan` 使用同
 ## 验证范围
 
 已在本机真实 WLAN IPv4 上验证两会话、身份隔离、HTTP/WS、业务命令、权限约束、网关启停与重连；已验证实际 Tk 面板与独立发布窗口。测试客户端仍运行在同一物理电脑上，不能据此宣称跨设备、防火墙穿越或不可信网络已验收。详细结果与截图见[验收报告](../../../tools/room-manager/docs/acceptance.md)。
+
+2026-11-19 的 AI 调试增量通过本机回环 HTTP 转发验收，验证 GET、原账号 Cookie、查询参数和 no-store，以及拒绝 POST／额外 AI／host-control 路径；路由、SDK 和环境边界见[本轮验收](../../../engineering/acceptance/ai-debug-route/README.md)。它不替代独立 AI 模块的正文授权与脱敏测试。

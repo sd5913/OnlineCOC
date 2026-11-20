@@ -18,3 +18,5 @@ export {bindReferenceDetails} from './reference-details.js';
 
 export {mountRulings} from './rulings.js';
 export {mountAISettings} from './settings.js';
+
+export {appendDebugTools,appendReviewSource} from './debug.js';

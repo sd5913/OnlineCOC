@@ -1,0 +1,1580 @@
+{
+  "checkedAt": "2026-11-20T12:06:22.602107+08:00",
+  "requestedModel": "deepseek-v4-pro",
+  "thinking": "disabled",
+  "callLimit": 20,
+  "cases": [
+    {
+      "id": "quoted-player-intent",
+      "goal": "来源第一人称属于player1；当前KP收到待审批次，不再询问是否提交",
+      "attempts": [
+        {
+          "task": {
+            "requestId": "cca2d160e768456f929fb4b441d3366b",
+            "sessionId": "f65a0721f18248a2bec1cad551cebc1e",
+            "status": "needs_input",
+            "createdAt": 1795147613.1673143,
+            "text": "请协助处理所引用的申请或裁决，核对当前资料后准备具体方案，修改另行提交我审核。",
+            "initiator": "kp",
+            "taskId": "0ce3c17e89b44cf4ba17113e2e69aece",
+            "proposalId": null,
+            "error": null,
+            "response": "当前角色木栗没有明确的“钱币”字段。要为他增加1枚钱币，请确认钱币在本包中对应哪类资源：",
+            "reviewSource": {
+              "kind": "package",
+              "sourceId": "stumpsville",
+              "category": "request",
+              "id": "player1:cfd90d9b-916d-454f-8b89-4a69a3d875cf",
+              "revision": "c3da4a3a7f5425421a438ed504f803cf87846d112868e1ab3a6f432fd3774955",
+              "title": "玩家行动申请",
+              "summary": "给我的角色增加1枚钱币，请直接准备给KP审核的指令包，不用再问我是否要提交。",
+              "context": {
+                "record": {
+                  "id": "player1:cfd90d9b-916d-454f-8b89-4a69a3d875cf",
+                  "account": "player1",
+                  "actor": "c936e93d536144dea94c4c5b9b52f837",
+                  "kind": "free",
+                  "args": {
+                    "kind": "free",
+                    "manual": true,
+                    "text": "给我的角色增加1枚钱币，请直接准备给KP审核的指令包，不用再问我是否要提交。"
+                  },
+                  "text": "给我的角色增加1枚钱币，请直接准备给KP审核的指令包，不用再问我是否要提交。",
+                  "status": "pending",
+                  "reason": "玩家主动申请",
+                  "location": 1,
+                  "time": 1795147612.8578372
+                },
+                "status": "pending",
+                "sourceLocator": {
+                  "kind": "request",
+                  "id": "player1:cfd90d9b-916d-454f-8b89-4a69a3d875cf"
+                }
+              },
+              "requestedBy": "player1",
+              "verification": "provided-snapshot",
+              "visibility": "kp"
+            },
+            "modelCalls": [
+              {
+                "requestedModel": "deepseek-v4-pro",
+                "returnedModel": "deepseek-v4-pro",
+                "systemFingerprint": "d400d062347a13495558bb956f2a0a0c",
+                "usage": {
+                  "prompt_tokens": 12395,
+                  "completion_tokens": 97,
+                  "total_tokens": 12492
+                },
+                "profileRevision": 6
+              },
+              {
+                "requestedModel": "deepseek-v4-pro",
+                "returnedModel": "deepseek-v4-pro",
+                "systemFingerprint": "d400d062347a13495558bb956f2a0a0c",
+                "usage": {
+                  "prompt_tokens": 12788,
+                  "completion_tokens": 166,
+                  "total_tokens": 12954
+                },
+                "profileRevision": 6
+              },
+              {
+                "requestedModel": "deepseek-v4-pro",
+                "returnedModel": "deepseek-v4-pro",
+                "systemFingerprint": "d400d062347a13495558bb956f2a0a0c",
+                "usage": {
+                  "prompt_tokens": 13790,
+                  "completion_tokens": 93,
+                  "total_tokens": 13883
+                },
+                "profileRevision": 6
+              },
+              {
+                "requestedModel": "deepseek-v4-pro",
+                "returnedModel": "deepseek-v4-pro",
+                "systemFingerprint": "d400d062347a13495558bb956f2a0a0c",
+                "usage": {
+                  "prompt_tokens": 16469,
+                  "completion_tokens": 83,
+                  "total_tokens": 16552
+                },
+                "profileRevision": 6
+              },
+              {
+                "requestedModel": "deepseek-v4-pro",
+                "returnedModel": "deepseek-v4-pro",
+                "systemFingerprint": "d400d062347a13495558bb956f2a0a0c",
+                "usage": {
+                  "prompt_tokens": 16681,
+                  "completion_tokens": 119,
+                  "total_tokens": 16800
+                },
+                "profileRevision": 6
+              },
+              {
+                "requestedModel": "deepseek-v4-pro",
+                "returnedModel": "deepseek-v4-pro",
+                "systemFingerprint": "d400d062347a13495558bb956f2a0a0c",
+                "usage": {
+                  "prompt_tokens": 18886,
+                  "completion_tokens": 228,
+                  "total_tokens": 19114
+                },
+                "profileRevision": 6
+              },
+              {
+                "requestedModel": "deepseek-v4-pro",
+                "returnedModel": "deepseek-v4-pro",
+                "systemFingerprint": "d400d062347a13495558bb956f2a0a0c",
+                "usage": {
+                  "prompt_tokens": 17215,
+                  "completion_tokens": 210,
+                  "total_tokens": 17425
+                },
+                "profileRevision": 6
+              },
+              {
+                "requestedModel": "deepseek-v4-pro",
+                "returnedModel": "deepseek-v4-pro",
+                "systemFingerprint": "d400d062347a13495558bb956f2a0a0c",
+                "usage": {
+                  "prompt_tokens": 17541,
+                  "completion_tokens": 194,
+                  "total_tokens": 17735
+                },
+                "profileRevision": 6
+              }
+            ],
+            "diagnostics": {
+              "schemaVersion": 1,
+              "stage": "completed",
+              "turn": 6,
+              "toolCalls": [
+                {
+                  "name": "room_search_data",
+                  "status": "completed",
+                  "argumentsDigest": "97b53926c007bda412cebd7573dde53b451fcaf637aecfbacedc3b583211bef2",
+                  "keys": [
+                    "limit",
+                    "query",
+                    "types"
+                  ],
+                  "unknownKeys": false,
+                  "turn": 0,
+                  "types": [
+                    "entity"
+                  ],
+                  "hasQuery": true
+                },
+                {
+                  "name": "room_read_data",
+                  "status": "completed",
+                  "argumentsDigest": "e695c5b5a27b00143f7fe8440b3fb0d06517c06cebb24ff5af5b8882fbdf5abb",
+                  "keys": [
+                    "refs"
+                  ],
+                  "unknownKeys": false,
+                  "turn": 1,
+                  "referenceCount": 1
+                },
+                {
+                  "name": "room_manage_catalog",
+                  "status": "completed",
+                  "argumentsDigest": "6f232d4cadb1e035532c1291bbcdd9943256c99c4a0be48cd7347a118d79cbe5",
+                  "keys": [
+                    "operations"
+                  ],
+                  "unknownKeys": false,
+                  "turn": 2
+                },
+                {
+                  "name": "room_read_management",
+                  "status": "completed",
+                  "argumentsDigest": "ee15a487760142b40a383b3f41a2219a431031b378b4977a26d1888108942b99",
+                  "keys": [
+                    "section"
+                  ],
+                  "unknownKeys": false,
+                  "turn": 3
+                },
+                {
+                  "name": "room_search_data",
+                  "status": "completed",
+                  "argumentsDigest": "6c502e317160b0eb2abadaefdb0b475ac6680fcd079a6b1ecd7a1a51e69eb04d",
+                  "keys": [
+                    "limit",
+                    "query",
+                    "types"
+                  ],
+                  "unknownKeys": false,
+                  "turn": 4,
+                  "types": [
+                    "room"
+                  ],
+                  "hasQuery": true
+                },
+                {
+                  "name": "room_read_data",
+                  "status": "rejected",
+                  "argumentsDigest": "93a430ea04379383e2d3b35ae78a736089bfd26825afe391cb6e13d284fb6061",
+                  "keys": [
+                    "fields",
+                    "refs"
+                  ],
+                  "unknownKeys": false,
+                  "turn": 5,
+                  "referenceCount": 1,
+                  "code": "INPUT_INVALID"
+                }
+              ],
+              "errors": [],
+              "outputFailures": [
+                {
+                  "attempt": 1,
+                  "code": "MODEL_JSON_INVALID",
+                  "path": "/"
+                }
+              ],
+              "contextBudget": {
+                "bytes": 69962,
+                "limitBytes": 262144,
+                "toolSchemaBytes": 2,
+                "toolMessageBytes": 20279
+              }
+            },
+            "choices": {
+              "prompt": "请选择要增加的钱币类型：",
+              "options": [
+                {
+                  "id": "a",
+                  "label": "银钱/世界资源",
+                  "text": "按 sv.world 提升与钱币相关的世界资源值，并通知木栗。"
+                },
+                {
+                  "id": "b",
+                  "label": "新增物品槽",
+                  "text": "先定义“钱币”物品，再发放1枚到木栗的空槽位。"
+                },
+                {
+                  "id": "c",
+                  "label": "修改角色数值",
+                  "text": "把1枚钱币计入木栗已有的某个数值字段（请说明字段名）。"
+                }
+              ]
+            }
+          },
+          "calls": 8
+        }
+      ],
+      "passed": false,
+      "errorType": "AssertionError",
+      "error": "No pending runtime batch: inspect task status, output and diagnostics",
+      "elapsedSecondsIncludingApproval": 30.87,
+      "realCalls": 8
+    },
+    {
+      "id": "stale-short-confirmation",
+      "goal": "旧依据变化后保留对话意图，短确认直接提交player2加2钱币待审批次",
+      "attempts": [
+        {
+          "task": {
+            "requestId": "430cf60d6f3048718ececf364ed11ef8",
+            "sessionId": "d4cef0f026e04ed09cafb495431fc19f",
+            "status": "review_ready",
+            "createdAt": 1795147667.7281537,
+            "ruling": {
+              "batchId": "97718d8f9bb1435ca91aa28031ec74eb",
+              "status": "pending",
+              "digest": "71ee60638fbdebec1061f67475d6f36da41b06153a047281541b07c5254832ed"
+            },
+            "text": "是的，按此方案处理，直接提交给我审批。",
+            "initiator": "kp",
+            "taskId": "c5553f24426a42d29ea18db9a912a939",
+            "proposalId": null,
+            "error": null,
+            "response": "将 [[entity:89442fca8fcf469c84f463ed191ecde9@8]] 的金币 pips 从 2 增加 2 枚至 4，并给 owner=player2 发通知。",
+            "modelCalls": [
+              {
+                "requestedModel": "deepseek-v4-pro",
+                "returnedModel": "deepseek-v4-pro",
+                "systemFingerprint": "d400d062347a13495558bb956f2a0a0c",
+                "usage": {
+                  "prompt_tokens": 12213,
+                  "completion_tokens": 122,
+                  "total_tokens": 12335
+                },
+                "profileRevision": 6
+              },
+              {
+                "requestedModel": "deepseek-v4-pro",
+                "returnedModel": "deepseek-v4-pro",
+                "systemFingerprint": "d400d062347a13495558bb956f2a0a0c",
+                "usage": {
+                  "prompt_tokens": 12795,
+                  "completion_tokens": 215,
+                  "total_tokens": 13010
+                },
+                "profileRevision": 6
+              },
+              {
+                "requestedModel": "deepseek-v4-pro",
+                "returnedModel": "deepseek-v4-pro",
+                "systemFingerprint": "d400d062347a13495558bb956f2a0a0c",
+                "usage": {
+                  "prompt_tokens": 16269,
+                  "completion_tokens": 109,
+                  "total_tokens": 16378
+                },
+                "profileRevision": 6
+              },
+              {
+                "requestedModel": "deepseek-v4-pro",
+                "returnedModel": "deepseek-v4-pro",
+                "systemFingerprint": "d400d062347a13495558bb956f2a0a0c",
+                "usage": {
+                  "prompt_tokens": 18863,
+                  "completion_tokens": 85,
+                  "total_tokens": 18948
+                },
+                "profileRevision": 6
+              },
+              {
+                "requestedModel": "deepseek-v4-pro",
+                "returnedModel": "deepseek-v4-pro",
+                "systemFingerprint": "d400d062347a13495558bb956f2a0a0c",
+                "usage": {
+                  "prompt_tokens": 21342,
+                  "completion_tokens": 202,
+                  "total_tokens": 21544
+                },
+                "profileRevision": 6
+              },
+              {
+                "requestedModel": "deepseek-v4-pro",
+                "returnedModel": "deepseek-v4-pro",
+                "systemFingerprint": "d400d062347a13495558bb956f2a0a0c",
+                "usage": {
+                  "prompt_tokens": 23780,
+                  "completion_tokens": 50,
+                  "total_tokens": 23830
+                },
+                "profileRevision": 6
+              },
+              {
+                "requestedModel": "deepseek-v4-pro",
+                "returnedModel": "deepseek-v4-pro",
+                "systemFingerprint": "d400d062347a13495558bb956f2a0a0c",
+                "usage": {
+                  "prompt_tokens": 24177,
+                  "completion_tokens": 152,
+                  "total_tokens": 24329
+                },
+                "profileRevision": 6
+              }
+            ],
+            "diagnostics": {
+              "schemaVersion": 1,
+              "stage": "output_validate",
+              "turn": 6,
+              "toolCalls": [
+                {
+                  "name": "room_read_management",
+                  "status": "completed",
+                  "argumentsDigest": "ee15a487760142b40a383b3f41a2219a431031b378b4977a26d1888108942b99",
+                  "keys": [
+                    "section"
+                  ],
+                  "unknownKeys": false,
+                  "turn": 0
+                },
+                {
+                  "name": "room_search_data",
+                  "status": "completed",
+                  "argumentsDigest": "bb2d6e2ff842af30ac1498358b2194082a3979eee210e9b62f128067e781ec65",
+                  "keys": [
+                    "limit",
+                    "query",
+                    "types"
+                  ],
+                  "unknownKeys": false,
+                  "turn": 0,
+                  "types": [
+                    "entity"
+                  ],
+                  "hasQuery": true
+                },
+                {
+                  "name": "room_read_data",
+                  "status": "completed",
+                  "argumentsDigest": "7d2c091ef7d2f05b4892c7864360d9dcef8ff2363e5b89e5a35ef207e473a4b4",
+                  "keys": [
+                    "refs"
+                  ],
+                  "unknownKeys": false,
+                  "turn": 1,
+                  "referenceCount": 1
+                },
+                {
+                  "name": "room_manage_catalog",
+                  "status": "completed",
+                  "argumentsDigest": "016ab4436cfa43f424f76aa3665244233299efc253625542688c2964ced626e0",
+                  "keys": [
+                    "operations"
+                  ],
+                  "unknownKeys": false,
+                  "turn": 1
+                },
+                {
+                  "name": "room_manage_catalog",
+                  "status": "completed",
+                  "argumentsDigest": "d6c5f462e7e77b14fa59859a23bac615094bf2f6ad066105e18f18881cd213ab",
+                  "keys": [
+                    "operations"
+                  ],
+                  "unknownKeys": false,
+                  "turn": 2
+                },
+                {
+                  "name": "room_manage_catalog",
+                  "status": "completed",
+                  "argumentsDigest": "a29f4202ad6c92ac1e07487f324de622c79d6abac9ba1f4f9f727d6530ca8ab8",
+                  "keys": [
+                    "operations"
+                  ],
+                  "unknownKeys": false,
+                  "turn": 3
+                },
+                {
+                  "name": "room_manage_catalog",
+                  "status": "completed",
+                  "argumentsDigest": "299cf17963f9a23dcbcbc4185ed8086c6d2a631326b6c22f9810d9be5c7e2cd8",
+                  "keys": [
+                    "operations"
+                  ],
+                  "unknownKeys": false,
+                  "turn": 4
+                },
+                {
+                  "name": "room_manage_catalog",
+                  "status": "completed",
+                  "argumentsDigest": "3c798622019d3f8ccdfedf8c216f1a0f0fd037105acf2503f247d083a964ea82",
+                  "keys": [
+                    "operations"
+                  ],
+                  "unknownKeys": false,
+                  "turn": 5
+                }
+              ],
+              "errors": [],
+              "outputFailures": [],
+              "contextBudget": {
+                "bytes": 103245,
+                "limitBytes": 262144,
+                "toolSchemaBytes": 2,
+                "toolMessageBytes": 55014
+              }
+            },
+            "batchId": "97718d8f9bb1435ca91aa28031ec74eb"
+          },
+          "calls": 20,
+          "ruling": {
+            "sessionId": "d4cef0f026e04ed09cafb495431fc19f",
+            "requestId": "c5553f24426a42d29ea18db9a912a939",
+            "summary": "将 [[entity:89442fca8fcf469c84f463ed191ecde9@8]] 的金币 pips 从 2 增加 2 枚至 4，并给 owner=player2 发通知。",
+            "status": "pending",
+            "createdAt": 1795147703.1849744,
+            "digest": "71ee60638fbdebec1061f67475d6f36da41b06153a047281541b07c5254832ed",
+            "actions": [
+              {
+                "target": "host",
+                "op": "entity.update",
+                "args": {
+                  "id": "89442fca8fcf469c84f463ed191ecde9",
+                  "numbers": {
+                    "pips": 4
+                  }
+                }
+              },
+              {
+                "target": "host",
+                "op": "notification.send",
+                "args": {
+                  "recipientAccountIds": [
+                    "player2"
+                  ],
+                  "text": "已为你的角色增加 2 枚钱币，当前金币为 4。",
+                  "sourceActionIndex": 0
+                }
+              }
+            ],
+            "receipts": [],
+            "rulingId": "batch:97718d8f9bb1435ca91aa28031ec74eb",
+            "kind": "runtime",
+            "canDecide": true,
+            "risks": [],
+            "initiator": "kp"
+          },
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "plan": {
+        "requestId": "960ebce6d3614bfdba03eee9a34232c6",
+        "sessionId": "d4cef0f026e04ed09cafb495431fc19f",
+        "status": "review_ready",
+        "createdAt": 1795147645.125476,
+        "text": "给 player2 的角色增加2枚钱币。先读取角色当前钱币并说明具体方案，暂不生成指令包，等我下一条同意后再提交。",
+        "initiator": "kp",
+        "taskId": "04d7ccd884df4d1e9ef1d479796474ed",
+        "proposalId": null,
+        "error": null,
+        "response": "已读取 player2 的角色 [[entity:89442fca8fcf469c84f463ed191ecde9@7]]「豆叶」。该角色的金币由 `pips` 字段保存，当前为 **2**。\n\n- 方案：将 `pips` 从 2 改为 4（增加 2 枚钱币），字段 `entity.patch`，只改这一个数值。\n- 保留：HP/属性、背包槽位、地点、剧情等一律不动。\n- 本包没有金币对应的物品槽，钱币由 `pips` 独立记录，点击确认后我会生成待批指令包（含给 player2 的通知）。\n\n回复同意后我再提交。",
+        "modelCalls": [
+          {
+            "requestedModel": "deepseek-v4-pro",
+            "returnedModel": "deepseek-v4-pro",
+            "systemFingerprint": "d400d062347a13495558bb956f2a0a0c",
+            "usage": {
+              "prompt_tokens": 11977,
+              "completion_tokens": 125,
+              "total_tokens": 12102
+            },
+            "profileRevision": 6
+          },
+          {
+            "requestedModel": "deepseek-v4-pro",
+            "returnedModel": "deepseek-v4-pro",
+            "systemFingerprint": "d400d062347a13495558bb956f2a0a0c",
+            "usage": {
+              "prompt_tokens": 12364,
+              "completion_tokens": 165,
+              "total_tokens": 12529
+            },
+            "profileRevision": 6
+          },
+          {
+            "requestedModel": "deepseek-v4-pro",
+            "returnedModel": "deepseek-v4-pro",
+            "systemFingerprint": "d400d062347a13495558bb956f2a0a0c",
+            "usage": {
+              "prompt_tokens": 13362,
+              "completion_tokens": 124,
+              "total_tokens": 13486
+            },
+            "profileRevision": 6
+          },
+          {
+            "requestedModel": "deepseek-v4-pro",
+            "profileRevision": 6
+          },
+          {
+            "requestedModel": "deepseek-v4-pro",
+            "returnedModel": "deepseek-v4-pro",
+            "systemFingerprint": "d400d062347a13495558bb956f2a0a0c",
+            "usage": {
+              "prompt_tokens": 14360,
+              "completion_tokens": 170,
+              "total_tokens": 14530
+            },
+            "profileRevision": 6
+          }
+        ],
+        "diagnostics": {
+          "schemaVersion": 1,
+          "stage": "completed",
+          "turn": 3,
+          "toolCalls": [
+            {
+              "name": "room_search_data",
+              "status": "completed",
+              "argumentsDigest": "4f702babb77e916f73fc40a805e2f67a79a3006c3fcda3c4733ccbc8ef876b9d",
+              "keys": [
+                "limit",
+                "query",
+                "types"
+              ],
+              "unknownKeys": false,
+              "turn": 0,
+              "types": [
+                "entity"
+              ],
+              "hasQuery": true
+            },
+            {
+              "name": "room_read_data",
+              "status": "completed",
+              "argumentsDigest": "748756c5d2161446b36a57c9284ec0ad5f03dbd0af4acd409bbb2ed529a53024",
+              "keys": [
+                "refs"
+              ],
+              "unknownKeys": false,
+              "turn": 1,
+              "referenceCount": 1
+            },
+            {
+              "name": "pack_read_config_data",
+              "status": "completed",
+              "argumentsDigest": "352c8a3c9e6b1d073aea72faafcea9ab6d2596ea77236d3db24991b366c5e53b",
+              "keys": [
+                "file",
+                "limit",
+                "path"
+              ],
+              "unknownKeys": false,
+              "turn": 2
+            }
+          ],
+          "errors": [],
+          "outputFailures": [
+            {
+              "attempt": 1,
+              "code": "PROVIDER_EMPTY_OUTPUT",
+              "path": "/"
+            }
+          ],
+          "contextBudget": {
+            "bytes": 58518,
+            "limitBytes": 262144,
+            "toolSchemaBytes": 6335,
+            "toolMessageBytes": 6704
+          }
+        }
+      },
+      "historicalDisplay": {
+        "status": "stale",
+        "text": "给 player2 的角色增加2枚钱币。先读取角色当前钱币并说明具体方案，暂不生成指令包，等我下一条同意后再提交。",
+        "response": "已读取 player2 的角色 [[entity:89442fca8fcf469c84f463ed191ecde9@7]]「豆叶」。该角色的金币由 `pips` 字段保存，当前为 **2**。\n\n- 方案：将 `pips` 从 2 改为 4（增加 2 枚钱币），字段 `entity.patch`，只改这一个数值。\n- 保留：HP/属性、背包槽位、地点、剧情等一律不动。\n- 本包没有金币对应的物品槽，钱币由 `pips` 独立记录，点击确认后我会生成待批指令包（含给 player2 的通知）。\n\n回复同意后我再提交。",
+        "error": null,
+        "sourceState": "stale",
+        "sourceError": "BASELINE_STALE",
+        "sourceNotice": "历史回答的资料依据已变化，仅用于理解此前意图；涉及修改时必须重新查询当前资料并另行审核。",
+        "historicalReadOnly": true
+      },
+      "elapsedSecondsIncludingApproval": 69.84,
+      "realCalls": 12
+    }
+  ],
+  "executionChecks": [
+    {
+      "id": "repeat-confirm-no-replay",
+      "passed": true,
+      "rulingId": "batch:97718d8f9bb1435ca91aa28031ec74eb"
+    }
+  ],
+  "calls": [
+    {
+      "injected": false,
+      "httpStatus": 200,
+      "seconds": 2.16,
+      "usage": {
+        "prompt_tokens": 12395,
+        "completion_tokens": 97,
+        "total_tokens": 12492,
+        "prompt_tokens_details": {
+          "cached_tokens": 7936
+        },
+        "prompt_cache_hit_tokens": 7936,
+        "prompt_cache_miss_tokens": 4459
+      },
+      "finishReasons": [
+        "tool_calls"
+      ]
+    },
+    {
+      "injected": false,
+      "httpStatus": 200,
+      "seconds": 2.59,
+      "usage": {
+        "prompt_tokens": 12788,
+        "completion_tokens": 166,
+        "total_tokens": 12954,
+        "prompt_tokens_details": {
+          "cached_tokens": 12288
+        },
+        "prompt_cache_hit_tokens": 12288,
+        "prompt_cache_miss_tokens": 500
+      },
+      "finishReasons": [
+        "tool_calls"
+      ]
+    },
+    {
+      "injected": false,
+      "httpStatus": 200,
+      "seconds": 2.93,
+      "usage": {
+        "prompt_tokens": 13790,
+        "completion_tokens": 93,
+        "total_tokens": 13883,
+        "prompt_tokens_details": {
+          "cached_tokens": 12672
+        },
+        "prompt_cache_hit_tokens": 12672,
+        "prompt_cache_miss_tokens": 1118
+      },
+      "finishReasons": [
+        "tool_calls"
+      ]
+    },
+    {
+      "injected": false,
+      "httpStatus": 200,
+      "seconds": 1.93,
+      "usage": {
+        "prompt_tokens": 16469,
+        "completion_tokens": 83,
+        "total_tokens": 16552,
+        "prompt_tokens_details": {
+          "cached_tokens": 13696
+        },
+        "prompt_cache_hit_tokens": 13696,
+        "prompt_cache_miss_tokens": 2773
+      },
+      "finishReasons": [
+        "tool_calls"
+      ]
+    },
+    {
+      "injected": false,
+      "httpStatus": 200,
+      "seconds": 2.21,
+      "usage": {
+        "prompt_tokens": 16681,
+        "completion_tokens": 119,
+        "total_tokens": 16800,
+        "prompt_tokens_details": {
+          "cached_tokens": 16384
+        },
+        "prompt_cache_hit_tokens": 16384,
+        "prompt_cache_miss_tokens": 297
+      },
+      "finishReasons": [
+        "tool_calls"
+      ]
+    },
+    {
+      "injected": false,
+      "httpStatus": 200,
+      "seconds": 3.37,
+      "usage": {
+        "prompt_tokens": 18886,
+        "completion_tokens": 228,
+        "total_tokens": 19114,
+        "prompt_tokens_details": {
+          "cached_tokens": 16768
+        },
+        "prompt_cache_hit_tokens": 16768,
+        "prompt_cache_miss_tokens": 2118
+      },
+      "finishReasons": [
+        "tool_calls"
+      ]
+    },
+    {
+      "injected": false,
+      "httpStatus": 200,
+      "seconds": 2.96,
+      "usage": {
+        "prompt_tokens": 17215,
+        "completion_tokens": 210,
+        "total_tokens": 17425,
+        "prompt_tokens_details": {
+          "cached_tokens": 3328
+        },
+        "prompt_cache_hit_tokens": 3328,
+        "prompt_cache_miss_tokens": 13887
+      },
+      "finishReasons": [
+        "stop"
+      ]
+    },
+    {
+      "injected": false,
+      "httpStatus": 200,
+      "seconds": 3.11,
+      "usage": {
+        "prompt_tokens": 17541,
+        "completion_tokens": 194,
+        "total_tokens": 17735,
+        "prompt_tokens_details": {
+          "cached_tokens": 17152
+        },
+        "prompt_cache_hit_tokens": 17152,
+        "prompt_cache_miss_tokens": 389
+      },
+      "finishReasons": [
+        "stop"
+      ]
+    },
+    {
+      "injected": false,
+      "httpStatus": 200,
+      "seconds": 2.18,
+      "usage": {
+        "prompt_tokens": 11977,
+        "completion_tokens": 125,
+        "total_tokens": 12102,
+        "prompt_tokens_details": {
+          "cached_tokens": 11904
+        },
+        "prompt_cache_hit_tokens": 11904,
+        "prompt_cache_miss_tokens": 73
+      },
+      "finishReasons": [
+        "tool_calls"
+      ]
+    },
+    {
+      "injected": false,
+      "httpStatus": 200,
+      "seconds": 2.52,
+      "usage": {
+        "prompt_tokens": 12364,
+        "completion_tokens": 165,
+        "total_tokens": 12529,
+        "prompt_tokens_details": {
+          "cached_tokens": 11904
+        },
+        "prompt_cache_hit_tokens": 11904,
+        "prompt_cache_miss_tokens": 460
+      },
+      "finishReasons": [
+        "tool_calls"
+      ]
+    },
+    {
+      "injected": false,
+      "httpStatus": 200,
+      "seconds": 2.33,
+      "usage": {
+        "prompt_tokens": 13362,
+        "completion_tokens": 124,
+        "total_tokens": 13486,
+        "prompt_tokens_details": {
+          "cached_tokens": 12288
+        },
+        "prompt_cache_hit_tokens": 12288,
+        "prompt_cache_miss_tokens": 1074
+      },
+      "finishReasons": [
+        "tool_calls"
+      ]
+    },
+    {
+      "injected": false,
+      "httpStatus": 200,
+      "seconds": 3.03,
+      "usage": {
+        "prompt_tokens": 14348,
+        "completion_tokens": 154,
+        "total_tokens": 14502,
+        "prompt_tokens_details": {
+          "cached_tokens": 13312
+        },
+        "prompt_cache_hit_tokens": 13312,
+        "prompt_cache_miss_tokens": 1036
+      },
+      "finishReasons": [
+        "stop"
+      ]
+    },
+    {
+      "injected": false,
+      "httpStatus": 200,
+      "seconds": 3.25,
+      "usage": {
+        "prompt_tokens": 14360,
+        "completion_tokens": 170,
+        "total_tokens": 14530,
+        "prompt_tokens_details": {
+          "cached_tokens": 14336
+        },
+        "prompt_cache_hit_tokens": 14336,
+        "prompt_cache_miss_tokens": 24
+      },
+      "finishReasons": [
+        "stop"
+      ]
+    },
+    {
+      "injected": false,
+      "httpStatus": 200,
+      "seconds": 2.41,
+      "usage": {
+        "prompt_tokens": 12213,
+        "completion_tokens": 122,
+        "total_tokens": 12335,
+        "prompt_tokens_details": {
+          "cached_tokens": 5504
+        },
+        "prompt_cache_hit_tokens": 5504,
+        "prompt_cache_miss_tokens": 6709
+      },
+      "finishReasons": [
+        "tool_calls"
+      ]
+    },
+    {
+      "injected": false,
+      "httpStatus": 200,
+      "seconds": 2.78,
+      "usage": {
+        "prompt_tokens": 12795,
+        "completion_tokens": 215,
+        "total_tokens": 13010,
+        "prompt_tokens_details": {
+          "cached_tokens": 12160
+        },
+        "prompt_cache_hit_tokens": 12160,
+        "prompt_cache_miss_tokens": 635
+      },
+      "finishReasons": [
+        "tool_calls"
+      ]
+    },
+    {
+      "injected": false,
+      "httpStatus": 200,
+      "seconds": 2.22,
+      "usage": {
+        "prompt_tokens": 16269,
+        "completion_tokens": 109,
+        "total_tokens": 16378,
+        "prompt_tokens_details": {
+          "cached_tokens": 12928
+        },
+        "prompt_cache_hit_tokens": 12928,
+        "prompt_cache_miss_tokens": 3341
+      },
+      "finishReasons": [
+        "tool_calls"
+      ]
+    },
+    {
+      "injected": false,
+      "httpStatus": 200,
+      "seconds": 1.88,
+      "usage": {
+        "prompt_tokens": 18863,
+        "completion_tokens": 85,
+        "total_tokens": 18948,
+        "prompt_tokens_details": {
+          "cached_tokens": 16256
+        },
+        "prompt_cache_hit_tokens": 16256,
+        "prompt_cache_miss_tokens": 2607
+      },
+      "finishReasons": [
+        "tool_calls"
+      ]
+    },
+    {
+      "injected": false,
+      "httpStatus": 200,
+      "seconds": 3.12,
+      "usage": {
+        "prompt_tokens": 21342,
+        "completion_tokens": 202,
+        "total_tokens": 21544,
+        "prompt_tokens_details": {
+          "cached_tokens": 18816
+        },
+        "prompt_cache_hit_tokens": 18816,
+        "prompt_cache_miss_tokens": 2526
+      },
+      "finishReasons": [
+        "tool_calls"
+      ]
+    },
+    {
+      "injected": false,
+      "httpStatus": 200,
+      "seconds": 1.72,
+      "usage": {
+        "prompt_tokens": 23780,
+        "completion_tokens": 50,
+        "total_tokens": 23830,
+        "prompt_tokens_details": {
+          "cached_tokens": 21248
+        },
+        "prompt_cache_hit_tokens": 21248,
+        "prompt_cache_miss_tokens": 2532
+      },
+      "finishReasons": [
+        "tool_calls"
+      ]
+    },
+    {
+      "injected": false,
+      "httpStatus": 200,
+      "seconds": 3.1,
+      "usage": {
+        "prompt_tokens": 24177,
+        "completion_tokens": 152,
+        "total_tokens": 24329,
+        "prompt_tokens_details": {
+          "cached_tokens": 3328
+        },
+        "prompt_cache_hit_tokens": 3328,
+        "prompt_cache_miss_tokens": 20849
+      },
+      "finishReasons": [
+        "stop"
+      ]
+    }
+  ],
+  "realSaveChanged": false,
+  "evidenceDirectory": "tests/output/review-identity-live-deepseek-v4-pro-9c913983",
+  "previousRuns": [
+    {
+      "passed": false,
+      "rates": {
+        "firstAttemptPassed": 1,
+        "totalCases": 2,
+        "firstAttemptRate": 0.5,
+        "note": "小样本专项；执行验证另列，不代表全部跑团需求成功率"
+      },
+      "realCalls": 12,
+      "confirmedTokens": 202140,
+      "failureAnalysis": {
+        "category": "runtime-status-premature",
+        "cause": "api.tasks replaced a still-generating follow-up status with stale because its historical intent was old; harness ended before response completed",
+        "modelSemanticOutcome": "undetermined for second case",
+        "rawEvidencePreserved": true
+      },
+      "evidenceDirectory": "tests/output/review-identity-live-deepseek-v4-pro-7d835b4d"
+    }
+  ],
+  "usage": {
+    "schemaVersion": 1,
+    "scopeId": "e2e1e5e4ab32426aa9f589370abecbb5",
+    "scope": "room",
+    "timezone": "UTC",
+    "from": "2026-11-14",
+    "to": "2026-11-20",
+    "totals": {
+      "calls": 20,
+      "settledCalls": 19,
+      "pendingCalls": 0,
+      "uncertainCalls": 1,
+      "confirmedTokens": 309976,
+      "promptTokens": 307267,
+      "completionTokens": 2709,
+      "missingBreakdownCalls": 0,
+      "pendingReservedTokens": 0,
+      "uncertainReservedTokens": 66610,
+      "accountedTokens": 376586
+    },
+    "byDay": [
+      {
+        "date": "2026-11-20",
+        "calls": 20,
+        "settledCalls": 19,
+        "pendingCalls": 0,
+        "uncertainCalls": 1,
+        "confirmedTokens": 309976,
+        "promptTokens": 307267,
+        "completionTokens": 2709,
+        "missingBreakdownCalls": 0,
+        "pendingReservedTokens": 0,
+        "uncertainReservedTokens": 66610,
+        "accountedTokens": 376586
+      }
+    ],
+    "byProfile": [
+      {
+        "profileId": "deepseek-main",
+        "model": "deepseek-v4-pro",
+        "calls": 20,
+        "settledCalls": 19,
+        "pendingCalls": 0,
+        "uncertainCalls": 1,
+        "confirmedTokens": 309976,
+        "promptTokens": 307267,
+        "completionTokens": 2709,
+        "missingBreakdownCalls": 0,
+        "pendingReservedTokens": 0,
+        "uncertainReservedTokens": 66610,
+        "accountedTokens": 376586
+      }
+    ],
+    "budgetsToday": [
+      {
+        "profileId": "deepseek-main",
+        "date": "2026-11-20",
+        "dailyTokenBudget": null,
+        "enabled": false,
+        "accountedTokens": 376586,
+        "remainingTokens": null
+      }
+    ],
+    "items": [
+      {
+        "callId": "76970240dd354ebd94fcfbfcc18351cc",
+        "date": "2026-11-20",
+        "profileId": "deepseek-main",
+        "model": "deepseek-v4-pro",
+        "requestId": "430cf60d6f3048718ececf364ed11ef8",
+        "sessionId": "d4cef0f026e04ed09cafb495431fc19f",
+        "status": "confirmed",
+        "taskStatus": "review_ready",
+        "createdAt": 1795147698.661862,
+        "calls": 1,
+        "settledCalls": 1,
+        "pendingCalls": 0,
+        "uncertainCalls": 0,
+        "confirmedTokens": 24329,
+        "promptTokens": 24177,
+        "completionTokens": 152,
+        "missingBreakdownCalls": 0,
+        "pendingReservedTokens": 0,
+        "uncertainReservedTokens": 0,
+        "accountedTokens": 24329
+      },
+      {
+        "callId": "54dc55f2b35345bb957f16984cf148ac",
+        "date": "2026-11-20",
+        "profileId": "deepseek-main",
+        "model": "deepseek-v4-pro",
+        "requestId": "430cf60d6f3048718ececf364ed11ef8",
+        "sessionId": "d4cef0f026e04ed09cafb495431fc19f",
+        "status": "confirmed",
+        "taskStatus": "review_ready",
+        "createdAt": 1795147695.040486,
+        "calls": 1,
+        "settledCalls": 1,
+        "pendingCalls": 0,
+        "uncertainCalls": 0,
+        "confirmedTokens": 23830,
+        "promptTokens": 23780,
+        "completionTokens": 50,
+        "missingBreakdownCalls": 0,
+        "pendingReservedTokens": 0,
+        "uncertainReservedTokens": 0,
+        "accountedTokens": 23830
+      },
+      {
+        "callId": "b1c5968dbdd84b9daaf211f31d404cc0",
+        "date": "2026-11-20",
+        "profileId": "deepseek-main",
+        "model": "deepseek-v4-pro",
+        "requestId": "430cf60d6f3048718ececf364ed11ef8",
+        "sessionId": "d4cef0f026e04ed09cafb495431fc19f",
+        "status": "confirmed",
+        "taskStatus": "review_ready",
+        "createdAt": 1795147690.070127,
+        "calls": 1,
+        "settledCalls": 1,
+        "pendingCalls": 0,
+        "uncertainCalls": 0,
+        "confirmedTokens": 21544,
+        "promptTokens": 21342,
+        "completionTokens": 202,
+        "missingBreakdownCalls": 0,
+        "pendingReservedTokens": 0,
+        "uncertainReservedTokens": 0,
+        "accountedTokens": 21544
+      },
+      {
+        "callId": "c2a692e80b874f0b8b957755ba40a20e",
+        "date": "2026-11-20",
+        "profileId": "deepseek-main",
+        "model": "deepseek-v4-pro",
+        "requestId": "430cf60d6f3048718ececf364ed11ef8",
+        "sessionId": "d4cef0f026e04ed09cafb495431fc19f",
+        "status": "confirmed",
+        "taskStatus": "review_ready",
+        "createdAt": 1795147686.082571,
+        "calls": 1,
+        "settledCalls": 1,
+        "pendingCalls": 0,
+        "uncertainCalls": 0,
+        "confirmedTokens": 18948,
+        "promptTokens": 18863,
+        "completionTokens": 85,
+        "missingBreakdownCalls": 0,
+        "pendingReservedTokens": 0,
+        "uncertainReservedTokens": 0,
+        "accountedTokens": 18948
+      },
+      {
+        "callId": "50f17b4667f64d579806a0f0695378f9",
+        "date": "2026-11-20",
+        "profileId": "deepseek-main",
+        "model": "deepseek-v4-pro",
+        "requestId": "430cf60d6f3048718ececf364ed11ef8",
+        "sessionId": "d4cef0f026e04ed09cafb495431fc19f",
+        "status": "confirmed",
+        "taskStatus": "review_ready",
+        "createdAt": 1795147681.918806,
+        "calls": 1,
+        "settledCalls": 1,
+        "pendingCalls": 0,
+        "uncertainCalls": 0,
+        "confirmedTokens": 16378,
+        "promptTokens": 16269,
+        "completionTokens": 109,
+        "missingBreakdownCalls": 0,
+        "pendingReservedTokens": 0,
+        "uncertainReservedTokens": 0,
+        "accountedTokens": 16378
+      },
+      {
+        "callId": "254b8284388541e299d48e4e6382f633",
+        "date": "2026-11-20",
+        "profileId": "deepseek-main",
+        "model": "deepseek-v4-pro",
+        "requestId": "430cf60d6f3048718ececf364ed11ef8",
+        "sessionId": "d4cef0f026e04ed09cafb495431fc19f",
+        "status": "confirmed",
+        "taskStatus": "review_ready",
+        "createdAt": 1795147675.933845,
+        "calls": 1,
+        "settledCalls": 1,
+        "pendingCalls": 0,
+        "uncertainCalls": 0,
+        "confirmedTokens": 13010,
+        "promptTokens": 12795,
+        "completionTokens": 215,
+        "missingBreakdownCalls": 0,
+        "pendingReservedTokens": 0,
+        "uncertainReservedTokens": 0,
+        "accountedTokens": 13010
+      },
+      {
+        "callId": "a2e6dc1335c74a24b29fd2e82f60e190",
+        "date": "2026-11-20",
+        "profileId": "deepseek-main",
+        "model": "deepseek-v4-pro",
+        "requestId": "430cf60d6f3048718ececf364ed11ef8",
+        "sessionId": "d4cef0f026e04ed09cafb495431fc19f",
+        "status": "confirmed",
+        "taskStatus": "review_ready",
+        "createdAt": 1795147670.76497,
+        "calls": 1,
+        "settledCalls": 1,
+        "pendingCalls": 0,
+        "uncertainCalls": 0,
+        "confirmedTokens": 12335,
+        "promptTokens": 12213,
+        "completionTokens": 122,
+        "missingBreakdownCalls": 0,
+        "pendingReservedTokens": 0,
+        "uncertainReservedTokens": 0,
+        "accountedTokens": 12335
+      },
+      {
+        "callId": "f1359814755641409e5e779f3bb63b81",
+        "date": "2026-11-20",
+        "profileId": "deepseek-main",
+        "model": "deepseek-v4-pro",
+        "requestId": "960ebce6d3614bfdba03eee9a34232c6",
+        "sessionId": "d4cef0f026e04ed09cafb495431fc19f",
+        "status": "confirmed",
+        "taskStatus": "review_ready",
+        "createdAt": 1795147659.731741,
+        "calls": 1,
+        "settledCalls": 1,
+        "pendingCalls": 0,
+        "uncertainCalls": 0,
+        "confirmedTokens": 14530,
+        "promptTokens": 14360,
+        "completionTokens": 170,
+        "missingBreakdownCalls": 0,
+        "pendingReservedTokens": 0,
+        "uncertainReservedTokens": 0,
+        "accountedTokens": 14530
+      },
+      {
+        "callId": "74cba63579574be2b3b2d2e88a3fe1dd",
+        "date": "2026-11-20",
+        "profileId": "deepseek-main",
+        "model": "deepseek-v4-pro",
+        "requestId": "960ebce6d3614bfdba03eee9a34232c6",
+        "sessionId": "d4cef0f026e04ed09cafb495431fc19f",
+        "status": "uncertain",
+        "taskStatus": "review_ready",
+        "createdAt": 1795147656.343123,
+        "calls": 1,
+        "settledCalls": 0,
+        "pendingCalls": 0,
+        "uncertainCalls": 1,
+        "confirmedTokens": 0,
+        "promptTokens": 0,
+        "completionTokens": 0,
+        "missingBreakdownCalls": 0,
+        "pendingReservedTokens": 0,
+        "uncertainReservedTokens": 66610,
+        "accountedTokens": 66610
+      },
+      {
+        "callId": "2f4317d617244c2ebe886b39a73b2eb6",
+        "date": "2026-11-20",
+        "profileId": "deepseek-main",
+        "model": "deepseek-v4-pro",
+        "requestId": "960ebce6d3614bfdba03eee9a34232c6",
+        "sessionId": "d4cef0f026e04ed09cafb495431fc19f",
+        "status": "confirmed",
+        "taskStatus": "review_ready",
+        "createdAt": 1795147653.0993,
+        "calls": 1,
+        "settledCalls": 1,
+        "pendingCalls": 0,
+        "uncertainCalls": 0,
+        "confirmedTokens": 13486,
+        "promptTokens": 13362,
+        "completionTokens": 124,
+        "missingBreakdownCalls": 0,
+        "pendingReservedTokens": 0,
+        "uncertainReservedTokens": 0,
+        "accountedTokens": 13486
+      },
+      {
+        "callId": "5109d4f7953546a3af5c57a65ef5d04c",
+        "date": "2026-11-20",
+        "profileId": "deepseek-main",
+        "model": "deepseek-v4-pro",
+        "requestId": "960ebce6d3614bfdba03eee9a34232c6",
+        "sessionId": "d4cef0f026e04ed09cafb495431fc19f",
+        "status": "confirmed",
+        "taskStatus": "review_ready",
+        "createdAt": 1795147649.48999,
+        "calls": 1,
+        "settledCalls": 1,
+        "pendingCalls": 0,
+        "uncertainCalls": 0,
+        "confirmedTokens": 12529,
+        "promptTokens": 12364,
+        "completionTokens": 165,
+        "missingBreakdownCalls": 0,
+        "pendingReservedTokens": 0,
+        "uncertainReservedTokens": 0,
+        "accountedTokens": 12529
+      },
+      {
+        "callId": "8b80d40408a442c9ae84b60253143cdd",
+        "date": "2026-11-20",
+        "profileId": "deepseek-main",
+        "model": "deepseek-v4-pro",
+        "requestId": "960ebce6d3614bfdba03eee9a34232c6",
+        "sessionId": "d4cef0f026e04ed09cafb495431fc19f",
+        "status": "confirmed",
+        "taskStatus": "review_ready",
+        "createdAt": 1795147646.696953,
+        "calls": 1,
+        "settledCalls": 1,
+        "pendingCalls": 0,
+        "uncertainCalls": 0,
+        "confirmedTokens": 12102,
+        "promptTokens": 11977,
+        "completionTokens": 125,
+        "missingBreakdownCalls": 0,
+        "pendingReservedTokens": 0,
+        "uncertainReservedTokens": 0,
+        "accountedTokens": 12102
+      },
+      {
+        "callId": "e52feb78cdea417da17c9a781763ea36",
+        "date": "2026-11-20",
+        "profileId": "deepseek-main",
+        "model": "deepseek-v4-pro",
+        "requestId": "cca2d160e768456f929fb4b441d3366b",
+        "sessionId": "f65a0721f18248a2bec1cad551cebc1e",
+        "status": "confirmed",
+        "taskStatus": "needs_input",
+        "createdAt": 1795147638.934183,
+        "calls": 1,
+        "settledCalls": 1,
+        "pendingCalls": 0,
+        "uncertainCalls": 0,
+        "confirmedTokens": 17735,
+        "promptTokens": 17541,
+        "completionTokens": 194,
+        "missingBreakdownCalls": 0,
+        "pendingReservedTokens": 0,
+        "uncertainReservedTokens": 0,
+        "accountedTokens": 17735
+      },
+      {
+        "callId": "688e75a6736b4f5cad91d5daa4ffd6a8",
+        "date": "2026-11-20",
+        "profileId": "deepseek-main",
+        "model": "deepseek-v4-pro",
+        "requestId": "cca2d160e768456f929fb4b441d3366b",
+        "sessionId": "f65a0721f18248a2bec1cad551cebc1e",
+        "status": "confirmed",
+        "taskStatus": "needs_input",
+        "createdAt": 1795147635.127706,
+        "calls": 1,
+        "settledCalls": 1,
+        "pendingCalls": 0,
+        "uncertainCalls": 0,
+        "confirmedTokens": 17425,
+        "promptTokens": 17215,
+        "completionTokens": 210,
+        "missingBreakdownCalls": 0,
+        "pendingReservedTokens": 0,
+        "uncertainReservedTokens": 0,
+        "accountedTokens": 17425
+      },
+      {
+        "callId": "b74633fbde4b435d9af86e0dacaf05e1",
+        "date": "2026-11-20",
+        "profileId": "deepseek-main",
+        "model": "deepseek-v4-pro",
+        "requestId": "cca2d160e768456f929fb4b441d3366b",
+        "sessionId": "f65a0721f18248a2bec1cad551cebc1e",
+        "status": "confirmed",
+        "taskStatus": "needs_input",
+        "createdAt": 1795147630.816564,
+        "calls": 1,
+        "settledCalls": 1,
+        "pendingCalls": 0,
+        "uncertainCalls": 0,
+        "confirmedTokens": 19114,
+        "promptTokens": 18886,
+        "completionTokens": 228,
+        "missingBreakdownCalls": 0,
+        "pendingReservedTokens": 0,
+        "uncertainReservedTokens": 0,
+        "accountedTokens": 19114
+      },
+      {
+        "callId": "32b66cd6b06347a5b3314dfa98033339",
+        "date": "2026-11-20",
+        "profileId": "deepseek-main",
+        "model": "deepseek-v4-pro",
+        "requestId": "cca2d160e768456f929fb4b441d3366b",
+        "sessionId": "f65a0721f18248a2bec1cad551cebc1e",
+        "status": "confirmed",
+        "taskStatus": "needs_input",
+        "createdAt": 1795147627.354662,
+        "calls": 1,
+        "settledCalls": 1,
+        "pendingCalls": 0,
+        "uncertainCalls": 0,
+        "confirmedTokens": 16800,
+        "promptTokens": 16681,
+        "completionTokens": 119,
+        "missingBreakdownCalls": 0,
+        "pendingReservedTokens": 0,
+        "uncertainReservedTokens": 0,
+        "accountedTokens": 16800
+      },
+      {
+        "callId": "34cf0efb72824224a34650959a08c7c3",
+        "date": "2026-11-20",
+        "profileId": "deepseek-main",
+        "model": "deepseek-v4-pro",
+        "requestId": "cca2d160e768456f929fb4b441d3366b",
+        "sessionId": "f65a0721f18248a2bec1cad551cebc1e",
+        "status": "confirmed",
+        "taskStatus": "needs_input",
+        "createdAt": 1795147624.653424,
+        "calls": 1,
+        "settledCalls": 1,
+        "pendingCalls": 0,
+        "uncertainCalls": 0,
+        "confirmedTokens": 16552,
+        "promptTokens": 16469,
+        "completionTokens": 83,
+        "missingBreakdownCalls": 0,
+        "pendingReservedTokens": 0,
+        "uncertainReservedTokens": 0,
+        "accountedTokens": 16552
+      },
+      {
+        "callId": "1cf45c84cd5d40fc972bbe4fff0c0db1",
+        "date": "2026-11-20",
+        "profileId": "deepseek-main",
+        "model": "deepseek-v4-pro",
+        "requestId": "cca2d160e768456f929fb4b441d3366b",
+        "sessionId": "f65a0721f18248a2bec1cad551cebc1e",
+        "status": "confirmed",
+        "taskStatus": "needs_input",
+        "createdAt": 1795147620.956858,
+        "calls": 1,
+        "settledCalls": 1,
+        "pendingCalls": 0,
+        "uncertainCalls": 0,
+        "confirmedTokens": 13883,
+        "promptTokens": 13790,
+        "completionTokens": 93,
+        "missingBreakdownCalls": 0,
+        "pendingReservedTokens": 0,
+        "uncertainReservedTokens": 0,
+        "accountedTokens": 13883
+      },
+      {
+        "callId": "91ccf9ae643e4bcbbb522106dbc53f81",
+        "date": "2026-11-20",
+        "profileId": "deepseek-main",
+        "model": "deepseek-v4-pro",
+        "requestId": "cca2d160e768456f929fb4b441d3366b",
+        "sessionId": "f65a0721f18248a2bec1cad551cebc1e",
+        "status": "confirmed",
+        "taskStatus": "needs_input",
+        "createdAt": 1795147616.748624,
+        "calls": 1,
+        "settledCalls": 1,
+        "pendingCalls": 0,
+        "uncertainCalls": 0,
+        "confirmedTokens": 12954,
+        "promptTokens": 12788,
+        "completionTokens": 166,
+        "missingBreakdownCalls": 0,
+        "pendingReservedTokens": 0,
+        "uncertainReservedTokens": 0,
+        "accountedTokens": 12954
+      },
+      {
+        "callId": "d08cd66ebc7546bbbacfb9315301ba95",
+        "date": "2026-11-20",
+        "profileId": "deepseek-main",
+        "model": "deepseek-v4-pro",
+        "requestId": "cca2d160e768456f929fb4b441d3366b",
+        "sessionId": "f65a0721f18248a2bec1cad551cebc1e",
+        "status": "confirmed",
+        "taskStatus": "needs_input",
+        "createdAt": 1795147613.880983,
+        "calls": 1,
+        "settledCalls": 1,
+        "pendingCalls": 0,
+        "uncertainCalls": 0,
+        "confirmedTokens": 12492,
+        "promptTokens": 12395,
+        "completionTokens": 97,
+        "missingBreakdownCalls": 0,
+        "pendingReservedTokens": 0,
+        "uncertainReservedTokens": 0,
+        "accountedTokens": 12492
+      }
+    ],
+    "nextBefore": null
+  },
+  "persistentProviderConfigUnchanged": true,
+  "realCalls": 20,
+  "confirmedTokens": 324478,
+  "returnedModels": [
+    "deepseek-v4-pro"
+  ],
+  "modelOutputRepairFailures": 2,
+  "rates": {
+    "firstAttemptPassed": 1,
+    "totalCases": 2,
+    "firstAttemptRate": 0.5,
+    "note": "按用户请求计，包含额度内自动格式修正；原始输出修正另列。小样本专项，不代表全部跑团需求成功率"
+  },
+  "passed": false,
+  "sourceDigests": {
+    "ai/guide.md": "eca4f145f94c02e013109dd02c5cc894a2b8c7dc9db0cd9d5bea6cbb912422a1",
+    "ai/game-terms.json": "b958fbedcd7af47ce2f8b330545018cc2c3976f82f1169ace50a3c54e24f6b00"
+  },
+  "testConfiguration": {
+    "maxOutputTokens": 8192,
+    "maxToolRounds": 6,
+    "maxRepairAttempts": 5,
+    "maxTransportRetries": 0,
+    "thinking": "disabled"
+  }
+}

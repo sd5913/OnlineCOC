@@ -40,12 +40,16 @@ SLOTS = re.compile(r'[a-zA-Z0-9_-]{1,40}')
 STATIC = {'': ('ui/index.html', 'text/html; charset=utf-8'),
           'app.js': ('ui/app.js', 'text/javascript; charset=utf-8'),
           'chat.js': ('ui/chat.js', 'text/javascript; charset=utf-8'),
+          'ruling-card.js': ('ui/ruling-card.js', 'text/javascript; charset=utf-8'),
+          'reference-view.js': ('ui/reference-view.js', 'text/javascript; charset=utf-8'),
+          'keeper-rulings.js': ('ui/keeper-rulings.js', 'text/javascript; charset=utf-8'),
           'keeper-queue.js': ('ui/keeper-queue.js', 'text/javascript; charset=utf-8'),
           'dice.js': ('ui/dice.js', 'text/javascript; charset=utf-8'),
           'effects.js': ('ui/effects.js', 'text/javascript; charset=utf-8'),
           'map.js': ('ui/map.js', 'text/javascript; charset=utf-8'),
           'ai.js': ('ui/ai.js', 'text/javascript; charset=utf-8'),
           'ai-embedded.js': ('ui/ai-embedded.js', 'text/javascript; charset=utf-8'),
+          'ai-recovery.js': ('ui/ai-recovery.js', 'text/javascript; charset=utf-8'),
           'i18n.js': ('ui/i18n.js', 'text/javascript; charset=utf-8'),
           'messageformat.js': ('ui/messageformat.js', 'text/javascript; charset=utf-8'),
           'locales/zh-CN/ui.json': ('locales/zh-CN/ui.json', 'application/json'),
@@ -342,6 +346,8 @@ def create_app(runtime):
                         with runtime.package.lock:
                             return ScopedChat(runtime.package).history(client, json.loads(body))
                     return response(await asyncio.to_thread(history))
+                if path == 'package/ai-source' and request.method == 'POST':
+                    return response(await asyncio.to_thread(runtime.package.review_source, client, json.loads(body)))
                 if path == 'package/ai' and request.method == 'POST':
                     if len(body) > 65536:
                         return response({'code': 'REQUEST_TOO_LARGE'}, 413)

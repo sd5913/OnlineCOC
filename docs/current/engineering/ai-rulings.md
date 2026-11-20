@@ -4,7 +4,7 @@
 - 文档子类：工程
 - 状态：有效
 - 创建日期：2026-11-16
-- 最后更新：2026-11-19
+- 最后更新：2026-11-20
 - 关联文档：[会话权限](ai-session-access.md)、[回答约定](ai-responses.md)、[嵌入组件](ai-pack-embedding.md)、[数据查询](ai-data-query.md)
 
 ## 一次提交，一次裁决
@@ -30,13 +30,21 @@
 
 `autoApproveBatches` 和 `autoApproveConfigurations` 默认关闭，只控制允许范围内的普通变更，执行人为保存策略的 KP。配置自动批准仍需 A/B/C 和可发布来源。来自 player_request 的审核会话始终人工批准，普通修改也不适用自动策略。`allowRuntimeChanges`、`allowConfigurationChanges` 可关闭对应写入，待执行内容同样受校验。
 
-配置删除使用 `{kind:'remove',id,expectedRevision,value:null}`。所有活动或归档实例都不能仍引用目标；拒绝时返回 `REFERENCE_CONFLICT`，不自动级联。`Publication.configurationRevisions[id]=null` 表示已删除。规则替换仍校验现存行为引用、接口与工件完整性。
+配置删除使用 `{kind:'remove',id,expectedRevision,value:null}`。所有活动或归档实例都不能仍引用目标；拒绝时返回 `REFERENCE_CONFLICT`，不自动级联。`Publication.configurationRevisions[id]=null` 表示已删除。规则替换仍校验现存行为引用、接口与工件完整性。模板删除不等于规则源删除：ChangeSet.sources 只接受文件名到完整 Lua 字符串的映射，未提供删除源文件操作，不能以 null 或空文件冒充已支持的删除。
 
 ## 接口和回执
 
 `GET ai/rulings` / `AiClient.aiRulings()` 返回 KP 队列，包括来源、会话、概要、状态、digest、风险、完整动作或 ChangeSet、diff、报告和回执。`createAITools(client).rulings` 提供 list/decide。`mountRulings(...,{compact:true,onOpenSession,onKnowledgeRequest})` 支持紧凑摘要、详情浮窗和宿主披露选择器。知识申请的批准由选择器一次提交；未装选择器不能直接批准。创作申请按钮为“接收并生成方案”，接收后返回 KP 专用 reviewSessionId，onOpenSession 优先打开该审核会话；accepted 仅表示接收。接口和取消规则见[玩家创作申请](ai-session-access.md#玩家创作与配置申请)。
 
 配置宿主命令 ID 固定为 `ai-ruling:<proposalId>:<revision>:approve/apply`。运行时与披露操作同样先保存执行意图再执行。未知结果只核对原回执，不自动换 ID 或重放：运行时用 `ai.batch.reconcile`，知识申请用 `ai.knowledge.reconcile {rulingId,digest}`。部分完成不等于全批成功。已批准未加载的配置保留原 approval，由公开接口核对或撤销。
+
+配置裁决意图在执行前保存 `proposalRevision`；队列同时匹配修订号与候选摘要，再应用其状态和回执。`candidateDigest` 不包含宿主 epoch 或提案修订号，同内容重新修订、检查后摘要可能保持不变，不能据此把旧修订的拒绝套给新修订。读取不会删除或改写原决定，旧宿主回执与原 AI 命令回执仍可核对。
+
+旧决定缺少 `proposalRevision` 时，只有全部回执 commandId 都完整符合上述格式、绑定同一 proposalId 且修订号一致，才推断修订归属；不会只取第一条或做前缀匹配。没有可靠归属的同摘要决定继续保留；其中 unknown／executing 即使摘要改变也继续阻止重试，不能将未知执行视为未执行。
+
+重启前的待批准上下文仍会被宿主以 `STALE_AUTHORITY` 拒绝。明确拒绝且没有发布的候选，可通过公开 `ai.proposal.revise` 建立新修订并 `ai.proposal.validate` 重新三检；新修订通过后恢复 pending，必须再次人工批准高危完整候选和风险理由。修订仍复验当前权限、基线与保留的来源证据；调用方应先核对当前配置与原 diff.before，不能以重检为由覆盖期间变更。已有 publication 的完成事实仍优先显示，避免重复发布。
+
+引擎隔离回归与旧记录兼容证据见[裁决修订验收](../../../engineering/acceptance/ruling-revisions/README.md)；配置包浏览器恢复入口由包侧独立联测。
 
 执行会改变此前读取的实体修订。来源复验失败时，completed 仍显示“已执行完成，请勿重复执行”，partial 显示“部分操作已执行，请核对原回执”，unknown／executing 提示核对结果；仅待执行内容提示重新读取并生成方案。权限撤销时仍隐藏原摘要、动作、候选、报告、差异和回执内容，只保留裁决状态及脱敏 receipt.status，不输出命令 ID、参数或结果。重复批准已完成项返回完成状态，不重新执行。
 
@@ -64,6 +72,11 @@ Stumpsville 的实际材料、发布后的包状态同步及限制由[包侧集�
 
 删除配置还须开启包契约 highRisk.allowRemove；目标可以是 highRisk 显式名单，或原 extensionPoints 允许的类型和命名空间／既有 ID。删除始终按高危审核，普通 NPC 数值替换不会仅因允许删除而成为高危；仍被实体引用的模板不能删除。
 
-2026-11-19 模块验收按测试 ID 取最新结果去重：281 项通过、0 失败、0 跳过。覆盖真实宿主执行、人工高危指纹、普通自动审批、个人披露、存量实体探针、容量边界和 Edge 嵌入界面；初跑失败与复验关系保存在[验收报告](../../../engineering/acceptance/ai-runtime/policies-results.json)。模块测试使用隔离房间与离线服务；引擎和真实 DeepSeek 记录分别由报告中的关联验收维护，不将不同阶段次数相加。
 
-同日 Stumpsville 隔离联调：包侧 18 组确定性验收通过，选定的 K08 复活、K12 新物品、P04 玩家自愿资料申请三个真实 DeepSeek 用例均通过。复活生成待审批次后由 KP 批准执行，物品和财富保留；新物品经高危提案审批落库。累计 46 次 API 调用、686207 tokens，包括失败调试；另保留一次未调用模型的测试前置失败。最终复活用例为 4 次调用，单次验收的 11.65 秒模型耗时不代表普遍延迟。详见[包侧实测](../../../rulepacks/stumpsville/tests/ai-scenarios-live-results.json)与[包侧确定性验收](../../../rulepacks/stumpsville/tests/ai-scenarios-results.json)；53 项草稿场景并未全部实测。没有修改正式存档或服务商配置。
+## 来源审核与调试
+
+所有原生裁决详情可“转 AI 处理”；未生成裁决的请求和包裁决也有统一来源入口，原裁决状态不因此改变。来源审核会话保持人工批准，见[统一审核接口](ai-debug-review.md#来源审核)。
+
+模型 dataEdits 会先展开为完整候选再进入当前裁决流程；增量不是运行时执行命令，也不能绕过数据/核心规则的高危人工批准。修改摘要、diff 和批准指纹绑定完整结果，见[精确增量](ai-data-query.md#活动配置数据的精确增量)。
+
+阶段验收、初跑与复验关系见[开发记录](../../history/2026-11-20-ai-development-records.md)。

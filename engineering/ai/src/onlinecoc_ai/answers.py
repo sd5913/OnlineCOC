@@ -15,7 +15,7 @@ def parse_answer(content):
     require(output.get('kind') in ('plan','draft','clarification','batch'),'MODEL_KIND_INVALID',path='/kind')
     require(isinstance(output.get('text'),str) and 1<=len(output['text'])<=8000,'MODEL_TEXT_INVALID',path='/text')
     required={'kind','text'}|({'changeSet'} if output['kind']=='draft' else {'actions'} if output['kind']=='batch' else set())
-    require(required<=set(output)<=required|{'choices'},'MODEL_FIELDS_INVALID',path='/')
+    require(required<=set(output)<=required|{'choices'}|({'dataEdits'} if output['kind']=='draft' else set()),'MODEL_FIELDS_INVALID',path='/')
     return output
 
 CHOICES = {'type':'object','additionalProperties':False,'required':['prompt','options'],'properties':{

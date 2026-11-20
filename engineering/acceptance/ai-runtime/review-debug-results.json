@@ -1,0 +1,1063 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-11-19",
+  "scope": "AI module source review, diagnostic export, provider identity",
+  "status": "passed",
+  "latestUnique": {
+    "passed": 220,
+    "failed": 0,
+    "skipped": 0
+  },
+  "runs": [
+    {
+      "file": "review-debug-core.xml",
+      "tests": 70,
+      "passed": 68,
+      "failed": 2,
+      "skipped": 0
+    },
+    {
+      "file": "review-debug-ui.xml",
+      "tests": 25,
+      "passed": 24,
+      "failed": 1,
+      "skipped": 0
+    },
+    {
+      "file": "review-debug-regression.xml",
+      "tests": 189,
+      "passed": 189,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "file": "review-debug-ui-retest.xml",
+      "tests": 5,
+      "passed": 5,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "file": "review-debug-http.xml",
+      "tests": 1,
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "file": "review-debug-copy.xml",
+      "tests": 1,
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "file": "review-debug-legacy.xml",
+      "tests": 48,
+      "passed": 48,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "file": "review-debug-model.xml",
+      "tests": 1,
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0
+    }
+  ],
+  "tests": {
+    "tests.test_review_debug::test_review_source_is_separate_from_kp_message_and_deduplicated": {
+      "status": "passed",
+      "evidence": "review-debug-legacy.xml"
+    },
+    "tests.test_review_debug::test_forwarded_request_resolves_real_source_and_does_not_change_original": {
+      "status": "passed",
+      "evidence": "review-debug-legacy.xml"
+    },
+    "tests.test_review_debug::test_all_forwarded_reviews_stay_manual_with_auto_on": {
+      "status": "passed",
+      "evidence": "review-debug-legacy.xml"
+    },
+    "tests.test_review_debug::test_review_source_obeys_external_scope": {
+      "status": "passed",
+      "evidence": "review-debug-legacy.xml"
+    },
+    "tests.test_review_debug::test_ruling_digest_and_snapshot_size_checked": {
+      "status": "passed",
+      "evidence": "review-debug-legacy.xml"
+    },
+    "tests.test_review_debug::test_debug_is_readonly_metadata_default_with_authorized_content_opt_in": {
+      "status": "passed",
+      "evidence": "review-debug-legacy.xml"
+    },
+    "tests.test_review_debug::test_debug_rejects_ambiguous_or_invalid_options[options0]": {
+      "status": "passed",
+      "evidence": "review-debug-legacy.xml"
+    },
+    "tests.test_review_debug::test_debug_rejects_ambiguous_or_invalid_options[options1]": {
+      "status": "passed",
+      "evidence": "review-debug-legacy.xml"
+    },
+    "tests.test_review_debug::test_debug_rejects_ambiguous_or_invalid_options[options2]": {
+      "status": "passed",
+      "evidence": "review-debug-legacy.xml"
+    },
+    "tests.test_review_debug::test_debug_rejects_ambiguous_or_invalid_options[options3]": {
+      "status": "passed",
+      "evidence": "review-debug-legacy.xml"
+    },
+    "tests.test_review_debug::test_debug_rejects_ambiguous_or_invalid_options[options4]": {
+      "status": "passed",
+      "evidence": "review-debug-legacy.xml"
+    },
+    "tests.test_review_debug::test_debug_rechecks_deleted_session_and_player_switch": {
+      "status": "passed",
+      "evidence": "review-debug-legacy.xml"
+    },
+    "tests.test_review_debug::test_pure_schema_catalog_available_without_kp_egress": {
+      "status": "passed",
+      "evidence": "review-debug-legacy.xml"
+    },
+    "tests.test_review_debug::test_provider_records_actual_model_without_equating_alias_and_version": {
+      "status": "passed",
+      "evidence": "review-debug-legacy.xml"
+    },
+    "tests.test_player_requests::test_direct_intent_requires_no_provider_knowledge_or_egress_and_is_deduplicated": {
+      "status": "passed",
+      "evidence": "review-debug-legacy.xml"
+    },
+    "tests.test_player_requests::test_intent_owner_level_policy_and_input_cannot_be_forged": {
+      "status": "passed",
+      "evidence": "review-debug-legacy.xml"
+    },
+    "tests.test_player_requests::test_cancelled_and_deleted_intents_cannot_be_accepted": {
+      "status": "passed",
+      "evidence": "review-debug-legacy.xml"
+    },
+    "tests.test_player_requests::test_kp_accept_creates_private_review_once_without_state_changes": {
+      "status": "passed",
+      "evidence": "review-debug-legacy.xml"
+    },
+    "tests.test_player_requests::test_kp_reject_and_archive_do_not_create_review": {
+      "status": "passed",
+      "evidence": "review-debug-legacy.xml"
+    },
+    "tests.test_player_requests::test_accepted_request_batch_remains_manual_with_auto_approval_enabled": {
+      "status": "passed",
+      "evidence": "review-debug-legacy.xml"
+    },
+    "tests.test_player_requests::test_query_blockers_have_distinct_safe_errors_without_model_calls[unconfigured-KNOWLEDGE_UNAVAILABLE]": {
+      "status": "passed",
+      "evidence": "review-debug-legacy.xml"
+    },
+    "tests.test_player_requests::test_query_blockers_have_distinct_safe_errors_without_model_calls[private-EXTERNAL_SCOPE_DISABLED]": {
+      "status": "passed",
+      "evidence": "review-debug-legacy.xml"
+    },
+    "tests.test_player_requests::test_query_blockers_have_distinct_safe_errors_without_model_calls[queries-DATA_QUERIES_DISABLED]": {
+      "status": "passed",
+      "evidence": "review-debug-legacy.xml"
+    },
+    "tests.test_player_requests::test_query_blockers_have_distinct_safe_errors_without_model_calls[egress-KNOWLEDGE_EGRESS_DISABLED]": {
+      "status": "passed",
+      "evidence": "review-debug-legacy.xml"
+    },
+    "tests.test_player_requests::test_keyword_miss_returns_explicit_personal_index_and_never_other_players": {
+      "status": "passed",
+      "evidence": "review-debug-legacy.xml"
+    },
+    "tests.test_player_requests::test_preloaded_known_index_can_be_read_and_creative_choice_is_not_auto_submitted": {
+      "status": "passed",
+      "evidence": "review-debug-legacy.xml"
+    },
+    "tests.test_player_requests::test_recoverable_invalid_knowledge_query_can_retry_then_read_index": {
+      "status": "passed",
+      "evidence": "review-debug-legacy.xml"
+    },
+    "tests.test_player_requests::test_player_request_reference_is_label_only_in_kp_review": {
+      "status": "passed",
+      "evidence": "review-debug-legacy.xml"
+    },
+    "tests.test_player_requests::test_ordinary_configuration_from_player_review_cannot_auto_publish": {
+      "status": "passed",
+      "evidence": "review-debug-legacy.xml"
+    },
+    "tests.test_player_requests::test_restart_preserves_accepted_review_without_duplicate_dispatch": {
+      "status": "passed",
+      "evidence": "review-debug-legacy.xml"
+    },
+    "tests.test_player_requests::test_cancelled_query_failure_keeps_cancelled_status": {
+      "status": "passed",
+      "evidence": "review-debug-legacy.xml"
+    },
+    "tests.test_player_requests::test_review_context_identifies_original_player_for_my_character_intent": {
+      "status": "passed",
+      "evidence": "review-debug-legacy.xml"
+    },
+    "tests.test_player_requests::test_reference_label_cannot_bypass_disabled_private_egress_during_kp_accept": {
+      "status": "passed",
+      "evidence": "review-debug-legacy.xml"
+    },
+    "tests.test_providers::test_deepseek_wire_format_and_secret_stays_in_header": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_providers::test_compatible_endpoint_omits_vendor_options": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_providers::test_http_failures_are_bounded_and_redacted[401-PROVIDER_AUTH_FAILED-False]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_providers::test_http_failures_are_bounded_and_redacted[403-PROVIDER_AUTH_FAILED-False]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_providers::test_http_failures_are_bounded_and_redacted[429-PROVIDER_RATE_LIMITED-True]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_providers::test_http_failures_are_bounded_and_redacted[500-PROVIDER_UNAVAILABLE-True]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_providers::test_http_failures_are_bounded_and_redacted[503-PROVIDER_UNAVAILABLE-True]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_providers::test_http_failures_are_bounded_and_redacted[302-PROVIDER_REDIRECT_REJECTED-False]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_providers::test_http_failures_are_bounded_and_redacted[400-PROVIDER_REQUEST_INVALID-False]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_providers::test_http_failures_are_bounded_and_redacted[422-PROVIDER_REQUEST_INVALID-False]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_providers::test_http_failures_are_bounded_and_redacted[402-PROVIDER_BALANCE_INSUFFICIENT-False]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_providers::test_http_failures_are_bounded_and_redacted[404-PROVIDER_NOT_FOUND-False]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_providers::test_http_failures_are_bounded_and_redacted[408-PROVIDER_TIMEOUT-True]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_providers::test_http_failures_are_bounded_and_redacted[413-PROVIDER_REQUEST_TOO_LARGE-False]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_providers::test_http_failures_are_bounded_and_redacted[409-PROVIDER_HTTP_ERROR-False]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_providers::test_http_failures_are_bounded_and_redacted[204-PROVIDER_HTTP_ERROR-False]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_providers::test_empty_model_content_is_rejected[]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_providers::test_empty_model_content_is_rejected[   ]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_providers::test_bad_answer_json_keeps_usage_for_coordinator_repair[{]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_providers::test_bad_answer_json_keeps_usage_for_coordinator_repair[[]]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_providers::test_bad_answer_json_keeps_usage_for_coordinator_repair[{\"x\":1,\"x\":2}]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_providers::test_bad_answer_json_keeps_usage_for_coordinator_repair[{\"n\":NaN}]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_providers::test_truncation_usage_and_unknown_reasoning": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_providers::test_connection_failure_and_total_timeout": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_providers::test_unsafe_url_is_rejected[file:///x]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_providers::test_unsafe_url_is_rejected[https://key:password@example.com]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_providers::test_unsafe_url_is_rejected[https://example.com?key=secret]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_providers::test_unsafe_url_is_rejected[http://127.0.0.1]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_providers::test_unsafe_url_is_rejected[https://example.com:99999]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_providers::test_unsafe_url_is_rejected[https://example.com/\\r\\nx]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_providers::test_dns_pinning_blocks_rebinding_and_preserves_original_host": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_providers::test_local_profile_management_never_stores_key": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_providers::test_probe_requires_json_and_a_real_tool_call": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_providers::test_json_mode_guard_preserves_caller_history_and_tool_envelope[Return only {\"ok\":true}.-deepseek-chat]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_providers::test_json_mode_guard_preserves_caller_history_and_tool_envelope[Return only {\"ok\":true}.-compatible-chat]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_providers::test_json_mode_guard_preserves_caller_history_and_tool_envelope[Return JSON only.-deepseek-chat]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_providers::test_json_mode_guard_preserves_caller_history_and_tool_envelope[Return JSON only.-compatible-chat]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_review_debug_ui::test_source_card_and_export_opt_in_guard": {
+      "status": "passed",
+      "evidence": "review-debug-copy.xml"
+    },
+    "tests.test_player_requests_ui::test_real_player_direct_request_without_knowledge_then_kp_queue": {
+      "status": "passed",
+      "evidence": "review-debug-ui.xml"
+    },
+    "tests.test_player_requests_ui::test_player_error_is_visible_and_choice_forwards_original_request_once": {
+      "status": "passed",
+      "evidence": "review-debug-ui.xml"
+    },
+    "tests.test_player_requests_ui::test_kp_accept_label_and_open_private_review_session": {
+      "status": "passed",
+      "evidence": "review-debug-ui.xml"
+    },
+    "tests.test_embeds::test_package_manifest_covers_public_runtime_dependencies": {
+      "status": "passed",
+      "evidence": "review-debug-ui.xml"
+    },
+    "tests.test_embeds::test_real_room_page_variants[page]": {
+      "status": "passed",
+      "evidence": "review-debug-ui.xml"
+    },
+    "tests.test_embeds::test_real_room_page_variants[conversation]": {
+      "status": "passed",
+      "evidence": "review-debug-ui.xml"
+    },
+    "tests.test_embeds::test_real_room_page_variants[collapsible]": {
+      "status": "passed",
+      "evidence": "review-debug-ui.xml"
+    },
+    "tests.test_embeds::test_same_origin_iframe_entry_and_csp_scope": {
+      "status": "passed",
+      "evidence": "review-debug-ui.xml"
+    },
+    "tests.test_embeds::test_headless_tools_and_shared_client_ownership": {
+      "status": "passed",
+      "evidence": "review-debug-ui.xml"
+    },
+    "tests.test_manager_ui::test_real_manager_providers_sessions_review_and_embed": {
+      "status": "passed",
+      "evidence": "review-debug-ui-retest.xml"
+    },
+    "tests.test_entrypoints::test_requests_are_explicit_idempotent_redacted_and_paged": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_entrypoints::test_chat_forwarding_binds_original_and_policy": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_entrypoints::test_player_can_cancel_after_dispatching_kp_loses_role": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_entrypoints::test_plan_without_proposal_rechecks_context_on_read": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_entrypoints::test_auto_off_prefix_dedup_edits_withdrawal_and_role": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_entrypoints::test_manual_revision_invalidates_approval_and_cancel_revokes": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_entrypoints::test_receipt_rechecks_private_sources_and_restart_pending": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_entrypoints::test_http_auth_limits_schema_capability_and_disabled_module": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_entrypoints::test_cli_uses_same_three_engines": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_access_batches::test_defaults_binding_and_no_permission_escalation": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_access_batches::test_player_auto_dispatch_context_output_and_revoke": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_access_batches::test_kp_player_session_has_player_ceiling_and_data_proof": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_access_batches::test_batch_human_approval_idempotence_and_player_denial": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_access_batches::test_batch_stale_reject_auto_and_bypass_forbidden": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_access_batches::test_batch_unknown_reconciles_without_reexecuting": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_access_batches::test_batch_stops_after_partial_failure_and_restart_never_replays": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_access_batches::test_delete_cancels_queue_hides_session_and_keeps_usage_audit": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_access_batches::test_administrator_tools_respect_external_scope": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_access_batches::test_player_contract_tool_and_batch_output_cannot_escalate": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_access_batches::test_delete_interrupts_active_generation": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_access_batches::test_management_catalog_is_bounded_and_schema_complete": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_access_batches::test_other_administrator_can_inspect_draft_without_taking_review_identity": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_access_batches::test_player_history_rechecks_package_evidence_during_generation": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_rulings::test_chat_approval_is_bound_to_batch_and_not_another_model_request": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_rulings::test_config_is_one_checked_ruling_and_publishes_once": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_rulings::test_high_risk_config_never_uses_auto_approval": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_rulings::test_player_cannot_decide_and_stale_digest_cannot_execute": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_rulings::test_consultation_only_evidence_cannot_enter_publish_queue_or_auto_approve": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_rulings::test_invalid_model_output_has_specific_cause[[]-MODEL_OBJECT_REQUIRED]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_rulings::test_invalid_model_output_has_specific_cause[null-MODEL_OBJECT_REQUIRED]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_rulings::test_invalid_model_output_has_specific_cause[broken-MODEL_JSON_INVALID]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_rulings::test_invalid_model_output_has_specific_cause[{\"kind\":\"other\",\"text\":\"a\"}-MODEL_KIND_INVALID]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_rulings::test_single_json_fence_is_accepted_without_extracting_arbitrary_text": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_rulings::test_five_repairs_do_not_consume_tool_rounds[True]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_rulings::test_five_repairs_do_not_consume_tool_rounds[False]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_rulings::test_user_decision_pauses_instead_of_retrying[clarification]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_rulings::test_user_decision_pauses_instead_of_retrying[plan]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_rulings::test_basic_lua_error_repairs_same_proposal_before_review": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_context::test_default_excludes_room_and_pack_text": {
+      "status": "passed",
+      "evidence": "review-debug-legacy.xml"
+    },
+    "tests.test_context::test_public_context_strips_secret_and_never_reads_others_private_chat": {
+      "status": "passed",
+      "evidence": "review-debug-legacy.xml"
+    },
+    "tests.test_context::test_context_rechecks_source_and_policy_after_generation[edit]": {
+      "status": "passed",
+      "evidence": "review-debug-legacy.xml"
+    },
+    "tests.test_context::test_context_rechecks_source_and_policy_after_generation[delete]": {
+      "status": "passed",
+      "evidence": "review-debug-legacy.xml"
+    },
+    "tests.test_context::test_context_rechecks_source_and_policy_after_generation[policy]": {
+      "status": "passed",
+      "evidence": "review-debug-legacy.xml"
+    },
+    "tests.test_context::test_context_rechecks_source_and_policy_after_generation[revoke]": {
+      "status": "passed",
+      "evidence": "review-debug-legacy.xml"
+    },
+    "tests.test_context::test_context_rechecks_source_and_policy_after_generation[profile]": {
+      "status": "passed",
+      "evidence": "review-debug-legacy.xml"
+    },
+    "tests.test_context::test_manual_revision_keeps_original_source_authorization": {
+      "status": "passed",
+      "evidence": "review-debug-legacy.xml"
+    },
+    "tests.test_context::test_chat_source_requires_actual_current_text_and_external_permission": {
+      "status": "passed",
+      "evidence": "review-debug-legacy.xml"
+    },
+    "tests.test_context::test_unrelated_read_position_and_ai_history_do_not_change_world": {
+      "status": "passed",
+      "evidence": "review-debug-legacy.xml"
+    },
+    "tests.test_context::test_scope_mismatch_rejects_cross_room_context": {
+      "status": "passed",
+      "evidence": "review-debug-legacy.xml"
+    },
+    "tests.test_context::test_context_size_is_bounded": {
+      "status": "passed",
+      "evidence": "review-debug-legacy.xml"
+    },
+    "tests.test_context::test_two_actual_demo_directories_do_not_share_secrets_or_memory": {
+      "status": "passed",
+      "evidence": "review-debug-legacy.xml"
+    },
+    "tests.test_contracts::test_valid_model[Profile]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_contracts::test_valid_model[PackContract]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_contracts::test_valid_model[ContextSnapshot]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_contracts::test_valid_model[Request]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_contracts::test_valid_model[Proposal]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_contracts::test_valid_model[ChangeSet]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_contracts::test_valid_model[ValidationReport]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_contracts::test_valid_model[PreparedBundle]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_contracts::test_valid_model[Approval]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_contracts::test_valid_model[Publication]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_contracts::test_valid_model[MemoryEntry]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_contracts::test_valid_model[Scenario]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_contracts::test_valid_model[CheckSpec]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_contracts::test_valid_model[Metric]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_contracts::test_valid_model[AiCommand]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_contracts::test_unknown_authority_fields_rejected[Profile]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_contracts::test_unknown_authority_fields_rejected[PackContract]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_contracts::test_unknown_authority_fields_rejected[ContextSnapshot]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_contracts::test_unknown_authority_fields_rejected[Request]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_contracts::test_unknown_authority_fields_rejected[Proposal]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_contracts::test_unknown_authority_fields_rejected[ChangeSet]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_contracts::test_unknown_authority_fields_rejected[ValidationReport]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_contracts::test_unknown_authority_fields_rejected[PreparedBundle]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_contracts::test_unknown_authority_fields_rejected[Approval]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_contracts::test_unknown_authority_fields_rejected[Publication]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_contracts::test_unknown_authority_fields_rejected[MemoryEntry]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_contracts::test_unknown_authority_fields_rejected[Scenario]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_contracts::test_unknown_authority_fields_rejected[CheckSpec]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_contracts::test_unknown_authority_fields_rejected[Metric]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_contracts::test_unknown_authority_fields_rejected[AiCommand]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_contracts::test_negative_fixtures[case0]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_contracts::test_negative_fixtures[case1]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_contracts::test_negative_fixtures[case2]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_contracts::test_negative_fixtures[case3]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_contracts::test_negative_fixtures[case4]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_contracts::test_negative_fixtures[case5]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_contracts::test_every_schema_is_valid": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_contracts::test_ambiguous_or_invalid_json_rejected[{\"x\":1,\"x\":2}]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_contracts::test_ambiguous_or_invalid_json_rejected[{\"nested\":{\"x\":1,\"x\":2}}]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_contracts::test_ambiguous_or_invalid_json_rejected[{\"x\":NaN}]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_contracts::test_ambiguous_or_invalid_json_rejected[{\"x\":Infinity}]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_contracts::test_ambiguous_or_invalid_json_rejected[\"\\ud800\"]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_contracts::test_ambiguous_or_invalid_json_rejected[\\xff]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_contracts::test_non_json_or_unsafe_numbers_rejected[nan]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_contracts::test_non_json_or_unsafe_numbers_rejected[inf]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_contracts::test_non_json_or_unsafe_numbers_rejected[9007199254740992]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_contracts::test_non_json_or_unsafe_numbers_rejected[1044388881413152506691752710716624382579964249047383780384233483283953907971557456848826811934997558340890106714439262837987573438185793607263236087851365277945956976543709998340361590134383718314428070011855946226376318839397712745672334684344586617496807908705803704071284048740118609114467977783598029006686938976881787785946905630190260940599579453432823469303026696443059025015972399867714215541693835559885291486318237914434496734087811872639496475100189041349008417061675093668333850551032972088269550769983616369411933015213796825837188091833656751221318492846368125550225998300412344784862595674492194617023806505913245610825731835380087608622102834270197698202313169017678006675195485079921636419370285375124784014907159135459982790513399611551794271106831134090584272884279791554849782954323534517065223269061394905987693002122963395687782878948440616007412945674919823050571642377154816321380631045902916136926708342856440730447899971901781465763473223850267253059899795996090799469201774624817718449867455659250178329070473119433165550807568221846571746373296884912819520317457002440926616910874148385078411929804522981857338977648103126085903001302413467189726673216491511131602920781738033436090243804708340403154190336]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_contracts::test_non_json_or_unsafe_numbers_rejected[value4]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_contracts::test_non_json_or_unsafe_numbers_rejected[value5]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_contracts::test_cycles_and_depth_are_bounded": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_contracts::test_golden_digests_and_host_interop": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_contracts::test_baseline_binds_every_precondition[scopeId]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_contracts::test_baseline_binds_every_precondition[baseRuleset]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_contracts::test_baseline_binds_every_precondition[configDigest]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_contracts::test_baseline_binds_every_precondition[contractDigest]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_contracts::test_baseline_binds_every_precondition[validatorSetDigest]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_contracts::test_baseline_binds_every_precondition[worldDigest]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_contracts::test_candidate_binds_complete_artifact_and_configuration": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_contracts::test_mismatched_report_or_candidate_cannot_be_reused[PreparedBundle]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_contracts::test_mismatched_report_or_candidate_cannot_be_reused[Approval]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_contracts::test_change_identity_and_expected_revision": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_contracts::test_model_tools_do_not_include_approval_or_mutation": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_contracts::test_pack_materials_are_present_and_typed": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_contracts::test_provider_template_is_disabled_and_contains_only_secret_reference": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_manager::test_local_boundary_bootstrap_csrf_and_lock": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_manager::test_profile_cas_disable_delete_and_secret_rejected_in_config": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_manager::test_real_dpapi_key_roundtrip_no_plaintext_and_legacy_fallback": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_manager::test_room_endpoint_is_bounded[https://127.0.0.1:8765]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_manager::test_room_endpoint_is_bounded[http://192.168.1.2:8765]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_manager::test_room_endpoint_is_bounded[http://example.com:8765]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_manager::test_room_endpoint_is_bounded[http://user:pass@127.0.0.1:8765]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_manager::test_room_endpoint_is_bounded[http://127.0.0.1:8765/api]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_manager::test_room_endpoint_is_bounded[http://127.0.0.1:8765?x=1]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_manager::test_room_endpoint_is_bounded[http://127.0.0.1:99999]": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_manager::test_room_profiles_persist_but_login_does_not": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_manager::test_room_bridge_never_exposes_host_control_or_shares_sessions": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_manager::test_session_ownership_archive_idempotence_and_reopen": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_manager::test_manager_static_modules_have_correct_mime_and_headers": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_manager::test_late_room_login_cannot_restore_locked_session": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_manager::test_concurrent_profile_edits_have_exactly_one_winner": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_manager::test_advisory_lock_is_bounded": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_manager::test_running_room_refreshes_profile_and_fails_closed": {
+      "status": "passed",
+      "evidence": "review-debug-regression.xml"
+    },
+    "tests.test_policies_ui::test_permission_switches_save_and_high_risk_policy_is_fixed": {
+      "status": "passed",
+      "evidence": "review-debug-ui-retest.xml"
+    },
+    "tests.test_policies_ui::test_high_risk_click_binds_digest_and_knowledge_callback_does_not_auto_approve": {
+      "status": "passed",
+      "evidence": "review-debug-ui-retest.xml"
+    },
+    "tests.test_policies_ui::test_player_disclosure_requires_a_click_and_reports_pending": {
+      "status": "passed",
+      "evidence": "review-debug-ui-retest.xml"
+    },
+    "tests.test_review_debug::test_real_http_debug_authorization_no_store_and_no_receipt": {
+      "status": "passed",
+      "evidence": "review-debug-legacy.xml"
+    },
+    "tests.test_review_debug::test_legacy_accepted_review_retains_original_player_source": {
+      "status": "passed",
+      "evidence": "review-debug-legacy.xml"
+    },
+    "tests.test_review_debug::test_task_and_debug_preserve_requested_and_actual_model_ids": {
+      "status": "passed",
+      "evidence": "review-debug-model.xml"
+    }
+  },
+  "sourceSha256": {
+    "engineering/ai/src/onlinecoc_ai/__init__.py": "45a5eef692b3ff17f5451ed03348f091061741b46e352d2f560a77735f28b1c8",
+    "engineering/ai/src/onlinecoc_ai/access.py": "e3c872622671c9aee75ea83b3b98194709b8cdddd9152c031dcd46c25216876f",
+    "engineering/ai/src/onlinecoc_ai/answers.py": "6ea3d4c5a7f988a4b0e538612e5692187ebdac811e2d83eb56445d6e2e5e209e",
+    "engineering/ai/src/onlinecoc_ai/api.py": "0ccd41a04a2a3a22bd2145669b343238ee77386b6d638a0e3776209e5a6de18e",
+    "engineering/ai/src/onlinecoc_ai/batches.py": "6c0371d6335f0ff87c0cc351d9d42b899593c5ebc0082714f93e8a40f2ac8268",
+    "engineering/ai/src/onlinecoc_ai/change_policy.py": "a6da5036ee262283289336b071fd94c77faadf073948b98234c54dcb7d9a82ba",
+    "engineering/ai/src/onlinecoc_ai/cli.py": "9fd275ce87a8edff8c0e724a5b04fc1ce79bc0784b0d60bcfa750d09b23c1e9d",
+    "engineering/ai/src/onlinecoc_ai/context.py": "bfd0b965905599a267935b7bf26a18a47738b4fe58a350f9385fa43155c66235",
+    "engineering/ai/src/onlinecoc_ai/contracts.py": "1a1d77e43f0dbeeda22cfe7e7416210bf3b204f17768e8ad355acfbfd28c9a86",
+    "engineering/ai/src/onlinecoc_ai/coordinator.py": "6a07a34a8f8c3baf8bfd561d065e78ae394b07bc5e550c2a6f426fbe304921e3",
+    "engineering/ai/src/onlinecoc_ai/data_queries.py": "8193830e78557833ae7dd0b9770604f2e4ed09b1f47b60f25069ef18d30ab9f6",
+    "engineering/ai/src/onlinecoc_ai/debug.py": "17e3bb1ad71e02582e3649823c2818d6defcfca34e3f3d0171c6fec2c019ee38",
+    "engineering/ai/src/onlinecoc_ai/diagnostics.py": "d4d0a34a68dc38d39869b5162d1387f1a1c2cda006468c7480b6b06012ac3ff1",
+    "engineering/ai/src/onlinecoc_ai/errors.py": "d082dda537453626acb6f3b8424aa4d73f85c00da42d762762fb23d2e7a384ce",
+    "engineering/ai/src/onlinecoc_ai/knowledge.py": "e21eac9de627e4afc2430b7532fe2223341406049e3b1cb9ea6e6c3341a0c96b",
+    "engineering/ai/src/onlinecoc_ai/knowledge_requests.py": "b53403b1b8da40715a5152b4ac257586278963ea46eb90688f5b7fc14f10a6f6",
+    "engineering/ai/src/onlinecoc_ai/known_answers.py": "3010f52e2f77b1e847078955ae7fb4f3eb04ed318f498305f74c8a0949f9dbc0",
+    "engineering/ai/src/onlinecoc_ai/local_lock.py": "163704bbe210e32da99510237931b116bc67ded4f16939625357aec8936fc1af",
+    "engineering/ai/src/onlinecoc_ai/manager.py": "ab390bfc4897cab3cdf8c813db4e8cf833047f7e74151a6f93b21a9e1718d19d",
+    "engineering/ai/src/onlinecoc_ai/memory.py": "63c54933810330288c43e047d8f29e5eaf8befed1435d5e23bc63b500c97c235",
+    "engineering/ai/src/onlinecoc_ai/pack.py": "46271072cd2c5e607fd6ce74d196888887dada7f56eeabdd3bed7ef8666e3442",
+    "engineering/ai/src/onlinecoc_ai/player_requests.py": "5ec76146c422f74e34c410f8850fe1f6d007f33b5a104c76d176c7d29c63d9c9",
+    "engineering/ai/src/onlinecoc_ai/policy.py": "75e0dbd30cbe7f5ecd5e4743b49d56a60f3eef0206c6621de200c531cb0e2b71",
+    "engineering/ai/src/onlinecoc_ai/profiles.py": "c2c13d549be93456d9ef7168b9fa19c1924aadb0524911729681887457ab7c6c",
+    "engineering/ai/src/onlinecoc_ai/proposals.py": "785a6487ea9eccb2ec3354927c0ee7889554cd6b5ddae6aee523ac51e69526b5",
+    "engineering/ai/src/onlinecoc_ai/providers/__init__.py": "853b4a7ef469f37005ca2b6cd3cfda46a02a4d2cc709b4317e976ce41d0d038d",
+    "engineering/ai/src/onlinecoc_ai/providers/base.py": "db70f903e9b6ec4720ec176b90d8a250017699a61653a1aa1b3ae8d8dd64475a",
+    "engineering/ai/src/onlinecoc_ai/providers/compatible.py": "e783ef478de56e85bb83562f68fffa97da8b07db89c5454a2420e2575dc9d7a5",
+    "engineering/ai/src/onlinecoc_ai/providers/deepseek.py": "5fd1a82a519ce8835cc407755182884598cabbbe845988d3f5354aa4b2dd1f57",
+    "engineering/ai/src/onlinecoc_ai/providers/transport.py": "e962909ad7eee0ae05655926ff42ab6e581166725a7e54afac08a4a14bb236e0",
+    "engineering/ai/src/onlinecoc_ai/references.py": "9beb0d84c0aa25f03df8d49cff836f038ca2d79c42b6eb13edf0e85fd916926a",
+    "engineering/ai/src/onlinecoc_ai/repository.py": "724de82df0940cb6458f6dfc1e09fb18ddc810dcdf06e09f746b8b1cce96e217",
+    "engineering/ai/src/onlinecoc_ai/reviews.py": "c9ff6ed55b21ef8a90d7dac688b712dd1d7b21d10c70f71130754b03ba732b42",
+    "engineering/ai/src/onlinecoc_ai/rulings.py": "f46dceec4e46d66698d93636e65ce87a2428ea159ae2260bfbed18c5c8f84690",
+    "engineering/ai/src/onlinecoc_ai/runtime.py": "5f4f13401189ee3e3a07e07b700417d2243a7ccaa7d0530b3d14eb1317f4103c",
+    "engineering/ai/src/onlinecoc_ai/sandbox.py": "30766603068ef36110b15a9add78c65282658cf9e0fe4fef1f24ae1785ceb407",
+    "engineering/ai/src/onlinecoc_ai/sessions.py": "ba8f37a71b20cc36e85f8076643277daed7d907c84a3aed13e3177ce80d85ee3",
+    "engineering/ai/src/onlinecoc_ai/usage.py": "e1b38804a341bf1f825daf2367938e5c8350ed46755d858089819c8cb4c644a6",
+    "engineering/ai/src/onlinecoc_ai/validation/__init__.py": "c6f6e326c479f9eb78c920e80b8abf304731ac3305687a127cdcda2ac894f932",
+    "engineering/ai/src/onlinecoc_ai/validation/base.py": "5c247432ca6362244ec78b28c98dc7e61195dc518e8f11cdedcca0b11e27e38d",
+    "engineering/ai/src/onlinecoc_ai/validation/common.py": "524e6a28b52e880483310fd3f04e540582502276eb53f232bf97160ea38f692c",
+    "engineering/ai/src/onlinecoc_ai/validation/extensions.py": "94298df880066f8a66faaed227b6f2f519f382680b8227fd8a00088dbf8c5461",
+    "engineering/ai/src/onlinecoc_ai/validation/gameplay.py": "a2daef832d54b6e46cf50c1481e8707676bb7839ba97755276c9214b057f2be2",
+    "engineering/ai/src/onlinecoc_ai/validation/live.py": "058054b2a9a558fa404aabac855b8c448e5bc87dcb37ad797711a98b9bdc9bc3",
+    "engineering/ai/src/onlinecoc_ai/validation/rules.py": "073024fbc8593b367cf1b97e69bba101a469f69145680913d61e89f19d477c8e",
+    "engineering/ai/src/onlinecoc_ai/vault.py": "4bfa15671a968f2e8a917c7ccea0256970a3fd20ce08167b72d604ecac810bca",
+    "engineering/ai/tests/test_review_debug.py": "dc07efbc74e6d57ae2606ef17ac2de114813da52be7ece6c7482413a16d4d501",
+    "engineering/ai/tests/test_review_debug_ui.py": "efdc4a75bb97ec526fcb2048e8369b6e98275dbe8d3049f8e277f3c66765dc6c",
+    "engineering/ai/web/components/chat.css": "35b2ccf17d836b5309bf69d573601f412b08e2f69f96c786fd70d9720b1fffaa",
+    "engineering/ai/web/components/chat.js": "9ea7cb86b841617309728e715751ac308c5c1fbc15befe6d8e85b44d9a3010fc",
+    "engineering/ai/web/components/choices.css": "ba30e313516516cfd0ff4e1cede2ade8ca5265534b6f7bbdc90860737e0c98c6",
+    "engineering/ai/web/components/choices.js": "dff5b42432dd828ba296ee300d01eb9b653fc86d39613be72e4ad49ff319ed95",
+    "engineering/ai/web/components/client.js": "f3560206a7d2478859ff81eec5c4455784247b9f8fe8662143679d4f65c59f28",
+    "engineering/ai/web/components/collapsible.html": "c301bc7c97bbb3e06416a058907d8b089d01c91f3b6ee9c821623003d0d4a7a8",
+    "engineering/ai/web/components/conversation.html": "e1334f360512de2309ec1f0379555cbba004a36ec827b14d54055987fa4f485b",
+    "engineering/ai/web/components/debug.js": "fb8fd9c160e9112472690b53c6ec5b21d78bbd8ffd1b9ceeb18ba2bc7594b68f",
+    "engineering/ai/web/components/guard.js": "ef5169f85a86143449b4d2899a7aa3f9ba5117cb6ca5b92d98ebf40060cb74f0",
+    "engineering/ai/web/components/index.d.ts": "aead77bbd85367d42c83999470c6ee081caf19f78357c44346a27adadab1bb30",
+    "engineering/ai/web/components/index.js": "4464519cf98905085c80e588167df212ad0a1994a401757c5990fd4d31a4ccc0",
+    "engineering/ai/web/components/markdown.css": "8c5609113a5cf9cc98b6a501a0e1bdf797224a73a47025868ce6fe357e2e8b40",
+    "engineering/ai/web/components/markdown.js": "31e81e74cc6349e5fe448163bef35a15108fb23aa65e48809ee0546e5c43b573",
+    "engineering/ai/web/components/pack-manifest.json": "eec3be47ca71117f6a3634deb6ecac701782b698f0354dc0f78859af77e58259",
+    "engineering/ai/web/components/pack.d.ts": "f391d394f8c2ecb5a33bbedefbc4626b227b5c8f8c4effab064a4a81c987a7ee",
+    "engineering/ai/web/components/pack.js": "9fa395cb363e17e5756e459fa7c699833d276a6a350fe46e7784141b43d920de",
+    "engineering/ai/web/components/page-entry.css": "868732ccb9bde4b0e1fecd3c17b3bc92c2ef1265724e7f92cd6409d7c480ac84",
+    "engineering/ai/web/components/page-entry.js": "6fe175d9bcd64db41a517aa7329db9512ef0de68c4bcbefd7b2504b76cb4f964",
+    "engineering/ai/web/components/page.html": "8ae09651115165c3eaf5a9c70cbea579eb531fef40b1a1f4cf5c8ef307f9884f",
+    "engineering/ai/web/components/panel.css": "0c1dd83f2355b7bf4f7a171c4939383bf9320f4a39210a97caf254402c848ea8",
+    "engineering/ai/web/components/providers.js": "1e5f5cc8063c81add949125126b93c680cdd99c93909817fcc2b5cf6c44671c8",
+    "engineering/ai/web/components/reference-commands.js": "1dde523702635a6afe17804265c68bab2a8860677d313603fe607cd49710e910",
+    "engineering/ai/web/components/reference-details.css": "b48adb88a532d1bef5feb2aace9d52eb303debf9dbf97993242cafb80bcd49a1",
+    "engineering/ai/web/components/reference-details.js": "61f74597fe7afc0b2c428a6cfa8158e51019e5f9aa2868dbc439e9e8a287f800",
+    "engineering/ai/web/components/reference-editor.js": "cd69936f18c2409b7dea240cf45102d34d02c4a7b0659c2f227a05a300a2e138",
+    "engineering/ai/web/components/reference-input.js": "2ee610229a8ab5758d28ff8db702289a5c62467c527b883e544d9348a5fe3215",
+    "engineering/ai/web/components/room-panel.js": "64fd0e05ed88eb9b822a0708e606eafd7951308e98ec1bc4ad76cf2f7514a470",
+    "engineering/ai/web/components/rulings.css": "693cb8e3a5814b1bf2885bd70f742f825b68faab7f0461bdb09702a103db1cc5",
+    "engineering/ai/web/components/rulings.js": "9c82c3b0a4a2d6148433379f15e3599fcea00cae36fe8516843aa0bcc8c30bc0",
+    "engineering/ai/web/components/session-manager.css": "546311842e0ef5385710a5a71b77ae2975b7be60a470213706460ad904905819",
+    "engineering/ai/web/components/session-manager.js": "9c88f72dc2bae019f8931ea822c11c29a3f21467863eea0416d02ef488bab86c",
+    "engineering/ai/web/components/sessions.html": "7f960c03bc3d238e6a8ddcf5fd802c93b7001e72a395c41a9020ea3f6e51c8d2",
+    "engineering/ai/web/components/sessions.js": "9dd5b59228e769003275695d256f4febeef831b60f63a6ada584287608b945a9",
+    "engineering/ai/web/components/settings.css": "b940f97a3fa23387b9fdc26bd5c92c2dc33f0f6d79ab9bba756baad68e7a2542",
+    "engineering/ai/web/components/settings.html": "607439426c9b87f343fb1669de7fd43859686cb711bbd2ada2c56eaab060796b",
+    "engineering/ai/web/components/settings.js": "00d2800aec6e5c414dd91ce9c447b4ec4c2c0dc4709294f4132610a5a739aa77",
+    "engineering/ai/web/components/styles.js": "2da73e4f1c3cd43f0a723275c8a2671cccfc85775a64d21d2500250f8843a48b",
+    "engineering/ai/web/components/tools.js": "92bfbed0cabcb9c65cccf532300ea7e71d131c82f83732186c6d90124fdc7caf",
+    "engineering/ai/web/components/usage.css": "fd4876d0d045ab3bcd96191a6040a6b09a23fa90959d861d5594ae85dcfc4826",
+    "engineering/ai/web/components/usage.js": "f2682739b4ddb8703954768135d914fdc35602778b43c462e726c758be40339e",
+    "engineering/ai/web/components/views.css": "e3fdf0cc2bdc280d11e09965d816fbf68c95401ed08f6d71064613bb1d2d1b70",
+    "engineering/ai/web/components/views.js": "6021ec08b2d08d8d6b29cdaade080378cb590c1bf91434e5fae1d6d0b27fbea8",
+    "engineering/ai/web/manager/index.html": "51479107d798f753ad84d31fa6db76c808a01162e0f1847233df78629a28b233",
+    "engineering/ai/web/manager/manager.js": "d2b17bc0cea94370484ce2d4800ed5813243b0f601c5ee39af2af9ee6dd49e56",
+    "engineering/ai/web/manager/prototype.css": "63047a4e8cd6ee2ede1546b70f2c09baaa35dbc7d3c05e28aa577ccdf77ec597",
+    "engineering/ai/web/manager/prototype.html": "22ba70b19d49afe4cd268e74520115e6394a3dff43ff73e1309f991af0fa5a54",
+    "engineering/ai/web/manager/prototype.js": "7e9b368b14b8af1cc72f76c8821daaf0c0fbfaa276fe4a7aeb48df90b96d819b",
+    "engineering/ai/web/manager/session-prototype.css": "52673645f09f16539d1790a7724f3e34a994c12231ee76bb7b50adc2716cabf8",
+    "engineering/ai/web/manager/session-prototype.html": "bf21b170e7dae847dfc2a4c2ac75fb71087bc1ab105e6a2ac94c0b1f79ece3fd",
+    "engineering/ai/web/manager/session-prototype.js": "fde13cd1e3345ecdc0d0196d37197362faf9eb1b87ff5dde262c4d0f425fd4d2",
+    "engineering/ai/web/manager/style.css": "fd062b5367c14528ffbaa507963e1c2e34f73bbf00727605f6706a41342e8be2",
+    "engineering/backend/src/onlinecoc/ai_api.py": "33fe9003a971d37367c12c62f6cb020c56ea63df88701f01fafd49e807ae953a",
+    "engineering/contracts/ai-operations.json": "40a4bc34a24b6fb6510c083b98f7a8685dcf124d88a23ec8a06adf4e87632868",
+    "engineering/contracts/ai.json": "48ab0351c291769dadc706792102e14e90e16b2aecce20f7ba085e46e34f73ce"
+  },
+  "notes": [
+    "Initial two failures were new fixture preconditions (player switch and explicit KP dispatch); fixed and retested.",
+    "Initial manager UI assertion used previous known-empty wording; updated to current rendered wording and retested.",
+    "Isolated UI session token redacted from initial failed XML; failure retained.",
+    "Legacy accepted review source and private egress revalidated without changing historical request text.",
+    "Module paid API calls: 0. Formal room game state and external scopes unchanged. Current local DeepSeek profile received verified version metadata only.",
+    "Engine route/SDK/LAN 17 tests and package live tests are independent; not added to module count."
+  ]
+}

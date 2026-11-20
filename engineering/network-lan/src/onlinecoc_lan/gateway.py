@@ -42,7 +42,7 @@ class Config:
         return f'http://{self.bind}:{self.port}'
 
 
-GET = re.compile(r'^/api/v1/(capabilities|me|view|contracts|catalog|admin|chat/members|knowledge/capabilities|receipts/[\w.-]+|assets/[\w.-]+|admin/artifacts/[\w.-]+)$')
+GET = re.compile(r'^/api/v1/(capabilities|me|view|contracts|catalog|admin|chat/members|knowledge/capabilities|ai/debug|receipts/[\w.-]+|assets/[\w.-]+|admin/artifacts/[\w.-]+)$')
 POST = re.compile(r'^/api/v1/(login|logout|query|commands|calculate|preview|assets|backup|chat/history|knowledge/(preview|search|read|grants/query))$')
 STATIC = re.compile(r'^/(?:|index\.html|[\w.-]+\.(?:js|css)|sdk/[\w./-]+)$')
 

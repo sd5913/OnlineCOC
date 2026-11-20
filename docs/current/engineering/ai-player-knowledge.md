@@ -4,7 +4,7 @@
 - 文档子类：工程
 - 状态：有效
 - 创建日期：2026-11-17
-- 最后更新：2026-11-19
+- 最后更新：2026-11-20
 - 关联文档：[设计与 D01—D16](../design/ai-player-knowledge.md)、[实施记录](../../history/2026-11-17-ai-player-knowledge.md)、[引擎知识服务](player-knowledge.md)、[会话权限](ai-session-access.md)、[Stumpsville 操作](../../../rulepacks/stumpsville/docs/current/player-knowledge.md)
 
 ## 当前通路
@@ -63,23 +63,12 @@
 
 ## 分阶段验收
 
-2026-11-19 已知资料排版、旧回复只读转换及 KP／PL 显示分层通过 134 项相关测试，详见[显示验收](ai-responses.md#验收)。仅改变已授权数据的表现，不放宽严格 evidence 门槛；包侧内容投影缺口单列 ISSUE。
-
-2026-11-18 玩家 JSON 模式兼容修复已通过实际 DeepSeek 请求及 215 项相关测试，见[本轮记录](../../../engineering/acceptance/ai-runtime/capability-fix-results.json)。下面的 384 项为此前个人知识阶段，不与本轮数字相加。
-
-2026-11-17 按 A0—A3 与工程侧 K0—K5 对接。最终 **384 项 AI 测试去重全部通过**：全量原始记录为 383 通过、1 项测试操作遗漏；补齐 KP 转交步骤后 2 项操作台补验通过。原始失败保留，不重复累加。明细见[汇总](../../../engineering/acceptance/ai-runtime/known-results.json)、[全量](../../../engineering/acceptance/ai-runtime/known-full.xml)、[补验](../../../engineering/acceptance/ai-runtime/known-ui-retest.xml)。阶段专项如下：
-
-| 阶段 | 交付及证据 |
-| --- | --- |
-| A0 | 严格输出、引用编码、能力／外发拒绝、批量复验；最初 18 项见 [A0](../../../engineering/acceptance/ai-runtime/known-a0.xml)，后续扩展纳入运行时专项 |
-| A1 | 主体隔离、固定观察、无完整指南、在途撤权、旧回复复验、第二包证词及转交 KP；[85 项运行时专项](../../../engineering/acceptance/ai-runtime/known-runtime-final.xml)全部通过 |
-| A2 | 单独／对话／折叠嵌入、原子引用、原观察详情、撤权清空、会话权限；初次 [5 项界面验收](../../../engineering/acceptance/ai-runtime/known-a2.xml)通过，扩展的 17 项组件／操作台浏览器测试均在最终全量及补验中通过 |
-| A3 | [Stumpsville 12 组](../../../rulepacks/stumpsville/tests/strict-known-results.json)公开 HTTP／Edge 测试；原十地点／18 行动 [8 组回归](../../../rulepacks/stumpsville/tests/scene-results.json)通过；不同玩法[证词示例](../../../engineering/ai/examples/knowledge-investigation.py)不跟随未来改口 |
-
-测试使用隔离存档、确定性模型及本机 HTTP。断言实际提供方输入和最终显示结果，包括模型夹带秘密的拒绝／重试，不以模型偶然未泄露代替权限验证。本轮未调用真实模型、修改正式房间或部署云端。
+阶段测试、失败复验和早期决策已移入[开发记录](../../history/2026-11-20-ai-development-records.md)。各阶段计数不相加为当前全量结果。 专项入口：`test_known_runtime.py`、`test_player_requests.py`、`test_known_ui.py`；包侧覆盖与模块覆盖分别记录。
 
 ## 首版边界
 
 按账号隔离；角色级主体、场景持续订阅、二进制知识资料、生成式事实摘要尚未开放。缺少历史受众／顺序证明的聊天和裁决不进入严格 PL AI。首次接入旧房间须显式转换 Room v4、绑定知识策略，并由 KP 选择现在揭示的旧地点；不能补造历史观察。开发者接线和源版本规则见[包侧说明](../../../rulepacks/stumpsville/docs/current/player-knowledge.md)。
 
-2026-11-19 本轮查询与创作申请验收：按测试 ID 取最新结果去重 **190 项通过，0 失败、0 跳过**。覆盖真实宿主权限、私有审核、普通自动审批拦截、重启和 Edge 嵌入界面；初跑问题、复验关系与源码摘要见[本轮结果](../../../engineering/acceptance/ai-runtime/player-requests-results.json)。模块未调用付费 API、未修改正式房间；包侧隔离模型实测另行记录，不合并测试数。
+## 2026-11-19 来源审核与调试
+
+玩家原需求转交后独立显示为 KP 审核来源卡；PL 调试导出仍限制在本人当前授权会话，不能读取 KP 的审核材料。详见[来源与导出边界](ai-debug-review.md)。

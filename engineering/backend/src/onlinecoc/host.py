@@ -84,6 +84,7 @@ class Host:
         if not rec:return {'status':'unknown','commandId':id}
         if rec['status']=='pending':return {'status':'pending','commandId':id}
         result=copy.deepcopy(rec['receipt'])
+        if rec.get('op')=='notification.ack':return result
         if (rec.get('op') or '').startswith('chat.'):
             cid=result.get('result',{}).get('channelId')
             if cid and not chat.can_read(s,account,s['chat']['channels'].get(cid)):result.pop('result',None)
@@ -177,7 +178,9 @@ class Host:
                         if op.startswith('chat.'):self.hit('before_chat_commit')
                         if op in ('ai.proposal.approve','publication.apply'):self.hit('before_'+op+'_commit')
                         if op.startswith('knowledge.'):self.hit('before_knowledge_commit')
+                        if op.startswith('notification.'):self.hit('before_notification_commit')
                         self.commit(s)
+                        if op.startswith('notification.'):self.hit('after_notification_commit')
                         if op.startswith('knowledge.'):self.hit('after_knowledge_commit')
                         if op.startswith('chat.'):self.hit('after_chat_commit')
                         if op in ('ai.proposal.approve','publication.apply'):self.hit('after_'+op+'_commit')
@@ -287,6 +290,9 @@ class Host:
             return self.knowledge.project_result(s,account,rule,out['result'],out['reads'],egress='rules')
     def manage(self,s,account,op,args,*,prepared=None,command_id=None):
         m=member(s,account)
+        if op.startswith('notification.'):
+            from .notifications import apply
+            return apply(s,account,op,args,self.clock())
         if op.startswith('knowledge.'):return self.knowledge.apply(s,account,op,args,command_id)
         if op.startswith('chat.'):
             if s['knowledge']['policies']:
@@ -388,6 +394,9 @@ class Host:
                 if w['flowId']==f['id'] and w['status']=='waiting':w['status']='cancelled';w['revision']+=1
             return True
         raise DomainError('UNKNOWN_OPERATION')
+    def notifications(self,account,after=0,limit=50):
+        from .notifications import page
+        with self.lock:return page(self.state(),account,after,limit)
     def chat_members(self,account):
         with self.lock:
             s=self.state();member(s,account);accounts=self.identity.store.snapshot()[1]['accounts']

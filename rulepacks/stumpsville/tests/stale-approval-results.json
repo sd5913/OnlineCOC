@@ -1,0 +1,38 @@
+{
+  "checkedAt": "2026-11-20T12:39:57.277020+08:00",
+  "checks": [
+    "真实同档重启后，旧高危候选批准返回STALE_AUTHORITY；三检通过但未发布",
+    "界面解释失效原因；相同内容重检提升修订并更新审批上下文，指纹可保持相同，不执行且不调用模型",
+    "重新人工接受后按当前修订和整包指纹发布一次；可选备注和提交即关闭继续有效",
+    "相关配置已变化时重检拒绝覆写；不创建新修订、不发布过期整文件",
+    "失败通知保留原提案、版本、指纹及宿主批准命令定位"
+  ],
+  "realSaveChanged": false,
+  "realProviderCalls": 0,
+  "evidenceDirectory": "tests/output/stale-approval-39965dcf",
+  "previousRuns": [
+    {
+      "passed": false,
+      "error": "Locator expected to contain text '等待 KP 裁决'\nActual value: 09:56类型：AI 高危配置kp人工配置草稿检查未通过查看并裁决查看对话转 AI 处理 \nCall log:\n  - Expect \"to_contain_text\" locator(\"[data-ruling-id=\\\"proposal:b6a90be4acc8464e8151fd7185bc4f62\\\"]\") with timeout 60000ms\n  - waiting for locator(\"[data-ruling-id=\\\"proposal:b6a90be4acc8464e8151fd7185bc4f62\\\"]\")\n    39 × locator resolved to <article class=\"queue-item ruling-card\" data-ruling-id=\"proposal:b6a90be4acc8464e8151fd7185bc4f62\">…</article>\n       - unexpected value \"09:55类型：AI 高危配置kp人工配置草稿检查未通过查看并裁决查看对话转 AI 处理\"\n    83 × locator resolved to <article class=\"queue-item ruling-card\" data-ruling-id=\"proposal:b6a90be4acc8464e8151fd7185bc4f62\">…</article>\n       - unexpected value \"09:56类型：AI 高危配置kp人工配置草稿检查未通过查看并裁决查看对话转 AI 处理\"\n\nAria snapshot:\n- article:\n  - time: 09:56\n  - text: 类型：AI 高危配置 kp 人工配置草稿 检查未通过\n  - button \"查看并裁决\"\n  - button \"查看对话\" [disabled]\n  - button \"转 AI 处理\"",
+      "checks": [
+        "真实同档重启后，旧高危候选批准返回STALE_AUTHORITY；三检通过但未发布"
+      ],
+      "evidenceDirectory": "tests/output/stale-approval-bb060b85"
+    },
+    {
+      "passed": true,
+      "error": null,
+      "checks": [
+        "真实同档重启后，旧高危候选批准返回STALE_AUTHORITY；三检通过但未发布",
+        "界面解释失效原因；相同内容重检提升修订并更新审批上下文，指纹可保持相同，不执行且不调用模型",
+        "重新人工接受后按当前修订和整包指纹发布一次；可选备注和提交即关闭继续有效",
+        "相关配置已变化时重检拒绝覆写；不创建新修订、不发布过期整文件",
+        "失败通知保留原提案、版本、指纹及宿主批准命令定位"
+      ],
+      "evidenceDirectory": "tests/output/stale-approval-8d722d12"
+    }
+  ],
+  "passed": true,
+  "pageErrors": [],
+  "passedCount": 5
+}

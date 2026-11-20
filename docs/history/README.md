@@ -27,3 +27,13 @@
 - [工程设计归档](2026-11-17-player-knowledge-engineering-design.md)：已实现接口与原始决策，现行说明见个人知识服务。
 - [施工与验收归档](2026-11-17-player-knowledge-construction-plan.md)：K0—K5及K-01—K-27完成记录。
 - [ISSUE-011完成记录](2026-11-17-issue-011-player-knowledge-authorization.md)：跨入口资料授权问题及处理结果。
+
+- [AI 阶段开发与实验记录](2026-11-20-ai-development-records.md)：取代当前文档中的阶段流水及早期完整实施计划，保留失败、复验与决策背景。
+
+- [ISSUE-013 重启历史恢复](2026-11-20-issue-013-ai-session-restart.md)：独立只读复验与执行 epoch 分离，含首次失败及联合验收。
+
+- [ISSUE-014 旧操作台裁决接线](2026-11-20-issue-014-ai-console-rulings-client.md)：SDK 方法与订阅补齐，含原始失败、独立8项及浏览器5项复验。
+
+- [ISSUE-015：AI 累计存储与全历史无损压缩](2026-11-20-issue-015-ai-store-growth.md)：原始失败、方案取舍、故障与大样本验证；现行说明见工程存储文档。
+
+- [ISSUE-016：审核连续性、语义引用与指令包通知](2026-11-20-issue-016-review-continuity-notifications.md)：三方实现边界、过期历史和生成状态修复、自动归档与单次通知、64次真实模型调用及全部失败／复验记录。

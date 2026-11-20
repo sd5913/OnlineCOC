@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="25" time="149.053" timestamp="2026-11-19T16:56:41.831940+08:00" hostname="LAPTOP-BIFSL64A"><testcase classname="tests.test_review_debug" name="test_review_source_is_separate_from_kp_message_and_deduplicated" time="1.182" /><testcase classname="tests.test_review_debug" name="test_forwarded_request_resolves_real_source_and_does_not_change_original" time="1.117" /><testcase classname="tests.test_review_debug" name="test_all_forwarded_reviews_stay_manual_with_auto_on" time="1.321" /><testcase classname="tests.test_review_debug" name="test_review_source_obeys_external_scope" time="1.105" /><testcase classname="tests.test_review_debug" name="test_ruling_digest_and_snapshot_size_checked" time="1.349" /><testcase classname="tests.test_review_debug" name="test_debug_is_readonly_metadata_default_with_authorized_content_opt_in" time="1.191" /><testcase classname="tests.test_review_debug" name="test_debug_rejects_ambiguous_or_invalid_options[options0]" time="1.174" /><testcase classname="tests.test_review_debug" name="test_debug_rejects_ambiguous_or_invalid_options[options1]" time="0.970" /><testcase classname="tests.test_review_debug" name="test_debug_rejects_ambiguous_or_invalid_options[options2]" time="0.988" /><testcase classname="tests.test_review_debug" name="test_debug_rejects_ambiguous_or_invalid_options[options3]" time="0.966" /><testcase classname="tests.test_review_debug" name="test_debug_rejects_ambiguous_or_invalid_options[options4]" time="1.054" /><testcase classname="tests.test_review_debug" name="test_debug_rechecks_deleted_session_and_player_switch" time="1.078" /><testcase classname="tests.test_review_debug" name="test_pure_schema_catalog_available_without_kp_egress" time="1.424" /><testcase classname="tests.test_review_debug" name="test_provider_records_actual_model_without_equating_alias_and_version" time="0.005" /><testcase classname="tests.test_review_debug_ui" name="test_source_card_and_export_opt_in_guard" time="5.523" /><testcase classname="tests.test_player_requests_ui" name="test_real_player_direct_request_without_knowledge_then_kp_queue" time="6.032" /><testcase classname="tests.test_player_requests_ui" name="test_player_error_is_visible_and_choice_forwards_original_request_once" time="4.730" /><testcase classname="tests.test_player_requests_ui" name="test_kp_accept_label_and_open_private_review_session" time="4.845" /><testcase classname="tests.test_embeds" name="test_package_manifest_covers_public_runtime_dependencies" time="0.029" /><testcase classname="tests.test_embeds" name="test_real_room_page_variants[page]" time="19.785" /><testcase classname="tests.test_embeds" name="test_real_room_page_variants[conversation]" time="5.440" /><testcase classname="tests.test_embeds" name="test_real_room_page_variants[collapsible]" time="7.733" /><testcase classname="tests.test_embeds" name="test_same_origin_iframe_entry_and_csp_scope" time="5.842" /><testcase classname="tests.test_embeds" name="test_headless_tools_and_shared_client_ownership" time="5.387" /><testcase classname="tests.test_manager_ui" name="test_real_manager_providers_sessions_review_and_embed" time="67.026"><failure message="AssertionError: Locator expected to contain text '本人已知资料不足'&#10;Actual value: 希望有一盏灯待审核暂未获得与问题匹配的本人已知资料。可换个关键词查询，或向 KP 申请资料。向 KP 申请披露提交创作／配置申请取消引用与调试复制定位包含当前可见正文（可能含私密资料）导出调试 JSON复制回答 &#10;Call log:&#10;  - Expect &quot;to_contain_text&quot; locator(&quot;#history&quot;) with timeout 30000ms&#10;  - waiting for locator(&quot;#history&quot;)&#10;    15 × locator resolved to &lt;div role=&quot;log&quot; id=&quot;history&quot; class=&quot;messages&quot; aria-label=&quot;对话记录&quot;&gt;…&lt;/div&gt;&#10;[+15 more lines; full report in element text]">services = ('http://127.0.0.1:55748', {'key': '[isolated-test-session-redacted]', 'roomPort': 55747, 'managerPort': 55...dies/Art Programming/OnlineCOC/engineering/acceptance/ai-runtime/review-debug-ui-tmp/test_real_manager_providers_se0'))
+
+    def test_real_manager_providers_sessions_review_and_embed(services):
+        origin,entry,tmp=services;errors=[];timings=[]
+        allow_players(f'http://127.0.0.1:{entry["roomPort"]}')
+        output=Path(__file__).resolve().parents[2]/'acceptance/ai-runtime'
+        with sync_playwright() as p:
+            browser=p.chromium.launch(channel='msedge',headless=True)
+            context=browser.new_context(viewport={'width':1440,'height':960});page=context.new_page();page.on('pageerror',lambda e:errors.append(str(e)))
+            try:
+                page.goto(origin+'/#unlock='+entry['key'])
+                expect(page.locator('#room-start')).to_be_visible()
+                assert '#unlock' not in page.url
+                page.locator('[data-page=providers]').click()
+                page.get_by_role('button',name='编辑',exact=True).click()
+                page.locator('#secret').fill('browser-offline-test-key');page.get_by_role('button',name='保存密钥',exact=True).click()
+                expect(page.locator('#key-status')).to_have_text('密钥状态：已加密保存')
+                page.get_by_role('button',name='测试连接（产生用量）',exact=True).click();expect(page.locator('#status')).to_contain_text('连接通过')
+                page.locator('#manage-rooms').click();page.locator('#room-name').fill('周五调查团');page.locator('#room-url').fill(f'http://127.0.0.1:{entry["roomPort"]}')
+                page.get_by_role('button',name='添加房间',exact=True).click();page.get_by_role('button',name='登录',exact=True).click()
+                page.locator('#password').fill('test-password');page.get_by_role('button',name='连接',exact=True).click()
+                expect(page.locator('#session-panel #text')).to_be_visible()
+                expect(page.locator('#folders .folder-head')).to_contain_text('周五调查团')
+                page.locator('#review-open').click();page.locator('[data-tab=settings]').click();page.get_by_text('服务与外发范围',exact=True).click()
+                expect(page.locator('#ai-save-settings')).to_be_enabled()
+                page.locator('#ai-enabled').check();page.locator('#ai-profile').select_option('deepseek-main');page.locator('#ai-public').check();page.locator('#ai-private').check();page.locator('#ai-save-settings').click()
+                expect(page.locator('#ai-result')).to_have_text('设置已保存');page.locator('#review-close').click()
+                start=time.perf_counter();page.locator('#new-chat').click();expect(page.locator('#session-panel #status')).to_have_text('新会话已创建');timings.append(round((time.perf_counter()-start)*1000,2))
+                page.locator('#rename').fill('提灯与技能讨论');page.locator('#save').click();expect(page.locator('#folders .session-link')).to_have_text('提灯与技能讨论')
+                page.locator('#session-manage').click();expect(page.locator('.settings [name=title]')).to_have_value('提灯与技能讨论')
+                page.locator('[name=historyTurns]').select_option('2');page.locator('.save').click();expect(page.locator('.session-manager .status')).to_have_text('设置已保存')
+                page.locator('#session-close').click()
+                page.locator('#session-panel #text').fill('/config demo.skill')
+                expect(page.locator('#completion').get_by_role('option')).to_have_count(1)
+                page.locator('#session-panel #text').press('ArrowDown');page.locator('#session-panel #text').press('Enter')
+                token=page.locator('#session-panel #text .reference-chip').get_attribute('data-token');assert token.startswith('[[config:demo.skill@')
+                page.locator('#preview').click();expect(page.locator('#reference-preview')).to_contain_text('demo.skill')
+                page.locator('#session-panel #text').fill('参考 '+token+'，将新建技能初值改为 15，保留已有技能。')
+                page.locator('#send').click();expect(page.locator('#history')).to_contain_text('新建技能初值')
+                expect(page.locator('#history')).to_contain_text('离线验收：新技能默认值 15',timeout=40000)
+                page.screenshot(path=str(output/'reference-ui-room.png'),full_page=True)
+                page.get_by_role('button',name='查看配置裁决',exact=True).click(timeout=40000)
+                expect(page.locator('.batch-card')).to_contain_text('等待 KP 裁决')
+                for field in page.locator('.batch-card textarea').all():field.fill('验收接受新技能初值提升，保留已有技能投入的价值。')
+                page.screenshot(path=str(output/'ai-rulings.png'),full_page=True)
+                page.get_by_role('button',name='批准并执行',exact=True).click();expect(page.locator('.batch-card')).to_contain_text('已执行',timeout=20000)
+                page.locator('#review-close').click()
+                page.locator('#archive').click();expect(page.locator('#session-panel #status')).to_contain_text('已归档')
+                page.locator('#archived').click();expect(page.locator('#folders .session-link')).to_have_text('提灯与技能讨论')
+                page.reload();page.locator('#folders .folder-head').click();expect(page.locator('#session-panel #text')).to_be_visible()
+                page.locator('#archived').click();page.locator('#folders .session-link').click();expect(page.locator('#rename')).to_have_value('提灯与技能讨论')
+                page.locator('#disconnect').click();expect(page.locator('#room-workspace')).to_be_hidden()
+                page.locator('#folders .folder-head').click();page.locator('#account').fill('player1');page.locator('#password').fill('test-password');page.get_by_role('button',name='连接',exact=True).click()
+                expect(page.locator('#session-panel #text')).to_be_visible();expect(page.locator('#review-open')).to_be_hidden()
+                assert page.locator('#folders .session-link').count()==0
+&gt;               page.locator('#session-panel #text').fill('希望有一盏灯');page.locator('#send').click();expect(page.locator('#history')).to_contain_text('本人已知资料不足',timeout=30000)
+                                                                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E               AssertionError: Locator expected to contain text '本人已知资料不足'
+E               Actual value: 希望有一盏灯待审核暂未获得与问题匹配的本人已知资料。可换个关键词查询，或向 KP 申请资料。向 KP 申请披露提交创作／配置申请取消引用与调试复制定位包含当前可见正文（可能含私密资料）导出调试 JSON复制回答 
+E               Call log:
+E                 - Expect "to_contain_text" locator("#history") with timeout 30000ms
+E                 - waiting for locator("#history")
+E                   15 × locator resolved to &lt;div role="log" id="history" class="messages" aria-label="对话记录"&gt;…&lt;/div&gt;
+E                      - unexpected value "✳从一个想法开始引用资料、梳理线索，或准备下一步方案。整理已知线索只使用本人已经获知的资料查找一份资料输入 /knowledge 选择引用向 KP 请求说明提交问题，由 KP 决定揭示范围"
+E                   48 × locator resolved to &lt;div role="log" id="history" class="messages" aria-label="对话记录"&gt;…&lt;/div&gt;
+E                      - unexpected value "希望有一盏灯待审核暂未获得与问题匹配的本人已知资料。可换个关键词查询，或向 KP 申请资料。向 KP 申请披露提交创作／配置申请取消引用与调试复制定位包含当前可见正文（可能含私密资料）导出调试 JSON复制回答"
+E               
+E               Aria snapshot:
+E               - log "对话记录":
+E                 - article: 希望有一盏灯
+E                 - article:
+E                   - text: AI 待审核
+E                   - paragraph: 暂未获得与问题匹配的本人已知资料。可换个关键词查询，或向 KP 申请资料。
+E                   - button "向 KP 申请披露"
+E                   - button "提交创作／配置申请"
+E                   - button "取消"
+E                   - group: 引用与调试
+E                   - button "复制回答"
+
+engineering\ai\tests\test_manager_ui.py:96: AssertionError</failure></testcase></testsuite></testsuites>

@@ -1,0 +1,33 @@
+{
+  "date": "2026-11-20",
+  "timezone": "Asia/Shanghai",
+  "nodeVersion": "v24.22.3",
+  "tests": 8,
+  "failures": 0,
+  "skipped": 0,
+  "evidence": "core.xml",
+  "sourceSha256": {
+    "engineering/client-sdk/client.js": "19e2762ff1d717b71abe63f6bede1b689c844ac8252acb8bd4b6a662c8b117cd",
+    "engineering/ai/web/components/room-panel.js": "64fd0e05ed88eb9b822a0708e606eafd7951308e98ec1bc4ad76cf2f7514a470",
+    "engineering/ai/web/components/rulings.js": "9c82c3b0a4a2d6148433379f15e3599fcea00cae36fe8516843aa0bcc8c30bc0",
+    "engineering/ai/web/components/debug.js": "fb8fd9c160e9112472690b53c6ec5b21d78bbd8ffd1b9ceeb18ba2bc7594b68f",
+    "engineering/ai/web/components/guard.js": "ef5169f85a86143449b4d2899a7aa3f9ba5117cb6ca5b92d98ebf40060cb74f0",
+    "engineering/backend/src/onlinecoc/ai_api.py": "33fe9003a971d37367c12c62f6cb020c56ea63df88701f01fafd49e807ae953a",
+    "engineering/acceptance/rulings-sdk/test_client.mjs": "3ce853390e363d7e3147215045c6c5d05f358b659f0b777b875e357b35b1305f"
+  },
+  "testNames": [
+    "legacy review and ruling components have all client methods they call",
+    "ruling reads preserve high-risk digest and do not submit a decision",
+    "reference resolution uses authenticated POST and preserves reference tokens",
+    "aiRulings discards a late private response after identity reset",
+    "aiResolve discards a late private response after identity reset",
+    "ruling errors remain errors, never an empty approved queue",
+    "subscription and legacy onChange both see atomic snapshots, resets and disconnects",
+    "identity reset notifies subscribers and old socket cannot restore private data"
+  ],
+  "boundaries": [
+    "Real SDK and consumer source, synthetic Transport; no HTTP/browser/model execution.",
+    "Full legacy-console browser acceptance delegated to AI owner.",
+    "High-risk approval and publication logic unchanged."
+  ]
+}

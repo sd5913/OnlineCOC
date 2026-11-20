@@ -19,7 +19,7 @@ class Repository:
     def __init__(self, directory, scope_id, *, store_factory=FileDataStore):
         self.lock = threading.RLock()
         self.pending = None
-        self.store = store_factory(directory)
+        self.store = store_factory(directory, auto_compress=True) if store_factory is FileDataStore else store_factory(directory)
         try:
             if self.store.snapshot()[1] is None:
                 self.store.commit(0, initial(scope_id))
@@ -116,6 +116,13 @@ class Repository:
                 review=sessions.get(request.get('reviewSessionId'),{})
                 require(review.get('accessLevel')=='administrator' and review.get('owner')==request.get('decidedBy') and
                     request.get('reviewRequestId') in review.get('requestIds',[]),'PLAYER_REQUEST_STATE_INVALID')
+        reviews=state['settings'].get('reviews',{})
+        require(type(reviews) is dict,'REVIEW_STATE_INVALID')
+        for key,record in reviews.items():
+            session=sessions.get(key,{})
+            require(record.get('sessionId')==key and record.get('requestId') in session.get('requestIds',[]) and
+                session.get('accessLevel')=='administrator' and session.get('owner')==record.get('owner') and
+                record.get('digest')==digest({k:v for k,v in record.items() if k!='digest'}),'REVIEW_STATE_INVALID')
         errors=state['settings'].get('requestErrors',{})
         require(type(errors) is dict and all(k in state['requests'] and isinstance(v,str) and re.fullmatch('[A-Z][A-Z0-9_]{0,100}',v) for k,v in errors.items()),'REQUEST_STATE_INVALID')
         linked = set()

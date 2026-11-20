@@ -1,6 +1,6 @@
 {
   "passed": true,
-  "managerProcessToHttpReadyMs": 1790.54,
+  "managerProcessToHttpReadyMs": 2313.55,
   "samples": 1,
   "includes": [
     "Python process and imports",

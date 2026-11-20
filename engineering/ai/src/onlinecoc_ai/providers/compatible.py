@@ -127,7 +127,9 @@ class CompatibleProvider:
                 require(reason == "stop" and content and content.strip(), "PROVIDER_EMPTY_OUTPUT")
                 # A valid wire reply has billable usage even if its answer JSON
                 # is malformed. Let the coordinator record and repair that text.
-            return Completion(normalized, normalized_usage, reason, digest(value))
+            identity={k:value.get(k) for k in ('model','system_fingerprint')}
+            require(all(v is None or type(v) is str and 0<len(v)<=200 and all(ord(c)>=32 for c in v) for v in identity.values()),'PROVIDER_RESPONSE_INVALID')
+            return Completion(normalized, normalized_usage, reason, digest(value), identity['model'], identity['system_fingerprint'])
         except ProviderError:
             raise
         except (AiError, KeyError, TypeError, ValueError) as exc:
@@ -144,6 +146,7 @@ class CompatibleProvider:
         require(len(calls) == 1 and calls[0]["function"]["name"] == "connection_probe" and loads(calls[0]["function"]["arguments"]) == {}, "UNSUPPORTED_CAPABILITY")
         return {"profileId": self.profile["profileId"], "profileRevision": self.profile["revision"], "model": self.profile["model"],
                 "jsonProbe": "passed", "toolProbe": "passed", "usage": {k: result.usage[k] + called.usage[k] for k in result.usage},
+                "returnedModels":[result.model,called.model], "systemFingerprints":[result.system_fingerprint,called.system_fingerprint],
                 "responseDigests": [result.response_digest, called.response_digest]}
 
     async def close(self):

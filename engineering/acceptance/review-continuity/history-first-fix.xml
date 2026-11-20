@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="19" time="25.999" timestamp="2026-11-20T11:41:21.343537+08:00" hostname="LAPTOP-BIFSL64A"><testcase classname="tests.test_history_continuity" name="test_stale_authorized_response_stays_visible_with_readonly_notice" time="1.291" /><testcase classname="tests.test_history_continuity" name="test_short_confirmation_retains_stale_intent_without_old_execution_proofs" time="1.235" /><testcase classname="tests.test_sessions" name="test_history_reuses_valid_response_but_drops_stale_sources" time="1.196"><failure message="AssertionError: assert ['user', 'assistant'] == ['user']&#10;  &#10;  Left contains one more item: 'assistant'&#10;  Use -v to get more diff">application = &lt;onlinecoc_ai.api.Application object at 0x00000235D0864F50&gt;
+
+    def test_history_reuses_valid_response_but_drops_stale_sources(application):
+        app = application
+        sid = committed(command(app, 'ai.session.create', {'title': '上下文连续性'}))['sessionId']
+        async def callback(*args):return completion({'kind': 'plan', 'text': '以前的未批准方案'})
+        async def run():
+            app.coordinator.provider_factory = lambda p: Fake(callback)
+            await app.coordinator.start()
+            try:
+                first = submit(app, sid, '第一次需求')
+                task = committed(command(app, 'ai.request.dispatch', {'requestId': first['requestId']}))
+                assert (await wait_task(app.coordinator, task['taskId']))['status'] == 'review_ready'
+                second = submit(app, sid, '继续完善')
+                request = app.repository.state()['requests'][second['requestId']]
+                _, payload = Context(app.proposals).capture('kp', request)
+                assert [(h['role'], h['content']) for h in payload['conversationHistory']] == [('user', '第一次需求'), ('assistant', '以前的未批准方案')]
+                assert payload['conversationHistory'][1]['authority'] == 'unapproved-model-response'
+                room = app.host.state();room['entities']['actor-one']['name'] = '世界已改变';app.host.commit(room)
+                snapshot, changed = Context(app.proposals).capture('kp', request)
+                assert [h['role'] for h in changed['conversationHistory']] == ['user']
+                assert 'session-response:' + first['requestId'] in snapshot[0]['omittedSources']
+            finally:await app.coordinator.close()
+&gt;       asyncio.run(run())
+
+engineering\ai\tests\test_sessions.py:37: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:204: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:127: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\base_events.py:719: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    async def run():
+        app.coordinator.provider_factory = lambda p: Fake(callback)
+        await app.coordinator.start()
+        try:
+            first = submit(app, sid, '第一次需求')
+            task = committed(command(app, 'ai.request.dispatch', {'requestId': first['requestId']}))
+            assert (await wait_task(app.coordinator, task['taskId']))['status'] == 'review_ready'
+            second = submit(app, sid, '继续完善')
+            request = app.repository.state()['requests'][second['requestId']]
+            _, payload = Context(app.proposals).capture('kp', request)
+            assert [(h['role'], h['content']) for h in payload['conversationHistory']] == [('user', '第一次需求'), ('assistant', '以前的未批准方案')]
+            assert payload['conversationHistory'][1]['authority'] == 'unapproved-model-response'
+            room = app.host.state();room['entities']['actor-one']['name'] = '世界已改变';app.host.commit(room)
+            snapshot, changed = Context(app.proposals).capture('kp', request)
+&gt;           assert [h['role'] for h in changed['conversationHistory']] == ['user']
+E           AssertionError: assert ['user', 'assistant'] == ['user']
+E             
+E             Left contains one more item: 'assistant'
+E             Use -v to get more diff
+
+engineering\ai\tests\test_sessions.py:34: AssertionError</failure></testcase><testcase classname="tests.test_sessions" name="test_history_is_bounded_and_never_reads_other_sessions" time="1.282" /><testcase classname="tests.test_sessions" name="test_repository_rejects_broken_conversation_links[foreign]" time="1.290" /><testcase classname="tests.test_sessions" name="test_repository_rejects_broken_conversation_links[missing]" time="1.060" /><testcase classname="tests.test_sessions" name="test_repository_rejects_broken_conversation_links[duplicate]" time="1.135" /><testcase classname="tests.test_sessions" name="test_repository_rejects_broken_conversation_links[title]" time="1.309" /><testcase classname="tests.test_sessions" name="test_session_preferences_owner_conflict_and_persistence" time="1.506" /><testcase classname="tests.test_sessions" name="test_configured_history_bound_preserves_records[0]" time="1.231" /><testcase classname="tests.test_sessions" name="test_configured_history_bound_preserves_records[2]" time="1.671" /><testcase classname="tests.test_sessions" name="test_configured_history_bound_preserves_records[4]" time="1.180" /><testcase classname="tests.test_sessions" name="test_session_preferences_validate_command_and_stored_data[historyTurns--1]" time="1.117" /><testcase classname="tests.test_sessions" name="test_session_preferences_validate_command_and_stored_data[historyTurns-5]" time="1.130" /><testcase classname="tests.test_sessions" name="test_session_preferences_validate_command_and_stored_data[historyTurns-True]" time="1.483" /><testcase classname="tests.test_sessions" name="test_session_preferences_validate_command_and_stored_data[historyTurns-1.5]" time="1.450" /><testcase classname="tests.test_sessions" name="test_session_preferences_validate_command_and_stored_data[renderMode-html]" time="1.149" /><testcase classname="tests.test_sessions" name="test_session_preferences_validate_command_and_stored_data[pinned-1]" time="1.392" /><testcase classname="tests.test_sessions" name="test_session_preferences_validate_command_and_stored_data[showDiagnostics-false]" time="1.447" /></testsuite></testsuites>

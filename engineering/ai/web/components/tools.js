@@ -29,6 +29,8 @@ export function createAITools(rawClient){
   access:{get:()=>client.aiAccess(),update:(value,id)=>ai('ai.access.update',value,id)},
   rulings:{list:()=>client.aiRulings(),decide:(value,id)=>ai('ai.ruling.decide',value,id)},
   batches:{list:()=>client.aiBatches(),approve:(batchId,digest,id)=>ai('ai.batch.approve',{batchId,digest},id),reject:(batchId,digest,id)=>ai('ai.batch.reject',{batchId,digest},id),reconcile:(batchId,digest,id)=>ai('ai.batch.reconcile',{batchId,digest},id)},
+  debug:options=>client.aiDebug(options),
+  review:(source,instruction,id)=>ai('ai.review.create',{source,...(instruction?{instruction}:{})},id),
   usage:options=>client.aiUsage(options),
   settings:{get:()=>client.aiSettings(),update:(settings,id)=>ai('ai.settings.update',settings,id)},
   receipts:{ai:id=>client.aiReceipt(id),host:id=>client.receipt(id)},contracts:()=>client.aiContracts(),

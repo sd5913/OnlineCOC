@@ -171,7 +171,9 @@ def test_player_request_reference_is_label_only_in_kp_review(application):
     token=References(app.host).search('player1','knowledge')['items'][0]['token']
     s,r=create(app,text='我想改造 '+token);result=committed(decide(app,r))
     review=app.sessions.get('kp',result['reviewSessionId'])['items'][0]
-    assert '玩家引用' in review['text'] and '[[knowledge:' not in review['text']
+    assert '[[knowledge:' not in review['text'] and '我想改造' not in review['text']
+    source=app.reviews.payload(result['reviewSessionId'])
+    assert '来源引用' in source['summary'] and '[[knowledge:' not in source['summary']
     assert app.sessions.get('player1',s['sessionId'])['items'][0]['text'].endswith(token)
 
 
@@ -215,11 +217,11 @@ def test_cancelled_query_failure_keeps_cancelled_status(application):
 
 
 def test_review_context_identifies_original_player_for_my_character_intent(application):
-    app=application;s,r=create(app,text='请为我的角色设计一件新道具')
+    app=application;enable(app.host,public=True,private=True,kp=True);s,r=create(app,text='请为我的角色设计一件新道具')
     captured=[]
     async def callback(count,messages,tools):
         payload=json.loads(messages[1]['content']);captured.append(payload)
-        assert payload['playerRequestReview']['requestedBy']=='player1'
+        assert payload['reviewSource']['requestedBy']=='player1'
         assert payload['sessionAccess']['level']=='administrator'
         return completion({'kind':'plan','text':'为申请人的角色准备道具方案。'})
     async def run():
@@ -239,4 +241,6 @@ def test_reference_label_cannot_bypass_disabled_private_egress_during_kp_accept(
     s,r=create(app,text='请帮我改造 '+ref['token'])
     enable(app.host,public=True,private=False,kp=True)
     result=committed(decide(app,r));text=app.sessions.get('kp',result['reviewSessionId'])['items'][0]['text']
-    assert '当前不可核验' in text and ref['label'] not in text and '[[knowledge:' not in text
+    assert ref['label'] not in text and '[[knowledge:' not in text
+    payload=app.reviews.payload(result['reviewSessionId'])
+    assert payload['omitted'] and payload['code']=='EXTERNAL_SCOPE_DISABLED' and ref['label'] not in str(payload)

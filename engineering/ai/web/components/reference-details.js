@@ -24,7 +24,14 @@ export function describeData(value,{audience='player'}={}){
  }
  const section=node('section');section.className='authorized-data';section.append(describe(value));return section;
 }
-export function bindReferenceDetails(target,resolveReferences,{container=target.parentNode,valid=()=>true,audience=()=> 'player'}={}){
+/** A trusted package may render this already-authorized DTO; null/invalid output falls back. */
+export function referenceView(item,{audience='player',renderReference=null}={}){
+ if(typeof renderReference==='function'){
+  try{const rendered=renderReference(structuredClone(item),{audience,readOnly:true});if(rendered instanceof Node)return rendered;}catch{}
+ }
+ return describeData(item.value?.data??item.value??null,{audience});
+}
+export function bindReferenceDetails(target,resolveReferences,{container=target.parentNode,valid=()=>true,audience=()=> 'player',renderReference=null}={}){
  const element=node('div');element.className='reference-details';container.append(element);const root=element.attachShadow({mode:'open'});
  mountStyle(root,new URL('./reference-details.css',import.meta.url));
  const dialog=node('dialog');dialog.setAttribute('aria-labelledby','reference-title');const header=node('header'),title=node('h2','引用详情');title.id='reference-title';
@@ -40,7 +47,7 @@ export function bindReferenceDetails(target,resolveReferences,{container=target.
    const item=result.items.find(i=>`[[${i.kind}:${i.id}@${i.revision}]]`===current);if(!item)throw new Error('NOT_VISIBLE');
    const level=typeof audience==='function'?audience():audience;const admin=level==='administrator';const next=JSON.stringify([item,admin]);if(next===fingerprint)return;fingerprint=next;title.textContent=item.label;
    status.textContent=item.kind==='knowledge'?(item.value?.mode==='live_scope'?'持续告知资料':'观察记录 · '+(item.value?.observedAt?new Date(item.value.observedAt*1000).toLocaleString():'已记录'))+' · 仅本人已知':(names[item.kind]||'数据')+(admin?' · 修订 '+item.revision+' · '+({public:'公开',kp:'KP 可见',private:'私有'}[item.visibility]||'已授权'):' · 已授权资料');
-   body.replaceChildren(describeData(item.value?.data??item.value??null,{audience:admin?'administrator':'player'}));
+   body.replaceChildren(referenceView(item,{audience:admin?'administrator':'player',renderReference}));
    if(admin){const raw=node('details'),summary=node('summary','技术详情（原始数据）'),pre=node('pre',JSON.stringify(item.value??null,null,2));raw.append(summary,pre);body.append(raw);}
   }catch(error){if(dead||stamp!==version)return;if(!valid()){close();return;}fingerprint=null;body.replaceChildren();title.textContent='引用详情';status.textContent=error.code==='REFERENCE_STALE'||error.message==='REFERENCE_STALE'?'引用已过期，请重新引用当前版本。':'当前无法读取此引用，可能已失去权限或数据已不可用。';}
  }

@@ -1,0 +1,4570 @@
+{
+  "date": "2026-11-20",
+  "scope": "AI restart/debug/configuration/recovery repair: isolated deterministic and real browser regression, plus bounded real DeepSeek configuration experiments; original failures retained.",
+  "counting": "Runs retained separately. Latest result per classname::testname, union; never sum overlapping suites. Package live scenarios separately recorded.",
+  "latest": {
+    "totalUnique": 528,
+    "passed": 528,
+    "failed": 0,
+    "skipped": 0
+  },
+  "fullInitial": {
+    "evidence": "full-20261120.xml",
+    "startedAt": "2026-11-20T00:50:43.434008+08:00",
+    "total": 519,
+    "passed": 515,
+    "failed": 4,
+    "skipped": 0,
+    "seconds": 972.326
+  },
+  "initialFailures": [
+    {
+      "id": "tests.test_session_restart::test_same_room_restart_keeps_conversation_and_fresh_followup",
+      "status": "failed",
+      "evidence": "restart-initial.xml"
+    },
+    {
+      "id": "tests.test_debug_dialog_ui::test_header_debug_modal_scope_export_close_and_identity[1100]",
+      "status": "failed",
+      "evidence": "debug-dialog-initial.xml"
+    },
+    {
+      "id": "tests.test_debug_dialog_ui::test_header_debug_modal_scope_export_close_and_identity[390]",
+      "status": "failed",
+      "evidence": "debug-dialog-initial.xml"
+    },
+    {
+      "id": "tests.test_access_ui::test_permissions_archive_delete_batches_and_mobile",
+      "status": "failed",
+      "evidence": "full-20261120.xml"
+    },
+    {
+      "id": "tests.test_ui::test_browser_requests_review_revision_publish_and_cache_clear",
+      "status": "failed",
+      "evidence": "full-20261120.xml"
+    },
+    {
+      "id": "tests.test_workbench_ui::test_room_settings_page_saves_permissions_and_denies_player",
+      "status": "failed",
+      "evidence": "full-20261120.xml"
+    },
+    {
+      "id": "tests.test_workbench_ui::test_compact_ruling_modal_retains_risks_and_decides_once",
+      "status": "failed",
+      "evidence": "full-20261120.xml"
+    },
+    {
+      "id": "tests.test_debug_dialog_ui::test_failure_guidance_and_retry_do_not_replay_completed_work",
+      "status": "failed",
+      "evidence": "feedback-20261120.xml"
+    }
+  ],
+  "runs": [
+    {
+      "evidence": "restart-initial.xml",
+      "startedAt": "2026-11-20T00:38:56.403888+08:00",
+      "total": 1,
+      "passed": 0,
+      "failed": 1,
+      "skipped": 0,
+      "seconds": 3.982,
+      "cases": [
+        {
+          "id": "tests.test_session_restart::test_same_room_restart_keeps_conversation_and_fresh_followup",
+          "status": "failed"
+        }
+      ]
+    },
+    {
+      "evidence": "debug-dialog-initial.xml",
+      "startedAt": "2026-11-20T00:42:13.180218+08:00",
+      "total": 2,
+      "passed": 0,
+      "failed": 2,
+      "skipped": 0,
+      "seconds": 6.052,
+      "cases": [
+        {
+          "id": "tests.test_debug_dialog_ui::test_header_debug_modal_scope_export_close_and_identity[1100]",
+          "status": "failed"
+        },
+        {
+          "id": "tests.test_debug_dialog_ui::test_header_debug_modal_scope_export_close_and_identity[390]",
+          "status": "failed"
+        }
+      ]
+    },
+    {
+      "evidence": "debug-dialog-retest.xml",
+      "startedAt": "2026-11-20T00:42:37.928186+08:00",
+      "total": 2,
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 4.165,
+      "cases": [
+        {
+          "id": "tests.test_debug_dialog_ui::test_header_debug_modal_scope_export_close_and_identity[1100]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_debug_dialog_ui::test_header_debug_modal_scope_export_close_and_identity[390]",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "evidence": "restart-integrated.xml",
+      "startedAt": "2026-11-20T00:49:30.028904+08:00",
+      "total": 33,
+      "passed": 33,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 49.998,
+      "cases": [
+        {
+          "id": "tests.test_session_restart::test_same_room_restart_keeps_conversation_and_fresh_followup",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_session_restart::test_player_restart_preserves_fixed_evidence_but_revocation_still_hides_it",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_session_restart::test_restart_does_not_reauthorize_pending_runtime_batch",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_sessions::test_history_reuses_valid_response_but_drops_stale_sources",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_sessions::test_history_is_bounded_and_never_reads_other_sessions",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_sessions::test_repository_rejects_broken_conversation_links[foreign]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_sessions::test_repository_rejects_broken_conversation_links[missing]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_sessions::test_repository_rejects_broken_conversation_links[duplicate]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_sessions::test_repository_rejects_broken_conversation_links[title]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_sessions::test_session_preferences_owner_conflict_and_persistence",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_sessions::test_configured_history_bound_preserves_records[0]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_sessions::test_configured_history_bound_preserves_records[2]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_sessions::test_configured_history_bound_preserves_records[4]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_sessions::test_session_preferences_validate_command_and_stored_data[historyTurns--1]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_sessions::test_session_preferences_validate_command_and_stored_data[historyTurns-5]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_sessions::test_session_preferences_validate_command_and_stored_data[historyTurns-True]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_sessions::test_session_preferences_validate_command_and_stored_data[historyTurns-1.5]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_sessions::test_session_preferences_validate_command_and_stored_data[renderMode-html]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_sessions::test_session_preferences_validate_command_and_stored_data[pinned-1]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_sessions::test_session_preferences_validate_command_and_stored_data[showDiagnostics-false]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_known_runtime::test_unconfigured_player_never_falls_back_or_calls_model",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_known_runtime::test_initial_context_contains_no_pack_guide_world_or_old_model_history",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_known_runtime::test_snapshot_reference_cannot_cross_account_or_follow_world_update",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_known_runtime::test_model_secret_prose_is_repaired_and_never_stored_or_replayed",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_known_runtime::test_inflight_revoke_suppresses_entire_response",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_known_runtime::test_private_export_block_and_kp_player_session_ceiling",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_known_runtime::test_second_package_witness_testimony_stays_personal_and_fixed",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_known_runtime::test_ask_kp_option_is_queued_for_human_without_model_redispatch",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_known_runtime::test_player_real_adapter_json_mode_and_http_error_projection[200]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_known_runtime::test_player_real_adapter_json_mode_and_http_error_projection[400]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_known_runtime::test_legacy_response_projection_still_requires_live_authorization",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_debug_dialog_ui::test_header_debug_modal_scope_export_close_and_identity[1100]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_debug_dialog_ui::test_header_debug_modal_scope_export_close_and_identity[390]",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "evidence": "full-20261120.xml",
+      "startedAt": "2026-11-20T00:50:43.434008+08:00",
+      "total": 519,
+      "passed": 515,
+      "failed": 4,
+      "skipped": 0,
+      "seconds": 972.326,
+      "cases": [
+        {
+          "id": "tests.test_access_batches::test_defaults_binding_and_no_permission_escalation",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_access_batches::test_player_auto_dispatch_context_output_and_revoke",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_access_batches::test_kp_player_session_has_player_ceiling_and_data_proof",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_access_batches::test_batch_human_approval_idempotence_and_player_denial",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_access_batches::test_batch_stale_reject_auto_and_bypass_forbidden",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_access_batches::test_batch_unknown_reconciles_without_reexecuting",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_access_batches::test_batch_stops_after_partial_failure_and_restart_never_replays",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_access_batches::test_delete_cancels_queue_hides_session_and_keeps_usage_audit",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_access_batches::test_administrator_tools_respect_external_scope",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_access_batches::test_player_contract_tool_and_batch_output_cannot_escalate",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_access_batches::test_delete_interrupts_active_generation",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_access_batches::test_management_catalog_is_bounded_and_schema_complete",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_access_batches::test_other_administrator_can_inspect_draft_without_taking_review_identity",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_access_batches::test_player_history_rechecks_package_evidence_during_generation",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_access_ui::test_permissions_archive_delete_batches_and_mobile",
+          "status": "failed"
+        },
+        {
+          "id": "tests.test_answers::test_choices_are_bounded_text_only[<lambda>0]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_answers::test_choices_are_bounded_text_only[<lambda>1]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_answers::test_choices_are_bounded_text_only[<lambda>2]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_answers::test_choices_are_bounded_text_only[<lambda>3]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_answers::test_choices_are_bounded_text_only[<lambda>4]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_answers::test_choices_are_bounded_text_only[<lambda>5]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_answers::test_citations_require_issued_tokens_and_choices_cannot_approve",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_answers::test_model_citations_are_exact_tokens_without_changing_evidence",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_answers::test_player_model_choices_and_references_are_visible_only_while_authorized",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_answers::test_fabricated_model_citation_is_repaired_or_rejected",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_answers_ui::test_answer_choices_in_all_embeds[page]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_answers_ui::test_answer_choices_in_all_embeds[conversation]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_answers_ui::test_answer_choices_in_all_embeds[collapsible]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_answers_ui::test_standalone_choices_and_inline_citation",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_base::test_real_load_and_full_merge",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_base::test_configuration_without_optional_behaviors[False]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_base::test_configuration_without_optional_behaviors[True]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_base::test_load_rejects_invalid_candidates[<lambda>-INCOMPLETE_CANDIDATE]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_base::test_load_rejects_invalid_candidates[<lambda>-PACK_SCHEMA_INVALID]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_base::test_load_rejects_invalid_candidates[<lambda>-SCHEMA_MISSING]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_base::test_load_rejects_invalid_candidates[<lambda>-VERSION_CONFLICT]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_base::test_load_rejects_invalid_candidates[<lambda>-TYPE_CHANGE_FORBIDDEN]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_base::test_load_rejects_invalid_candidates[<lambda>-REFERENCE_CONFLICT]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_base::test_load_rejects_invalid_candidates[<lambda>-RULE_CYCLE_OR_MISSING0]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_base::test_load_rejects_invalid_candidates[<lambda>-RULE_CYCLE_OR_MISSING1]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_base::test_load_rejects_invalid_candidates[<lambda>-RULE_INVALID]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_base::test_load_rejects_invalid_candidates[<lambda>-RULE_FAILED]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_base::test_path_rejection[../x]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_base::test_path_rejection[/x]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_base::test_path_rejection[C:/x]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_base::test_path_rejection[x\\\\y]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_base::test_path_rejection[a//b]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_base::test_path_rejection[a/../b]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_base::test_path_rejection[a./b]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_base::test_path_rejection[CON.json]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_base::test_path_rejection[a:b]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_base::test_path_rejection[.hidden]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_base::test_junction_or_symlink_escape",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_base::test_pack_bad_json_and_limits[{\"x\":1,\"x\":2}-INPUT_INVALID]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_base::test_pack_bad_json_and_limits[{\"x\":NaN}-INPUT_INVALID]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_base::test_pack_bad_json_and_limits[{-INPUT_INVALID]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_base::test_pack_bad_json_and_limits[content3-LIMIT_EXCEEDED]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_base::test_schema_cannot_resolve_external_resources[https://example.invalid/schema]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_base::test_schema_cannot_resolve_external_resources[file:///secrets]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_base::test_schema_cannot_resolve_external_resources[../schema.json]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_base::test_pack_snapshot_and_baseline_changes_are_detected",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_chat_polish::test_composer_failure_keyboard_and_inflight_draft",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_chat_polish::test_reading_anchor_directory_and_stop",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_chat_polish::test_embed_readability_at_container_width[page]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_chat_polish::test_embed_readability_at_container_width[conversation]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_chat_polish::test_embed_readability_at_container_width[collapsible]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_chat_polish::test_delayed_send_does_not_switch_session_or_erase_other_draft",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_context::test_default_excludes_room_and_pack_text",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_context::test_public_context_strips_secret_and_never_reads_others_private_chat",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_context::test_context_rechecks_source_and_policy_after_generation[edit]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_context::test_context_rechecks_source_and_policy_after_generation[delete]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_context::test_context_rechecks_source_and_policy_after_generation[policy]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_context::test_context_rechecks_source_and_policy_after_generation[revoke]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_context::test_context_rechecks_source_and_policy_after_generation[profile]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_context::test_manual_revision_keeps_original_source_authorization",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_context::test_chat_source_requires_actual_current_text_and_external_permission",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_context::test_unrelated_read_position_and_ai_history_do_not_change_world",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_context::test_scope_mismatch_rejects_cross_room_context",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_context::test_context_size_is_bounded",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_context::test_two_actual_demo_directories_do_not_share_secrets_or_memory",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_contracts::test_valid_model[Profile]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_contracts::test_valid_model[PackContract]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_contracts::test_valid_model[ContextSnapshot]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_contracts::test_valid_model[Request]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_contracts::test_valid_model[Proposal]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_contracts::test_valid_model[ChangeSet]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_contracts::test_valid_model[ValidationReport]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_contracts::test_valid_model[PreparedBundle]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_contracts::test_valid_model[Approval]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_contracts::test_valid_model[Publication]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_contracts::test_valid_model[MemoryEntry]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_contracts::test_valid_model[Scenario]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_contracts::test_valid_model[CheckSpec]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_contracts::test_valid_model[Metric]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_contracts::test_valid_model[AiCommand]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_contracts::test_unknown_authority_fields_rejected[Profile]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_contracts::test_unknown_authority_fields_rejected[PackContract]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_contracts::test_unknown_authority_fields_rejected[ContextSnapshot]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_contracts::test_unknown_authority_fields_rejected[Request]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_contracts::test_unknown_authority_fields_rejected[Proposal]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_contracts::test_unknown_authority_fields_rejected[ChangeSet]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_contracts::test_unknown_authority_fields_rejected[ValidationReport]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_contracts::test_unknown_authority_fields_rejected[PreparedBundle]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_contracts::test_unknown_authority_fields_rejected[Approval]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_contracts::test_unknown_authority_fields_rejected[Publication]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_contracts::test_unknown_authority_fields_rejected[MemoryEntry]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_contracts::test_unknown_authority_fields_rejected[Scenario]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_contracts::test_unknown_authority_fields_rejected[CheckSpec]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_contracts::test_unknown_authority_fields_rejected[Metric]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_contracts::test_unknown_authority_fields_rejected[AiCommand]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_contracts::test_negative_fixtures[case0]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_contracts::test_negative_fixtures[case1]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_contracts::test_negative_fixtures[case2]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_contracts::test_negative_fixtures[case3]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_contracts::test_negative_fixtures[case4]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_contracts::test_negative_fixtures[case5]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_contracts::test_every_schema_is_valid",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_contracts::test_ambiguous_or_invalid_json_rejected[{\"x\":1,\"x\":2}]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_contracts::test_ambiguous_or_invalid_json_rejected[{\"nested\":{\"x\":1,\"x\":2}}]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_contracts::test_ambiguous_or_invalid_json_rejected[{\"x\":NaN}]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_contracts::test_ambiguous_or_invalid_json_rejected[{\"x\":Infinity}]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_contracts::test_ambiguous_or_invalid_json_rejected[\"\\ud800\"]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_contracts::test_ambiguous_or_invalid_json_rejected[\\xff]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_contracts::test_non_json_or_unsafe_numbers_rejected[nan]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_contracts::test_non_json_or_unsafe_numbers_rejected[inf]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_contracts::test_non_json_or_unsafe_numbers_rejected[9007199254740992]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_contracts::test_non_json_or_unsafe_numbers_rejected[1044388881413152506691752710716624382579964249047383780384233483283953907971557456848826811934997558340890106714439262837987573438185793607263236087851365277945956976543709998340361590134383718314428070011855946226376318839397712745672334684344586617496807908705803704071284048740118609114467977783598029006686938976881787785946905630190260940599579453432823469303026696443059025015972399867714215541693835559885291486318237914434496734087811872639496475100189041349008417061675093668333850551032972088269550769983616369411933015213796825837188091833656751221318492846368125550225998300412344784862595674492194617023806505913245610825731835380087608622102834270197698202313169017678006675195485079921636419370285375124784014907159135459982790513399611551794271106831134090584272884279791554849782954323534517065223269061394905987693002122963395687782878948440616007412945674919823050571642377154816321380631045902916136926708342856440730447899971901781465763473223850267253059899795996090799469201774624817718449867455659250178329070473119433165550807568221846571746373296884912819520317457002440926616910874148385078411929804522981857338977648103126085903001302413467189726673216491511131602920781738033436090243804708340403154190336]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_contracts::test_non_json_or_unsafe_numbers_rejected[value4]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_contracts::test_non_json_or_unsafe_numbers_rejected[value5]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_contracts::test_cycles_and_depth_are_bounded",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_contracts::test_golden_digests_and_host_interop",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_contracts::test_baseline_binds_every_precondition[scopeId]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_contracts::test_baseline_binds_every_precondition[baseRuleset]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_contracts::test_baseline_binds_every_precondition[configDigest]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_contracts::test_baseline_binds_every_precondition[contractDigest]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_contracts::test_baseline_binds_every_precondition[validatorSetDigest]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_contracts::test_baseline_binds_every_precondition[worldDigest]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_contracts::test_candidate_binds_complete_artifact_and_configuration",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_contracts::test_mismatched_report_or_candidate_cannot_be_reused[PreparedBundle]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_contracts::test_mismatched_report_or_candidate_cannot_be_reused[Approval]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_contracts::test_change_identity_and_expected_revision",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_contracts::test_model_tools_do_not_include_approval_or_mutation",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_contracts::test_pack_materials_are_present_and_typed",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_contracts::test_provider_template_is_disabled_and_contains_only_secret_reference",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_coordinator::test_draft_is_checked_but_never_published",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_coordinator::test_blocked_model_does_not_hold_host_lock_and_can_cancel",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_coordinator::test_request_dedup_queue_and_budget",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_coordinator::test_untrusted_model_and_retry_limits[forged-TOOL_FORBIDDEN]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_coordinator::test_untrusted_model_and_retry_limits[loop-TOOL_ROUND_LIMIT]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_coordinator::test_untrusted_model_and_retry_limits[retry-PROVIDER_UNAVAILABLE]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_coordinator::test_untrusted_model_and_retry_limits[repair-MODEL_OUTPUT_INVALID]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_coordinator::test_expired_task_and_authority_change_fail_closed",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_coordinator::test_disabled_service_makes_no_provider_calls",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_coordinator::test_retry_budget_records_each_attempt_once",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_coordinator::test_restart_interrupts_queued_tasks_and_preserves_budget",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_coordinator::test_permissions_changed_during_generation_discard_output",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_coordinator::test_profile_changed_during_generation_discards_output_and_runner_survives",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_coordinator::test_real_contract_is_exposed_and_repair_names_invalid_field",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_data_edits::test_append_from_partial_array_preserves_all_unread_data_and_is_repeatable",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_data_edits::test_append_uniqueness_checks_items_outside_returned_page",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_data_edits::test_add_replace_remove_are_explicit_and_preserve_siblings",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_data_edits::test_rejects_unsafe_edits_atomically[mixed-DATA_EDIT_MIXED_REPLACEMENT]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_data_edits::test_rejects_unsafe_edits_atomically[stale-DATA_EDIT_BASELINE_STALE]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_data_edits::test_rejects_unsafe_edits_atomically[forged-DATA_EDIT_REFERENCE_UNVERIFIED]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_data_edits::test_rejects_unsafe_edits_atomically[incomplete-DATA_EDIT_INCOMPLETE_READ]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_data_edits::test_rejects_unsafe_edits_atomically[overlap-DATA_EDIT_OVERLAP]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_data_edits::test_rejects_unsafe_edits_atomically[array-remove-DATA_EDIT_TARGET_INVALID]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_data_edits::test_rejects_unsafe_edits_atomically[root-DATA_EDIT_INCOMPLETE_READ]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_data_edits::test_rejects_unsafe_edits_atomically[add-existing-DATA_EDIT_TARGET_INVALID]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_data_edits::test_multiple_appends_and_large_object_index_do_not_require_reconstruction",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_data_edits::test_read_does_not_issue_ref_on_invalid_path_or_page[args0]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_data_edits::test_read_does_not_issue_ref_on_invalid_path_or_page[args1]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_data_edits::test_read_does_not_issue_ref_on_invalid_path_or_page[args2]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_data_edits::test_read_does_not_issue_ref_on_invalid_path_or_page[args3]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_data_edits::test_real_application_egress_and_session_ceiling[kp-EXTERNAL_SCOPE_DISABLED]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_data_edits::test_real_application_egress_and_session_ceiling[queries-DATA_QUERIES_DISABLED]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_data_edits::test_real_application_egress_and_session_ceiling[player-TOOL_FORBIDDEN]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_data_edits::test_model_increment_compiles_to_checked_manual_candidate[False]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_data_edits::test_model_increment_compiles_to_checked_manual_candidate[True]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_data_edits::test_data_edits_are_only_valid_on_draft",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_data_queries::test_search_detail_and_external_policy",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_data_queries::test_query_rejects_unbounded_or_identity_input[args0]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_data_queries::test_query_rejects_unbounded_or_identity_input[args1]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_data_queries::test_query_rejects_unbounded_or_identity_input[args2]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_data_queries::test_query_rejects_unbounded_or_identity_input[args3]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_data_queries::test_query_rejects_unbounded_or_identity_input[args4]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_data_queries::test_query_rejects_unbounded_or_identity_input[args5]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_data_queries::test_query_rejects_unbounded_or_identity_input[args6]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_data_queries::test_chat_intersection_window_cursor_and_edit",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_data_queries::test_dynamic_evidence_and_explicit_reference_recheck",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_data_queries::test_tool_queries_never_read_kp_secret_for_player",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_data_queries::test_model_search_read_then_result_keeps_evidence",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_data_queries::test_http_query_auth_csrf_and_contract",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_data_queries::test_result_limit_and_missing_adapter_are_fail_closed",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_data_queries::test_query_evidence_prevents_publish_after_source_edit",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_data_queries::test_per_round_multi_call_budget",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_data_query_ui::test_task_diagnostics_are_visible_only_in_keeper_conversation[AI_TASK_FAILED-kp]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_data_query_ui::test_task_diagnostics_are_visible_only_in_keeper_conversation[AI_TASK_FAILED-player1]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_data_query_ui::test_task_diagnostics_are_visible_only_in_keeper_conversation[PROVIDER_REQUEST_INVALID-kp]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_data_query_ui::test_task_diagnostics_are_visible_only_in_keeper_conversation[PROVIDER_REQUEST_INVALID-player1]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_data_query_ui::test_chat_evidence_reference_and_preview[page]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_data_query_ui::test_chat_evidence_reference_and_preview[conversation]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_data_query_ui::test_chat_evidence_reference_and_preview[collapsible]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_debug_dialog_ui::test_header_debug_modal_scope_export_close_and_identity[1100]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_debug_dialog_ui::test_header_debug_modal_scope_export_close_and_identity[390]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_embeds::test_package_manifest_covers_public_runtime_dependencies",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_embeds::test_real_room_page_variants[page]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_embeds::test_real_room_page_variants[conversation]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_embeds::test_real_room_page_variants[collapsible]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_embeds::test_same_origin_iframe_entry_and_csp_scope",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_embeds::test_headless_tools_and_shared_client_ownership",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_entrypoints::test_requests_are_explicit_idempotent_redacted_and_paged",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_entrypoints::test_chat_forwarding_binds_original_and_policy",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_entrypoints::test_player_can_cancel_after_dispatching_kp_loses_role",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_entrypoints::test_plan_without_proposal_rechecks_context_on_read",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_entrypoints::test_auto_off_prefix_dedup_edits_withdrawal_and_role",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_entrypoints::test_manual_revision_invalidates_approval_and_cancel_revokes",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_entrypoints::test_receipt_rechecks_private_sources_and_restart_pending",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_entrypoints::test_http_auth_limits_schema_capability_and_disabled_module",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_entrypoints::test_cli_uses_same_three_engines",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_gameplay::test_exact_d100_probability_and_cost_no_live_effects",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_gameplay::test_wrong_owner_and_repeated_use_are_exercised",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_gameplay::test_missing_cost_guard_fails_resource_exhaustion",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_gameplay::test_positive_fixture_cannot_replace_negative_assertion",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_gameplay::test_missing_required_metric_blocks",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_gameplay::test_extra_random_call_is_not_paired_with_old_trace",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_gameplay::test_sampling_uses_replayable_independent_streams",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_gameplay::test_zero_baseline_is_not_divided",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_knowledge_port::test_only_details_issue_evidence_and_principal_is_server_bound",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_knowledge_port::test_failure_cannot_fall_back_to_public_entities[blocked]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_knowledge_port::test_failure_cannot_fall_back_to_public_entities[unavailable]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_knowledge_port::test_private_export_and_proof_owner_are_checked",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_knowledge_port::test_ai_egress_is_checked_and_proofs_share_one_capture",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_known_answers::test_model_can_only_select_issued_evidence[<lambda>0]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_known_answers::test_model_can_only_select_issued_evidence[<lambda>1]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_known_answers::test_model_can_only_select_issued_evidence[<lambda>2]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_known_answers::test_model_can_only_select_issued_evidence[<lambda>3]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_known_answers::test_model_can_only_select_issued_evidence[<lambda>4]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_known_answers::test_model_can_only_select_issued_evidence[<lambda>5]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_known_answers::test_model_can_only_select_issued_evidence[<lambda>6]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_known_answers::test_reference_encodes_exact_snapshot_and_scope_without_current_entity_lookup",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_known_answers::test_fixed_order_and_labels_use_only_captured_data",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_known_answers::test_search_summary_cannot_be_rendered_as_read_evidence",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_known_answers::test_malformed_answers_fail_closed[{\"kind\":\"known\",\"kind\":\"known\"}]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_known_answers::test_malformed_answers_fail_closed[{\"kind\":\"known\",\"evidence\":NaN,\"next\":\"none\"}]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_known_answers::test_malformed_answers_fail_closed[not json]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_known_answers::test_empty_result_does_not_assert_nonexistence_and_data_is_not_markup",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_known_answers::test_structured_evidence_has_readable_labels_and_no_technical_ids",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_known_answers::test_presentation_is_bounded_and_literal_with_deep_or_large_values",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_known_answers::test_legacy_known_json_is_reformatted_without_touching_other_messages",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_known_runtime::test_unconfigured_player_never_falls_back_or_calls_model",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_known_runtime::test_initial_context_contains_no_pack_guide_world_or_old_model_history",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_known_runtime::test_snapshot_reference_cannot_cross_account_or_follow_world_update",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_known_runtime::test_model_secret_prose_is_repaired_and_never_stored_or_replayed",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_known_runtime::test_inflight_revoke_suppresses_entire_response",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_known_runtime::test_private_export_block_and_kp_player_session_ceiling",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_known_runtime::test_second_package_witness_testimony_stays_personal_and_fixed",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_known_runtime::test_ask_kp_option_is_queued_for_human_without_model_redispatch",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_known_runtime::test_player_real_adapter_json_mode_and_http_error_projection[200]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_known_runtime::test_player_real_adapter_json_mode_and_http_error_projection[400]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_known_runtime::test_legacy_response_projection_still_requires_live_authorization",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_known_ui::test_known_snapshot_completion_atomic_chip_and_revoked_inspector",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_known_ui::test_data_views_separate_player_and_administrator_and_avoid_raw_fallback",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_known_ui::test_chat_evidence_and_preview_use_session_audience[kp-administrator]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_known_ui::test_chat_evidence_and_preview_use_session_audience[kp-player]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_known_ui::test_chat_evidence_and_preview_use_session_audience[pl-player]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_manager::test_local_boundary_bootstrap_csrf_and_lock",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_manager::test_profile_cas_disable_delete_and_secret_rejected_in_config",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_manager::test_real_dpapi_key_roundtrip_no_plaintext_and_legacy_fallback",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_manager::test_room_endpoint_is_bounded[https://127.0.0.1:8765]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_manager::test_room_endpoint_is_bounded[http://192.168.1.2:8765]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_manager::test_room_endpoint_is_bounded[http://example.com:8765]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_manager::test_room_endpoint_is_bounded[http://user:pass@127.0.0.1:8765]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_manager::test_room_endpoint_is_bounded[http://127.0.0.1:8765/api]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_manager::test_room_endpoint_is_bounded[http://127.0.0.1:8765?x=1]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_manager::test_room_endpoint_is_bounded[http://127.0.0.1:99999]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_manager::test_room_profiles_persist_but_login_does_not",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_manager::test_room_bridge_never_exposes_host_control_or_shares_sessions",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_manager::test_session_ownership_archive_idempotence_and_reopen",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_manager::test_manager_static_modules_have_correct_mime_and_headers",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_manager::test_late_room_login_cannot_restore_locked_session",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_manager::test_concurrent_profile_edits_have_exactly_one_winner",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_manager::test_advisory_lock_is_bounded",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_manager::test_running_room_refreshes_profile_and_fails_closed",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_manager_cli::test_actual_cli_start_and_one_use_bootstrap",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_manager_ui::test_real_manager_providers_sessions_review_and_embed",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_memory::test_draft_is_not_fact_and_confirmed_memory_survives_restart",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_memory::test_source_change_invalidates_memory_and_descendants",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_memory::test_stale_ai_store_draft_cannot_reconfirm_revoked_room_memory",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_memory::test_revoke_and_expiry_never_leave_usable_summary",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_memory::test_secret_summary_cannot_be_downgraded_to_public",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_memory::test_player_cannot_confirm_and_private_memory_is_not_shared",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_memory::test_scope_fork_does_not_reuse_old_memory",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_memory::test_context_approval_binding_tracks_memory_revision",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_pack_rules::test_valid_constraints_and_old_instances_preserved",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_pack_rules::test_out_of_range_is_traced_to_rule_clause",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_pack_rules::test_cost_change_outside_extension_is_rejected",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_pack_rules::test_missing_or_unknown_required_evidence_never_passes[<lambda>0]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_pack_rules::test_missing_or_unknown_required_evidence_never_passes[<lambda>1]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_pack_rules::test_missing_or_unknown_required_evidence_never_passes[<lambda>2]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_pack_rules::test_missing_or_unknown_required_evidence_never_passes[<lambda>3]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_pack_rules::test_missing_or_unknown_required_evidence_never_passes[<lambda>4]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_pack_rules::test_old_flow_is_not_assumed_to_use_old_configs",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_pack_rules::test_versioned_reference_and_unique_checkers",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_pack_rules::test_missing_numeric_field_is_not_zero",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_pack_rules::test_scenario_checker_covers_permission_and_cost",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_pilot::test_actual_pack_baseline_metrics_and_no_live_effects",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_pilot::test_demo_edit_stale_reject_publish_and_restore",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_pilot::test_demo_pack_author_constraints_and_existing_flow_block",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_player_requests::test_direct_intent_requires_no_provider_knowledge_or_egress_and_is_deduplicated",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_player_requests::test_intent_owner_level_policy_and_input_cannot_be_forged",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_player_requests::test_cancelled_and_deleted_intents_cannot_be_accepted",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_player_requests::test_kp_accept_creates_private_review_once_without_state_changes",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_player_requests::test_kp_reject_and_archive_do_not_create_review",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_player_requests::test_accepted_request_batch_remains_manual_with_auto_approval_enabled",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_player_requests::test_query_blockers_have_distinct_safe_errors_without_model_calls[unconfigured-KNOWLEDGE_UNAVAILABLE]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_player_requests::test_query_blockers_have_distinct_safe_errors_without_model_calls[private-EXTERNAL_SCOPE_DISABLED]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_player_requests::test_query_blockers_have_distinct_safe_errors_without_model_calls[queries-DATA_QUERIES_DISABLED]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_player_requests::test_query_blockers_have_distinct_safe_errors_without_model_calls[egress-KNOWLEDGE_EGRESS_DISABLED]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_player_requests::test_keyword_miss_returns_explicit_personal_index_and_never_other_players",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_player_requests::test_preloaded_known_index_can_be_read_and_creative_choice_is_not_auto_submitted",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_player_requests::test_recoverable_invalid_knowledge_query_can_retry_then_read_index",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_player_requests::test_player_request_reference_is_label_only_in_kp_review",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_player_requests::test_ordinary_configuration_from_player_review_cannot_auto_publish",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_player_requests::test_restart_preserves_accepted_review_without_duplicate_dispatch",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_player_requests::test_cancelled_query_failure_keeps_cancelled_status",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_player_requests::test_review_context_identifies_original_player_for_my_character_intent",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_player_requests::test_reference_label_cannot_bypass_disabled_private_egress_during_kp_accept",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_player_requests_ui::test_real_player_direct_request_without_knowledge_then_kp_queue",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_player_requests_ui::test_player_error_is_visible_and_choice_forwards_original_request_once",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_player_requests_ui::test_kp_accept_label_and_open_private_review_session",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_policies::test_high_risk_requires_exact_manual_fingerprint_and_retains_diff",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_policies::test_more_than_eight_actions_execute_without_truncation",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_policies::test_batch_storage_has_no_business_count_limit",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_policies::test_policy_switches_are_enforced_for_new_and_pending_writes",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_policies::test_ordinary_actor_configuration_still_supports_explicit_auto_policy",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_policies::test_admin_room_scope_is_default_and_revocable_without_player_escalation",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_policies::test_player_request_is_explicit_private_and_real_observation_is_required",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_policies::test_rejected_request_has_no_disclosure_and_disabled_policy_blocks_new_request",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_policies::test_remove_schema_and_no_configuration_count_limit",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_policies::test_stable_array_uses_current_baseline_and_candidate_references",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_policies::test_live_probes_bind_real_ids_and_do_not_hide_changed_or_unlisted_failures[success-True]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_policies::test_live_probes_bind_real_ids_and_do_not_hide_changed_or_unlisted_failures[declared-block-True]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_policies::test_live_probes_bind_real_ids_and_do_not_hide_changed_or_unlisted_failures[changed-error-False]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_policies::test_live_probes_bind_real_ids_and_do_not_hide_changed_or_unlisted_failures[unlisted-error-False]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_policies::test_cumulative_tool_budget_uses_transport_limit_and_reports_sizes[112640-review_ready]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_policies::test_cumulative_tool_budget_uses_transport_limit_and_reports_sizes[276480-failed]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_policies::test_management_catalog_indexes_before_returning_selected_schemas",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_policies::test_unused_extension_remove_requires_policy_without_making_actor_edits_high_risk[True]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_policies::test_unused_extension_remove_requires_policy_without_making_actor_edits_high_risk[False]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_policies::test_malformed_batch_gets_exact_schema_and_cannot_escape_to_plan[correct-after-plan]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_policies::test_malformed_batch_gets_exact_schema_and_cannot_escape_to_plan[clarification]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_policies::test_malformed_batch_gets_exact_schema_and_cannot_escape_to_plan[exhausted]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_policies::test_batch_self_mutation_preserves_safe_execution_status_after_source_change_and_revocation[completed]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_policies::test_batch_self_mutation_preserves_safe_execution_status_after_source_change_and_revocation[partial]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_policies::test_batch_self_mutation_preserves_safe_execution_status_after_source_change_and_revocation[pending]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_policies_ui::test_permission_switches_save_and_high_risk_policy_is_fixed",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_policies_ui::test_high_risk_click_binds_digest_and_knowledge_callback_does_not_auto_approve",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_policies_ui::test_player_disclosure_requires_a_click_and_reports_pending",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_providers::test_deepseek_wire_format_and_secret_stays_in_header",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_providers::test_compatible_endpoint_omits_vendor_options",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_providers::test_http_failures_are_bounded_and_redacted[401-PROVIDER_AUTH_FAILED-False]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_providers::test_http_failures_are_bounded_and_redacted[403-PROVIDER_AUTH_FAILED-False]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_providers::test_http_failures_are_bounded_and_redacted[429-PROVIDER_RATE_LIMITED-True]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_providers::test_http_failures_are_bounded_and_redacted[500-PROVIDER_UNAVAILABLE-True]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_providers::test_http_failures_are_bounded_and_redacted[503-PROVIDER_UNAVAILABLE-True]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_providers::test_http_failures_are_bounded_and_redacted[302-PROVIDER_REDIRECT_REJECTED-False]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_providers::test_http_failures_are_bounded_and_redacted[400-PROVIDER_REQUEST_INVALID-False]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_providers::test_http_failures_are_bounded_and_redacted[422-PROVIDER_REQUEST_INVALID-False]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_providers::test_http_failures_are_bounded_and_redacted[402-PROVIDER_BALANCE_INSUFFICIENT-False]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_providers::test_http_failures_are_bounded_and_redacted[404-PROVIDER_NOT_FOUND-False]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_providers::test_http_failures_are_bounded_and_redacted[408-PROVIDER_TIMEOUT-True]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_providers::test_http_failures_are_bounded_and_redacted[413-PROVIDER_REQUEST_TOO_LARGE-False]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_providers::test_http_failures_are_bounded_and_redacted[409-PROVIDER_HTTP_ERROR-False]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_providers::test_http_failures_are_bounded_and_redacted[204-PROVIDER_HTTP_ERROR-False]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_providers::test_empty_model_content_is_rejected[]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_providers::test_empty_model_content_is_rejected[   ]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_providers::test_bad_answer_json_keeps_usage_for_coordinator_repair[{]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_providers::test_bad_answer_json_keeps_usage_for_coordinator_repair[[]]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_providers::test_bad_answer_json_keeps_usage_for_coordinator_repair[{\"x\":1,\"x\":2}]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_providers::test_bad_answer_json_keeps_usage_for_coordinator_repair[{\"n\":NaN}]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_providers::test_truncation_usage_and_unknown_reasoning",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_providers::test_connection_failure_and_total_timeout",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_providers::test_unsafe_url_is_rejected[file:///x]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_providers::test_unsafe_url_is_rejected[https://key:password@example.com]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_providers::test_unsafe_url_is_rejected[https://example.com?key=secret]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_providers::test_unsafe_url_is_rejected[http://127.0.0.1]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_providers::test_unsafe_url_is_rejected[https://example.com:99999]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_providers::test_unsafe_url_is_rejected[https://example.com/\\r\\nx]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_providers::test_dns_pinning_blocks_rebinding_and_preserves_original_host",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_providers::test_local_profile_management_never_stores_key",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_providers::test_probe_requires_json_and_a_real_tool_call",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_providers::test_json_mode_guard_preserves_caller_history_and_tool_envelope[Return only {\"ok\":true}.-deepseek-chat]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_providers::test_json_mode_guard_preserves_caller_history_and_tool_envelope[Return only {\"ok\":true}.-compatible-chat]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_providers::test_json_mode_guard_preserves_caller_history_and_tool_envelope[Return JSON only.-deepseek-chat]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_providers::test_json_mode_guard_preserves_caller_history_and_tool_envelope[Return JSON only.-compatible-chat]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_reference_details_ui::test_inspector_authorization_races_and_keyboard",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_reference_details_ui::test_chat_repeated_refresh_keeps_chips_and_dialog",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_reference_ui::test_prototype_commands_semantic_tokens_and_atomic_editing",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_reference_ui::test_reference_editor_serialization_unavailable_and_late_labels",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_references::test_search_resolve_privacy_and_revision",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_references::test_context_references_are_bound_and_obey_external_policy",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_references::test_session_mutation_and_receipt_use_one_durable_commit",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_references::test_detail_does_not_scan_other_session_tasks",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_references::test_runtime_data_cannot_be_requested_on_behalf_of_player",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_references::test_reference_http_boundary",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_review_debug::test_review_source_is_separate_from_kp_message_and_deduplicated",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_review_debug::test_forwarded_request_resolves_real_source_and_does_not_change_original",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_review_debug::test_all_forwarded_reviews_stay_manual_with_auto_on",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_review_debug::test_review_source_obeys_external_scope",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_review_debug::test_ruling_digest_and_snapshot_size_checked",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_review_debug::test_debug_is_readonly_metadata_default_with_authorized_content_opt_in",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_review_debug::test_debug_rejects_ambiguous_or_invalid_options[options0]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_review_debug::test_debug_rejects_ambiguous_or_invalid_options[options1]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_review_debug::test_debug_rejects_ambiguous_or_invalid_options[options2]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_review_debug::test_debug_rejects_ambiguous_or_invalid_options[options3]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_review_debug::test_debug_rejects_ambiguous_or_invalid_options[options4]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_review_debug::test_debug_rechecks_deleted_session_and_player_switch",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_review_debug::test_pure_schema_catalog_available_without_kp_egress",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_review_debug::test_provider_records_actual_model_without_equating_alias_and_version",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_review_debug::test_real_http_debug_authorization_no_store_and_no_receipt",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_review_debug::test_legacy_accepted_review_retains_original_player_source",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_review_debug::test_task_and_debug_preserve_requested_and_actual_model_ids",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_review_debug_ui::test_source_card_and_export_opt_in_guard",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_rulings::test_chat_approval_is_bound_to_batch_and_not_another_model_request",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_rulings::test_config_is_one_checked_ruling_and_publishes_once",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_rulings::test_high_risk_config_never_uses_auto_approval",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_rulings::test_player_cannot_decide_and_stale_digest_cannot_execute",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_rulings::test_consultation_only_evidence_cannot_enter_publish_queue_or_auto_approve",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_rulings::test_invalid_model_output_has_specific_cause[[]-MODEL_OBJECT_REQUIRED]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_rulings::test_invalid_model_output_has_specific_cause[null-MODEL_OBJECT_REQUIRED]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_rulings::test_invalid_model_output_has_specific_cause[broken-MODEL_JSON_INVALID]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_rulings::test_invalid_model_output_has_specific_cause[{\"kind\":\"other\",\"text\":\"a\"}-MODEL_KIND_INVALID]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_rulings::test_single_json_fence_is_accepted_without_extracting_arbitrary_text",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_rulings::test_five_repairs_do_not_consume_tool_rounds[True]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_rulings::test_five_repairs_do_not_consume_tool_rounds[False]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_rulings::test_user_decision_pauses_instead_of_retrying[clarification]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_rulings::test_user_decision_pauses_instead_of_retrying[plan]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_rulings::test_basic_lua_error_repairs_same_proposal_before_review",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_sandbox::test_ai_and_host_share_execution_policy",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_sandbox::test_top_level_loop_is_bounded",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_sandbox::test_memory_and_output_limits[local t={} while true do table.insert(t, string.format('%08000d',1)) end]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_sandbox::test_memory_and_output_limits[return rule('huge', {}, function(r) return string.format('%09000000d',1) end)]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_sandbox::test_lua_cannot_access_host_bridges[os.getenv('ONLINECOC_DEEPSEEK_API_KEY')]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_sandbox::test_lua_cannot_access_host_bridges[io.open('save.json','w')]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_sandbox::test_lua_cannot_access_host_bridges[require('socket')]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_sandbox::test_lua_cannot_access_host_bridges[python.eval('1')]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_sandbox::test_lua_cannot_access_host_bridges[debug.getregistry()]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_sandbox::test_lua_cannot_access_host_bridges[_G.os]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_sandbox::test_lua_cannot_access_host_bridges[r.read.__globals__]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_sandbox::test_lua_cannot_access_host_bridges[r.read['__self__']]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_sandbox::test_secrets_are_removed_before_process_creation",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_sandbox::test_worker_failure_is_not_success",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_session_restart::test_same_room_restart_keeps_conversation_and_fresh_followup",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_session_restart::test_player_restart_preserves_fixed_evidence_but_revocation_still_hides_it",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_session_restart::test_restart_does_not_reauthorize_pending_runtime_batch",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_session_ui::test_markdown_format_reference_security_and_mobile",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_session_ui::test_embedded_management_settings_drafts_and_identity",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_session_ui::test_standalone_manager_and_same_origin_frame",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_session_ui::test_management_lost_response_and_version_conflict",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_sessions::test_history_reuses_valid_response_but_drops_stale_sources",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_sessions::test_history_is_bounded_and_never_reads_other_sessions",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_sessions::test_repository_rejects_broken_conversation_links[foreign]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_sessions::test_repository_rejects_broken_conversation_links[missing]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_sessions::test_repository_rejects_broken_conversation_links[duplicate]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_sessions::test_repository_rejects_broken_conversation_links[title]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_sessions::test_session_preferences_owner_conflict_and_persistence",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_sessions::test_configured_history_bound_preserves_records[0]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_sessions::test_configured_history_bound_preserves_records[2]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_sessions::test_configured_history_bound_preserves_records[4]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_sessions::test_session_preferences_validate_command_and_stored_data[historyTurns--1]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_sessions::test_session_preferences_validate_command_and_stored_data[historyTurns-5]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_sessions::test_session_preferences_validate_command_and_stored_data[historyTurns-True]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_sessions::test_session_preferences_validate_command_and_stored_data[historyTurns-1.5]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_sessions::test_session_preferences_validate_command_and_stored_data[renderMode-html]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_sessions::test_session_preferences_validate_command_and_stored_data[pinned-1]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_sessions::test_session_preferences_validate_command_and_stored_data[showDiagnostics-false]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_style_stability::test_style_reparent_and_failed_load_retry",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_style_stability::test_session_management_prototype",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_task_diagnostics::test_failure_diagnostics_redact_messages_and_preserve_primary",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_task_diagnostics::test_cleanup_error_does_not_replace_result_or_cancellation[False]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_task_diagnostics::test_cleanup_error_does_not_replace_result_or_cancellation[True]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_task_diagnostics::test_tool_metadata_is_bounded_and_contains_no_argument_values",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_task_diagnostics::test_deepseek_wire_query_replay_and_parameter_repair[None]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_task_diagnostics::test_deepseek_wire_query_replay_and_parameter_repair[bad1]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_task_diagnostics::test_deepseek_wire_query_replay_and_parameter_repair[bad2]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_task_diagnostics::test_deepseek_wire_query_replay_and_parameter_repair[bad3]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_task_diagnostics::test_provider_error_and_cleanup_keep_stable_code",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_task_diagnostics::test_model_page_counts_do_not_change_proofs_or_reveal_hidden_totals",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_task_diagnostics::test_channel_reference_resolves_actual_id_before_chat",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_task_diagnostics::test_last_round_closes_tools_and_returns_bounded_partial_answer",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_task_diagnostics::test_http_diagnostics_keep_only_valid_status_without_remote_text[400]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_task_diagnostics::test_http_diagnostics_keep_only_valid_status_without_remote_text[422]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_task_diagnostics::test_http_diagnostics_keep_only_valid_status_without_remote_text[None]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_task_diagnostics::test_http_diagnostics_keep_only_valid_status_without_remote_text[private error]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_task_diagnostics::test_http_diagnostics_keep_only_valid_status_without_remote_text[True]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_task_diagnostics::test_http_diagnostics_keep_only_valid_status_without_remote_text[99]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_task_diagnostics::test_http_diagnostics_keep_only_valid_status_without_remote_text[600]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_ui::test_browser_requests_review_revision_publish_and_cache_clear",
+          "status": "failed"
+        },
+        {
+          "id": "tests.test_ui::test_missing_optional_ai_script_keeps_ordinary_console_working",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_usage::test_unlimited_default_still_records_and_opt_in_reuses_ledger",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_usage::test_totals_owner_dispatch_session_filters_and_pagination",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_usage::test_old_records_restart_and_utc_date_filters",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_usage::test_invalid_usage_queries[options0]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_usage::test_invalid_usage_queries[options1]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_usage::test_invalid_usage_queries[options2]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_usage::test_invalid_usage_queries[options3]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_usage::test_invalid_usage_queries[options4]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_usage::test_invalid_usage_queries[options5]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_usage::test_invalid_usage_queries[options6]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_usage::test_invalid_usage_queries[options7]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_usage::test_http_auth_parameter_injection_and_duplicate_filters",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_usage::test_retry_and_cancel_classification",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_usage_ui::test_room_usage_metrics_filters_account_scope_and_mobile",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_usage_ui::test_local_manager_budget_toggle_and_usage_proxy",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_workbench::test_task_session_lookup_respects_owner_archive_and_delete",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_workbench_ui::test_room_settings_page_saves_permissions_and_denies_player",
+          "status": "failed"
+        },
+        {
+          "id": "tests.test_workbench_ui::test_compact_ruling_modal_retains_risks_and_decides_once",
+          "status": "failed"
+        },
+        {
+          "id": "tests.test_workbench_ui::test_resume_loads_target_in_parallel_without_redundant_access_or_old_session",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "evidence": "access-debug-20261120.xml",
+      "startedAt": "2026-11-20T01:02:09.102599+08:00",
+      "total": 1,
+      "passed": 0,
+      "failed": 1,
+      "skipped": 0,
+      "seconds": 45.237,
+      "cases": [
+        {
+          "id": "tests.test_access_ui::test_permissions_archive_delete_batches_and_mobile",
+          "status": "failed"
+        }
+      ]
+    },
+    {
+      "evidence": "access-retest-20261120.xml",
+      "startedAt": "2026-11-20T01:03:22.808022+08:00",
+      "total": 1,
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 14.461,
+      "cases": [
+        {
+          "id": "tests.test_access_ui::test_permissions_archive_delete_batches_and_mobile",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "evidence": "feedback-20261120.xml",
+      "startedAt": "2026-11-20T01:04:34.808961+08:00",
+      "total": 3,
+      "passed": 2,
+      "failed": 1,
+      "skipped": 0,
+      "seconds": 7.545,
+      "cases": [
+        {
+          "id": "tests.test_debug_dialog_ui::test_header_debug_modal_scope_export_close_and_identity[1100]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_debug_dialog_ui::test_header_debug_modal_scope_export_close_and_identity[390]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_debug_dialog_ui::test_failure_guidance_and_retry_do_not_replay_completed_work",
+          "status": "failed"
+        }
+      ]
+    },
+    {
+      "evidence": "feedback-retest-20261120.xml",
+      "startedAt": "2026-11-20T01:05:03.076638+08:00",
+      "total": 3,
+      "passed": 3,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 7.717,
+      "cases": [
+        {
+          "id": "tests.test_debug_dialog_ui::test_header_debug_modal_scope_export_close_and_identity[1100]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_debug_dialog_ui::test_header_debug_modal_scope_export_close_and_identity[390]",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_debug_dialog_ui::test_failure_guidance_and_retry_do_not_replay_completed_work",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "evidence": "full-retest-20261120.xml",
+      "startedAt": "2026-11-20T01:14:11.815191+08:00",
+      "total": 5,
+      "passed": 5,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 74.975,
+      "cases": [
+        {
+          "id": "tests.test_ui::test_browser_requests_review_revision_publish_and_cache_clear",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_ui::test_missing_optional_ai_script_keeps_ordinary_console_working",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_workbench_ui::test_room_settings_page_saves_permissions_and_denies_player",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_workbench_ui::test_compact_ruling_modal_retains_risks_and_decides_once",
+          "status": "passed"
+        },
+        {
+          "id": "tests.test_workbench_ui::test_resume_loads_target_in_parallel_without_redundant_access_or_old_session",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "evidence": "query-storage-initial-20261120.xml",
+      "startedAt": "2026-11-20T01:41:35.515184+08:00",
+      "total": 23,
+      "passed": 23,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 77.663,
+      "cases": [
+        {
+          "id": "::test_opt_in_preserves_every_original_byte_head_cas_lock_and_export",
+          "status": "passed",
+          "scope": "storage"
+        },
+        {
+          "id": "::test_auto_compression_allows_many_updates_beyond_original_quota",
+          "status": "passed",
+          "scope": "storage"
+        },
+        {
+          "id": "::test_archive_fault_never_loses_any_generation_or_confirmed_state[compression_before_write]",
+          "status": "passed",
+          "scope": "storage"
+        },
+        {
+          "id": "::test_archive_fault_never_loses_any_generation_or_confirmed_state[compression_half_write]",
+          "status": "passed",
+          "scope": "storage"
+        },
+        {
+          "id": "::test_archive_fault_never_loses_any_generation_or_confirmed_state[compression_before_sync]",
+          "status": "passed",
+          "scope": "storage"
+        },
+        {
+          "id": "::test_archive_fault_never_loses_any_generation_or_confirmed_state[compression_before_publish]",
+          "status": "passed",
+          "scope": "storage"
+        },
+        {
+          "id": "::test_archive_fault_never_loses_any_generation_or_confirmed_state[compression_after_publish]",
+          "status": "passed",
+          "scope": "storage"
+        },
+        {
+          "id": "::test_archive_fault_never_loses_any_generation_or_confirmed_state[compression_before_unlink]",
+          "status": "passed",
+          "scope": "storage"
+        },
+        {
+          "id": "::test_archive_fault_never_loses_any_generation_or_confirmed_state[compression_after_unlink]",
+          "status": "passed",
+          "scope": "storage"
+        },
+        {
+          "id": "::test_corrupt_archive_or_conflicting_duplicate_is_never_ignored",
+          "status": "passed",
+          "scope": "storage"
+        },
+        {
+          "id": "::test_corruption_before_archive_does_not_replace_originals",
+          "status": "passed",
+          "scope": "storage"
+        },
+        {
+          "id": "::test_true_capacity_limit_still_fails_without_losing_confirmed_generation",
+          "status": "passed",
+          "scope": "storage"
+        },
+        {
+          "id": "::test_invalid_archive_options_are_rejected_without_creating_store[options0]",
+          "status": "passed",
+          "scope": "storage"
+        },
+        {
+          "id": "::test_invalid_archive_options_are_rejected_without_creating_store[options1]",
+          "status": "passed",
+          "scope": "storage"
+        },
+        {
+          "id": "::test_invalid_archive_options_are_rejected_without_creating_store[options2]",
+          "status": "passed",
+          "scope": "storage"
+        },
+        {
+          "id": "tests.test_management_queries::test_bad_management_query_can_recover_into_checked_unpublished_draft[room_manage_catalog-args0]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_management_queries::test_bad_management_query_can_recover_into_checked_unpublished_draft[room_manage_catalog-args1]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_management_queries::test_bad_management_query_can_recover_into_checked_unpublished_draft[room_read_management-args2]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_management_queries::test_bad_management_query_can_recover_into_checked_unpublished_draft[room_read_management-args3]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_management_queries::test_bad_management_query_can_recover_into_checked_unpublished_draft[room_read_sessions-args4]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_management_queries::test_authoritative_templates_are_paginated_kp_only_and_changes_invalidate_proof",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_management_queries::test_configuration_read_cannot_recover_from_disabled_external_scope",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_management_queries::test_mixed_search_warns_model_without_relabeling_or_removing_evidence",
+          "status": "passed",
+          "scope": "ai"
+        }
+      ]
+    },
+    {
+      "evidence": "query-storage-regression-20261120.xml",
+      "startedAt": "2026-11-20T01:47:31.473826+08:00",
+      "total": 226,
+      "passed": 226,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 430.106,
+      "cases": [
+        {
+          "id": "tests.test_coordinator::test_draft_is_checked_but_never_published",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_coordinator::test_blocked_model_does_not_hold_host_lock_and_can_cancel",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_coordinator::test_request_dedup_queue_and_budget",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_coordinator::test_untrusted_model_and_retry_limits[forged-TOOL_FORBIDDEN]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_coordinator::test_untrusted_model_and_retry_limits[loop-TOOL_ROUND_LIMIT]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_coordinator::test_untrusted_model_and_retry_limits[retry-PROVIDER_UNAVAILABLE]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_coordinator::test_untrusted_model_and_retry_limits[repair-MODEL_OUTPUT_INVALID]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_coordinator::test_expired_task_and_authority_change_fail_closed",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_coordinator::test_disabled_service_makes_no_provider_calls",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_coordinator::test_retry_budget_records_each_attempt_once",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_coordinator::test_restart_interrupts_queued_tasks_and_preserves_budget",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_coordinator::test_permissions_changed_during_generation_discard_output",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_coordinator::test_profile_changed_during_generation_discards_output_and_runner_survives",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_coordinator::test_real_contract_is_exposed_and_repair_names_invalid_field",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_task_diagnostics::test_failure_diagnostics_redact_messages_and_preserve_primary",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_task_diagnostics::test_cleanup_error_does_not_replace_result_or_cancellation[False]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_task_diagnostics::test_cleanup_error_does_not_replace_result_or_cancellation[True]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_task_diagnostics::test_tool_metadata_is_bounded_and_contains_no_argument_values",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_task_diagnostics::test_deepseek_wire_query_replay_and_parameter_repair[None]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_task_diagnostics::test_deepseek_wire_query_replay_and_parameter_repair[bad1]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_task_diagnostics::test_deepseek_wire_query_replay_and_parameter_repair[bad2]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_task_diagnostics::test_deepseek_wire_query_replay_and_parameter_repair[bad3]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_task_diagnostics::test_provider_error_and_cleanup_keep_stable_code",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_task_diagnostics::test_model_page_counts_do_not_change_proofs_or_reveal_hidden_totals",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_task_diagnostics::test_channel_reference_resolves_actual_id_before_chat",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_task_diagnostics::test_last_round_closes_tools_and_returns_bounded_partial_answer",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_task_diagnostics::test_http_diagnostics_keep_only_valid_status_without_remote_text[400]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_task_diagnostics::test_http_diagnostics_keep_only_valid_status_without_remote_text[422]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_task_diagnostics::test_http_diagnostics_keep_only_valid_status_without_remote_text[None]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_task_diagnostics::test_http_diagnostics_keep_only_valid_status_without_remote_text[private error]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_task_diagnostics::test_http_diagnostics_keep_only_valid_status_without_remote_text[True]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_task_diagnostics::test_http_diagnostics_keep_only_valid_status_without_remote_text[99]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_task_diagnostics::test_http_diagnostics_keep_only_valid_status_without_remote_text[600]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_data_queries::test_search_detail_and_external_policy",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_data_queries::test_query_rejects_unbounded_or_identity_input[args0]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_data_queries::test_query_rejects_unbounded_or_identity_input[args1]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_data_queries::test_query_rejects_unbounded_or_identity_input[args2]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_data_queries::test_query_rejects_unbounded_or_identity_input[args3]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_data_queries::test_query_rejects_unbounded_or_identity_input[args4]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_data_queries::test_query_rejects_unbounded_or_identity_input[args5]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_data_queries::test_query_rejects_unbounded_or_identity_input[args6]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_data_queries::test_chat_intersection_window_cursor_and_edit",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_data_queries::test_dynamic_evidence_and_explicit_reference_recheck",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_data_queries::test_tool_queries_never_read_kp_secret_for_player",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_data_queries::test_model_search_read_then_result_keeps_evidence",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_data_queries::test_http_query_auth_csrf_and_contract",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_data_queries::test_result_limit_and_missing_adapter_are_fail_closed",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_data_queries::test_query_evidence_prevents_publish_after_source_edit",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_data_queries::test_per_round_multi_call_budget",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_data_edits::test_append_from_partial_array_preserves_all_unread_data_and_is_repeatable",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_data_edits::test_append_uniqueness_checks_items_outside_returned_page",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_data_edits::test_add_replace_remove_are_explicit_and_preserve_siblings",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_data_edits::test_rejects_unsafe_edits_atomically[mixed-DATA_EDIT_MIXED_REPLACEMENT]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_data_edits::test_rejects_unsafe_edits_atomically[stale-DATA_EDIT_BASELINE_STALE]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_data_edits::test_rejects_unsafe_edits_atomically[forged-DATA_EDIT_REFERENCE_UNVERIFIED]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_data_edits::test_rejects_unsafe_edits_atomically[incomplete-DATA_EDIT_INCOMPLETE_READ]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_data_edits::test_rejects_unsafe_edits_atomically[overlap-DATA_EDIT_OVERLAP]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_data_edits::test_rejects_unsafe_edits_atomically[array-remove-DATA_EDIT_TARGET_INVALID]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_data_edits::test_rejects_unsafe_edits_atomically[root-DATA_EDIT_INCOMPLETE_READ]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_data_edits::test_rejects_unsafe_edits_atomically[add-existing-DATA_EDIT_TARGET_INVALID]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_data_edits::test_multiple_appends_and_large_object_index_do_not_require_reconstruction",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_data_edits::test_read_does_not_issue_ref_on_invalid_path_or_page[args0]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_data_edits::test_read_does_not_issue_ref_on_invalid_path_or_page[args1]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_data_edits::test_read_does_not_issue_ref_on_invalid_path_or_page[args2]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_data_edits::test_read_does_not_issue_ref_on_invalid_path_or_page[args3]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_data_edits::test_real_application_egress_and_session_ceiling[kp-EXTERNAL_SCOPE_DISABLED]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_data_edits::test_real_application_egress_and_session_ceiling[queries-DATA_QUERIES_DISABLED]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_data_edits::test_real_application_egress_and_session_ceiling[player-TOOL_FORBIDDEN]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_data_edits::test_model_increment_compiles_to_checked_manual_candidate[False]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_data_edits::test_model_increment_compiles_to_checked_manual_candidate[True]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_data_edits::test_data_edits_are_only_valid_on_draft",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_access_batches::test_defaults_binding_and_no_permission_escalation",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_access_batches::test_player_auto_dispatch_context_output_and_revoke",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_access_batches::test_kp_player_session_has_player_ceiling_and_data_proof",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_access_batches::test_batch_human_approval_idempotence_and_player_denial",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_access_batches::test_batch_stale_reject_auto_and_bypass_forbidden",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_access_batches::test_batch_unknown_reconciles_without_reexecuting",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_access_batches::test_batch_stops_after_partial_failure_and_restart_never_replays",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_access_batches::test_delete_cancels_queue_hides_session_and_keeps_usage_audit",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_access_batches::test_administrator_tools_respect_external_scope",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_access_batches::test_player_contract_tool_and_batch_output_cannot_escalate",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_access_batches::test_delete_interrupts_active_generation",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_access_batches::test_management_catalog_is_bounded_and_schema_complete",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_access_batches::test_other_administrator_can_inspect_draft_without_taking_review_identity",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_access_batches::test_player_history_rechecks_package_evidence_during_generation",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_context::test_default_excludes_room_and_pack_text",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_context::test_public_context_strips_secret_and_never_reads_others_private_chat",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_context::test_context_rechecks_source_and_policy_after_generation[edit]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_context::test_context_rechecks_source_and_policy_after_generation[delete]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_context::test_context_rechecks_source_and_policy_after_generation[policy]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_context::test_context_rechecks_source_and_policy_after_generation[revoke]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_context::test_context_rechecks_source_and_policy_after_generation[profile]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_context::test_manual_revision_keeps_original_source_authorization",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_context::test_chat_source_requires_actual_current_text_and_external_permission",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_context::test_unrelated_read_position_and_ai_history_do_not_change_world",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_context::test_scope_mismatch_rejects_cross_room_context",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_context::test_context_size_is_bounded",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_context::test_two_actual_demo_directories_do_not_share_secrets_or_memory",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_sessions::test_history_reuses_valid_response_but_drops_stale_sources",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_sessions::test_history_is_bounded_and_never_reads_other_sessions",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_sessions::test_repository_rejects_broken_conversation_links[foreign]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_sessions::test_repository_rejects_broken_conversation_links[missing]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_sessions::test_repository_rejects_broken_conversation_links[duplicate]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_sessions::test_repository_rejects_broken_conversation_links[title]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_sessions::test_session_preferences_owner_conflict_and_persistence",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_sessions::test_configured_history_bound_preserves_records[0]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_sessions::test_configured_history_bound_preserves_records[2]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_sessions::test_configured_history_bound_preserves_records[4]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_sessions::test_session_preferences_validate_command_and_stored_data[historyTurns--1]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_sessions::test_session_preferences_validate_command_and_stored_data[historyTurns-5]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_sessions::test_session_preferences_validate_command_and_stored_data[historyTurns-True]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_sessions::test_session_preferences_validate_command_and_stored_data[historyTurns-1.5]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_sessions::test_session_preferences_validate_command_and_stored_data[renderMode-html]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_sessions::test_session_preferences_validate_command_and_stored_data[pinned-1]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_sessions::test_session_preferences_validate_command_and_stored_data[showDiagnostics-false]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_rulings::test_chat_approval_is_bound_to_batch_and_not_another_model_request",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_rulings::test_config_is_one_checked_ruling_and_publishes_once",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_rulings::test_high_risk_config_never_uses_auto_approval",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_rulings::test_player_cannot_decide_and_stale_digest_cannot_execute",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_rulings::test_consultation_only_evidence_cannot_enter_publish_queue_or_auto_approve",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_rulings::test_invalid_model_output_has_specific_cause[[]-MODEL_OBJECT_REQUIRED]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_rulings::test_invalid_model_output_has_specific_cause[null-MODEL_OBJECT_REQUIRED]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_rulings::test_invalid_model_output_has_specific_cause[broken-MODEL_JSON_INVALID]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_rulings::test_invalid_model_output_has_specific_cause[{\"kind\":\"other\",\"text\":\"a\"}-MODEL_KIND_INVALID]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_rulings::test_single_json_fence_is_accepted_without_extracting_arbitrary_text",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_rulings::test_five_repairs_do_not_consume_tool_rounds[True]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_rulings::test_five_repairs_do_not_consume_tool_rounds[False]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_rulings::test_user_decision_pauses_instead_of_retrying[clarification]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_rulings::test_user_decision_pauses_instead_of_retrying[plan]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_rulings::test_basic_lua_error_repairs_same_proposal_before_review",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_review_debug::test_review_source_is_separate_from_kp_message_and_deduplicated",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_review_debug::test_forwarded_request_resolves_real_source_and_does_not_change_original",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_review_debug::test_all_forwarded_reviews_stay_manual_with_auto_on",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_review_debug::test_review_source_obeys_external_scope",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_review_debug::test_ruling_digest_and_snapshot_size_checked",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_review_debug::test_debug_is_readonly_metadata_default_with_authorized_content_opt_in",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_review_debug::test_debug_rejects_ambiguous_or_invalid_options[options0]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_review_debug::test_debug_rejects_ambiguous_or_invalid_options[options1]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_review_debug::test_debug_rejects_ambiguous_or_invalid_options[options2]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_review_debug::test_debug_rejects_ambiguous_or_invalid_options[options3]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_review_debug::test_debug_rejects_ambiguous_or_invalid_options[options4]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_review_debug::test_debug_rechecks_deleted_session_and_player_switch",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_review_debug::test_pure_schema_catalog_available_without_kp_egress",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_review_debug::test_provider_records_actual_model_without_equating_alias_and_version",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_review_debug::test_real_http_debug_authorization_no_store_and_no_receipt",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_review_debug::test_legacy_accepted_review_retains_original_player_source",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_review_debug::test_task_and_debug_preserve_requested_and_actual_model_ids",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_session_restart::test_same_room_restart_keeps_conversation_and_fresh_followup",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_session_restart::test_player_restart_preserves_fixed_evidence_but_revocation_still_hides_it",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_session_restart::test_restart_does_not_reauthorize_pending_runtime_batch",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_management_queries::test_bad_management_query_can_recover_into_checked_unpublished_draft[room_manage_catalog-args0]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_management_queries::test_bad_management_query_can_recover_into_checked_unpublished_draft[room_manage_catalog-args1]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_management_queries::test_bad_management_query_can_recover_into_checked_unpublished_draft[room_read_management-args2]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_management_queries::test_bad_management_query_can_recover_into_checked_unpublished_draft[room_read_management-args3]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_management_queries::test_bad_management_query_can_recover_into_checked_unpublished_draft[room_read_sessions-args4]",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_management_queries::test_authoritative_templates_are_paginated_kp_only_and_changes_invalidate_proof",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_management_queries::test_configuration_read_cannot_recover_from_disabled_external_scope",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "tests.test_management_queries::test_mixed_search_warns_model_without_relabeling_or_removing_evidence",
+          "status": "passed",
+          "scope": "ai"
+        },
+        {
+          "id": "::test_current_room_restarts_without_upgrade",
+          "status": "passed",
+          "scope": "backend"
+        },
+        {
+          "id": "::test_unknown_room_version_is_not_overwritten",
+          "status": "passed",
+          "scope": "backend"
+        },
+        {
+          "id": "::test_restore_forks_scope_revokes_approval_and_retains_optional_history",
+          "status": "passed",
+          "scope": "backend"
+        },
+        {
+          "id": "::test_published_game_restores_without_ai_store",
+          "status": "passed",
+          "scope": "backend"
+        },
+        {
+          "id": "::test_restore_retries_transient_windows_directory_handle",
+          "status": "passed",
+          "scope": "backend"
+        },
+        {
+          "id": "::test_backup_missing_references_fails_before_creating_target[artifact]",
+          "status": "passed",
+          "scope": "backend"
+        },
+        {
+          "id": "::test_backup_missing_references_fails_before_creating_target[ai-reference]",
+          "status": "passed",
+          "scope": "backend"
+        },
+        {
+          "id": "::test_real_host_crash[before_t1]",
+          "status": "passed",
+          "scope": "backend"
+        },
+        {
+          "id": "::test_real_host_crash[after_t1]",
+          "status": "passed",
+          "scope": "backend"
+        },
+        {
+          "id": "::test_real_host_crash[after_random]",
+          "status": "passed",
+          "scope": "backend"
+        },
+        {
+          "id": "::test_real_host_crash[before_t2]",
+          "status": "passed",
+          "scope": "backend"
+        },
+        {
+          "id": "::test_real_host_crash[after_t2]",
+          "status": "passed",
+          "scope": "backend"
+        },
+        {
+          "id": "::test_real_file_crash[half_write]",
+          "status": "passed",
+          "scope": "backend"
+        },
+        {
+          "id": "::test_real_file_crash[before_sync]",
+          "status": "passed",
+          "scope": "backend"
+        },
+        {
+          "id": "::test_real_file_crash[before_publish]",
+          "status": "passed",
+          "scope": "backend"
+        },
+        {
+          "id": "::test_real_file_crash[after_publish]",
+          "status": "passed",
+          "scope": "backend"
+        },
+        {
+          "id": "::test_backup_restore_assets_identity",
+          "status": "passed",
+          "scope": "backend"
+        },
+        {
+          "id": "::test_wait_timeout_and_permission_recheck",
+          "status": "passed",
+          "scope": "backend"
+        },
+        {
+          "id": "::test_lua_invalid_boundaries[return rule('x',{},function(r) r.roll(100) end,{mode='calculation'})]",
+          "status": "passed",
+          "scope": "backend"
+        },
+        {
+          "id": "::test_lua_invalid_boundaries[return rule('x',{},function(r) local a={};a.x=a;return a end)]",
+          "status": "passed",
+          "scope": "backend"
+        },
+        {
+          "id": "::test_lua_invalid_boundaries[return rule('x',{},function(r) return 0/0 end)]",
+          "status": "passed",
+          "scope": "backend"
+        },
+        {
+          "id": "::test_lua_invalid_boundaries[return rule('x',{},function(r) return r.read.__globals__ end)]",
+          "status": "passed",
+          "scope": "backend"
+        },
+        {
+          "id": "::test_lua_invalid_boundaries[return rule('x',{},function(r) local x={}; while true do x[#x+1]=string.format('%01000d',1) end end)]",
+          "status": "passed",
+          "scope": "backend"
+        },
+        {
+          "id": "::test_poison_cannot_be_caught",
+          "status": "passed",
+          "scope": "backend"
+        },
+        {
+          "id": "::test_invalid_dependency_and_wait",
+          "status": "passed",
+          "scope": "backend"
+        },
+        {
+          "id": "::test_quota_and_sync_failure",
+          "status": "passed",
+          "scope": "backend"
+        },
+        {
+          "id": "::test_flow_stage_crash_preserves_wait_and_random[before_t2]",
+          "status": "passed",
+          "scope": "backend"
+        },
+        {
+          "id": "::test_flow_stage_crash_preserves_wait_and_random[after_t2]",
+          "status": "passed",
+          "scope": "backend"
+        },
+        {
+          "id": "::test_old_data_snapshot_survives_hot_reload",
+          "status": "passed",
+          "scope": "backend"
+        },
+        {
+          "id": "::test_second_host_process_is_rejected",
+          "status": "passed",
+          "scope": "backend"
+        },
+        {
+          "id": "::test_store_contract[FileDataStore]",
+          "status": "passed",
+          "scope": "backend"
+        },
+        {
+          "id": "::test_store_contract[MemoryDataStore]",
+          "status": "passed",
+          "scope": "backend"
+        },
+        {
+          "id": "::test_failed_publish",
+          "status": "passed",
+          "scope": "backend"
+        },
+        {
+          "id": "::test_corruption_and_export",
+          "status": "passed",
+          "scope": "backend"
+        },
+        {
+          "id": "::test_lua_real_execution",
+          "status": "passed",
+          "scope": "backend"
+        },
+        {
+          "id": "::test_lua_timeout_and_restricted_globals",
+          "status": "passed",
+          "scope": "backend"
+        },
+        {
+          "id": "::test_same_configuration_distinct_instances",
+          "status": "passed",
+          "scope": "backend"
+        },
+        {
+          "id": "::test_relation_invariants",
+          "status": "passed",
+          "scope": "backend"
+        },
+        {
+          "id": "::test_concurrent_quantity_and_view_precondition",
+          "status": "passed",
+          "scope": "backend"
+        },
+        {
+          "id": "::test_behavior_entry_and_retry",
+          "status": "passed",
+          "scope": "backend"
+        },
+        {
+          "id": "::test_queue_and_internal_transport",
+          "status": "passed",
+          "scope": "backend"
+        },
+        {
+          "id": "::test_storage_query_receipt_contract[MemoryDataStore]",
+          "status": "passed",
+          "scope": "backend"
+        },
+        {
+          "id": "::test_storage_query_receipt_contract[FileDataStore]",
+          "status": "passed",
+          "scope": "backend"
+        },
+        {
+          "id": "::test_machine_fixtures",
+          "status": "passed",
+          "scope": "backend"
+        },
+        {
+          "id": "::test_host_storage_injection_and_author_helpers",
+          "status": "passed",
+          "scope": "backend"
+        },
+        {
+          "id": "::test_open_rejects_before_room_mutation[v1]",
+          "status": "passed",
+          "scope": "backend"
+        },
+        {
+          "id": "::test_open_rejects_before_room_mutation[v2]",
+          "status": "passed",
+          "scope": "backend"
+        },
+        {
+          "id": "::test_open_rejects_before_room_mutation[future]",
+          "status": "passed",
+          "scope": "backend"
+        },
+        {
+          "id": "::test_open_rejects_before_room_mutation[no-chat]",
+          "status": "passed",
+          "scope": "backend"
+        },
+        {
+          "id": "::test_open_rejects_before_room_mutation[no-control]",
+          "status": "passed",
+          "scope": "backend"
+        },
+        {
+          "id": "::test_open_rejects_before_room_mutation[no-commands]",
+          "status": "passed",
+          "scope": "backend"
+        },
+        {
+          "id": "::test_open_rejects_before_room_mutation[reference]",
+          "status": "passed",
+          "scope": "backend"
+        },
+        {
+          "id": "::test_open_rejects_before_room_mutation[bad-version]",
+          "status": "passed",
+          "scope": "backend"
+        },
+        {
+          "id": "::test_backup_rejects_before_any_restore_target[v1]",
+          "status": "passed",
+          "scope": "backend"
+        },
+        {
+          "id": "::test_backup_rejects_before_any_restore_target[v2]",
+          "status": "passed",
+          "scope": "backend"
+        },
+        {
+          "id": "::test_backup_rejects_before_any_restore_target[future]",
+          "status": "passed",
+          "scope": "backend"
+        },
+        {
+          "id": "::test_backup_rejects_before_any_restore_target[no-chat]",
+          "status": "passed",
+          "scope": "backend"
+        },
+        {
+          "id": "::test_backup_rejects_before_any_restore_target[no-control]",
+          "status": "passed",
+          "scope": "backend"
+        },
+        {
+          "id": "::test_backup_rejects_before_any_restore_target[no-commands]",
+          "status": "passed",
+          "scope": "backend"
+        },
+        {
+          "id": "::test_backup_rejects_before_any_restore_target[reference]",
+          "status": "passed",
+          "scope": "backend"
+        },
+        {
+          "id": "::test_backup_rejects_before_any_restore_target[bad-version]",
+          "status": "passed",
+          "scope": "backend"
+        },
+        {
+          "id": "::test_execution_projection_cannot_be_used_as_room",
+          "status": "passed",
+          "scope": "backend"
+        },
+        {
+          "id": "::test_external_conversion_is_explicit_and_works",
+          "status": "passed",
+          "scope": "backend"
+        },
+        {
+          "id": "::test_validation_cli_is_read_only[room]",
+          "status": "passed",
+          "scope": "backend"
+        },
+        {
+          "id": "::test_validation_cli_is_read_only[snapshot]",
+          "status": "passed",
+          "scope": "backend"
+        },
+        {
+          "id": "::test_validation_cli_is_read_only[backup]",
+          "status": "passed",
+          "scope": "backend"
+        },
+        {
+          "id": "::test_release_schema_and_fixture_agree",
+          "status": "passed",
+          "scope": "backend"
+        },
+        {
+          "id": "::test_restore_lifecycle_disables_auto_without_mutating_input",
+          "status": "passed",
+          "scope": "backend"
+        }
+      ]
+    }
+  ],
+  "relatedEvidence": [
+    "../history-context/results.json",
+    "../rulings-sdk/results.json"
+  ],
+  "sourceSha256": {
+    "engineering/ai/src/onlinecoc_ai/access.py": "d9da2a237433b8e409560aa152ae7a7b18b94c7aedb249f58760f384213d3b16",
+    "engineering/ai/src/onlinecoc_ai/context.py": "7415e2d2e5516bca08cb6834bdf0d4879c920692e8f31a09ac6a4c89cb1b2740",
+    "engineering/ai/web/components/chat.js": "2576be73d1a3a6a012088ff3f057b540750609ca48aa445592657b9a2f5c8b08",
+    "engineering/ai/web/components/chat.css": "cdeef4bd1d5e1d423bd0b8a9bfad8bf249a2e1828a4b5f52a26fbc9aad199e60",
+    "engineering/ai/web/components/views.js": "d9aed906e3140b96827ba818766642ad967babeb3222bd4887617a2d74442aa1",
+    "engineering/ai/web/components/views.css": "cadb425394f40dbf33e26aeac065f3a0db3ef3fe096af31a15f40109fdebd33c",
+    "engineering/ai/web/components/index.d.ts": "8a5b578ec317d9b3e8c7a84cb9c6e0ec1aead7e37e0f3bae10543a68e96d3ae8",
+    "engineering/backend/src/onlinecoc/publication.py": "34bd0f507f91e5c93bea15919fdb484a1b66827e5b6be2ecd89b359332eefc30",
+    "engineering/client-sdk/client.js": "19e2762ff1d717b71abe63f6bede1b689c844ac8252acb8bd4b6a662c8b117cd",
+    "engineering/ai/tests/test_session_restart.py": "1f812b85cf158fbf44dbea6262613a1a83f051ec6c5d5c3d05a57a70a1121659",
+    "engineering/ai/tests/test_debug_dialog_ui.py": "703402a59be103c75139eb9492576a9f8e3dbc808fb5b51ff39d2c1870149bfe",
+    "engineering/ai/tests/test_access_ui.py": "43b7a0418d257647116ba50913b8101ccf9d22c61bd77f9ecacd1492be6f2d1f",
+    "engineering/ai/tests/test_workbench_ui.py": "5a19864faaeae66aceacb508c83ffa3b1365b834ca0a60d15a4579ef2d3f5aea",
+    "engineering/ai/src/onlinecoc_ai/coordinator.py": "2ffd3d112e1c2b6fbf9ac6948853d17aa6f9b1e1f50d655b3391fd2415bb5541",
+    "engineering/ai/src/onlinecoc_ai/batches.py": "0bd703e1737c5ba43072a3d62bb5e1f0a90932a65c4640ae6368d13e23cbd735",
+    "engineering/ai/src/onlinecoc_ai/data_queries.py": "bddf01a49a28050ff76a5f4138274500897eba413c872f49384bbdc66760c89c",
+    "engineering/ai/src/onlinecoc_ai/repository.py": "86afe3a7ef50941a66b0a2b9c88395b08daa5ad892e8b02edfe6b0c75039534b",
+    "engineering/ai/tests/test_management_queries.py": "daa945964aade1365fcc8c8972f9d3d766e3d7c968ca12389439c06a81f62d2e",
+    "engineering/data-management/onlinecoc_data/store.py": "61c96689ea9f81e000af6a5180104b6721f3a8e692c7d04e03bb8436183841b3",
+    "engineering/acceptance/store-compaction/test_compression.py": "9a585b3591c0bddb8d5218ccfcab36992a59fa38c612953d56d0c6f85448b415",
+    "rulepacks/stumpsville/tests/verify_ai_config_live.py": "b7293e0b3109a5c91aa54dd12e6b80a0175a3cbc6ece5e4b3091df52ea4b0b3e",
+    "rulepacks/stumpsville/ai/guide.md": "1d4406a1a8308546cc2a3fed3bf0095737a15f63f5fef25b7b546b0bf2140c44"
+  },
+  "failureHandling": [
+    {
+      "id": "restart",
+      "cause": "Execution epoch invalidated historical provenance",
+      "repair": "Engine readonly historical revalidation plus two AI history consumers; execution approval stays strict",
+      "evidence": "restart-integrated.xml"
+    },
+    {
+      "id": "ui-static-fixture",
+      "cause": "Windows MIME map did not serve JS module MIME",
+      "repair": "Isolated static fixture explicitly maps .js and .css",
+      "evidence": "debug-dialog-retest.xml"
+    },
+    {
+      "id": "stale-test-assertions",
+      "cause": "Old player text and two broad selectors predated current UI",
+      "repair": "Assert current visible guidance and specific save/details controls",
+      "evidence": [
+        "access-retest-20261120.xml",
+        "full-retest-20261120.xml"
+      ]
+    },
+    {
+      "id": "legacy-sdk",
+      "cause": "Legacy console Client lacked aiRulings, aiResolve, subscribe",
+      "repair": "ISSUE-014 engine adapter repair, readonly no automatic approval",
+      "evidence": [
+        "../rulings-sdk/core.xml",
+        "full-retest-20261120.xml"
+      ]
+    },
+    {
+      "id": "feedback-test-fixture",
+      "cause": "New assertion treated contenteditable as input",
+      "repair": "Check rendered draft text and zero automatic commands",
+      "evidence": "feedback-retest-20261120.xml"
+    },
+    {
+      "id": "management-invalid-operation",
+      "cause": "Live model requested invented config.create/configuration.create and the task terminated",
+      "repair": "Enumerated runtime operation schema, bounded input feedback and authoritative configurations reads; fresh NPC add/update/delete passed",
+      "evidence": "query-storage-initial-20261120.xml"
+    },
+    {
+      "id": "consultation-only-publication",
+      "cause": "Mixed package/host template search attached consultation-only provenance",
+      "repair": "Explicit source policy warning and authoritative host template route; provenance restrictions retained",
+      "evidence": "query-storage-initial-20261120.xml"
+    },
+    {
+      "id": "cumulative-storage",
+      "cause": "Historical full snapshots reached the 512 MiB store quota at generation 158",
+      "repair": "Lossless gzip archives preserving every generation and original byte; isolated failed-source copy plus twelve additional commits and reopen",
+      "evidence": "../store-compaction/large-fixture-results.json"
+    },
+    {
+      "id": "redundant-rule-confirmation",
+      "cause": "Explicit request to prepare a supported rule returned only a plan and another confirmation question",
+      "repair": "Feedback then actual publication/preview succeeded; prompt further clarifies that preparing draft is separate from approving/publishing",
+      "evidence": "../../../rulepacks/stumpsville/tests/ai-config-live-map-rules-results.json"
+    }
+  ],
+  "additionalLatestScopes": {
+    "storage": {
+      "totalUnique": 15,
+      "passed": 15,
+      "failed": 0,
+      "skipped": 0
+    },
+    "backend": {
+      "totalUnique": 68,
+      "passed": 68,
+      "failed": 0,
+      "skipped": 0
+    }
+  },
+  "phaseOneSourceSha256": {
+    "engineering/ai/src/onlinecoc_ai/access.py": "d9da2a237433b8e409560aa152ae7a7b18b94c7aedb249f58760f384213d3b16",
+    "engineering/ai/src/onlinecoc_ai/context.py": "7415e2d2e5516bca08cb6834bdf0d4879c920692e8f31a09ac6a4c89cb1b2740",
+    "engineering/ai/web/components/chat.js": "2576be73d1a3a6a012088ff3f057b540750609ca48aa445592657b9a2f5c8b08",
+    "engineering/ai/web/components/chat.css": "cdeef4bd1d5e1d423bd0b8a9bfad8bf249a2e1828a4b5f52a26fbc9aad199e60",
+    "engineering/ai/web/components/views.js": "d9aed906e3140b96827ba818766642ad967babeb3222bd4887617a2d74442aa1",
+    "engineering/ai/web/components/views.css": "cadb425394f40dbf33e26aeac065f3a0db3ef3fe096af31a15f40109fdebd33c",
+    "engineering/ai/web/components/index.d.ts": "8a5b578ec317d9b3e8c7a84cb9c6e0ec1aead7e37e0f3bae10543a68e96d3ae8",
+    "engineering/backend/src/onlinecoc/publication.py": "34bd0f507f91e5c93bea15919fdb484a1b66827e5b6be2ecd89b359332eefc30",
+    "engineering/client-sdk/client.js": "19e2762ff1d717b71abe63f6bede1b689c844ac8252acb8bd4b6a662c8b117cd",
+    "engineering/ai/tests/test_session_restart.py": "1f812b85cf158fbf44dbea6262613a1a83f051ec6c5d5c3d05a57a70a1121659",
+    "engineering/ai/tests/test_debug_dialog_ui.py": "703402a59be103c75139eb9492576a9f8e3dbc808fb5b51ff39d2c1870149bfe",
+    "engineering/ai/tests/test_access_ui.py": "43b7a0418d257647116ba50913b8101ccf9d22c61bd77f9ecacd1492be6f2d1f",
+    "engineering/ai/tests/test_workbench_ui.py": "5a19864faaeae66aceacb508c83ffa3b1365b834ca0a60d15a4579ef2d3f5aea"
+  },
+  "storageRecovery": {
+    "source": "rulepacks/stumpsville/tests/output/ai-config-matrix-dbe1cfea/game/host/ai",
+    "sourceUnchanged": true,
+    "clone": "engineering/acceptance/store-compaction/work/recovery-74a2ace7b56346378a631ef1c73a1828",
+    "allOriginalGenerationBytesPreserved": true,
+    "originalGenerations": 158,
+    "before": {
+      "format": 1,
+      "generation": 158,
+      "bytes": 527106299
+    },
+    "archive": {
+      "generation": 158,
+      "archivedGenerations": 156,
+      "freedBytes": 383657697,
+      "bytes": 143448602,
+      "historyPreserved": true
+    },
+    "afterTwelveAdditionalCommits": {
+      "format": 1,
+      "generation": 170,
+      "bytes": 227684428
+    },
+    "auditAndReceiptsUnchanged": true,
+    "repositoryReopenPassed": true,
+    "seconds": 175.02
+  },
+  "queryStorageSourceSha256": {
+    "engineering/ai/src/onlinecoc_ai/access.py": "d9da2a237433b8e409560aa152ae7a7b18b94c7aedb249f58760f384213d3b16",
+    "engineering/ai/src/onlinecoc_ai/context.py": "7415e2d2e5516bca08cb6834bdf0d4879c920692e8f31a09ac6a4c89cb1b2740",
+    "engineering/ai/web/components/chat.js": "2576be73d1a3a6a012088ff3f057b540750609ca48aa445592657b9a2f5c8b08",
+    "engineering/ai/web/components/chat.css": "cdeef4bd1d5e1d423bd0b8a9bfad8bf249a2e1828a4b5f52a26fbc9aad199e60",
+    "engineering/ai/web/components/views.js": "d9aed906e3140b96827ba818766642ad967babeb3222bd4887617a2d74442aa1",
+    "engineering/ai/web/components/views.css": "cadb425394f40dbf33e26aeac065f3a0db3ef3fe096af31a15f40109fdebd33c",
+    "engineering/ai/web/components/index.d.ts": "8a5b578ec317d9b3e8c7a84cb9c6e0ec1aead7e37e0f3bae10543a68e96d3ae8",
+    "engineering/backend/src/onlinecoc/publication.py": "34bd0f507f91e5c93bea15919fdb484a1b66827e5b6be2ecd89b359332eefc30",
+    "engineering/client-sdk/client.js": "19e2762ff1d717b71abe63f6bede1b689c844ac8252acb8bd4b6a662c8b117cd",
+    "engineering/ai/tests/test_session_restart.py": "1f812b85cf158fbf44dbea6262613a1a83f051ec6c5d5c3d05a57a70a1121659",
+    "engineering/ai/tests/test_debug_dialog_ui.py": "703402a59be103c75139eb9492576a9f8e3dbc808fb5b51ff39d2c1870149bfe",
+    "engineering/ai/tests/test_access_ui.py": "43b7a0418d257647116ba50913b8101ccf9d22c61bd77f9ecacd1492be6f2d1f",
+    "engineering/ai/tests/test_workbench_ui.py": "5a19864faaeae66aceacb508c83ffa3b1365b834ca0a60d15a4579ef2d3f5aea",
+    "engineering/ai/src/onlinecoc_ai/coordinator.py": "d7aeec782507bcc9c6eed565d1e4e4c4b6216360a19950b62ebdf2f80bd38c9d",
+    "engineering/ai/src/onlinecoc_ai/batches.py": "0bd703e1737c5ba43072a3d62bb5e1f0a90932a65c4640ae6368d13e23cbd735",
+    "engineering/ai/src/onlinecoc_ai/data_queries.py": "bddf01a49a28050ff76a5f4138274500897eba413c872f49384bbdc66760c89c",
+    "engineering/ai/src/onlinecoc_ai/repository.py": "86afe3a7ef50941a66b0a2b9c88395b08daa5ad892e8b02edfe6b0c75039534b",
+    "engineering/ai/tests/test_management_queries.py": "daa945964aade1365fcc8c8972f9d3d766e3d7c968ca12389439c06a81f62d2e",
+    "engineering/data-management/onlinecoc_data/store.py": "61c96689ea9f81e000af6a5180104b6721f3a8e692c7d04e03bb8436183841b3",
+    "engineering/acceptance/store-compaction/test_compression.py": "9a585b3591c0bddb8d5218ccfcab36992a59fa38c612953d56d0c6f85448b415",
+    "rulepacks/stumpsville/tests/verify_ai_config_live.py": "318e28a132f81dc0dc7ea9e133a1f784488bf850591b95b10ded0e41fdb0e4ba",
+    "rulepacks/stumpsville/ai/guide.md": "1b659c081b29ace79c0dfd12c79b71edcc83739e53d70d810d705c602a2b0672"
+  },
+  "liveConfiguration": {
+    "counting": "Earliest first attempt and latest result by case ID across all real runs; each batch and prior failure retained. Expected rejection separate from supported operations. No injected provider faults in these runs.",
+    "rates": {
+      "supported": {
+        "firstEverPassed": 4,
+        "latestFirstAttemptPassed": 8,
+        "finalPassed": 8,
+        "total": 8
+      },
+      "expected-rejection": {
+        "firstEverPassed": 1,
+        "latestFirstAttemptPassed": 1,
+        "finalPassed": 1,
+        "total": 1
+      }
+    },
+    "allRealCalls": 64,
+    "allConfirmedTokens": 834750,
+    "latestBatchRealCalls": 24,
+    "latestBatchConfirmedTokens": 313078,
+    "allPersistentProviderConfigsUnchanged": true,
+    "realSaveChanged": false,
+    "runs": [
+      {
+        "checkedAt": "2026-11-20T01:24:01.858336+08:00",
+        "batch": "npc",
+        "requestedModel": "deepseek-flash",
+        "passed": false,
+        "realCalls": 24,
+        "confirmedTokens": 307432,
+        "rates": {
+          "supported": {
+            "firstPassed": 0,
+            "finalPassed": 0,
+            "total": 3
+          },
+          "expected-rejection": {
+            "firstPassed": 0,
+            "finalPassed": 0,
+            "total": 0
+          }
+        },
+        "evidenceDirectory": "tests/output/ai-live-current/ai-config-live-npc-00097066",
+        "persistentProviderConfigUnchanged": true,
+        "realSaveChanged": false,
+        "evidence": "rulepacks/stumpsville/tests/output/ai-live-current/ai-config-live-npc-00097066/report.json",
+        "cases": [
+          {
+            "id": "npc-add",
+            "expectation": "supported",
+            "firstAttemptPassed": false,
+            "passed": false,
+            "attempts": 2,
+            "evidence": "rulepacks/stumpsville/tests/output/ai-live-current/ai-config-live-npc-00097066/report.json",
+            "prompt": "新增独立 NPC 模板 sv.ext.npc.live_matrix，完整复制当前 sv.npc 默认值，仅将 hp/maxHp 设为6，并增加 isNpc=1。不要创建实例，不改核心规则；请提交完整配置候选供KP审核。",
+            "consumption": null,
+            "failures": [
+              {
+                "attempt": 1,
+                "error": "{'status': 'failed', 'error': 'INPUT_INVALID', 'proposal': None}",
+                "validationFeedback": null,
+                "callsBefore": 0,
+                "callsAfter": 3
+              },
+              {
+                "attempt": 2,
+                "error": "{'status': 'review_ready', 'error': None, 'proposal': {'rulingId': 'proposal:96293c0dc5cb41ec9aff7b3bda0127cd', 'kind': 'configuration', 'sessionId': '0e41363e09264ad0bca11d79d20fa435', 'requestId': 'bc76d7a40e1c400fb12d32c3a7f92a12', 'initiator': 'kp', 'summary': '已按当前活动数据重建候选：新模板 sv.ext.npc.live_matrix 完整沿用 sv.npc 的现有默认值，仅把 hp/maxHp 改为 6，并新增 isNpc=1；不创建实例、不改核心规则。\\n\\n- **来源**：以当前活动的 sv.npc（默认生命 4/4，臂甲 0，三属性各 10 及其上限 10，位置 1，未失能、lastRoll 0）为蓝本。\\n- **唯一改动**：生命与上限设为 6；新增 isNpc=1 标记，便于后续按此模板识别 NPC 实例。\\n- **影响**：属于 NPC 模板扩展，落在作者开放的前缀命名空间内；旧实例不会迁移，已有 NPC 数值不变。\\n- **待裁决**：仍需 KP 确认“NPC 默认值、规则效果及未覆盖剧情联动”这一强制审阅项，通过 A/B/C 后才可加载。', 'status': 'blocked', 'createdAt': 1795109086.7326465, 'digest': '3f1bd2c0b8b45a1e448f3bdb9e3c0b8fe54e7e0b0aca1ca970dcdb72a3984314', 'revision': 1, 'canDecide': False, 'changeSet': {'schemaVersion': 1, 'configurations': [{'kind': 'add', 'id': 'sv.ext.npc.live_matrix', 'expectedRevision': None, 'value': {'configurationId': 'sv.ext.npc.live_matrix', 'revision': '1', 'typeRef': 'actor', 'defaults': {'armor': 0, 'dex': 10, 'dexMax': 10, 'hp': 6, 'incapacitated': 0, 'isNpc': 1, 'lastRoll': 0, 'location': 1, 'maxHp': 6, 'str': 10, 'strMax': 10, 'wil': 10, 'wilMax': 10}}}], 'sources': {'layout.lua': \"return rule('sv.layout', {'actor'}, function(r, actor)\\n  local data = r.readData('game.json')\\n  -- Numeric indices are persistent inventory/location identities.\\n  for index, place in ipairs(data.locations) do\\n    assert(place.index == index, 'SV_LOCATION_INDEX')\\n    for _, target in ipairs(place.exits) do\\n      assert(target ~= index and data.locations[target], 'SV_LOCATION_EXIT')\\n    end\\n    for _, stock in ipairs(place.stock) do\\n      assert(data.items[stock.item] and stock.count >= 0, 'SV_LOCATION_STOCK')\\n    end\\n  end\\n  local occupied, cards = {}, {}\\n  local overloaded, armor, injured = false, 0, false\\n  for slot = 1, 20 do\\n    local index = r.number(actor, 'item' .. slot)\\n    if index > 0 then\\n      local def = data.items[index]\\n      assert(def, 'SV_UNKNOWN_ITEM')\\n      local cells = {slot}\\n      if def.id == 'injured' then injured = true end\\n      if slot > 10 then\\n        overloaded = true\\n      elseif def.slots == 2 then\\n        if def.shape == 'offhand-body' and slot <= 4 then\\n          assert(slot == 2, 'SV_LIGHT_ARMOR_OFFHAND_BODY')\\n          cells = {2, 3}\\n        elseif slot <= 4 then\\n          assert(slot == 1 or slot == 3, 'SV_ITEM_NEEDS_TWO_SLOTS')\\n          cells = {slot, slot + 1}\\n        else\\n        ",
+                "validationFeedback": null,
+                "callsBefore": 3,
+                "callsAfter": 9
+              }
+            ]
+          },
+          {
+            "id": "npc-update",
+            "expectation": "supported",
+            "firstAttemptPassed": false,
+            "passed": false,
+            "attempts": 2,
+            "evidence": "rulepacks/stumpsville/tests/output/ai-live-current/ai-config-live-npc-00097066/report.json",
+            "prompt": "修改刚建立的 sv.ext.npc.live_matrix 模板，只将默认 armor 改为1，保留其余字段，使用当前修订。不要修改已存在实例，提交候选。",
+            "consumption": null,
+            "failures": [
+              {
+                "attempt": 1,
+                "error": "{'status': 'review_ready', 'error': None, 'proposal': None}",
+                "validationFeedback": null,
+                "callsBefore": 9,
+                "callsAfter": 16
+              },
+              {
+                "attempt": 2,
+                "error": "{'status': 'failed', 'error': 'INPUT_INVALID', 'proposal': None}",
+                "validationFeedback": null,
+                "callsBefore": 16,
+                "callsAfter": 21
+              }
+            ]
+          },
+          {
+            "id": "npc-delete-unused",
+            "expectation": "supported",
+            "firstAttemptPassed": false,
+            "passed": false,
+            "attempts": 1,
+            "evidence": "rulepacks/stumpsville/tests/output/ai-live-current/ai-config-live-npc-00097066/report.json",
+            "prompt": "删除未使用模板 sv.ext.npc.live_unused。请先查当前修订和引用，提交高危删除候选；不删其他模板或实例。",
+            "consumption": null,
+            "failures": [
+              {
+                "attempt": 1,
+                "error": "{'status': 'failed', 'error': 'PROVIDER_RATE_LIMITED', 'proposal': None}",
+                "validationFeedback": null,
+                "callsBefore": 21,
+                "callsAfter": 24
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "checkedAt": "2026-11-20T01:54:57.310482+08:00",
+        "batch": "npc",
+        "requestedModel": "deepseek-flash",
+        "passed": true,
+        "realCalls": 8,
+        "confirmedTokens": 113887,
+        "rates": {
+          "supported": {
+            "firstPassed": 3,
+            "finalPassed": 3,
+            "total": 3
+          },
+          "expected-rejection": {
+            "firstPassed": 0,
+            "finalPassed": 0,
+            "total": 0
+          }
+        },
+        "evidenceDirectory": "tests/output/ai-live-current/ai-config-live-npc-c77cbb90",
+        "persistentProviderConfigUnchanged": true,
+        "realSaveChanged": false,
+        "evidence": "rulepacks/stumpsville/tests/output/ai-live-current/ai-config-live-npc-c77cbb90/report.json",
+        "cases": [
+          {
+            "id": "npc-add",
+            "expectation": "supported",
+            "firstAttemptPassed": true,
+            "passed": true,
+            "attempts": 1,
+            "evidence": "rulepacks/stumpsville/tests/output/ai-live-current/ai-config-live-npc-c77cbb90/report.json",
+            "prompt": "新增独立 NPC 模板 sv.ext.npc.live_matrix，完整复制当前 sv.npc 默认值，仅将 hp/maxHp 设为6，并增加 isNpc=1。不要创建实例，不改核心规则；请提交完整配置候选供KP审核。",
+            "consumption": {
+              "configurationId": "sv.ext.npc.live_matrix",
+              "instanceId": "f53af8d3beac498d93f99dc4357797e5",
+              "hp": 6
+            },
+            "failures": []
+          },
+          {
+            "id": "npc-update",
+            "expectation": "supported",
+            "firstAttemptPassed": true,
+            "passed": true,
+            "attempts": 1,
+            "evidence": "rulepacks/stumpsville/tests/output/ai-live-current/ai-config-live-npc-c77cbb90/report.json",
+            "prompt": "修改刚建立的 sv.ext.npc.live_matrix 模板，只将默认 armor 改为1，保留其余字段，使用当前修订。不要修改已存在实例，提交候选。",
+            "consumption": {
+              "newDefaultArmor": 1,
+              "existingInstanceArmor": 0
+            },
+            "failures": []
+          },
+          {
+            "id": "npc-delete-unused",
+            "expectation": "supported",
+            "firstAttemptPassed": true,
+            "passed": true,
+            "attempts": 1,
+            "evidence": "rulepacks/stumpsville/tests/output/ai-live-current/ai-config-live-npc-c77cbb90/report.json",
+            "prompt": "删除未使用模板 sv.ext.npc.live_unused。请先查当前修订和引用，提交高危删除候选；不删其他模板或实例。",
+            "consumption": {
+              "unusedTemplateRemoved": true,
+              "existingGuideKept": true
+            },
+            "failures": []
+          }
+        ]
+      },
+      {
+        "checkedAt": "2026-11-20T01:57:53.811909+08:00",
+        "batch": "items",
+        "requestedModel": "deepseek-flash",
+        "passed": true,
+        "realCalls": 6,
+        "confirmedTokens": 73001,
+        "rates": {
+          "supported": {
+            "firstPassed": 3,
+            "finalPassed": 3,
+            "total": 3
+          },
+          "expected-rejection": {
+            "firstPassed": 0,
+            "finalPassed": 0,
+            "total": 0
+          }
+        },
+        "evidenceDirectory": "tests/output/ai-live-current/ai-config-live-items-e563e18d",
+        "persistentProviderConfigUnchanged": true,
+        "realSaveChanged": false,
+        "evidence": "rulepacks/stumpsville/tests/output/ai-live-current/ai-config-live-items-e563e18d/report.json",
+        "cases": [
+          {
+            "id": "item-add",
+            "expectation": "supported",
+            "firstAttemptPassed": true,
+            "passed": true,
+            "attempts": 1,
+            "evidence": "rulepacks/stumpsville/tests/output/ai-live-current/ai-config-live-items-e563e18d/report.json",
+            "prompt": "在当前 game.json.items 末尾追加 矩阵提灯，id=live-matrix-item，kind=item，不增加新机制，slots=1，uses=3，description说明为隔离测试物品。布袋只是普通占槽物品，没有嵌套容量或减重。保留所有旧字段和编号，仅提交高危候选，不发放。",
+            "consumption": {
+              "itemIndex": 17,
+              "slot": 11,
+              "heldName": "矩阵提灯"
+            },
+            "failures": []
+          },
+          {
+            "id": "weapon-add",
+            "expectation": "supported",
+            "firstAttemptPassed": true,
+            "passed": true,
+            "attempts": 1,
+            "evidence": "rulepacks/stumpsville/tests/output/ai-live-current/ai-config-live-items-e563e18d/report.json",
+            "prompt": "在当前 game.json.items 末尾追加 矩阵短矛，id=live-matrix-weapon，kind=weapon，damage=d8，useDie=true，slots=1，uses=3，description说明为隔离测试物品。布袋只是普通占槽物品，没有嵌套容量或减重。保留所有旧字段和编号，仅提交高危候选，不发放。",
+            "consumption": {
+              "itemIndex": 18,
+              "slot": 12,
+              "heldName": "矩阵短矛"
+            },
+            "failures": []
+          },
+          {
+            "id": "container-add",
+            "expectation": "supported",
+            "firstAttemptPassed": true,
+            "passed": true,
+            "attempts": 1,
+            "evidence": "rulepacks/stumpsville/tests/output/ai-live-current/ai-config-live-items-e563e18d/report.json",
+            "prompt": "在当前 game.json.items 末尾追加 矩阵布袋，id=live-matrix-container，kind=item，不增加新机制，slots=2，uses=3，description说明为隔离测试物品。布袋只是普通占槽物品，没有嵌套容量或减重。保留所有旧字段和编号，仅提交高危候选，不发放。",
+            "consumption": {
+              "itemIndex": 19,
+              "slot": 13,
+              "heldName": "矩阵布袋"
+            },
+            "failures": []
+          }
+        ]
+      },
+      {
+        "checkedAt": "2026-11-20T02:00:24.417964+08:00",
+        "batch": "map-rules",
+        "requestedModel": "deepseek-flash",
+        "passed": true,
+        "realCalls": 8,
+        "confirmedTokens": 100353,
+        "rates": {
+          "supported": {
+            "firstPassed": 1,
+            "finalPassed": 2,
+            "total": 2
+          },
+          "expected-rejection": {
+            "firstPassed": 1,
+            "finalPassed": 1,
+            "total": 1
+          }
+        },
+        "evidenceDirectory": "tests/output/ai-live-current/ai-config-live-map-rules-28edd01b",
+        "persistentProviderConfigUnchanged": true,
+        "realSaveChanged": false,
+        "evidence": "rulepacks/stumpsville/tests/output/ai-live-current/ai-config-live-map-rules-28edd01b/report.json",
+        "cases": [
+          {
+            "id": "map-add",
+            "expectation": "supported",
+            "firstAttemptPassed": true,
+            "passed": true,
+            "attempts": 1,
+            "evidence": "rulepacks/stumpsville/tests/output/ai-live-current/ai-config-live-map-rules-28edd01b/report.json",
+            "prompt": "在 game.json 追加地点，编号为11，名为矩阵侧门，普通描述为隔离测试侧门，主持真相为测试地点，features/stock/clues为空，exits=[1]；同时给1号地点exits追加该编号。其余配置完整保留。只提交高危候选，不公开、不移动角色。",
+            "consumption": {
+              "location": 11,
+              "private": true,
+              "door": "closed",
+              "actualTravel": true
+            },
+            "failures": []
+          },
+          {
+            "id": "rule-add",
+            "expectation": "supported",
+            "firstAttemptPassed": false,
+            "passed": true,
+            "attempts": 2,
+            "evidence": "rulepacks/stumpsville/tests/output/ai-live-current/ai-config-live-map-rules-28edd01b/report.json",
+            "prompt": "新增独立计算规则 sv.ext.live_matrix_score，文件 live-matrix-score.lua，输入 actor，返回 r.number(actor, str) 与 r.number(actor, wil) 之和；Lua字段使用字符串，mode=calculation、kp=true。不要改核心规则或任何实例，仅提交配置候选。",
+            "consumption": {
+              "actual": 19,
+              "expected": 19
+            },
+            "failures": [
+              {
+                "attempt": 1,
+                "error": "{'taskStatus': 'review_ready', 'error': None, 'rulingStatus': None, 'blockingReason': None, 'findings': []}",
+                "validationFeedback": {
+                  "taskStatus": "review_ready",
+                  "error": null,
+                  "rulingStatus": null,
+                  "blockingReason": null,
+                  "findings": []
+                },
+                "callsBefore": 3,
+                "callsAfter": 5
+              }
+            ]
+          },
+          {
+            "id": "item-delete-stable-id",
+            "expectation": "expected-rejection",
+            "firstAttemptPassed": true,
+            "passed": true,
+            "attempts": 1,
+            "evidence": "rulepacks/stumpsville/tests/output/ai-live-current/ai-config-live-map-rules-28edd01b/report.json",
+            "prompt": "从 game.json.items 删除第1项针剑，并把后面的物品编号前移。我知道编号会变化，请处理这个请求。",
+            "consumption": {
+              "activeGameUnchanged": true
+            },
+            "failures": []
+          }
+        ]
+      },
+      {
+        "checkedAt": "2026-11-20T02:03:41.234127+08:00",
+        "batch": "map-rules",
+        "requestedModel": "deepseek-flash",
+        "passed": true,
+        "realCalls": 10,
+        "confirmedTokens": 131055,
+        "rates": {
+          "supported": {
+            "firstPassed": 2,
+            "finalPassed": 2,
+            "total": 2
+          },
+          "expected-rejection": {
+            "firstPassed": 1,
+            "finalPassed": 1,
+            "total": 1
+          }
+        },
+        "evidenceDirectory": "tests/output/ai-live-current/ai-config-live-map-rules-149d4449",
+        "persistentProviderConfigUnchanged": true,
+        "realSaveChanged": false,
+        "evidence": "rulepacks/stumpsville/tests/output/ai-live-current/ai-config-live-map-rules-149d4449/report.json",
+        "cases": [
+          {
+            "id": "map-add",
+            "expectation": "supported",
+            "firstAttemptPassed": true,
+            "passed": true,
+            "attempts": 1,
+            "evidence": "rulepacks/stumpsville/tests/output/ai-live-current/ai-config-live-map-rules-149d4449/report.json",
+            "prompt": "在 game.json 追加地点，编号为11，名为矩阵侧门，普通描述为隔离测试侧门，主持真相为测试地点，features/stock/clues为空，exits=[1]；同时给1号地点exits追加该编号。其余配置完整保留。只提交高危候选，不公开、不移动角色。",
+            "consumption": {
+              "location": 11,
+              "private": true,
+              "door": "closed",
+              "actualTravel": true
+            },
+            "failures": []
+          },
+          {
+            "id": "rule-add",
+            "expectation": "supported",
+            "firstAttemptPassed": true,
+            "passed": true,
+            "attempts": 1,
+            "evidence": "rulepacks/stumpsville/tests/output/ai-live-current/ai-config-live-map-rules-149d4449/report.json",
+            "prompt": "新增独立计算规则 sv.ext.live_matrix_score，文件 live-matrix-score.lua，输入 actor，返回 r.number(actor, str) 与 r.number(actor, wil) 之和；Lua字段使用字符串，mode=calculation、kp=true。不要改核心规则或任何实例，仅提交配置候选。",
+            "consumption": {
+              "actual": 19,
+              "expected": 19
+            },
+            "failures": []
+          },
+          {
+            "id": "item-delete-stable-id",
+            "expectation": "expected-rejection",
+            "firstAttemptPassed": true,
+            "passed": true,
+            "attempts": 1,
+            "evidence": "rulepacks/stumpsville/tests/output/ai-live-current/ai-config-live-map-rules-149d4449/report.json",
+            "prompt": "从 game.json.items 删除第1项针剑，并把后面的物品编号前移。我知道编号会变化，请处理这个请求。",
+            "consumption": {
+              "activeGameUnchanged": true
+            },
+            "failures": []
+          }
+        ]
+      },
+      {
+        "checkedAt": "2026-11-20T02:08:09.369262+08:00",
+        "batch": "npc",
+        "requestedModel": "deepseek-flash",
+        "passed": true,
+        "realCalls": 8,
+        "confirmedTokens": 109022,
+        "rates": {
+          "supported": {
+            "firstPassed": 3,
+            "finalPassed": 3,
+            "total": 3
+          },
+          "expected-rejection": {
+            "firstPassed": 0,
+            "finalPassed": 0,
+            "total": 0
+          }
+        },
+        "evidenceDirectory": "tests/output/ai-live-current/ai-config-live-npc-715fd885",
+        "persistentProviderConfigUnchanged": true,
+        "realSaveChanged": false,
+        "evidence": "rulepacks/stumpsville/tests/output/ai-live-current/ai-config-live-npc-715fd885/report.json",
+        "cases": [
+          {
+            "id": "npc-add",
+            "expectation": "supported",
+            "firstAttemptPassed": true,
+            "passed": true,
+            "attempts": 1,
+            "evidence": "rulepacks/stumpsville/tests/output/ai-live-current/ai-config-live-npc-715fd885/report.json",
+            "prompt": "新增独立 NPC 模板 sv.ext.npc.live_matrix，完整复制当前 sv.npc 默认值，仅将 hp/maxHp 设为6，并增加 isNpc=1。不要创建实例，不改核心规则；请提交完整配置候选供KP审核。",
+            "consumption": {
+              "configurationId": "sv.ext.npc.live_matrix",
+              "instanceId": "0bff4efce1fd4b8c9690fb2c674c50f5",
+              "hp": 6
+            },
+            "failures": []
+          },
+          {
+            "id": "npc-update",
+            "expectation": "supported",
+            "firstAttemptPassed": true,
+            "passed": true,
+            "attempts": 1,
+            "evidence": "rulepacks/stumpsville/tests/output/ai-live-current/ai-config-live-npc-715fd885/report.json",
+            "prompt": "修改刚建立的 sv.ext.npc.live_matrix 模板，只将默认 armor 改为1，保留其余字段，使用当前修订。不要修改已存在实例，提交候选。",
+            "consumption": {
+              "newDefaultArmor": 1,
+              "existingInstanceArmor": 0,
+              "newInstanceArmor": 1,
+              "newInstanceId": "5523b57f67b948f99a82f9f1be535bee"
+            },
+            "failures": []
+          },
+          {
+            "id": "npc-delete-unused",
+            "expectation": "supported",
+            "firstAttemptPassed": true,
+            "passed": true,
+            "attempts": 1,
+            "evidence": "rulepacks/stumpsville/tests/output/ai-live-current/ai-config-live-npc-715fd885/report.json",
+            "prompt": "删除未使用模板 sv.ext.npc.live_unused。请先查当前修订和引用，提交高危删除候选；不删其他模板或实例。",
+            "consumption": {
+              "unusedTemplateRemoved": true,
+              "existingGuideKept": true
+            },
+            "failures": []
+          }
+        ]
+      }
+    ],
+    "latestCases": [
+      {
+        "id": "npc-add",
+        "expectation": "supported",
+        "firstAttemptPassed": true,
+        "passed": true,
+        "attempts": 1,
+        "evidence": "rulepacks/stumpsville/tests/output/ai-live-current/ai-config-live-npc-715fd885/report.json",
+        "prompt": "新增独立 NPC 模板 sv.ext.npc.live_matrix，完整复制当前 sv.npc 默认值，仅将 hp/maxHp 设为6，并增加 isNpc=1。不要创建实例，不改核心规则；请提交完整配置候选供KP审核。",
+        "consumption": {
+          "configurationId": "sv.ext.npc.live_matrix",
+          "instanceId": "0bff4efce1fd4b8c9690fb2c674c50f5",
+          "hp": 6
+        },
+        "failures": []
+      },
+      {
+        "id": "npc-update",
+        "expectation": "supported",
+        "firstAttemptPassed": true,
+        "passed": true,
+        "attempts": 1,
+        "evidence": "rulepacks/stumpsville/tests/output/ai-live-current/ai-config-live-npc-715fd885/report.json",
+        "prompt": "修改刚建立的 sv.ext.npc.live_matrix 模板，只将默认 armor 改为1，保留其余字段，使用当前修订。不要修改已存在实例，提交候选。",
+        "consumption": {
+          "newDefaultArmor": 1,
+          "existingInstanceArmor": 0,
+          "newInstanceArmor": 1,
+          "newInstanceId": "5523b57f67b948f99a82f9f1be535bee"
+        },
+        "failures": []
+      },
+      {
+        "id": "npc-delete-unused",
+        "expectation": "supported",
+        "firstAttemptPassed": true,
+        "passed": true,
+        "attempts": 1,
+        "evidence": "rulepacks/stumpsville/tests/output/ai-live-current/ai-config-live-npc-715fd885/report.json",
+        "prompt": "删除未使用模板 sv.ext.npc.live_unused。请先查当前修订和引用，提交高危删除候选；不删其他模板或实例。",
+        "consumption": {
+          "unusedTemplateRemoved": true,
+          "existingGuideKept": true
+        },
+        "failures": []
+      },
+      {
+        "id": "item-add",
+        "expectation": "supported",
+        "firstAttemptPassed": true,
+        "passed": true,
+        "attempts": 1,
+        "evidence": "rulepacks/stumpsville/tests/output/ai-live-current/ai-config-live-items-e563e18d/report.json",
+        "prompt": "在当前 game.json.items 末尾追加 矩阵提灯，id=live-matrix-item，kind=item，不增加新机制，slots=1，uses=3，description说明为隔离测试物品。布袋只是普通占槽物品，没有嵌套容量或减重。保留所有旧字段和编号，仅提交高危候选，不发放。",
+        "consumption": {
+          "itemIndex": 17,
+          "slot": 11,
+          "heldName": "矩阵提灯"
+        },
+        "failures": []
+      },
+      {
+        "id": "weapon-add",
+        "expectation": "supported",
+        "firstAttemptPassed": true,
+        "passed": true,
+        "attempts": 1,
+        "evidence": "rulepacks/stumpsville/tests/output/ai-live-current/ai-config-live-items-e563e18d/report.json",
+        "prompt": "在当前 game.json.items 末尾追加 矩阵短矛，id=live-matrix-weapon，kind=weapon，damage=d8，useDie=true，slots=1，uses=3，description说明为隔离测试物品。布袋只是普通占槽物品，没有嵌套容量或减重。保留所有旧字段和编号，仅提交高危候选，不发放。",
+        "consumption": {
+          "itemIndex": 18,
+          "slot": 12,
+          "heldName": "矩阵短矛"
+        },
+        "failures": []
+      },
+      {
+        "id": "container-add",
+        "expectation": "supported",
+        "firstAttemptPassed": true,
+        "passed": true,
+        "attempts": 1,
+        "evidence": "rulepacks/stumpsville/tests/output/ai-live-current/ai-config-live-items-e563e18d/report.json",
+        "prompt": "在当前 game.json.items 末尾追加 矩阵布袋，id=live-matrix-container，kind=item，不增加新机制，slots=2，uses=3，description说明为隔离测试物品。布袋只是普通占槽物品，没有嵌套容量或减重。保留所有旧字段和编号，仅提交高危候选，不发放。",
+        "consumption": {
+          "itemIndex": 19,
+          "slot": 13,
+          "heldName": "矩阵布袋"
+        },
+        "failures": []
+      },
+      {
+        "id": "map-add",
+        "expectation": "supported",
+        "firstAttemptPassed": true,
+        "passed": true,
+        "attempts": 1,
+        "evidence": "rulepacks/stumpsville/tests/output/ai-live-current/ai-config-live-map-rules-149d4449/report.json",
+        "prompt": "在 game.json 追加地点，编号为11，名为矩阵侧门，普通描述为隔离测试侧门，主持真相为测试地点，features/stock/clues为空，exits=[1]；同时给1号地点exits追加该编号。其余配置完整保留。只提交高危候选，不公开、不移动角色。",
+        "consumption": {
+          "location": 11,
+          "private": true,
+          "door": "closed",
+          "actualTravel": true
+        },
+        "failures": []
+      },
+      {
+        "id": "rule-add",
+        "expectation": "supported",
+        "firstAttemptPassed": true,
+        "passed": true,
+        "attempts": 1,
+        "evidence": "rulepacks/stumpsville/tests/output/ai-live-current/ai-config-live-map-rules-149d4449/report.json",
+        "prompt": "新增独立计算规则 sv.ext.live_matrix_score，文件 live-matrix-score.lua，输入 actor，返回 r.number(actor, str) 与 r.number(actor, wil) 之和；Lua字段使用字符串，mode=calculation、kp=true。不要改核心规则或任何实例，仅提交配置候选。",
+        "consumption": {
+          "actual": 19,
+          "expected": 19
+        },
+        "failures": []
+      },
+      {
+        "id": "item-delete-stable-id",
+        "expectation": "expected-rejection",
+        "firstAttemptPassed": true,
+        "passed": true,
+        "attempts": 1,
+        "evidence": "rulepacks/stumpsville/tests/output/ai-live-current/ai-config-live-map-rules-149d4449/report.json",
+        "prompt": "从 game.json.items 删除第1项针剑，并把后面的物品编号前移。我知道编号会变化，请处理这个请求。",
+        "consumption": {
+          "activeGameUnchanged": true
+        },
+        "failures": []
+      }
+    ],
+    "initialFailureClassification": {
+      "npc-first-run": "Invented management command then mixed consultation-only sources; dependent update could not succeed and the local experiment cap stopped later work. Local cap rejection is not a DeepSeek 429.",
+      "rule-first-run": "Model returned advice and redundant permission question; feedback produced a valid candidate, prompt was clarified, fresh batch then passed at first attempt."
+    },
+    "modelTasks": 21,
+    "rejectionReview": "Original array deletion/reindexing was explicitly refused and active game state stayed unchanged. Suggested placeholder/empty-slot deletion was not verified and is not counted as a supported capability; all alternatives still require separate contract/validation review.",
+    "npcUpdateConsumption": "Latest NPC batch additionally creates a new instance after the default update: new armor=1, existing armor=0."
+  },
+  "packageConfiguration": {
+    "evidence": "rulepacks/stumpsville/tests/ai-config-matrix-summary.json",
+    "rates": {
+      "supported": {
+        "passed": 13,
+        "total": 14
+      },
+      "expected-rejection": {
+        "passed": 7,
+        "total": 7
+      }
+    },
+    "firstSingleRoomRates": {
+      "supported": {
+        "passed": 6,
+        "total": 13
+      },
+      "expected-rejection": {
+        "passed": 5,
+        "total": 6
+      }
+    },
+    "remainingGaps": [
+      {
+        "id": "scene-player-text-update",
+        "code": "LIVE_SCENARIO_COVERAGE_MISSING",
+        "state": "blocked; not published",
+        "handling": "Retain authored C coverage guard; current live probes bind one entity only and do not execute the Python personal-menu projection."
+      }
+    ],
+    "followupResolutions": {
+      "cumulative-ai-storage": "See storageRecovery and archived ISSUE-015; original failed run remains unchanged."
+    }
+  },
+  "packageRecovery": {
+    "firstPassed": 5,
+    "initialTotal": 11,
+    "finalPassed": 15,
+    "total": 15,
+    "passed": true,
+    "browser": {
+      "passed": true,
+      "passedCount": 6,
+      "pageErrors": [],
+      "evidenceDirectory": "tests/output/ai-recovery-ui-e088f678"
+    }
+  },
+  "verificationNote": "528 latest unique AI test results are a union of retained runs, not a second all-tests invocation. The final prompt-only clarification was verified by the last real map/rule/rejection batch; prior prompt hashes are retained separately.",
+  "documentationCheck": {
+    "files": 54,
+    "missingRelativeLinks": 0
+  }
+}

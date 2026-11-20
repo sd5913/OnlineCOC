@@ -4,7 +4,7 @@
 - 文档子类：工程
 - 状态：有效
 - 创建日期：2026-11-14
-- 最后更新：2026-11-17
+- 最后更新：2026-11-20
 - 关联文档：[机器契约](../../../engineering/contracts/models.json)、[知识契约](../../../engineering/contracts/knowledge.json)、[初始化样例](../../../engineering/contracts/fixtures/room-initial.json)、[运行说明](first-test.md)、[个人知识服务](player-knowledge.md)
 
 ## 当前支持
@@ -34,6 +34,8 @@ v4 新增必需 `knowledge`：子格式1、独立scopeId、revision、policies�
 
 版本号彼此独立：Room=4，Entity=1，AI契约/控制=1，知识=1，聊天=1，网络protocolVersion=1，文件封套format=1，备份format=1。执行态ExecutionSnapshot仍是精简投影，不能作为完整Room打开；知识账本不直接传入Lua。
 
+outbox 兼容旧动作提示，并保存子格式1的 `kind:notification` [定向通知](notifications.md)。新记录绑定已提交原动作、受众授权版本和逐人确认，参与完整房间验证；旧存档无需新增顶层字段或转换。正常重启及备份恢复保留通知与确认事实，不重做来源动作。
+
 ## 显式v3→v4转换
 
 以下命令从项目根目录运行，输入必须是停止写入的独立副本或已导出备份。输出必须不存在，不能与输入相同或位于输入目录内。
@@ -62,5 +64,7 @@ engineering/.venv/Scripts/python engineering/backend/scripts/run.py validate-roo
 room校验纯Room；snapshot另校验封套；backup验证完整备份。检查不启动Host、不占存档锁、不修改输入，成功退出0、失败退出2并输出JSON。SCHEMA_UNSUPPORTED只报告整数版本或null、支持版本[4]和文档路径，不回显正文。当前格式字段错误使用INPUT_INVALID，无效引用使用相关领域错误。
 
 普通重启保留AI与知识scope。恢复为新副本分别生成新AI/知识scope，撤销未消费的approved批准，关闭自动需求；已发布数据与回执保持恢复规则。知识内部观察/授权ID保留，但对外ref的scope与opaque ID改变，旧引用不能读新副本。
+
+普通重启会更换运行期 `authorityEpoch`。引擎的[历史上下文只读复验](high-risk-publication.md#历史上下文的只读复验)允许同 scope 且当前授权、基线和来源仍有效的旧上下文被读取，不改写其原 epoch 或持久内容。旧批准与未执行命令仍受当前 epoch 校验；恢复分叉仍拒绝原 scope 的历史。该读取入口不改变 Room v4 或存档迁移规则。
 
 核心验收覆盖三种离线转换、原字节不变、冷启动、备份恢复和知识引用分叉，见[专项测试](../../../engineering/backend/tests/test_knowledge_network.py)。本轮不转换或覆盖正式存档。

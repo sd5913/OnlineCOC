@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="3.982" timestamp="2026-11-20T00:38:56.403888+08:00" hostname="LAPTOP-BIFSL64A"><testcase classname="tests.test_session_restart" name="test_same_room_restart_keeps_conversation_and_fresh_followup" time="2.065"><failure message="AssertionError: [{'requestId': '00a49b30107f493d82b1fed8c68b55cd', 'sessionId': 'ac46598f53a149f1a5af72e007751829', 'status': 'review_...b25cd2fa23', 'sessionId': 'ac46598f53a149f1a5af72e007751829', 'status': 'stale', 'createdAt': 1795106339.5914414, ...}]&#10;assert False&#10; +  where False = all(&lt;generator object test_same_room_restart_keeps_conversation_and_fresh_followup.&lt;locals&gt;.&lt;genexpr&gt; at 0x00000299DAB4BAE0&gt;)">application = &lt;onlinecoc_ai.api.Application object at 0x00000299DAB4E510&gt;
+
+    def test_same_room_restart_keeps_conversation_and_fresh_followup(application):
+        app=application
+        sid=committed(command(app,'ai.session.create',{'title':'重启后继续'}))['sessionId']
+        async def callback(*args): return completion({'kind':'plan','text':'已核验的历史建议'})
+        async def run():
+            app.coordinator.provider_factory=lambda p:Fake(callback)
+            await app.coordinator.start()
+            try:
+                for text in ('第一轮','第二轮'):
+                    req=submit(app,sid,text)
+                    task=committed(command(app,'ai.request.dispatch',{'requestId':req['requestId']}))
+                    assert (await wait_task(app.coordinator,task['taskId']))['status']=='review_ready'
+            finally: await app.coordinator.close()
+        asyncio.run(run())
+        profile=next(iter(app.coordinator.profiles.values()));pack=app.proposals.pack
+        directory=app.host.path;old_epoch=app.host.epoch
+        app.proposals.close();app.host.close()
+        host=Host(directory);proposals=Proposals(host,pack)
+        try:
+            coordinator=Coordinator(proposals,{profile['profileId']:profile},context=Context(proposals))
+            current=Application(SimpleNamespace(proposals=proposals,coordinator=coordinator))
+            assert host.epoch!=old_epoch
+            page=current.sessions.get('kp',sid)
+            assert len(page['items'])==2
+&gt;           assert all(i.get('response')=='已核验的历史建议' for i in page['items']),page['items']
+E           AssertionError: [{'requestId': '00a49b30107f493d82b1fed8c68b55cd', 'sessionId': 'ac46598f53a149f1a5af72e007751829', 'status': 'review_...b25cd2fa23', 'sessionId': 'ac46598f53a149f1a5af72e007751829', 'status': 'stale', 'createdAt': 1795106339.5914414, ...}]
+E           assert False
+E            +  where False = all(&lt;generator object test_same_room_restart_keeps_conversation_and_fresh_followup.&lt;locals&gt;.&lt;genexpr&gt; at 0x00000299DAB4BAE0&gt;)
+
+engineering\ai\tests\test_session_restart.py:38: AssertionError</failure></testcase></testsuite></testsuites>

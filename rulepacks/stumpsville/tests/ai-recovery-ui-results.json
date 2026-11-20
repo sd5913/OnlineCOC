@@ -1,0 +1,52 @@
+{
+  "checkedAt": "2026-11-20T12:44:17.011481+08:00",
+  "realSaveChanged": false,
+  "realProviderCalls": 0,
+  "checks": [
+    "真实包页面收到无status字段的HTTP403后，可继续创建会话，无遗留恢复标记",
+    "1440px顶部调试弹窗：请求选择、默认无正文、显式正文导出、关闭及边界通过",
+    "390px顶部调试弹窗：请求选择、默认无正文、显式正文导出、关闭及边界通过",
+    "重新加载包页面后可重新选择原会话并读取请求",
+    "网页导出的真实组件图可加载并打开调试弹窗（不代替公网WebRTC全链路）",
+    "浏览器无未捕获脚本错误"
+  ],
+  "evidenceDirectory": "tests/output/ai-recovery-ui-ec488a63",
+  "previousRuns": [
+    {
+      "checkedAt": "2026-11-20T01:01:38.792384+08:00",
+      "passed": false,
+      "checks": [
+        "真实包页面收到无status字段的HTTP403后，可继续创建会话，无遗留恢复标记"
+      ],
+      "error": "Locator.select_option: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\"#kp-ai-embedded\").locator(\".session-select\")\n    - locator resolved to <select aria-label=\"选择会话\" class=\"session-select\">…</select>\n  - attempting select option action\n    2 × waiting for element to be visible and enabled\n      - did not find some options\n    - retrying select option action\n    - waiting 20ms\n    2 × waiting for element to be visible and enabled\n      - did not find some options\n    - retrying select option action\n      - waiting 100ms\n    59 × waiting for element to be visible and enabled\n       - did not find some options\n     - retrying select option action\n       - waiting 500ms\n",
+      "evidenceDirectory": "tests/output/ai-recovery-ui-8e082c50"
+    },
+    {
+      "checkedAt": "2026-11-20T01:03:35.029083+08:00",
+      "passed": false,
+      "checks": [
+        "真实包页面收到无status字段的HTTP403后，可继续创建会话，无遗留恢复标记",
+        "1440px顶部调试弹窗：请求选择、默认无正文、显式正文导出、关闭及边界通过"
+      ],
+      "error": "Locator.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\"#kp-ai-embedded\").locator(\".debug-slot .debug-open\")\n    - locator resolved to <button type=\"button\" class=\"debug-open\">引用与调试</button>\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n      - waiting 100ms\n    59 × waiting for element to be visible, enabled and stable\n       - element is not visible\n     - retrying click action\n       - waiting 500ms\n",
+      "evidenceDirectory": "tests/output/ai-recovery-ui-f9a25e19"
+    },
+    {
+      "checkedAt": "2026-11-20T01:06:07.997442+08:00",
+      "passed": true,
+      "checks": [
+        "真实包页面收到无status字段的HTTP403后，可继续创建会话，无遗留恢复标记",
+        "1440px顶部调试弹窗：请求选择、默认无正文、显式正文导出、关闭及边界通过",
+        "390px顶部调试弹窗：请求选择、默认无正文、显式正文导出、关闭及边界通过",
+        "重新加载包页面后可重新选择原会话并读取请求",
+        "网页导出的真实组件图可加载并打开调试弹窗（不代替公网WebRTC全链路）",
+        "浏览器无未捕获脚本错误"
+      ],
+      "error": null,
+      "evidenceDirectory": "tests/output/ai-recovery-ui-e088f678"
+    }
+  ],
+  "passed": true,
+  "passedCount": 6,
+  "pageErrors": []
+}

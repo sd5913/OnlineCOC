@@ -1,8 +1,9 @@
+import {appendDebugTools} from './debug.js';
 import {mountStyle} from './styles.js';
 import {guardedClient} from './guard.js';
 import {mountMarkdown} from './markdown.js';
 /** Host-authorized queue: a whole change set is one decision, never a model confirmation. */
-export function mountRulings(target,rawClient,{compact=false,onOpenSession=null,onKnowledgeRequest=null,onChange=()=>{}}={}){
+export function mountRulings(target,rawClient,{compact=false,onOpenSession=null,onOpenSource=null,onKnowledgeRequest=null,onChange=()=>{}}={}){
  const shell=document.createElement('div');shell.className='ai-rulings';target.append(shell);const root=shell.attachShadow({mode:'open'});
  mountStyle(root,new URL('./rulings.css',import.meta.url));
  const heading=document.createElement('h3');heading.textContent='AI 修改裁决';const status=document.createElement('p');status.className='rulings-status';status.setAttribute('role','status');const list=document.createElement('div');root.append(heading,status,list);
@@ -16,6 +17,7 @@ export function mountRulings(target,rawClient,{compact=false,onOpenSession=null,
   if(item.blockingReason==='CONSULTATION_ONLY'){const reason=document.createElement('p');reason.textContent='该版本引用了仅供咨询的包侧资料，不能发布；请基于宿主资料重新生成配置。';card.append(reason);}
   const details=document.createElement('details'),caption=document.createElement('summary'),pre=document.createElement('pre');caption.textContent='完整修改与检查结果';pre.textContent=JSON.stringify(item.kind==='runtime'?{actions:item.actions,receipts:item.receipts}:{changeSet:item.changeSet,diff:item.diff,riskTags:item.riskTags,reports:item.reports,receipts:item.receipts,publications:item.publications},null,2);details.append(caption,pre);card.append(details);
   if(item.kind==='player_request'){details.hidden=true;const note=document.createElement('p');note.textContent='接收申请后在 KP 私有会话准备方案；不会向玩家披露新资料，也不会执行修改。生成的修改必须另行人工审核。';card.append(note);if(item.generationError){const error=document.createElement('p');error.textContent='方案生成未启动（'+item.generationError+'），可打开审核会话处理。';card.append(error);}if(!compact&&item.reviewSessionId&&onOpenSession){const open=document.createElement('button');open.textContent='打开审核会话';open.onclick=()=>onOpenSession(item.reviewSessionId);card.append(open);}}
+  if(item.kind==='runtime'){for(const [index,action] of (item.actions||[]).entries()){if(action.op!=='notification.send')continue;const note=document.createElement('p');note.className='notification-plan';const source=action.args.sourceActionIndex;note.textContent='通知步骤 '+(index+1)+'：'+action.args.recipientAccountIds.join('、')+'；绑定第 '+(source+1)+' 步 '+(item.actions[source]?.op||'无效动作')+'。仅原动作成功且流程完成后投递。消息：'+action.args.text;card.append(note);}}
   const fields=new Map();if(item.status==='pending'&&item.canDecide){for(const risk of item.risks){const label=document.createElement('label'),input=document.createElement('textarea');label.textContent=risk.question;input.setAttribute('aria-label',risk.question);input.placeholder='填写风险判断后批准';label.append(input);card.append(label);fields.set(risk.id,input);}
    for(const [text,decision] of [['批准并执行','approve'],['拒绝','reject']]){const button=document.createElement('button');button.textContent=item.kind==='player_request'&&decision==='approve'?'接收并生成方案':item.kind==='knowledge_request'&&decision==='approve'?'选择披露资料':text;if(item.kind==='knowledge_request'&&decision==='approve'&&!onKnowledgeRequest){button.disabled=true;button.dataset.unavailable='true';button.title='宿主需接入披露分面选择器';}button.onclick=async()=>{if(dead||busy)return;busy=true;for(const b of list.querySelectorAll('button'))b.disabled=true;status.textContent='正在保存裁决…';try{
     if(item.kind==='knowledge_request'&&decision==='approve'){if(onKnowledgeRequest){await onKnowledgeRequest(item);await refresh();}return;}
@@ -28,6 +30,8 @@ export function mountRulings(target,rawClient,{compact=false,onOpenSession=null,
     try{const result=await client.aiCommand(item.kind==='runtime'?'ai.batch.reconcile':'ai.knowledge.reconcile',item.kind==='runtime'?{batchId:item.rulingId.slice(6),digest:item.digest}:{rulingId:item.rulingId,digest:item.digest});if(result.status!=='committed')throw Error(result.code||result.status);await refresh();onChange(result.result);}
     catch(e){if(!dead)status.textContent=e.code||e.message;}finally{busy=false;if(!dead)recover.disabled=false;}};card.append(recover);
   }
+  const forward=document.createElement('button');forward.textContent='转 AI 处理';forward.onclick=async()=>{if(dead||busy)return;busy=true;forward.disabled=true;try{const r=await client.aiCommand('ai.review.create',{source:{kind:'ruling',rulingId:item.rulingId,digest:item.digest}});if(r.status!=='committed')throw Error(r.code||r.status);status.textContent='已创建审核会话，修改另行批准。';if(onOpenSession)await onOpenSession(r.result.sessionId);}catch(e){if(!dead)status.textContent=e.code||e.message;}finally{busy=false;if(!dead)forward.disabled=false;}};card.append(forward);
+  appendDebugTools(card,client,{rulingId:item.rulingId},{valid:()=>!dead&&card.isConnected});
   return {card,markdown,key:JSON.stringify(item)};
  }
  function make(item){

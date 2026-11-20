@@ -3,14 +3,14 @@
 - 文档类型：计划
 - 状态：进行中
 - 创建日期：2026-11-14
-- 最后更新：2026-11-15
+- 最后更新：2026-11-20
 - 关联文档：[当前实现与接口](../current/engineering/ai-data-query.md)、[通用请求与决定](interaction-records.md)、[Stumpsville 接入](stumpsville-ai-integration.md)
 
 ## 已完成范围
 
 2026-11-15 按用户授权核对引擎并实施：Room v3 上的四类只读查询工具、HTTP/开发者接口、按需上下文、版本化来源及宿主复验、三种嵌入视图的聊天/事件/裁决语义引用、树桩镇可信只读适配与新行动消息来源记录。实际协议、配额、验证结果和边界统一维护在[当前实现](../current/engineering/ai-data-query.md)，不再在计划中复制。
 
-引擎近期更新为后端 0.2.0、只接受 Room v3，未落地通用请求/决定集合。本轮因此采用标准读取适配先行，不增加第二份裁决事实库，也不改变存档格式。决定采用 confirmed＋outcome（包括 deny），与执行状态分开，替代初稿中易混淆的 decisionStatus=rejected 表达。
+当前引擎为后端 0.3.0 / Room v4，个人知识服务已落地，通用请求／决定集合仍未实现。本轮因此采用标准读取适配先行，不增加第二份裁决事实库，也不改变存档格式。决定采用 confirmed＋outcome（包括 deny），与执行状态分开，替代初稿中易混淆的 decisionStatus=rejected 表达。
 
 ## 剩余范围与顺序
 

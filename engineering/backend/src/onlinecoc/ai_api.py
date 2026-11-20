@@ -62,6 +62,24 @@ def install(app, runtime, auth):
         require(len(request.query_params.multi_items()) == len(request.query_params), 'INPUT_INVALID')
         return service.usage(account, dict(request.query_params))
 
+    @app.get('/api/v1/ai/debug')
+    def debug(request: Request):
+        from onlinecoc_ai.errors import require
+        account = auth(request)
+        require(len(request.query_params.multi_items()) == len(request.query_params), 'INPUT_INVALID')
+        options = dict(request.query_params)
+        require(set(options) <= {'sessionId', 'requestId', 'rulingId', 'includeContent'}, 'INPUT_INVALID')
+        require(bool(set(options) & {'sessionId', 'requestId', 'rulingId'}), 'INPUT_INVALID')
+        content = options.get('includeContent', 'false')
+        require(content in ('true', 'false'), 'INPUT_INVALID')
+        options['includeContent'] = content == 'true'
+        for key in ('sessionId', 'requestId', 'rulingId'):
+            if key in options:
+                require(1 <= len(options[key]) <= 200, 'INPUT_INVALID')
+        # Authorization is evaluated live by Application.debug; no command or
+        # receipt is created for this read-only projection.
+        return JSONResponse(service.debug(account, options), headers={'Cache-Control': 'no-store'})
+
     @app.get('/api/v1/ai/proposals/{proposal_id}')
     def proposal(proposal_id: str, request: Request):return service.proposal(auth(request), proposal_id)
 

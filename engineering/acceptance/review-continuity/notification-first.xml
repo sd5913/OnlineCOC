@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="12" time="15.948" timestamp="2026-11-20T11:42:39.980642+08:00" hostname="LAPTOP-BIFSL64A"><testcase classname="tests.test_batch_notifications" name="test_review_catalog_exposes_only_server_bound_source_index" time="1.222" /><testcase classname="tests.test_batch_notifications" name="test_notification_rejects_nonprior_source[-1]" time="1.028" /><testcase classname="tests.test_batch_notifications" name="test_notification_rejects_nonprior_source[1]" time="0.993" /><testcase classname="tests.test_batch_notifications" name="test_notification_rejects_nonprior_source[2]" time="1.006" /><testcase classname="tests.test_batch_notifications" name="test_notification_rejects_nonprior_source[True]" time="1.205" /><testcase classname="tests.test_batch_notifications" name="test_notification_rejects_unsupported_source[source0]" time="1.341" /><testcase classname="tests.test_batch_notifications" name="test_notification_rejects_unsupported_source[source1]" time="1.269" /><testcase classname="tests.test_batch_notifications" name="test_reviewed_notification_waits_for_approval_and_is_targeted_once" time="1.419"><failure message="KeyError: 'sourceCommandId'">application = &lt;onlinecoc_ai.api.Application object at 0x00000263F69109E0&gt;
+
+    def test_reviewed_notification_waits_for_approval_and_is_targeted_once(application):
+        app=application;b=batch(app,actions())
+        assert not inbox(app,'player1')
+        assert decide(app,b,who='player1')['code']=='PERMISSION_DENIED'
+        result=committed(decide(app,b));assert result['status']=='completed',result
+        notices=inbox(app,'player1');assert len(notices)==1
+&gt;       assert notices[0]['sourceCommandId']=='ai-batch:'+b['batchId']+':0'
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'sourceCommandId'
+
+engineering\ai\tests\test_batch_notifications.py:45: KeyError</failure></testcase><testcase classname="tests.test_batch_notifications" name="test_failed_source_cannot_claim_success" time="1.481" /><testcase classname="tests.test_batch_notifications" name="test_rejected_batch_sends_nothing" time="1.179" /><testcase classname="tests.test_batch_notifications" name="test_lost_reply_never_blindly_replays_or_sends_early[0]" time="1.225" /><testcase classname="tests.test_batch_notifications" name="test_lost_reply_never_blindly_replays_or_sends_early[1]" time="1.219" /></testsuite></testsuites>

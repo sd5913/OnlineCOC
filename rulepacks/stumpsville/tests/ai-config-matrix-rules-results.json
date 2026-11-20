@@ -1,0 +1,160 @@
+{
+  "checkedAt": "2026-11-20T01:16:09.122316+08:00",
+  "realSaveChanged": false,
+  "realProviderCalls": 0,
+  "batch": "rules",
+  "cases": [
+    {
+      "id": "npc-add",
+      "expectation": "supported",
+      "passed": true,
+      "evidence": {
+        "status": "completed",
+        "highRisk": false,
+        "proposalId": "9d014f5868954d588cd848a5f85fcd9e"
+      },
+      "seconds": 14.99
+    },
+    {
+      "id": "rule-add",
+      "expectation": "supported",
+      "passed": true,
+      "evidence": {
+        "status": "completed",
+        "highRisk": true,
+        "proposalId": "88bb11ac0a4c4a7b9f3985f4981eeb60"
+      },
+      "seconds": 29.17
+    },
+    {
+      "id": "rule-update",
+      "expectation": "supported",
+      "passed": true,
+      "evidence": {
+        "status": "completed",
+        "highRisk": true,
+        "proposalId": "14c410ff0cde4ca990718e0583dee12c"
+      },
+      "seconds": 38.28
+    },
+    {
+      "id": "rule-source-delete-unsupported",
+      "expectation": "expected-rejection",
+      "passed": true,
+      "evidence": {
+        "code": "INPUT_INVALID",
+        "boundary": "ChangeSet.sources only accepts Lua strings; no removal operation"
+      },
+      "seconds": 1.12
+    },
+    {
+      "id": "core-check-update",
+      "expectation": "supported",
+      "passed": true,
+      "evidence": {
+        "status": "completed",
+        "highRisk": true,
+        "proposalId": "e14e11a243534ef6a0dcf03ee39410dc"
+      },
+      "seconds": 40.09
+    },
+    {
+      "id": "same-save-restart-session",
+      "expectation": "supported",
+      "passed": true,
+      "evidence": {
+        "sessionId": "0830f466c18a4d388e8d27a58731d62b",
+        "requestId": "ba5f603381dd440ba2736e2cc20a8dc7",
+        "configurationOrderChanged": true
+      },
+      "seconds": 3.84
+    }
+  ],
+  "operations": [
+    {
+      "case": "npc-add",
+      "op": "ai.draft.create",
+      "passed": true,
+      "seconds": 0.99
+    },
+    {
+      "case": "npc-add",
+      "op": "ai.proposal.validate",
+      "passed": true,
+      "seconds": 6.7
+    },
+    {
+      "case": "npc-add",
+      "op": "ai.ruling.decide",
+      "passed": true,
+      "seconds": 5.16
+    },
+    {
+      "case": "rule-add",
+      "op": "ai.draft.create",
+      "passed": true,
+      "seconds": 2.37
+    },
+    {
+      "case": "rule-add",
+      "op": "ai.proposal.validate",
+      "passed": true,
+      "seconds": 13.36
+    },
+    {
+      "case": "rule-add",
+      "op": "ai.ruling.decide",
+      "passed": true,
+      "seconds": 9.17
+    },
+    {
+      "case": "rule-update",
+      "op": "ai.draft.create",
+      "passed": true,
+      "seconds": 3.83
+    },
+    {
+      "case": "rule-update",
+      "op": "ai.proposal.validate",
+      "passed": true,
+      "seconds": 15.59
+    },
+    {
+      "case": "rule-update",
+      "op": "ai.ruling.decide",
+      "passed": true,
+      "seconds": 13.43
+    },
+    {
+      "case": "core-check-update",
+      "op": "ai.draft.create",
+      "passed": true,
+      "seconds": 5.55
+    },
+    {
+      "case": "core-check-update",
+      "op": "ai.proposal.validate",
+      "passed": true,
+      "seconds": 12.68
+    },
+    {
+      "case": "core-check-update",
+      "op": "ai.ruling.decide",
+      "passed": true,
+      "seconds": 17.32
+    }
+  ],
+  "evidenceDirectory": "tests/output/ai-config-matrix-rules-2e378601",
+  "fixtureProviderCalls": 0,
+  "rates": {
+    "supported": {
+      "passed": 5,
+      "total": 5
+    },
+    "expected-rejection": {
+      "passed": 1,
+      "total": 1
+    }
+  },
+  "passed": true
+}

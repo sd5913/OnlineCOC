@@ -16,7 +16,7 @@ def main():
     output = PACK / 'tests/output' / ('keeper-queue-' + secrets.token_hex(4))
     output.mkdir(parents=True)
     def respond(request):
-        return {'role': 'assistant', 'content': json.dumps({'kind': 'known', 'evidence': [], 'next': 'ask_kp'})}
+        return {'role': 'assistant', 'content': json.dumps({'kind': 'plan', 'text': '已为KP整理所引用的申请；尚未执行。'})}
     with provider(output, respond) as (config, calls), running('keeper-queue', data=output/'game', ai_config=config, no_browser=True) as (runtime, password):
         kp, p1, p2 = [Account(runtime.origin, name, password, name) for name in ('kp', 'player1', 'player2')]
         p1.action('draft', {'preset': 'mul', 'name': '木栗'})
@@ -107,7 +107,7 @@ def main():
             checks.append('AI configuration ruling shares the queue; polling preserves risk input and rejection uses the authoritative digest')
 
             queue.locator('[data-request-id="'+game_request['requestId']+'"] [data-action=console-request]').last.click()
-            page.locator('#ruling-form summary').click()
+            page.locator('#ruling-form [data-ruling-reply] > summary').click()
             page.locator('#ruling-form [name=reason]').fill('同意检查，请保持安全距离。')
             page.wait_for_timeout(3000)
             expect(page.locator('#ruling-form [name=reason]')).to_have_value('同意检查，请保持安全距离。')
@@ -128,15 +128,22 @@ def main():
             checks.append('information request opens an executable disclosure form for its original player only')
             pl_row.get_by_role('button', name='查看对应会话', exact=True).click()
             expect(page.locator('#kp-ai-embedded #session-access')).to_contain_text('player1')
-            pl_row.get_by_role('button', name='转交 AI', exact=True).click()
-            deadline = time.monotonic()+25
+            pl_row.get_by_role('button', name='转 AI 处理', exact=True).click()
+            deadline = time.monotonic()+70
+            review_id=None; items=[]
             while time.monotonic()<deadline:
-                items=p1.request('/api/v1/ai/sessions/'+session['sessionId'])['items']
-                if items and items[0]['status'] in {'needs_input','review_ready'}:break
+                review_id=page.locator('#kp-ai-embedded .session-select').input_value()
+                if review_id and review_id!=session['sessionId']:
+                    items=kp.request('/api/v1/ai/sessions/'+review_id)['items']
+                    if items and items[-1]['status']=='review_ready':break
                 page.wait_for_timeout(200)
-            assert calls and items[0]['requestId']==knowledge['requestId'] and items[0]['status'] in {'needs_input','review_ready'}, items
-            assert items[0]['initiator']=='player1'
-            checks.append('forwarding from the queue runs the original player request once and keeps the response in that player’s conversation')
+            assert calls and review_id!=session['sessionId'] and items and items[-1]['status']=='review_ready', {'reviewId':review_id,'items':items,'status':queue.locator('.queue-status').inner_text()}
+            assert items[-1]['initiator']=='kp' and items[-1]['reviewSource']['sessionId']==session['sessionId']
+            assert items[-1]['text']!='请 KP 说明本次问题中允许我获知的信息。'
+            assert p1.request('/api/v1/ai/sessions/'+review_id,allow_error=True).get('code')
+            original=p1.request('/api/v1/ai/sessions/'+session['sessionId'])
+            assert original['items'][0]['requestId']==knowledge['requestId'] and review_id not in json.dumps(original)
+            checks.append('queue forwarding quotes the original player request in a separate KP review; private output does not return to the player')
 
             # Simulate a lost response after a real cancellation is committed.
             def lose_reply(route):

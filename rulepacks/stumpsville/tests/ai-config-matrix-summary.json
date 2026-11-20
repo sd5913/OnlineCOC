@@ -1,0 +1,3136 @@
+{
+  "checkedAt": "2026-11-20T01:22:41.213872+08:00",
+  "realSaveChanged": false,
+  "realProviderCalls": 0,
+  "firstSingleRoomRun": {
+    "file": "tests/ai-config-matrix-results.json",
+    "rates": {
+      "supported": {
+        "passed": 6,
+        "total": 13
+      },
+      "expected-rejection": {
+        "passed": 5,
+        "total": 6
+      }
+    },
+    "attempted": 19,
+    "passed": 11,
+    "fatalError": "(503, {'code': 'STORAGE_UNAVAILABLE'})"
+  },
+  "latestByCase": [
+    {
+      "id": "npc-add",
+      "expectation": "supported",
+      "passed": true,
+      "evidence": {
+        "status": "completed",
+        "highRisk": false,
+        "proposalId": "9d014f5868954d588cd848a5f85fcd9e"
+      },
+      "seconds": 14.99,
+      "evidenceFile": "tests/ai-config-matrix-rules-results.json",
+      "evidenceDirectory": "tests/output/ai-config-matrix-rules-2e378601"
+    },
+    {
+      "id": "npc-update",
+      "expectation": "supported",
+      "passed": true,
+      "evidence": {
+        "status": "completed",
+        "highRisk": false,
+        "proposalId": "66d8e3fcbc69484da80a592cbfec76f4"
+      },
+      "evidenceFile": "tests/ai-config-matrix-results.json",
+      "evidenceDirectory": "tests/output/ai-config-matrix-dbe1cfea"
+    },
+    {
+      "id": "npc-delete-in-use",
+      "expectation": "expected-rejection",
+      "passed": true,
+      "evidence": {
+        "status": "blocked",
+        "reports": [
+          {
+            "schemaVersion": 1,
+            "reportId": "fa422f7d1dc84be4ae5622c974f88e75",
+            "level": "A",
+            "status": "fail",
+            "candidateDigest": "5eeb4b5e81c95402a92ffa4b9b6dab37258a756e397c318029d68793f3777923",
+            "baselineDigest": "b16759b8bb3c401aaea608f02a4a7273b67d8e721468c11949a291927cc71b26",
+            "contextDigest": "7cb9c7c40713016ec3b95efc02ba61555755c607b788e58d98ff4563ddbe3a60",
+            "contractDigest": "2a8acf8928fce034d67ea0933794cbb1b3be64ff2b2800ef8bf6c4743543136c",
+            "validatorSetDigest": "ff2754dcc2c78466cd65f03b16ee45d7ad77f2715b331cefa2781351a7ea0595",
+            "coverage": [],
+            "findings": [
+              {
+                "code": "REFERENCE_CONFLICT",
+                "severity": "error",
+                "path": "",
+                "sourceRef": "",
+                "message": "REFERENCE_CONFLICT",
+                "evidence": null,
+                "suggestion": ""
+              }
+            ],
+            "evidence": {},
+            "risk": "unknown",
+            "reviewItems": [],
+            "createdAt": 1795107180.6840873
+          },
+          {
+            "schemaVersion": 1,
+            "reportId": "65dd4444e60846ddad08a8d5741980a8",
+            "level": "B",
+            "status": "unknown",
+            "candidateDigest": "5eeb4b5e81c95402a92ffa4b9b6dab37258a756e397c318029d68793f3777923",
+            "baselineDigest": "b16759b8bb3c401aaea608f02a4a7273b67d8e721468c11949a291927cc71b26",
+            "contextDigest": "7cb9c7c40713016ec3b95efc02ba61555755c607b788e58d98ff4563ddbe3a60",
+            "contractDigest": "2a8acf8928fce034d67ea0933794cbb1b3be64ff2b2800ef8bf6c4743543136c",
+            "validatorSetDigest": "ff2754dcc2c78466cd65f03b16ee45d7ad77f2715b331cefa2781351a7ea0595",
+            "coverage": [],
+            "findings": [
+              {
+                "code": "BASE_CHECK_REQUIRED",
+                "severity": "error",
+                "path": "",
+                "sourceRef": "",
+                "message": "BASE_CHECK_REQUIRED",
+                "evidence": null,
+                "suggestion": ""
+              }
+            ],
+            "evidence": {},
+            "risk": "unknown",
+            "reviewItems": [],
+            "createdAt": 1795107181.422335
+          },
+          {
+            "schemaVersion": 1,
+            "reportId": "adc002bcbe144f32ab1e1f33ca449e2e",
+            "level": "C",
+            "status": "unknown",
+            "candidateDigest": "5eeb4b5e81c95402a92ffa4b9b6dab37258a756e397c318029d68793f3777923",
+            "baselineDigest": "b16759b8bb3c401aaea608f02a4a7273b67d8e721468c11949a291927cc71b26",
+            "contextDigest": "7cb9c7c40713016ec3b95efc02ba61555755c607b788e58d98ff4563ddbe3a60",
+            "contractDigest": "2a8acf8928fce034d67ea0933794cbb1b3be64ff2b2800ef8bf6c4743543136c",
+            "validatorSetDigest": "ff2754dcc2c78466cd65f03b16ee45d7ad77f2715b331cefa2781351a7ea0595",
+            "coverage": [],
+            "findings": [
+              {
+                "code": "BASE_CHECK_REQUIRED",
+                "severity": "error",
+                "path": "",
+                "sourceRef": "",
+                "message": "BASE_CHECK_REQUIRED",
+                "evidence": null,
+                "suggestion": ""
+              }
+            ],
+            "evidence": {},
+            "risk": "unknown",
+            "reviewItems": [],
+            "createdAt": 1795107182.0937178
+          }
+        ]
+      },
+      "evidenceFile": "tests/ai-config-matrix-results.json",
+      "evidenceDirectory": "tests/output/ai-config-matrix-dbe1cfea"
+    },
+    {
+      "id": "npc-delete-unused",
+      "expectation": "supported",
+      "passed": true,
+      "evidence": {
+        "status": "completed",
+        "highRisk": true,
+        "proposalId": "cc3e79b2e76c44ceaf1f22d54859c7d6"
+      },
+      "evidenceFile": "tests/ai-config-matrix-results.json",
+      "evidenceDirectory": "tests/output/ai-config-matrix-dbe1cfea"
+    },
+    {
+      "id": "item-add",
+      "expectation": "supported",
+      "passed": true,
+      "evidence": {
+        "status": "completed",
+        "highRisk": true,
+        "proposalId": "ca317eec375649308a2be962d10af85f"
+      },
+      "seconds": 18.15,
+      "evidenceFile": "tests/ai-config-matrix-restart-results.json",
+      "evidenceDirectory": "tests/output/ai-offline-current/ai-config-matrix-restart-82c8d0ed"
+    },
+    {
+      "id": "weapon-add",
+      "expectation": "supported",
+      "passed": true,
+      "evidence": {
+        "status": "completed",
+        "highRisk": true,
+        "proposalId": "d69323856648471ba3c9f55efd19afdc"
+      },
+      "seconds": 26.03,
+      "evidenceFile": "tests/ai-config-matrix-items-results.json",
+      "evidenceDirectory": "tests/output/ai-config-matrix-items-e5074065"
+    },
+    {
+      "id": "container-as-item-add",
+      "expectation": "supported",
+      "passed": true,
+      "evidence": {
+        "status": "completed",
+        "highRisk": true,
+        "proposalId": "03da792663234223ae8253ca09930d2f"
+      },
+      "seconds": 34.36,
+      "evidenceFile": "tests/ai-config-matrix-items-results.json",
+      "evidenceDirectory": "tests/output/ai-config-matrix-items-e5074065"
+    },
+    {
+      "id": "item-update",
+      "expectation": "supported",
+      "passed": true,
+      "evidence": {
+        "status": "completed",
+        "highRisk": true,
+        "proposalId": "9f633e78663244ea8f2e912da2170863"
+      },
+      "seconds": 40.9,
+      "evidenceFile": "tests/ai-config-matrix-items-results.json",
+      "evidenceDirectory": "tests/output/ai-config-matrix-items-e5074065"
+    },
+    {
+      "id": "item-delete",
+      "expectation": "expected-rejection",
+      "passed": true,
+      "evidence": {
+        "status": "blocked",
+        "reports": [
+          {
+            "schemaVersion": 1,
+            "reportId": "dd2d9d0868d7412b97f8d5fdc98cdbf2",
+            "level": "A",
+            "status": "pass",
+            "candidateDigest": "4a37049e7ec52206d72be39ac220e61763824c031ad7e2f2b83adfb78e1692a1",
+            "baselineDigest": "cf99dab81f6a6bf600eb4c12ace3f11a5f6c212106167da04062dbe8e2d927b5",
+            "contextDigest": "e7c2f2ba97eb8b1d1639dc971d1684550eac0cbab80f2d8a29b59795def8f94f",
+            "contractDigest": "2a8acf8928fce034d67ea0933794cbb1b3be64ff2b2800ef8bf6c4743543136c",
+            "validatorSetDigest": "ff2754dcc2c78466cd65f03b16ee45d7ad77f2715b331cefa2781351a7ea0595",
+            "coverage": [
+              "json",
+              "full-artifact",
+              "host-stage",
+              "pack-schemas",
+              "host-model",
+              "references"
+            ],
+            "findings": [],
+            "evidence": {
+              "artifactRevision": "ac471350f33a92c08270a34edddec97406b0b2c4c5956e0d9a1a7339c09b1dcd",
+              "configurationCount": 13
+            },
+            "risk": "low",
+            "reviewItems": [],
+            "createdAt": 1795108207.793064
+          },
+          {
+            "schemaVersion": 1,
+            "reportId": "3d14d71c6d2b4b289dc780cf244d4cba",
+            "level": "B",
+            "status": "fail",
+            "candidateDigest": "4a37049e7ec52206d72be39ac220e61763824c031ad7e2f2b83adfb78e1692a1",
+            "baselineDigest": "cf99dab81f6a6bf600eb4c12ace3f11a5f6c212106167da04062dbe8e2d927b5",
+            "contextDigest": "e7c2f2ba97eb8b1d1639dc971d1684550eac0cbab80f2d8a29b59795def8f94f",
+            "contractDigest": "2a8acf8928fce034d67ea0933794cbb1b3be64ff2b2800ef8bf6c4743543136c",
+            "validatorSetDigest": "ff2754dcc2c78466cd65f03b16ee45d7ad77f2715b331cefa2781351a7ea0595",
+            "coverage": [],
+            "findings": [
+              {
+                "code": "STABLE_ARRAY_ID_CONFLICT",
+                "severity": "error",
+                "path": "/data/game.json/items",
+                "sourceRef": "",
+                "message": "STABLE_ARRAY_ID_CONFLICT",
+                "evidence": null,
+                "suggestion": ""
+              }
+            ],
+            "evidence": {},
+            "risk": "unknown",
+            "reviewItems": [],
+            "createdAt": 1795108208.361041
+          },
+          {
+            "schemaVersion": 1,
+            "reportId": "1bbac6000be64706b3a4b330ab3190bd",
+            "level": "C",
+            "status": "unknown",
+            "candidateDigest": "4a37049e7ec52206d72be39ac220e61763824c031ad7e2f2b83adfb78e1692a1",
+            "baselineDigest": "cf99dab81f6a6bf600eb4c12ace3f11a5f6c212106167da04062dbe8e2d927b5",
+            "contextDigest": "e7c2f2ba97eb8b1d1639dc971d1684550eac0cbab80f2d8a29b59795def8f94f",
+            "contractDigest": "2a8acf8928fce034d67ea0933794cbb1b3be64ff2b2800ef8bf6c4743543136c",
+            "validatorSetDigest": "ff2754dcc2c78466cd65f03b16ee45d7ad77f2715b331cefa2781351a7ea0595",
+            "coverage": [
+              "npc-morale",
+              "npc-player-denied",
+              "gameplay-inventory",
+              "gameplay-travel"
+            ],
+            "findings": [
+              {
+                "code": "LIVE_SCENARIO_FAILED",
+                "severity": "error",
+                "path": "",
+                "sourceRef": "",
+                "message": "LIVE_SCENARIO_FAILED",
+                "evidence": null,
+                "suggestion": ""
+              }
+            ],
+            "evidence": {},
+            "risk": "unknown",
+            "reviewItems": [
+              {
+                "id": "npc-extension-impact",
+                "question": "NPC 默认值、规则效果及未覆盖的剧情联动是否可接受？",
+                "required": true
+              }
+            ],
+            "createdAt": 1795108212.9689958
+          }
+        ]
+      },
+      "seconds": 20.66,
+      "evidenceFile": "tests/ai-config-matrix-items-results.json",
+      "evidenceDirectory": "tests/output/ai-config-matrix-items-e5074065"
+    },
+    {
+      "id": "item-duplicate-id",
+      "expectation": "expected-rejection",
+      "passed": true,
+      "evidence": {
+        "status": "blocked",
+        "reports": [
+          {
+            "schemaVersion": 1,
+            "reportId": "5610945c84314213b1e361024ec753fc",
+            "level": "A",
+            "status": "pass",
+            "candidateDigest": "5a1b0cd8ed8e896ffd0df11f408942c3b74d1500d393e5c6cb5c581c92ac283e",
+            "baselineDigest": "cf99dab81f6a6bf600eb4c12ace3f11a5f6c212106167da04062dbe8e2d927b5",
+            "contextDigest": "0bd8675dc1d5b01a514275151c198cd65d625f7ec413801e98f534f5e0ebb531",
+            "contractDigest": "2a8acf8928fce034d67ea0933794cbb1b3be64ff2b2800ef8bf6c4743543136c",
+            "validatorSetDigest": "ff2754dcc2c78466cd65f03b16ee45d7ad77f2715b331cefa2781351a7ea0595",
+            "coverage": [
+              "json",
+              "full-artifact",
+              "host-stage",
+              "pack-schemas",
+              "host-model",
+              "references"
+            ],
+            "findings": [],
+            "evidence": {
+              "artifactRevision": "db163177f438f97be2fdf33d3b33b86de20562ca32ce5d2fb73fe5730e5a909d",
+              "configurationCount": 13
+            },
+            "risk": "low",
+            "reviewItems": [],
+            "createdAt": 1795108229.1044042
+          },
+          {
+            "schemaVersion": 1,
+            "reportId": "bd6766df50e241ceb7d7d19749ac9fa2",
+            "level": "B",
+            "status": "fail",
+            "candidateDigest": "5a1b0cd8ed8e896ffd0df11f408942c3b74d1500d393e5c6cb5c581c92ac283e",
+            "baselineDigest": "cf99dab81f6a6bf600eb4c12ace3f11a5f6c212106167da04062dbe8e2d927b5",
+            "contextDigest": "0bd8675dc1d5b01a514275151c198cd65d625f7ec413801e98f534f5e0ebb531",
+            "contractDigest": "2a8acf8928fce034d67ea0933794cbb1b3be64ff2b2800ef8bf6c4743543136c",
+            "validatorSetDigest": "ff2754dcc2c78466cd65f03b16ee45d7ad77f2715b331cefa2781351a7ea0595",
+            "coverage": [],
+            "findings": [
+              {
+                "code": "STABLE_ARRAY_ID_CONFLICT",
+                "severity": "error",
+                "path": "/data/game.json/items",
+                "sourceRef": "",
+                "message": "STABLE_ARRAY_ID_CONFLICT",
+                "evidence": null,
+                "suggestion": ""
+              }
+            ],
+            "evidence": {},
+            "risk": "unknown",
+            "reviewItems": [],
+            "createdAt": 1795108229.68568
+          },
+          {
+            "schemaVersion": 1,
+            "reportId": "a0a5e6a6e1b64ee587a3629c70523b8f",
+            "level": "C",
+            "status": "pass",
+            "candidateDigest": "5a1b0cd8ed8e896ffd0df11f408942c3b74d1500d393e5c6cb5c581c92ac283e",
+            "baselineDigest": "cf99dab81f6a6bf600eb4c12ace3f11a5f6c212106167da04062dbe8e2d927b5",
+            "contextDigest": "0bd8675dc1d5b01a514275151c198cd65d625f7ec413801e98f534f5e0ebb531",
+            "contractDigest": "2a8acf8928fce034d67ea0933794cbb1b3be64ff2b2800ef8bf6c4743543136c",
+            "validatorSetDigest": "ff2754dcc2c78466cd65f03b16ee45d7ad77f2715b331cefa2781351a7ea0595",
+            "coverage": [
+              "npc-morale",
+              "npc-player-denied",
+              "gameplay-inventory",
+              "gameplay-travel"
+            ],
+            "findings": [
+              {
+                "code": "LIVE_GAMEPLAY_REVIEW",
+                "severity": "warning",
+                "path": "",
+                "sourceRef": "",
+                "message": "LIVE_GAMEPLAY_REVIEW",
+                "evidence": null,
+                "suggestion": "Review author-declared compatibility coverage and remaining gameplay changes"
+              }
+            ],
+            "evidence": {
+              "comparisons": [
+                {
+                  "scenarioId": "npc-morale",
+                  "metricId": "npc-morale-success",
+                  "unit": "probability",
+                  "baseline": 0.5,
+                  "candidate": 0.5,
+                  "absoluteDelta": 0.0,
+                  "relativeDelta": 0.0,
+                  "relativeUnavailableReason": null,
+                  "exact": true
+                }
+              ],
+              "scenarios": [
+                {
+                  "scenarioId": "npc-morale",
+                  "population": "new-instances-from-same-fixture",
+                  "policies": {
+                    "baseline": {
+                      "algorithm": "exact-single-die-v1",
+                      "seed": 1,
+                      "trials": 20,
+                      "randomCalls": [
+                        1
+                      ]
+                    },
+                    "candidate": {
+                      "algorithm": "exact-single-die-v1",
+                      "seed": 1,
+                      "trials": 20,
+                      "randomCalls": [
+                        1
+                      ]
+                    }
+                  },
+                  "trials": {
+                    "baseline": [
+                      {
+                        "steps": [
+                          {
+                            "ok": true,
+                            "result": {
+                              "passed": true,
+                              "attribute": "wil",
+                              "target": 10,
+                              "rolled": 1
+                            },
+                            "effects": [
+                              {
+                                "type": "number",
+                                "id": "ai-npc",
+                                "key": "lastRoll",
+                                "value": 1
+                              }
+                            ]
+                          }
+                        ],
+                        "random": [
+                          {
+                            "sides": 20,
+                            "value": 1
+                          }
+                        ]
+                      },
+                      {
+                        "steps": [
+                          {
+                            "ok": true,
+                            "result": {
+                              "attribute": "wil",
+                              "rolled": 2,
+                              "passed": true,
+                              "target": 10
+                            },
+                            "effects": [
+                              {
+                                "type": "number",
+                                "id": "ai-npc",
+                                "key": "lastRoll",
+                                "value": 2
+                              }
+                            ]
+                          }
+                        ],
+                        "random": [
+                          {
+                            "sides": 20,
+                            "value": 2
+                          }
+                        ]
+                      },
+                      {
+                        "steps": [
+                          {
+                            "ok": true,
+                            "result": {
+                              "attribute": "wil",
+                              "target": 10,
+                              "passed": true,
+                              "rolled": 3
+                            },
+                            "effects": [
+                              {
+                                "type": "number",
+                                "id": "ai-npc",
+                                "key": "lastRoll",
+                                "value": 3
+                              }
+                            ]
+                          }
+                        ],
+                        "random": [
+                          {
+                            "sides": 20,
+                            "value": 3
+                          }
+                        ]
+                      },
+                      {
+                        "steps": [
+                          {
+                            "ok": true,
+                            "result": {
+                              "target": 10,
+                              "passed": true,
+                              "attribute": "wil",
+                              "rolled": 4
+                            },
+                            "effects": [
+                              {
+                                "type": "number",
+                                "id": "ai-npc",
+                                "key": "lastRoll",
+                                "value": 4
+                              }
+                            ]
+                          }
+                        ],
+                        "random": [
+                          {
+                            "sides": 20,
+                            "value": 4
+                          }
+                        ]
+                      },
+                      {
+                        "steps": [
+                          {
+                            "ok": true,
+                            "result": {
+                              "target": 10,
+                              "passed": true,
+                              "attribute": "wil",
+                              "rolled": 5
+                            },
+                            "effects": [
+                              {
+                                "type": "number",
+                                "id": "ai-npc",
+                                "key": "lastRoll",
+                                "value": 5
+                              }
+                            ]
+                          }
+                        ],
+                        "random": [
+                          {
+                            "sides": 20,
+                            "value": 5
+                          }
+                        ]
+                      },
+                      {
+                        "steps": [
+                          {
+                            "ok": true,
+                            "result": {
+                              "target": 10,
+                              "rolled": 6,
+                              "attribute": "wil",
+                              "passed": true
+                            },
+                            "effects": [
+                              {
+                                "type": "number",
+                                "id": "ai-npc",
+                                "key": "lastRoll",
+                                "value": 6
+                              }
+                            ]
+                          }
+                        ],
+                        "random": [
+                          {
+                            "sides": 20,
+                            "value": 6
+                          }
+                        ]
+                      },
+                      {
+                        "steps": [
+                          {
+                            "ok": true,
+                            "result": {
+                              "attribute": "wil",
+                              "rolled": 7,
+                              "passed": true,
+                              "target": 10
+                            },
+                            "effects": [
+                              {
+                                "type": "number",
+                                "id": "ai-npc",
+                                "key": "lastRoll",
+                                "value": 7
+                              }
+                            ]
+                          }
+                        ],
+                        "random": [
+                          {
+                            "sides": 20,
+                            "value": 7
+                          }
+                        ]
+                      },
+                      {
+                        "steps": [
+                          {
+                            "ok": true,
+                            "result": {
+                              "target": 10,
+                              "rolled": 8,
+                              "attribute": "wil",
+                              "passed": true
+                            },
+                            "effects": [
+                              {
+                                "type": "number",
+                                "id": "ai-npc",
+                                "key": "lastRoll",
+                                "value": 8
+                              }
+                            ]
+                          }
+                        ],
+                        "random": [
+                          {
+                            "sides": 20,
+                            "value": 8
+                          }
+                        ]
+                      },
+                      {
+                        "steps": [
+                          {
+                            "ok": true,
+                            "result": {
+                              "attribute": "wil",
+                              "passed": true,
+                              "target": 10,
+                              "rolled": 9
+                            },
+                            "effects": [
+                              {
+                                "type": "number",
+                                "id": "ai-npc",
+                                "key": "lastRoll",
+                                "value": 9
+                              }
+                            ]
+                          }
+                        ],
+                        "random": [
+                          {
+                            "sides": 20,
+                            "value": 9
+                          }
+                        ]
+                      },
+                      {
+                        "steps": [
+                          {
+                            "ok": true,
+                            "result": {
+                              "rolled": 10,
+                              "attribute": "wil",
+                              "target": 10,
+                              "passed": true
+                            },
+                            "effects": [
+                              {
+                                "type": "number",
+                                "id": "ai-npc",
+                                "key": "lastRoll",
+                                "value": 10
+                              }
+                            ]
+                          }
+                        ],
+                        "random": [
+                          {
+                            "sides": 20,
+                            "value": 10
+                          }
+                        ]
+                      },
+                      {
+                        "steps": [
+                          {
+                            "ok": true,
+                            "result": {
+                              "target": 10,
+                              "passed": false,
+                              "attribute": "wil",
+                              "rolled": 11
+                            },
+                            "effects": [
+                              {
+                                "type": "number",
+                                "id": "ai-npc",
+                                "key": "lastRoll",
+                                "value": 11
+                              }
+                            ]
+                          }
+                        ],
+                        "random": [
+                          {
+                            "sides": 20,
+                            "value": 11
+                          }
+                        ]
+                      },
+                      {
+                        "steps": [
+                          {
+                            "ok": true,
+                            "result": {
+                              "attribute": "wil",
+                              "target": 10,
+                              "rolled": 12,
+                              "passed": false
+                            },
+                            "effects": [
+                              {
+                                "type": "number",
+                                "id": "ai-npc",
+                                "key": "lastRoll",
+                                "value": 12
+                              }
+                            ]
+                          }
+                        ],
+                        "random": [
+                          {
+                            "sides": 20,
+                            "value": 12
+                          }
+                        ]
+                      },
+                      {
+                        "steps": [
+                          {
+                            "ok": true,
+                            "result": {
+                              "attribute": "wil",
+                              "target": 10,
+                              "rolled": 13,
+                              "passed": false
+                            },
+                            "effects": [
+                              {
+                                "type": "number",
+                                "id": "ai-npc",
+                                "key": "lastRoll",
+                                "value": 13
+                              }
+                            ]
+                          }
+                        ],
+                        "random": [
+                          {
+                            "sides": 20,
+                            "value": 13
+                          }
+                        ]
+                      },
+                      {
+                        "steps": [
+                          {
+                            "ok": true,
+                            "result": {
+                              "attribute": "wil",
+                              "passed": false,
+                              "target": 10,
+                              "rolled": 14
+                            },
+                            "effects": [
+                              {
+                                "type": "number",
+                                "id": "ai-npc",
+                                "key": "lastRoll",
+                                "value": 14
+                              }
+                            ]
+                          }
+                        ],
+                        "random": [
+                          {
+                            "sides": 20,
+                            "value": 14
+                          }
+                        ]
+                      },
+                      {
+                        "steps": [
+                          {
+                            "ok": true,
+                            "result": {
+                              "target": 10,
+                              "attribute": "wil",
+                              "rolled": 15,
+                              "passed": false
+                            },
+                            "effects": [
+                              {
+                                "type": "number",
+                                "id": "ai-npc",
+                                "key": "lastRoll",
+                                "value": 15
+                              }
+                            ]
+                          }
+                        ],
+                        "random": [
+                          {
+                            "sides": 20,
+                            "value": 15
+                          }
+                        ]
+                      },
+                      {
+                        "steps": [
+                          {
+                            "ok": true,
+                            "result": {
+                              "rolled": 16,
+                              "passed": false,
+                              "attribute": "wil",
+                              "target": 10
+                            },
+                            "effects": [
+                              {
+                                "type": "number",
+                                "id": "ai-npc",
+                                "key": "lastRoll",
+                                "value": 16
+                              }
+                            ]
+                          }
+                        ],
+                        "random": [
+                          {
+                            "sides": 20,
+                            "value": 16
+                          }
+                        ]
+                      },
+                      {
+                        "steps": [
+                          {
+                            "ok": true,
+                            "result": {
+                              "target": 10,
+                              "passed": false,
+                              "rolled": 17,
+                              "attribute": "wil"
+                            },
+                            "effects": [
+                              {
+                                "type": "number",
+                                "id": "ai-npc",
+                                "key": "lastRoll",
+                                "value": 17
+                              }
+                            ]
+                          }
+                        ],
+                        "random": [
+                          {
+                            "sides": 20,
+                            "value": 17
+                          }
+                        ]
+                      },
+                      {
+                        "steps": [
+                          {
+                            "ok": true,
+                            "result": {
+                              "passed": false,
+                              "rolled": 18,
+                              "attribute": "wil",
+                              "target": 10
+                            },
+                            "effects": [
+                              {
+                                "type": "number",
+                                "id": "ai-npc",
+                                "key": "lastRoll",
+                                "value": 18
+                              }
+                            ]
+                          }
+                        ],
+                        "random": [
+                          {
+                            "sides": 20,
+                            "value": 18
+                          }
+                        ]
+                      },
+                      {
+                        "steps": [
+                          {
+                            "ok": true,
+                            "result": {
+                              "passed": false,
+                              "rolled": 19,
+                              "attribute": "wil",
+                              "target": 10
+                            },
+                            "effects": [
+                              {
+                                "type": "number",
+                                "id": "ai-npc",
+                                "key": "lastRoll",
+                                "value": 19
+                              }
+                            ]
+                          }
+                        ],
+                        "random": [
+                          {
+                            "sides": 20,
+                            "value": 19
+                          }
+                        ]
+                      },
+                      {
+                        "steps": [
+                          {
+                            "ok": true,
+                            "result": {
+                              "target": 10,
+                              "passed": false,
+                              "rolled": 20,
+                              "attribute": "wil"
+                            },
+                            "effects": [
+                              {
+                                "type": "number",
+                                "id": "ai-npc",
+                                "key": "lastRoll",
+                                "value": 20
+                              }
+                            ]
+                          }
+                        ],
+                        "random": [
+                          {
+                            "sides": 20,
+                            "value": 20
+                          }
+                        ]
+                      }
+                    ],
+                    "candidate": [
+                      {
+                        "steps": [
+                          {
+                            "ok": true,
+                            "result": {
+                              "target": 10,
+                              "attribute": "wil",
+                              "passed": true,
+                              "rolled": 1
+                            },
+                            "effects": [
+                              {
+                                "type": "number",
+                                "id": "ai-npc",
+                                "key": "lastRoll",
+                                "value": 1
+                              }
+                            ]
+                          }
+                        ],
+                        "random": [
+                          {
+                            "sides": 20,
+                            "value": 1
+                          }
+                        ]
+                      },
+                      {
+                        "steps": [
+                          {
+                            "ok": true,
+                            "result": {
+                              "rolled": 2,
+                              "attribute": "wil",
+                              "passed": true,
+                              "target": 10
+                            },
+                            "effects": [
+                              {
+                                "type": "number",
+                                "id": "ai-npc",
+                                "key": "lastRoll",
+                                "value": 2
+                              }
+                            ]
+                          }
+                        ],
+                        "random": [
+                          {
+                            "sides": 20,
+                            "value": 2
+                          }
+                        ]
+                      },
+                      {
+                        "steps": [
+                          {
+                            "ok": true,
+                            "result": {
+                              "target": 10,
+                              "rolled": 3,
+                              "attribute": "wil",
+                              "passed": true
+                            },
+                            "effects": [
+                              {
+                                "type": "number",
+                                "id": "ai-npc",
+                                "key": "lastRoll",
+                                "value": 3
+                              }
+                            ]
+                          }
+                        ],
+                        "random": [
+                          {
+                            "sides": 20,
+                            "value": 3
+                          }
+                        ]
+                      },
+                      {
+                        "steps": [
+                          {
+                            "ok": true,
+                            "result": {
+                              "target": 10,
+                              "attribute": "wil",
+                              "passed": true,
+                              "rolled": 4
+                            },
+                            "effects": [
+                              {
+                                "type": "number",
+                                "id": "ai-npc",
+                                "key": "lastRoll",
+                                "value": 4
+                              }
+                            ]
+                          }
+                        ],
+                        "random": [
+                          {
+                            "sides": 20,
+                            "value": 4
+                          }
+                        ]
+                      },
+                      {
+                        "steps": [
+                          {
+                            "ok": true,
+                            "result": {
+                              "target": 10,
+                              "rolled": 5,
+                              "passed": true,
+                              "attribute": "wil"
+                            },
+                            "effects": [
+                              {
+                                "type": "number",
+                                "id": "ai-npc",
+                                "key": "lastRoll",
+                                "value": 5
+                              }
+                            ]
+                          }
+                        ],
+                        "random": [
+                          {
+                            "sides": 20,
+                            "value": 5
+                          }
+                        ]
+                      },
+                      {
+                        "steps": [
+                          {
+                            "ok": true,
+                            "result": {
+                              "attribute": "wil",
+                              "passed": true,
+                              "rolled": 6,
+                              "target": 10
+                            },
+                            "effects": [
+                              {
+                                "type": "number",
+                                "id": "ai-npc",
+                                "key": "lastRoll",
+                                "value": 6
+                              }
+                            ]
+                          }
+                        ],
+                        "random": [
+                          {
+                            "sides": 20,
+                            "value": 6
+                          }
+                        ]
+                      },
+                      {
+                        "steps": [
+                          {
+                            "ok": true,
+                            "result": {
+                              "target": 10,
+                              "passed": true,
+                              "rolled": 7,
+                              "attribute": "wil"
+                            },
+                            "effects": [
+                              {
+                                "type": "number",
+                                "id": "ai-npc",
+                                "key": "lastRoll",
+                                "value": 7
+                              }
+                            ]
+                          }
+                        ],
+                        "random": [
+                          {
+                            "sides": 20,
+                            "value": 7
+                          }
+                        ]
+                      },
+                      {
+                        "steps": [
+                          {
+                            "ok": true,
+                            "result": {
+                              "passed": true,
+                              "attribute": "wil",
+                              "target": 10,
+                              "rolled": 8
+                            },
+                            "effects": [
+                              {
+                                "type": "number",
+                                "id": "ai-npc",
+                                "key": "lastRoll",
+                                "value": 8
+                              }
+                            ]
+                          }
+                        ],
+                        "random": [
+                          {
+                            "sides": 20,
+                            "value": 8
+                          }
+                        ]
+                      },
+                      {
+                        "steps": [
+                          {
+                            "ok": true,
+                            "result": {
+                              "target": 10,
+                              "passed": true,
+                              "rolled": 9,
+                              "attribute": "wil"
+                            },
+                            "effects": [
+                              {
+                                "type": "number",
+                                "id": "ai-npc",
+                                "key": "lastRoll",
+                                "value": 9
+                              }
+                            ]
+                          }
+                        ],
+                        "random": [
+                          {
+                            "sides": 20,
+                            "value": 9
+                          }
+                        ]
+                      },
+                      {
+                        "steps": [
+                          {
+                            "ok": true,
+                            "result": {
+                              "attribute": "wil",
+                              "rolled": 10,
+                              "passed": true,
+                              "target": 10
+                            },
+                            "effects": [
+                              {
+                                "type": "number",
+                                "id": "ai-npc",
+                                "key": "lastRoll",
+                                "value": 10
+                              }
+                            ]
+                          }
+                        ],
+                        "random": [
+                          {
+                            "sides": 20,
+                            "value": 10
+                          }
+                        ]
+                      },
+                      {
+                        "steps": [
+                          {
+                            "ok": true,
+                            "result": {
+                              "rolled": 11,
+                              "passed": false,
+                              "attribute": "wil",
+                              "target": 10
+                            },
+                            "effects": [
+                              {
+                                "type": "number",
+                                "id": "ai-npc",
+                                "key": "lastRoll",
+                                "value": 11
+                              }
+                            ]
+                          }
+                        ],
+                        "random": [
+                          {
+                            "sides": 20,
+                            "value": 11
+                          }
+                        ]
+                      },
+                      {
+                        "steps": [
+                          {
+                            "ok": true,
+                            "result": {
+                              "passed": false,
+                              "attribute": "wil",
+                              "rolled": 12,
+                              "target": 10
+                            },
+                            "effects": [
+                              {
+                                "type": "number",
+                                "id": "ai-npc",
+                                "key": "lastRoll",
+                                "value": 12
+                              }
+                            ]
+                          }
+                        ],
+                        "random": [
+                          {
+                            "sides": 20,
+                            "value": 12
+                          }
+                        ]
+                      },
+                      {
+                        "steps": [
+                          {
+                            "ok": true,
+                            "result": {
+                              "passed": false,
+                              "attribute": "wil",
+                              "rolled": 13,
+                              "target": 10
+                            },
+                            "effects": [
+                              {
+                                "type": "number",
+                                "id": "ai-npc",
+                                "key": "lastRoll",
+                                "value": 13
+                              }
+                            ]
+                          }
+                        ],
+                        "random": [
+                          {
+                            "sides": 20,
+                            "value": 13
+                          }
+                        ]
+                      },
+                      {
+                        "steps": [
+                          {
+                            "ok": true,
+                            "result": {
+                              "target": 10,
+                              "passed": false,
+                              "attribute": "wil",
+                              "rolled": 14
+                            },
+                            "effects": [
+                              {
+                                "type": "number",
+                                "id": "ai-npc",
+                                "key": "lastRoll",
+                                "value": 14
+                              }
+                            ]
+                          }
+                        ],
+                        "random": [
+                          {
+                            "sides": 20,
+                            "value": 14
+                          }
+                        ]
+                      },
+                      {
+                        "steps": [
+                          {
+                            "ok": true,
+                            "result": {
+                              "rolled": 15,
+                              "target": 10,
+                              "attribute": "wil",
+                              "passed": false
+                            },
+                            "effects": [
+                              {
+                                "type": "number",
+                                "id": "ai-npc",
+                                "key": "lastRoll",
+                                "value": 15
+                              }
+                            ]
+                          }
+                        ],
+                        "random": [
+                          {
+                            "sides": 20,
+                            "value": 15
+                          }
+                        ]
+                      },
+                      {
+                        "steps": [
+                          {
+                            "ok": true,
+                            "result": {
+                              "passed": false,
+                              "attribute": "wil",
+                              "target": 10,
+                              "rolled": 16
+                            },
+                            "effects": [
+                              {
+                                "type": "number",
+                                "id": "ai-npc",
+                                "key": "lastRoll",
+                                "value": 16
+                              }
+                            ]
+                          }
+                        ],
+                        "random": [
+                          {
+                            "sides": 20,
+                            "value": 16
+                          }
+                        ]
+                      },
+                      {
+                        "steps": [
+                          {
+                            "ok": true,
+                            "result": {
+                              "passed": false,
+                              "rolled": 17,
+                              "target": 10,
+                              "attribute": "wil"
+                            },
+                            "effects": [
+                              {
+                                "type": "number",
+                                "id": "ai-npc",
+                                "key": "lastRoll",
+                                "value": 17
+                              }
+                            ]
+                          }
+                        ],
+                        "random": [
+                          {
+                            "sides": 20,
+                            "value": 17
+                          }
+                        ]
+                      },
+                      {
+                        "steps": [
+                          {
+                            "ok": true,
+                            "result": {
+                              "rolled": 18,
+                              "attribute": "wil",
+                              "passed": false,
+                              "target": 10
+                            },
+                            "effects": [
+                              {
+                                "type": "number",
+                                "id": "ai-npc",
+                                "key": "lastRoll",
+                                "value": 18
+                              }
+                            ]
+                          }
+                        ],
+                        "random": [
+                          {
+                            "sides": 20,
+                            "value": 18
+                          }
+                        ]
+                      },
+                      {
+                        "steps": [
+                          {
+                            "ok": true,
+                            "result": {
+                              "rolled": 19,
+                              "attribute": "wil",
+                              "passed": false,
+                              "target": 10
+                            },
+                            "effects": [
+                              {
+                                "type": "number",
+                                "id": "ai-npc",
+                                "key": "lastRoll",
+                                "value": 19
+                              }
+                            ]
+                          }
+                        ],
+                        "random": [
+                          {
+                            "sides": 20,
+                            "value": 19
+                          }
+                        ]
+                      },
+                      {
+                        "steps": [
+                          {
+                            "ok": true,
+                            "result": {
+                              "attribute": "wil",
+                              "rolled": 20,
+                              "passed": false,
+                              "target": 10
+                            },
+                            "effects": [
+                              {
+                                "type": "number",
+                                "id": "ai-npc",
+                                "key": "lastRoll",
+                                "value": 20
+                              }
+                            ]
+                          }
+                        ],
+                        "random": [
+                          {
+                            "sides": 20,
+                            "value": 20
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "scenarioId": "npc-player-denied",
+                  "population": "new-instances-from-same-fixture",
+                  "policies": {
+                    "baseline": {
+                      "algorithm": "fixed-sequence-v1",
+                      "seed": 1,
+                      "trials": 1,
+                      "randomCalls": [
+                        0
+                      ]
+                    },
+                    "candidate": {
+                      "algorithm": "fixed-sequence-v1",
+                      "seed": 1,
+                      "trials": 1,
+                      "randomCalls": [
+                        0
+                      ]
+                    }
+                  },
+                  "trials": {
+                    "baseline": [
+                      {
+                        "steps": [
+                          {
+                            "ok": false,
+                            "code": "PERMISSION_DENIED"
+                          }
+                        ],
+                        "random": []
+                      }
+                    ],
+                    "candidate": [
+                      {
+                        "steps": [
+                          {
+                            "ok": false,
+                            "code": "PERMISSION_DENIED"
+                          }
+                        ],
+                        "random": []
+                      }
+                    ]
+                  }
+                },
+                {
+                  "scenarioId": "gameplay-inventory",
+                  "population": "new-instances-from-same-fixture",
+                  "policies": {
+                    "baseline": {
+                      "algorithm": "fixed-sequence-v1",
+                      "seed": 1,
+                      "trials": 1,
+                      "randomCalls": [
+                        0
+                      ]
+                    },
+                    "candidate": {
+                      "algorithm": "fixed-sequence-v1",
+                      "seed": 1,
+                      "trials": 1,
+                      "randomCalls": [
+                        0
+                      ]
+                    }
+                  },
+                  "trials": {
+                    "baseline": [
+                      {
+                        "steps": [
+                          {
+                            "ok": true,
+                            "result": {
+                              "occupied": {},
+                              "armor": 0,
+                              "cards": {},
+                              "overloaded": false,
+                              "coinSlots": {},
+                              "injured": false
+                            },
+                            "effects": []
+                          }
+                        ],
+                        "random": []
+                      }
+                    ],
+                    "candidate": [
+                      {
+                        "steps": [
+                          {
+                            "ok": true,
+                            "result": {
+                              "armor": 0,
+                              "cards": {},
+                              "coinSlots": {},
+                              "injured": false,
+                              "occupied": {},
+                              "overloaded": false
+                            },
+                            "effects": []
+                          }
+                        ],
+                        "random": []
+                      }
+                    ]
+                  }
+                },
+                {
+                  "scenarioId": "gameplay-travel",
+                  "population": "new-instances-from-same-fixture",
+                  "policies": {
+                    "baseline": {
+                      "algorithm": "fixed-sequence-v1",
+                      "seed": 1,
+                      "trials": 1,
+                      "randomCalls": [
+                        0
+                      ]
+                    },
+                    "candidate": {
+                      "algorithm": "fixed-sequence-v1",
+                      "seed": 1,
+                      "trials": 1,
+                      "randomCalls": [
+                        0
+                      ]
+                    }
+                  },
+                  "trials": {
+                    "baseline": [
+                      {
+                        "steps": [
+                          {
+                            "ok": true,
+                            "result": {
+                              "location": 2
+                            },
+                            "effects": [
+                              {
+                                "type": "number",
+                                "id": "ai-player",
+                                "key": "location",
+                                "value": 2
+                              }
+                            ]
+                          }
+                        ],
+                        "random": []
+                      }
+                    ],
+                    "candidate": [
+                      {
+                        "steps": [
+                          {
+                            "ok": true,
+                            "result": {
+                              "location": 2
+                            },
+                            "effects": [
+                              {
+                                "type": "number",
+                                "id": "ai-player",
+                                "key": "location",
+                                "value": 2
+                              }
+                            ]
+                          }
+                        ],
+                        "random": []
+                      }
+                    ]
+                  }
+                },
+                {
+                  "liveValidation": {
+                    "scenarios": [
+                      {
+                        "configurationId": "sv.character",
+                        "rule": "sv.layout",
+                        "matched": 2,
+                        "trials": [
+                          {
+                            "entityId": "005183eb22834db79371a2bcbbddf1e8",
+                            "variant": "baseline",
+                            "results": [
+                              {
+                                "steps": [
+                                  {
+                                    "ok": true,
+                                    "result": {
+                                      "armor": 0,
+                                      "injured": false,
+                                      "coinSlots": {},
+                                      "cards": [
+                                        {
+                                          "cells": [
+                                            1
+                                          ],
+                                          "item": 1,
+                                          "slot": 1,
+                                          "uses": 3
+                                        },
+                                        {
+                                          "cells": [
+                                            2
+                                          ],
+                                          "item": 2,
+                                          "slot": 2,
+                                          "uses": 3
+                                        },
+                                        {
+                                          "cells": [
+                                            5
+                                          ],
+                                          "item": 3,
+                                          "slot": 5,
+                                          "uses": 3
+                                        },
+                                        {
+                                          "cells": [
+                                            6
+                                          ],
+                                          "item": 4,
+                                          "slot": 6,
+                                          "uses": 3
+                                        },
+                                        {
+                                          "cells": [
+                                            11
+                                          ],
+                                          "item": 17,
+                                          "slot": 11,
+                                          "uses": 3
+                                        },
+                                        {
+                                          "cells": [
+                                            12
+                                          ],
+                                          "item": 18,
+                                          "slot": 12,
+                                          "uses": 3
+                                        },
+                                        {
+                                          "cells": [
+                                            13
+                                          ],
+                                          "item": 19,
+                                          "slot": 13,
+                                          "uses": 3
+                                        }
+                                      ],
+                                      "occupied": {
+                                        "2": 2,
+                                        "1": 1,
+                                        "12": 12,
+                                        "13": 13,
+                                        "6": 6,
+                                        "5": 5,
+                                        "11": 11
+                                      },
+                                      "overloaded": true
+                                    },
+                                    "effects": []
+                                  }
+                                ],
+                                "random": []
+                              },
+                              {
+                                "steps": [
+                                  {
+                                    "ok": true,
+                                    "result": {
+                                      "occupied": {
+                                        "13": 13,
+                                        "2": 2,
+                                        "1": 1,
+                                        "12": 12,
+                                        "11": 11,
+                                        "6": 6,
+                                        "5": 5
+                                      },
+                                      "overloaded": true,
+                                      "cards": [
+                                        {
+                                          "uses": 3,
+                                          "cells": [
+                                            1
+                                          ],
+                                          "item": 1,
+                                          "slot": 1
+                                        },
+                                        {
+                                          "uses": 3,
+                                          "cells": [
+                                            2
+                                          ],
+                                          "item": 2,
+                                          "slot": 2
+                                        },
+                                        {
+                                          "uses": 3,
+                                          "cells": [
+                                            5
+                                          ],
+                                          "item": 3,
+                                          "slot": 5
+                                        },
+                                        {
+                                          "uses": 3,
+                                          "cells": [
+                                            6
+                                          ],
+                                          "item": 4,
+                                          "slot": 6
+                                        },
+                                        {
+                                          "uses": 3,
+                                          "cells": [
+                                            11
+                                          ],
+                                          "item": 17,
+                                          "slot": 11
+                                        },
+                                        {
+                                          "uses": 3,
+                                          "cells": [
+                                            12
+                                          ],
+                                          "item": 18,
+                                          "slot": 12
+                                        },
+                                        {
+                                          "uses": 3,
+                                          "cells": [
+                                            13
+                                          ],
+                                          "item": 19,
+                                          "slot": 13
+                                        }
+                                      ],
+                                      "injured": false,
+                                      "armor": 0,
+                                      "coinSlots": {}
+                                    },
+                                    "effects": []
+                                  }
+                                ],
+                                "random": []
+                              },
+                              {
+                                "steps": [
+                                  {
+                                    "ok": true,
+                                    "result": {
+                                      "overloaded": true,
+                                      "injured": false,
+                                      "coinSlots": {},
+                                      "armor": 0,
+                                      "cards": [
+                                        {
+                                          "cells": [
+                                            1
+                                          ],
+                                          "uses": 3,
+                                          "slot": 1,
+                                          "item": 1
+                                        },
+                                        {
+                                          "cells": [
+                                            2
+                                          ],
+                                          "uses": 3,
+                                          "slot": 2,
+                                          "item": 2
+                                        },
+                                        {
+                                          "cells": [
+                                            5
+                                          ],
+                                          "uses": 3,
+                                          "slot": 5,
+                                          "item": 3
+                                        },
+                                        {
+                                          "cells": [
+                                            6
+                                          ],
+                                          "uses": 3,
+                                          "slot": 6,
+                                          "item": 4
+                                        },
+                                        {
+                                          "cells": [
+                                            11
+                                          ],
+                                          "uses": 3,
+                                          "slot": 11,
+                                          "item": 17
+                                        },
+                                        {
+                                          "cells": [
+                                            12
+                                          ],
+                                          "uses": 3,
+                                          "slot": 12,
+                                          "item": 18
+                                        },
+                                        {
+                                          "cells": [
+                                            13
+                                          ],
+                                          "uses": 3,
+                                          "slot": 13,
+                                          "item": 19
+                                        }
+                                      ],
+                                      "occupied": {
+                                        "6": 6,
+                                        "1": 1,
+                                        "13": 13,
+                                        "12": 12,
+                                        "2": 2,
+                                        "5": 5,
+                                        "11": 11
+                                      }
+                                    },
+                                    "effects": []
+                                  }
+                                ],
+                                "random": []
+                              }
+                            ]
+                          },
+                          {
+                            "entityId": "005183eb22834db79371a2bcbbddf1e8",
+                            "variant": "candidate",
+                            "results": [
+                              {
+                                "steps": [
+                                  {
+                                    "ok": true,
+                                    "result": {
+                                      "overloaded": true,
+                                      "occupied": {
+                                        "2": 2,
+                                        "1": 1,
+                                        "12": 12,
+                                        "11": 11,
+                                        "6": 6,
+                                        "5": 5,
+                                        "13": 13
+                                      },
+                                      "coinSlots": {},
+                                      "injured": false,
+                                      "cards": [
+                                        {
+                                          "cells": [
+                                            1
+                                          ],
+                                          "slot": 1,
+                                          "uses": 3,
+                                          "item": 1
+                                        },
+                                        {
+                                          "cells": [
+                                            2
+                                          ],
+                                          "slot": 2,
+                                          "uses": 3,
+                                          "item": 2
+                                        },
+                                        {
+                                          "cells": [
+                                            5
+                                          ],
+                                          "slot": 5,
+                                          "uses": 3,
+                                          "item": 3
+                                        },
+                                        {
+                                          "cells": [
+                                            6
+                                          ],
+                                          "slot": 6,
+                                          "uses": 3,
+                                          "item": 4
+                                        },
+                                        {
+                                          "cells": [
+                                            11
+                                          ],
+                                          "slot": 11,
+                                          "uses": 3,
+                                          "item": 17
+                                        },
+                                        {
+                                          "cells": [
+                                            12
+                                          ],
+                                          "slot": 12,
+                                          "uses": 3,
+                                          "item": 18
+                                        },
+                                        {
+                                          "cells": [
+                                            13
+                                          ],
+                                          "slot": 13,
+                                          "uses": 3,
+                                          "item": 19
+                                        }
+                                      ],
+                                      "armor": 0
+                                    },
+                                    "effects": []
+                                  }
+                                ],
+                                "random": []
+                              },
+                              {
+                                "steps": [
+                                  {
+                                    "ok": true,
+                                    "result": {
+                                      "occupied": {
+                                        "11": 11,
+                                        "12": 12,
+                                        "6": 6,
+                                        "5": 5,
+                                        "13": 13,
+                                        "2": 2,
+                                        "1": 1
+                                      },
+                                      "overloaded": true,
+                                      "cards": [
+                                        {
+                                          "slot": 1,
+                                          "uses": 3,
+                                          "item": 1,
+                                          "cells": [
+                                            1
+                                          ]
+                                        },
+                                        {
+                                          "slot": 2,
+                                          "uses": 3,
+                                          "item": 2,
+                                          "cells": [
+                                            2
+                                          ]
+                                        },
+                                        {
+                                          "slot": 5,
+                                          "uses": 3,
+                                          "item": 3,
+                                          "cells": [
+                                            5
+                                          ]
+                                        },
+                                        {
+                                          "slot": 6,
+                                          "uses": 3,
+                                          "item": 4,
+                                          "cells": [
+                                            6
+                                          ]
+                                        },
+                                        {
+                                          "slot": 11,
+                                          "uses": 3,
+                                          "item": 17,
+                                          "cells": [
+                                            11
+                                          ]
+                                        },
+                                        {
+                                          "slot": 12,
+                                          "uses": 3,
+                                          "item": 18,
+                                          "cells": [
+                                            12
+                                          ]
+                                        },
+                                        {
+                                          "slot": 13,
+                                          "uses": 3,
+                                          "item": 19,
+                                          "cells": [
+                                            13
+                                          ]
+                                        }
+                                      ],
+                                      "injured": false,
+                                      "armor": 0,
+                                      "coinSlots": {}
+                                    },
+                                    "effects": []
+                                  }
+                                ],
+                                "random": []
+                              },
+                              {
+                                "steps": [
+                                  {
+                                    "ok": true,
+                                    "result": {
+                                      "overloaded": true,
+                                      "occupied": {
+                                        "2": 2,
+                                        "1": 1,
+                                        "12": 12,
+                                        "11": 11,
+                                        "6": 6,
+                                        "5": 5,
+                                        "13": 13
+                                      },
+                                      "coinSlots": {},
+                                      "injured": false,
+                                      "cards": [
+                                        {
+                                          "cells": [
+                                            1
+                                          ],
+                                          "slot": 1,
+                                          "uses": 3,
+                                          "item": 1
+                                        },
+                                        {
+                                          "cells": [
+                                            2
+                                          ],
+                                          "slot": 2,
+                                          "uses": 3,
+                                          "item": 2
+                                        },
+                                        {
+                                          "cells": [
+                                            5
+                                          ],
+                                          "slot": 5,
+                                          "uses": 3,
+                                          "item": 3
+                                        },
+                                        {
+                                          "cells": [
+                                            6
+                                          ],
+                                          "slot": 6,
+                                          "uses": 3,
+                                          "item": 4
+                                        },
+                                        {
+                                          "cells": [
+                                            11
+                                          ],
+                                          "slot": 11,
+                                          "uses": 3,
+                                          "item": 17
+                                        },
+                                        {
+                                          "cells": [
+                                            12
+                                          ],
+                                          "slot": 12,
+                                          "uses": 3,
+                                          "item": 18
+                                        },
+                                        {
+                                          "cells": [
+                                            13
+                                          ],
+                                          "slot": 13,
+                                          "uses": 3,
+                                          "item": 19
+                                        }
+                                      ],
+                                      "armor": 0
+                                    },
+                                    "effects": []
+                                  }
+                                ],
+                                "random": []
+                              }
+                            ]
+                          },
+                          {
+                            "entityId": "e88afc8ff5a0439f8a144835a8f782cd",
+                            "variant": "baseline",
+                            "results": [
+                              {
+                                "steps": [
+                                  {
+                                    "ok": true,
+                                    "result": {
+                                      "overloaded": false,
+                                      "coinSlots": {},
+                                      "injured": false,
+                                      "occupied": {
+                                        "2": 2,
+                                        "1": 1,
+                                        "6": 6,
+                                        "5": 5
+                                      },
+                                      "armor": 0,
+                                      "cards": [
+                                        {
+                                          "cells": [
+                                            1
+                                          ],
+                                          "uses": 3,
+                                          "item": 1,
+                                          "slot": 1
+                                        },
+                                        {
+                                          "cells": [
+                                            2
+                                          ],
+                                          "uses": 3,
+                                          "item": 2,
+                                          "slot": 2
+                                        },
+                                        {
+                                          "cells": [
+                                            5
+                                          ],
+                                          "uses": 3,
+                                          "item": 3,
+                                          "slot": 5
+                                        },
+                                        {
+                                          "cells": [
+                                            6
+                                          ],
+                                          "uses": 3,
+                                          "item": 4,
+                                          "slot": 6
+                                        }
+                                      ]
+                                    },
+                                    "effects": []
+                                  }
+                                ],
+                                "random": []
+                              },
+                              {
+                                "steps": [
+                                  {
+                                    "ok": true,
+                                    "result": {
+                                      "injured": false,
+                                      "overloaded": false,
+                                      "occupied": {
+                                        "6": 6,
+                                        "5": 5,
+                                        "2": 2,
+                                        "1": 1
+                                      },
+                                      "armor": 0,
+                                      "coinSlots": {},
+                                      "cards": [
+                                        {
+                                          "cells": [
+                                            1
+                                          ],
+                                          "uses": 3,
+                                          "item": 1,
+                                          "slot": 1
+                                        },
+                                        {
+                                          "cells": [
+                                            2
+                                          ],
+                                          "uses": 3,
+                                          "item": 2,
+                                          "slot": 2
+                                        },
+                                        {
+                                          "cells": [
+                                            5
+                                          ],
+                                          "uses": 3,
+                                          "item": 3,
+                                          "slot": 5
+                                        },
+                                        {
+                                          "cells": [
+                                            6
+                                          ],
+                                          "uses": 3,
+                                          "item": 4,
+                                          "slot": 6
+                                        }
+                                      ]
+                                    },
+                                    "effects": []
+                                  }
+                                ],
+                                "random": []
+                              },
+                              {
+                                "steps": [
+                                  {
+                                    "ok": true,
+                                    "result": {
+                                      "overloaded": false,
+                                      "occupied": {
+                                        "6": 6,
+                                        "2": 2,
+                                        "1": 1,
+                                        "5": 5
+                                      },
+                                      "coinSlots": {},
+                                      "injured": false,
+                                      "cards": [
+                                        {
+                                          "cells": [
+                                            1
+                                          ],
+                                          "item": 1,
+                                          "slot": 1,
+                                          "uses": 3
+                                        },
+                                        {
+                                          "cells": [
+                                            2
+                                          ],
+                                          "item": 2,
+                                          "slot": 2,
+                                          "uses": 3
+                                        },
+                                        {
+                                          "cells": [
+                                            5
+                                          ],
+                                          "item": 3,
+                                          "slot": 5,
+                                          "uses": 3
+                                        },
+                                        {
+                                          "cells": [
+                                            6
+                                          ],
+                                          "item": 4,
+                                          "slot": 6,
+                                          "uses": 3
+                                        }
+                                      ],
+                                      "armor": 0
+                                    },
+                                    "effects": []
+                                  }
+                                ],
+                                "random": []
+                              }
+                            ]
+                          },
+                          {
+                            "entityId": "e88afc8ff5a0439f8a144835a8f782cd",
+                            "variant": "candidate",
+                            "results": [
+                              {
+                                "steps": [
+                                  {
+                                    "ok": true,
+                                    "result": {
+                                      "cards": [
+                                        {
+                                          "cells": [
+                                            1
+                                          ],
+                                          "slot": 1,
+                                          "item": 1,
+                                          "uses": 3
+                                        },
+                                        {
+                                          "cells": [
+                                            2
+                                          ],
+                                          "slot": 2,
+                                          "item": 2,
+                                          "uses": 3
+                                        },
+                                        {
+                                          "cells": [
+                                            5
+                                          ],
+                                          "slot": 5,
+                                          "item": 3,
+                                          "uses": 3
+                                        },
+                                        {
+                                          "cells": [
+                                            6
+                                          ],
+                                          "slot": 6,
+                                          "item": 4,
+                                          "uses": 3
+                                        }
+                                      ],
+                                      "overloaded": false,
+                                      "armor": 0,
+                                      "coinSlots": {},
+                                      "injured": false,
+                                      "occupied": {
+                                        "1": 1,
+                                        "6": 6,
+                                        "5": 5,
+                                        "2": 2
+                                      }
+                                    },
+                                    "effects": []
+                                  }
+                                ],
+                                "random": []
+                              },
+                              {
+                                "steps": [
+                                  {
+                                    "ok": true,
+                                    "result": {
+                                      "occupied": {
+                                        "6": 6,
+                                        "5": 5,
+                                        "1": 1,
+                                        "2": 2
+                                      },
+                                      "overloaded": false,
+                                      "armor": 0,
+                                      "coinSlots": {},
+                                      "cards": [
+                                        {
+                                          "slot": 1,
+                                          "item": 1,
+                                          "uses": 3,
+                                          "cells": [
+                                            1
+                                          ]
+                                        },
+                                        {
+                                          "slot": 2,
+                                          "item": 2,
+                                          "uses": 3,
+                                          "cells": [
+                                            2
+                                          ]
+                                        },
+                                        {
+                                          "slot": 5,
+                                          "item": 3,
+                                          "uses": 3,
+                                          "cells": [
+                                            5
+                                          ]
+                                        },
+                                        {
+                                          "slot": 6,
+                                          "item": 4,
+                                          "uses": 3,
+                                          "cells": [
+                                            6
+                                          ]
+                                        }
+                                      ],
+                                      "injured": false
+                                    },
+                                    "effects": []
+                                  }
+                                ],
+                                "random": []
+                              },
+                              {
+                                "steps": [
+                                  {
+                                    "ok": true,
+                                    "result": {
+                                      "injured": false,
+                                      "overloaded": false,
+                                      "coinSlots": {},
+                                      "cards": [
+                                        {
+                                          "slot": 1,
+                                          "item": 1,
+                                          "uses": 3,
+                                          "cells": [
+                                            1
+                                          ]
+                                        },
+                                        {
+                                          "slot": 2,
+                                          "item": 2,
+                                          "uses": 3,
+                                          "cells": [
+                                            2
+                                          ]
+                                        },
+                                        {
+                                          "slot": 5,
+                                          "item": 3,
+                                          "uses": 3,
+                                          "cells": [
+                                            5
+                                          ]
+                                        },
+                                        {
+                                          "slot": 6,
+                                          "item": 4,
+                                          "uses": 3,
+                                          "cells": [
+                                            6
+                                          ]
+                                        }
+                                      ],
+                                      "occupied": {
+                                        "6": 6,
+                                        "5": 5,
+                                        "2": 2,
+                                        "1": 1
+                                      },
+                                      "armor": 0
+                                    },
+                                    "effects": []
+                                  }
+                                ],
+                                "random": []
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "configurationId": "sv.character",
+                        "rule": "sv.check.core",
+                        "status": "skipped-unaffected"
+                      },
+                      {
+                        "configurationId": "sv.character",
+                        "rule": "sv.travel",
+                        "status": "skipped-unaffected"
+                      }
+                    ],
+                    "coveredData": [
+                      "game.json"
+                    ],
+                    "coveredRules": [],
+                    "limitations": [
+                      "Author-declared compatibility probes, not exhaustive gameplay or narrative coverage",
+                      "Existing values are preserved; no live command is executed",
+                      "Fixed d20 probes 1/10/20; zero matching entities means no live samples"
+                    ]
+                  }
+                }
+              ],
+              "requiredMetrics": [
+                "npc-morale-success"
+              ],
+              "measuredMetrics": [
+                "npc-morale-success"
+              ],
+              "limitations": [
+                "Only declared scenarios and metrics are covered",
+                "Existing instance values are not migrated",
+                "KP judgment is required for subjective gameplay impact"
+              ]
+            },
+            "risk": "high",
+            "reviewItems": [
+              {
+                "id": "npc-extension-impact",
+                "question": "NPC 默认值、规则效果及未覆盖的剧情联动是否可接受？",
+                "required": true
+              }
+            ],
+            "createdAt": 1795108235.219803
+          }
+        ]
+      },
+      "seconds": 22.61,
+      "evidenceFile": "tests/ai-config-matrix-items-results.json",
+      "evidenceDirectory": "tests/output/ai-config-matrix-items-e5074065"
+    },
+    {
+      "id": "container-undeclared-capacity",
+      "expectation": "expected-rejection",
+      "passed": true,
+      "evidence": {
+        "status": "blocked",
+        "reports": [
+          {
+            "schemaVersion": 1,
+            "reportId": "b1fe47f8081c4b759860012c534dade5",
+            "level": "A",
+            "status": "fail",
+            "candidateDigest": "9bfc671acd68ef0ae3ad6c209833ea937f0569d30d1bebad44daaab179e2e63d",
+            "baselineDigest": "cf99dab81f6a6bf600eb4c12ace3f11a5f6c212106167da04062dbe8e2d927b5",
+            "contextDigest": "ff426542047fa80613a17e6e73959baf46f88b66e0785a5aa914b2887c361012",
+            "contractDigest": "2a8acf8928fce034d67ea0933794cbb1b3be64ff2b2800ef8bf6c4743543136c",
+            "validatorSetDigest": "ff2754dcc2c78466cd65f03b16ee45d7ad77f2715b331cefa2781351a7ea0595",
+            "coverage": [],
+            "findings": [
+              {
+                "code": "PACK_SCHEMA_INVALID",
+                "severity": "error",
+                "path": "/data/game.json",
+                "sourceRef": "",
+                "message": "Additional properties are not allowed ('capacity' was unexpected)\n\nFailed validating 'additionalProperties' in schema['properties']['items']['items']:\n    {'type': 'object',\n     'required': ['id', 'name', 'kind', 'slots', 'uses', 'description'],\n     'properties': {'id': {'type': 'string', 'minLength': 1},\n                    'name': {'type': 'string', 'minLength': 1},\n                    'kind': {'enum': ['armor',\n                                      'condition',\n                             ",
+                "evidence": null,
+                "suggestion": ""
+              }
+            ],
+            "evidence": {},
+            "risk": "unknown",
+            "reviewItems": [],
+            "createdAt": 1795108252.3745873
+          },
+          {
+            "schemaVersion": 1,
+            "reportId": "7b7fa5bb355140999db4ea11fc3b7421",
+            "level": "B",
+            "status": "unknown",
+            "candidateDigest": "9bfc671acd68ef0ae3ad6c209833ea937f0569d30d1bebad44daaab179e2e63d",
+            "baselineDigest": "cf99dab81f6a6bf600eb4c12ace3f11a5f6c212106167da04062dbe8e2d927b5",
+            "contextDigest": "ff426542047fa80613a17e6e73959baf46f88b66e0785a5aa914b2887c361012",
+            "contractDigest": "2a8acf8928fce034d67ea0933794cbb1b3be64ff2b2800ef8bf6c4743543136c",
+            "validatorSetDigest": "ff2754dcc2c78466cd65f03b16ee45d7ad77f2715b331cefa2781351a7ea0595",
+            "coverage": [],
+            "findings": [
+              {
+                "code": "BASE_CHECK_REQUIRED",
+                "severity": "error",
+                "path": "",
+                "sourceRef": "",
+                "message": "BASE_CHECK_REQUIRED",
+                "evidence": null,
+                "suggestion": ""
+              }
+            ],
+            "evidence": {},
+            "risk": "unknown",
+            "reviewItems": [],
+            "createdAt": 1795108252.9306557
+          },
+          {
+            "schemaVersion": 1,
+            "reportId": "c21b77ed1390436aa9ea367c9a1668b3",
+            "level": "C",
+            "status": "unknown",
+            "candidateDigest": "9bfc671acd68ef0ae3ad6c209833ea937f0569d30d1bebad44daaab179e2e63d",
+            "baselineDigest": "cf99dab81f6a6bf600eb4c12ace3f11a5f6c212106167da04062dbe8e2d927b5",
+            "contextDigest": "ff426542047fa80613a17e6e73959baf46f88b66e0785a5aa914b2887c361012",
+            "contractDigest": "2a8acf8928fce034d67ea0933794cbb1b3be64ff2b2800ef8bf6c4743543136c",
+            "validatorSetDigest": "ff2754dcc2c78466cd65f03b16ee45d7ad77f2715b331cefa2781351a7ea0595",
+            "coverage": [],
+            "findings": [
+              {
+                "code": "BASE_CHECK_REQUIRED",
+                "severity": "error",
+                "path": "",
+                "sourceRef": "",
+                "message": "BASE_CHECK_REQUIRED",
+                "evidence": null,
+                "suggestion": ""
+              }
+            ],
+            "evidence": {},
+            "risk": "unknown",
+            "reviewItems": [],
+            "createdAt": 1795108253.4806917
+          }
+        ]
+      },
+      "seconds": 18.37,
+      "evidenceFile": "tests/ai-config-matrix-items-results.json",
+      "evidenceDirectory": "tests/output/ai-config-matrix-items-e5074065"
+    },
+    {
+      "id": "map-add",
+      "expectation": "supported",
+      "passed": true,
+      "evidence": {
+        "status": "completed",
+        "highRisk": true,
+        "proposalId": "825be535766e4942a0f8c1998ebf014b"
+      },
+      "seconds": 21.87,
+      "evidenceFile": "tests/ai-config-matrix-map-results.json",
+      "evidenceDirectory": "tests/output/ai-config-matrix-map-bc947a3d"
+    },
+    {
+      "id": "map-update",
+      "expectation": "supported",
+      "passed": true,
+      "evidence": {
+        "status": "completed",
+        "highRisk": true,
+        "proposalId": "05ea080e18c1435f905070642ef1de61"
+      },
+      "seconds": 23.9,
+      "evidenceFile": "tests/ai-config-matrix-map-results.json",
+      "evidenceDirectory": "tests/output/ai-config-matrix-map-bc947a3d"
+    },
+    {
+      "id": "map-delete",
+      "expectation": "expected-rejection",
+      "passed": true,
+      "evidence": {
+        "status": "blocked",
+        "reports": [
+          {
+            "schemaVersion": 1,
+            "reportId": "31d0d6f4aa954291811fd182f3f3ad0d",
+            "level": "A",
+            "status": "pass",
+            "candidateDigest": "12f822bba9244d3e14e897b1a4bc39c0e8af33a4f3ac45b2246f756ed813facb",
+            "baselineDigest": "86bd11a704ddacc5160cdb263ea0036117d6b472f886e5cba7d8d9076d30b8f8",
+            "contextDigest": "8d5ab538fdbe8dbd8319cc778bc1656c92fab03b25c00c7f7579246722069e39",
+            "contractDigest": "2a8acf8928fce034d67ea0933794cbb1b3be64ff2b2800ef8bf6c4743543136c",
+            "validatorSetDigest": "ff2754dcc2c78466cd65f03b16ee45d7ad77f2715b331cefa2781351a7ea0595",
+            "coverage": [
+              "json",
+              "full-artifact",
+              "host-stage",
+              "pack-schemas",
+              "host-model",
+              "references"
+            ],
+            "findings": [],
+            "evidence": {
+              "artifactRevision": "c942e9509919fbddcf60983acebc7ca9e723380d8347ce2aadee37209bc98767",
+              "configurationCount": 13
+            },
+            "risk": "low",
+            "reviewItems": [],
+            "createdAt": 1795108462.6151342
+          },
+          {
+            "schemaVersion": 1,
+            "reportId": "b1470f3a8ad8412d96d8202359a32d09",
+            "level": "B",
+            "status": "fail",
+            "candidateDigest": "12f822bba9244d3e14e897b1a4bc39c0e8af33a4f3ac45b2246f756ed813facb",
+            "baselineDigest": "86bd11a704ddacc5160cdb263ea0036117d6b472f886e5cba7d8d9076d30b8f8",
+            "contextDigest": "8d5ab538fdbe8dbd8319cc778bc1656c92fab03b25c00c7f7579246722069e39",
+            "contractDigest": "2a8acf8928fce034d67ea0933794cbb1b3be64ff2b2800ef8bf6c4743543136c",
+            "validatorSetDigest": "ff2754dcc2c78466cd65f03b16ee45d7ad77f2715b331cefa2781351a7ea0595",
+            "coverage": [],
+            "findings": [
+              {
+                "code": "DATA_REFERENCE_CONFLICT",
+                "severity": "error",
+                "path": "/data/game.json/locations",
+                "sourceRef": "",
+                "message": "DATA_REFERENCE_CONFLICT",
+                "evidence": null,
+                "suggestion": ""
+              }
+            ],
+            "evidence": {},
+            "risk": "unknown",
+            "reviewItems": [],
+            "createdAt": 1795108463.1824436
+          },
+          {
+            "schemaVersion": 1,
+            "reportId": "f60c3488ce244d74abb0eb177c6ff96f",
+            "level": "C",
+            "status": "unknown",
+            "candidateDigest": "12f822bba9244d3e14e897b1a4bc39c0e8af33a4f3ac45b2246f756ed813facb",
+            "baselineDigest": "86bd11a704ddacc5160cdb263ea0036117d6b472f886e5cba7d8d9076d30b8f8",
+            "contextDigest": "8d5ab538fdbe8dbd8319cc778bc1656c92fab03b25c00c7f7579246722069e39",
+            "contractDigest": "2a8acf8928fce034d67ea0933794cbb1b3be64ff2b2800ef8bf6c4743543136c",
+            "validatorSetDigest": "ff2754dcc2c78466cd65f03b16ee45d7ad77f2715b331cefa2781351a7ea0595",
+            "coverage": [
+              "npc-morale",
+              "npc-player-denied",
+              "gameplay-travel"
+            ],
+            "findings": [
+              {
+                "code": "LIVE_SCENARIO_FAILED",
+                "severity": "error",
+                "path": "",
+                "sourceRef": "",
+                "message": "LIVE_SCENARIO_FAILED",
+                "evidence": null,
+                "suggestion": ""
+              }
+            ],
+            "evidence": {},
+            "risk": "unknown",
+            "reviewItems": [
+              {
+                "id": "npc-extension-impact",
+                "question": "NPC 默认值、规则效果及未覆盖的剧情联动是否可接受？",
+                "required": true
+              }
+            ],
+            "createdAt": 1795108467.8487935
+          }
+        ]
+      },
+      "seconds": 15.4,
+      "evidenceFile": "tests/ai-config-matrix-map-results.json",
+      "evidenceDirectory": "tests/output/ai-config-matrix-map-bc947a3d"
+    },
+    {
+      "id": "map-dangling-exit",
+      "expectation": "expected-rejection",
+      "passed": true,
+      "evidence": {
+        "status": "blocked",
+        "reports": [
+          {
+            "schemaVersion": 1,
+            "reportId": "6e47685f2a404ccb8f7aabbd342a187b",
+            "level": "A",
+            "status": "pass",
+            "candidateDigest": "f9d8a0f3ca2f0c994a66d3062b52b17784481b3f178c66e0f1009e7693a27570",
+            "baselineDigest": "86bd11a704ddacc5160cdb263ea0036117d6b472f886e5cba7d8d9076d30b8f8",
+            "contextDigest": "6af8bdbe1a8f83b74c26bf2a6d0d2c444477e09b16ef81fc1517bdf6591a8f00",
+            "contractDigest": "2a8acf8928fce034d67ea0933794cbb1b3be64ff2b2800ef8bf6c4743543136c",
+            "validatorSetDigest": "ff2754dcc2c78466cd65f03b16ee45d7ad77f2715b331cefa2781351a7ea0595",
+            "coverage": [
+              "json",
+              "full-artifact",
+              "host-stage",
+              "pack-schemas",
+              "host-model",
+              "references"
+            ],
+            "findings": [],
+            "evidence": {
+              "artifactRevision": "cea153c8c962cab7851c850483e1cb50b8ceaff2d29f84c78c5fbba9ad1fe080",
+              "configurationCount": 13
+            },
+            "risk": "low",
+            "reviewItems": [],
+            "createdAt": 1795108477.2557943
+          },
+          {
+            "schemaVersion": 1,
+            "reportId": "b19cd0e85e3943a38c1ab331f8a88781",
+            "level": "B",
+            "status": "fail",
+            "candidateDigest": "f9d8a0f3ca2f0c994a66d3062b52b17784481b3f178c66e0f1009e7693a27570",
+            "baselineDigest": "86bd11a704ddacc5160cdb263ea0036117d6b472f886e5cba7d8d9076d30b8f8",
+            "contextDigest": "6af8bdbe1a8f83b74c26bf2a6d0d2c444477e09b16ef81fc1517bdf6591a8f00",
+            "contractDigest": "2a8acf8928fce034d67ea0933794cbb1b3be64ff2b2800ef8bf6c4743543136c",
+            "validatorSetDigest": "ff2754dcc2c78466cd65f03b16ee45d7ad77f2715b331cefa2781351a7ea0595",
+            "coverage": [],
+            "findings": [
+              {
+                "code": "DATA_REFERENCE_CONFLICT",
+                "severity": "error",
+                "path": "/data/game.json/locations",
+                "sourceRef": "",
+                "message": "DATA_REFERENCE_CONFLICT",
+                "evidence": null,
+                "suggestion": ""
+              }
+            ],
+            "evidence": {},
+            "risk": "unknown",
+            "reviewItems": [],
+            "createdAt": 1795108477.8228054
+          },
+          {
+            "schemaVersion": 1,
+            "reportId": "939318eef70b4674a60e4284294d5ee3",
+            "level": "C",
+            "status": "unknown",
+            "candidateDigest": "f9d8a0f3ca2f0c994a66d3062b52b17784481b3f178c66e0f1009e7693a27570",
+            "baselineDigest": "86bd11a704ddacc5160cdb263ea0036117d6b472f886e5cba7d8d9076d30b8f8",
+            "contextDigest": "6af8bdbe1a8f83b74c26bf2a6d0d2c444477e09b16ef81fc1517bdf6591a8f00",
+            "contractDigest": "2a8acf8928fce034d67ea0933794cbb1b3be64ff2b2800ef8bf6c4743543136c",
+            "validatorSetDigest": "ff2754dcc2c78466cd65f03b16ee45d7ad77f2715b331cefa2781351a7ea0595",
+            "coverage": [
+              "npc-morale",
+              "npc-player-denied",
+              "gameplay-travel"
+            ],
+            "findings": [
+              {
+                "code": "LIVE_SCENARIO_FAILED",
+                "severity": "error",
+                "path": "",
+                "sourceRef": "",
+                "message": "LIVE_SCENARIO_FAILED",
+                "evidence": null,
+                "suggestion": ""
+              }
+            ],
+            "evidence": {},
+            "risk": "unknown",
+            "reviewItems": [
+              {
+                "id": "npc-extension-impact",
+                "question": "NPC 默认值、规则效果及未覆盖的剧情联动是否可接受？",
+                "required": true
+              }
+            ],
+            "createdAt": 1795108482.543528
+          }
+        ]
+      },
+      "seconds": 14.85,
+      "evidenceFile": "tests/ai-config-matrix-map-results.json",
+      "evidenceDirectory": "tests/output/ai-config-matrix-map-bc947a3d"
+    },
+    {
+      "id": "scene-player-text-update",
+      "expectation": "supported",
+      "passed": false,
+      "errorType": "AssertionError",
+      "error": "{'proposal': {'schemaVersion': 1, 'proposalId': 'a8782c8d2ab34a59b1b5e1be49bb995a', 'revision': 1, 'requestId': '2903b67107894bba9967d73c2cece546', 'scopeId': 'bb6a04516e1744649c105a6b6a14b460', 'contextRef': '30312a89123b26e5e8ddf4087cbdfba7d74d3e7e60eb18e766004e5274468e57', 'profileRevision': None, 'model': None, 'summary': '人工配置草稿', 'alternatives': [], 'changeSet': {'schemaVersion': 1, 'configurations': [], 'sources': {'layout.lua': \"return rule('sv.layout', {'actor'}, function(r, actor)\\n  local data = r.readData('game.json')\\n  -- Numeric indices are persistent inventory/location identities.\\n  for index, place in ipairs(data.locations) do\\n    assert(place.index == index, 'SV_LOCATION_INDEX')\\n    for _, target in ipairs(place.exits) do\\n      assert(target ~= index and data.locations[target], 'SV_LOCATION_EXIT')\\n    end\\n    for _, stock in ipairs(place.stock) do\\n      assert(data.items[stock.item] and stock.count >= 0, 'SV_LOCATION_STOCK')\\n    end\\n  end\\n  local occupied, cards = {}, {}\\n  local overloaded, armor, injured = false, 0, false\\n  for slot = 1, 20 do\\n    local index = r.number(actor, 'item' .. slot)\\n    if index > 0 then\\n      local def = data.items[index]\\n      assert(def, 'SV_UNKNOWN_ITEM')\\n      local cells = {slot}\\n      if def.id == 'injured' then injured = true end\\n      if slot > 10 then\\n        overloaded = true\\n      elseif def.slots == 2 then\\n        if def.shape == 'offhand-body' and slot <= 4 then\\n          assert(slot == 2, 'SV_LIGHT_ARMOR_OFFHAND_BODY')\\n          cells = {2, 3}\\n        elseif slot <= 4 then\\n          assert(slot == 1 or slot == 3, 'SV_ITEM_NEEDS_TWO_SLOTS')\\n          cells = {slot, slot + 1}\\n        else\\n          assert(slot == 5 or slot == 6 or slot == 8 or slot == 9, 'SV_ITEM_NEEDS_TWO_SLOTS')\\n          cells = {slot, slot + 1}\\n        end\\n      elseif def.slots == 4 then\\n        assert(slot == 5 or slot == 6, 'SV_ITEM_NEEDS_FOUR_SLOTS')\\n        cells = {slot, slot + 1, slot + 3, slot + 4}\\n      end\\n      if def.kind == 'armor' and slot <= 4 and r.number(actor, 'uses' .. slot) > 0 then armor = math.max(armor, def.armor or 0) end\\n      for _, cell in ipairs(cells) do\\n        assert(not occupied[tostring(cell)], 'SV_SLOT_OCCUPIED')\\n        occupied[tostring(cell)] = slot\\n      end\\n      cards[#cards + 1] = {slot=slot, item=index, uses=r.number(actor, 'uses' .. slot), cells=cells}\\n    end\\n  end\\n  local coins = math.ceil(math.max(0, r.number(actor, 'pips') - 250) / 250)\\n  local coinSlots = {}\\n  for slot=10,1,-1 do\\n    if coins > 0 and not occupied[tostring(slot)] then\\n      occupied[tostring(slot)] = -1\\n      coinSlots[#coinSlots+1] = slot\\n      coins = coins - 1\\n    end\\n  end\\n  if coins > 0 then overloaded = true end\\n  return {occupied=occupied, cards=cards, overloaded=overloaded, armor=armor, injured=injured, coinSlots=coinSlots}\\nend, {mode='calculation', public=false})\\n\", 'profile.lua': \"return rule('sv.profile', {'actor', 'strength:amount', 'dexterity:amount', 'will:amount', 'hp:amount', 'pips:amount'}, function(r, actor, strength, dexterity, will, hp, pips)\\n  assert(r.matches(actor, 'sv.character'), 'SV_NOT_CHARACTER')\\n  assert(r.number(actor, 'approved') == 0, 'SV_PROFILE_LOCKED')\\n  assert(strength >= 2 and strength <= 12 and dexterity >= 2 and dexterity <= 12 and will >= 2 and will <= 12, 'SV_START_ATTRIBUTE_RANGE')\\n  assert(hp >= 1 and hp <= 6 and pips <= 6, 'SV_START_RESOURCE_RANGE')\\n  r.set(actor, 'str', strength)\\n  r.set(ac",
+      "seconds": 14.34,
+      "evidenceFile": "tests/ai-config-matrix-map-results.json",
+      "evidenceDirectory": "tests/output/ai-config-matrix-map-bc947a3d"
+    },
+    {
+      "id": "rule-add",
+      "expectation": "supported",
+      "passed": true,
+      "evidence": {
+        "status": "completed",
+        "highRisk": true,
+        "proposalId": "88bb11ac0a4c4a7b9f3985f4981eeb60"
+      },
+      "seconds": 29.17,
+      "evidenceFile": "tests/ai-config-matrix-rules-results.json",
+      "evidenceDirectory": "tests/output/ai-config-matrix-rules-2e378601"
+    },
+    {
+      "id": "rule-update",
+      "expectation": "supported",
+      "passed": true,
+      "evidence": {
+        "status": "completed",
+        "highRisk": true,
+        "proposalId": "14c410ff0cde4ca990718e0583dee12c"
+      },
+      "seconds": 38.28,
+      "evidenceFile": "tests/ai-config-matrix-rules-results.json",
+      "evidenceDirectory": "tests/output/ai-config-matrix-rules-2e378601"
+    },
+    {
+      "id": "core-check-update",
+      "expectation": "supported",
+      "passed": true,
+      "evidence": {
+        "status": "completed",
+        "highRisk": true,
+        "proposalId": "e14e11a243534ef6a0dcf03ee39410dc"
+      },
+      "seconds": 40.09,
+      "evidenceFile": "tests/ai-config-matrix-rules-results.json",
+      "evidenceDirectory": "tests/output/ai-config-matrix-rules-2e378601"
+    },
+    {
+      "id": "same-save-restart-session",
+      "expectation": "supported",
+      "passed": true,
+      "evidence": {
+        "sessionId": "54e9259f5e6841e1af956e72c31818d3",
+        "requestId": "a085bd89e74d4bc3874541c53e03f0f5",
+        "configurationOrderChanged": true
+      },
+      "seconds": 8.87,
+      "evidenceFile": "tests/ai-config-matrix-restart-results.json",
+      "evidenceDirectory": "tests/output/ai-offline-current/ai-config-matrix-restart-82c8d0ed"
+    },
+    {
+      "id": "rule-source-delete-unsupported",
+      "expectation": "expected-rejection",
+      "passed": true,
+      "evidence": {
+        "code": "INPUT_INVALID",
+        "boundary": "ChangeSet.sources only accepts Lua strings; no removal operation"
+      },
+      "seconds": 1.12,
+      "evidenceFile": "tests/ai-config-matrix-rules-results.json",
+      "evidenceDirectory": "tests/output/ai-config-matrix-rules-2e378601"
+    }
+  ],
+  "rates": {
+    "supported": {
+      "passed": 13,
+      "total": 14
+    },
+    "expected-rejection": {
+      "passed": 7,
+      "total": 7
+    }
+  },
+  "passedCases": 20,
+  "totalCases": 21,
+  "passed": false,
+  "batchReports": [
+    {
+      "file": "tests/ai-config-matrix-results.json",
+      "rates": {
+        "supported": {
+          "passed": 6,
+          "total": 13
+        },
+        "expected-rejection": {
+          "passed": 5,
+          "total": 6
+        }
+      },
+      "passed": false
+    },
+    {
+      "file": "tests/ai-config-matrix-items-results.json",
+      "rates": {
+        "supported": {
+          "passed": 4,
+          "total": 5
+        },
+        "expected-rejection": {
+          "passed": 3,
+          "total": 3
+        }
+      },
+      "passed": false
+    },
+    {
+      "file": "tests/ai-config-matrix-map-results.json",
+      "rates": {
+        "supported": {
+          "passed": 3,
+          "total": 4
+        },
+        "expected-rejection": {
+          "passed": 2,
+          "total": 2
+        }
+      },
+      "passed": false
+    },
+    {
+      "file": "tests/ai-config-matrix-rules-results.json",
+      "rates": {
+        "supported": {
+          "passed": 5,
+          "total": 5
+        },
+        "expected-rejection": {
+          "passed": 1,
+          "total": 1
+        }
+      },
+      "passed": true
+    },
+    {
+      "file": "tests/ai-config-matrix-restart-results.json",
+      "rates": {
+        "supported": {
+          "passed": 2,
+          "total": 2
+        },
+        "expected-rejection": {
+          "passed": 0,
+          "total": 0
+        }
+      },
+      "passed": true
+    }
+  ],
+  "interpretation": "Independent batch reruns prove specific operations only; they do not repair cumulative storage growth or add scene-text publication coverage.",
+  "unresolved": [
+    {
+      "id": "scene-player-text-update",
+      "code": "LIVE_SCENARIO_COVERAGE_MISSING",
+      "state": "blocked; not published",
+      "handling": "Retain authored C coverage guard; current live probes bind one entity only and do not execute the Python personal-menu projection."
+    },
+    {
+      "id": "cumulative-ai-storage",
+      "code": "STORE_FULL",
+      "publicCode": "STORAGE_UNAVAILABLE",
+      "generations": 158,
+      "usedBytes": 527106299,
+      "latestBytes": 7019617,
+      "maxBytes": 536870912,
+      "evidenceDirectory": "tests/output/ai-config-matrix-dbe1cfea",
+      "handling": "Root coordinator to register engineering issue; no store edits, pruning or bypass."
+    }
+  ],
+  "resolvedFixtureFailures": [
+    {
+      "id": "restart-bundle-order",
+      "initial": "items batch compared configuration list order",
+      "resolved": "compare configurationId-keyed mapping; map/rules/restart batches pass and record order change"
+    }
+  ],
+  "timeoutFollowup": {
+    "initialProxySeconds": 30,
+    "initialCases": [
+      "item-update",
+      "map-add",
+      "map-update"
+    ],
+    "serialReruns": "all passed below proxy threshold; no timeout policy changed"
+  },
+  "restartProof": {
+    "file": "tests/ai-config-matrix-restart-results.json",
+    "fixtureProviderCalls": 3,
+    "steps": [
+      "publish and consume one added item",
+      "two fixed loopback plans after all mutations",
+      "close host and restart same directory",
+      "read both authorized replies",
+      "third loopback plan succeeds"
+    ]
+  }
+}

@@ -80,6 +80,10 @@ def main():
     checks, errors = [], []
     with running('notifications') as (runtime, password):
         kp, p1, p2 = provision(runtime, password)
+        # This legacy-effects suite starts after character approval notices were read.
+        for player in (p1, p2):
+            for notice in player.request('/api/v1/notifications')['items']:
+                player.action('notification.ack', {'notificationId': notice['notificationId']})
         with sync_playwright() as pw:
             browser = pw.chromium.launch(channel='msedge', headless=True)
             presenter_checks(browser, runtime.origin, checks)

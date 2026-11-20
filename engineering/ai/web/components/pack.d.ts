@@ -5,5 +5,5 @@ export {mountAISettings,mountRulings,bindReferenceDetails,mountChoices,
 } from './index.js';
 export type {
  KnowledgeRequest,AIRuling,RulingDecision,ResponseOption,ResponseChoices,Json,Transport,AiReceipt,Session,SessionAccess,ExecutionBatch,Task,Panel,RoomPanel,DataReference,ReferenceEditor,
- ReferenceCommand,AIViewOptions,AIView,AICollapsible,AITools,EvidencePage,SessionManager,MarkdownOptions,UsageQuery,UsageMetrics,UsageReport,UsagePanel
+ ReferenceCommand,ReferenceRenderer,NotificationActionArgs,AIViewOptions,AIView,AICollapsible,AITools,EvidencePage,SessionManager,MarkdownOptions,UsageQuery,UsageMetrics,UsageReport,UsagePanel
 } from './index.js';

@@ -1,0 +1,1091 @@
+{
+  "checkedAt": "2026-11-20T12:09:40.561289+08:00",
+  "requestedModel": "deepseek-flash",
+  "thinking": "disabled",
+  "callLimit": 11,
+  "cases": [
+    {
+      "id": "quoted-player-intent",
+      "goal": "来源第一人称属于player1；当前KP收到待审批次，不再询问是否提交",
+      "attempts": [
+        {
+          "task": {
+            "requestId": "c79f85456a8a400e99376325cf2e0d89",
+            "sessionId": "932eb8c0a82546988e69ea4ee62e8d08",
+            "status": "review_ready",
+            "createdAt": 1795147806.9474912,
+            "ruling": {
+              "batchId": "ca71546cc43745dfbc3f01153f33cc9b",
+              "status": "pending",
+              "digest": "d7462dc799a1d943d40c92440b28aa72dc93b83c404759b996fa9d97581873c3"
+            },
+            "text": "请协助处理所引用的申请或裁决，核对当前资料后准备具体方案，修改另行提交我审核。",
+            "initiator": "kp",
+            "taskId": "14ace7ac2b0542ee909d2d808521b275",
+            "proposalId": null,
+            "error": null,
+            "response": "已核对 player1 的树桩镇角色「木栗」（活跃、已批准）：当前钱币为 3 枚，拟增至 4 枚。下面两项为待审提案，不修改其他字段、装备或位置。\n\n- **数值调整**：仅将 pips 由 3 改为 4，其余数值保持原样。\n- **通知**：执行成功后将向 player1 发送一句告知；若原动作失败则不会投递。\n\n提交后仍需你在此处批准执行，批准前不视为已生效。",
+            "reviewSource": {
+              "kind": "package",
+              "sourceId": "stumpsville",
+              "category": "request",
+              "id": "player1:04eb43a4-7c0b-4f05-be49-3f728b32b8fa",
+              "revision": "b06eca713c06bda6c6417ad3176cd88a1aee884306edf3b1d166c10089b46032",
+              "title": "玩家行动申请",
+              "summary": "给我的角色增加1枚钱币，请直接准备给KP审核的指令包，不用再问我是否要提交。",
+              "context": {
+                "record": {
+                  "id": "player1:04eb43a4-7c0b-4f05-be49-3f728b32b8fa",
+                  "account": "player1",
+                  "actor": "d5e94a2ed24145ad8568f2c9d7d706aa",
+                  "kind": "free",
+                  "args": {
+                    "kind": "free",
+                    "manual": true,
+                    "text": "给我的角色增加1枚钱币，请直接准备给KP审核的指令包，不用再问我是否要提交。"
+                  },
+                  "text": "给我的角色增加1枚钱币，请直接准备给KP审核的指令包，不用再问我是否要提交。",
+                  "status": "pending",
+                  "reason": "玩家主动申请",
+                  "location": 1,
+                  "time": 1795147806.7456706
+                },
+                "status": "pending",
+                "sourceLocator": {
+                  "kind": "request",
+                  "id": "player1:04eb43a4-7c0b-4f05-be49-3f728b32b8fa"
+                }
+              },
+              "requestedBy": "player1",
+              "verification": "provided-snapshot",
+              "visibility": "kp"
+            },
+            "modelCalls": [
+              {
+                "requestedModel": "deepseek-flash",
+                "returnedModel": "deepseek-flash",
+                "systemFingerprint": "bc19ba97cbe016479903222bb1578db6",
+                "usage": {
+                  "prompt_tokens": 12782,
+                  "completion_tokens": 121,
+                  "total_tokens": 12903
+                },
+                "profileRevision": 6
+              },
+              {
+                "requestedModel": "deepseek-flash",
+                "returnedModel": "deepseek-flash",
+                "systemFingerprint": "bc19ba97cbe016479903222bb1578db6",
+                "usage": {
+                  "prompt_tokens": 20562,
+                  "completion_tokens": 172,
+                  "total_tokens": 20734
+                },
+                "profileRevision": 6
+              },
+              {
+                "requestedModel": "deepseek-flash",
+                "returnedModel": "deepseek-flash",
+                "systemFingerprint": "bc19ba97cbe016479903222bb1578db6",
+                "usage": {
+                  "prompt_tokens": 21563,
+                  "completion_tokens": 228,
+                  "total_tokens": 21791
+                },
+                "profileRevision": 6
+              }
+            ],
+            "diagnostics": {
+              "schemaVersion": 1,
+              "stage": "output_validate",
+              "turn": 2,
+              "toolCalls": [
+                {
+                  "name": "room_search_data",
+                  "status": "completed",
+                  "argumentsDigest": "d8efcc6c9d91a5abb1827c90676ff897d7131b1d061c8efe475f1d1b908f8159",
+                  "keys": [
+                    "limit",
+                    "query",
+                    "types"
+                  ],
+                  "unknownKeys": false,
+                  "turn": 0,
+                  "types": [
+                    "entity"
+                  ],
+                  "hasQuery": false
+                },
+                {
+                  "name": "room_manage_catalog",
+                  "status": "completed",
+                  "argumentsDigest": "102e66a87d70c5753734babc060e3f5fdfde73f4569054144b24f546c07bd076",
+                  "keys": [
+                    "operations"
+                  ],
+                  "unknownKeys": false,
+                  "turn": 0
+                },
+                {
+                  "name": "room_read_data",
+                  "status": "completed",
+                  "argumentsDigest": "fe188d148cb2a756f052f89d4db9996e64e4f2eec1db889a41834d2ca7b004d9",
+                  "keys": [
+                    "refs"
+                  ],
+                  "unknownKeys": false,
+                  "turn": 1,
+                  "referenceCount": 1
+                }
+              ],
+              "errors": [],
+              "outputFailures": [],
+              "contextBudget": {
+                "bytes": 81570,
+                "limitBytes": 262144,
+                "toolSchemaBytes": 6335,
+                "toolMessageBytes": 26865
+              }
+            },
+            "batchId": "ca71546cc43745dfbc3f01153f33cc9b"
+          },
+          "calls": 3,
+          "ruling": {
+            "sessionId": "932eb8c0a82546988e69ea4ee62e8d08",
+            "requestId": "14ace7ac2b0542ee909d2d808521b275",
+            "summary": "已核对 player1 的树桩镇角色「木栗」（活跃、已批准）：当前钱币为 3 枚，拟增至 4 枚。下面两项为待审提案，不修改其他字段、装备或位置。\n\n- **数值调整**：仅将 pips 由 3 改为 4，其余数值保持原样。\n- **通知**：执行成功后将向 player1 发送一句告知；若原动作失败则不会投递。\n\n提交后仍需你在此处批准执行，批准前不视为已生效。",
+            "status": "pending",
+            "createdAt": 1795147814.8397615,
+            "digest": "d7462dc799a1d943d40c92440b28aa72dc93b83c404759b996fa9d97581873c3",
+            "actions": [
+              {
+                "target": "host",
+                "op": "entity.update",
+                "args": {
+                  "id": "d5e94a2ed24145ad8568f2c9d7d706aa",
+                  "numbers": {
+                    "pips": 4
+                  }
+                }
+              },
+              {
+                "target": "host",
+                "op": "notification.send",
+                "args": {
+                  "recipientAccountIds": [
+                    "player1"
+                  ],
+                  "text": "你获得了 1 枚钱币，钱币现共 4 枚。",
+                  "sourceActionIndex": 0
+                }
+              }
+            ],
+            "receipts": [],
+            "rulingId": "batch:ca71546cc43745dfbc3f01153f33cc9b",
+            "kind": "runtime",
+            "canDecide": true,
+            "risks": [],
+            "initiator": "kp"
+          },
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "elapsedSecondsIncludingApproval": 14.13,
+      "realCalls": 3
+    },
+    {
+      "id": "stale-short-confirmation",
+      "goal": "旧依据变化后保留对话意图，短确认直接提交player2加2钱币待审批次",
+      "attempts": [
+        {
+          "task": {
+            "requestId": "51be3d49f6fb4904a60cfc7941d7f490",
+            "sessionId": "b9ee0b69ff204fd4afd17271ddd4991d",
+            "status": "review_ready",
+            "createdAt": 1795147838.0520875,
+            "ruling": {
+              "batchId": "b97fe4a6efc34a4998d1c3850f8b408f",
+              "status": "pending",
+              "digest": "429ba9cb43fa88028070c84d247b1ef49eaa59be299a86058944cc296ff59044"
+            },
+            "text": "是的，按此方案处理，直接提交给我审批。",
+            "initiator": "kp",
+            "taskId": "97f4b7b85e004728a76a45457887cde0",
+            "proposalId": null,
+            "error": null,
+            "response": "已核对豆叶（player2 的树桩镇角色，活跃）[[entity:ada71041feda4de7887807b0c8681638@8]]当前钱币为 2 枚，按方案把 pips 改为 4，其余数值、装备与位置保持不变。\n\n- 第 1 项：更新该角色 pips 2→4，只写这一个数值。\n- 第 2 项：向 player2 发送通知，说明钱币增加 2 枚；通知仅在第 1 项实际成功后投递。\n- 这是待审提案，批准与执行结果以宿主回执为准。",
+            "modelCalls": [
+              {
+                "requestedModel": "deepseek-flash",
+                "returnedModel": "deepseek-flash",
+                "systemFingerprint": "bc19ba97cbe016479903222bb1578db6",
+                "usage": {
+                  "prompt_tokens": 12606,
+                  "completion_tokens": 122,
+                  "total_tokens": 12728
+                },
+                "profileRevision": 6
+              },
+              {
+                "requestedModel": "deepseek-flash",
+                "returnedModel": "deepseek-flash",
+                "systemFingerprint": "bc19ba97cbe016479903222bb1578db6",
+                "usage": {
+                  "prompt_tokens": 15596,
+                  "completion_tokens": 214,
+                  "total_tokens": 15810
+                },
+                "profileRevision": 6
+              },
+              {
+                "requestedModel": "deepseek-flash",
+                "returnedModel": "deepseek-flash",
+                "systemFingerprint": "bc19ba97cbe016479903222bb1578db6",
+                "usage": {
+                  "prompt_tokens": 15862,
+                  "completion_tokens": 173,
+                  "total_tokens": 16035
+                },
+                "profileRevision": 6
+              },
+              {
+                "requestedModel": "deepseek-flash",
+                "returnedModel": "deepseek-flash",
+                "systemFingerprint": "bc19ba97cbe016479903222bb1578db6",
+                "usage": {
+                  "prompt_tokens": 16860,
+                  "completion_tokens": 245,
+                  "total_tokens": 17105
+                },
+                "profileRevision": 6
+              }
+            ],
+            "diagnostics": {
+              "schemaVersion": 1,
+              "stage": "output_validate",
+              "turn": 3,
+              "toolCalls": [
+                {
+                  "name": "room_search_data",
+                  "status": "completed",
+                  "argumentsDigest": "bb2d6e2ff842af30ac1498358b2194082a3979eee210e9b62f128067e781ec65",
+                  "keys": [
+                    "limit",
+                    "query",
+                    "types"
+                  ],
+                  "unknownKeys": false,
+                  "turn": 0,
+                  "types": [
+                    "entity"
+                  ],
+                  "hasQuery": true
+                },
+                {
+                  "name": "room_manage_catalog",
+                  "status": "completed",
+                  "argumentsDigest": "102e66a87d70c5753734babc060e3f5fdfde73f4569054144b24f546c07bd076",
+                  "keys": [
+                    "operations"
+                  ],
+                  "unknownKeys": false,
+                  "turn": 0
+                },
+                {
+                  "name": "room_read_data",
+                  "status": "rejected",
+                  "argumentsDigest": "fc0ea8e6e6e3bd552aae84b08c3e28a3e7f2243484730958da0d3e1d89d63235",
+                  "keys": [
+                    "fields",
+                    "refs"
+                  ],
+                  "unknownKeys": false,
+                  "turn": 1,
+                  "referenceCount": 1,
+                  "code": "INPUT_INVALID"
+                },
+                {
+                  "name": "room_read_data",
+                  "status": "completed",
+                  "argumentsDigest": "16b5cac3ace04365c02834039ae77a5f08e4dd102566bb0fd24f11c952dc4c93",
+                  "keys": [
+                    "refs"
+                  ],
+                  "unknownKeys": false,
+                  "turn": 2,
+                  "referenceCount": 1
+                }
+              ],
+              "errors": [],
+              "outputFailures": [],
+              "contextBudget": {
+                "bytes": 69231,
+                "limitBytes": 262144,
+                "toolSchemaBytes": 6335,
+                "toolMessageBytes": 14504
+              }
+            },
+            "batchId": "b97fe4a6efc34a4998d1c3850f8b408f"
+          },
+          "calls": 11,
+          "ruling": {
+            "sessionId": "b9ee0b69ff204fd4afd17271ddd4991d",
+            "requestId": "97f4b7b85e004728a76a45457887cde0",
+            "summary": "已核对豆叶（player2 的树桩镇角色，活跃）[[entity:ada71041feda4de7887807b0c8681638@8]]当前钱币为 2 枚，按方案把 pips 改为 4，其余数值、装备与位置保持不变。\n\n- 第 1 项：更新该角色 pips 2→4，只写这一个数值。\n- 第 2 项：向 player2 发送通知，说明钱币增加 2 枚；通知仅在第 1 项实际成功后投递。\n- 这是待审提案，批准与执行结果以宿主回执为准。",
+            "status": "pending",
+            "createdAt": 1795147858.0121758,
+            "digest": "429ba9cb43fa88028070c84d247b1ef49eaa59be299a86058944cc296ff59044",
+            "actions": [
+              {
+                "target": "host",
+                "op": "entity.update",
+                "args": {
+                  "id": "ada71041feda4de7887807b0c8681638",
+                  "numbers": {
+                    "pips": 4
+                  }
+                }
+              },
+              {
+                "target": "host",
+                "op": "notification.send",
+                "args": {
+                  "recipientAccountIds": [
+                    "player2"
+                  ],
+                  "text": "豆叶的钱币增加了 2 枚，现为 4 枚。",
+                  "sourceActionIndex": 0
+                }
+              }
+            ],
+            "receipts": [],
+            "rulingId": "batch:b97fe4a6efc34a4998d1c3850f8b408f",
+            "kind": "runtime",
+            "canDecide": true,
+            "risks": [],
+            "initiator": "kp"
+          },
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "plan": {
+        "requestId": "2f7a9cebd65f4e8e87be86dd1af6fa07",
+        "sessionId": "b9ee0b69ff204fd4afd17271ddd4991d",
+        "status": "review_ready",
+        "createdAt": 1795147822.1471238,
+        "text": "给 player2 的角色增加2枚钱币。先读取角色当前钱币并说明具体方案，暂不生成指令包，等我下一条同意后再提交。",
+        "initiator": "kp",
+        "taskId": "50bff152e97c4bbbb9ea36d304e4f25d",
+        "proposalId": null,
+        "error": null,
+        "response": "player2 的角色「豆叶」当前钱币为 **2 枚**；增加 2 枚后应为 **4 枚**。\n\n- 钱币存在角色的 `numbers.pips` 字段，不是背包物品，也不需要改动物品定义。\n- 拟改动：仅把该角色的 pips 由 2 改为 4，其余数值、装备、位置与状态保持不变。\n- 因为修改的是玩家角色的数值，我会在同一待审批次中附一条发给 player2 的通知，说明钱币增加了 2 枚；通知只在数值更新实际成功后才投递。\n\n按你的要求，本条只作说明，未生成指令包。你下一条表示同意后，我再提交包含数值更新与通知的待审批次。",
+        "modelCalls": [
+          {
+            "requestedModel": "deepseek-flash",
+            "returnedModel": "deepseek-flash",
+            "systemFingerprint": "bc19ba97cbe016479903222bb1578db6",
+            "usage": {
+              "prompt_tokens": 12362,
+              "completion_tokens": 86,
+              "total_tokens": 12448
+            },
+            "profileRevision": 6
+          },
+          {
+            "requestedModel": "deepseek-flash",
+            "returnedModel": "deepseek-flash",
+            "systemFingerprint": "bc19ba97cbe016479903222bb1578db6",
+            "usage": {
+              "prompt_tokens": 12748,
+              "completion_tokens": 210,
+              "total_tokens": 12958
+            },
+            "profileRevision": 6
+          },
+          {
+            "requestedModel": "deepseek-flash",
+            "returnedModel": "deepseek-flash",
+            "systemFingerprint": "bc19ba97cbe016479903222bb1578db6",
+            "usage": {
+              "prompt_tokens": 13010,
+              "completion_tokens": 175,
+              "total_tokens": 13185
+            },
+            "profileRevision": 6
+          },
+          {
+            "requestedModel": "deepseek-flash",
+            "returnedModel": "deepseek-flash",
+            "systemFingerprint": "bc19ba97cbe016479903222bb1578db6",
+            "usage": {
+              "prompt_tokens": 14007,
+              "completion_tokens": 178,
+              "total_tokens": 14185
+            },
+            "profileRevision": 6
+          }
+        ],
+        "diagnostics": {
+          "schemaVersion": 1,
+          "stage": "completed",
+          "turn": 3,
+          "toolCalls": [
+            {
+              "name": "room_search_data",
+              "status": "completed",
+              "argumentsDigest": "bb2d6e2ff842af30ac1498358b2194082a3979eee210e9b62f128067e781ec65",
+              "keys": [
+                "limit",
+                "query",
+                "types"
+              ],
+              "unknownKeys": false,
+              "turn": 0,
+              "types": [
+                "entity"
+              ],
+              "hasQuery": true
+            },
+            {
+              "name": "room_read_data",
+              "status": "rejected",
+              "argumentsDigest": "668bd254a06a35502dd3f6ee53c41ba2262a504c9015bd9dfd0b1a844e048899",
+              "keys": [
+                "fields",
+                "refs"
+              ],
+              "unknownKeys": false,
+              "turn": 1,
+              "referenceCount": 1,
+              "code": "INPUT_INVALID"
+            },
+            {
+              "name": "room_read_data",
+              "status": "completed",
+              "argumentsDigest": "879a8d0bc4f3d4189ff715e79e948c7d8438a9ec2ccde7672eea390b3352c080",
+              "keys": [
+                "refs"
+              ],
+              "unknownKeys": false,
+              "turn": 2,
+              "referenceCount": 1
+            }
+          ],
+          "errors": [],
+          "outputFailures": [],
+          "contextBudget": {
+            "bytes": 57126,
+            "limitBytes": 262144,
+            "toolSchemaBytes": 6335,
+            "toolMessageBytes": 3596
+          }
+        }
+      },
+      "historicalDisplay": {
+        "status": "stale",
+        "text": "给 player2 的角色增加2枚钱币。先读取角色当前钱币并说明具体方案，暂不生成指令包，等我下一条同意后再提交。",
+        "response": "player2 的角色「豆叶」当前钱币为 **2 枚**；增加 2 枚后应为 **4 枚**。\n\n- 钱币存在角色的 `numbers.pips` 字段，不是背包物品，也不需要改动物品定义。\n- 拟改动：仅把该角色的 pips 由 2 改为 4，其余数值、装备、位置与状态保持不变。\n- 因为修改的是玩家角色的数值，我会在同一待审批次中附一条发给 player2 的通知，说明钱币增加了 2 枚；通知只在数值更新实际成功后才投递。\n\n按你的要求，本条只作说明，未生成指令包。你下一条表示同意后，我再提交包含数值更新与通知的待审批次。",
+        "error": null,
+        "sourceState": "stale",
+        "sourceError": "BASELINE_STALE",
+        "sourceNotice": "历史回答的资料依据已变化，仅用于理解此前意图；涉及修改时必须重新查询当前资料并另行审核。",
+        "historicalReadOnly": true
+      },
+      "elapsedSecondsIncludingApproval": 46.93,
+      "realCalls": 8
+    }
+  ],
+  "executionChecks": [
+    {
+      "id": "reviewed-notice-once",
+      "passed": true,
+      "notificationId": "d3791097b798f2191636b2a58b3b04711b7c1e5a036f06caff60a5973583b369",
+      "source": {
+        "commandId": "ai-batch:ca71546cc43745dfbc3f01153f33cc9b:0",
+        "op": "entity.update",
+        "status": "committed"
+      }
+    },
+    {
+      "id": "approved-target-only",
+      "passed": true,
+      "rulingId": "batch:ca71546cc43745dfbc3f01153f33cc9b"
+    },
+    {
+      "id": "repeat-confirm-no-replay",
+      "passed": true,
+      "rulingId": "batch:b97fe4a6efc34a4998d1c3850f8b408f"
+    }
+  ],
+  "calls": [
+    {
+      "injected": false,
+      "httpStatus": 200,
+      "seconds": 1.27,
+      "usage": {
+        "prompt_tokens": 12782,
+        "completion_tokens": 121,
+        "total_tokens": 12903,
+        "prompt_tokens_details": {
+          "cached_tokens": 5632
+        },
+        "prompt_cache_hit_tokens": 5632,
+        "prompt_cache_miss_tokens": 7150
+      },
+      "finishReasons": [
+        "tool_calls"
+      ]
+    },
+    {
+      "injected": false,
+      "httpStatus": 200,
+      "seconds": 1.87,
+      "usage": {
+        "prompt_tokens": 20562,
+        "completion_tokens": 172,
+        "total_tokens": 20734,
+        "prompt_tokens_details": {
+          "cached_tokens": 12672
+        },
+        "prompt_cache_hit_tokens": 12672,
+        "prompt_cache_miss_tokens": 7890
+      },
+      "finishReasons": [
+        "tool_calls"
+      ]
+    },
+    {
+      "injected": false,
+      "httpStatus": 200,
+      "seconds": 2.26,
+      "usage": {
+        "prompt_tokens": 21563,
+        "completion_tokens": 228,
+        "total_tokens": 21791,
+        "prompt_tokens_details": {
+          "cached_tokens": 20608
+        },
+        "prompt_cache_hit_tokens": 20608,
+        "prompt_cache_miss_tokens": 955
+      },
+      "finishReasons": [
+        "stop"
+      ]
+    },
+    {
+      "injected": false,
+      "httpStatus": 200,
+      "seconds": 1.47,
+      "usage": {
+        "prompt_tokens": 12362,
+        "completion_tokens": 86,
+        "total_tokens": 12448,
+        "prompt_tokens_details": {
+          "cached_tokens": 7936
+        },
+        "prompt_cache_hit_tokens": 7936,
+        "prompt_cache_miss_tokens": 4426
+      },
+      "finishReasons": [
+        "tool_calls"
+      ]
+    },
+    {
+      "injected": false,
+      "httpStatus": 200,
+      "seconds": 1.5,
+      "usage": {
+        "prompt_tokens": 12748,
+        "completion_tokens": 210,
+        "total_tokens": 12958,
+        "prompt_tokens_details": {
+          "cached_tokens": 12288
+        },
+        "prompt_cache_hit_tokens": 12288,
+        "prompt_cache_miss_tokens": 460
+      },
+      "finishReasons": [
+        "tool_calls"
+      ]
+    },
+    {
+      "injected": false,
+      "httpStatus": 200,
+      "seconds": 1.81,
+      "usage": {
+        "prompt_tokens": 13010,
+        "completion_tokens": 175,
+        "total_tokens": 13185,
+        "prompt_tokens_details": {
+          "cached_tokens": 12800
+        },
+        "prompt_cache_hit_tokens": 12800,
+        "prompt_cache_miss_tokens": 210
+      },
+      "finishReasons": [
+        "tool_calls"
+      ]
+    },
+    {
+      "injected": false,
+      "httpStatus": 200,
+      "seconds": 2.36,
+      "usage": {
+        "prompt_tokens": 14007,
+        "completion_tokens": 178,
+        "total_tokens": 14185,
+        "prompt_tokens_details": {
+          "cached_tokens": 13184
+        },
+        "prompt_cache_hit_tokens": 13184,
+        "prompt_cache_miss_tokens": 823
+      },
+      "finishReasons": [
+        "stop"
+      ]
+    },
+    {
+      "injected": false,
+      "httpStatus": 200,
+      "seconds": 1.53,
+      "usage": {
+        "prompt_tokens": 12606,
+        "completion_tokens": 122,
+        "total_tokens": 12728,
+        "prompt_tokens_details": {
+          "cached_tokens": 5376
+        },
+        "prompt_cache_hit_tokens": 5376,
+        "prompt_cache_miss_tokens": 7230
+      },
+      "finishReasons": [
+        "tool_calls"
+      ]
+    },
+    {
+      "injected": false,
+      "httpStatus": 200,
+      "seconds": 1.55,
+      "usage": {
+        "prompt_tokens": 15596,
+        "completion_tokens": 214,
+        "total_tokens": 15810,
+        "prompt_tokens_details": {
+          "cached_tokens": 12544
+        },
+        "prompt_cache_hit_tokens": 12544,
+        "prompt_cache_miss_tokens": 3052
+      },
+      "finishReasons": [
+        "tool_calls"
+      ]
+    },
+    {
+      "injected": false,
+      "httpStatus": 200,
+      "seconds": 1.63,
+      "usage": {
+        "prompt_tokens": 15862,
+        "completion_tokens": 173,
+        "total_tokens": 16035,
+        "prompt_tokens_details": {
+          "cached_tokens": 15616
+        },
+        "prompt_cache_hit_tokens": 15616,
+        "prompt_cache_miss_tokens": 246
+      },
+      "finishReasons": [
+        "tool_calls"
+      ]
+    },
+    {
+      "injected": false,
+      "httpStatus": 200,
+      "seconds": 2.46,
+      "usage": {
+        "prompt_tokens": 16860,
+        "completion_tokens": 245,
+        "total_tokens": 17105,
+        "prompt_tokens_details": {
+          "cached_tokens": 16000
+        },
+        "prompt_cache_hit_tokens": 16000,
+        "prompt_cache_miss_tokens": 860
+      },
+      "finishReasons": [
+        "stop"
+      ]
+    }
+  ],
+  "realSaveChanged": false,
+  "evidenceDirectory": "tests/output/review-identity-live-deepseek-flash-4057b8ca",
+  "previousRuns": [
+    {
+      "passed": false,
+      "rates": {
+        "firstAttemptPassed": 1,
+        "totalCases": 2,
+        "firstAttemptRate": 0.5,
+        "note": "小样本专项；执行验证另列，不代表全部跑团需求成功率"
+      },
+      "realCalls": 7,
+      "confirmedTokens": 102603,
+      "failureAnalysis": {
+        "category": "runtime-status-premature",
+        "cause": "api.tasks replaced a still-generating follow-up status with stale because its historical intent was old; harness ended before response completed",
+        "modelSemanticOutcome": "undetermined for second case",
+        "rawEvidencePreserved": true
+      },
+      "evidenceDirectory": "tests/output/review-identity-live-deepseek-flash-0a1d4edb"
+    },
+    {
+      "passed": false,
+      "rates": {
+        "firstAttemptPassed": 1,
+        "totalCases": 2,
+        "firstAttemptRate": 0.5,
+        "note": "按用户请求计，包含额度内自动格式修正；原始输出修正另列。小样本专项，不代表全部跑团需求成功率"
+      },
+      "realCalls": 14,
+      "confirmedTokens": 231725,
+      "failureAnalysis": null,
+      "evidenceDirectory": "tests/output/review-identity-live-deepseek-flash-bead44b1"
+    }
+  ],
+  "usage": {
+    "schemaVersion": 1,
+    "scopeId": "e3944b5689884c5db6fb3ada2a6e6959",
+    "scope": "room",
+    "timezone": "UTC",
+    "from": "2026-11-14",
+    "to": "2026-11-20",
+    "totals": {
+      "calls": 11,
+      "settledCalls": 11,
+      "pendingCalls": 0,
+      "uncertainCalls": 0,
+      "confirmedTokens": 169882,
+      "promptTokens": 167958,
+      "completionTokens": 1924,
+      "missingBreakdownCalls": 0,
+      "pendingReservedTokens": 0,
+      "uncertainReservedTokens": 0,
+      "accountedTokens": 169882
+    },
+    "byDay": [
+      {
+        "date": "2026-11-20",
+        "calls": 11,
+        "settledCalls": 11,
+        "pendingCalls": 0,
+        "uncertainCalls": 0,
+        "confirmedTokens": 169882,
+        "promptTokens": 167958,
+        "completionTokens": 1924,
+        "missingBreakdownCalls": 0,
+        "pendingReservedTokens": 0,
+        "uncertainReservedTokens": 0,
+        "accountedTokens": 169882
+      }
+    ],
+    "byProfile": [
+      {
+        "profileId": "deepseek-main",
+        "model": "deepseek-flash",
+        "calls": 11,
+        "settledCalls": 11,
+        "pendingCalls": 0,
+        "uncertainCalls": 0,
+        "confirmedTokens": 169882,
+        "promptTokens": 167958,
+        "completionTokens": 1924,
+        "missingBreakdownCalls": 0,
+        "pendingReservedTokens": 0,
+        "uncertainReservedTokens": 0,
+        "accountedTokens": 169882
+      }
+    ],
+    "budgetsToday": [
+      {
+        "profileId": "deepseek-main",
+        "date": "2026-11-20",
+        "dailyTokenBudget": null,
+        "enabled": false,
+        "accountedTokens": 169882,
+        "remainingTokens": null
+      }
+    ],
+    "items": [
+      {
+        "callId": "a784e481833c47a385b0ed5b76044114",
+        "date": "2026-11-20",
+        "profileId": "deepseek-main",
+        "model": "deepseek-flash",
+        "requestId": "51be3d49f6fb4904a60cfc7941d7f490",
+        "sessionId": "b9ee0b69ff204fd4afd17271ddd4991d",
+        "status": "confirmed",
+        "taskStatus": "review_ready",
+        "createdAt": 1795147854.208056,
+        "calls": 1,
+        "settledCalls": 1,
+        "pendingCalls": 0,
+        "uncertainCalls": 0,
+        "confirmedTokens": 17105,
+        "promptTokens": 16860,
+        "completionTokens": 245,
+        "missingBreakdownCalls": 0,
+        "pendingReservedTokens": 0,
+        "uncertainReservedTokens": 0,
+        "accountedTokens": 17105
+      },
+      {
+        "callId": "81c38979f7304738b00660e16eaedced",
+        "date": "2026-11-20",
+        "profileId": "deepseek-main",
+        "model": "deepseek-flash",
+        "requestId": "51be3d49f6fb4904a60cfc7941d7f490",
+        "sessionId": "b9ee0b69ff204fd4afd17271ddd4991d",
+        "status": "confirmed",
+        "taskStatus": "review_ready",
+        "createdAt": 1795147849.374302,
+        "calls": 1,
+        "settledCalls": 1,
+        "pendingCalls": 0,
+        "uncertainCalls": 0,
+        "confirmedTokens": 16035,
+        "promptTokens": 15862,
+        "completionTokens": 173,
+        "missingBreakdownCalls": 0,
+        "pendingReservedTokens": 0,
+        "uncertainReservedTokens": 0,
+        "accountedTokens": 16035
+      },
+      {
+        "callId": "0930ef72740447bb91bd25eada705313",
+        "date": "2026-11-20",
+        "profileId": "deepseek-main",
+        "model": "deepseek-flash",
+        "requestId": "51be3d49f6fb4904a60cfc7941d7f490",
+        "sessionId": "b9ee0b69ff204fd4afd17271ddd4991d",
+        "status": "confirmed",
+        "taskStatus": "review_ready",
+        "createdAt": 1795147845.561974,
+        "calls": 1,
+        "settledCalls": 1,
+        "pendingCalls": 0,
+        "uncertainCalls": 0,
+        "confirmedTokens": 15810,
+        "promptTokens": 15596,
+        "completionTokens": 214,
+        "missingBreakdownCalls": 0,
+        "pendingReservedTokens": 0,
+        "uncertainReservedTokens": 0,
+        "accountedTokens": 15810
+      },
+      {
+        "callId": "2b4a81d547504080b631bd5e5104ac07",
+        "date": "2026-11-20",
+        "profileId": "deepseek-main",
+        "model": "deepseek-flash",
+        "requestId": "51be3d49f6fb4904a60cfc7941d7f490",
+        "sessionId": "b9ee0b69ff204fd4afd17271ddd4991d",
+        "status": "confirmed",
+        "taskStatus": "review_ready",
+        "createdAt": 1795147841.289768,
+        "calls": 1,
+        "settledCalls": 1,
+        "pendingCalls": 0,
+        "uncertainCalls": 0,
+        "confirmedTokens": 12728,
+        "promptTokens": 12606,
+        "completionTokens": 122,
+        "missingBreakdownCalls": 0,
+        "pendingReservedTokens": 0,
+        "uncertainReservedTokens": 0,
+        "accountedTokens": 12728
+      },
+      {
+        "callId": "d036e652cffe48688de91a3e6eec525e",
+        "date": "2026-11-20",
+        "profileId": "deepseek-main",
+        "model": "deepseek-flash",
+        "requestId": "2f7a9cebd65f4e8e87be86dd1af6fa07",
+        "sessionId": "b9ee0b69ff204fd4afd17271ddd4991d",
+        "status": "confirmed",
+        "taskStatus": "review_ready",
+        "createdAt": 1795147831.104038,
+        "calls": 1,
+        "settledCalls": 1,
+        "pendingCalls": 0,
+        "uncertainCalls": 0,
+        "confirmedTokens": 14185,
+        "promptTokens": 14007,
+        "completionTokens": 178,
+        "missingBreakdownCalls": 0,
+        "pendingReservedTokens": 0,
+        "uncertainReservedTokens": 0,
+        "accountedTokens": 14185
+      },
+      {
+        "callId": "a449c5276e0143b3a6de8dcde2ed087f",
+        "date": "2026-11-20",
+        "profileId": "deepseek-main",
+        "model": "deepseek-flash",
+        "requestId": "2f7a9cebd65f4e8e87be86dd1af6fa07",
+        "sessionId": "b9ee0b69ff204fd4afd17271ddd4991d",
+        "status": "confirmed",
+        "taskStatus": "review_ready",
+        "createdAt": 1795147828.157467,
+        "calls": 1,
+        "settledCalls": 1,
+        "pendingCalls": 0,
+        "uncertainCalls": 0,
+        "confirmedTokens": 13185,
+        "promptTokens": 13010,
+        "completionTokens": 175,
+        "missingBreakdownCalls": 0,
+        "pendingReservedTokens": 0,
+        "uncertainReservedTokens": 0,
+        "accountedTokens": 13185
+      },
+      {
+        "callId": "5704d85f22684478be093b0e3f8ccafc",
+        "date": "2026-11-20",
+        "profileId": "deepseek-main",
+        "model": "deepseek-flash",
+        "requestId": "2f7a9cebd65f4e8e87be86dd1af6fa07",
+        "sessionId": "b9ee0b69ff204fd4afd17271ddd4991d",
+        "status": "confirmed",
+        "taskStatus": "review_ready",
+        "createdAt": 1795147825.98084,
+        "calls": 1,
+        "settledCalls": 1,
+        "pendingCalls": 0,
+        "uncertainCalls": 0,
+        "confirmedTokens": 12958,
+        "promptTokens": 12748,
+        "completionTokens": 210,
+        "missingBreakdownCalls": 0,
+        "pendingReservedTokens": 0,
+        "uncertainReservedTokens": 0,
+        "accountedTokens": 12958
+      },
+      {
+        "callId": "a2d006bdd38c4518ac48f6483d54c0c4",
+        "date": "2026-11-20",
+        "profileId": "deepseek-main",
+        "model": "deepseek-flash",
+        "requestId": "2f7a9cebd65f4e8e87be86dd1af6fa07",
+        "sessionId": "b9ee0b69ff204fd4afd17271ddd4991d",
+        "status": "confirmed",
+        "taskStatus": "review_ready",
+        "createdAt": 1795147823.827249,
+        "calls": 1,
+        "settledCalls": 1,
+        "pendingCalls": 0,
+        "uncertainCalls": 0,
+        "confirmedTokens": 12448,
+        "promptTokens": 12362,
+        "completionTokens": 86,
+        "missingBreakdownCalls": 0,
+        "pendingReservedTokens": 0,
+        "uncertainReservedTokens": 0,
+        "accountedTokens": 12448
+      },
+      {
+        "callId": "e041b5ae406d4b2a923e7a1e8a448f8d",
+        "date": "2026-11-20",
+        "profileId": "deepseek-main",
+        "model": "deepseek-flash",
+        "requestId": "c79f85456a8a400e99376325cf2e0d89",
+        "sessionId": "932eb8c0a82546988e69ea4ee62e8d08",
+        "status": "confirmed",
+        "taskStatus": "review_ready",
+        "createdAt": 1795147812.071291,
+        "calls": 1,
+        "settledCalls": 1,
+        "pendingCalls": 0,
+        "uncertainCalls": 0,
+        "confirmedTokens": 21791,
+        "promptTokens": 21563,
+        "completionTokens": 228,
+        "missingBreakdownCalls": 0,
+        "pendingReservedTokens": 0,
+        "uncertainReservedTokens": 0,
+        "accountedTokens": 21791
+      },
+      {
+        "callId": "392ab8708b2b4b26829b3f02cbc5dc39",
+        "date": "2026-11-20",
+        "profileId": "deepseek-main",
+        "model": "deepseek-flash",
+        "requestId": "c79f85456a8a400e99376325cf2e0d89",
+        "sessionId": "932eb8c0a82546988e69ea4ee62e8d08",
+        "status": "confirmed",
+        "taskStatus": "review_ready",
+        "createdAt": 1795147809.258599,
+        "calls": 1,
+        "settledCalls": 1,
+        "pendingCalls": 0,
+        "uncertainCalls": 0,
+        "confirmedTokens": 20734,
+        "promptTokens": 20562,
+        "completionTokens": 172,
+        "missingBreakdownCalls": 0,
+        "pendingReservedTokens": 0,
+        "uncertainReservedTokens": 0,
+        "accountedTokens": 20734
+      },
+      {
+        "callId": "a2b8ee4a06d046619a1eabffe234523b",
+        "date": "2026-11-20",
+        "profileId": "deepseek-main",
+        "model": "deepseek-flash",
+        "requestId": "c79f85456a8a400e99376325cf2e0d89",
+        "sessionId": "932eb8c0a82546988e69ea4ee62e8d08",
+        "status": "confirmed",
+        "taskStatus": "review_ready",
+        "createdAt": 1795147807.433452,
+        "calls": 1,
+        "settledCalls": 1,
+        "pendingCalls": 0,
+        "uncertainCalls": 0,
+        "confirmedTokens": 12903,
+        "promptTokens": 12782,
+        "completionTokens": 121,
+        "missingBreakdownCalls": 0,
+        "pendingReservedTokens": 0,
+        "uncertainReservedTokens": 0,
+        "accountedTokens": 12903
+      }
+    ],
+    "nextBefore": null
+  },
+  "persistentProviderConfigUnchanged": true,
+  "realCalls": 11,
+  "confirmedTokens": 169882,
+  "returnedModels": [
+    "deepseek-flash"
+  ],
+  "modelOutputRepairFailures": 0,
+  "rates": {
+    "firstAttemptPassed": 2,
+    "totalCases": 2,
+    "firstAttemptRate": 1.0,
+    "note": "按用户请求计，包含额度内自动格式修正；原始输出修正另列。小样本专项，不代表全部跑团需求成功率"
+  },
+  "passed": true,
+  "sourceDigests": {
+    "ai/guide.md": "14a6f1c2c86f7751d831c33dce510ae3741c006e6d71b361e9967cccf093a969",
+    "ai/game-terms.json": "0fa8e7a851a138f24f92c803cf1a788389e08c3cd29cb2d101d7eb8350a69e45"
+  },
+  "testConfiguration": {
+    "maxOutputTokens": 8192,
+    "maxToolRounds": 6,
+    "maxRepairAttempts": 5,
+    "maxTransportRetries": 0,
+    "thinking": "disabled"
+  }
+}

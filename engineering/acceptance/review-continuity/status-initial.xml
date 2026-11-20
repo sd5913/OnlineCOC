@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="3" skipped="0" tests="3" time="5.824" timestamp="2026-11-20T12:01:53.794862+08:00" hostname="LAPTOP-BIFSL64A"><testcase classname="tests.test_history_continuity" name="test_model_repairs_stale_intent_by_reading_target_without_reasking" time="1.660"><failure message="AssertionError: {'requestId': 'ab54143164824c78b51a3a15aa74728d', 'sessionId': '76a0049bcaf843568e319edb55d403e4', 'status': 'stale', 'createdAt': 1795147316.0425234, ...}&#10;assert ('stale' == 'review_ready'&#10;  &#10;  - review_ready&#10;  + stale)">application = &lt;onlinecoc_ai.api.Application object at 0x00000272411EC440&gt;
+
+    def test_model_repairs_stale_intent_by_reading_target_without_reasking(application):
+        import json
+        from onlinecoc_ai.data_queries import DataQueryService
+        from test_batch_notifications import actions
+        from test_access_batches import decide
+        app=application;sid,old=history_case(app,demand=True)
+        from onlinecoc_ai.coordinator import Coordinator
+        app.coordinator=Coordinator(app.proposals,app.coordinator.profiles,context=Context(app.proposals,demand=True))
+        app.runtime.coordinator=app.coordinator;app.coordinator.application=app
+        ref=next(i['ref'] for i in DataQueryService(app.host).execute('kp','search',{'types':['entity']})['items'] if i['ref']['id']==digest(['host','entity','actor-one']))
+        seen=[]
+        async def callback(count,messages,tools):
+            seen.append(count)
+            if count==1:
+                payload=json.loads(messages[1]['content'])
+                assert payload['currentActor']['accountId']=='kp'
+                assert payload['conversationHistory'][-1]['authority']=='historical-intent-only'
+                return completion({'kind':'batch','text':'保留原方案，待审核后修改并通知','actions':actions()})
+            if count==2:
+                feedback=json.loads(messages[-1]['content'])
+                assert feedback['error']['code']=='HISTORY_REQUERY_REQUIRED'
+                assert 'do not ask' in feedback['instruction']
+                return tool_call('room_read_data',{'refs':[ref]})
+            return completion({'kind':'batch','text':'已核对当前目标，修改和通知均等待审核','actions':actions()})
+        async def run():
+            app.coordinator.provider_factory=lambda _:Fake(callback);await app.coordinator.start()
+            try:
+                request=submit(app,sid,'是的，按此方案处理')
+                task=committed(command(app,'ai.request.dispatch',{'requestId':request['requestId']}))
+                result=await wait_task(app.coordinator,task['taskId']);assert result['status']=='review_ready',result
+                return result
+            finally:await app.coordinator.close()
+        result=asyncio.run(run());assert seen==[1,2,3]
+        row=next(i for i in app.sessions.get('kp',sid)['items'] if i.get('taskId')==result['taskId'])
+&gt;       assert row['status']=='review_ready' and not row.get('historicalReadOnly'),row
+E       AssertionError: {'requestId': 'ab54143164824c78b51a3a15aa74728d', 'sessionId': '76a0049bcaf843568e319edb55d403e4', 'status': 'stale', 'createdAt': 1795147316.0425234, ...}
+E       assert ('stale' == 'review_ready'
+E         
+E         - review_ready
+E         + stale)
+
+engineering\ai\tests\test_history_continuity.py:178: AssertionError</failure></testcase><testcase classname="tests.test_history_continuity" name="test_new_generation_public_status_is_not_expired_historical_intent[False]" time="1.317"><failure message="AssertionError: {'requestId': '64eb362733834f56a17b94638635236b', 'sessionId': '0acb25ed3c4e452cb9b5a64604fb02d7', 'status': 'stale', 'createdAt': 1795147317.874645, ...}&#10;assert ('stale' == 'generating'&#10;  &#10;  - generating&#10;  + stale)">application = &lt;onlinecoc_ai.api.Application object at 0x0000027240F307D0&gt;
+change_during_generation = False
+
+    @pytest.mark.parametrize('change_during_generation',[False,True])
+    def test_new_generation_public_status_is_not_expired_historical_intent(application,change_during_generation):
+        from onlinecoc_ai.coordinator import Coordinator
+        app=application;sid,old=history_case(app,demand=True)
+        app.coordinator=Coordinator(app.proposals,app.coordinator.profiles,context=Context(app.proposals,demand=True))
+        app.runtime.coordinator=app.coordinator;app.coordinator.application=app
+        async def run():
+            entered=asyncio.Event();release=asyncio.Event()
+            async def callback(*_):
+                entered.set();await release.wait()
+                return completion({'kind':'plan','text':'已保留原意图，继续准备当前方案'})
+            app.coordinator.provider_factory=lambda _:Fake(callback);await app.coordinator.start()
+            try:
+                req=submit(app,sid,'是的，按此方案处理')
+                dispatched=committed(command(app,'ai.request.dispatch',{'requestId':req['requestId']}))
+                await asyncio.wait_for(entered.wait(),5)
+                if change_during_generation:
+                    room=app.host.state();room['entities']['actor-one']['name']='生成期间再次变化';room['entities']['actor-one']['revision']+=1;app.host.commit(room)
+                row=next(i for i in app.sessions.get('kp',sid)['items'] if i['requestId']==req['requestId'])
+                assert row['status']=='generating' and not row.get('historicalReadOnly'),row
+                release.set();task=await wait_task(app.coordinator,dispatched['taskId'])
+                row=next(i for i in app.sessions.get('kp',sid)['items'] if i['requestId']==req['requestId'])
+                if change_during_generation:
+                    assert task['status']=='failed' and row['status']=='failed',row
+                else:
+                    assert task['status']=='review_ready' and row['status']=='review_ready',row
+                    assert not row.get('historicalReadOnly') and not row.get('sourceState')
+                old_row=next(i for i in app.sessions.get('kp',sid)['items'] if i.get('taskId')==old['taskId'])
+                assert old_row['historicalReadOnly'] and old_row['response']==old['text']
+            finally:release.set();await app.coordinator.close()
+&gt;       asyncio.run(run())
+
+engineering\ai\tests\test_history_continuity.py:215: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:204: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:127: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\base_events.py:719: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    async def run():
+        entered=asyncio.Event();release=asyncio.Event()
+        async def callback(*_):
+            entered.set();await release.wait()
+            return completion({'kind':'plan','text':'已保留原意图，继续准备当前方案'})
+        app.coordinator.provider_factory=lambda _:Fake(callback);await app.coordinator.start()
+        try:
+            req=submit(app,sid,'是的，按此方案处理')
+            dispatched=committed(command(app,'ai.request.dispatch',{'requestId':req['requestId']}))
+            await asyncio.wait_for(entered.wait(),5)
+            if change_during_generation:
+                room=app.host.state();room['entities']['actor-one']['name']='生成期间再次变化';room['entities']['actor-one']['revision']+=1;app.host.commit(room)
+            row=next(i for i in app.sessions.get('kp',sid)['items'] if i['requestId']==req['requestId'])
+&gt;           assert row['status']=='generating' and not row.get('historicalReadOnly'),row
+E           AssertionError: {'requestId': '64eb362733834f56a17b94638635236b', 'sessionId': '0acb25ed3c4e452cb9b5a64604fb02d7', 'status': 'stale', 'createdAt': 1795147317.874645, ...}
+E           assert ('stale' == 'generating'
+E             
+E             - generating
+E             + stale)
+
+engineering\ai\tests\test_history_continuity.py:204: AssertionError</failure></testcase><testcase classname="tests.test_history_continuity" name="test_new_generation_public_status_is_not_expired_historical_intent[True]" time="1.424"><failure message="AssertionError: {'requestId': 'b2eb794d229d4ddda198e60326e0aa99', 'sessionId': '676d4ef6c5f24fa1bf2a41c1159ce5bb', 'status': 'stale', 'createdAt': 1795147319.3489199, ...}&#10;assert ('stale' == 'generating'&#10;  &#10;  - generating&#10;  + stale)">application = &lt;onlinecoc_ai.api.Application object at 0x0000027240F32990&gt;
+change_during_generation = True
+
+    @pytest.mark.parametrize('change_during_generation',[False,True])
+    def test_new_generation_public_status_is_not_expired_historical_intent(application,change_during_generation):
+        from onlinecoc_ai.coordinator import Coordinator
+        app=application;sid,old=history_case(app,demand=True)
+        app.coordinator=Coordinator(app.proposals,app.coordinator.profiles,context=Context(app.proposals,demand=True))
+        app.runtime.coordinator=app.coordinator;app.coordinator.application=app
+        async def run():
+            entered=asyncio.Event();release=asyncio.Event()
+            async def callback(*_):
+                entered.set();await release.wait()
+                return completion({'kind':'plan','text':'已保留原意图，继续准备当前方案'})
+            app.coordinator.provider_factory=lambda _:Fake(callback);await app.coordinator.start()
+            try:
+                req=submit(app,sid,'是的，按此方案处理')
+                dispatched=committed(command(app,'ai.request.dispatch',{'requestId':req['requestId']}))
+                await asyncio.wait_for(entered.wait(),5)
+                if change_during_generation:
+                    room=app.host.state();room['entities']['actor-one']['name']='生成期间再次变化';room['entities']['actor-one']['revision']+=1;app.host.commit(room)
+                row=next(i for i in app.sessions.get('kp',sid)['items'] if i['requestId']==req['requestId'])
+                assert row['status']=='generating' and not row.get('historicalReadOnly'),row
+                release.set();task=await wait_task(app.coordinator,dispatched['taskId'])
+                row=next(i for i in app.sessions.get('kp',sid)['items'] if i['requestId']==req['requestId'])
+                if change_during_generation:
+                    assert task['status']=='failed' and row['status']=='failed',row
+                else:
+                    assert task['status']=='review_ready' and row['status']=='review_ready',row
+                    assert not row.get('historicalReadOnly') and not row.get('sourceState')
+                old_row=next(i for i in app.sessions.get('kp',sid)['items'] if i.get('taskId')==old['taskId'])
+                assert old_row['historicalReadOnly'] and old_row['response']==old['text']
+            finally:release.set();await app.coordinator.close()
+&gt;       asyncio.run(run())
+
+engineering\ai\tests\test_history_continuity.py:215: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:204: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:127: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\base_events.py:719: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    async def run():
+        entered=asyncio.Event();release=asyncio.Event()
+        async def callback(*_):
+            entered.set();await release.wait()
+            return completion({'kind':'plan','text':'已保留原意图，继续准备当前方案'})
+        app.coordinator.provider_factory=lambda _:Fake(callback);await app.coordinator.start()
+        try:
+            req=submit(app,sid,'是的，按此方案处理')
+            dispatched=committed(command(app,'ai.request.dispatch',{'requestId':req['requestId']}))
+            await asyncio.wait_for(entered.wait(),5)
+            if change_during_generation:
+                room=app.host.state();room['entities']['actor-one']['name']='生成期间再次变化';room['entities']['actor-one']['revision']+=1;app.host.commit(room)
+            row=next(i for i in app.sessions.get('kp',sid)['items'] if i['requestId']==req['requestId'])
+&gt;           assert row['status']=='generating' and not row.get('historicalReadOnly'),row
+E           AssertionError: {'requestId': 'b2eb794d229d4ddda198e60326e0aa99', 'sessionId': '676d4ef6c5f24fa1bf2a41c1159ce5bb', 'status': 'stale', 'createdAt': 1795147319.3489199, ...}
+E           assert ('stale' == 'generating'
+E             
+E             - generating
+E             + stale)
+
+engineering\ai\tests\test_history_continuity.py:204: AssertionError</failure></testcase></testsuite></testsuites>

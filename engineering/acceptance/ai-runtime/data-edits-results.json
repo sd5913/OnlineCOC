@@ -1,0 +1,562 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-11-19",
+  "scope": "Explicit model data edits compiled to full validated candidates",
+  "status": "passed",
+  "latestUnique": {
+    "passed": 115,
+    "failed": 0,
+    "skipped": 0
+  },
+  "runs": [
+    {
+      "file": "data-edits-core.xml",
+      "tests": 22,
+      "passed": 22,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "file": "data-edits-copy.xml",
+      "tests": 2,
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "file": "data-edits-regression.xml",
+      "tests": 93,
+      "passed": 91,
+      "failed": 2,
+      "skipped": 0
+    },
+    {
+      "file": "data-edits-budget.xml",
+      "tests": 2,
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0
+    }
+  ],
+  "tests": {
+    "tests.test_data_edits::test_append_from_partial_array_preserves_all_unread_data_and_is_repeatable": {
+      "status": "passed",
+      "evidence": "data-edits-copy.xml"
+    },
+    "tests.test_data_edits::test_append_uniqueness_checks_items_outside_returned_page": {
+      "status": "passed",
+      "evidence": "data-edits-core.xml"
+    },
+    "tests.test_data_edits::test_add_replace_remove_are_explicit_and_preserve_siblings": {
+      "status": "passed",
+      "evidence": "data-edits-core.xml"
+    },
+    "tests.test_data_edits::test_rejects_unsafe_edits_atomically[mixed-DATA_EDIT_MIXED_REPLACEMENT]": {
+      "status": "passed",
+      "evidence": "data-edits-core.xml"
+    },
+    "tests.test_data_edits::test_rejects_unsafe_edits_atomically[stale-DATA_EDIT_BASELINE_STALE]": {
+      "status": "passed",
+      "evidence": "data-edits-core.xml"
+    },
+    "tests.test_data_edits::test_rejects_unsafe_edits_atomically[forged-DATA_EDIT_REFERENCE_UNVERIFIED]": {
+      "status": "passed",
+      "evidence": "data-edits-core.xml"
+    },
+    "tests.test_data_edits::test_rejects_unsafe_edits_atomically[incomplete-DATA_EDIT_INCOMPLETE_READ]": {
+      "status": "passed",
+      "evidence": "data-edits-core.xml"
+    },
+    "tests.test_data_edits::test_rejects_unsafe_edits_atomically[overlap-DATA_EDIT_OVERLAP]": {
+      "status": "passed",
+      "evidence": "data-edits-core.xml"
+    },
+    "tests.test_data_edits::test_rejects_unsafe_edits_atomically[array-remove-DATA_EDIT_TARGET_INVALID]": {
+      "status": "passed",
+      "evidence": "data-edits-core.xml"
+    },
+    "tests.test_data_edits::test_rejects_unsafe_edits_atomically[root-DATA_EDIT_INCOMPLETE_READ]": {
+      "status": "passed",
+      "evidence": "data-edits-core.xml"
+    },
+    "tests.test_data_edits::test_rejects_unsafe_edits_atomically[add-existing-DATA_EDIT_TARGET_INVALID]": {
+      "status": "passed",
+      "evidence": "data-edits-core.xml"
+    },
+    "tests.test_data_edits::test_multiple_appends_and_large_object_index_do_not_require_reconstruction": {
+      "status": "passed",
+      "evidence": "data-edits-copy.xml"
+    },
+    "tests.test_data_edits::test_read_does_not_issue_ref_on_invalid_path_or_page[args0]": {
+      "status": "passed",
+      "evidence": "data-edits-core.xml"
+    },
+    "tests.test_data_edits::test_read_does_not_issue_ref_on_invalid_path_or_page[args1]": {
+      "status": "passed",
+      "evidence": "data-edits-core.xml"
+    },
+    "tests.test_data_edits::test_read_does_not_issue_ref_on_invalid_path_or_page[args2]": {
+      "status": "passed",
+      "evidence": "data-edits-core.xml"
+    },
+    "tests.test_data_edits::test_read_does_not_issue_ref_on_invalid_path_or_page[args3]": {
+      "status": "passed",
+      "evidence": "data-edits-core.xml"
+    },
+    "tests.test_data_edits::test_real_application_egress_and_session_ceiling[kp-EXTERNAL_SCOPE_DISABLED]": {
+      "status": "passed",
+      "evidence": "data-edits-core.xml"
+    },
+    "tests.test_data_edits::test_real_application_egress_and_session_ceiling[queries-DATA_QUERIES_DISABLED]": {
+      "status": "passed",
+      "evidence": "data-edits-core.xml"
+    },
+    "tests.test_data_edits::test_real_application_egress_and_session_ceiling[player-TOOL_FORBIDDEN]": {
+      "status": "passed",
+      "evidence": "data-edits-core.xml"
+    },
+    "tests.test_data_edits::test_model_increment_compiles_to_checked_manual_candidate[False]": {
+      "status": "passed",
+      "evidence": "data-edits-core.xml"
+    },
+    "tests.test_data_edits::test_model_increment_compiles_to_checked_manual_candidate[True]": {
+      "status": "passed",
+      "evidence": "data-edits-core.xml"
+    },
+    "tests.test_data_edits::test_data_edits_are_only_valid_on_draft": {
+      "status": "passed",
+      "evidence": "data-edits-core.xml"
+    },
+    "tests.test_coordinator::test_draft_is_checked_but_never_published": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_coordinator::test_blocked_model_does_not_hold_host_lock_and_can_cancel": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_coordinator::test_request_dedup_queue_and_budget": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_coordinator::test_untrusted_model_and_retry_limits[forged-TOOL_FORBIDDEN]": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_coordinator::test_untrusted_model_and_retry_limits[loop-TOOL_ROUND_LIMIT]": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_coordinator::test_untrusted_model_and_retry_limits[retry-PROVIDER_UNAVAILABLE]": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_coordinator::test_untrusted_model_and_retry_limits[repair-MODEL_OUTPUT_INVALID]": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_coordinator::test_expired_task_and_authority_change_fail_closed": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_coordinator::test_disabled_service_makes_no_provider_calls": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_coordinator::test_retry_budget_records_each_attempt_once": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_coordinator::test_restart_interrupts_queued_tasks_and_preserves_budget": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_coordinator::test_permissions_changed_during_generation_discard_output": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_coordinator::test_profile_changed_during_generation_discards_output_and_runner_survives": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_coordinator::test_real_contract_is_exposed_and_repair_names_invalid_field": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_context::test_default_excludes_room_and_pack_text": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_context::test_public_context_strips_secret_and_never_reads_others_private_chat": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_context::test_context_rechecks_source_and_policy_after_generation[edit]": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_context::test_context_rechecks_source_and_policy_after_generation[delete]": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_context::test_context_rechecks_source_and_policy_after_generation[policy]": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_context::test_context_rechecks_source_and_policy_after_generation[revoke]": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_context::test_context_rechecks_source_and_policy_after_generation[profile]": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_context::test_manual_revision_keeps_original_source_authorization": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_context::test_chat_source_requires_actual_current_text_and_external_permission": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_context::test_unrelated_read_position_and_ai_history_do_not_change_world": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_context::test_scope_mismatch_rejects_cross_room_context": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_context::test_context_size_is_bounded": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_context::test_two_actual_demo_directories_do_not_share_secrets_or_memory": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_entrypoints::test_requests_are_explicit_idempotent_redacted_and_paged": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_entrypoints::test_chat_forwarding_binds_original_and_policy": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_entrypoints::test_player_can_cancel_after_dispatching_kp_loses_role": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_entrypoints::test_plan_without_proposal_rechecks_context_on_read": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_entrypoints::test_auto_off_prefix_dedup_edits_withdrawal_and_role": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_entrypoints::test_manual_revision_invalidates_approval_and_cancel_revokes": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_entrypoints::test_receipt_rechecks_private_sources_and_restart_pending": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_entrypoints::test_http_auth_limits_schema_capability_and_disabled_module": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_entrypoints::test_cli_uses_same_three_engines": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_rulings::test_chat_approval_is_bound_to_batch_and_not_another_model_request": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_rulings::test_config_is_one_checked_ruling_and_publishes_once": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_rulings::test_high_risk_config_never_uses_auto_approval": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_rulings::test_player_cannot_decide_and_stale_digest_cannot_execute": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_rulings::test_consultation_only_evidence_cannot_enter_publish_queue_or_auto_approve": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_rulings::test_invalid_model_output_has_specific_cause[[]-MODEL_OBJECT_REQUIRED]": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_rulings::test_invalid_model_output_has_specific_cause[null-MODEL_OBJECT_REQUIRED]": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_rulings::test_invalid_model_output_has_specific_cause[broken-MODEL_JSON_INVALID]": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_rulings::test_invalid_model_output_has_specific_cause[{\"kind\":\"other\",\"text\":\"a\"}-MODEL_KIND_INVALID]": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_rulings::test_single_json_fence_is_accepted_without_extracting_arbitrary_text": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_rulings::test_five_repairs_do_not_consume_tool_rounds[True]": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_rulings::test_five_repairs_do_not_consume_tool_rounds[False]": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_rulings::test_user_decision_pauses_instead_of_retrying[clarification]": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_rulings::test_user_decision_pauses_instead_of_retrying[plan]": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_rulings::test_basic_lua_error_repairs_same_proposal_before_review": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_policies::test_high_risk_requires_exact_manual_fingerprint_and_retains_diff": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_policies::test_more_than_eight_actions_execute_without_truncation": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_policies::test_batch_storage_has_no_business_count_limit": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_policies::test_policy_switches_are_enforced_for_new_and_pending_writes": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_policies::test_ordinary_actor_configuration_still_supports_explicit_auto_policy": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_policies::test_admin_room_scope_is_default_and_revocable_without_player_escalation": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_policies::test_player_request_is_explicit_private_and_real_observation_is_required": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_policies::test_rejected_request_has_no_disclosure_and_disabled_policy_blocks_new_request": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_policies::test_remove_schema_and_no_configuration_count_limit": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_policies::test_stable_array_uses_current_baseline_and_candidate_references": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_policies::test_live_probes_bind_real_ids_and_do_not_hide_changed_or_unlisted_failures[success-True]": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_policies::test_live_probes_bind_real_ids_and_do_not_hide_changed_or_unlisted_failures[declared-block-True]": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_policies::test_live_probes_bind_real_ids_and_do_not_hide_changed_or_unlisted_failures[changed-error-False]": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_policies::test_live_probes_bind_real_ids_and_do_not_hide_changed_or_unlisted_failures[unlisted-error-False]": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_policies::test_cumulative_tool_budget_uses_transport_limit_and_reports_sizes[112640-review_ready]": {
+      "status": "passed",
+      "evidence": "data-edits-budget.xml"
+    },
+    "tests.test_policies::test_cumulative_tool_budget_uses_transport_limit_and_reports_sizes[276480-failed]": {
+      "status": "passed",
+      "evidence": "data-edits-budget.xml"
+    },
+    "tests.test_policies::test_management_catalog_indexes_before_returning_selected_schemas": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_policies::test_unused_extension_remove_requires_policy_without_making_actor_edits_high_risk[True]": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_policies::test_unused_extension_remove_requires_policy_without_making_actor_edits_high_risk[False]": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_policies::test_malformed_batch_gets_exact_schema_and_cannot_escape_to_plan[correct-after-plan]": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_policies::test_malformed_batch_gets_exact_schema_and_cannot_escape_to_plan[clarification]": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_policies::test_malformed_batch_gets_exact_schema_and_cannot_escape_to_plan[exhausted]": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_policies::test_batch_self_mutation_preserves_safe_execution_status_after_source_change_and_revocation[completed]": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_policies::test_batch_self_mutation_preserves_safe_execution_status_after_source_change_and_revocation[partial]": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_policies::test_batch_self_mutation_preserves_safe_execution_status_after_source_change_and_revocation[pending]": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_review_debug::test_review_source_is_separate_from_kp_message_and_deduplicated": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_review_debug::test_forwarded_request_resolves_real_source_and_does_not_change_original": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_review_debug::test_all_forwarded_reviews_stay_manual_with_auto_on": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_review_debug::test_review_source_obeys_external_scope": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_review_debug::test_ruling_digest_and_snapshot_size_checked": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_review_debug::test_debug_is_readonly_metadata_default_with_authorized_content_opt_in": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_review_debug::test_debug_rejects_ambiguous_or_invalid_options[options0]": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_review_debug::test_debug_rejects_ambiguous_or_invalid_options[options1]": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_review_debug::test_debug_rejects_ambiguous_or_invalid_options[options2]": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_review_debug::test_debug_rejects_ambiguous_or_invalid_options[options3]": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_review_debug::test_debug_rejects_ambiguous_or_invalid_options[options4]": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_review_debug::test_debug_rechecks_deleted_session_and_player_switch": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_review_debug::test_pure_schema_catalog_available_without_kp_egress": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_review_debug::test_provider_records_actual_model_without_equating_alias_and_version": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_review_debug::test_real_http_debug_authorization_no_store_and_no_receipt": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_review_debug::test_legacy_accepted_review_retains_original_player_source": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    },
+    "tests.test_review_debug::test_task_and_debug_preserve_requested_and_actual_model_ids": {
+      "status": "passed",
+      "evidence": "data-edits-regression.xml"
+    }
+  },
+  "sourceSha256": {
+    "engineering/ai/src/onlinecoc_ai/access.py": "e3c872622671c9aee75ea83b3b98194709b8cdddd9152c031dcd46c25216876f",
+    "engineering/ai/src/onlinecoc_ai/answers.py": "cabf3db2d04ca16b5c694f7adca74cf50183c0dc671a3c6ac5358900fc676402",
+    "engineering/ai/src/onlinecoc_ai/api.py": "0ccd41a04a2a3a22bd2145669b343238ee77386b6d638a0e3776209e5a6de18e",
+    "engineering/ai/src/onlinecoc_ai/batches.py": "6c0371d6335f0ff87c0cc351d9d42b899593c5ebc0082714f93e8a40f2ac8268",
+    "engineering/ai/src/onlinecoc_ai/change_policy.py": "a6da5036ee262283289336b071fd94c77faadf073948b98234c54dcb7d9a82ba",
+    "engineering/ai/src/onlinecoc_ai/cli.py": "9fd275ce87a8edff8c0e724a5b04fc1ce79bc0784b0d60bcfa750d09b23c1e9d",
+    "engineering/ai/src/onlinecoc_ai/context.py": "bfd0b965905599a267935b7bf26a18a47738b4fe58a350f9385fa43155c66235",
+    "engineering/ai/src/onlinecoc_ai/contracts.py": "1a1d77e43f0dbeeda22cfe7e7416210bf3b204f17768e8ad355acfbfd28c9a86",
+    "engineering/ai/src/onlinecoc_ai/coordinator.py": "538b7a20da1dfb99eb87c6eb378eb7bc6d6dbe14ba041f26930947ea6b6c1a4b",
+    "engineering/ai/src/onlinecoc_ai/data_edits.py": "0532ef479ec441dd2133383410cb77592a2bd8c3e4fe7d1f663c001b35cad565",
+    "engineering/ai/src/onlinecoc_ai/data_queries.py": "8193830e78557833ae7dd0b9770604f2e4ed09b1f47b60f25069ef18d30ab9f6",
+    "engineering/ai/src/onlinecoc_ai/debug.py": "17e3bb1ad71e02582e3649823c2818d6defcfca34e3f3d0171c6fec2c019ee38",
+    "engineering/ai/src/onlinecoc_ai/diagnostics.py": "af1576c3b2e05a50fadc097eeab73b222d951739a0e5380fbaa45efc9384aa29",
+    "engineering/ai/src/onlinecoc_ai/errors.py": "d082dda537453626acb6f3b8424aa4d73f85c00da42d762762fb23d2e7a384ce",
+    "engineering/ai/src/onlinecoc_ai/knowledge.py": "e21eac9de627e4afc2430b7532fe2223341406049e3b1cb9ea6e6c3341a0c96b",
+    "engineering/ai/src/onlinecoc_ai/knowledge_requests.py": "b53403b1b8da40715a5152b4ac257586278963ea46eb90688f5b7fc14f10a6f6",
+    "engineering/ai/src/onlinecoc_ai/known_answers.py": "3010f52e2f77b1e847078955ae7fb4f3eb04ed318f498305f74c8a0949f9dbc0",
+    "engineering/ai/src/onlinecoc_ai/local_lock.py": "163704bbe210e32da99510237931b116bc67ded4f16939625357aec8936fc1af",
+    "engineering/ai/src/onlinecoc_ai/manager.py": "ab390bfc4897cab3cdf8c813db4e8cf833047f7e74151a6f93b21a9e1718d19d",
+    "engineering/ai/src/onlinecoc_ai/memory.py": "63c54933810330288c43e047d8f29e5eaf8befed1435d5e23bc63b500c97c235",
+    "engineering/ai/src/onlinecoc_ai/pack.py": "46271072cd2c5e607fd6ce74d196888887dada7f56eeabdd3bed7ef8666e3442",
+    "engineering/ai/src/onlinecoc_ai/player_requests.py": "5ec76146c422f74e34c410f8850fe1f6d007f33b5a104c76d176c7d29c63d9c9",
+    "engineering/ai/src/onlinecoc_ai/policy.py": "75e0dbd30cbe7f5ecd5e4743b49d56a60f3eef0206c6621de200c531cb0e2b71",
+    "engineering/ai/src/onlinecoc_ai/profiles.py": "c2c13d549be93456d9ef7168b9fa19c1924aadb0524911729681887457ab7c6c",
+    "engineering/ai/src/onlinecoc_ai/proposals.py": "9ff4ef2fb2d53385bdc3b5e31ed6c473aeda6e7c7c09eb71d5ca87e7ce48430c",
+    "engineering/ai/src/onlinecoc_ai/references.py": "9beb0d84c0aa25f03df8d49cff836f038ca2d79c42b6eb13edf0e85fd916926a",
+    "engineering/ai/src/onlinecoc_ai/repository.py": "724de82df0940cb6458f6dfc1e09fb18ddc810dcdf06e09f746b8b1cce96e217",
+    "engineering/ai/src/onlinecoc_ai/reviews.py": "c9ff6ed55b21ef8a90d7dac688b712dd1d7b21d10c70f71130754b03ba732b42",
+    "engineering/ai/src/onlinecoc_ai/rulings.py": "f46dceec4e46d66698d93636e65ce87a2428ea159ae2260bfbed18c5c8f84690",
+    "engineering/ai/src/onlinecoc_ai/runtime.py": "5f4f13401189ee3e3a07e07b700417d2243a7ccaa7d0530b3d14eb1317f4103c",
+    "engineering/ai/src/onlinecoc_ai/sandbox.py": "30766603068ef36110b15a9add78c65282658cf9e0fe4fef1f24ae1785ceb407",
+    "engineering/ai/src/onlinecoc_ai/sessions.py": "ba8f37a71b20cc36e85f8076643277daed7d907c84a3aed13e3177ce80d85ee3",
+    "engineering/ai/src/onlinecoc_ai/usage.py": "e1b38804a341bf1f825daf2367938e5c8350ed46755d858089819c8cb4c644a6",
+    "engineering/ai/src/onlinecoc_ai/vault.py": "4bfa15671a968f2e8a917c7ccea0256970a3fd20ce08167b72d604ecac810bca",
+    "engineering/ai/src/onlinecoc_ai/__init__.py": "45a5eef692b3ff17f5451ed03348f091061741b46e352d2f560a77735f28b1c8",
+    "engineering/ai/src/onlinecoc_ai/providers/base.py": "db70f903e9b6ec4720ec176b90d8a250017699a61653a1aa1b3ae8d8dd64475a",
+    "engineering/ai/src/onlinecoc_ai/providers/compatible.py": "e783ef478de56e85bb83562f68fffa97da8b07db89c5454a2420e2575dc9d7a5",
+    "engineering/ai/src/onlinecoc_ai/providers/deepseek.py": "5fd1a82a519ce8835cc407755182884598cabbbe845988d3f5354aa4b2dd1f57",
+    "engineering/ai/src/onlinecoc_ai/providers/transport.py": "e962909ad7eee0ae05655926ff42ab6e581166725a7e54afac08a4a14bb236e0",
+    "engineering/ai/src/onlinecoc_ai/providers/__init__.py": "853b4a7ef469f37005ca2b6cd3cfda46a02a4d2cc709b4317e976ce41d0d038d",
+    "engineering/ai/src/onlinecoc_ai/validation/base.py": "5c247432ca6362244ec78b28c98dc7e61195dc518e8f11cdedcca0b11e27e38d",
+    "engineering/ai/src/onlinecoc_ai/validation/common.py": "524e6a28b52e880483310fd3f04e540582502276eb53f232bf97160ea38f692c",
+    "engineering/ai/src/onlinecoc_ai/validation/extensions.py": "94298df880066f8a66faaed227b6f2f519f382680b8227fd8a00088dbf8c5461",
+    "engineering/ai/src/onlinecoc_ai/validation/gameplay.py": "a2daef832d54b6e46cf50c1481e8707676bb7839ba97755276c9214b057f2be2",
+    "engineering/ai/src/onlinecoc_ai/validation/live.py": "058054b2a9a558fa404aabac855b8c448e5bc87dcb37ad797711a98b9bdc9bc3",
+    "engineering/ai/src/onlinecoc_ai/validation/rules.py": "073024fbc8593b367cf1b97e69bba101a469f69145680913d61e89f19d477c8e",
+    "engineering/ai/src/onlinecoc_ai/validation/__init__.py": "c6f6e326c479f9eb78c920e80b8abf304731ac3305687a127cdcda2ac894f932",
+    "engineering/ai/tests/test_data_edits.py": "32fb6755eb45829eb78048e31e1a8d54640b2174b781e462ec57daee7c651bdf",
+    "engineering/ai/tests/test_policies.py": "538709dc9c8cc00fba1fa1868231a67b3594a73044e748ad549e7f25f73a398c",
+    "engineering/contracts/ai.json": "48ab0351c291769dadc706792102e14e90e16b2aecce20f7ba085e46e34f73ce",
+    "engineering/contracts/ai-operations.json": "40a4bc34a24b6fb6510c083b98f7a8685dcf124d88a23ec8a06adf4e87632868"
+  },
+  "notes": [
+    "22 focused cases verify preservation of unread baseline, pagination, full-array uniqueness, stale/forged refs, explicit edits, permissions and A/B/C with manual high-risk approval.",
+    "Regression initially had two outdated catalog mock signatures missing public_only keyword support; only the test mock changed and both were retested. Production source stayed frozen during package live retest.",
+    "Explicit edits are model output only; persistent ChangeSet and engine publication schema remain unchanged.",
+    "Module paid API calls: 0. Real package fixture validation is recorded separately; module tests do not count toward that result."
+  ]
+}

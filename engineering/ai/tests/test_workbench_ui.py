@@ -19,7 +19,7 @@ def test_room_settings_page_saves_permissions_and_denies_player(services):
             page.locator('#allow-player').check();page.locator('#auto-batches').check();page.locator('#access button').click()
             expect(page.locator('#status')).to_have_text('设置已保存')
             access=page.request.get(origin+'/api/v1/ai/access').json();assert access['allowPlayerChat'] and access['autoApproveBatches']
-            page.locator('#profile').select_option('deepseek-main');page.locator('#public').check();page.locator('#service button').click()
+            page.locator('#profile').select_option('deepseek-main');page.locator('#public').check();page.get_by_role('button',name='保存服务设置',exact=True).click()
             expect(page.locator('#status')).to_have_text('设置已保存')
             assert page.request.get(origin+'/api/v1/ai/settings').json()['settings']['profileId']=='deepseek-main'
             page.screenshot(path=str(OUTPUT/'workbench-settings.png'))
@@ -51,7 +51,7 @@ def test_compact_ruling_modal_retains_risks_and_decides_once(services):
             page.get_by_role('button',name='打开对话').click();assert page.evaluate('opened')=='s1'
             page.get_by_role('button',name='查看并裁决').click();page.locator('textarea').fill('接受已核对影响')
             page.evaluate('panel.refresh()');expect(page.locator('textarea')).to_have_value('接受已核对影响')
-            expect(page.locator('details')).not_to_have_attribute('open','')
+            expect(page.locator('details').filter(has=page.get_by_text('完整修改与检查结果',exact=True))).not_to_have_attribute('open','')
             page.screenshot(path=str(OUTPUT/'workbench-ruling-detail.png'))
             page.get_by_role('button',name='批准并执行').click();expect(page.locator('.ruling-summary')).to_contain_text('已执行')
             sent=page.evaluate('commands');assert len(sent)==1 and sent[0]['args']['riskDecisions']=={'risk':'接受已核对影响'}

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="45.237" timestamp="2026-11-20T01:02:09.102599+08:00" hostname="LAPTOP-BIFSL64A"><testcase classname="tests.test_access_ui" name="test_permissions_archive_delete_batches_and_mobile" time="44.681"><failure message="AssertionError: Locator expected to contain text '本人已知资料不足'&#10;Actual value: 玩家咨询验收待审核暂未获得与问题匹配的本人已知资料。可换个关键词查询，或向 KP 申请资料。向 KP 申请披露提交创作／配置申请取消复制回答 &#10;Call log:&#10;  - Expect &quot;to_contain_text&quot; locator(&quot;#history&quot;) with timeout 30000ms&#10;  - waiting for locator(&quot;#history&quot;)&#10;    4 × locator resolved to &lt;div role=&quot;log&quot; id=&quot;history&quot; class=&quot;messages&quot; aria-label=&quot;对话记录&quot;&gt;…&lt;/div&gt;&#10;      - unexpected value &quot;✳从一个想法开始引用资料、梳理线索，或准备下一步方案。整理已知线索只使用本人已经获知的资料查找一份资料输入 /knowledge 选择引用向 KP 请求说明提交问题，由 KP 决定揭示范围&quot;&#10;[+13 more lines; full report in element text]">services = ('http://127.0.0.1:50764', {'key': 'WRMHj40r_VmHYHxjkEEJjkbDLYI_0FZY4FriV24WKpM', 'roomPort': 50763, 'managerPort': 50.../Studies/Art Programming/OnlineCOC/engineering/ai/.test-output/access-debug-20261120/test_permissions_archive_delet0'))
+
+    def test_permissions_archive_delete_batches_and_mobile(services):
+        _,entry,_=services;origin=f'http://127.0.0.1:{entry["roomPort"]}'
+        with sync_playwright() as p:
+            browser=p.chromium.launch(channel='msedge',headless=True);page=browser.new_page(viewport={'width':1380,'height':920});errors=[]
+            page.on('pageerror',lambda e:errors.append(str(e)))
+            try:
+                page.goto(origin+'/ai-ui/conversation.html');login(page,'player1')
+                expect(page.locator('#status')).to_contain_text('尚未允许')
+                expect(page.locator('#send')).to_be_disabled()
+                page.locator('#logout').click();login(page,'kp')
+                page.locator('.review-open').click();page.locator('[data-tab=settings]').click()
+                expect(page.locator('#ai-allow-player')).not_to_be_checked();expect(page.locator('#ai-auto-approve')).not_to_be_checked()
+                page.locator('#ai-allow-player').check();page.locator('#ai-save-access').click();expect(page.locator('#ai-result')).to_have_text('权限设置已保存')
+                page.get_by_text('服务与外发范围',exact=True).click();page.locator('#ai-enabled').check();page.locator('#ai-public').check();page.locator('#ai-private').check();page.locator('#ai-save-settings').click();expect(page.locator('#ai-result')).to_have_text('设置已保存')
+                page.screenshot(path=str(OUTPUT/'access-settings.png'),full_page=True)
+                page.locator('.review-close').click();page.locator('.new-chat').click();expect(page.locator('#session-access')).to_contain_text('管理员')
+                page.locator('#text').fill('批次验收：请改名');page.locator('#send').click();expect(page.locator('#history')).to_contain_text('查看执行批次',timeout=30000)
+                page.locator('.review-open').click();page.locator('[data-tab=batches]').click();expect(page.locator('.batch-card')).to_contain_text('等待 KP 裁决')
+                page.get_by_role('button',name='批准并执行',exact=True).click();expect(page.locator('.batch-card')).to_contain_text('已执行')
+                page.screenshot(path=str(OUTPUT/'execution-batches.png'),full_page=True);page.locator('.review-close').click()
+                page.locator('.manage-sessions').click();expect(page.locator('.binding')).to_contain_text('创建者 kp')
+                for _ in range(3):
+                    page.locator('.session-manager .archive').click();expect(page.locator('.session-manager .status')).to_have_text('会话已归档')
+                    expect(page.locator('[data-filter=archived]')).to_have_attribute('aria-pressed','true')
+                    page.wait_for_timeout(1400);expect(page.locator('.session-manager .archive')).to_have_text('恢复会话')
+                    page.locator('.session-manager .archive').click();expect(page.locator('.session-manager .status')).to_have_text('会话已恢复')
+                page.locator('.session-manager .delete').click();page.locator('.confirm-delete').click();expect(page.locator('.session-manager .status')).to_have_text('会话已删除')
+                expect(page.locator('.settings')).to_be_hidden();expect(page.locator('.session-manager .session-link')).to_have_count(0)
+                page.locator('.session-close').click();page.wait_for_timeout(1500);expect(page.locator('#history')).not_to_contain_text('批次验收')
+                page.locator('#logout').click();login(page,'player1');page.locator('.new-chat').click();expect(page.locator('#session-access')).to_contain_text('玩家 · player1')
+&gt;               page.locator('#text').fill('玩家咨询验收');page.locator('#send').click();expect(page.locator('#history')).to_contain_text('本人已知资料不足',timeout=30000)
+                                                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E               AssertionError: Locator expected to contain text '本人已知资料不足'
+E               Actual value: 玩家咨询验收待审核暂未获得与问题匹配的本人已知资料。可换个关键词查询，或向 KP 申请资料。向 KP 申请披露提交创作／配置申请取消复制回答 
+E               Call log:
+E                 - Expect "to_contain_text" locator("#history") with timeout 30000ms
+E                 - waiting for locator("#history")
+E                   4 × locator resolved to &lt;div role="log" id="history" class="messages" aria-label="对话记录"&gt;…&lt;/div&gt;
+E                     - unexpected value "✳从一个想法开始引用资料、梳理线索，或准备下一步方案。整理已知线索只使用本人已经获知的资料查找一份资料输入 /knowledge 选择引用向 KP 请求说明提交问题，由 KP 决定揭示范围"
+E                   59 × locator resolved to &lt;div role="log" id="history" class="messages" aria-label="对话记录"&gt;…&lt;/div&gt;
+E                      - unexpected value "玩家咨询验收待审核暂未获得与问题匹配的本人已知资料。可换个关键词查询，或向 KP 申请资料。向 KP 申请披露提交创作／配置申请取消复制回答"
+E               
+E               Aria snapshot:
+E               - log "对话记录":
+E                 - article: 玩家咨询验收
+E                 - article:
+E                   - text: AI 待审核
+E                   - paragraph: 暂未获得与问题匹配的本人已知资料。可换个关键词查询，或向 KP 申请资料。
+E                   - button "向 KP 申请披露"
+E                   - button "提交创作／配置申请"
+E                   - button "取消"
+E                   - button "复制回答"
+
+engineering\ai\tests\test_access_ui.py:39: AssertionError</failure></testcase></testsuite></testsuites>

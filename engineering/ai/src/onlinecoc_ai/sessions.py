@@ -49,7 +49,9 @@ class Sessions:
             'KNOWLEDGE_EGRESS_DISABLED':'配置包禁止个人已知资料外发给 AI，请 KP 检查知识策略。',
             'EXTERNAL_SCOPE_DISABLED':'房间未允许向 AI 外发本人已知资料（私密信息），请 KP 检查服务设置。',
             'DATA_QUERIES_DISABLED':'KP 已停用 AI 资料查询；仍可提交创作申请供 KP 处理。'}
+        external=self.host.state()['aiControl']['settings']['externalSources']
         return {'role': role, 'canChat': role == 'kp' or p['allowPlayerChat'],
+            **({'effectiveAccess':{'roomRead':p['allowAdminRoomRead'],'dataQueries':p['allowDataQueries'],'kpExternal':external['kp'],'privateExternal':external['private'],'notice':'读写权限与资料外发分别控制；关闭 KP 外发时，隐藏资料、包指南和管理正文不会交给模型。'}} if role=='kp' else {}),
             'knowledge':{'mode':'strict-known','status':knowledge['status'],
                 **({'code':knowledge['code']} if 'code' in knowledge else {}),
                 'notice':notices.get(knowledge.get('code'),'玩家会话只使用本人已知记录；观察记录不代表当前场景，未知内容可请 KP 揭示。' if knowledge['status']=='ready' else '个人资料暂不可用，请 KP 检查当前会话与知识服务。')},
@@ -68,7 +70,9 @@ class Sessions:
         state = self.repository.state()
         for item in items:
             request = state['requests'][item['requestId']]
-            if request['initiator'] == account and request['sourceKind'] == 'manual':item['text'] = request['text']
+            if request['initiator'] == account and request['sourceKind'] == 'manual':
+                from .reviews import request_text
+                item['text'] = request_text(self.repository,request)
         return {'session': public(record), 'items': sorted(items, key=lambda x: x['createdAt'])}
 
     def execute(self, account, identifier, op, args):

@@ -1,0 +1,611 @@
+{
+  "date": "2026-11-20",
+  "timezone": "Asia/Shanghai",
+  "scope": "Host history-only context revalidation",
+  "runs": [
+    {
+      "file": "core-initial.xml",
+      "tests": 26,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 21.012
+    },
+    {
+      "file": "core-retest.xml",
+      "tests": 29,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 23.401
+    },
+    {
+      "file": "regression.xml",
+      "tests": 110,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 76.308
+    }
+  ],
+  "latestUniqueTests": 110,
+  "latestPassed": 110,
+  "initialFailure": "Synthetic no-change candidate was incorrectly given a high-risk review reason; fixture corrected to remove an unreferenced configuration.",
+  "boundaries": [
+    "No AI source imported or read; execution validator fingerprint fixed in host fixture.",
+    "PreparedBundle reports are trusted synthetic fixtures, not real A/B/C.",
+    "Real host/file store restart and command/publication guards tested.",
+    "AI conversation/browser/live-model integration is delegated to the AI owner."
+  ],
+  "commandsDocument": "engineering/acceptance/history-context/README.md",
+  "sourceSha256": {
+    "engineering/backend/src/onlinecoc/publication.py": "34bd0f507f91e5c93bea15919fdb484a1b66827e5b6be2ecd89b359332eefc30",
+    "engineering/backend/src/onlinecoc/ai_contracts.py": "eb4c5a5cdedeb02398f9bf08e6c8713308cffb373007c8e569e735f7f4e94678",
+    "engineering/backend/src/onlinecoc/ai_sources.py": "5be3cbe061bd99a0be5a7387a3b575c21c74d27f80d6f54c9309150df4a6aec0",
+    "engineering/backend/src/onlinecoc/data_queries.py": "d5f7b0cbc53d6fd83bd50b1ee26f46dced7a8bb4bfbbd98fb57c43d337b09790",
+    "engineering/backend/src/onlinecoc/host.py": "9e64dd57711b5cc576e70ce5ff43c8e6be4a25e4c7f89b9fe348ab4ade0e4b6a",
+    "engineering/backend/src/onlinecoc/knowledge/service.py": "6d606d227583559abd19d548e03422dd64f3e2964ab657b51858ab5b76909ac5",
+    "engineering/backend/tests/test_history_context.py": "ce58217fbf5856c874db4439de9ff0fea11d4d24c7c022f76e83632498f4f773",
+    "engineering/backend/tests/test_high_risk_commands.py": "71fd745bad959f7a32cca7c4f8d93a0c7eb731bf408432e36798b12ac65c4c86",
+    "engineering/backend/tests/test_high_risk_host.py": "6a68007ab8289070ecfe05543dbf4aad3c252b7b852511c5e7134646d01d9206",
+    "engineering/backend/tests/test_knowledge.py": "3ffc72b911da72859def403d56cd2c35fced077408e38bf8c202d23eba3eb4c4",
+    "engineering/backend/tests/test_host.py": "e040677bc6db9ef601d9347a2c3fd8ac824901dcc470dc96b971b3664d245e45",
+    "engineering/backend/tests/test_room_versions.py": "5cb4e6cd469682e7d017b3d35e6bcaae852ebc71283262d113a58388c49759a0",
+    "engineering/backend/tests/test_foundation.py": "e55a8dd093ccfa5e08396c61f631668b00cf0904d79997312efa936798acd68a",
+    "engineering/contracts/ai.json": "48ab0351c291769dadc706792102e14e90e16b2aecce20f7ba085e46e34f73ce",
+    "docs/current/engineering/high-risk-publication.md": "b2815f90872f13752ac8fe712790fe325ca7badf50180f7979dc607a11c401dd",
+    "docs/current/engineering/room-format.md": "49592d6d3b3fb36573e9a8995c6b927174aff77a912e00a1b3cf57cf26351edd"
+  },
+  "tests": [
+    {
+      "id": "tests.test_host::test_readonly_and_permissions",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_knowledge::test_k05_live_revisions_and_eligibility",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_knowledge::test_manage_observation_uses_previous_state_atomically",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_room_versions::test_release_schema_and_fixture_agree",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_history_context::test_player_history_uses_current_knowledge_authorization[none]",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_knowledge::test_k01_empty_and_k24_no_ai",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_history_context::test_player_history_uses_current_knowledge_authorization[other-account]",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_knowledge::test_explicit_live_entity_compatibility_and_revoke",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_room_versions::test_backup_rejects_before_any_restore_target[bad-version]",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_history_context::test_player_history_uses_current_knowledge_authorization[hard-guard]",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_high_risk_commands::test_player_cannot_approve_or_publish_high_risk",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_high_risk_commands::test_core_rule_and_data_replacement_waits_for_explicit_publish",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_history_context::test_history_rechecks_chat_sources_after_restart[permission]",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_history_context::test_player_history_uses_current_knowledge_authorization[inactive]",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_knowledge::test_k02_k03_subject_and_legacy_exit",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_high_risk_host::test_package_scoped_reader_only_receives_host_authorized_scope[None]",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_knowledge::test_k09_host_effect_and_automatic_observation_same_commit",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_high_risk_host::test_inflight_flow_keeps_old_artifact_and_does_not_require_old_rule_in_new_catalog",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_history_context::test_history_preserves_authorization_scope_baseline_and_egress_checks[authorization-PERMISSION_DENIED]",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_room_versions::test_open_rejects_before_room_mutation[v1]",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_high_risk_commands::test_high_risk_requires_explicit_candidate_digest_and_reason",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_knowledge::test_k09_crash_atomicity[after_knowledge_commit]",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_high_risk_host::test_item_family_configuration_changes_are_high_risk[item]",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_history_context::test_history_preserves_authorization_scope_baseline_and_egress_checks[external-EXTERNAL_SCOPE_CHANGED]",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_history_context::test_history_preserves_authorization_scope_baseline_and_egress_checks[profile-PROFILE_CHANGED]",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_room_versions::test_open_rejects_before_room_mutation[v2]",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_history_context::test_history_preserves_authorization_scope_baseline_and_egress_checks[inactive-PERMISSION_DENIED]",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_high_risk_host::test_new_ruleset_must_preserve_all_existing_behavior_bindings[entity]",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_history_context::test_history_preserves_authorization_scope_baseline_and_egress_checks[contract-VALIDATOR_STALE]",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_knowledge::test_k09_crash_atomicity[before_knowledge_commit]",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_knowledge::test_k21_oversized_snapshot_and_query",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_history_context::test_history_does_not_restore_revoked_kp_room_read_access",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_history_context::test_history_rechecks_chat_sources_after_restart[revised]",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_room_versions::test_open_rejects_before_room_mutation[future]",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_room_versions::test_execution_projection_cannot_be_used_as_room",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_high_risk_host::test_large_room_source_splits_without_omission_or_local_identity_access",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_high_risk_host::test_legacy_package_reader_remains_compatible",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_foundation::test_corruption_and_export",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_history_context::test_player_history_uses_current_knowledge_authorization[revoke]",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_room_versions::test_backup_rejects_before_any_restore_target[v2]",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_high_risk_host::test_new_ruleset_must_preserve_all_existing_behavior_bindings[configuration]",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_high_risk_host::test_delete_referenced_configuration_never_cascades[active]",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_room_versions::test_backup_rejects_before_any_restore_target[future]",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_high_risk_commands::test_remove_apply_returns_null_and_is_exactly_once",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_history_context::test_history_preserves_authorization_scope_baseline_and_egress_checks[configuration-BASELINE_STALE]",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_history_context::test_history_preserves_authorization_scope_baseline_and_egress_checks[world-BASELINE_STALE]",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_high_risk_host::test_rule_dependencies_and_stale_configuration_changes_fail",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_high_risk_host::test_kp_room_private_chat_is_explicit_and_external_policy_still_applies",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_room_versions::test_external_conversion_is_explicit_and_works",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_high_risk_commands::test_referenced_remove_rejected_before_approval[archived]",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_knowledge::test_k10_persistent_policy_and_k11_future_objects",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_foundation::test_lua_real_execution",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_room_versions::test_open_rejects_before_room_mutation[no-control]",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_history_context::test_history_preserves_authorization_scope_baseline_and_egress_checks[scope-SCOPE_MISMATCH]",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_high_risk_host::test_add_replace_remove_projection_is_atomic_and_does_not_mutate_input",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_high_risk_commands::test_referenced_remove_rejected_before_approval[active]",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_history_context::test_player_history_uses_current_knowledge_authorization[scope]",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_room_versions::test_open_rejects_before_room_mutation[bad-version]",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_host::test_old_flow_lock_and_restart",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_history_context::test_player_history_uses_current_knowledge_authorization[authorization]",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_foundation::test_store_contract[FileDataStore]",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_knowledge::test_k12_member_recreated_and_k22_scope_fork",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_high_risk_host::test_room_read_proof_rechecks_grant_and_original_content",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_history_context::test_history_preserves_authorization_scope_baseline_and_egress_checks[ruleset-BASELINE_STALE]",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_room_versions::test_backup_rejects_before_any_restore_target[no-control]",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_room_versions::test_open_rejects_before_room_mutation[no-commands]",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_history_context::test_history_replays_query_proofs_against_current_sources",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_room_versions::test_restore_lifecycle_disables_auto_without_mutating_input",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_high_risk_host::test_full_room_requires_actual_kp_explicit_scope_and_authorizer",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_history_context::test_history_rechecks_session_access_callback",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_high_risk_host::test_package_scoped_reader_only_receives_host_authorized_scope[kp-room]",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_history_context::test_history_preserves_authorization_scope_baseline_and_egress_checks[role-PERMISSION_DENIED]",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_room_versions::test_validation_cli_is_read_only[room]",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_host::test_failure_rolls_back",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_foundation::test_store_contract[MemoryDataStore]",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_history_context::test_player_history_uses_current_knowledge_authorization[missing-provider]",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_room_versions::test_backup_rejects_before_any_restore_target[v1]",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_knowledge::test_k15_k18_operations_and_old_receipts",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_high_risk_host::test_delete_referenced_configuration_never_cascades[archived]",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_room_versions::test_backup_rejects_before_any_restore_target[reference]",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_room_versions::test_backup_rejects_before_any_restore_target[no-chat]",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_knowledge::test_policy_overlap_and_provider_exception_fail_closed",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_history_context::test_reading_history_does_not_depend_on_execution_validator_code",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_history_context::test_player_history_uses_current_knowledge_authorization[policy]",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_host::test_personal_progress_and_revocation",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_room_versions::test_validation_cli_is_read_only[snapshot]",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_foundation::test_failed_publish",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_history_context::test_same_directory_restart_reads_original_context_without_writes",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_history_context::test_history_does_not_renew_old_approval_or_new_execution",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_history_context::test_history_rechecks_chat_sources_after_restart[deleted]",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_history_context::test_history_requires_complete_context_and_does_not_allow_player_to_read_kp",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_room_versions::test_backup_rejects_before_any_restore_target[no-commands]",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_high_risk_host::test_item_family_configuration_changes_are_high_risk[weapon]",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_room_versions::test_validation_cli_is_read_only[backup]",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_knowledge::test_k06_equivalent_grant_and_k14_unrelated_change",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_high_risk_commands::test_partial_configuration_failure_leaves_no_commit_and_can_reconcile_receipt",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_high_risk_host::test_core_source_data_remove_and_declared_maps_are_high_risk",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_host::test_transfer_dedupe_restart",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_knowledge::test_k19_protected_asset_url",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_knowledge::test_k26_strict_data_query",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_knowledge::test_batch_read_proofs_capture_provider_once",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_knowledge::test_k04_fixed_versions_and_k20_archive",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_high_risk_commands::test_old_approval_without_manual_fingerprint_cannot_be_loaded",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_room_versions::test_open_rejects_before_room_mutation[reference]",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_knowledge::test_k07_forgery_and_k08_dedupe",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_knowledge::test_explicit_denied_egress_wins_over_provider_hooks",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_knowledge::test_structural_cache_never_bypasses_mutation_or_references",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_high_risk_host::test_item_family_configuration_changes_are_high_risk[bag]",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_foundation::test_lua_timeout_and_restricted_globals",
+      "status": "passed",
+      "source": "regression.xml"
+    },
+    {
+      "id": "tests.test_room_versions::test_open_rejects_before_room_mutation[no-chat]",
+      "status": "passed",
+      "source": "regression.xml"
+    }
+  ]
+}

@@ -93,7 +93,7 @@ def test_real_manager_providers_sessions_review_and_embed(services):
             page.locator('#folders .folder-head').click();page.locator('#account').fill('player1');page.locator('#password').fill('test-password');page.get_by_role('button',name='连接',exact=True).click()
             expect(page.locator('#session-panel #text')).to_be_visible();expect(page.locator('#review-open')).to_be_hidden()
             assert page.locator('#folders .session-link').count()==0
-            page.locator('#session-panel #text').fill('希望有一盏灯');page.locator('#send').click();expect(page.locator('#history')).to_contain_text('本人已知资料不足',timeout=30000)
+            page.locator('#session-panel #text').fill('希望有一盏灯');page.locator('#send').click();expect(page.locator('#history')).to_contain_text('暂未获得与问题匹配的本人已知资料',timeout=30000)
             assert page.get_by_role('button',name='转交 AI',exact=True).count()==0
             page.set_viewport_size({'width':780,'height':800});expect(page.locator('#lock')).to_be_visible()
             page.locator('#lock').click();expect(page.locator('#locked')).to_be_visible();assert page.locator('#folders .session-link').count()==0

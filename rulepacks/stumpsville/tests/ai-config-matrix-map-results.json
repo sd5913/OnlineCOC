@@ -1,0 +1,364 @@
+{
+  "checkedAt": "2026-11-20T01:13:07.881014+08:00",
+  "realSaveChanged": false,
+  "realProviderCalls": 0,
+  "batch": "map",
+  "cases": [
+    {
+      "id": "map-add",
+      "expectation": "supported",
+      "passed": true,
+      "evidence": {
+        "status": "completed",
+        "highRisk": true,
+        "proposalId": "825be535766e4942a0f8c1998ebf014b"
+      },
+      "seconds": 21.87
+    },
+    {
+      "id": "map-update",
+      "expectation": "supported",
+      "passed": true,
+      "evidence": {
+        "status": "completed",
+        "highRisk": true,
+        "proposalId": "05ea080e18c1435f905070642ef1de61"
+      },
+      "seconds": 23.9
+    },
+    {
+      "id": "map-delete",
+      "expectation": "expected-rejection",
+      "passed": true,
+      "evidence": {
+        "status": "blocked",
+        "reports": [
+          {
+            "schemaVersion": 1,
+            "reportId": "31d0d6f4aa954291811fd182f3f3ad0d",
+            "level": "A",
+            "status": "pass",
+            "candidateDigest": "12f822bba9244d3e14e897b1a4bc39c0e8af33a4f3ac45b2246f756ed813facb",
+            "baselineDigest": "86bd11a704ddacc5160cdb263ea0036117d6b472f886e5cba7d8d9076d30b8f8",
+            "contextDigest": "8d5ab538fdbe8dbd8319cc778bc1656c92fab03b25c00c7f7579246722069e39",
+            "contractDigest": "2a8acf8928fce034d67ea0933794cbb1b3be64ff2b2800ef8bf6c4743543136c",
+            "validatorSetDigest": "ff2754dcc2c78466cd65f03b16ee45d7ad77f2715b331cefa2781351a7ea0595",
+            "coverage": [
+              "json",
+              "full-artifact",
+              "host-stage",
+              "pack-schemas",
+              "host-model",
+              "references"
+            ],
+            "findings": [],
+            "evidence": {
+              "artifactRevision": "c942e9509919fbddcf60983acebc7ca9e723380d8347ce2aadee37209bc98767",
+              "configurationCount": 13
+            },
+            "risk": "low",
+            "reviewItems": [],
+            "createdAt": 1795108462.6151342
+          },
+          {
+            "schemaVersion": 1,
+            "reportId": "b1470f3a8ad8412d96d8202359a32d09",
+            "level": "B",
+            "status": "fail",
+            "candidateDigest": "12f822bba9244d3e14e897b1a4bc39c0e8af33a4f3ac45b2246f756ed813facb",
+            "baselineDigest": "86bd11a704ddacc5160cdb263ea0036117d6b472f886e5cba7d8d9076d30b8f8",
+            "contextDigest": "8d5ab538fdbe8dbd8319cc778bc1656c92fab03b25c00c7f7579246722069e39",
+            "contractDigest": "2a8acf8928fce034d67ea0933794cbb1b3be64ff2b2800ef8bf6c4743543136c",
+            "validatorSetDigest": "ff2754dcc2c78466cd65f03b16ee45d7ad77f2715b331cefa2781351a7ea0595",
+            "coverage": [],
+            "findings": [
+              {
+                "code": "DATA_REFERENCE_CONFLICT",
+                "severity": "error",
+                "path": "/data/game.json/locations",
+                "sourceRef": "",
+                "message": "DATA_REFERENCE_CONFLICT",
+                "evidence": null,
+                "suggestion": ""
+              }
+            ],
+            "evidence": {},
+            "risk": "unknown",
+            "reviewItems": [],
+            "createdAt": 1795108463.1824436
+          },
+          {
+            "schemaVersion": 1,
+            "reportId": "f60c3488ce244d74abb0eb177c6ff96f",
+            "level": "C",
+            "status": "unknown",
+            "candidateDigest": "12f822bba9244d3e14e897b1a4bc39c0e8af33a4f3ac45b2246f756ed813facb",
+            "baselineDigest": "86bd11a704ddacc5160cdb263ea0036117d6b472f886e5cba7d8d9076d30b8f8",
+            "contextDigest": "8d5ab538fdbe8dbd8319cc778bc1656c92fab03b25c00c7f7579246722069e39",
+            "contractDigest": "2a8acf8928fce034d67ea0933794cbb1b3be64ff2b2800ef8bf6c4743543136c",
+            "validatorSetDigest": "ff2754dcc2c78466cd65f03b16ee45d7ad77f2715b331cefa2781351a7ea0595",
+            "coverage": [
+              "npc-morale",
+              "npc-player-denied",
+              "gameplay-travel"
+            ],
+            "findings": [
+              {
+                "code": "LIVE_SCENARIO_FAILED",
+                "severity": "error",
+                "path": "",
+                "sourceRef": "",
+                "message": "LIVE_SCENARIO_FAILED",
+                "evidence": null,
+                "suggestion": ""
+              }
+            ],
+            "evidence": {},
+            "risk": "unknown",
+            "reviewItems": [
+              {
+                "id": "npc-extension-impact",
+                "question": "NPC 默认值、规则效果及未覆盖的剧情联动是否可接受？",
+                "required": true
+              }
+            ],
+            "createdAt": 1795108467.8487935
+          }
+        ]
+      },
+      "seconds": 15.4
+    },
+    {
+      "id": "map-dangling-exit",
+      "expectation": "expected-rejection",
+      "passed": true,
+      "evidence": {
+        "status": "blocked",
+        "reports": [
+          {
+            "schemaVersion": 1,
+            "reportId": "6e47685f2a404ccb8f7aabbd342a187b",
+            "level": "A",
+            "status": "pass",
+            "candidateDigest": "f9d8a0f3ca2f0c994a66d3062b52b17784481b3f178c66e0f1009e7693a27570",
+            "baselineDigest": "86bd11a704ddacc5160cdb263ea0036117d6b472f886e5cba7d8d9076d30b8f8",
+            "contextDigest": "6af8bdbe1a8f83b74c26bf2a6d0d2c444477e09b16ef81fc1517bdf6591a8f00",
+            "contractDigest": "2a8acf8928fce034d67ea0933794cbb1b3be64ff2b2800ef8bf6c4743543136c",
+            "validatorSetDigest": "ff2754dcc2c78466cd65f03b16ee45d7ad77f2715b331cefa2781351a7ea0595",
+            "coverage": [
+              "json",
+              "full-artifact",
+              "host-stage",
+              "pack-schemas",
+              "host-model",
+              "references"
+            ],
+            "findings": [],
+            "evidence": {
+              "artifactRevision": "cea153c8c962cab7851c850483e1cb50b8ceaff2d29f84c78c5fbba9ad1fe080",
+              "configurationCount": 13
+            },
+            "risk": "low",
+            "reviewItems": [],
+            "createdAt": 1795108477.2557943
+          },
+          {
+            "schemaVersion": 1,
+            "reportId": "b19cd0e85e3943a38c1ab331f8a88781",
+            "level": "B",
+            "status": "fail",
+            "candidateDigest": "f9d8a0f3ca2f0c994a66d3062b52b17784481b3f178c66e0f1009e7693a27570",
+            "baselineDigest": "86bd11a704ddacc5160cdb263ea0036117d6b472f886e5cba7d8d9076d30b8f8",
+            "contextDigest": "6af8bdbe1a8f83b74c26bf2a6d0d2c444477e09b16ef81fc1517bdf6591a8f00",
+            "contractDigest": "2a8acf8928fce034d67ea0933794cbb1b3be64ff2b2800ef8bf6c4743543136c",
+            "validatorSetDigest": "ff2754dcc2c78466cd65f03b16ee45d7ad77f2715b331cefa2781351a7ea0595",
+            "coverage": [],
+            "findings": [
+              {
+                "code": "DATA_REFERENCE_CONFLICT",
+                "severity": "error",
+                "path": "/data/game.json/locations",
+                "sourceRef": "",
+                "message": "DATA_REFERENCE_CONFLICT",
+                "evidence": null,
+                "suggestion": ""
+              }
+            ],
+            "evidence": {},
+            "risk": "unknown",
+            "reviewItems": [],
+            "createdAt": 1795108477.8228054
+          },
+          {
+            "schemaVersion": 1,
+            "reportId": "939318eef70b4674a60e4284294d5ee3",
+            "level": "C",
+            "status": "unknown",
+            "candidateDigest": "f9d8a0f3ca2f0c994a66d3062b52b17784481b3f178c66e0f1009e7693a27570",
+            "baselineDigest": "86bd11a704ddacc5160cdb263ea0036117d6b472f886e5cba7d8d9076d30b8f8",
+            "contextDigest": "6af8bdbe1a8f83b74c26bf2a6d0d2c444477e09b16ef81fc1517bdf6591a8f00",
+            "contractDigest": "2a8acf8928fce034d67ea0933794cbb1b3be64ff2b2800ef8bf6c4743543136c",
+            "validatorSetDigest": "ff2754dcc2c78466cd65f03b16ee45d7ad77f2715b331cefa2781351a7ea0595",
+            "coverage": [
+              "npc-morale",
+              "npc-player-denied",
+              "gameplay-travel"
+            ],
+            "findings": [
+              {
+                "code": "LIVE_SCENARIO_FAILED",
+                "severity": "error",
+                "path": "",
+                "sourceRef": "",
+                "message": "LIVE_SCENARIO_FAILED",
+                "evidence": null,
+                "suggestion": ""
+              }
+            ],
+            "evidence": {},
+            "risk": "unknown",
+            "reviewItems": [
+              {
+                "id": "npc-extension-impact",
+                "question": "NPC 默认值、规则效果及未覆盖的剧情联动是否可接受？",
+                "required": true
+              }
+            ],
+            "createdAt": 1795108482.543528
+          }
+        ]
+      },
+      "seconds": 14.85
+    },
+    {
+      "id": "scene-player-text-update",
+      "expectation": "supported",
+      "passed": false,
+      "errorType": "AssertionError",
+      "error": "{'proposal': {'schemaVersion': 1, 'proposalId': 'a8782c8d2ab34a59b1b5e1be49bb995a', 'revision': 1, 'requestId': '2903b67107894bba9967d73c2cece546', 'scopeId': 'bb6a04516e1744649c105a6b6a14b460', 'contextRef': '30312a89123b26e5e8ddf4087cbdfba7d74d3e7e60eb18e766004e5274468e57', 'profileRevision': None, 'model': None, 'summary': '人工配置草稿', 'alternatives': [], 'changeSet': {'schemaVersion': 1, 'configurations': [], 'sources': {'layout.lua': \"return rule('sv.layout', {'actor'}, function(r, actor)\\n  local data = r.readData('game.json')\\n  -- Numeric indices are persistent inventory/location identities.\\n  for index, place in ipairs(data.locations) do\\n    assert(place.index == index, 'SV_LOCATION_INDEX')\\n    for _, target in ipairs(place.exits) do\\n      assert(target ~= index and data.locations[target], 'SV_LOCATION_EXIT')\\n    end\\n    for _, stock in ipairs(place.stock) do\\n      assert(data.items[stock.item] and stock.count >= 0, 'SV_LOCATION_STOCK')\\n    end\\n  end\\n  local occupied, cards = {}, {}\\n  local overloaded, armor, injured = false, 0, false\\n  for slot = 1, 20 do\\n    local index = r.number(actor, 'item' .. slot)\\n    if index > 0 then\\n      local def = data.items[index]\\n      assert(def, 'SV_UNKNOWN_ITEM')\\n      local cells = {slot}\\n      if def.id == 'injured' then injured = true end\\n      if slot > 10 then\\n        overloaded = true\\n      elseif def.slots == 2 then\\n        if def.shape == 'offhand-body' and slot <= 4 then\\n          assert(slot == 2, 'SV_LIGHT_ARMOR_OFFHAND_BODY')\\n          cells = {2, 3}\\n        elseif slot <= 4 then\\n          assert(slot == 1 or slot == 3, 'SV_ITEM_NEEDS_TWO_SLOTS')\\n          cells = {slot, slot + 1}\\n        else\\n          assert(slot == 5 or slot == 6 or slot == 8 or slot == 9, 'SV_ITEM_NEEDS_TWO_SLOTS')\\n          cells = {slot, slot + 1}\\n        end\\n      elseif def.slots == 4 then\\n        assert(slot == 5 or slot == 6, 'SV_ITEM_NEEDS_FOUR_SLOTS')\\n        cells = {slot, slot + 1, slot + 3, slot + 4}\\n      end\\n      if def.kind == 'armor' and slot <= 4 and r.number(actor, 'uses' .. slot) > 0 then armor = math.max(armor, def.armor or 0) end\\n      for _, cell in ipairs(cells) do\\n        assert(not occupied[tostring(cell)], 'SV_SLOT_OCCUPIED')\\n        occupied[tostring(cell)] = slot\\n      end\\n      cards[#cards + 1] = {slot=slot, item=index, uses=r.number(actor, 'uses' .. slot), cells=cells}\\n    end\\n  end\\n  local coins = math.ceil(math.max(0, r.number(actor, 'pips') - 250) / 250)\\n  local coinSlots = {}\\n  for slot=10,1,-1 do\\n    if coins > 0 and not occupied[tostring(slot)] then\\n      occupied[tostring(slot)] = -1\\n      coinSlots[#coinSlots+1] = slot\\n      coins = coins - 1\\n    end\\n  end\\n  if coins > 0 then overloaded = true end\\n  return {occupied=occupied, cards=cards, overloaded=overloaded, armor=armor, injured=injured, coinSlots=coinSlots}\\nend, {mode='calculation', public=false})\\n\", 'profile.lua': \"return rule('sv.profile', {'actor', 'strength:amount', 'dexterity:amount', 'will:amount', 'hp:amount', 'pips:amount'}, function(r, actor, strength, dexterity, will, hp, pips)\\n  assert(r.matches(actor, 'sv.character'), 'SV_NOT_CHARACTER')\\n  assert(r.number(actor, 'approved') == 0, 'SV_PROFILE_LOCKED')\\n  assert(strength >= 2 and strength <= 12 and dexterity >= 2 and dexterity <= 12 and will >= 2 and will <= 12, 'SV_START_ATTRIBUTE_RANGE')\\n  assert(hp >= 1 and hp <= 6 and pips <= 6, 'SV_START_RESOURCE_RANGE')\\n  r.set(actor, 'str', strength)\\n  r.set(ac",
+      "seconds": 14.34
+    },
+    {
+      "id": "same-save-restart-session",
+      "expectation": "supported",
+      "passed": true,
+      "evidence": {
+        "sessionId": "4634a78f505c4740bce94131768d38a4",
+        "requestId": "1adb396deeed419697e3ceaf2523fde7",
+        "configurationOrderChanged": true
+      },
+      "seconds": 3.44
+    }
+  ],
+  "operations": [
+    {
+      "case": "map-add",
+      "op": "ai.draft.create",
+      "passed": true,
+      "seconds": 1.13
+    },
+    {
+      "case": "map-add",
+      "op": "ai.proposal.validate",
+      "passed": true,
+      "seconds": 9.73
+    },
+    {
+      "case": "map-add",
+      "op": "ai.ruling.decide",
+      "passed": true,
+      "seconds": 5.87
+    },
+    {
+      "case": "map-update",
+      "op": "ai.draft.create",
+      "passed": true,
+      "seconds": 2.7
+    },
+    {
+      "case": "map-update",
+      "op": "ai.proposal.validate",
+      "passed": true,
+      "seconds": 10.07
+    },
+    {
+      "case": "map-update",
+      "op": "ai.ruling.decide",
+      "passed": true,
+      "seconds": 10.12
+    },
+    {
+      "case": "map-delete",
+      "op": "ai.draft.create",
+      "passed": true,
+      "seconds": 5.45
+    },
+    {
+      "case": "map-delete",
+      "op": "ai.proposal.validate",
+      "passed": true,
+      "seconds": 9.6
+    },
+    {
+      "case": "map-dangling-exit",
+      "op": "ai.draft.create",
+      "passed": true,
+      "seconds": 4.58
+    },
+    {
+      "case": "map-dangling-exit",
+      "op": "ai.proposal.validate",
+      "passed": true,
+      "seconds": 9.9
+    },
+    {
+      "case": "scene-player-text-update",
+      "op": "ai.draft.create",
+      "passed": true,
+      "seconds": 4.87
+    },
+    {
+      "case": "scene-player-text-update",
+      "op": "ai.proposal.validate",
+      "passed": true,
+      "seconds": 9.28
+    }
+  ],
+  "evidenceDirectory": "tests/output/ai-config-matrix-map-bc947a3d",
+  "rates": {
+    "supported": {
+      "passed": 3,
+      "total": 4
+    },
+    "expected-rejection": {
+      "passed": 2,
+      "total": 2
+    }
+  },
+  "passed": false,
+  "failureAnalysis": {
+    "scene-player-text-update": {
+      "status": "blocked",
+      "reports": [
+        {
+          "level": "A",
+          "status": "pass",
+          "codes": []
+        },
+        {
+          "level": "B",
+          "status": "pass",
+          "codes": []
+        },
+        {
+          "level": "C",
+          "status": "unknown",
+          "codes": [
+            "LIVE_SCENARIO_COVERAGE_MISSING"
+          ]
+        }
+      ],
+      "resolution": "Capability gap retained: authored live-scene coverage is missing; no publication approved."
+    }
+  }
+}

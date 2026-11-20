@@ -135,6 +135,13 @@ def create_app(host,port=8765,host_control=None,*,ai_runtime=None):
         response=JSONResponse({'ok':True});response.delete_cookie('onlinecoc');return response
     @app.get('/api/v1/view')
     def view(request:Request):return host.project(auth(request))
+    @app.get('/api/v1/notifications')
+    def notifications(request:Request):
+        require(set(request.query_params)<= {'after','limit'}, 'INPUT_INVALID')
+        try:
+            after=int(request.query_params.get('after','0'));limit=int(request.query_params.get('limit','50'))
+        except ValueError:raise DomainError('INPUT_INVALID')
+        return host.notifications(auth(request),after,limit)
     @app.get('/api/v1/knowledge/capabilities')
     def knowledge_capabilities(request:Request):
         with host.lock:return host.knowledge.capabilities(auth(request))

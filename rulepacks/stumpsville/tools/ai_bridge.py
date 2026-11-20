@@ -18,10 +18,21 @@ def consultation(client, payload):
     if not isinstance(path, str):
         reject()
     if method == 'GET' and 'body' not in payload:
+        try:
+            url = urlsplit(path)
+        except ValueError:
+            reject()
         if path == 'ai/access':return client.request('/' + path)
+        if url.path == 'ai/debug' and not url.scheme and not url.netloc and not url.fragment:
+            query = parse_qs(url.query, keep_blank_values=True)
+            allowed = {'sessionId', 'requestId', 'rulingId', 'includeContent'}
+            locators = {'sessionId', 'requestId', 'rulingId'} & set(query)
+            if (set(query) <= allowed and locators and all(len(values) == 1 for values in query.values())
+                    and all(0 < len(query[key][0]) <= 200 for key in locators)
+                    and query.get('includeContent', ['false'])[0] in {'false', 'true'}):
+                return client.request('/' + path)
         if path == 'capabilities':
             return {'ai': client.request('/capabilities').get('ai', {'available': False})}
-        url = urlsplit(path)
         if url.path == 'ai/usage' and not url.scheme and not url.netloc and not url.fragment:
             query = parse_qs(url.query, keep_blank_values=True)
             if set(query) <= {'from','to','scope','profileId','sessionId','before','limit'} and all(len(v)==1 and 1<=len(v[0])<=200 for v in query.values()):

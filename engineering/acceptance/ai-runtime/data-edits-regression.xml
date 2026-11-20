@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="93" time="283.665" timestamp="2026-11-19T17:39:10.905701+08:00" hostname="LAPTOP-BIFSL64A"><testcase classname="tests.test_coordinator" name="test_draft_is_checked_but_never_published" time="9.245" /><testcase classname="tests.test_coordinator" name="test_blocked_model_does_not_hold_host_lock_and_can_cancel" time="1.140" /><testcase classname="tests.test_coordinator" name="test_request_dedup_queue_and_budget" time="1.131" /><testcase classname="tests.test_coordinator" name="test_untrusted_model_and_retry_limits[forged-TOOL_FORBIDDEN]" time="1.175" /><testcase classname="tests.test_coordinator" name="test_untrusted_model_and_retry_limits[loop-TOOL_ROUND_LIMIT]" time="1.592" /><testcase classname="tests.test_coordinator" name="test_untrusted_model_and_retry_limits[retry-PROVIDER_UNAVAILABLE]" time="1.504" /><testcase classname="tests.test_coordinator" name="test_untrusted_model_and_retry_limits[repair-MODEL_OUTPUT_INVALID]" time="1.286" /><testcase classname="tests.test_coordinator" name="test_expired_task_and_authority_change_fail_closed" time="1.403" /><testcase classname="tests.test_coordinator" name="test_disabled_service_makes_no_provider_calls" time="1.117" /><testcase classname="tests.test_coordinator" name="test_retry_budget_records_each_attempt_once" time="1.481" /><testcase classname="tests.test_coordinator" name="test_restart_interrupts_queued_tasks_and_preserves_budget" time="1.443" /><testcase classname="tests.test_coordinator" name="test_permissions_changed_during_generation_discard_output" time="1.228" /><testcase classname="tests.test_coordinator" name="test_profile_changed_during_generation_discards_output_and_runner_survives" time="1.329" /><testcase classname="tests.test_coordinator" name="test_real_contract_is_exposed_and_repair_names_invalid_field" time="8.658" /><testcase classname="tests.test_context" name="test_default_excludes_room_and_pack_text" time="1.063" /><testcase classname="tests.test_context" name="test_public_context_strips_secret_and_never_reads_others_private_chat" time="1.141" /><testcase classname="tests.test_context" name="test_context_rechecks_source_and_policy_after_generation[edit]" time="1.231" /><testcase classname="tests.test_context" name="test_context_rechecks_source_and_policy_after_generation[delete]" time="1.382" /><testcase classname="tests.test_context" name="test_context_rechecks_source_and_policy_after_generation[policy]" time="1.401" /><testcase classname="tests.test_context" name="test_context_rechecks_source_and_policy_after_generation[revoke]" time="1.544" /><testcase classname="tests.test_context" name="test_context_rechecks_source_and_policy_after_generation[profile]" time="1.429" /><testcase classname="tests.test_context" name="test_manual_revision_keeps_original_source_authorization" time="1.671" /><testcase classname="tests.test_context" name="test_chat_source_requires_actual_current_text_and_external_permission" time="1.308" /><testcase classname="tests.test_context" name="test_unrelated_read_position_and_ai_history_do_not_change_world" time="1.309" /><testcase classname="tests.test_context" name="test_scope_mismatch_rejects_cross_room_context" time="1.259" /><testcase classname="tests.test_context" name="test_context_size_is_bounded" time="1.301" /><testcase classname="tests.test_context" name="test_two_actual_demo_directories_do_not_share_secrets_or_memory" time="2.484" /><testcase classname="tests.test_entrypoints" name="test_requests_are_explicit_idempotent_redacted_and_paged" time="1.725" /><testcase classname="tests.test_entrypoints" name="test_chat_forwarding_binds_original_and_policy" time="1.540" /><testcase classname="tests.test_entrypoints" name="test_player_can_cancel_after_dispatching_kp_loses_role" time="1.867" /><testcase classname="tests.test_entrypoints" name="test_plan_without_proposal_rechecks_context_on_read" time="1.716" /><testcase classname="tests.test_entrypoints" name="test_auto_off_prefix_dedup_edits_withdrawal_and_role" time="1.478" /><testcase classname="tests.test_entrypoints" name="test_manual_revision_invalidates_approval_and_cancel_revokes" time="26.042" /><testcase classname="tests.test_entrypoints" name="test_receipt_rechecks_private_sources_and_restart_pending" time="1.409" /><testcase classname="tests.test_entrypoints" name="test_http_auth_limits_schema_capability_and_disabled_module" time="1.906" /><testcase classname="tests.test_entrypoints" name="test_cli_uses_same_three_engines" time="14.582" /><testcase classname="tests.test_rulings" name="test_chat_approval_is_bound_to_batch_and_not_another_model_request" time="1.586" /><testcase classname="tests.test_rulings" name="test_config_is_one_checked_ruling_and_publishes_once" time="28.685" /><testcase classname="tests.test_rulings" name="test_high_risk_config_never_uses_auto_approval" time="10.672" /><testcase classname="tests.test_rulings" name="test_player_cannot_decide_and_stale_digest_cannot_execute" time="1.997" /><testcase classname="tests.test_rulings" name="test_consultation_only_evidence_cannot_enter_publish_queue_or_auto_approve" time="12.271" /><testcase classname="tests.test_rulings" name="test_invalid_model_output_has_specific_cause[[]-MODEL_OBJECT_REQUIRED]" time="0.003" /><testcase classname="tests.test_rulings" name="test_invalid_model_output_has_specific_cause[null-MODEL_OBJECT_REQUIRED]" time="0.002" /><testcase classname="tests.test_rulings" name="test_invalid_model_output_has_specific_cause[broken-MODEL_JSON_INVALID]" time="0.002" /><testcase classname="tests.test_rulings" name="test_invalid_model_output_has_specific_cause[{&quot;kind&quot;:&quot;other&quot;,&quot;text&quot;:&quot;a&quot;}-MODEL_KIND_INVALID]" time="0.002" /><testcase classname="tests.test_rulings" name="test_single_json_fence_is_accepted_without_extracting_arbitrary_text" time="0.001" /><testcase classname="tests.test_rulings" name="test_five_repairs_do_not_consume_tool_rounds[True]" time="3.089" /><testcase classname="tests.test_rulings" name="test_five_repairs_do_not_consume_tool_rounds[False]" time="2.594" /><testcase classname="tests.test_rulings" name="test_user_decision_pauses_instead_of_retrying[clarification]" time="2.767" /><testcase classname="tests.test_rulings" name="test_user_decision_pauses_instead_of_retrying[plan]" time="1.826" /><testcase classname="tests.test_rulings" name="test_basic_lua_error_repairs_same_proposal_before_review" time="14.101" /><testcase classname="tests.test_policies" name="test_high_risk_requires_exact_manual_fingerprint_and_retains_diff" time="21.350" /><testcase classname="tests.test_policies" name="test_more_than_eight_actions_execute_without_truncation" time="2.103" /><testcase classname="tests.test_policies" name="test_batch_storage_has_no_business_count_limit" time="10.635" /><testcase classname="tests.test_policies" name="test_policy_switches_are_enforced_for_new_and_pending_writes" time="1.458" /><testcase classname="tests.test_policies" name="test_ordinary_actor_configuration_still_supports_explicit_auto_policy" time="15.600" /><testcase classname="tests.test_policies" name="test_admin_room_scope_is_default_and_revocable_without_player_escalation" time="1.311" /><testcase classname="tests.test_policies" name="test_player_request_is_explicit_private_and_real_observation_is_required" time="1.401" /><testcase classname="tests.test_policies" name="test_rejected_request_has_no_disclosure_and_disabled_policy_blocks_new_request" time="1.451" /><testcase classname="tests.test_policies" name="test_remove_schema_and_no_configuration_count_limit" time="0.049" /><testcase classname="tests.test_policies" name="test_stable_array_uses_current_baseline_and_candidate_references" time="0.002" /><testcase classname="tests.test_policies" name="test_live_probes_bind_real_ids_and_do_not_hide_changed_or_unlisted_failures[success-True]" time="0.001" /><testcase classname="tests.test_policies" name="test_live_probes_bind_real_ids_and_do_not_hide_changed_or_unlisted_failures[declared-block-True]" time="0.001" /><testcase classname="tests.test_policies" name="test_live_probes_bind_real_ids_and_do_not_hide_changed_or_unlisted_failures[changed-error-False]" time="0.001" /><testcase classname="tests.test_policies" name="test_live_probes_bind_real_ids_and_do_not_hide_changed_or_unlisted_failures[unlisted-error-False]" time="0.002" /><testcase classname="tests.test_policies" name="test_cumulative_tool_budget_uses_transport_limit_and_reports_sizes[112640-review_ready]" time="2.106"><failure message="AssertionError: {'taskId': '2e604e8859bc49a38fd1ea745cf56255', 'requestId': '2e604e8859bc49a38fd1ea745cf56255', 'account': 'kp', 'profile': {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...}, ...}&#10;assert 'failed' == 'review_ready'&#10;  &#10;  - review_ready&#10;  + failed">application = &lt;onlinecoc_ai.api.Application object at 0x000001D8B9B21610&gt;
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001D8BA198490&gt;
+size = 112640, expected = 'review_ready'
+
+    @pytest.mark.parametrize('size,expected', [(110*1024,'review_ready'),(270*1024,'failed')])
+    def test_cumulative_tool_budget_uses_transport_limit_and_reports_sizes(application,monkeypatch,size,expected):
+        app=application;enable(app.host,public=True,private=True,kp=True)
+        monkeypatch.setattr(app.batches,'catalog_query',lambda *args: {'notice':'x'*size})
+        async def callback(count,messages,tools):
+            return tool_call('room_manage_catalog') if count==1 else completion({'kind':'plan','text':'已读取目录，等待具体需求。'})
+        provider=Fake(callback)
+        async def run():
+            app.coordinator.provider_factory=lambda _:provider;await app.coordinator.start()
+            try:
+                request=submit(app,session(app),'读取管理目录')
+                dispatched=committed(command(app,'ai.request.dispatch',{'requestId':request['requestId']}))
+                result=await wait_task(app.coordinator,dispatched['taskId'])
+                assert result['status']==expected,result
+                budget=result['diagnostics']['contextBudget']
+                assert budget['limitBytes']==256*1024 and budget['toolMessageBytes']&gt;=size
+                assert 'x'*100 not in str(result['diagnostics'])
+                if expected=='failed':assert result['error']=='CONTEXT_LIMIT_EXCEEDED' and provider.calls==1
+                else:assert provider.calls==2 and 96*1024&lt;budget['bytes']&lt;budget['limitBytes']
+            finally:await app.coordinator.close()
+&gt;       asyncio.run(run())
+
+engineering\ai\tests\test_policies.py:215: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:204: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:127: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\base_events.py:719: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    async def run():
+        app.coordinator.provider_factory=lambda _:provider;await app.coordinator.start()
+        try:
+            request=submit(app,session(app),'读取管理目录')
+            dispatched=committed(command(app,'ai.request.dispatch',{'requestId':request['requestId']}))
+            result=await wait_task(app.coordinator,dispatched['taskId'])
+&gt;           assert result['status']==expected,result
+E           AssertionError: {'taskId': '2e604e8859bc49a38fd1ea745cf56255', 'requestId': '2e604e8859bc49a38fd1ea745cf56255', 'account': 'kp', 'profile': {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...}, ...}
+E           assert 'failed' == 'review_ready'
+E             
+E             - review_ready
+E             + failed
+
+engineering\ai\tests\test_policies.py:208: AssertionError</failure></testcase><testcase classname="tests.test_policies" name="test_cumulative_tool_budget_uses_transport_limit_and_reports_sizes[276480-failed]" time="2.000"><failure message="assert (262144 == (256 * 1024) and 0 &gt;= 276480)">application = &lt;onlinecoc_ai.api.Application object at 0x000001D8B9DE5910&gt;
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001D8BA186250&gt;
+size = 276480, expected = 'failed'
+
+    @pytest.mark.parametrize('size,expected', [(110*1024,'review_ready'),(270*1024,'failed')])
+    def test_cumulative_tool_budget_uses_transport_limit_and_reports_sizes(application,monkeypatch,size,expected):
+        app=application;enable(app.host,public=True,private=True,kp=True)
+        monkeypatch.setattr(app.batches,'catalog_query',lambda *args: {'notice':'x'*size})
+        async def callback(count,messages,tools):
+            return tool_call('room_manage_catalog') if count==1 else completion({'kind':'plan','text':'已读取目录，等待具体需求。'})
+        provider=Fake(callback)
+        async def run():
+            app.coordinator.provider_factory=lambda _:provider;await app.coordinator.start()
+            try:
+                request=submit(app,session(app),'读取管理目录')
+                dispatched=committed(command(app,'ai.request.dispatch',{'requestId':request['requestId']}))
+                result=await wait_task(app.coordinator,dispatched['taskId'])
+                assert result['status']==expected,result
+                budget=result['diagnostics']['contextBudget']
+                assert budget['limitBytes']==256*1024 and budget['toolMessageBytes']&gt;=size
+                assert 'x'*100 not in str(result['diagnostics'])
+                if expected=='failed':assert result['error']=='CONTEXT_LIMIT_EXCEEDED' and provider.calls==1
+                else:assert provider.calls==2 and 96*1024&lt;budget['bytes']&lt;budget['limitBytes']
+            finally:await app.coordinator.close()
+&gt;       asyncio.run(run())
+
+engineering\ai\tests\test_policies.py:215: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:204: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:127: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\base_events.py:719: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    async def run():
+        app.coordinator.provider_factory=lambda _:provider;await app.coordinator.start()
+        try:
+            request=submit(app,session(app),'读取管理目录')
+            dispatched=committed(command(app,'ai.request.dispatch',{'requestId':request['requestId']}))
+            result=await wait_task(app.coordinator,dispatched['taskId'])
+            assert result['status']==expected,result
+            budget=result['diagnostics']['contextBudget']
+&gt;           assert budget['limitBytes']==256*1024 and budget['toolMessageBytes']&gt;=size
+E           assert (262144 == (256 * 1024) and 0 &gt;= 276480)
+
+engineering\ai\tests\test_policies.py:210: AssertionError</failure></testcase><testcase classname="tests.test_policies" name="test_management_catalog_indexes_before_returning_selected_schemas" time="1.348" /><testcase classname="tests.test_policies" name="test_unused_extension_remove_requires_policy_without_making_actor_edits_high_risk[True]" time="0.001" /><testcase classname="tests.test_policies" name="test_unused_extension_remove_requires_policy_without_making_actor_edits_high_risk[False]" time="0.001" /><testcase classname="tests.test_policies" name="test_malformed_batch_gets_exact_schema_and_cannot_escape_to_plan[correct-after-plan]" time="1.840" /><testcase classname="tests.test_policies" name="test_malformed_batch_gets_exact_schema_and_cannot_escape_to_plan[clarification]" time="2.150" /><testcase classname="tests.test_policies" name="test_malformed_batch_gets_exact_schema_and_cannot_escape_to_plan[exhausted]" time="2.449" /><testcase classname="tests.test_policies" name="test_batch_self_mutation_preserves_safe_execution_status_after_source_change_and_revocation[completed]" time="1.498" /><testcase classname="tests.test_policies" name="test_batch_self_mutation_preserves_safe_execution_status_after_source_change_and_revocation[partial]" time="1.983" /><testcase classname="tests.test_policies" name="test_batch_self_mutation_preserves_safe_execution_status_after_source_change_and_revocation[pending]" time="1.456" /><testcase classname="tests.test_review_debug" name="test_review_source_is_separate_from_kp_message_and_deduplicated" time="1.820" /><testcase classname="tests.test_review_debug" name="test_forwarded_request_resolves_real_source_and_does_not_change_original" time="1.446" /><testcase classname="tests.test_review_debug" name="test_all_forwarded_reviews_stay_manual_with_auto_on" time="1.631" /><testcase classname="tests.test_review_debug" name="test_review_source_obeys_external_scope" time="1.268" /><testcase classname="tests.test_review_debug" name="test_ruling_digest_and_snapshot_size_checked" time="1.741" /><testcase classname="tests.test_review_debug" name="test_debug_is_readonly_metadata_default_with_authorized_content_opt_in" time="1.306" /><testcase classname="tests.test_review_debug" name="test_debug_rejects_ambiguous_or_invalid_options[options0]" time="1.305" /><testcase classname="tests.test_review_debug" name="test_debug_rejects_ambiguous_or_invalid_options[options1]" time="1.385" /><testcase classname="tests.test_review_debug" name="test_debug_rejects_ambiguous_or_invalid_options[options2]" time="1.743" /><testcase classname="tests.test_review_debug" name="test_debug_rejects_ambiguous_or_invalid_options[options3]" time="1.373" /><testcase classname="tests.test_review_debug" name="test_debug_rejects_ambiguous_or_invalid_options[options4]" time="1.984" /><testcase classname="tests.test_review_debug" name="test_debug_rechecks_deleted_session_and_player_switch" time="1.321" /><testcase classname="tests.test_review_debug" name="test_pure_schema_catalog_available_without_kp_egress" time="1.661" /><testcase classname="tests.test_review_debug" name="test_provider_records_actual_model_without_equating_alias_and_version" time="0.006" /><testcase classname="tests.test_review_debug" name="test_real_http_debug_authorization_no_store_and_no_receipt" time="1.778" /><testcase classname="tests.test_review_debug" name="test_legacy_accepted_review_retains_original_player_source" time="1.404" /><testcase classname="tests.test_review_debug" name="test_task_and_debug_preserve_requested_and_actual_model_ids" time="1.622" /></testsuite></testsuites>

@@ -4,7 +4,7 @@
 - 文档子类：工程
 - 状态：有效
 - 创建日期：2026-10-30
-- 最后更新：2026-11-17
+- 最后更新：2026-11-20
 - 关联文档：[工程索引](README.md)、[编写 Lua](lua-authoring.md)、[验收报告](first-test-acceptance.md)、[施工计划](<../../plans/project planning/first-test-construction-plan.md>)
 
 ## 1. 实现范围
@@ -56,6 +56,8 @@ flowchart LR
 
 聊天室以独立 `chat.py` 领域模块管理频道、消息与个人已读，复用房间事务和文件存储，不绑定网络适配器；联系人目录、历史分页和写命令均有 HTTP 与进程内入口。
 
+持久定向通知由 `notifications.py` 管理，复用 Room v4 outbox 与命令回执。`notification.send` 必须明确提交受众、文字和已成功的来源动作；`GET /api/v1/notifications` 读取本人未确认项，`notification.ack` 逐人确认。离线补取、来源绑定、幂等和客户端展示去重边界见[定向通知](notifications.md)，不以快照差值代替持久事件。
+
 个人知识由独立宿主模块 `onlinecoc.knowledge` 管理，AI关闭也可使用。持久策略保护受控资源，固定观察与持续告知分开，KP披露/撤回采用正常幂等事务。接口、提供方接入、只读证据与出口限制见[个人知识服务](player-knowledge.md)。
 
 素材字节与业务存档分离，消息通过 `assetIds` 引用公共素材，实体仅在 `components.core.assets` 保存 `assetId`。素材适配器负责内容摘要、文件落盘、登记、读取权限与回收。
@@ -95,7 +97,9 @@ engineering/.venv/Scripts/python engineering/backend/scripts/run.py --data-dir e
 
 恢复会为 AI 创建新 scopeId、撤销未消费批准并关闭自动需求；已发布配置/工件不丢失。可选 AI 历史在恢复目录中作为待复核附件保留，不直接复用旧授权。相同存档正常重启保留 scopeId；恢复分叉与正常重启不同。
 
-`asset.remove` 只移除无引用登记，字节延迟回收；离线 `collect-assets` 清理超过一天的未引用字节/暂存文件。快照代和旧规则工件目前不自动裁剪。单存储默认累计配额 512 MiB，达到配额后需备份并恢复到新目录建立新链；不能手动删除历史中间代。备份失败没有最终 manifest 时视为未完成。
+`asset.remove` 只移除无引用登记，字节延迟回收；离线 `collect-assets` 清理超过一天的未引用字节/暂存文件。快照代和旧规则工件不自动裁剪。单存储默认累计配额 512 MiB。FileDataStore 提供 `compress_history(expected_generation=...)`，逐代校验完整链后将较早 JSON 无损压缩为 `.json.gz`，保留每代原始字节、代号和摘要；默认最近两代保留原文件。仅在压缩副本发布、同步及回读一致后移除其冗余原文件。AI Repository 默认在提交即将超过配额时自动触发；房间和身份存储仍默认关闭自动压缩。压缩不会删除会话、审计或回执，当前状态和压缩后的历史仍会增长；真正不足时仍返回 STORE_FULL，需备份并恢复到新目录建立新链，不能手动删除历史中间代。备份失败没有最终 manifest 时视为未完成。
+
+新读取器兼容原 JSON 链及 JSON/gzip 混合链；压缩后的存储不能直接交给旧读取器。文件封套版本仍为 1，原字节均可从 gzip 还原；回退程序前应使用兼容读取器导出并恢复到独立目录。压缩保持单写锁和 CAS，临时写失败或同时存在两种表示时必须校验原字节一致，损坏不回退。已验证原 527106299 字节失败样本的隔离副本压缩至 143448602 字节，158 代全部保留，再写 12 代并重开成功；详见[压缩验收](../../../engineering/acceptance/store-compaction/README.md)。
 
 ## 6. 协议与首测限额
 

@@ -4,7 +4,7 @@
 - 文档子类：工程
 - 状态：有效
 - 创建日期：2026-11-14
-- 最后更新：2026-11-19
+- 最后更新：2026-11-20
 - 关联文档：[管理器与 API](ai-manager.md)、[会话权限与执行批次](ai-session-access.md)、[AI 运行时](ai-runtime.md)、[配置包开发指南](../../../rulepacks/README.md)、[包侧交互计划](../../plans/ai-pack-interaction.md)
 
 ## 入口与选择
@@ -68,7 +68,7 @@ client.destroy(); // 仅当这个客户端由本页面创建并独占时调用
 
 替换挂载函数为 `mountAIPage` 或 `mountAIConversation` 即可切换形式。为普通页面/对话组件的容器设置明确高度，例如 `height: 700px`；可折叠组件展开高度由 CSS 变量 `--ai-panel-height` 控制，默认 640px。组件支持现有 `--ai-surface`、`--ai-text`、`--ai-border` 等主题变量，使用 Shadow DOM 隔离样式与内部 ID。样式由 `styles.js` 共享加载并保留在 adoptedStyleSheets 中；首次加载失败可重试，反复挂载不重建外部 stylesheet link。网页打包需同时内联该助手和 CSS 文本，不能继续使用旧 link 替换器。见[渲染排查与验收](ai-rendering-knowledge.md)。
 
-公共选项：`title`、`review`（默认 true）、`onReview(proposalId?)`、`onReceipt(commandId)`、`onSessions(items)`、`onSession(session)`。提供 `onReview` 时，将审核入口交给包侧自定义 UI；无提案 ID 表示打开房间审核/队列入口。`review:false` 隐藏该组件的审核入口，适合需求专用界面，但不构成服务端权限策略。折叠版另有 `open`、`onToggle(open)`。
+公共选项：`renderReference`（见下文）、`title`、`review`（默认 true）、`onReview(proposalId?)`、`onReceipt(commandId)`、`onSessions(items)`、`onSession(session)`。提供 `onReview` 时，将审核入口交给包侧自定义 UI；无提案 ID 表示打开房间审核/队列入口。`review:false` 隐藏该组件的审核入口，适合需求专用界面，但不构成服务端权限策略。折叠版另有 `open`、`onToggle(open)`。
 
 | 方法 | 行为 |
 | --- | --- |
@@ -83,6 +83,20 @@ client.destroy(); // 仅当这个客户端由本页面创建并独占时调用
 | 折叠版 `open()` / `close()` / `toggle()` / `isOpen` | 控制展开状态；关闭会暂停对话并卸载审核面板 |
 
 折叠不会取消已提交任务，也不撤销批准或回滚游戏。切换会话会分别保留未发送草稿；草稿只保留在当前页面内存中，换身份、退出、销毁或刷新页面会清理；关闭审核区会丢弃尚未提交的审核表单输入。折叠暂停的是本组件的会话/审核轮询，宿主共用 `AiClient` 的身份同步仍由其拥有者管理。
+
+## 配置包引用详情渲染
+
+`mountAIPage`、`mountAIConversation`、`mountAICollapsible`、`mountChat`、`mountMarkdown` 和 `bindReferenceDetails` 可选传入同步回调 `renderReference(item, {audience, readOnly:true}) => Node | null`。item 是本次授权解析的完整 DataReference 副本，含 kind/id/revision/label/value；包可复用角色、物品、已知场景的只读语义视图。返回 null、无效值或抛错时沿用通用字段视图，不阻断引用。
+
+```js
+const panel = mountAIConversation(container, client, {
+  renderReference(item, {audience}) {
+    return packageReferenceView(item, audience); // 不支持的类型返回 null
+  }
+});
+```
+
+外层仍负责每次解析、权限与修订校验、窗口标题/关闭/焦点、过期错误、管理员技术详情及身份切换清理。回调不获得额外授权，不自行读取未披露资料；仅使用所传 DTO 构建文本 DOM。输入区对象预览沿用此回调；聊天和事件的既有预览摘要保持原处理。mountMarkdown.update 更换回调或 audience 时重新绑定，丢弃旧异步结果。
 
 ## 独立 HTML 与 iframe
 
@@ -201,15 +215,7 @@ Stumpsville 的本地 KP、PL 与网页玩家已接入原生对话和会话管�
 
 ## 验收
 
-2026-11-19 数据排版与角色分层更新通过 134 项相关测试，含真实 Edge 的预览／引用详情和既有三种嵌入回归；[结果与范围](../../../engineering/acceptance/ai-runtime/data-presentation-results.json)。本次未重建树桩镇分发网页，也未实施包侧行动内容投影。
-
-2026-11-17 聊天模板完成三轮迭代：第一轮 12 项既有回归通过；第二轮 5 项新交互测试通过；第三轮补充发送切换竞态，最终按测试 ID 去重 **27 项通过（含 6 项新增交互测试）**。末轮初跑 25 项通过、2 项旧定位断言失败；限定补全候选定位后，两项复测通过。见[逐轮结果与源码摘要](../../../engineering/acceptance/ai-runtime/chat-polish-results.json)。覆盖本机管理器、三种嵌入形态、390 px 窄容器/移动视口、引用详情与原子编辑、权限和归档删除；使用真实 Edge、隔离宿主及离线模型，无真实 API 消耗。前端优化不代表推理延迟优化。
-
-2026-11-16 的不限额与用量统计新增验收为122项模块测试及9组树桩镇接入，详见[用量结果](../../../engineering/acceptance/ai-runtime/usage-results.json)及[界面截图](../../../engineering/acceptance/ai-runtime/usage-panel.png)。以下为此前格式/会话阶段结果，不重复累加。
-
-三种页面经真实 Edge＋隔离宿主验证，覆盖同源 iframe、折叠暂停／恢复、草稿保留、窄屏、组件共用客户端、迟到响应清理、幂等与越权拒绝；资源清单验证模块依赖闭合。2026-11-16 新增玩家直接排队、权限、执行批次和归档／删除验收，详见[会话权限](ai-session-access.md)。
-
-2026-11-15 格式与会话管理更新通过 **51 项模块回归、7 组树桩镇接入验收**；防重复提交的 4 项复验包含在 51 项内。证据见[结果与源码摘要](../../../engineering/acceptance/ai-runtime/rendering-sessions.json)，截图见[格式渲染](../../../engineering/acceptance/ai-runtime/markdown-embedded.png)、[会话管理](../../../engineering/acceptance/ai-runtime/session-management.png)。覆盖真实 Edge、本地 KP、两名 WebRTC 网页玩家、旧咨询队列和沙箱表单；全部使用隔离存档/模拟服务，没有调用真实 DeepSeek、修改正式存档或新增云端部署。此前三种视图 26 项验收保留于[原记录](../../../engineering/acceptance/ai-runtime/embeds.json)。
+阶段测试、失败复验和早期决策已移入[开发记录](../../history/2026-11-20-ai-development-records.md)。各阶段计数不相加为当前全量结果。
 
 ## 数据查询与事件资料
 
@@ -253,9 +259,6 @@ const queue = mountRulings(queueTarget, client, {
 
 服务端按选中会话的 requestIds 读取任务，单次构建派发／提案索引，保留每次来源复验与撤权处理。此优化减少网络往返、列表查找和重复扫描，不缩短模型推理时间。专项通过明确的请求次数与并行屏障验证；测量数值及适用范围见[工作台验收](../../../engineering/acceptance/ai-runtime/workbench-results.json)，不作为公网延迟保证。
 
-2026-11-19 工作台验收：81 项按测试 ID 去重通过，包含42项会话／请求／裁决、25项权限／知识、14项浏览器检查；复测不累加。桌面与390px截图、初跑失败原因、请求并行屏障、源码摘要和包侧独立验收边界见[结果记录](../../../engineering/acceptance/ai-runtime/workbench-results.json)。测试不调用真实模型、不改正式房间。
-
-
 ## 高危裁决与资料申请
 
 设置组件和本机审核面板提供完整的查询、写入、外发、PL 及普通自动审批开关，字段见[会话权限](ai-session-access.md)。高危策略不可自动通过。`mountRulings` 详情展示服务端 diff/riskTags，人工批准绑定 explicitHighRiskDigest。
@@ -270,3 +273,13 @@ const queue = mountRulings(queueTarget, client, {
 底层 `createAITools(client).playerRequests.submit({sessionId,text}, commandId?)` 或 `.submit({sessionId,requestId}, commandId?)` 返回安全申请回执。配置包桥需将 **ai.player.request** 加入本人命令白名单，不放行 ai.ruling.decide 或管理员命令。`mountAISettings` 新增 `allowPlayerRequests`（控件 id=player-requests），旧策略缺失时默认 true。通路、错误和权限见[会话权限](ai-session-access.md#玩家创作与配置申请)。
 
 KP 的 `mountRulings` 已支持 player_request 和“接收并生成方案”；既有 `onOpenSession` 收到审核会话 ID，无需额外业务批准回调。资料披露仍独立通过 onKnowledgeRequest 选择分面。配置包不得把“接收创作申请”显示成“修改已执行”或自动向 PL 复制 KP 生成内容。
+
+## 来源审核与调试
+
+新增 debug.js、来源卡与 onOpenSource，底层 ai.review.create、AiClient.aiDebug 和独立 helper 可自行装配；转交不等于执行。接口及桥接边界见[来源审核与调试](ai-debug-review.md)。
+
+三种对话视图在顶栏显示“引用与调试”，点击子窗口后选择整会话／单条消息。独立 `mountChat` 默认将按钮放在会话标题栏，也可传 `debugTarget: HTMLElement` 安装到宿主指定顶栏；返回 `showDebug(requestId?)` 可由宿主定位某条消息。关闭、身份变化、暂停和销毁均清理临时正文及异步响应。接口仍是只读 `ai/debug`，正文外发仍须显式勾选。详见[排障与导出](ai-debug-review.md)。
+
+## 旧首测操作台客户端
+
+宿主 `/sdk/client.js` 使用 `engineering/client-sdk/client.js`。其 `aiRulings()` 读取现有裁决列表与完整高危摘要，`aiResolve(tokens)` 带 CSRF 解析授权引用，`subscribe(listener)` 返回取消订阅函数并保留旧 `onChange` 回调。两项读取沿用会话代号检查，身份切换后的迟到响应拒绝；快照、reset、退出与断线通知组件更新或清空。读取不审批、不发布，高危摘要仍由审核界面提交明确批准。独立接口证据见[SDK 验收](../../../engineering/acceptance/rulings-sdk/README.md)。

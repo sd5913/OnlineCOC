@@ -1,3 +1,6 @@
+import {rulingCard} from './ruling-card.js';
+import {explainAIError} from './ai-recovery.js';
+import {characterStatsHTML,itemDetailsHTML,renderPackageReference} from './reference-view.js';
 import {chatUI} from './chat.js';
 import {diceUI} from './dice.js';
 import {effectsUI} from './effects.js';
@@ -35,7 +38,7 @@ let busy = false;
 let lastFocus = null;
 let connection = t('ui.m066');
 let desktop = null, desktopAccount = '', consoleTab = 'control', selectedRequest = '', localAction = null, renderDeferred = false;
-let executorBusy = false, aiQueuePending=0, rulingPane='queue';
+let executorBusy = false, aiQueuePending=0, rulingPane='queue', queueTab='rulings';
 let statePollRunning=false,lastStatePoll=0,stateGeneration=0;
 const replyOpen=new Set();
 let libraryCache=null,libraryLoading=false,libraryError='',libraryTab='configurations',libraryQuery='',libraryType='';
@@ -137,6 +140,9 @@ async function perform(operation,args,existing) {
   catch(error){busy=false;throw error;}
   const body = existing ? {id:existing.id,operation:existing.operation,args:existing.args} : {id:newId(),operation,args};
   const key = pendingKey();
+  const ruling=['resolve','approve','reject','host-flow','ai.review','location.reveal'].includes(operation)&&state.role==='kp';
+  const rulingIdentity=noticeIdentity(),locator={actionId:body.id,operation,requestId:args.requestId,sourceId:args.id||args.account||args.input?.waitId||args.input?.flowId};
+  if(ruling){closeDialog();recordRulingNotice({title:'裁决行动',status:'processing',reason:'正在提交',locator,identity:rulingIdentity});}
   localStorage.setItem(key,JSON.stringify(webMode?{...body,_webRules:webRules}:body));
   localAction = {status:'submitting',text:t('action.submitting')};
   updateActivity();toast(t('action.submitting'));
@@ -146,13 +152,15 @@ async function perform(operation,args,existing) {
     localStorage.removeItem(key);
     if(result.status==='processing')actionWake?.postMessage({scope:state.storageScope});
     dirtyForm = null;
-    closeDialog();
+    if(!ruling)closeDialog();
     localAction = null;
     await refresh();
     const notified=state.role==='player'&&state.events?.some(e=>e.id===state.accountId+':'+body.id&&!['pending','processing'].includes(e.status));
     if(!notified)toast(result.status==='processing'?t('action.queued'):resultText(result));
+    if(ruling)recordRulingNotice({title:'裁决行动',status:operation==='reject'||operation==='resolve'&&!args.approve?'rejected':result.status==='processing'?'processing':'completed',reason:args.reason||((operation==='reject'||operation==='resolve'&&!args.approve)?'KP 拒绝本次申请（未填写备注）':resultText(result)),locator,identity:rulingIdentity});
     return result;
   } catch(error) {
+    if(ruling)recordRulingNotice({title:'裁决行动',status:error.status>=400&&error.status<500?'failed':'unknown',reason:error.failure?.reason||error.message,locator,identity:rulingIdentity});
     localAction = {status:'error',failure:error.failure,text:error.failure?'':error.message + (error.status>=400&&error.status<500?t('action.failed'):t('action.uncertain'))};
     updateActivity();
     toast(error.message);
@@ -190,6 +198,7 @@ async function chooseAIKnowledge(item,decide){
   let selected=null,generation=0;
   openDialog('批准资料申请',`<p>${escape(item.initiator)} · ${escape(item.summary||'')}</p>${select('选择披露资料','disclose-resource',[['','请选择'],...candidates.map(e=>[e.instanceId,e.name+' · '+(e.configurationId==='sv.location'?'地点描述与已发布线索':'身份与位置')])],'')}<div data-knowledge-preview></div>`,async()=>{
     if(!selected)throw Error('请先选择并查看披露内容');
+    closeDialog();
     const result=await decide([{op:'knowledge.observe',args:{policyId:policy.policyId,expectedPolicyRevision:policy.revision,subjectMemberId:member.memberId,resource:selected.resource,facetIds:selected.facetIds,expectedSourceRevision:selected.preview.sourceRevision,reason:'KP 批准玩家 AI 资料申请'}}]);
     if(result.status!=='completed')throw Error('资料披露尚未全部完成，请在原申请中核对回执');
     closeDialog();toast('已向申请玩家披露所选资料');
@@ -213,8 +222,7 @@ async function chooseAIKnowledge(item,decide){
 }
 
 function statCards(character){
-  const n=character.numbers;
-  return `<div class="statgrid">${['str','dex','wil'].map(key=>`<div class="stat">${button(escape(fieldName(key)),'check',{attribute:key},'quiet')}<strong>${n[key]} / ${n[key+'Max']}</strong></div>`).join('')}</div><div class="row"><strong>${t('field.hp')} ${n.hp} / ${n.maxHp}</strong><span>${t('field.armor')} ${n.armor}</span><span>${t('field.pips')} ${n.pips}</span></div>`;
+  return characterStatsHTML(character,{label:fieldName,check:key=>button(escape(fieldName(key)),'check',{attribute:key},'quiet')});
 }
 
 function roomActors(index) {
@@ -250,15 +258,26 @@ function roomPage(){
 function mapPage(){
   return heading('P16',t('nav.map'))+panel(t('ui.m105'),mapView(Object.values(state.allLocations),selectedLocation,true));
 }
+function noticeIdentity(){return JSON.stringify([state?.storageScope,state?.accountId]);}
+function noticeKey(){return 'sv.desktop.rulingNotices.'+state.storageScope+'.'+state.accountId;}
+function rulingNotices(){try{return JSON.parse(localStorage.getItem(noticeKey())||'[]').map(n=>({...n,reason:explainAIError(n.reason)}));}catch{return [];}}
+function recordRulingNotice(value){
+  if(!state||state.role!=='kp'||value.identity&&value.identity!==noticeIdentity())return;
+  const reasons={INPUT_INVALID:'提交参数无效，请刷新原裁决后重试',RULING_STALE:'裁决依据已更新，请重新打开原裁决',PERMISSION_DENIED:'当前账号无权执行该裁决',HIGH_RISK_REVIEW_REQUIRED:'高危确认已失效，请重新核对原方案',STORAGE_UNAVAILABLE:'房间存储暂不可用，请保留定位并联系房主排查',SOURCE_STALE:'来源已变化，请重新生成方案',SESSION_ACCESS_CHANGED:'会话权限已变化，请重新登录核对'};
+  const entry={id:newId(),time:Date.now(),...value,reason:reasons[value.reason]?reasons[value.reason]+'（'+value.reason+'）':explainAIError(value.reason)};const records=rulingNotices();records.unshift(entry);localStorage.setItem(noticeKey(),JSON.stringify(records.slice(0,100)));
+  const label={pending:'等待确认',processing:'处理中',completed:'已完成',published:'已发布',accepted:'已接收',rejected:'已拒绝',cancelled:'已取消',failed:'失败',blocked:'已阻止',partial:'部分完成',unknown:'结果待核对'}[entry.status]||entry.status;
+  toast(entry.title+' · '+label+'\n'+entry.reason);
+  const target=document.querySelector('#message-queue-list');if(target)target.innerHTML=messageQueue();
+}
 function messageQueue(){
   const channels=Object.values(state.channels).filter(c=>c.unreadCount>0);
-  return channels.map(c=>`<button type="button" class="message-queue-item" data-action="chat-channel" data-args="${escape(JSON.stringify({channel:c.channelId}))}"><strong>${escape(c.name)}</strong><span class="tag">${c.unreadCount}</span></button>`).join('')||empty(t('ruling.noMessages'));
+  return channels.map(c=>`<button type="button" class="message-queue-item" data-action="chat-channel" data-args="${escape(JSON.stringify({channel:c.channelId}))}"><strong>${escape(c.name)}</strong><span class="tag">${c.unreadCount}</span></button>`).join('')+rulingNotices().map(n=>rulingCard({time:new Date(n.time).toLocaleTimeString(locale(),{hour:'2-digit',minute:'2-digit'}),type:'执行结果',source:'KP',summary:escape(n.title+' · '+n.reason),state:({pending:'等待确认',failed:'失败',rejected:'已拒绝',processing:'处理中',unknown:'结果待核对',blocked:'已阻止',completed:'已完成'}[n.status]||n.status),actions:button('详情与定位','ruling-notice',{id:n.id})})).join('')||empty(t('ruling.noMessages'));
 }
 function keeperLocalPending(){return (state?.requests||[]).filter(r=>r.status==='pending').length+Object.values(state?.drafts||{}).filter(d=>d.status==='submitted').length+(state?.keeperWaits||[]).length+(state?.keeperFlows||[]).length;}
 function updateQueueCount(value=aiQueuePending){aiQueuePending=value;const count=document.querySelector('#keeper-pending-count');if(count)count.textContent=keeperLocalPending()+aiQueuePending;}
 function updateKeeperQueue(){
   if(state?.role!=='kp'||!document.querySelector('.ruling-work'))return;
-  for(const [selector,render] of [['#keeper-character-approvals',characterApprovalQueue],['#keeper-host-flows',hostFlowQueue],['#keeper-game-requests',rulingQueue]]){
+  for(const [selector,render] of [['#keeper-character-approvals',characterApprovalQueue],['#keeper-host-flows',hostFlowQueue],['#keeper-game-requests',rulingQueue],['#keeper-archived-rulings',archivedRulings]]){
     const node=document.querySelector(selector);if(!node)continue;
     const markup=render();if(node._queueMarkup!==markup){node.innerHTML=markup;node._queueMarkup=markup;}
   }
@@ -269,23 +288,54 @@ function queueTime(value){
   return Number.isNaN(date.getTime())?'—':date.toLocaleTimeString(locale(),{hour:'2-digit',minute:'2-digit'});
 }
 function compactQueue(time,source,summary,action,args,actions='',attrs=''){
-  return `<article class="queue-item compact-queue" ${attrs}><time>${escape(queueTime(time))}</time><span class="queue-source" title="${escape(source)}">${escape(source)}</span><button type="button" class="queue-summary quiet" data-action="${action}" data-args="${escape(JSON.stringify(args))}">${escape(summary)}</button><div class="actions">${actions}</div></article>`;
+  const type=attrs.includes('data-draft')?'角色申请':attrs.includes('data-wait')?'流程裁决':attrs.includes('data-flow')?'流程异常':'玩家行动';
+  return rulingCard({time:queueTime(time),type,source,summary:`<button type="button" class="queue-summary quiet" data-action="${action}" data-args="${escape(JSON.stringify(args))}">${escape(summary)}</button>`,actions,attrs});
+}
+function rulingAIButton(kind,id,account){return button('转 AI 处理','ruling-ai',{kind,id,...(account?{account}:{})},'small');}
+function rulingDebugTools(kind,id,account){
+  const args={kind,id,...(account?{account}:{})};
+  return `<details class="ruling-debug"><summary>调试</summary><label><input type="checkbox" data-review-content> 包含裁决内容</label><div class="actions">${button('复制引用','ruling-reference',args,'small')}${button('导出调试','ruling-export',args,'small')}</div></details>`;
+}
+async function readRulingSource(args){
+  const identity=JSON.stringify([state.storageScope,state.accountId,state.role]),opened=dialog.firstElementChild;
+  const source=await api('package/ai-source',args);
+  if(state.role!=='kp'||identity!==JSON.stringify([state.storageScope,state.accountId,state.role]))throw Error('身份已变化，请刷新');
+  if(!dialog.open||dialog.firstElementChild!==opened)throw Error('裁决窗口已变化，请重新操作');
+  return source;
+}
+async function copyRulingReference(args){
+  const source=await readRulingSource(args);
+  const value=JSON.stringify({storageScope:state.storageScope,kind:source.kind,sourceId:source.sourceId,category:source.category,id:source.id,revision:source.revision,title:source.title,requestedBy:source.requestedBy,locator:source.context.sourceLocator});
+  try{if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(value);return toast('裁决引用已复制');}}catch{}
+  const input=document.createElement('textarea');input.value=value;dialog.append(input);input.readOnly=true;input.setAttribute('aria-label','可复制的裁决引用');input.focus();input.select();let copied=false;try{copied=!!document.execCommand?.('copy');}catch{}if(copied)input.remove();toast(copied?'裁决引用已复制':'请选择并复制引用');
+}
+async function exportRulingDebug(args){
+  const includeContent=!!dialog.querySelector('[data-review-content]')?.checked,source=await readRulingSource(args);
+  const content=includeContent?source:Object.fromEntries(Object.entries(source).filter(([key])=>!['summary','context'].includes(key)));
+  const data={schemaVersion:1,storageScope:state.storageScope,exportedAt:new Date().toISOString(),contentIncluded:includeContent,locator:source.context.sourceLocator,source:content};
+  const url=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));
+  const link=document.createElement('a');link.href=url;link.download='stumpsville-ruling-debug.json';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+function openRulingSource(source){
+  if(source.kind!=='package'||source.sourceId!=='stumpsville')return toast('该来源不属于当前配置包');
+  const args=source.context?.sourceLocator||{kind:source.category,id:source.id,account:source.requestedBy};
+  if(args.kind==='request'&&state.requests.some(r=>r.id===args.id&&r.status==='pending'))actions['console-request']({id:args.id});else queueDetail(args);
 }
 function characterApprovalQueue(){
-  return Object.values(state.drafts||{}).filter(d=>d.status==='submitted').map(d=>compactQueue(d.time,d.account,t('queue.characterApproval')+' · '+d.name,'queue-detail',{kind:'draft',id:d.account},button(t('ui.m114'),'approve',{account:d.account},'primary small')+button(t('ui.m115'),'reject',{account:d.account},'small'),`data-draft="${escape(d.account)}"`)).join('');
+  return Object.values(state.drafts||{}).filter(d=>d.status==='submitted').map(d=>compactQueue(d.time,d.account,t('queue.characterApproval')+' · '+d.name,'queue-detail',{kind:'draft',id:d.account},button(t('ui.m114'),'approve',{account:d.account},'primary small')+button(t('ui.m115'),'reject',{account:d.account},'small')+rulingAIButton('draft',d.account),`data-draft="${escape(d.account)}"`)).join('');
 }
 function hostFlowQueue(){
-  return (state.keeperWaits||[]).map(w=>compactQueue(w.createdAt||w.created,w.account||'宿主',w.options?.question||w.options?.prompt||t('queue.flowWait'),'queue-detail',{kind:'wait',id:w.id},button(t('ui.m099'),'host-flow',{operation:'flow.respond',input:{waitId:w.id,revision:w.revision,answer:true}},'primary small')+button(t('ui.m100'),'host-flow',{operation:'flow.respond',input:{waitId:w.id,revision:w.revision,answer:false}},'small'),`data-wait="${escape(w.id)}"`)).join('')+(state.keeperFlows||[]).map(f=>compactQueue(f.updatedAt||f.createdAt,f.rule,f.error||t('queue.flowAttention'),'queue-detail',{kind:'flow',id:f.id},button(t('queue.retryFlow'),'host-flow',{operation:'flow.retry',input:{flowId:f.id}},'small')+button(t('queue.cancelFlow'),'host-flow',{operation:'flow.cancel',input:{flowId:f.id}},'small'),`data-flow="${escape(f.id)}"`)).join('');
+  return (state.keeperWaits||[]).map(w=>compactQueue(w.createdAt||w.created,w.account||'宿主',w.options?.question||w.options?.prompt||t('queue.flowWait'),'queue-detail',{kind:'wait',id:w.id},button(t('ui.m099'),'host-flow',{operation:'flow.respond',input:{waitId:w.id,revision:w.revision,answer:true}},'primary small')+button(t('ui.m100'),'host-flow',{operation:'flow.respond',input:{waitId:w.id,revision:w.revision,answer:false}},'small')+rulingAIButton('wait',w.id),`data-wait="${escape(w.id)}"`)).join('')+(state.keeperFlows||[]).map(f=>compactQueue(f.updatedAt||f.createdAt,f.rule,f.error||t('queue.flowAttention'),'queue-detail',{kind:'flow',id:f.id},button(t('queue.retryFlow'),'host-flow',{operation:'flow.retry',input:{flowId:f.id}},'small')+button(t('queue.cancelFlow'),'host-flow',{operation:'flow.cancel',input:{flowId:f.id}},'small')+rulingAIButton('flow',f.id),`data-flow="${escape(f.id)}"`)).join('');
 }
-function queueDetail({kind,id}){
-  const item=kind==='draft'?state.drafts[id]:kind==='wait'?state.keeperWaits.find(x=>x.id===id):state.keeperFlows.find(x=>x.id===id);
-  if(!item)return;
-  const title=kind==='draft'?t('queue.characterApproval'):kind==='wait'?t('queue.flowWait'):t('queue.flowAttention');
-  const body=kind==='draft'?`<h3>${escape(item.name)}</h3><p>${escape(item.account)} · ${fieldName('str')} ${item.str} / ${fieldName('dex')} ${item.dex} / ${fieldName('wil')} ${item.wil} · ${fieldName('hp')} ${item.hp}</p>`:`<p>${escape(item.options?.question||item.options?.prompt||item.error||item.status||'')}</p>`;
-  openDialog(title,body+`<pre class="data-detail">${escape(JSON.stringify(item,null,2))}</pre>`,null);
+function queueDetail({kind,id,account}){
+  const item=kind==='request'?state.requests.find(x=>x.id===id):kind==='draft'?state.drafts[id]:kind==='wait'?state.keeperWaits.find(x=>x.id===id):kind==='event'?(state.events||[]).find(x=>x.id===id&&(!account||x.account===account)):state.keeperFlows.find(x=>x.id===id);
+  if(!item)return toast('原裁决已不在当前列表中，请刷新或查看处理记录');
+  const title=kind==='request'?'玩家行动申请':kind==='event'?'裁决与行动记录':kind==='draft'?t('queue.characterApproval'):kind==='wait'?t('queue.flowWait'):t('queue.flowAttention');
+  const body=kind==='draft'?`<h3>${escape(item.name)}</h3><p>${escape(item.account)} · ${fieldName('str')} ${item.str} / ${fieldName('dex')} ${item.dex} / ${fieldName('wil')} ${item.wil} · ${fieldName('hp')} ${item.hp}</p>`:`<p>${escape(item.options?.question||item.options?.prompt||item.text||item.error||item.status||'')}</p>`;
+  openDialog(title,body+`<pre class="data-detail">${escape(JSON.stringify(item,null,2))}</pre><div class="actions">${rulingAIButton(kind,id,account)}</div>`+rulingDebugTools(kind,id,account),null);
 }
 function rulingsPage(){
-  return `<nav class="ruling-switch" aria-label="裁决工作区">${[['queue','裁决队列'],['ai','AI 对话'],['chat','聊天']].map(([pane,label])=>button(label,'ruling-pane',{pane},pane===rulingPane?'primary small':'small')).join('')}</nav><div class="rulings-grid" data-pane="${rulingPane}"><div class="ruling-queues"><section class="panel message-queue"><h2>${t('ruling.messages')}</h2><div id="message-queue-list" class="ruling-scroll">${messageQueue()}</div></section><section class="panel ruling-work"><h2>${t('ruling.queue')} <span class="tag" id="keeper-pending-count">${keeperLocalPending()+aiQueuePending}</span></h2><div class="ruling-scroll"><div id="keeper-character-approvals">${characterApprovalQueue()}</div><div id="keeper-host-flows">${hostFlowQueue()}</div><div id="keeper-game-requests">${rulingQueue()}</div><div id="kp-ai-rulings"></div><details><summary>${t('ruling.history')}</summary>${activityFeed()}</details></div></section></div><section class="panel ruling-ai" aria-label="${t('ai.title')}"><div id="kp-ai-embedded"></div></section><aside id="chat-column" class="ruling-chat" aria-label="${t('chat.title')}"></aside></div>`;
+  return `<nav class="ruling-switch" aria-label="裁决工作区">${[['queue','裁决队列'],['ai','AI 对话'],['chat','聊天']].map(([pane,label])=>button(label,'ruling-pane',{pane},pane===rulingPane?'primary small':'small')).join('')}</nav><div class="rulings-grid" data-pane="${rulingPane}"><section class="panel ruling-work ruling-queues"><header class="queue-heading"><div role="tablist" aria-label="消息与裁决"><button type="button" role="tab" aria-selected="${queueTab==='messages'}" data-action="queue-tab" data-args='{"tab":"messages"}'>消息队列</button><button type="button" role="tab" aria-selected="${queueTab==='rulings'}" data-action="queue-tab" data-args='{"tab":"rulings"}'>裁决队列 <span id="keeper-pending-count">${keeperLocalPending()+aiQueuePending}</span></button><button type="button" role="tab" aria-selected="${queueTab==='archived'}" data-action="queue-tab" data-args='{"tab":"archived"}'>已归档</button></div><div class="queue-header-actions">${button('记录','ruling-history',{},'small')}${button('刷新','queue-refresh',{},'small')}${button('设置','navigate',{path:'gm/ai-settings'},'small')}</div></header><div id="message-queue-list" class="ruling-scroll" role="tabpanel" ${queueTab!=='messages'?'hidden':''}>${messageQueue()}</div><div id="ruling-queue-list" class="ruling-scroll" role="tabpanel" ${queueTab==='messages'?'hidden':''}><div data-pending-rulings ${queueTab==='archived'?'hidden':''}><div id="keeper-character-approvals">${characterApprovalQueue()}</div><div id="keeper-host-flows">${hostFlowQueue()}</div><div id="keeper-game-requests">${rulingQueue()}</div></div><div id="keeper-archived-rulings" ${queueTab!=='archived'?'hidden':''}>${archivedRulings()}</div><div id="kp-ai-rulings"></div></div></section><section class="panel ruling-ai" aria-label="${t('ai.title')}"><div id="kp-ai-embedded"></div></section><aside id="chat-column" class="ruling-chat" aria-label="${t('chat.title')}"></aside></div>`;
 }
 
 function mapView(locations,current,rosters=false) {
@@ -356,7 +406,8 @@ function renderPage() {
   if(gm&&state.publicationSync&&state.publicationSync.status!=='completed')main.insertAdjacentHTML('afterbegin','<div class="notice error" role="status">规则发布已提交；包侧'+(state.publicationSync.status==='conflict'?'同步冲突':'等待同步')+'：'+escape(state.publicationSync.message)+'</div>');
   chatUI.update(state);
   chatUI.mount(workspace||path==='gm/rulings'?document.querySelector('#chat-column'):null);
-  embeddedAI.mount(path==='gm/ai-settings'?document.querySelector('#kp-ai-settings'):path==='gm/rulings'?document.querySelector('#kp-ai-embedded'):workspace?document.querySelector('#player-ai-embedded'):null,{base,manager:gm,account:state.accountId,scope:state.storageScope,settings:path==='gm/ai-settings',rulingsTarget:document.querySelector('#kp-ai-rulings'),onQueueCount:updateQueueCount,onSettings:()=>{location.hash='/gm/ai-settings';},onReveal:account=>actions['knowledge-ruling']({account}),onKnowledgeRequest:chooseAIKnowledge,onReview:()=>{location.hash='/gm/rulings';}});
+  const renderedIdentity=noticeIdentity();
+  embeddedAI.mount(path==='gm/ai-settings'?document.querySelector('#kp-ai-settings'):path==='gm/rulings'?document.querySelector('#kp-ai-embedded'):workspace?document.querySelector('#player-ai-embedded'):null,{base,manager:gm,account:state.accountId,scope:state.storageScope,settings:path==='gm/ai-settings',rulingsTarget:document.querySelector('#kp-ai-rulings'),archived:queueTab==='archived',readBundle:()=>api('package/bundle'),renderReference:renderPackageReference,onQueueCount:updateQueueCount,onNotice:value=>recordRulingNotice({...value,identity:renderedIdentity}),onSettings:()=>{location.hash='/gm/ai-settings';},onReveal:account=>actions['knowledge-ruling']({account}),onKnowledgeRequest:chooseAIKnowledge,onOpenSource:openRulingSource,onReview:()=>{location.hash='/gm/rulings';}});
   updateActivity();
   if(workspace){const log=document.querySelector('#action-feedback');if(log)log.scrollTop=logScroll;document.querySelector('.scene-column').scrollTop=sceneScroll;document.querySelector('.character-column').scrollTop=characterScroll;positionNotebook();}
 }
@@ -393,7 +444,7 @@ function scenePage(){
   const place=state.locations.find(x=>x.index===c.numbers.location);
   if(!place)return empty(t('scene.unpublished'));
   const observation=place.observedAt?`观察记录 · ${new Date(place.observedAt*1000).toLocaleString()}（非实时场景）`:t('scene.current');
-  return `<header class="scene-heading"><div><small>${escape(observation)}</small><h1>${String(place.index).padStart(2,'0')} ${escape(place.name)}</h1></div><span class="tag">${t('scene.round',{count:state.session?.numbers.round||0})}</span></header><p class="scene-description">${escape(place.description)}</p><div class="scene-map-area">${mapView(state.locations,place.index,'player')}${playerContacts()}</div><div class="available-actions"><header><h2>${t('scene.actions')}</h2><span class="tag">${state.automation.enabled?t('ui.m078'):t('ui.m091')}</span></header><div class="preset-actions">${sceneButtons(place)}</div><div class="travel-actions">${place.exits.map(index=>button(t('scene.go',{place:escape(state.locations.find(x=>x.index===index)?.name||String(index))}),'travel',{destination:index},'small')).join('')}</div><div class="generic-actions">${button(t('ui.m051'),'check',{},'primary')}${button(t('ui.m049'),'request',{kind:'free'})}${button(t('ui.m050'),'review')}</div></div>${sceneStatusPanel()}`;
+  return `<header class="scene-heading"><div><small>${escape(observation)}</small><h1>${String(place.index).padStart(2,'0')} ${escape(place.name)}</h1></div><span class="tag">${t('scene.round',{count:state.session?.numbers.round||0})}</span></header><p class="scene-description">${escape(place.description)}</p><div class="scene-map-area">${mapView(state.locations,place.index,'player')}${playerContacts()}</div><div class="available-actions"><header><h2>${t('scene.actions')}</h2><span class="tag scene-settlement" role="status">${settlementStatus()}</span></header><div class="preset-actions">${sceneButtons(place)}</div><div class="travel-actions">${place.exits.map(index=>button(t('scene.go',{place:escape(state.locations.find(x=>x.index===index)?.name||String(index))}),'travel',{destination:index},'small')).join('')}</div><div class="generic-actions">${button(t('ui.m051'),'check',{},'primary')}${button(t('ui.m049'),'request',{kind:'free'})}${button(t('ui.m050'),'review')}</div></div>${sceneStatusPanel()}`;
 }
 
 function inventoryCards(c) {
@@ -507,9 +558,16 @@ function saveDesktop(){localStorage.setItem(desktopKey(),JSON.stringify(desktop)
 function unreadEvents(){return (state.events||[]).filter(e=>!desktop.seen.includes(e.account+':'+e.id)).length;}
 function unreadMessages(){return Object.values(state.channels||{}).reduce((n,c)=>n+(c.unreadCount||0),0);}
 function markEventsRead(){desktop.seen=(state.events||[]).map(e=>e.account+':'+e.id);saveDesktop();}
+function settlementStatus(){
+  if(!state.automation.enabled)return t('ui.m091');
+  if(!state.sceneAutomation?.ready)return '自动结算 · 未就绪';
+  if(!state.sceneAutomation.executorOnline)return '自动结算 · 离线待结算';
+  const pending=(state.autoSceneTasks||[]).filter(x=>!['completed','cancelled','failed'].includes(x.status)).length;
+  return t('ui.m078')+(pending?' · '+pending+' 项待结算':'');
+}
 function sceneButtons(place){
   if(!state.sceneAutomation?.ready)return `<p class="notice">${t('scene.rulesmissing')}</p>`;
-  return '<p class="muted">以下为该次观察中已知的做法；实际条件和资源在执行时检查。未列出的想法可自由描述并申请裁决。</p>'+(!state.sceneAutomation.executorOnline?`<p class="notice">${t('scene.executoroffline')}</p>`:'')+(state.autoSceneTasks?.length?`<p class="notice">${t('scene.queued')}</p>`:'')+(state.sceneActions||[]).map(a=>button(escape(a.label),'scene-action',{id:a.id})).join('');
+  return (state.sceneActions||[]).map(a=>button(escape(a.label),'scene-action',{id:a.id})).join('');
 }
 function sceneStatusPanel(){
   const data=state.sceneStatus||{};if(!data.facts?.length&&!data.supplies?.length)return '';
@@ -543,7 +601,7 @@ function eventCard(e,compact=false){
   const label=t(e.status==='processing'?'ui.m095':waiting?'ui.m091':denied?'ui.m093':e.status==='blocked'||e.result?.outcome==='blocked'?'state.blocked':e.status==='approved'?'state.approved':'ui.m092');
   const r=e.result&&typeof e.result==='object'?e.result:{};
   const changes=changeList(e.changes||[]);
-  return `<article class="event-card ${waiting?'waiting':denied?'denied':''}" data-event-id="${escape(e.id)}"><div class="event-head"><strong>${escape(e.title)}</strong><span class="tag">${label}</span></div><small class="muted">${new Date(e.time*1000).toLocaleString(locale())} · ${t(e.mode==='kp'?'log.keeper':'ui.m078')}${state.role==='kp'?' · '+escape(e.account):''}</small>${compact?'':`<p class="action-steps">${t('log.submitted')} → ${t(e.mode==='kp'?'log.keeper':'log.rules')} → ${label}</p>`}${e.text&&!compact?'<p>'+escape(e.text)+'</p>':''}${r.failure?failurePanel(r.failure):sceneResult(r)||('passed' in r?diceBlock(r):`<p>${escape(waiting?t('log.waiting'):denied?t('log.rejected'):resultText(r))}</p>`)}${e.reason?`<p class="ruling-reason">${t(waiting?'log.reason':'log.ruling')}：${escape(e.reason)}</p>`:''}${changes?`<ul class="change-list">${changes}</ul>`:!waiting&&!r.failure?`<p class="muted">${t('log.nochanges')}</p>`:''}${!compact&&state.character&&e.receiptId?button(t('ui.m119'),'review',{receiptId:e.receiptId,text:t('log.review',{title:e.title})},'small quiet'):''}</article>`;
+  return `<article class="event-card ${waiting?'waiting':denied?'denied':''}" data-event-id="${escape(e.id)}"><div class="event-head"><strong>${escape(e.title)}</strong><span class="tag">${label}</span></div><small class="muted">${new Date(e.time*1000).toLocaleString(locale())} · ${t(e.mode==='kp'?'log.keeper':'ui.m078')}${state.role==='kp'?' · '+escape(e.account):''}</small>${compact?'':`<p class="action-steps">${t('log.submitted')} → ${t(e.mode==='kp'?'log.keeper':'log.rules')} → ${label}</p>`}${e.text&&!compact?'<p>'+escape(e.text)+'</p>':''}${r.failure?failurePanel(r.failure):sceneResult(r)||('passed' in r?diceBlock(r):`<p>${escape(waiting?t('log.waiting'):denied?t('log.rejected'):resultText(r))}</p>`)}${e.reason?`<p class="ruling-reason">${t(waiting?'log.reason':'log.ruling')}：${escape(e.reason)}</p>`:''}${changes?`<ul class="change-list">${changes}</ul>`:!waiting&&!r.failure?`<p class="muted">${t('log.nochanges')}</p>`:''}${!compact&&state.character&&e.receiptId?button(t('ui.m119'),'review',{receiptId:e.receiptId,text:t('log.review',{title:e.title})},'small quiet'):''}${state.role==='kp'?`<div class="actions">${rulingAIButton('event',e.id,e.account)}${button('详情与调试','queue-detail',{kind:'event',id:e.id,account:e.account},'small')}</div>`:''}</article>`;
 }
 function activityFeed(){
   const events=(state.events||[]).slice().reverse();
@@ -637,7 +695,12 @@ function requestDescription(r){
   return `${kind}${detail?' · '+detail:''}`;
 }
 function rulingQueue(){
-  return state.requests.filter(r=>r.status==='pending').map(r=>compactQueue(r.time,r.account,requestDescription(r)+(r.failure?' · '+r.failure.reason:r.text?' · '+r.text:''),'console-request',{id:r.id},(['check','inventory','travel','transfer','scene'].includes(r.kind)?button('执行','ruling-execute',{id:r.id},'primary small'):'')+button('处理','console-request',{id:r.id},'small'),`data-request-id="${escape(r.id)}"`)).join('');
+  return state.requests.filter(r=>r.status==='pending').map(r=>compactQueue(r.time,r.account,requestDescription(r)+(r.failure?' · '+r.failure.reason:r.text?' · '+r.text:''),'console-request',{id:r.id},(['check','inventory','travel','transfer','scene'].includes(r.kind)?button('执行','ruling-execute',{id:r.id},'primary small'):'')+button('处理','console-request',{id:r.id},'small')+(!['check','inventory','travel','transfer','scene'].includes(r.kind)?button('拒绝','ruling-decline',{id:r.id},'small'):'')+rulingAIButton('request',r.id),`data-request-id="${escape(r.id)}"`)).join('');
+}
+function archivedRulings(){
+  const requests=state.requests.filter(r=>r.status!=='pending').map(r=>({time:r.time,type:'玩家行动',source:r.account,summary:requestDescription(r)+(r.text?' · '+r.text:''),status:r.status,args:{kind:'request',id:r.id},attrs:'data-archived-request="'+escape(r.id)+'"'}));
+  const drafts=Object.values(state.drafts||{}).filter(d=>['approved','rejected'].includes(d.status)).map(d=>({time:d.time,type:'角色申请',source:d.account,summary:d.name,status:d.status,args:{kind:'draft',id:d.account},attrs:'data-archived-draft="'+escape(d.account)+'"'}));
+  return [...requests,...drafts].sort((a,b)=>(b.time||0)-(a.time||0)).map(r=>rulingCard({time:queueTime(r.time),type:r.type,source:r.source,summary:escape(r.summary),state:({approved:'已接受',rejected:'已拒绝',automatic:'已自动执行',cancelled:'已取消'}[r.status]||r.status),attrs:r.attrs,actions:button('查看详情','queue-detail',r.args)+rulingAIButton(r.args.kind,r.args.id,r.source)})).join('');
 }
 function rulingResolutionFields(kind){
   if(kind==='check')return select('属性','resolution-attribute',[['str',fieldName('str')],['dex',fieldName('dex')],['wil',fieldName('wil')]],'dex')+select('模式','resolution-mode',[['normal','普通'],['advantage','优势'],['disadvantage','劣势']],'normal');
@@ -656,7 +719,7 @@ function rulingDetail(){
   const r=state.requests.find(r=>r.id===selectedRequest&&r.status==='pending');
   if(!r)return '';selectedRequest=r.id;
   const actor=state.characters.find(c=>c.instanceId===r.actor),mechanical=['check','inventory','travel','transfer','scene'].includes(r.kind);
-  return `<h3>${escape(requestDescription(r))}</h3><p>${escape(actor?.name||r.account)} · ${escape(state.allLocations[String(r.location)]?.name||'')}</p><p class="full-request">${escape(r.text||'')}</p>${r.failure?failurePanel(r.failure):''}<input type="hidden" name="requestId" value="${escape(r.id)}">${select('决定','approve',[['yes','批准'],['no','拒绝']],'yes')}${!mechanical?select('执行动作','resolution',[['','仅回复'],['check','属性检定'],['damage','伤害结算'],['rest','休息恢复'],['grant','授予物品']],'')+'<div data-resolution-fields></div>':''}<details data-ruling-reply="${escape(r.id)}" ${replyOpen.has(r.id)?'open':''}><summary>回复（可选）</summary>${area('回复内容','reason')}</details><button class="primary" type="submit" data-ruling-submit>${mechanical?'批准并执行':'批准并回复'}</button>`;
+  return `<h3>${escape(requestDescription(r))}</h3><p>${escape(actor?.name||r.account)} · ${escape(state.allLocations[String(r.location)]?.name||'')}</p><p class="full-request">${escape(r.text||'')}</p>${r.failure?failurePanel(r.failure):''}<input type="hidden" name="requestId" value="${escape(r.id)}">${select('决定','approve',[['yes','批准'],['no','拒绝']],'yes')}${!mechanical?select('执行动作','resolution',[['','仅回复'],['check','属性检定'],['damage','伤害结算'],['rest','休息恢复'],['grant','授予物品']],'')+'<div data-resolution-fields></div>':''}<details data-ruling-reply="${escape(r.id)}" ${replyOpen.has(r.id)?'open':''}><summary>回复（可选）</summary>${area('回复内容','reason')}</details><button class="primary" type="submit" data-ruling-submit>${mechanical?'批准并执行':'批准并回复'}</button>${rulingAIButton('request',r.id)}${rulingDebugTools('request',r.id)}`;
 }
 function roomNetworkPanel(){
   const n=state.network;if(!n)return '';
@@ -711,7 +774,7 @@ const actions = {
     openDialog('网页分享',w.running?`<div class="actions"><a href="${escape(platform+'/create')}" target="_blank" rel="noopener">${t('web.create')}</a><a href="${escape(platform+'/manage')}" target="_blank" rel="noopener">${t('web.manage')}</a><a href="${escape(platform+'/join')}" target="_blank" rel="noopener">${t('web.join')}</a></div>${field('房间代号（分享给玩家）','room-code',w.roomCode)}${setup}<p>玩家使用平台账号及游戏账号两次登录。保持本机KP管理台在线。</p>`:failure,w.running?async()=>{await api('package/web/stop',{});closeDialog();toast('网页分享已停止，游戏宿主继续运行。');}:null,'停止网页分享');
   },
   'copy-web-setup':async()=>{const input=document.querySelector('#web-setup');try{if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(input.value);return toast(t('web.copied'));}}catch{}input.focus();input.select();toast(document.execCommand('copy')?t('web.copied'):t('web.selectCopy'));},
-  'ai-assistant':()=>{if(state.role==='kp'){location.hash='/gm/rulings';return;}if(route()==='play/scene'){communicationTab('ai');actions['workspace-column']({column:'communication'});return;}openDialog(t('ai.title'),'<div id="player-ai-embedded"></div>',null,'','AI');embeddedAI.mount(document.querySelector('#player-ai-embedded'),{base,account:state.accountId});},
+  'ai-assistant':()=>{if(state.role==='kp'){location.hash='/gm/rulings';return;}if(route()==='play/scene'){communicationTab('ai');actions['workspace-column']({column:'communication'});return;}openDialog(t('ai.title'),'<div id="player-ai-embedded"></div>',null,'','AI');embeddedAI.mount(document.querySelector('#player-ai-embedded'),{base,account:state.accountId,renderReference:renderPackageReference});},
   'open-chat':()=>chatUI.open(),
   'copy-room-address':async()=>{
     const input=document.querySelector('#room-url');
@@ -726,15 +789,25 @@ const actions = {
   },
   'events-read':()=>{markEventsRead();renderPage();},
   'console-tab':({tab})=>{if(dirtyForm)return toast('请先保存当前表单。');location.hash=tab==='control'?'/gm/console':'/gm/rulings';renderPage();},
+  'ruling-ai':async args=>{if(dirtyForm&&dirtyForm!=='ruling-form')throw Error(t('status.savefirst'));const result=await perform('ai.review',args);rulingPane='ai';location.hash='/gm/rulings';renderPage();embeddedAI.openSession(result.sessionId);},
+  'queue-tab':({tab})=>{if(!['messages','rulings','archived'].includes(tab))return;queueTab=tab;document.querySelector('#message-queue-list').hidden=tab!=='messages';document.querySelector('#ruling-queue-list').hidden=tab==='messages';document.querySelector('[data-pending-rulings]').hidden=tab==='archived';document.querySelector('#keeper-archived-rulings').hidden=tab!=='archived';embeddedAI.setArchived(tab==='archived');document.querySelectorAll('[data-action=queue-tab]').forEach(b=>b.setAttribute('aria-selected',String(JSON.parse(b.dataset.args).tab===tab)));},
+  'queue-refresh':async()=>{await refresh(false);updateKeeperQueue();await embeddedAI.refreshQueue();},
+  'ruling-history':()=>{const content=activityFeed();if(!embeddedAI.queueHistory(content))openDialog('裁决与行动记录',content,null);},
+  'ruling-notice':({id})=>{const n=rulingNotices().find(x=>x.id===id);if(!n)return;openDialog('执行结果与定位',`<p>${escape(n.title)}</p><p class="notice ${['failed','rejected','blocked','unknown','partial'].includes(n.status)?'error':''}">${escape(n.reason)}</p><pre class="data-detail">${escape(JSON.stringify({room:state.storageScope,account:state.accountId,time:new Date(n.time).toISOString(),status:n.status,...n.locator},null,2))}</pre><p>按以上原裁决／请求定位核对记录；结果未知时请查询原回执。</p>${button('复制定位','notice-copy',{id})}${n.locator?.rulingId?button('打开原裁决','notice-source',{id}):''}`,null);},
+  'notice-copy':async({id})=>{const n=rulingNotices().find(x=>x.id===id);if(!n)return;const text=JSON.stringify({room:state.storageScope,account:state.accountId,...n.locator});try{await navigator.clipboard.writeText(text);toast('定位已复制');}catch{const input=document.createElement('textarea');input.readOnly=true;input.value=text;input.setAttribute('aria-label','可复制的结果定位');dialog.append(input);input.select();}},
+  'notice-source':async({id})=>{const n=rulingNotices().find(x=>x.id===id);closeDialog();await embeddedAI.openRulingSource(n.locator);},
+  'ruling-reference':copyRulingReference,
+  'ruling-export':exportRulingDebug,
   'ruling-execute':({id})=>dirtyForm?toast(t('status.savefirst')):perform('resolve',{requestId:id,approve:true,reason:''}),
   'ruling-pane':({pane})=>{rulingPane=pane;const grid=document.querySelector('.rulings-grid');if(grid)grid.dataset.pane=pane;document.querySelectorAll('.ruling-switch button').forEach(b=>b.classList.toggle('primary',JSON.parse(b.dataset.args).pane===pane));},
   'library-tab':({id})=>{libraryTab=id;libraryQuery='';document.querySelector('#library-browser').innerHTML=libraryContent();},
   'library-refresh':()=>loadLibrary(true),
-  'library-detail':({group,id})=>{const value=libraryRows(libraryGroups().find(g=>g.id===group)?.value).find(r=>r[0]===id)?.[1];openDialog('资料详情',`<pre class="data-detail">${escape(typeof value==='string'?value:JSON.stringify(value,null,2))}</pre>`,null);},
+  'library-detail':({group,id})=>{const value=libraryRows(libraryGroups().find(g=>g.id===group)?.value).find(r=>r[0]===id)?.[1];const shown=renderPackageReference({kind:'data',value:{data:value}});openDialog('资料详情',shown?'<div data-reference-view></div>':`<pre class="data-detail">${escape(typeof value==='string'?value:JSON.stringify(value,null,2))}</pre>`,null);if(shown)dialog.querySelector('[data-reference-view]').append(shown);},
   'library-activate':()=>actions['rules-activate']({revision:document.querySelector('[name=library-revision]').value}),
   'library-revision':()=>actions['rules-preview']({revision:document.querySelector('[name=library-revision]').value}),
   'queue-detail':queueDetail,
   'console-request':({id})=>{if(dirtyForm)return toast('请先完成当前裁决。');selectedRequest=id;replyOpen.delete(id);const body=rulingDetail();if(!body)return toast('该申请已处理。');openDialog('裁决详情',body,null);dialog.querySelector('form').id='ruling-form';},
+  'ruling-decline':args=>{if(dirtyForm)return toast('请先完成当前裁决。');actions['console-request'](args);const select=dialog.querySelector('[name=approve]');if(select){select.value='no';select.dispatchEvent(new Event('change',{bubbles:true}));}},
   'automation-console':()=>actions.automation({enabled:!state.automation.enabled}),
   close:closeDialog,
   navigate:({path})=>{location.hash='/'+path;},
@@ -778,7 +851,7 @@ const actions = {
   rules:()=>openDialog(t('rules.title'),state.rules.map(x=>`<h3>${escape(x.title)}</h3><p>${escape(x.text)}</p><a href="${escape(x.source)}" target="_blank" rel="noreferrer">${t('rules.source')}</a>`).join('<hr>'),null,'','S13'),
   preferences:()=>openDialog(t('ui.m146'),select(t('ui.m147'),'font',[['16',t('ui.m148')],['18',t('ui.m149')],['20',t('ui.m150')]],localStorage.getItem('sv.font')||'16')+`<label><input type="checkbox" name="reduce" ${diceUI.reduced?'checked':''}>${t('preferences.reduce')}</label><label><input type="checkbox" name="dice" ${diceUI.enabled?'checked':''}>${t('dice.preference')}</label><p>${independentLogin()}</p>`,data=>{localStorage.setItem('sv.font',data.get('font'));document.documentElement.style.fontSize=data.get('font')+'px';diceUI.setReduced(data.has('reduce'));diceUI.setEnabled(data.has('dice'));closeDialog();},t('ui.m063'),'S17'),
   export:async()=>{const data=await api('package/bundle');const url=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download='stumpsville-bundle.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);},
-  item:({slot})=>{const n=state.character.numbers;const def=state.items[String(n['item'+slot])];openDialog(def.name,`<p>${escape(def.description)}</p><p>${t('inventory.details',{slots:def.slots,uses:n['uses'+slot],max:def.uses})}</p><div class="actions">${def.uses&&def.kind!=='spell'?button(t('ui.m120'),'use',{slot}):''}${def.kind==='spell'?button(t('spell.request'),'request',{kind:'free',text:t('spell.text',{name:def.name})}):''}${def.light?button(n.litSlot===slot?t('ui.m122'):t('ui.m121'),'light',{slot,operation:n.litSlot===slot?'extinguish':'light'}):''}${button(t('ui.m123'),'move-item',{slot})}${button(t('ui.m124'),'transfer',{slot})}</div>`,null,'','S01');},
+  item:({slot})=>{const n=state.character.numbers;const def=state.items[String(n['item'+slot])];openDialog(def.name,`${itemDetailsHTML(def,{uses:n['uses'+slot],maxUses:def.uses})}<div class="actions">${def.uses&&def.kind!=='spell'?button(t('ui.m120'),'use',{slot}):''}${def.kind==='spell'?button(t('spell.request'),'request',{kind:'free',text:t('spell.text',{name:def.name})}):''}${def.light?button(n.litSlot===slot?t('ui.m122'):t('ui.m121'),'light',{slot,operation:n.litSlot===slot?'extinguish':'light'}):''}${button(t('ui.m123'),'move-item',{slot})}${button(t('ui.m124'),'transfer',{slot})}</div>`,null,'','S01');},
   use:({slot})=>openDialog(t('inventory.use'),`<p>${t('inventory.usehelp')}</p>`+rulingMode(),data=>submitAction('inventory',{operation:'use',slot,value:0},data),t('inventory.confirmuse'),'S03'),
   light:({slot,operation})=>perform('inventory',{operation,slot,value:0}),
   'move-item':({slot})=>openDialog(t('inventory.move'),field(t('inventory.destination'),'value',5,'number')+rulingMode(),data=>submitAction('inventory',{operation:'move',slot,value:number(data.get('value'))},data),'移动','S04'),
@@ -890,7 +963,10 @@ effectsUI.configure(t,changeList,()=>diceUI.presenting,(pane='records')=>{
   for(const key of Object.keys(paneNames()))desktop[key].open=false;
   desktop[pane]={open:true,collapsed:false};desktop.front=pane;saveDesktop();
   if(route()!=='play/scene')location.hash='#/play/scene';else renderPage();
-},notificationResult);
+},notificationResult,async notificationId=>{
+  if(!state||state.role!=='player')return;
+  await api('package/action',{id:'notice-ack-'+notificationId,operation:'notification.ack',args:{notificationId}});
+});
 let actionWake=null;
 if(!webMode&&typeof BroadcastChannel!=='undefined'){
   try{actionWake=new BroadcastChannel('stumpsville-action-wake');actionWake.onmessage=event=>{if(event.data?.scope===state?.storageScope){if(event.data.completed)pollState();else runAutoScenes();}};}catch{}

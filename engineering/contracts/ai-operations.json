@@ -611,5 +611,120 @@
         }
       }
     ]
+  },
+  "ai.review.create": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "source"
+    ],
+    "properties": {
+      "source": {
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "kind",
+              "rulingId"
+            ],
+            "properties": {
+              "kind": {
+                "const": "ruling"
+              },
+              "rulingId": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              },
+              "digest": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "kind",
+              "sourceId",
+              "category",
+              "id",
+              "revision",
+              "title",
+              "summary"
+            ],
+            "properties": {
+              "kind": {
+                "const": "package"
+              },
+              "sourceId": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              },
+              "category": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              },
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              },
+              "revision": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              },
+              "requestedBy": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              },
+              "title": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 120
+              },
+              "summary": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 8000
+              },
+              "context": {
+                "type": "object"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "required": [
+              "kind",
+              "requestId"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "kind": {
+                "const": "request"
+              },
+              "requestId": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              }
+            }
+          }
+        ]
+      },
+      "instruction": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 4000
+      }
+    }
   }
 }

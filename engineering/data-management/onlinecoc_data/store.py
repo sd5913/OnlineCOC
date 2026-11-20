@@ -1,5 +1,7 @@
 """Framework-free, single-writer JSON snapshot store. No business algorithms."""
 import copy
+import gzip
+import re
 import hashlib
 import json
 import os
@@ -18,7 +20,10 @@ def digest(data):
 
 class FileDataStore:
     FORMAT = 1
-    def __init__(self, directory, *, max_bytes=512*1024*1024, fault=None):
+    def __init__(self, directory, *, max_bytes=512*1024*1024, fault=None,
+                 auto_compress=False, retain_generations=2):
+        if type(auto_compress) is not bool or type(retain_generations) is not int or retain_generations < 1:
+            raise StoreError("INVALID_RETENTION")
         self.path = Path(directory)
         self.path.mkdir(parents=True, exist_ok=True)
         self.generations = self.path / "generations"
@@ -26,6 +31,7 @@ class FileDataStore:
         self.staging = self.path / "staging"
         self.staging.mkdir(exist_ok=True)
         self.max_bytes, self.fault = max_bytes, fault
+        self.auto_compress, self.retain_generations = auto_compress, retain_generations
         self.mutex = threading.RLock()
         self.lock = open(self.path / "writer.lock", "a+b")
         self.lock.seek(0)
@@ -45,20 +51,101 @@ class FileDataStore:
         self.generation, self.head, self.value = 0, None, None
         self.closed = False
         try:
-            for file in sorted(self.generations.glob("*.json")):
-                raw = file.read_bytes()
-                env = json.loads(raw)
-                if (env.get("format") != self.FORMAT or env.get("generation") != self.generation+1
-                    or file.name != f"{self.generation+1:012d}.json"
-                    or env.get("parent") != self.head
-                    or env.get("digest") != digest(canonical(env.get("payload")))
-                    or env.get("length") != len(canonical(env.get("payload")))):
-                    raise StoreError("STORE_CORRUPT")
-                self.generation += 1
-                self.head, self.value = digest(raw), env["payload"]
+            self.generation, self.head, self.value = self._load_chain()
         except Exception as e:
             self.close()
             raise StoreError("STORE_CORRUPT_OR_UNSUPPORTED") from e
+
+    def _generation_files(self):
+        files = {}
+        for path in self.generations.iterdir():
+            if not (path.name.endswith('.json') or path.name.endswith('.json.gz')): continue
+            if not re.fullmatch(r'[0-9]{12,}\.json(?:\.gz)?', path.name) or path.is_symlink():
+                raise StoreError('STORE_CORRUPT')
+            number = int(path.name.removesuffix('.gz').removesuffix('.json'))
+            compressed = path.name.endswith('.gz')
+            if number < 1 or path.name != f'{number:012d}.json'+('.gz' if compressed else ''):
+                raise StoreError('STORE_CORRUPT')
+            files.setdefault(number, {})['compressed' if compressed else 'raw'] = path
+        return sorted(files.items())
+
+    def _read_generation(self, path):
+        opener = gzip.open if path.name.endswith('.gz') else open
+        with opener(path, 'rb') as stream: raw = stream.read(self.max_bytes + 1)
+        if len(raw) > self.max_bytes: raise StoreError('STORE_CORRUPT')
+        return raw
+
+    def _load_chain(self):
+        generation, head, value = 0, None, None
+        for number, paths in self._generation_files():
+            # Both representations can exist after publication loses its reply.
+            # Verify exact original bytes, then count the generation only once.
+            versions = [self._read_generation(path) for path in paths.values()]
+            raw = versions[0]
+            if any(other != raw for other in versions[1:]): raise StoreError('STORE_CORRUPT')
+            env = json.loads(raw)
+            data = canonical(env.get('payload'))
+            if (type(env.get('format')) is not int or env['format'] != self.FORMAT
+                or type(env.get('generation')) is not int or env['generation'] != generation+1
+                or number != generation+1 or env.get('parent') != head
+                or env.get('digest') != digest(data)
+                or type(env.get('length')) is not int or env['length'] != len(data)):
+                raise StoreError('STORE_CORRUPT')
+            generation, head, value = number, digest(raw), env['payload']
+        return generation, head, value
+
+    @staticmethod
+    def _sync_directory(directory):
+        if os.name != 'nt':
+            fd = os.open(directory, os.O_RDONLY)
+            try: os.fsync(fd)
+            finally: os.close(fd)
+
+    def _disk_bytes(self):
+        return (sum(path.stat().st_size for _, paths in self._generation_files() for path in paths.values())
+                + sum(path.stat().st_size for path in self.staging.glob('*.tmp')))
+
+    def compress_history(self, expected_generation=None):
+        """Reversibly archive old snapshots; preserve every generation and byte.
+
+        The full hash chain is checked first. Publish and verify a lossless gzip
+        copy before unlinking its redundant raw file. Keep recent files raw.
+        """
+        with self.mutex:
+            if self.closed: raise StoreError('STORE_CLOSED')
+            if expected_generation is not None and expected_generation != self.generation:
+                raise StoreError('VERSION_CONFLICT')
+            generation, head, _ = self._load_chain()
+            if generation != self.generation or head != self.head: raise StoreError('STORE_CHANGED')
+            before = self._disk_bytes(); archived = 0
+            for number, paths in self._generation_files():
+                if number > self.generation-self.retain_generations or 'raw' not in paths: continue
+                path = paths['raw']; raw = self._read_generation(path)
+                target = path.with_name(path.name+'.gz')
+                if 'compressed' not in paths:
+                    packed = gzip.compress(raw, compresslevel=6, mtime=0)
+                    if len(packed) >= len(raw): continue
+                    if self._disk_bytes()+len(packed) > self.max_bytes: raise StoreError('STORE_FULL')
+                    tmp = self.staging / (uuid.uuid4().hex+'.tmp')
+                    try:
+                        self._fault('compression_before_write')
+                        with open(tmp, 'xb') as stream:
+                            stream.write(packed[:len(packed)//2]); self._fault('compression_half_write')
+                            stream.write(packed[len(packed)//2:]); stream.flush()
+                            self._fault('compression_before_sync'); os.fsync(stream.fileno())
+                        if gzip.decompress(tmp.read_bytes()) != raw: raise StoreError('ARCHIVE_VERIFY_FAILED')
+                        self._fault('compression_before_publish')
+                        os.replace(tmp, target); self._sync_directory(self.generations)
+                        self._fault('compression_after_publish')
+                    finally:
+                        if tmp.exists(): tmp.unlink()
+                if self._read_generation(target) != raw: raise StoreError('ARCHIVE_VERIFY_FAILED')
+                self._fault('compression_before_unlink')
+                path.unlink(); archived += 1
+                self._sync_directory(self.generations); self._fault('compression_after_unlink')
+            after = self._disk_bytes()
+            return {'generation':self.generation,'archivedGenerations':archived,
+                    'freedBytes':before-after,'bytes':after,'historyPreserved':True}
 
     def _fault(self, stage):
         if self.fault: self.fault(stage)
@@ -76,7 +163,10 @@ class FileDataStore:
             env = {"format":self.FORMAT,"generation":self.generation+1,"parent":self.head,
                    "digest":digest(data),"length":len(data),"payload":value}
             raw = canonical(env)
-            used = sum(p.stat().st_size for p in self.generations.glob("*.json"))
+            used = self._disk_bytes()
+            if used + len(raw)*2 > self.max_bytes and self.auto_compress:
+                self.compress_history(expected_generation)
+                used = self._disk_bytes()
             if used + len(raw)*2 > self.max_bytes: raise StoreError("STORE_FULL")
             tmp = self.staging / (uuid.uuid4().hex + ".tmp")
             self._fault("before_write")
@@ -127,7 +217,8 @@ class FileDataStore:
         with cls(path) as store: store.commit(0,env["payload"])
 
     def inspect(self):
-        return {"format":1,"generation":self.generation,"bytes":sum(p.stat().st_size for p in self.generations.glob("*.json"))}
+        with self.mutex:
+            return {"format":1,"generation":self.generation,"bytes":self._disk_bytes()}
 
     def close(self):
         if getattr(self,"closed",False): return

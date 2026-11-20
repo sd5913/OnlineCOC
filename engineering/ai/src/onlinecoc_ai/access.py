@@ -47,7 +47,7 @@ def validate_context(host, repository, room, context):
             and facts.get('sessionAccess', {}).get('level') != 'player', 'PERMISSION_DENIED')
     # Assistant history can depend on package queries or older conversations.
     # Revalidate its complete provenance, with bounded traversal and no recursion.
-    from onlinecoc.publication import check_context
+    from onlinecoc.publication import check_history_context
     pending=list(context.get('facts',{}).get('historyContexts',[]));seen=set()
     contexts=repository.state()['contexts'] if pending else {}
     while pending:
@@ -56,7 +56,9 @@ def validate_context(host, repository, room, context):
         require(len(seen)<100 and key in contexts,'SOURCE_STALE');seen.add(key)
         previous=copy.deepcopy(contexts[key])
         pending.extend(previous['facts'].pop('historyContexts',[]))
-        check_context(host,room,previous['reviewPrincipal'],previous)
+        check_history_context(host,room,previous['reviewPrincipal'],previous)
+    from .history import validate_intents
+    validate_intents(host,repository,room,facts.get('historyIntents',[]))
     access = context.get('facts', {}).get('sessionAccess')
     if context.get('facts',{}).get('strictPlayer'):
         from .knowledge import recheck

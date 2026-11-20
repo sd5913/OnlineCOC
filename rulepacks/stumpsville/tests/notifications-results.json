@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-11-19T09:58:55.842288+08:00",
+  "checkedAt": "2026-11-20T11:38:30.438834+08:00",
   "passed": 10,
   "checks": [
     "notice stays 3 seconds then fades for 280ms; polling does not extend its lifetime or replay it",

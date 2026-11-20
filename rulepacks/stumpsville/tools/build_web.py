@@ -15,11 +15,15 @@ def ai_modules():
     """Compile the declared public component graph, with CSS inside shadow roots."""
     base=ROOT/'engineering/ai/web/components'
     declared=json.loads((base/'pack-manifest.json').read_text(encoding='utf-8'))['runtimeFiles']
-    names=['styles.js','client.js','guard.js','settings.js','reference-commands.js','reference-editor.js','reference-details.js','markdown.js','reference-input.js','tools.js','choices.js','chat.js','rulings.js','room-panel.js','sessions.js','session-manager.js','usage.js','views.js']
+    names=['styles.js','client.js','guard.js','debug.js','settings.js','reference-commands.js','reference-editor.js','reference-details.js','markdown.js','reference-input.js','tools.js','choices.js','chat.js','rulings.js','room-panel.js','sessions.js','session-manager.js','usage.js','views.js']
     output='const aiModules={};\n'
     for name in names:
         assert name in declared
         code=(base/name).read_text(encoding='utf-8')
+        # A missing upstream dependency would otherwise compile successfully and
+        # only fail while evaluating the exported page in the player sandbox.
+        dependencies=re.findall(r"import\s+\{[^}]+\}\s+from\s+'\./([^']+)';",code)
+        assert all(dep in names[:names.index(name)] for dep in dependencies), (name, dependencies)
         exports=re.findall(r'export\s+(?:async\s+)?(?:const|function|class)\s+(\w+)',code)
         code=re.sub(r"import\s+\{([^}]+)\}\s+from\s+'\./([^']+)';",lambda m:'const {'+m[1]+'}=aiModules['+json.dumps(m[2])+'];',code)
         def style(match):
@@ -35,17 +39,17 @@ def ai_modules():
 def build(output):
     output=Path(output).resolve();output.mkdir(parents=True,exist_ok=True)
     manifest=json.loads((PACK/'manifest.json').read_text(encoding='utf-8'))
-    sources={name:(PACK/'ui'/name).read_text(encoding='utf-8') for name in ('messageformat.js','i18n.js','chat.js','dice.js','effects.js','map.js','keeper-queue.js','ai.js','ai-embedded.js','app.js')}
+    sources={name:(PACK/'ui'/name).read_text(encoding='utf-8') for name in ('messageformat.js','i18n.js','reference-view.js','chat.js','dice.js','effects.js','map.js','ai-recovery.js','ruling-card.js','keeper-rulings.js','keeper-queue.js','ai.js','ai-embedded.js','app.js')}
     sources['ai-client.js']=(ROOT/'engineering/ai/web/components/client.js').read_text(encoding='utf-8')
     public={name:json.loads((PACK/name).read_text(encoding='utf-8')) for name in ('locales/zh-CN/ui.json','locales/meta/catalog/ui.json')}
     script='const STUMPSVILLE_STARTUP='+json.dumps(public,ensure_ascii=False)+';\n'+(PACK/'web/bridge.js').read_text(encoding='utf-8')
     script+='\n(async()=>{const web=await connectStumpsville();globalThis.stumpsvilleWeb=web;const localStorage=web.storage,sessionStorage=web.storage;\n'
     script+=ai_modules()
-    for name,imports,exports in [('messageformat.js','',['IntlMessageFormat']),('i18n.js','const {IntlMessageFormat}=modules["messageformat.js"];',['t','setLocale','locale','initLocale']),('chat.js','const {t}=modules["i18n.js"];',['chatUI']),('dice.js','',['diceUI']),('effects.js','',['effectsUI','effectSnapshot','effectChanges']),('map.js','',['mapPositions','mapRoutes','mapRoutePath']),('ai-client.js','',['AiClient','HttpTransport']),('ai.js','const {t}=modules["i18n.js"];',['aiUI']),('keeper-queue.js','const {t,locale}=modules["i18n.js"];',['mountKeeperAIQueue']),('ai-embedded.js','const {t}=modules["i18n.js"],{mountKeeperAIQueue}=modules["keeper-queue.js"];',['embeddedAI'])]:
+    for name,imports,exports in [('messageformat.js','',['IntlMessageFormat']),('i18n.js','const {IntlMessageFormat}=modules["messageformat.js"];',['t','setLocale','locale','initLocale']),('reference-view.js','const {t}=modules["i18n.js"];',['characterStatsHTML','itemDetailsHTML','renderPackageReference']),('chat.js','const {t}=modules["i18n.js"];',['chatUI']),('dice.js','',['diceUI']),('effects.js','',['effectsUI','effectSnapshot','effectChanges']),('map.js','',['mapPositions','mapRoutes','mapRoutePath']),('ai-client.js','',['AiClient','HttpTransport']),('ai.js','const {t}=modules["i18n.js"];',['aiUI']),('ai-recovery.js','',['definiteAIRejection','packageAITransport','explainAIError']),('ruling-card.js','',['rulingCard','rulingEscape']),('keeper-rulings.js','const {rulingCard,rulingEscape:esc}=modules["ruling-card.js"],{explainAIError}=modules["ai-recovery.js"];',['mountPackageRulings']),('keeper-queue.js','const {mountPackageRulings}=modules["keeper-rulings.js"],{rulingCard}=modules["ruling-card.js"];const {t,locale}=modules["i18n.js"],{definiteAIRejection}=modules["ai-recovery.js"];',['mountKeeperAIQueue']),('ai-embedded.js','const {t}=modules["i18n.js"],{mountKeeperAIQueue}=modules["keeper-queue.js"],{definiteAIRejection,packageAITransport}=modules["ai-recovery.js"];',['embeddedAI'])]:
         code=sources[name];code=re.sub(r'^import .*?;\s*','',code,flags=re.M);code=re.sub(r'^export \{.*?\};\s*','',code,flags=re.M);code=re.sub(r'\bexport (?=(const|function|async|class)\b)','',code);code=re.sub(r'^//# sourceMappingURL=.*','',code,flags=re.M)
         script+=('const modules={};\n' if name=='messageformat.js' else '')+'modules['+json.dumps(name)+']=(()=>{'+imports+'\n'+code+'\nreturn {'+','.join(exports)+'};})();\n'
     app=re.sub(r'^import .*?;\s*','',sources['app.js'],flags=re.M).replace('src="art/mouse.png"', 'data-web-image="mouse"')
-    script+='web.aiClient=modules["ai-client.js"];const {chatUI}=modules["chat.js"],{diceUI}=modules["dice.js"],{effectsUI}=modules["effects.js"],{mapPositions,mapRoutes,mapRoutePath}=modules["map.js"],{aiUI}=modules["ai.js"],{embeddedAI}=modules["ai-embedded.js"],{t,setLocale,locale,initLocale}=modules["i18n.js"];\n'+app+'\n})().catch(e=>{document.querySelector("#app").textContent="网页连接失败 · "+e.message;});'
+    script+='web.aiClient=modules["ai-client.js"];const {rulingCard}=modules["ruling-card.js"],{explainAIError}=modules["ai-recovery.js"];const {characterStatsHTML,itemDetailsHTML,renderPackageReference}=modules["reference-view.js"];const {chatUI}=modules["chat.js"],{diceUI}=modules["dice.js"],{effectsUI}=modules["effects.js"],{mapPositions,mapRoutes,mapRoutePath}=modules["map.js"],{aiUI}=modules["ai.js"],{embeddedAI}=modules["ai-embedded.js"],{t,setLocale,locale,initLocale}=modules["i18n.js"];\n'+app+'\n})().catch(e=>{document.querySelector("#app").textContent="网页连接失败 · "+e.message;});'
     # Resource groups may be served at blob URLs; avoid any direct network request.
     css=(PACK/'ui/styles.css').read_text(encoding='utf-8');css=re.sub(r"url\('art/welcome.png'\)",'none',css)
     html=(PACK/'ui/index.html').read_text(encoding='utf-8').replace('<link rel="stylesheet" href="styles.css">','<style>'+css+'</style>').replace('<script type="module" src="app.js"></script>','')

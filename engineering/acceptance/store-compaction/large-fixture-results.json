@@ -1,0 +1,27 @@
+{
+  "source": "rulepacks/stumpsville/tests/output/ai-config-matrix-dbe1cfea/game/host/ai",
+  "sourceUnchanged": true,
+  "clone": "engineering/acceptance/store-compaction/work/recovery-74a2ace7b56346378a631ef1c73a1828",
+  "allOriginalGenerationBytesPreserved": true,
+  "originalGenerations": 158,
+  "before": {
+    "format": 1,
+    "generation": 158,
+    "bytes": 527106299
+  },
+  "archive": {
+    "generation": 158,
+    "archivedGenerations": 156,
+    "freedBytes": 383657697,
+    "bytes": 143448602,
+    "historyPreserved": true
+  },
+  "afterTwelveAdditionalCommits": {
+    "format": 1,
+    "generation": 170,
+    "bytes": 227684428
+  },
+  "auditAndReceiptsUnchanged": true,
+  "repositoryReopenPassed": true,
+  "seconds": 175.02
+}

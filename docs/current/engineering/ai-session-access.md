@@ -4,7 +4,7 @@
 - 文档子类：工程
 - 状态：有效
 - 创建日期：2026-11-16
-- 最后更新：2026-11-19
+- 最后更新：2026-11-20
 - 关联文档：[管理面板](ai-manager.md)、[嵌入组件](ai-pack-embedding.md)、[资料查询](ai-data-query.md)、[剩余包侧与发布边界](../../plans/Issues/issue-010-ai-package-mutations.md)
 
 ## 会话边界
@@ -17,7 +17,7 @@
 | PL | 仅绑定本人且为玩家级的会话 | 只选择、查看本人授权知识证据；向 KP 提交需求；不取得审批和执行权限 |
 | KP 创建的玩家会话 | 创建者仍是 KP，不可冒充其他玩家 | 使用创建者的玩家视角投影，不能通过 KP 实际角色读取管理员资料 |
 
-只有创建者可在会话中发送新需求。KP 查看其他玩家会话不代表代替玩家发言。成员退出、撤权、来源修改、策略更新和会话删除会使相关生成／历史依据失效；已有回答可能显示“依据已变化”。普通聊天接口仍按参与者授权。管理员 AI 默认可通过受信 kp-room 查询读取全房间游戏资料，包括其他频道和历史工件；可由 allowAdminRoomRead 关闭，外发仍受三类开关约束；本机凭据不属于房间资料。KP 可读其他管理员提案和报告，已有配置提案的修订／检查／发布仍绑定原审核人。
+只有创建者可在会话中发送新需求。KP 查看其他玩家会话不代表代替玩家发言。成员退出、撤权、策略更新和会话删除会使相关生成／历史授权失效；来源只发生版本变化时，管理员仍可能按下述只读历史规则查看旧回答。普通聊天接口仍按参与者授权。管理员 AI 默认可通过受信 kp-room 查询读取全房间游戏资料，包括其他频道和历史工件；可由 allowAdminRoomRead 关闭，外发仍受三类开关约束；本机凭据不属于房间资料。KP 可读其他管理员提案和报告，已有配置提案的修订／检查／发布仍绑定原审核人。
 
 房间策略保存在独立 AI 仓库 `settings.accessPolicy`。`allowPlayerChat`、`autoApproveBatches`、`autoApproveConfigurations` 均默认 false。KP 在“服务与权限”保存策略时，服务端记录本次 KP 为授权执行人，客户端不能传入执行人字段。更新带 `revision` 防止覆盖。
 
@@ -33,11 +33,11 @@
 
 Stumpsville 的进入／再次进入或 KP 定向揭示保存当时场景分面。本人角色表通过 KP 显式持续告知授权；场景不订阅未来变化。旧地点集合不自动转成知识，需 KP 选择“现在揭示”。AI 查询不会写入知识记录，玩家配置需求供 KP 查看，严格回答不直接代写可执行配置；KP 可在管理员会话中编写并走原裁决流程。
 
-会话 `historyTurns` 仍为 0—4（默认 4），长期记忆仍需 KP 确认。复用回答时保留原查询及历史上下文证据，并在生成前后持续复验；包侧资料撤回后不会继续返回基于旧经历的结论。会话归档不会改变权限或加载配置；删除会取消关联任务并从目录／聊天读取中移除，保留墓碑、执行回执、需求及用量审计，防止重复执行和历史账目丢失。上限为 200 个未删除会话、每会话 100 请求；含删除审计的会话记录最多 5000。
+会话 `historyTurns` 为 0—4（默认 4），长期记忆需 KP 确认。有效回答沿用原查询证据；过期但仍可查看的管理员回答只保留历史意图，规则见下文。生成前后持续复验权限，撤回的包资料不作为历史恢复。会话归档不会改变权限或加载配置；删除会取消关联任务并从目录／聊天读取中移除，保留墓碑、执行回执、需求及用量审计，防止重复执行和历史账目丢失。上限为 200 个未删除会话、每会话 100 请求；含删除审计的会话记录最多 5000。
 
 ## 执行批次
 
-管理员模型额外获得 `room_manage_catalog`、`room_read_management`、`room_read_sessions`。三个管理工具还要求允许外发 KP 信息；管理员身份不能绕过房间外发开关。管理资料按 section/offset/limit 分页，会话查询同样分页。工具只读；真正变更以以下输出提交，不设动作条数上限、参数总量不超过 32 KiB：
+管理员模型额外获得 `room_manage_catalog`、`room_read_management`、`room_read_sessions`。通用操作名称／Schema 可在 KP 外发关闭时读取；动态行动目录及另外两类管理正文仍要求 KP 外发许可。管理员身份不能绕过房间外发开关。管理资料按 section/offset/limit 分页，会话查询同样分页。工具只读；真正变更以以下输出提交，不设动作条数上限、参数总量不超过 32 KiB：
 
 ```json
 {"kind":"batch","text":"修改理由与预期影响","actions":[{"target":"host","op":"entity.patch","args":{"id":"对象ID","name":"新名称"}}]}
@@ -51,6 +51,12 @@ Stumpsville 的进入／再次进入或 KP 定向揭示保存当时场景分面�
 
 配置与规则修改通过三检后进入同一 KP 裁决队列，一次批准记录风险决定并加载整批；自动批准分为运行时与配置两个开关。确认绑定、接口、恢复及 Stumpsville 扩展范围统一见[修改裁决](ai-rulings.md)。配置删除使用高危候选与引用完整性校验；包侧独立事务仍未接入。
 
+## 批次中的定向通知
+
+`notification.send` 是同一待审核批次中的独立宿主动作。AI 参数为 `{recipientAccountIds,text,sourceActionIndex}`；索引从 0 开始，只能指向此前的受支持宿主修改动作。候选和摘要不意味着已送达，界面显示接收人、消息及绑定步骤。原申请人由 reviewSource.requestedBy 解释；当前 KP 不自动成为受影响玩家。
+
+执行器只在原动作有 committed 回执后填入真实 sourceCommandId/sourceOp；模型不能指定这两个字段。宿主还验证原动作归属和支持范围；带 flowId 的流程启动回执不能证明动作完成，后续结束也不会自动升级这张启动回执，见[定向通知](notifications.md)。前序失败/unknown 停止批次；通知失败保留 partial/unknown 与原回执，不回滚已成功动作。对账不补发剩余通知，也不重放原动作；确认实际结果后另行安排后续工作。配置发布仍走独立 draft，不宣称已接入同批发布通知。
+
 ## 运行时写入目标与树桩镇限制
 
 以下是管理员 AI 批次的白名单，不是任意数据库写权限；还须通过命令 Schema、宿主权限、当前状态及批次基线复验。
@@ -62,8 +68,9 @@ Stumpsville 的进入／再次进入或 KP 定向揭示保存当时场景分面�
 | 流程、公开行动 | flow.respond/retry/cancel、action.invoke、behavior.invoke | 只能调用目录中真实入口；遵循原裁决／执行规则 |
 | 房间和成员 | room.status、member.add/update | 仍受宿主身份、状态与参数约束 |
 | 宿主聊天 | chat.direct.open、chat.channel.create/update、chat.message.send/share/edit/retract | 不绕过频道参与者和消息操作权限；不等同于包侧 scopedChat |
+| 定向通知 | notification.send | 独立审核动作，绑定同批此前成功且流程完成的宿主修改；模型只指定 sourceActionIndex |
 | AI 会话与记忆 | ai.session.create/update/delete、ai.memory.create/confirm/revoke | 留审计与回执；不能借此修改密钥或房间 AI 权限开关 |
-| 配置模板与规则 | 独立 kind=draft 路径 | add/replace 经 A/B/C、审核、发布；批次不直接发布，删除未接入 |
+| 配置模板与规则 | 独立 kind=draft 路径 | 模板 add/replace/remove 经三检发布；规则源以完整 Lua 新增/替换，未提供源文件删除操作；模板删除高危且拒绝仍被引用的目标 |
 | 包侧独立状态 | 尚无 package 批次目标 | 用已有包界面处理；新增 AI 适配见 ISSUE-010 |
 
 树桩镇沿用 `sv.npc` 创建 NPC，只是增加实体及其名称、位置、属性、可见性，不需要配置扩展点。新 NPC 即使设为 public，也不会自动写逐玩家 `actorDiscoveries`，不能保证出现在玩家联系人／AI 已知人物中；KP 可使用包操作 `actor.reveal` 向指定玩家生成身份固定观察；撤回会撤销对应 identity 授权。旧联系人标记不再作为 AI 读取依据。该操作目前不在 AI 批次目录内。
@@ -91,9 +98,7 @@ NPC 对话提示目前是给 KP 的设计文本；创建实例不会注册新的
 
 升级后重启房间宿主、本机管理器并刷新页面；树桩镇网页导出需重新生成，以包含同一版组件与 adapter。验证使用隔离测试存档和离线模型，无需真实密钥；验收入口为 `test_access_batches.py`、`test_access_ui.py` 与包内 `tests/verify_map_ai.py`。
 
-2026-11-16 验收：模块按测试 ID 去重 323 项、树桩镇 32 组通过，覆盖分级权限、直接排队、批次审批／恢复、归档／删除、双网页玩家及原生 KP。均使用隔离存档和离线服务，未调用真实模型或修改正式存档；[验收汇总](../../../engineering/acceptance/ai-runtime/session-access-results.json)保存逐项结果、复测关系和源码摘要。
-
-2026-11-19：新增可独立挂载的 KP 服务／权限设置页、紧凑裁决详情弹窗；任务列表直接返回会话定位，恢复会话减少串行读取。接口、分发、iframe 限制与性能证据统一见[嵌入指南](ai-pack-embedding.md#独立设置与紧凑裁决)。
+支持独立挂载的 KP 服务／权限设置页和紧凑裁决详情弹窗；任务列表直接返回会话定位，恢复会话减少串行读取。接口、分发、iframe 限制与性能证据统一见[嵌入指南](ai-pack-embedding.md#独立设置与紧凑裁决)。
 
 
 ## 查询、写入与玩家申请开关
@@ -113,10 +118,22 @@ KP 从 `kind:knowledge_request` 队列选择真实资源和分面，先使用宿
 
 模型仅可返回 `next:ask_kp_change` 建议提交，不能自动创建申请。`Task.playerRequest` 仅含 rulingId/sessionId/requestId/status/createdAt/digest；pending、accepted、rejected、cancelled 不等同于修改已执行。玩家看不到 KP 审核会话、草稿、秘密材料或生成错误细节。
 
-KP 队列 `kind:player_request` 显示原需求。`ai.ruling.decide {rulingId,digest,decision:'approve'}` 的含义是**接收并生成方案**：在当前 KP 名下创建私有 administrator 会话，以真实 KP 权限查询、编写待审方案。审核 payload 的 `playerRequestReview.requestedBy` 由服务端固定为原申请人，“我的角色／背包”不能误指 KP。原玩家引用先按玩家权限和房间外发开关核验，再转为文字标签；不可核验时使用中性标记，不重新解释成 KP 知识句柄。原文仅为需求，不是事实证据或执行授权。重复接收返回原审核会话，拒绝不生成。
+KP 队列 `kind:player_request` 显示原需求。批准的含义是**接收并生成方案**：在当前 KP 名下创建私有 administrator 会话。KP 请求使用通用审核指令，原玩家发言、原申请人和裁决定位独立保存为 `reviewSource`，不会冒充 KP 发言。原文只表达需求，生成的修改始终另行人工批准；重复接收复用审核会话。外发、引用、来源跳转和统一转交接口见[来源审核](ai-debug-review.md#来源审核)。
 
 该审核会话的运行时批次和普通配置也必须另行人工批准，`autoApproveBatches/autoApproveConfigurations` 不会自动处理它们；高危指纹和三检保持原要求。接收时生成失败会保存 KP 可见 generationError，原审核会话仍可打开并由 KP 重试转交；重启不自动创建第二个会话或重发模型。实际执行按既有批次／配置回执核对。
 
 未接收前取消原问题或删除会话会取消申请；归档后不能新增申请。已接收的审核会话是 KP 独立工作，删除 PL 原会话不撤销已接收的方案，也不授予 PL 取消 KP 工作的权限。历史误分类的资料申请保留，不自动改写正式房间。
 
-2026-11-19 本轮查询与创作申请验收：按测试 ID 取最新结果去重 **190 项通过，0 失败、0 跳过**。覆盖真实宿主权限、私有审核、普通自动审批拦截、重启和 Edge 嵌入界面；初跑问题、复验关系与源码摘要见[本轮结果](../../../engineering/acceptance/ai-runtime/player-requests-results.json)。模块未调用付费 API、未修改正式房间；包侧隔离模型实测另行记录，不合并测试数。
+## 同房间重启与历史
+
+会话记录保存在原房间 AI 仓库；同目录重启不重建 scope，旧进程标识不单独使历史失效。管理员历史区分两种情况：依据仍有效时保留原证明；只有版本或基线变化、且原对象仍存在并可查看时，保留旧回答并标记过期。账号撤权、来源删除、会话删除、外发策略改变、跨 scope、无法证明的包投影变化仍隐藏正文。严格玩家知识继续精确复验，不使用管理员回退。
+
+任务 DTO 为 `sourceState:"stale"`、`sourceError`、`sourceNotice`、`historicalReadOnly:true`，同时保留 `text/response/initiator`。已有待审/待补充回答可以显示 stale；queued/generating/validating、失败/取消以及 published/completed/rejected/partial/unknown 保留真实工作状态。自绘队列应显示 sourceNotice，不把“可读”解释为“旧候选可执行”。
+
+后续短句确认可携带 `authority:"historical-intent-only"` 的旧回答；`facts.historyIntents` 保存原任务与上下文定位，持续复验查看权限。historyIntents 的旧资料过期不传播到新任务；historyContexts 仍作为事实依赖复验。不会把旧 sourceRefs、dataQueries、historyContexts 当作新执行证明。修改候选必须重新读取当前目标。服务端对直接实体目标按标识检查新读取，对配置候选检查模板/规则/配置节点读取；其他动作至少要求本轮当前读取，并继续通过宿主基线、权限和人工审核。缺少读取返回 `HISTORY_REQUERY_REQUIRED`，进入原模型修复额度，要求查询而不是重复追问已确定的方案。
+
+旧存档不强制要求新字段：原 sourceRefs 或 read/case 参数中的对象标识可用于存在性与权限复验。旧 search/chat 仅有摘要且结果已变化时，无法证明原返回对象是否已删除，返回 `HISTORY_PROVENANCE_INCOMPLETE` 并隐藏旧正文；重新描述需求、查询当前资料后继续，不伪造来源。新查询保存 readRefs，管理查询保存实际返回键；复合事件、独立包投影及配置子树仍使用更保守的来源检查。
+
+生成中的当前任务、未消费批准和待执行批次继续绑定运行标识；重启后不自动重发模型、批准或重放动作。需要新方案时重新读取、生成、校验和审批，未知执行按原回执对账。变更恢复为新 scope 的房间不能沿用旧历史授权。
+
+阶段验收、初跑与复验关系见[开发记录](../../history/2026-11-20-ai-development-records.md)。

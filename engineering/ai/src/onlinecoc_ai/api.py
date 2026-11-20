@@ -9,6 +9,7 @@ from onlinecoc.model import member
 from .contracts import ENGINEERING, SCHEMAS, canonical, digest, loads, validate
 from .errors import require
 from .memory import Memory
+from .reviews import request_text
 
 OPERATIONS = loads((ENGINEERING / 'contracts/ai-operations.json').read_bytes())
 
@@ -37,6 +38,8 @@ class Application:
         self.knowledge_requests = KnowledgeRequests(self)
         from .player_requests import PlayerRequests
         self.player_requests = PlayerRequests(self)
+        from .reviews import Reviews
+        self.reviews = Reviews(self)
         from .access import policy
         self.host.ai_room_read_authorizer = lambda account: member(self.host.state(),account)['role']=='kp' and policy(self.repository)['allowAdminRoomRead']
 
@@ -102,6 +105,7 @@ class Application:
         return receipt
 
     def _execute(self, account, identifier, op, args, *, session_id=None, dispatch=True):
+        if op=='ai.review.create':return self.reviews.create(account,identifier,args)
         if op=='ai.player.request':return self.player_requests.create(account,identifier,args)
         if op=='ai.knowledge.request':return self.knowledge_requests.create(account,args)
         if op=='ai.knowledge.reconcile':
@@ -289,10 +293,16 @@ class Application:
                         require(context and context['scopeId'] == room['aiControl']['scopeId'] and
                             (strict or member(room, principal)['role'] == 'kp') and context['authorizationEpoch'] == room['members'][principal]['authorizationEpoch'], 'PERMISSION_DENIED')
                         if player_reply:require(strict and context['facts'].get('sessionAccess', {}).get('owner') == account and context['facts']['sessionAccess']['level'] == 'player', 'PERMISSION_DENIED')
-                        self.host.validate_ai_sources(room, principal, context)
+                        from .history import assess,NOTICE
+                        stale=assess(self.host,self.repository,room,context)
+                        if stale:
+                            item.update(sourceState='stale',sourceError=stale)
+                            if task and task.get('text') or not task and proposal and proposal.get('summary'):
+                                item.update(sourceNotice=NOTICE,historicalReadOnly=True)
+                                if item['status'] in ('review_ready','needs_input','approved'):item['status']='stale'
                     except Exception as exc:
                         from .diagnostics import error_code
-                        results.append({**item,'error':error_code(exc), 'status': item['status'] if item['status'] in ('published','completed','rejected','partial','unknown') else 'stale'})
+                        results.append({**{k:v for k,v in item.items() if k not in ('sourceState','sourceError','sourceNotice','historicalReadOnly')},'error':error_code(exc), 'status': 'stale' if item['status'] in ('review_ready','needs_input','approved') else item['status']})
                         continue
                 if request['sourceKind'] == 'chat':
                     matches = [(cid, m) for cid, messages in room['chat']['messages'].items() for m in messages if m['messageId'] == request['sourceId']]
@@ -300,17 +310,29 @@ class Application:
                     cid, message = matches[0]
                     if not chat.can_read(room, account, room['chat']['channels'][cid]) or message['deleted'] or str(message['revision']) != str(request['sourceRevision']):continue
                 if proposal and kp:
-                    try:self.proposals.get(task['account'] if task else account, proposal['proposalId'])
+                    try:
+                        from .history import assess,NOTICE
+                        stale=assess(self.host,self.repository,room,state['contexts'].get(proposal['contextRef']))
+                        if stale:
+                            item.update(sourceState='stale',sourceError=stale)
+                            if task and task.get('text') or not task and proposal and proposal.get('summary'):
+                                item.update(sourceNotice=NOTICE,historicalReadOnly=True)
+                                if item['status'] in ('review_ready','needs_input','approved'):item['status']='stale'
+                        else:self.proposals.get(task['account'] if task else account, proposal['proposalId'])
                     except Exception as exc:
                         from .diagnostics import error_code
-                        results.append({**item,'error':error_code(exc), 'status': item['status'] if item['status'] in ('published','completed','rejected','partial','unknown') else 'stale'})
+                        results.append({**{k:v for k,v in item.items() if k not in ('sourceState','sourceError','sourceNotice','historicalReadOnly')},'error':error_code(exc), 'status': 'stale' if item['status'] in ('review_ready','needs_input','approved') else item['status']})
                         continue
-                item.update(text=request['text'], initiator=request['initiator'], taskId=task['taskId'] if task else None,
+                item.update(text=request_text(self.repository,request), initiator=request['initiator'], taskId=task['taskId'] if task else None,
                     proposalId=proposal['proposalId'] if proposal and kp else None, error=task['error'] if task else dispatch_error,
                     response=task.get('text') if task else proposal['summary'] if proposal and kp else None)
                 if task and task.get('contextRef') and context and context['facts'].get('strictPlayer'):
                     from .known_answers import format_legacy
                     item['response'] = format_legacy(item.get('response'))
+                if kp and session:
+                    source=self.reviews.source(session['sessionId'])
+                    if source:item['reviewSource']=source
+                if task and task.get('calls'):item['modelCalls']=[{k:c[k] for k in ('requestedModel','returnedModel','systemFingerprint','usage','profileRevision') if k in c} for c in task['calls']]
                 if kp and task and task.get('diagnostics'):item['diagnostics'] = copy.deepcopy(task['diagnostics'])
                 if kp and task and task.get('batchId'):item['batchId'] = task['batchId']
                 if task and task.get('choices') and item['status'] in ('review_ready','needs_input'):
@@ -341,6 +363,10 @@ class Application:
         return {'settings': value, 'access': self.sessions.access(account), 'profiles': [{k: p[k] for k in ('profileId', 'revision', 'model', 'enabled')} for p in self.coordinator.profiles.values()],
             'budgets': self.repository.state()['budgets'], 'maxContextBytes': 96 * 1024,
             'memory': self.memory.search(account), 'autoError': getattr(self.runtime, 'auto_error', None)}
+
+    def debug(self, account, options=None):
+        from .debug import export
+        return export(self,account,options or {})
 
     def usage(self, account, options=None):
         from .usage import summarize

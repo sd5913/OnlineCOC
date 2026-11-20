@@ -11,13 +11,13 @@ ISSUE-011首版与AI消费接入已完成，见[现行知识服务](../current/e
 | [AI 数据查询与聊天裁决资料后续计划](ai-data-query-adjudication.md) | 进行中 | 四类查询、来源复验、组件引用与树桩镇只读适配已实现；通用记录、索引与跨存储发布仍待实施 |
 | [Stumpsville 网页联机调整规划](stumpsville-web-integration.md) | 进行中 | S0–S2、云端部署及S3本地/强制TURN双浏览器验收完成；真人独立家庭/移动网待验收 |
 | [配置包 AI 人机交互原型与接入计划](ai-pack-interaction.md) | 草案 | 已交付 KP／PL 可操作演示；对象引用、对话与分步审核，包侧正式接线和配置闭环待实施 |
-| [Stumpsville AI 接入计划](stumpsville-ai-integration.md) | 进行中 | 0.7.0咨询启动与KP/PL会话已接入；首个受限配置发布、包侧授权来源及跨设备多人验收仍待实施 |
+| [Stumpsville AI 接入计划](stumpsville-ai-integration.md) | 进行中 | 当前 KP/PL 会话与宿主配置发布已接入；包侧独立业务事务、跨存储一致性及多人试玩待补 |
 | [房间启动入口、服务编排与配置包职责](room-launch-orchestration.md) | 进行中 | P2P 借用宿主与会话锁已实现；完整创建/继续存档、多入口和具体包编排待实施 |
 | [服务器房间发现、P2P 联机与配置包同步](room-discovery-p2p-package-sync.md) | 进行中 | 短房间码、本机宿主识别与测试云已实现；完整包迁移、自动重入和长期验证待补 |
 | [公网大厅与按需游戏页](browser-room-portal.md) | 进行中 | network-web 0.3.0 三页、开房串与可选公开已部署；正式域名/证书、独立真人网络与长期验收待补 |
 | [阿里云与腾讯云服务器选型及部署调研](cloud-server-deployment-research.md) | 进行中 | 腾讯 CVM 测试部署；补充域名注册、DNS、备案与 HTTPS 步骤，续费和扩容按实际需求评估 |
-| [房间 AI 接入与运行时配置设计](ai-runtime-design.md) | 进行中 | DeepSeek 与自定义服务商、房间上下文与记忆、三类校验、KP 审核及原子发布 |
-| [房间 AI 模块实施与验收计划](ai-runtime-construction-plan.md) | 进行中 | AI-0—AI-5、AI-6 实际 demo 工程试点及真实 DeepSeek 联调通过，人工试玩待补 |
+| [房间 AI 接入与运行时配置设计](ai-runtime-design.md) | 进行中 | 当前能力移至工程文档；保留业务事务、通用请求、流程与迁移待设计范围 |
+| [房间 AI 模块实施与验收计划](ai-runtime-construction-plan.md) | 进行中 | 后续多人试玩、环境兼容、语义质量与配置消费矩阵；已完成阶段记录已归档 |
 | [AI 语音输入识别调研与接入方案](speech-input-research.md) | 草案 | 玩家及 KP/开发者输入场景；云端/本地识别方案、接入条件、费用及官方来源 |
 | [独立语音输入模块工程设计](speech-input-design.md) | 草案 | 阿里云首选与豆包备选、浏览器 PCM 流程、独立模块与协议、AI-0 文本字段映射及 LAN 条件 |
 | [独立语音输入模块施工与验收](speech-input-construction-plan.md) | 草案 | SI-0—SI-6 工作包、29 项验收矩阵及玩家/配置编写完整流程；尚未实施 |
@@ -46,6 +46,6 @@ ISSUE-011首版与AI消费接入已完成，见[现行知识服务](../current/e
 
 - [通用请求与决定工程评估](interaction-records.md)：双模型、读取试点、权限与事务边界，宿主接线尚未实现。
 
-- [AI 裁决与输出修正实验](ai-rulings-experiments.md)：离线故障注入、真实 API 与隔离房间验收。
+- [AI 场景实验与配置变更验收](ai-rulings-experiments.md)：重启、调试、配置增删改、失败处理及首轮/复测计数口径。
 
 - [AI 会话管理交互原型](ai-session-management-prototype.md)：房间／列表／详情三栏、KP／PL、归档撤销和窄屏交互，等待试玩反馈。

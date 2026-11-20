@@ -4,9 +4,10 @@
 
 | 编号 | 问题 | 状态 | 正文 |
 | --- | --- | --- | --- |
+| SV-ISSUE-003 | KP 来源审核、调试导出与物品查询 | 已完成并归档 | [记录](../history/2026-11-19-issue-003-kp-ai-review-debug.md) · [现行规则](../current/ai-debugging.md) |
 | SV-ISSUE-002 | 玩家查询与创作申请误归类 | 已完成并归档 | [记录](../history/2026-11-19-issue-002-player-ai-requests.md) · [现行规则](../current/ai-permissions.md) |
 | SV-ISSUE-001 | 玩家已知资料的内容投影与语义格式 | 已完成并归档 | [记录](../history/2026-11-19-issue-001-player-knowledge-presentation.md) · [现行规则](../current/player-knowledge.md) |
 
-包侧问题在此维护；需要引擎能力的问题登记到[工程 Issues](../../../../docs/plans/Issues/README.md)，相互链接，不复制相同正文。完成后把有效规则同步到 `docs/current/` 并按标准归档；新增文件需同步项目 hierarchy。下一编号为 SV-ISSUE-003。
+包侧问题在此维护；需要引擎能力的问题登记到[工程 Issues](../../../../docs/plans/Issues/README.md)，相互链接，不复制相同正文。完成后把有效规则同步到 `docs/current/` 并按标准归档；新增文件需同步项目 hierarchy。下一编号为 SV-ISSUE-004。
 
 返回[包文档入口](../README.md)。

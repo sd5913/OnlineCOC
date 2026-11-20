@@ -47,6 +47,7 @@ class DataQueryService:
         proofs=context['facts'].setdefault('dataQueries',[])
         require(len(proofs)<24,'QUERY_LIMIT')
         proof={'scopeId':context['scopeId'],'operation':operation,'args':args,'initiator':initiator,'player':player,'digest':digest(result)}
+        proof['readRefs']=[{'ref':item['ref'],'visibility':item['visibility']} for item in result['items']]
         if scope:proof['readScope']=scope
         if proof not in proofs:proofs.append(proof)
         if any(item['ref']['sourceId'] not in ('host','host-room') for item in result['items']):context['facts']['consultationOnly']=True
@@ -79,7 +80,8 @@ def model_result(result, args, citations=None):
     for item in result['items']:
         kind = item['ref']['kind']
         counts[kind] = counts.get(kind, 0) + 1
-    return {**result, 'items':[{**item,**({'citation':citations[digest(item['ref'])]} if citations and digest(item['ref']) in citations else {})} for item in result['items']],
+    source_policy={'publication':'consultation-only','notice':'This result includes independently stored package data and cannot authorize a configuration publication. Keep it for advice; prepare a fresh draft from authoritative host templates via room_read_management(section=configurations) or active artifact data via pack_read_config_data.'} if any(i['ref']['sourceId'] not in ('host','host-room') for i in result['items']) else {'publication':'host-evidence'}
+    return {**result, 'sourcePolicy':source_policy, 'items':[{**item,**({'citation':citations[digest(item['ref'])]} if citations and digest(item['ref']) in citations else {})} for item in result['items']],
         'pageSummary': {'returnedItems': len(result['items']),
         'countsByType': counts, 'hasMore': result['page']['nextCursor'] is not None,
         'isFirstPage': not bool(args.get('cursor'))}}

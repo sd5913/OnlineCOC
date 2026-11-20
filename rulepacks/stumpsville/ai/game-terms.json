@@ -10,6 +10,14 @@
   ],
   "terms": [
     {
+      "term": "钱币",
+      "aliases": ["金钱", "财富", "金币", "加钱", "发钱"],
+      "read": ["目标 configurationId=sv.character、owner 与 lifecycle=active", "该角色当前 numbers.pips", "entity.update 与 notification.send 的实际操作Schema"],
+      "meaning": "本包钱币保存为角色数值 pips，不是背包物品，也不需要新建货币配置。",
+      "clarify": "只有目标玩家或增减数量未确定时才询问；已明确数量不再询问字段映射或是否准备方案。",
+      "plan": "提交仅更新目标 pips 为当前值加减指定数量的 entity.update 待审动作，并附给该角色 owner 的 notification.send。不能调用 sv.world/addPips；sv.world 只用于场次流程。实际值与边界须从当前角色及Schema核实。"
+    },
+    {
       "term": "复活",
       "aliases": [
         "救活",

@@ -1,0 +1,264 @@
+{
+  "scope": "包内错误分类替身；真实包页面与导出组件另见 ai-recovery-ui-results.json",
+  "firstAttempt": {
+    "checkedAt": "2026-11-19T16:41:03.587Z",
+    "kind": "package-only mocked transport",
+    "realSaveChanged": false,
+    "realProviderCalls": 0,
+    "checks": [
+      {
+        "id": "http-400-does-not-poison-next-command",
+        "passed": false,
+        "error": "definite HTTP refusal retained an unknown command\n+ actual - expected\n\n+ 'first'\n- undefined\n"
+      },
+      {
+        "id": "http-401-does-not-poison-next-command",
+        "passed": false,
+        "error": "definite HTTP refusal retained an unknown command\n+ actual - expected\n\n+ 'first'\n- undefined\n"
+      },
+      {
+        "id": "http-403-does-not-poison-next-command",
+        "passed": false,
+        "error": "definite HTTP refusal retained an unknown command\n+ actual - expected\n\n+ 'first'\n- undefined\n"
+      },
+      {
+        "id": "http-409-does-not-poison-next-command",
+        "passed": false,
+        "error": "definite HTTP refusal retained an unknown command\n+ actual - expected\n\n+ 'first'\n- undefined\n"
+      },
+      {
+        "id": "http-429-does-not-poison-next-command",
+        "passed": false,
+        "error": "definite HTTP refusal retained an unknown command\n+ actual - expected\n\n+ 'first'\n- undefined\n"
+      },
+      {
+        "id": "uncertain-undefined-blocks-until-original-receipt",
+        "passed": true
+      },
+      {
+        "id": "uncertain-408-blocks-until-original-receipt",
+        "passed": true
+      },
+      {
+        "id": "uncertain-500-blocks-until-original-receipt",
+        "passed": true
+      },
+      {
+        "id": "uncertain-503-blocks-until-original-receipt",
+        "passed": true
+      },
+      {
+        "id": "unknown-receipt-does-not-silently-retry",
+        "passed": true
+      },
+      {
+        "id": "queue-definite-http-refusal-clears-prewritten-marker",
+        "passed": false,
+        "error": "queue retained marker after definitive refusal\n+ actual - expected\n\n+ 'queue-1917b19170c0cf39c4af14e8490a5306'\n- undefined\n"
+      }
+    ],
+    "passed": false,
+    "passedCount": 5,
+    "evidenceDirectory": "tests/output/ai-recovery-f67e9dcc-107c-4d7a-ba93-ec28ba9d7511"
+  },
+  "latestAttempt": {
+    "checkedAt": "2026-11-19T17:15:32.757Z",
+    "kind": "package-only mocked transport",
+    "realSaveChanged": false,
+    "realProviderCalls": 0,
+    "checks": [
+      {
+        "id": "actual-http-transport-retains-status-outside-json",
+        "passed": true
+      },
+      {
+        "id": "non-json-client-refusal-retains-status",
+        "passed": true
+      },
+      {
+        "id": "null-json-client-refusal-retains-status",
+        "passed": true
+      },
+      {
+        "id": "package-service-httpStatus-is-a-definite-refusal",
+        "passed": true
+      },
+      {
+        "id": "http-400-does-not-poison-next-command",
+        "passed": true
+      },
+      {
+        "id": "http-401-does-not-poison-next-command",
+        "passed": true
+      },
+      {
+        "id": "http-403-does-not-poison-next-command",
+        "passed": true
+      },
+      {
+        "id": "http-409-does-not-poison-next-command",
+        "passed": true
+      },
+      {
+        "id": "http-429-does-not-poison-next-command",
+        "passed": true
+      },
+      {
+        "id": "uncertain-undefined-blocks-until-original-receipt",
+        "passed": true
+      },
+      {
+        "id": "uncertain-408-blocks-until-original-receipt",
+        "passed": true
+      },
+      {
+        "id": "uncertain-500-blocks-until-original-receipt",
+        "passed": true
+      },
+      {
+        "id": "uncertain-503-blocks-until-original-receipt",
+        "passed": true
+      },
+      {
+        "id": "unknown-receipt-does-not-silently-retry",
+        "passed": true
+      },
+      {
+        "id": "queue-definite-http-refusal-clears-prewritten-marker",
+        "passed": true
+      }
+    ],
+    "passed": true,
+    "passedCount": 15,
+    "evidenceDirectory": "tests/output/ai-recovery-0e606e95-dd98-4975-a341-7917265e51e1"
+  },
+  "passed": true,
+  "firstPassed": 5,
+  "finalPassed": 15,
+  "total": 15,
+  "intermediateAttempts": [
+    {
+      "checkedAt": "2026-11-19T16:41:51.262Z",
+      "kind": "package-only mocked transport",
+      "realSaveChanged": false,
+      "realProviderCalls": 0,
+      "checks": [
+        {
+          "id": "http-400-does-not-poison-next-command",
+          "passed": true
+        },
+        {
+          "id": "http-401-does-not-poison-next-command",
+          "passed": true
+        },
+        {
+          "id": "http-403-does-not-poison-next-command",
+          "passed": true
+        },
+        {
+          "id": "http-409-does-not-poison-next-command",
+          "passed": true
+        },
+        {
+          "id": "http-429-does-not-poison-next-command",
+          "passed": true
+        },
+        {
+          "id": "uncertain-undefined-blocks-until-original-receipt",
+          "passed": true
+        },
+        {
+          "id": "uncertain-408-blocks-until-original-receipt",
+          "passed": true
+        },
+        {
+          "id": "uncertain-500-blocks-until-original-receipt",
+          "passed": true
+        },
+        {
+          "id": "uncertain-503-blocks-until-original-receipt",
+          "passed": true
+        },
+        {
+          "id": "unknown-receipt-does-not-silently-retry",
+          "passed": true
+        },
+        {
+          "id": "queue-definite-http-refusal-clears-prewritten-marker",
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "passedCount": 11,
+      "evidenceDirectory": "tests/output/ai-recovery-fd738404-9416-420e-9c12-b49a155ce5dc"
+    },
+    {
+      "checkedAt": "2026-11-19T16:57:32.391Z",
+      "kind": "package-only mocked transport",
+      "realSaveChanged": false,
+      "realProviderCalls": 0,
+      "checks": [
+        {
+          "id": "actual-http-transport-retains-status-outside-json",
+          "passed": true
+        },
+        {
+          "id": "non-json-client-refusal-retains-status",
+          "passed": true
+        },
+        {
+          "id": "package-service-httpStatus-is-a-definite-refusal",
+          "passed": true
+        },
+        {
+          "id": "http-400-does-not-poison-next-command",
+          "passed": true
+        },
+        {
+          "id": "http-401-does-not-poison-next-command",
+          "passed": true
+        },
+        {
+          "id": "http-403-does-not-poison-next-command",
+          "passed": true
+        },
+        {
+          "id": "http-409-does-not-poison-next-command",
+          "passed": true
+        },
+        {
+          "id": "http-429-does-not-poison-next-command",
+          "passed": true
+        },
+        {
+          "id": "uncertain-undefined-blocks-until-original-receipt",
+          "passed": true
+        },
+        {
+          "id": "uncertain-408-blocks-until-original-receipt",
+          "passed": true
+        },
+        {
+          "id": "uncertain-500-blocks-until-original-receipt",
+          "passed": true
+        },
+        {
+          "id": "uncertain-503-blocks-until-original-receipt",
+          "passed": true
+        },
+        {
+          "id": "unknown-receipt-does-not-silently-retry",
+          "passed": true
+        },
+        {
+          "id": "queue-definite-http-refusal-clears-prewritten-marker",
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "passedCount": 14,
+      "evidenceDirectory": "tests/output/ai-recovery-6e7f5726-ae0c-4f99-94e1-8b0df86b4ab0"
+    }
+  ],
+  "initialTotal": 11
+}

@@ -18,13 +18,20 @@ export function effectChanges(before,after){
     return a===b?[]:[{key,before:a,after:b}];
   }):[];
 }
-let translate,renderChanges,renderResult=()=>'',busy,openLog,popup,timer,expiry,fade,scope='',seen=new Set(),knownClues=new Set(),snapshot=null,queue=[];
+let translate,renderChanges,renderResult=()=>'',acknowledge=async()=>{},busy,openLog,popup,timer,expiry,fade,scope='',seen=new Set(),knownClues=new Set(),snapshot=null,queue=[];
+let notificationKey='',presented=new Set(),queuedNotices=new Set(),acking=new Set();
+function acknowledgeNotice(id){const pending=acking;if(pending.has(id))return;pending.add(id);Promise.resolve().then(()=>acknowledge(id)).catch(()=>{}).finally(()=>pending.delete(id));}
+function presentedNotice(id){
+  presented.add(id);
+  try{localStorage.setItem(notificationKey,JSON.stringify([...presented].slice(-500)));}catch{}
+  acknowledgeNotice(id);
+}
 const clueKey=clue=>clue.id?String(clue.location??'')+':'+clue.id:null;
 const sceneClues=state=>(state.locations||[]).flatMap(place=>(place.clues||[]).map(clue=>({...clue,location:clue.location??place.index})));
 function newClues(clues){return (clues||[]).filter(clue=>{const key=clueKey(clue);if(!key||knownClues.has(key))return false;knownClues.add(key);return true;});}
 function stopLifetime(){clearTimeout(expiry);clearTimeout(fade);if(popup)popup.classList.remove('fading');}
 function dismiss(){stopLifetime();if(popup)popup.hidden=true;clearTimeout(timer);timer=setTimeout(showNext,80);}
-function reset(){scope='';seen.clear();knownClues.clear();snapshot=null;queue=[];clearTimeout(timer);stopLifetime();if(popup)popup.hidden=true;}
+function reset(){scope='';seen.clear();knownClues.clear();snapshot=null;queue=[];notificationKey='';presented=new Set();queuedNotices=new Set();acking=new Set();clearTimeout(timer);stopLifetime();if(popup)popup.hidden=true;}
 function showNext(){
   clearTimeout(timer);
   if(popup&&!popup.hidden){popup.querySelector('.effects-count').textContent=queue.length?translate('effects.queued',{count:queue.length}):'';return;}
@@ -57,6 +64,7 @@ function showNext(){
   const log=popup.querySelector('.effects-log');log.textContent=translate('effects.log');log.hidden=!event.id;
   const clueLink=popup.querySelector('.effects-clues-link');clueLink.textContent=translate('effects.viewClues');clueLink.hidden=!event.clues?.length;
   popup.hidden=false;
+  if(event.notificationId)presentedNotice(event.notificationId);
   // Polling and newly queued notices must not extend this notice's lifetime.
   expiry=setTimeout(()=>{
     popup.classList.add('fading');
@@ -65,16 +73,29 @@ function showNext(){
   },3000);
 }
 export const effectsUI={
-  configure(t,render,isBusy,log,result=()=>''){translate=t;renderChanges=render;busy=isBusy;openLog=log;renderResult=result;},
+  configure(t,render,isBusy,log,result=()=>'',ack=async()=>{}){translate=t;renderChanges=render;busy=isBusy;openLog=log;renderResult=result;acknowledge=ack;},
   observe(state){
     if(!state||state.role!=='player'){reset();return;}
     const next=state.storageScope+':'+state.accountId+':'+(state.character?.instanceId||'');
     const events=(state.events||[]).filter(e=>e.account===state.accountId&&!['pending','processing'].includes(e.status));
     const current=effectSnapshot(state);
-    if(scope!==next){reset();scope=next;seen=new Set(events.map(e=>e.id));newClues(sceneClues(state));newClues(events.flatMap(e=>e.result?.clues||[]));snapshot=current;return;}
+    if(scope!==next){
+      reset();scope=next;seen=new Set(events.map(e=>e.id));newClues(sceneClues(state));newClues(events.flatMap(e=>e.result?.clues||[]));snapshot=current;
+      notificationKey='sv.desktop.presentedNotifications.'+state.storageScope+'.'+state.accountId;
+      try{presented=new Set(JSON.parse(localStorage.getItem(notificationKey)||'[]'));}catch{}
+    }
+    let newNotice=false;
+    for(const notice of state.notifications||[]){
+      const id=notice.notificationId;if(!id)continue;
+      if(presented.has(id)){acknowledgeNotice(id);continue;}
+      if(queuedNotices.has(id))continue;queuedNotices.add(id);newNotice=true;
+      const event=events.find(e=>e.notificationId===id);
+      queue.push({...(event||{}),id:'notification:'+id,notificationId:id,title:event?.title||'主持通知',
+        result:{...(event?.result||{}),message:notice.text},changes:(event?.changes||[]).filter(relevant),clues:newClues(event?.result?.clues)});
+    }
     const covered=new Map();
     for(const event of events){
-      if(seen.has(event.id))continue;
+      if(seen.has(event.id)||event.notificationId)continue;
       const changes=(event.changes||[]).filter(relevant);
       const clues=newClues(event.result?.clues);
       queue.push({...event,changes,clues});
@@ -85,7 +106,7 @@ export const effectsUI={
     const pending=(state.autoSceneTasks||[]).some(task=>['running','finishing'].includes(task.status));
     if(!pending){
       const changes=effectChanges(snapshot,current).filter(c=>!covered.has(c.key)||covered.get(c.key)!==c.after);
-      if(changes.length)queue.push({title:translate('effects.updated'),changes});
+      if(changes.length&&!newNotice)queue.push({title:translate('effects.updated'),changes});
       snapshot=current;
     }else if(snapshot){
       // Other completed events still advance their own keys during an open job.

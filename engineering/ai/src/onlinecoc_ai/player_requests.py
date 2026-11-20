@@ -50,7 +50,7 @@ class PlayerRequests:
         return items
 
     def review_required(self, session_id):
-        return bool(session_id) and any(r.get('reviewSessionId')==session_id for r in self.repository.state()['settings'].get('playerRequests',{}).values())
+        return bool(session_id) and (session_id in self.repository.state()['settings'].get('reviews',{}) or any(r.get('reviewSessionId')==session_id for r in self.repository.state()['settings'].get('playerRequests',{}).values()))
 
     def _save(self, record):
         self.repository.update(lambda s:s['settings']['playerRequests'].update({record['rulingId']:copy.deepcopy(record)}))
@@ -66,20 +66,10 @@ class PlayerRequests:
         require(record['authorityEpoch']==self.host.epoch,'STALE_AUTHORITY')
         if args['decision']=='reject':
             record.update(status='rejected',decidedBy=account);self._save(record);return self._item(account,record)
-        # References are player-scoped. Never reinterpret their tokens as KP evidence.
-        from .references import TOKEN, References
-        def label(match):
-            try:return '【玩家引用：'+References(self.host).resolve(record['initiator'],[match[0]],external_policy=self.host.state()['aiControl']['settings']['externalSources'])['items'][0]['label']+'】'
-            except Exception:return '【玩家引用：当前不可核验】'
-        intent=TOKEN.sub(label,record['summary'])
-        text=intent
-        require(len(text)<=8000,'INPUT_INVALID')
+        source=self.app.reviews.material(account,{'kind':'ruling','rulingId':record['rulingId'],'digest':record['digest']})
         with self.repository.transaction():
-            review=self.app.sessions.execute(account,'review:'+record['rulingId'],'ai.session.create',
-                {'title':'玩家创作申请 · '+record['initiator'],'accessLevel':'administrator'})
-            request=self.app._execute(account,'review:'+record['rulingId'],'ai.request.create',
-                {'sourceKind':'manual','text':text},session_id=review['sessionId'],dispatch=False)
-            record.update(status='accepted',decidedBy=account,reviewSessionId=review['sessionId'],reviewRequestId=request['requestId'])
+            review=self.app.reviews.prepare(account,'review:'+record['rulingId'],source)
+            record.update(status='accepted',decidedBy=account,reviewSessionId=review['sessionId'],reviewRequestId=review['requestId'])
             self._save(record)
         try:
             result=self.app._execute(account,'review-dispatch:'+record['rulingId'],'ai.request.dispatch',{'requestId':record['reviewRequestId']})

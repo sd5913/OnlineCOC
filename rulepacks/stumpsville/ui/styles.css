@@ -646,3 +646,30 @@ body.scene-workspace { height:100dvh; overflow:hidden; }
 .ruling-switch button.primary { background:var(--moss); color:#fff; opacity:1; }
 
 .ruling-switch button { transition:none; }
+
+/* Shared human / AI ruling cards and one tabbed queue workspace. */
+.rulings-grid>.ruling-queues { display:flex; flex-direction:column; gap:0; }
+.queue-heading { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:8px; padding-bottom:10px; border-bottom:1px solid var(--line); margin-bottom:10px; }
+.queue-heading [role=tablist],.queue-header-actions { display:flex; align-items:center; gap:4px; }
+.queue-heading [role=tab] { padding:7px 8px; font-size:14px; border:0; border-bottom:2px solid transparent; border-radius:0; background:transparent; }
+.queue-heading [role=tab][aria-selected=true] { border-bottom-color:var(--moss); color:var(--moss); font-weight:bold; }
+.queue-header-actions button { padding:4px 7px; font-size:12px; }
+.ruling-scroll[hidden] { display:none; }
+.keeper-ai-queue { border:0; margin:0; padding:0; }
+.keeper-ai-queue>.queue-tools { display:none; }
+.ruling-card.queue-item { display:flex; flex-direction:column; gap:7px; min-width:0; padding:11px; margin:0 0 10px; border:1px solid var(--line); border-radius:8px; background:var(--paper,#fffdf5); }
+.ruling-card-meta { display:grid; grid-template-columns:auto minmax(0,1fr) minmax(0,.8fr); align-items:center; gap:10px; font-size:12px; color:var(--muted); }
+.ruling-card-meta time { white-space:nowrap; }
+.ruling-card-type { text-align:center; }
+.ruling-card .queue-source { text-align:right; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.ruling-card-summary { min-width:0; font-size:14px; line-height:1.5; overflow-wrap:anywhere; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+.ruling-card-summary .queue-summary,.ruling-card .queue-summary { width:100%; padding:0; min-height:0; text-align:left; font-size:14px; line-height:1.5; }
+.ruling-card-actions.actions,.ruling-decision-actions { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:6px; }
+.ruling-card-actions button,.ruling-decision-actions button { min-width:0; padding:7px 4px; white-space:normal; overflow-wrap:anywhere; font-size:12px; }
+.ruling-card-actions button:only-child { grid-column:1/-1; }
+.ruling-card-state { color:var(--muted); }
+.ruling-dialog textarea { width:100%; box-sizing:border-box; min-height:64px; }
+.ruling-dialog .data-detail,.ruling-history .data-detail { white-space:pre-wrap; overflow-wrap:anywhere; }
+.ruling-history { width:min(760px,calc(100vw - 28px)); max-height:85dvh; overflow:auto; }
+.ruling-history>header { position:sticky; top:0; background:var(--paper,#fffdf5); z-index:1; }
+@media(max-width:1100px) { .rulings-grid[data-pane=queue]>.ruling-queues { display:flex; } }

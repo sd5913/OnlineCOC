@@ -45,6 +45,8 @@ class Proposals:
         from .access import policy
         require(policy(self.repository)['allowConfigurationChanges'], 'CONFIGURATION_CHANGES_DISABLED')
         context, state, artifact = snapshot or self.snapshot(account)
+        from .history import require_current_evidence
+        require_current_evidence(context,{'kind':'draft'})
         with self.host.lock:
             check_context(self.host, self.host.state(), account, context)
         changes = merge_changes(artifact, delta)
@@ -89,15 +91,17 @@ class Proposals:
             self.host.validate_ai_sources(current, account, context)
         return proposal
 
-    def revise(self, account, proposal_id, expected_revision, delta, *, summary="修订配置草稿"):
+    def revise(self, account, proposal_id, expected_revision, delta, *, summary="修订配置草稿", snapshot=None):
         from .access import policy
         require(policy(self.repository)['allowConfigurationChanges'], 'CONFIGURATION_CHANGES_DISABLED')
         old = self.get(account, proposal_id)
         require(old["revision"] == expected_revision, "PROPOSAL_STALE")
-        context, state, artifact = self.snapshot(account)
+        context, state, artifact = snapshot or self.snapshot(account)
         original_context = self.repository.state()['contexts'][old['contextRef']]
-        for key in ('sourceRefs', 'memoryRefs', 'includedSources', 'omittedSources', 'facts'):
-            context[key] = copy.deepcopy(original_context[key])
+        if snapshot is None:
+            for key in ('sourceRefs', 'memoryRefs', 'includedSources', 'omittedSources', 'facts'):
+                context[key] = copy.deepcopy(original_context[key])
+        with self.host.lock:check_context(self.host,self.host.state(),account,context)
         proposal = self._proposal(proposal_id, expected_revision + 1, old["requestId"], context, merge_changes(artifact, delta), summary)
         # Revoke before accepting an edit. A repository failure may leave a
         # conservative revoked approval, but never a publishable superseded one.

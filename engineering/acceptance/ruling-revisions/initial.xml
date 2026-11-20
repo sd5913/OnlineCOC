@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="2" time="33.370" timestamp="2026-11-20T10:14:09.468891+08:00" hostname="LAPTOP-BIFSL64A"><testcase classname="tests.test_ruling_revisions" name="test_restart_revise_same_digest_requires_fresh_manual_approval[False]" time="15.869"><failure message="AssertionError: assert ('blocked' == 'draft'&#10;  &#10;  - draft&#10;  + blocked)">application = &lt;onlinecoc_ai.api.Application object at 0x000001418887FA10&gt;
+legacy = False
+
+    @pytest.mark.parametrize('legacy', [False, True])
+    def test_restart_revise_same_digest_requires_fresh_manual_approval(application, legacy):
+        original = application
+        proposal = create_checked(original)
+        before = original.repository.state()['contexts'][proposal['contextRef']]
+        current = reopen(original)
+        try:
+            args = approve_args(item(current))
+            blocked = committed(command(current, 'ai.ruling.decide', args, identifier='old-approval'))
+            assert blocked['status'] == 'blocked'
+            assert len(blocked['receipts']) == 1
+            old_receipt = copy.deepcopy(blocked['receipts'][0])
+            assert old_receipt['status'] == 'rejected' and old_receipt['code'] == 'STALE_AUTHORITY'
+            assert not current.host.state()['aiControl']['approvals']
+            assert not current.host.state()['aiControl']['publications']
+            if legacy:
+                current.repository.update(lambda s: s['settings']['rulingDecisions'][args['rulingId']].pop('proposalRevision', None))
+            old_decision = copy.deepcopy(current.repository.state()['settings']['rulingDecisions'])
+            assert item(current)['status'] == 'blocked'  # same revision remains rejected
+            assert command(current, 'ai.ruling.decide', args)['code'] == 'RULING_NOT_READY'
+            revised = committed(command(current, 'ai.proposal.revise', {
+                'proposalId': proposal['proposalId'], 'revision': 1, 'changeSet': delta()}))
+            assert revised['revision'] == 2 and revised['candidateDigest'] == proposal['candidateDigest']
+            context = current.repository.state()['contexts'][revised['contextRef']]
+            assert context['authorityEpoch'] == current.host.epoch != before['authorityEpoch']
+            assert context['sourceRefs'] == before['sourceRefs'] and context['facts'] == before['facts']
+&gt;           assert item(current)['status'] == 'draft' and item(current)['receipts'] == []
+E           AssertionError: assert ('blocked' == 'draft'
+E             
+E             - draft
+E             + blocked)
+
+engineering\ai\tests\test_ruling_revisions.py:55: AssertionError</failure></testcase><testcase classname="tests.test_ruling_revisions" name="test_restart_revise_same_digest_requires_fresh_manual_approval[True]" time="16.222"><failure message="AssertionError: assert ('blocked' == 'draft'&#10;  &#10;  - draft&#10;  + blocked)">application = &lt;onlinecoc_ai.api.Application object at 0x0000014188A74A50&gt;
+legacy = True
+
+    @pytest.mark.parametrize('legacy', [False, True])
+    def test_restart_revise_same_digest_requires_fresh_manual_approval(application, legacy):
+        original = application
+        proposal = create_checked(original)
+        before = original.repository.state()['contexts'][proposal['contextRef']]
+        current = reopen(original)
+        try:
+            args = approve_args(item(current))
+            blocked = committed(command(current, 'ai.ruling.decide', args, identifier='old-approval'))
+            assert blocked['status'] == 'blocked'
+            assert len(blocked['receipts']) == 1
+            old_receipt = copy.deepcopy(blocked['receipts'][0])
+            assert old_receipt['status'] == 'rejected' and old_receipt['code'] == 'STALE_AUTHORITY'
+            assert not current.host.state()['aiControl']['approvals']
+            assert not current.host.state()['aiControl']['publications']
+            if legacy:
+                current.repository.update(lambda s: s['settings']['rulingDecisions'][args['rulingId']].pop('proposalRevision', None))
+            old_decision = copy.deepcopy(current.repository.state()['settings']['rulingDecisions'])
+            assert item(current)['status'] == 'blocked'  # same revision remains rejected
+            assert command(current, 'ai.ruling.decide', args)['code'] == 'RULING_NOT_READY'
+            revised = committed(command(current, 'ai.proposal.revise', {
+                'proposalId': proposal['proposalId'], 'revision': 1, 'changeSet': delta()}))
+            assert revised['revision'] == 2 and revised['candidateDigest'] == proposal['candidateDigest']
+            context = current.repository.state()['contexts'][revised['contextRef']]
+            assert context['authorityEpoch'] == current.host.epoch != before['authorityEpoch']
+            assert context['sourceRefs'] == before['sourceRefs'] and context['facts'] == before['facts']
+&gt;           assert item(current)['status'] == 'draft' and item(current)['receipts'] == []
+E           AssertionError: assert ('blocked' == 'draft'
+E             
+E             - draft
+E             + blocked)
+
+engineering\ai\tests\test_ruling_revisions.py:55: AssertionError</failure></testcase></testsuite></testsuites>

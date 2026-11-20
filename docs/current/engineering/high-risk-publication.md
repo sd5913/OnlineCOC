@@ -4,7 +4,7 @@
 - 文档子类：工程
 - 状态：有效
 - 创建日期：2026-11-19
-- 最后更新：2026-11-19
+- 最后更新：2026-11-20
 - 关联文档：[工程索引](README.md)、[房间 AI](ai-runtime.md)、[修改裁决](ai-rulings.md)、[数据查询](ai-data-query.md)、[宿主验收](../../../engineering/acceptance/high-risk-publication/README.md)
 
 ## 适用范围
@@ -71,6 +71,18 @@ Room 仍为 schemaVersion=4。新增批准字段为可选，旧数据可加载�
 | BASELINE_STALE / SOURCE_STALE | 游戏基线或证据变化，需要重新验证审核 |
 | VALIDATOR_STALE | 包绑定或检查器版本变化，需要重新验证 |
 | PERMISSION_DENIED | 账号、会话读取范围或当前授权不满足条件 |
+
+## 历史上下文的只读复验
+
+引擎提供 `publication.check_history_context(host, state, account, context)`，用于持久 AI 历史的授权读取。调用方在宿主锁内取得当前 `state` 后调用；成功返回 `None`，失败抛出现有 `DomainError`。它先验证完整 `ContextSnapshot`，不修改传入上下文、不提交房间，也不把旧证据升级为新批准。
+
+普通同目录重启保留 scope，但更换 `authorityEpoch`。历史只读入口不要求旧上下文的 epoch 等于本次进程，也不要求执行检查器指纹不变；读取不需要重新证明旧候选可执行。当前账号、授权版本、scope、包契约、来源／记忆、查询证明、外发策略、服务配置及已安装会话访问回调仍全部复验。管理员上下文继续检查活动规则、配置和世界基线；严格玩家上下文继续按原 owner 复验知识证明、提供方及当前授权，不能用 KP 身份替换原玩家知识范围。
+
+因此，仅宿主重启不会使仍有效的历史失去读取资格；成员停用／撤权、资料变化、知识撤回、提供方失效、外发策略变化、恢复为新 scope 等仍会拒绝。该入口保留原基线检查，不把历史输出声明为当前世界事实。
+
+`publication.check_context` 仍供生成中的执行校验、批准与发布使用，继续要求当前 `authorityEpoch` 和执行检查器版本。历史复验通过不允许重用旧批准或旧运行时命令；重新提交修改须重新捕获上下文、检查并审核。已提交命令的同 ID 回执查询规则保持不变。AI 消费侧必须区分历史读取和执行路径，不能把全部 `check_context` 调用替换为历史入口。
+
+引擎专项及回归见[历史上下文验收](../../../engineering/acceptance/history-context/README.md)；AI 会话展示、连续对话和界面接线由 AI 模块另行验收。
 
 ## 发布回执与包侧同步
 

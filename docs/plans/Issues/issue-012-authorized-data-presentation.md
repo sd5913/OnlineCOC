@@ -3,7 +3,7 @@
 - 文档类型：计划
 - 状态：草案
 - 创建日期：2026-11-19
-- 最后更新：2026-11-19
+- 最后更新：2026-11-20
 - 关联文档：[问题索引](README.md)、[知识服务](../../current/engineering/player-knowledge.md)、[AI 显示](../../current/engineering/ai-responses.md)、[包侧现行投影](../../../rulepacks/stumpsville/docs/current/player-knowledge.md)
 - 问题状态：待引擎责任者评估
 - 影响版本：后端 0.3.0 / Room v4；AI 严格玩家知识与数据引用
@@ -46,3 +46,4 @@
 
 - 2026-11-19：已登记引擎评估项。AI 已提供确定性中文字段／列表、角色分层详情和旧回复只读排版兜底；通用契约尚未实施。包侧行动菜单披露另见关联 ISSUE，不把“隐藏技术字段”当作修复数据授权。
 - 2026-11-19 后续：与工程bro 1号核对并由包侧隔离实测，现有 descriptor 绑定、分面 Schema、固定观察、sourceGuard 和来源复验足以处理 SV-ISSUE-001，无引擎代码依赖。包侧已完成个人菜单、KP／PL 分层、显式升级及旧证据失效，见[归档记录](../../../rulepacks/stumpsville/docs/history/2026-11-19-issue-001-player-knowledge-presentation.md)。新的 providerId／Schema 改变描述摘要；只换 pin 或 sourceRevision 不会废止旧固定观察。KP preview 与目标 PL pin 的 sourceRevision 必须基于相同权威输入，与受众投影区分。本 ISSUE 仍仅跟踪跨包展示元信息，不作为包侧安全修复的阻塞项。
+- 2026-11-20：[ISSUE-016完成记录](../../history/2026-11-20-issue-016-review-continuity-notifications.md)另行接入可信包代码的 `renderReference` 回调，复用常规角色／物品展示函数；通用AI组件负责授权DTO、生命周期与失效提示。该接口不是向资料中加入HTML或脚本，也不代替本议题尚未确定的跨包声明式展示元信息契约。

@@ -67,6 +67,23 @@ def candidate_configurations(state, changes, artifact):
 
 
 def check_context(host, state, account, context):
+    """Validate current execution/approval authority, including the host epoch."""
+    _check_context(host, state, account, context, history=False)
+
+
+def check_history_context(host, state, account, context):
+    """Revalidate persisted read-only evidence without renewing execution authority.
+
+    Call under the host lock with its current state. A process restart or a
+    changed execution validator does not revoke read access. All principal,
+    scope, contract, baseline and source checks still apply. Neither the old
+    context nor the room is rewritten; success is not approval to execute it.
+    """
+    validate_ai('ContextSnapshot', context)
+    _check_context(host, state, account, context, history=True)
+
+
+def _check_context(host, state, account, context, *, history):
     control = state["aiControl"]
     if context.get('facts',{}).get('strictPlayer'):
         facts=context['facts']; access=facts.get('sessionAccess',{})
@@ -74,7 +91,8 @@ def check_context(host, state, account, context):
         owner=access['owner']; m=member(state,owner); member(state,account)
         require(context['authorizationEpoch']==m['authorizationEpoch'],'PERMISSION_DENIED')
         require(context['scopeId']==control['scopeId'],'SCOPE_MISMATCH')
-        require(context['authorityEpoch']==host.epoch,'STALE_AUTHORITY')
+        if not history:
+            require(context['authorityEpoch']==host.epoch,'STALE_AUTHORITY')
         binding=control['packBinding']
         require(binding and context['contractDigest']==binding['digest'],'SOURCE_STALE')
         proofs=facts.get('knowledgeProofs')
@@ -88,10 +106,12 @@ def check_context(host, state, account, context):
     require(m["role"] == "kp" and context["reviewPrincipal"] == account, "PERMISSION_DENIED")
     require(context["authorizationEpoch"] == m["authorizationEpoch"], "PERMISSION_DENIED")
     require(context["scopeId"] == control["scopeId"], "SCOPE_MISMATCH")
-    require(context["authorityEpoch"] == host.epoch, "STALE_AUTHORITY")
+    if not history:
+        require(context["authorityEpoch"] == host.epoch, "STALE_AUTHORITY")
     binding = control["packBinding"]
-    require(binding and context["contractDigest"] == binding["digest"] and
-            context["validatorSetDigest"] == binding["validatorSetDigest"] == validator_digest(), "VALIDATOR_STALE")
+    require(binding and context["contractDigest"] == binding["digest"], "VALIDATOR_STALE")
+    if not history:
+        require(context["validatorSetDigest"] == binding["validatorSetDigest"] == validator_digest(), "VALIDATOR_STALE")
     require(context["baseRuleset"] == state["activeRuleset"] and context["configDigest"] == digest(state["configurations"]) and
             context["worldDigest"] == world_digest(state), "BASELINE_STALE")
     # Source checks live in the host and do not require an open AI repository.

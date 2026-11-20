@@ -16,6 +16,8 @@ class Completion:
     usage: dict
     finish_reason: str
     response_digest: str
+    model: str | None = None
+    system_fingerprint: str | None = None
 
 
 CAPABILITIES = {"protocol": "chat-completions", "jsonObject": True, "tools": True,

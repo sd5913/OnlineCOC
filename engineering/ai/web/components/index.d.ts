@@ -29,7 +29,14 @@ export interface ResponseOption {id: string; label: string; text: string}
 export interface ResponseChoices {prompt: string; options: ResponseOption[]}
 export function mountChoices(target: HTMLElement, choices: ResponseChoices | null, options?: {onSelect?: ((option: ResponseOption) => void) | null; disabled?: boolean; hintText?: string | null}): {update(choices: ResponseChoices | null, options?: {onSelect?: ((option: ResponseOption) => void) | null; disabled?: boolean; hintText?: string | null}): void; destroy(): void};
 export interface KnowledgeRequest {rulingId: string; sessionId: string; requestId: string; status: string; createdAt: number; digest: string}
+export interface ReviewSource {kind: "ruling" | "package" | "request"; sourceId?: string; category?: string; id?: string; revision?: string; rulingId?: string; digest?: string; sessionId?: string; requestId?: string; title?: string; requestedBy?: string; summary?: string; context?: Record<string,Json>}
+export interface DebugQuery {sessionId?: string; requestId?: string; rulingId?: string; includeContent?: boolean}
 export interface Task {
+  sourceState?: 'stale';
+  sourceError?: string;
+  sourceNotice?: string;
+  historicalReadOnly?: boolean;
+ reviewSource?: ReviewSource; modelCalls?: {requestedModel?: string; returnedModel?: string | null; systemFingerprint?: string | null; usage?: Record<string,number>; profileRevision?: number}[];
   knowledgeRequest?: KnowledgeRequest;
   playerRequest?: KnowledgeRequest;
   sessionId?: string | null;
@@ -67,6 +74,8 @@ export class AiClient {
   aiAccess(): Promise<SessionAccess>;
   aiRulings(): Promise<{items: AIRuling[]}>;
   aiBatches(): Promise<{items: ExecutionBatch[]}>;
+  aiDebug(options: DebugQuery): Promise<Json>;
+  aiReview(source: ReviewSource, instruction?: string): Promise<AiReceipt>;
   aiUsage(options?: UsageQuery): Promise<UsageReport>;
   aiContracts(): Promise<{version: number; operations: Record<string, Json>; $defs: Record<string, Json>}>;
   aiReferences(kind?: 'config' | 'entity' | 'data' | 'chat' | 'event' | 'ruling' | 'knowledge', q?: string): Promise<{items: DataReference[]; hasMore: boolean}>;
@@ -81,7 +90,10 @@ export function mountSessionManager(target: HTMLElement, client: AiClient, optio
   title?: string; onOpen?: ((id: string) => void | Promise<void>) | null;
   onChange?: (session: Session) => void | Promise<void>;
 }): SessionManager;
+/** Synchronous, trusted package renderer. Receives an authorized full DTO; null uses the common view. */
+export type ReferenceRenderer = (item: DataReference, context: {audience: "player" | "administrator"; readOnly: true}) => Node | null;
 export interface MarkdownOptions {
+  renderReference?: ReferenceRenderer | null;
   /** Display mode only; data must already be authorized. Default: player. */
   audience?: "player" | "administrator";
   plainText?: boolean;
@@ -99,8 +111,8 @@ export function mountSessions(target: HTMLElement, client: AiClient, options?: {
 /** Requires the local manager API, not a room's transport. Never expose it to PL. */
 export function mountProviders(target: HTMLElement, api: {request(path: string, body?: Json): Promise<any>}, options?: {onChange?: () => void}): Panel;
 export function requestId(): string;
-export interface DataReference {kind: 'config' | 'entity' | 'data' | 'chat' | 'event' | 'ruling' | 'knowledge'; id: string; label: string; revision: string; visibility: string; token?: string}
-export function mountChat(target: HTMLElement, client: AiClient, options?: {listTarget?: HTMLElement; onReview?: ((id: string | null) => void | Promise<void>) | null; onChange?: (sessions: Session[]) => void; onSelect?: (session: Session | null) => void}): Panel & {newChat(): Promise<void>; select(id: string): Promise<void>; showArchived(): Promise<boolean>; applySessionChange(session: Session): Promise<void>; suspend(): void; resume(options?: {sessionId?: string}): Promise<void>; setDraft(text: string, references?: DataReference[]): void; insertReference(item: DataReference): void};
+export interface DataReference {kind: 'config' | 'entity' | 'data' | 'chat' | 'event' | 'ruling' | 'knowledge'; id: string; label: string; revision: string; visibility: string; token?: string; value?: Json}
+export function mountChat(target: HTMLElement, client: AiClient, options?: {listTarget?: HTMLElement; debugTarget?: HTMLElement; renderReference?: ReferenceRenderer | null; onOpenSource?: ((source: ReviewSource) => void | Promise<void>) | null; onReview?: ((id: string | null) => void | Promise<void>) | null; onChange?: (sessions: Session[]) => void; onSelect?: (session: Session | null) => void}): Panel & {newChat(): Promise<void>; select(id: string): Promise<void>; showDebug(requestId?: string): void; showArchived(): Promise<boolean>; applySessionChange(session: Session): Promise<void>; suspend(): void; resume(options?: {sessionId?: string}): Promise<void>; setDraft(text: string, references?: DataReference[]): void; insertReference(item: DataReference): void};
 export function bindReferenceInput(input: HTMLTextAreaElement | HTMLElement, container: HTMLElement, client: AiClient, options?: {editor?: ReferenceEditor}): {reset(): void; destroy(): void};
 
 export interface ReferenceEditor {
@@ -120,6 +132,8 @@ export const REFERENCE_COMMANDS: readonly ReferenceCommand[];
 export function referenceCommands(role?: string): readonly ReferenceCommand[];
 export function referenceToken(item: DataReference): string;
 export interface AIViewOptions {
+ renderReference?: ReferenceRenderer | null;
+ onOpenSource?: ((source: ReviewSource) => void | Promise<void>) | null;
   title?: string; review?: boolean; onReview?: (proposalId?: string | null) => void | Promise<void>;
   onReceipt?: (id: string) => void; onSessions?: (sessions: Session[]) => void; onSession?: (session: Session | null) => void;
 }
@@ -140,6 +154,8 @@ export interface EvidencePage {
   coverage: {status: 'complete' | 'partial'; within: string};
 }
 export interface AITools {
+ debug(options: DebugQuery): Promise<Json>;
+ review(source: ReviewSource, instruction?: string, id?: string): Promise<Json>;
   data: {search(args: Record<string, Json>): Promise<EvidencePage>; read(args: Record<string, Json>): Promise<EvidencePage>; chat(args: Record<string, Json>): Promise<EvidencePage>; case(args: Record<string, Json>): Promise<EvidencePage>};
   sessions: {
     list(archived?: boolean): Promise<{items: (Session & {requestCount: number})[]; access: SessionAccess}>;
@@ -186,12 +202,17 @@ export interface UsageReport {
 export interface UsagePanel extends Panel {setSession(id: string | null): Promise<void>; suspend(): void; resume(): Promise<void>}
 export function mountUsage(target: HTMLElement, client: AiClient, options?: {sessionId?: string | null; scope?: 'mine' | 'room'}): UsagePanel;
 
+/** AI candidate field only; execution resolves the approved earlier host action to sourceCommandId/sourceOp. */
+export interface NotificationActionArgs {recipientAccountIds: string[]; text: string; sourceActionIndex: number}
 export interface ExecutionBatch {batchId: string; sessionId: string; requestId: string; creator: string; summary: string; revision: number; digest: string; status: string; actions: {target: "host" | "ai"; op: string; args: Json}[]; receipts: Json[]; createdAt: number}
 
 /** Resolve on every open; close/destroy when the caller changes identity. */
-export function bindReferenceDetails(target: HTMLElement, resolveReferences: NonNullable<MarkdownOptions["resolveReferences"]>, options?: {container?: HTMLElement | ShadowRoot; valid?: () => boolean; audience?: "player" | "administrator" | (() => "player" | "administrator")}): {open(token: string, anchor?: HTMLElement | null): Promise<void> | undefined; refresh(): Promise<void>; close(): void; destroy(): void};
+export function bindReferenceDetails(target: HTMLElement, resolveReferences: NonNullable<MarkdownOptions["resolveReferences"]>, options?: {container?: HTMLElement | ShadowRoot; valid?: () => boolean; renderReference?: ReferenceRenderer | null; audience?: "player" | "administrator" | (() => "player" | "administrator")}): {open(token: string, anchor?: HTMLElement | null): Promise<void> | undefined; refresh(): Promise<void>; close(): void; destroy(): void};
 
 export interface AIRuling {reviewSessionId?: string; generationError?: string;createdAt: number; initiator?: string; rulingId: string; blockingReason?: string; kind: "runtime" | "configuration" | "knowledge_request" | "player_request"; highRisk?: boolean; riskTags?: string[]; diff?: Json[]; sessionId: string | null; requestId: string; summary: string; status: string; digest: string; canDecide: boolean; risks: {id: string; question: string; required: boolean}[]; receipts: Json[]; actions?: Json[]; changeSet?: Json; reports?: Json[]; publications?: Json[]}
 export interface RulingDecision {rulingId: string; digest: string; decision: "approve" | "reject"; riskDecisions?: Record<string,string>; explicitHighRiskDigest?: string; disclosures?: {op: 'knowledge.observe'; args: Record<string,Json>}[]}
-export function mountRulings(target: HTMLElement, client: AiClient, options?: {compact?: boolean; onKnowledgeRequest?: (item: AIRuling) => void | Promise<void>; onOpenSession?: (sessionId: string) => void | Promise<void>; onChange?: (ruling: AIRuling) => void}): Panel;
+export function mountRulings(target: HTMLElement, client: AiClient, options?: {compact?: boolean; onOpenSource?: ((source: ReviewSource) => void | Promise<void>) | null; onKnowledgeRequest?: (item: AIRuling) => void | Promise<void>; onOpenSession?: (sessionId: string) => void | Promise<void>; onChange?: (ruling: AIRuling) => void}): Panel;
 export function mountAISettings(target: HTMLElement, client: AiClient, options?: {onChange?: (result: Json) => void; onReceipt?: (aiRequestId: string) => void}): Panel;
+
+export function appendDebugTools(target: HTMLElement, client: AiClient, locator: DebugQuery | (() => DebugQuery), options?: {valid?: () => boolean}): HTMLDetailsElement;
+export function appendReviewSource(target: HTMLElement, source: ReviewSource, options?: {onOpenSource?: ((source: ReviewSource) => void | Promise<void>) | null; onOpenSession?: ((sessionId: string) => void | Promise<void>) | null}): HTMLDetailsElement;

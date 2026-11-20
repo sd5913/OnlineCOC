@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="3" time="7.545" timestamp="2026-11-20T01:04:34.808961+08:00" hostname="LAPTOP-BIFSL64A"><testcase classname="tests.test_debug_dialog_ui" name="test_header_debug_modal_scope_export_close_and_identity[1100]" time="2.582" /><testcase classname="tests.test_debug_dialog_ui" name="test_header_debug_modal_scope_export_close_and_identity[390]" time="2.732" /><testcase classname="tests.test_debug_dialog_ui" name="test_failure_guidance_and_retry_do_not_replay_completed_work" time="1.795"><failure message="AssertionError: Locator expected to have Value 'Prepare configuration'&#10;Actual value: None&#10;Error: Not an input element &#10;Call log:&#10;  - Expect &quot;to_have_value&quot; locator(&quot;#text&quot;) with timeout 5000ms&#10;  - waiting for locator(&quot;#text&quot;)">static_ui = 'http://127.0.0.1:52157'
+
+    def test_failure_guidance_and_retry_do_not_replay_completed_work(static_ui):
+        with sync_playwright() as p:
+            browser=p.chromium.launch(channel='msedge',headless=True)
+            page=browser.new_page()
+            try:
+                page.goto(static_ui+'/')
+                page.evaluate("""async()=&gt;{
+                    document.body.innerHTML='&lt;div id="test" style="height:800px"&gt;&lt;/div&gt;';window.commands=[];
+                    const session={sessionId:'s1',title:'Recovery',owner:'kp',accessLevel:'administrator',revision:1,archived:false};
+                    const access={canChat:true};
+                    const items=[
+                        {requestId:'blocked',status:'blocked',text:'Prepare configuration',proposalId:'p1',error:'RULE_INVALID'},
+                        {requestId:'stale',status:'stale',text:'Read fresh evidence',error:'SOURCE_STALE'},
+                        {requestId:'done',status:'completed',text:'Already executed',error:'SOURCE_STALE'}];
+                    const client={connected:true,generation:1,view:{roomId:'room',accountId:'kp',role:'kp'},
+                        subscribe:()=&gt;()=&gt;{},onChange:()=&gt;()=&gt;{},aiSessions:async()=&gt;({items:[session],access}),
+                        aiAccess:async()=&gt;access,aiSession:async()=&gt;({session,items}),aiResolve:async()=&gt;({items:[]}),
+                        aiCommand:async(...args)=&gt;{commands.push(args);throw new Error('Unexpected automatic command');}};
+                    const {mountAIConversation}=await import('./pack.js');window.panel=mountAIConversation(document.querySelector('#test'),client);await panel.select('s1');
+                }""")
+                blocked=page.locator('[data-status=blocked]')
+                expect(blocked).to_contain_text('A/B/C')
+                expect(blocked).to_contain_text('当前未发布')
+                expect(blocked.get_by_role('button',name='查看配置裁决')).to_be_enabled()
+                blocked.get_by_role('button',name='编辑后重试').click()
+&gt;               expect(page.locator('#text')).to_have_value('Prepare configuration')
+E               AssertionError: Locator expected to have Value 'Prepare configuration'
+E               Actual value: None
+E               Error: Not an input element 
+E               Call log:
+E                 - Expect "to_have_value" locator("#text") with timeout 5000ms
+E                 - waiting for locator("#text")
+
+engineering\ai\tests\test_debug_dialog_ui.py:84: AssertionError</failure></testcase></testsuite></testsuites>

@@ -11,7 +11,7 @@ function shell(target){
 }
 function mountView(target,client,options={},full=false){
  const {element,root}=shell(target);const page=document.createElement('section');page.className='ai-view '+(full?'full':'conversation-only');root.append(page);
- page.innerHTML=`<header class="view-header"><strong class="view-title"></strong><span class="identity"></span><button class="review-open" hidden>KP 审核与设置</button></header><p class="view-status" role="status"></p><div class="view-workspace"><aside class="view-sidebar"><strong>本房间的会话</strong><div class="session-list"></div></aside><main><nav class="view-toolbar"><button class="new-chat">新建会话</button><select class="session-select" aria-label="选择会话"><option value="">选择会话</option></select><button class="archived">归档会话</button></nav><div class="view-chat"></div></main></div><dialog><button class="review-close">返回对话</button><div class="view-review"></div></dialog>`;
+ page.innerHTML=`<header class="view-header"><strong class="view-title"></strong><span class="identity"></span><span class="debug-slot"></span><button class="review-open" hidden>KP 审核与设置</button></header><p class="view-status" role="status"></p><div class="view-workspace"><aside class="view-sidebar"><strong>本房间的会话</strong><div class="session-list"></div></aside><main><nav class="view-toolbar"><button class="new-chat">新建会话</button><select class="session-select" aria-label="选择会话"><option value="">选择会话</option></select><button class="archived">归档会话</button></nav><div class="view-chat"></div></main></div><dialog><button class="review-close">返回对话</button><div class="view-review"></div></dialog>`;
  const $=selector=>page.querySelector(selector);$('.view-title').textContent=options.title||'房间 AI 助手';
  const management=document.createElement('dialog');management.className='session-dialog';management.innerHTML='<button class="session-close">返回对话</button><div class="session-management"></div>';page.append(management);
  const manage=document.createElement('button');manage.className='manage-sessions';manage.textContent='会话管理';$('.view-toolbar').append(manage);
@@ -60,8 +60,8 @@ function mountView(target,client,options={},full=false){
   if(!client.connected){$('.view-status').textContent='请先登录当前房间。';return;}
   if(!paused&&!chat){
    $('.view-status').textContent='';
-   chat=mountChat($('.view-chat'),client,{listTarget:full?$('.session-list'):undefined,
-    onChange:list,onReview:options.review===false?null:id=>run(()=>openReview(id)),
+   chat=mountChat($('.view-chat'),client,{debugTarget:$('.debug-slot'),listTarget:full?$('.session-list'):undefined,
+    onChange:list,renderReference:options.renderReference,onOpenSource:options.onOpenSource,onReview:options.review===false?null:id=>run(()=>openReview(id)),
     onSelect:session=>{selectedSession=session?.sessionId||null;$('.session-select').value=selectedSession||'';options.onSession?.(session);}});
   }
  }

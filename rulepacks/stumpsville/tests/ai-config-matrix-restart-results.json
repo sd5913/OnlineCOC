@@ -1,0 +1,63 @@
+{
+  "checkedAt": "2026-11-20T01:20:28.156077+08:00",
+  "realSaveChanged": false,
+  "realProviderCalls": 0,
+  "batch": "restart",
+  "cases": [
+    {
+      "id": "item-add",
+      "expectation": "supported",
+      "passed": true,
+      "evidence": {
+        "status": "completed",
+        "highRisk": true,
+        "proposalId": "ca317eec375649308a2be962d10af85f"
+      },
+      "seconds": 18.15
+    },
+    {
+      "id": "same-save-restart-session",
+      "expectation": "supported",
+      "passed": true,
+      "evidence": {
+        "sessionId": "54e9259f5e6841e1af956e72c31818d3",
+        "requestId": "a085bd89e74d4bc3874541c53e03f0f5",
+        "configurationOrderChanged": true
+      },
+      "seconds": 8.87
+    }
+  ],
+  "operations": [
+    {
+      "case": "matrix-item",
+      "op": "ai.draft.create",
+      "passed": true,
+      "seconds": 1.04
+    },
+    {
+      "case": "matrix-item",
+      "op": "ai.proposal.validate",
+      "passed": true,
+      "seconds": 8.47
+    },
+    {
+      "case": "matrix-item",
+      "op": "ai.ruling.decide",
+      "passed": true,
+      "seconds": 5.81
+    }
+  ],
+  "evidenceDirectory": "tests/output/ai-offline-current/ai-config-matrix-restart-82c8d0ed",
+  "fixtureProviderCalls": 3,
+  "rates": {
+    "supported": {
+      "passed": 2,
+      "total": 2
+    },
+    "expected-rejection": {
+      "passed": 0,
+      "total": 0
+    }
+  },
+  "passed": true
+}

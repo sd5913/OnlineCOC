@@ -1,14 +1,20 @@
 import {t} from './i18n.js';
 import {mountKeeperAIQueue} from './keeper-queue.js';
+import {definiteAIRejection,packageAITransport} from './ai-recovery.js';
 let current=null, epoch=0;
 export const embeddedAI={
   close(){epoch++;const old=current;current=null;old?.queue?.destroy();old?.queueRoot?.remove();old?.settings?.destroy();old?.unsubscribe?.();old?.view?.destroy();old?.client?.destroy();old?.root.remove();},
-  async mount(target,{base,manager=false,account='',scope='',onReview=()=>{},onQueueCount=()=>{},onSettings=()=>{},onReveal=()=>{},onKnowledgeRequest=()=>{},rulingsTarget=null,settings=false}={}){
+  openRulingSource(source){if(!current?.queue)throw Error('AI 队列尚未加载，请稍后重试或检查服务');return current.queue.openSource(source);},
+  setArchived(value){if(current){current.archived=!!value;current.queue?.setArchived(!!value);}},
+  queueHistory(content){if(!current?.queue)return false;current.queue.openHistory(content);return true;},
+  refreshQueue(){return current?.queue?.refresh();},
+  openSession(sessionId){if(!sessionId||!current?.manager)return;current.pendingSession=sessionId;current.attach?.();},
+  async mount(target,{base,manager=false,account='',scope='',onReview=()=>{},onQueueCount=()=>{},onSettings=()=>{},onReveal=()=>{},onKnowledgeRequest=()=>{},onOpenSource=()=>{},onNotice=()=>{},readBundle,renderReference,archived=false,rulingsTarget=null,settings=false}={}){
     const key=JSON.stringify([String(base),manager,account,scope]);
     if(!target){if(manager&&current?.key===key){current.root.remove();current.queueRoot?.remove();current.rulingsTarget=null;}else this.close();return;}
-    if(current?.key===key){current.mode=settings?'settings':'chat';current.queue?.relocalize();current.rulingsTarget=rulingsTarget;target.append(current.root);current.attach?.();return;}
+    if(current?.key===key){current.mode=settings?'settings':'chat';current.queue?.relocalize();current.rulingsTarget=rulingsTarget;current.archived=archived;current.queue?.setArchived(archived);target.append(current.root);current.attach?.();return;}
     this.close();const generation=epoch,root=document.createElement('div');root.className='embedded-ai-root';
-    target.append(root);current={key,root,rulingsTarget,mode:settings?'settings':'chat'};root.textContent=t('ai.loading');
+    target.append(root);current={key,root,rulingsTarget,manager,archived,mode:settings?'settings':'chat'};root.textContent=t('ai.loading');
     const live=()=>current?.root===root&&generation===epoch;
     try{
       const web=globalThis.stumpsvilleWeb;
@@ -18,7 +24,7 @@ export const embeddedAI={
       if(!capabilities.ai?.available){root.textContent=t('ai.disabled');if(current.rulingsTarget)current.rulingsTarget.replaceChildren();return;}
       const module=await modulePromise;if(module.loadError)throw module.loadError;
       if(!live())return;
-      const http=web?null:new module.HttpTransport(new URL('api/v1/',base).href);
+      const http=web?null:packageAITransport(new URL('api/v1/',base).href);
       let uncertain=manager?localStorage.getItem('sv.desktop.aiQueue.'+scope+'.'+account):null,notice=null;
       const transport={async request(path,options={}){
         if(uncertain&&path==='ai/commands')throw Error(t('ai.pending'));
@@ -29,7 +35,7 @@ export const embeddedAI={
             result=path==='me'?{csrf:null}:path==='view'?await web.api('api/v1/view'):await web.api('package/ai',{path,method:options.method||'GET',...(options.body===undefined?{}:{body:options.body})});
           }else result=await http.request(path,options);
         }catch(error){
-          if(live()&&path==='ai/commands'&&options.body?.requestId){uncertain=options.body.requestId;if(manager)localStorage.setItem('sv.desktop.aiQueue.'+scope+'.'+account,uncertain);if(manager&&current.queue)current.queue.remember(uncertain);if(notice&&(!current.queue||current.mode==='settings'))notice.hidden=false;}
+          if(live()&&path==='ai/commands'&&options.body?.requestId&&!definiteAIRejection(error)){uncertain=options.body.requestId;if(manager)localStorage.setItem('sv.desktop.aiQueue.'+scope+'.'+account,uncertain);if(manager&&current.queue)current.queue.remember(uncertain);if(notice&&(!current.queue||current.mode==='settings'))notice.hidden=false;}
           throw error;
         }
         if(uncertain&&path==='ai/receipts/'+encodeURIComponent(uncertain)&&['committed','rejected'].includes(result.status)){uncertain=null;if(manager)localStorage.removeItem('sv.desktop.aiQueue.'+scope+'.'+account);if(notice)notice.hidden=true;}
@@ -51,16 +57,18 @@ export const embeddedAI={
       const settingsBody=document.createElement('div');settingsBody.className='native-ai-body native-ai-settings';root.append(settingsBody);
       const identity=JSON.stringify([client.view?.accountId,client.view?.role,client.view?.authorityEpoch]);
       current.unsubscribe=client.subscribe(()=>{if(live()&&(!client.connected||identity!==JSON.stringify([client.view?.accountId,client.view?.role,client.view?.authorityEpoch])))this.close();});
+      const handleSource=source=>source.kind==='package'?onOpenSource(source):current?.queue?.openSource(source);
       current.attach=()=>{
         if(!live())return;
         guide.hidden=!(current.mode==='settings'&&current.guideOutdated);
         body.hidden=current.mode==='settings';settingsBody.hidden=current.mode!=='settings';
         if(current.mode==='settings'&&!current.settings)current.settings=module.mountAISettings(settingsBody,client);
-        if(current.mode==='chat'&&!current.view)current.view=module.mountAIConversation(body,client,{title:t('ai.title'),review:manager,onReview:id=>{if(current?.queueRoot){current.queue.refresh();current.queue.focus();}else onReview(id);}});
+        if(current.mode==='chat'&&!current.view)current.view=module.mountAIConversation(body,client,{title:t('ai.title'),review:manager,renderReference,onOpenSource:handleSource,onReview:id=>{if(current?.queueRoot){current.queue.refresh();current.queue.focus();}else onReview(id);}});
         if(manager&&current.rulingsTarget){
-          if(!current.queue){const queueRoot=document.createElement('div');current.queueRoot=queueRoot;current.queue=mountKeeperAIQueue(queueRoot,client,module,{scope,account,onCount:onQueueCount,onSettings,onReveal,onKnowledgeRequest,onSession:id=>current?.view?.resume({sessionId:id})});}
+          if(!current.queue){const queueRoot=document.createElement('div');current.queueRoot=queueRoot;current.queue=mountKeeperAIQueue(queueRoot,client,module,{scope,account,archived:current.archived,onCount:onQueueCount,onSettings,onReveal,onKnowledgeRequest,onOpenSource:handleSource,onNotice,readBundle,renderReference,onSession:id=>current?.view?.resume({sessionId:id})});}
           current.rulingsTarget.append(current.queueRoot);
         }
+        if(current.mode==='chat'&&current.view&&current.pendingSession){const sessionId=current.pendingSession;current.pendingSession=null;Promise.resolve(current.view.resume({sessionId})).catch(error=>{if(live()){guide.textContent=error.code||error.message;guide.hidden=false;}});}
         notice.hidden=!uncertain||(current.mode==='chat'&&!!current.queue);
       };
       current.attach();

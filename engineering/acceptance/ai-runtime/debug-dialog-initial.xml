@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="2" time="6.052" timestamp="2026-11-20T00:42:13.180218+08:00" hostname="LAPTOP-BIFSL64A"><testcase classname="tests.test_debug_dialog_ui" name="test_header_debug_modal_scope_export_close_and_identity[1100]" time="3.432"><failure message="playwright._impl._errors.Error: Page.evaluate: TypeError: Failed to fetch dynamically imported module: http://127.0.0.1:62573/pack.js">static_ui = 'http://127.0.0.1:62573', width = 1100
+
+    @pytest.mark.parametrize('width',[1100,390])
+    def test_header_debug_modal_scope_export_close_and_identity(static_ui,width):
+        with sync_playwright() as p:
+            browser=p.chromium.launch(channel='msedge',headless=True)
+            page=browser.new_page(viewport={'width':width,'height':850},accept_downloads=True);errors=[]
+            page.on('pageerror',lambda e:errors.append(str(e)))
+            try:
+                page.goto(static_ui+'/conversation.html')
+&gt;               page.evaluate("""async()=&gt;{
+                    document.body.innerHTML='&lt;div id="test" style="height:800px"&gt;&lt;/div&gt;';window.calls=[];window.listeners=[];
+                    const session={sessionId:'s1',title:'Review session',owner:'kp',accessLevel:'administrator',revision:1,archived:false,historyTurns:4};
+                    const access={canChat:true,allowPlayerChat:true,allowPlayerRequests:true};
+                    window.client={connected:true,generation:1,view:{roomId:'room',accountId:'kp',role:'kp',authorityEpoch:'epoch'},
+                        subscribe:fn=&gt;{listeners.push(fn);return()=&gt;{};},onChange:fn=&gt;{listeners.push(fn);return()=&gt;{};},
+                        aiSessions:async()=&gt;({items:[session],access}),aiAccess:async()=&gt;access,
+                        aiSession:async()=&gt;({session,items:[{requestId:'r1',status:'review_ready',text:'Original request',response:'Prepared advice',createdAt:1}]}),
+                        aiResolve:async()=&gt;({items:[]}),aiDebug:async options=&gt;{calls.push(options);return {schemaVersion:1,items:[]};}};
+                    const {mountAIConversation}=await import('./pack.js');window.panel=mountAIConversation(document.querySelector('#test'),client);await panel.select('s1');
+                }""")
+
+engineering\ai\tests\test_debug_dialog_ui.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+engineering\.venv\Lib\site-packages\playwright\sync_api\_generated.py:16843: in evaluate
+    self._sync(
+engineering\.venv\Lib\site-packages\playwright\_impl\_page.py:476: in evaluate
+    return await self._main_frame.evaluate(expression, arg)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+engineering\.venv\Lib\site-packages\playwright\_impl\_frame.py:346: in evaluate
+    await self._channel.send(
+engineering\.venv\Lib\site-packages\playwright\_impl\_connection.py:78: in send
+    return await self._connection.wrap_api_call(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;playwright._impl._connection.Connection object at 0x000001C92FE2A900&gt;
+cb = &lt;function Channel.send.&lt;locals&gt;.&lt;lambda&gt; at 0x000001C9302D99B0&gt;
+is_internal = False, title = None
+
+    async def wrap_api_call(
+        self, cb: Callable[[], Any], is_internal: bool = False, title: str = None
+    ) -&gt; Any:
+        if self._api_zone.get():
+            return await cb()
+        task = asyncio.current_task(self._loop)
+        parsed_st = _attach_api_call_information(
+            getattr(task, "__pw_stack__", None) or _capture_stack_trace(),
+            is_internal,
+            title,
+        )
+        self._api_zone.set(parsed_st)
+        try:
+            return await cb()
+        except Exception as error:
+&gt;           raise rewrite_error(error, f"{parsed_st['apiName']}: {error}") from None
+E           playwright._impl._errors.Error: Page.evaluate: TypeError: Failed to fetch dynamically imported module: http://127.0.0.1:62573/pack.js
+
+engineering\.venv\Lib\site-packages\playwright\_impl\_connection.py:636: Error</failure></testcase><testcase classname="tests.test_debug_dialog_ui" name="test_header_debug_modal_scope_export_close_and_identity[390]" time="1.700"><failure message="playwright._impl._errors.Error: Page.evaluate: TypeError: Failed to fetch dynamically imported module: http://127.0.0.1:62609/pack.js">static_ui = 'http://127.0.0.1:62609', width = 390
+
+    @pytest.mark.parametrize('width',[1100,390])
+    def test_header_debug_modal_scope_export_close_and_identity(static_ui,width):
+        with sync_playwright() as p:
+            browser=p.chromium.launch(channel='msedge',headless=True)
+            page=browser.new_page(viewport={'width':width,'height':850},accept_downloads=True);errors=[]
+            page.on('pageerror',lambda e:errors.append(str(e)))
+            try:
+                page.goto(static_ui+'/conversation.html')
+&gt;               page.evaluate("""async()=&gt;{
+                    document.body.innerHTML='&lt;div id="test" style="height:800px"&gt;&lt;/div&gt;';window.calls=[];window.listeners=[];
+                    const session={sessionId:'s1',title:'Review session',owner:'kp',accessLevel:'administrator',revision:1,archived:false,historyTurns:4};
+                    const access={canChat:true,allowPlayerChat:true,allowPlayerRequests:true};
+                    window.client={connected:true,generation:1,view:{roomId:'room',accountId:'kp',role:'kp',authorityEpoch:'epoch'},
+                        subscribe:fn=&gt;{listeners.push(fn);return()=&gt;{};},onChange:fn=&gt;{listeners.push(fn);return()=&gt;{};},
+                        aiSessions:async()=&gt;({items:[session],access}),aiAccess:async()=&gt;access,
+                        aiSession:async()=&gt;({session,items:[{requestId:'r1',status:'review_ready',text:'Original request',response:'Prepared advice',createdAt:1}]}),
+                        aiResolve:async()=&gt;({items:[]}),aiDebug:async options=&gt;{calls.push(options);return {schemaVersion:1,items:[]};}};
+                    const {mountAIConversation}=await import('./pack.js');window.panel=mountAIConversation(document.querySelector('#test'),client);await panel.select('s1');
+                }""")
+
+engineering\ai\tests\test_debug_dialog_ui.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+engineering\.venv\Lib\site-packages\playwright\sync_api\_generated.py:16843: in evaluate
+    self._sync(
+engineering\.venv\Lib\site-packages\playwright\_impl\_page.py:476: in evaluate
+    return await self._main_frame.evaluate(expression, arg)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+engineering\.venv\Lib\site-packages\playwright\_impl\_frame.py:346: in evaluate
+    await self._channel.send(
+engineering\.venv\Lib\site-packages\playwright\_impl\_connection.py:78: in send
+    return await self._connection.wrap_api_call(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;playwright._impl._connection.Connection object at 0x000001C9302CE0D0&gt;
+cb = &lt;function Channel.send.&lt;locals&gt;.&lt;lambda&gt; at 0x000001C93039F530&gt;
+is_internal = False, title = None
+
+    async def wrap_api_call(
+        self, cb: Callable[[], Any], is_internal: bool = False, title: str = None
+    ) -&gt; Any:
+        if self._api_zone.get():
+            return await cb()
+        task = asyncio.current_task(self._loop)
+        parsed_st = _attach_api_call_information(
+            getattr(task, "__pw_stack__", None) or _capture_stack_trace(),
+            is_internal,
+            title,
+        )
+        self._api_zone.set(parsed_st)
+        try:
+            return await cb()
+        except Exception as error:
+&gt;           raise rewrite_error(error, f"{parsed_st['apiName']}: {error}") from None
+E           playwright._impl._errors.Error: Page.evaluate: TypeError: Failed to fetch dynamically imported module: http://127.0.0.1:62609/pack.js
+
+engineering\.venv\Lib\site-packages\playwright\_impl\_connection.py:636: Error</failure></testcase></testsuite></testsuites>

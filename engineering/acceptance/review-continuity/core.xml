@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="27" time="57.949" timestamp="2026-11-20T11:47:28.617718+08:00" hostname="LAPTOP-BIFSL64A"><testcase classname="tests.test_history_continuity" name="test_stale_authorized_response_stays_visible_with_readonly_notice" time="1.849" /><testcase classname="tests.test_history_continuity" name="test_short_confirmation_retains_stale_intent_without_old_execution_proofs" time="1.352" /><testcase classname="tests.test_history_continuity" name="test_query_history_identity_witness_and_legacy_boundary[read-True-True]" time="1.589" /><testcase classname="tests.test_history_continuity" name="test_query_history_identity_witness_and_legacy_boundary[search-False-True]" time="1.547" /><testcase classname="tests.test_history_continuity" name="test_query_history_identity_witness_and_legacy_boundary[search-True-False]" time="1.803" /><testcase classname="tests.test_history_continuity" name="test_stale_history_never_restores_deleted_or_revoked_body[deleted]" time="1.338" /><testcase classname="tests.test_history_continuity" name="test_stale_history_never_restores_deleted_or_revoked_body[hidden]" time="1.492" /><testcase classname="tests.test_history_continuity" name="test_stale_history_never_restores_deleted_or_revoked_body[authorization]" time="1.300" /><testcase classname="tests.test_history_continuity" name="test_stale_history_never_restores_deleted_or_revoked_body[policy]" time="1.507" /><testcase classname="tests.test_history_continuity" name="test_stale_history_never_restores_deleted_or_revoked_body[session_deleted]" time="1.282" /><testcase classname="tests.test_history_continuity" name="test_new_query_witness_does_not_restore_deleted_object" time="1.608" /><testcase classname="tests.test_history_continuity" name="test_historical_intent_is_rechecked_after_capture_and_has_no_execution_authority" time="1.413" /><testcase classname="tests.test_history_continuity" name="test_history_scope_mismatch_never_falls_back" time="1.299" /><testcase classname="tests.test_history_continuity" name="test_short_confirmation_requires_current_target_read_before_batch" time="1.599" /><testcase classname="tests.test_history_continuity" name="test_model_repairs_stale_intent_by_reading_target_without_reasking" time="21.407"><failure message="TimeoutError">coordinator = &lt;onlinecoc_ai.coordinator.Coordinator object at 0x0000015D7B7F7380&gt;
+identifier = '135d1a24d1db4de183f4b50458a31190', timeout = 20
+
+    async def wait_task(coordinator,identifier,timeout=20):
+        async with asyncio.timeout(timeout):
+            while True:
+                task=coordinator.repository.state()['tasks'][identifier]
+                if task['status'] not in ('queued','generating','validating'):return task
+&gt;               await asyncio.sleep(.02)
+
+engineering\ai\tests\test_coordinator.py:51: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+delay = 0.02, result = None
+
+    async def sleep(delay, result=None):
+        """Coroutine that completes after a given time (in seconds)."""
+        if delay &lt;= 0:
+            await __sleep0()
+            return result
+    
+        if math.isnan(delay):
+            raise ValueError("Invalid delay: NaN (not a number)")
+    
+        loop = events.get_running_loop()
+        future = loop.create_future()
+        h = loop.call_later(delay,
+                            futures._set_result_unless_cancelled,
+                            future, result)
+        try:
+&gt;           return await future
+                   ^^^^^^^^^^^^
+E           asyncio.exceptions.CancelledError
+
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\tasks.py:702: CancelledError
+
+The above exception was the direct cause of the following exception:
+
+application = &lt;onlinecoc_ai.api.Application object at 0x0000015D7B7F7790&gt;
+
+    def test_model_repairs_stale_intent_by_reading_target_without_reasking(application):
+        import json
+        from onlinecoc_ai.data_queries import DataQueryService
+        from test_batch_notifications import actions
+        from test_access_batches import decide
+        app=application;sid,old=history_case(app,demand=True)
+        app.coordinator.context=Context(app.proposals,demand=True)
+        ref=next(i['ref'] for i in DataQueryService(app.host).execute('kp','search',{'types':['entity']})['items'] if i['ref']['id']==digest(['host','entity','actor-one']))
+        seen=[]
+        async def callback(count,messages,tools):
+            seen.append(count)
+            if count==1:
+                payload=json.loads(messages[1]['content'])
+                assert payload['currentActor']['accountId']=='kp'
+                assert payload['conversationHistory'][-1]['authority']=='historical-intent-only'
+                return completion({'kind':'batch','text':'保留原方案，待审核后修改并通知','actions':actions()})
+            if count==2:
+                feedback=json.loads(messages[-1]['content'])
+                assert feedback['error']['code']=='HISTORY_REQUERY_REQUIRED'
+                assert 'do not ask' in feedback['instruction']
+                return tool_call('room_read_data',{'refs':[ref]})
+            return completion({'kind':'batch','text':'已核对当前目标，修改和通知均等待审核','actions':actions()})
+        async def run():
+            app.coordinator.provider_factory=lambda _:Fake(callback);await app.coordinator.start()
+            try:
+                request=submit(app,sid,'是的，按此方案处理')
+                task=committed(command(app,'ai.request.dispatch',{'requestId':request['requestId']}))
+                result=await wait_task(app.coordinator,task['taskId']);assert result['status']=='review_ready',result
+                return result
+            finally:await app.coordinator.close()
+&gt;       result=asyncio.run(run());assert seen==[1,2,3]
+               ^^^^^^^^^^^^^^^^^^
+
+engineering\ai\tests\test_history_continuity.py:173: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:204: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:127: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\base_events.py:719: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+engineering\ai\tests\test_history_continuity.py:170: in run
+    result=await wait_task(app.coordinator,task['taskId']);assert result['status']=='review_ready',result
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+engineering\ai\tests\test_coordinator.py:47: in wait_task
+    async with asyncio.timeout(timeout):
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;Timeout [expired]&gt;
+exc_type = &lt;class 'asyncio.exceptions.CancelledError'&gt;
+exc_val = CancelledError(), exc_tb = &lt;traceback object at 0x0000015D7B7CB680&gt;
+
+    async def __aexit__(
+        self,
+        exc_type: type[BaseException] | None,
+        exc_val: BaseException | None,
+        exc_tb: TracebackType | None,
+    ) -&gt; bool | None:
+        assert self._state in (_State.ENTERED, _State.EXPIRING)
+    
+        if self._timeout_handler is not None:
+            self._timeout_handler.cancel()
+            self._timeout_handler = None
+    
+        if self._state is _State.EXPIRING:
+            self._state = _State.EXPIRED
+    
+            if self._task.uncancel() &lt;= self._cancelling and exc_type is not None:
+                # Since there are no new cancel requests, we're
+                # handling this.
+                if issubclass(exc_type, exceptions.CancelledError):
+&gt;                   raise TimeoutError from exc_val
+E                   TimeoutError
+
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\timeouts.py:114: TimeoutError</failure></testcase><testcase classname="tests.test_batch_notifications" name="test_review_catalog_exposes_only_server_bound_source_index" time="0.965" /><testcase classname="tests.test_batch_notifications" name="test_notification_rejects_nonprior_source[-1]" time="0.968" /><testcase classname="tests.test_batch_notifications" name="test_notification_rejects_nonprior_source[1]" time="0.958" /><testcase classname="tests.test_batch_notifications" name="test_notification_rejects_nonprior_source[2]" time="0.977" /><testcase classname="tests.test_batch_notifications" name="test_notification_rejects_nonprior_source[True]" time="0.977" /><testcase classname="tests.test_batch_notifications" name="test_notification_rejects_unsupported_source[source0]" time="1.077" /><testcase classname="tests.test_batch_notifications" name="test_notification_rejects_unsupported_source[source1]" time="1.238" /><testcase classname="tests.test_batch_notifications" name="test_reviewed_notification_waits_for_approval_and_is_targeted_once" time="1.266" /><testcase classname="tests.test_batch_notifications" name="test_failed_source_cannot_claim_success" time="1.563" /><testcase classname="tests.test_batch_notifications" name="test_rejected_batch_sends_nothing" time="1.142" /><testcase classname="tests.test_batch_notifications" name="test_lost_reply_never_blindly_replays_or_sends_early[0]" time="1.410" /><testcase classname="tests.test_batch_notifications" name="test_lost_reply_never_blindly_replays_or_sends_early[1]" time="1.378" /></testsuite></testsuites>

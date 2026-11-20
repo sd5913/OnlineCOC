@@ -65,6 +65,8 @@ def validate(state):
         require(key==publication["publicationId"] and publication["approvalId"] in control["approvals"] and
                 publication["ruleset"] in state["artifacts"] and publication["previousRuleset"] in state["artifacts"],"REFERENCE_CONFLICT")
     chat.validate(state)
+    from .notifications import validate as validate_notifications
+    validate_notifications(state)
     validate_world(state)
 
 

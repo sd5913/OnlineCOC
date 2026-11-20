@@ -1,5 +1,6 @@
 """One KP queue for immutable runtime batches and checked configuration publications."""
 import copy
+import re
 import threading
 from .errors import require, AiError
 from onlinecoc.errors import DomainError
@@ -38,6 +39,29 @@ class Rulings:
                 if key in item:item[key]=[]
         return item
 
+    @staticmethod
+    def decision_for_revision(decision, proposal):
+        if not decision:return {}
+        revision=decision.get('proposalRevision')
+        receipts=decision.get('receipts',[])
+        if receipts:
+            # Legacy records have no revision field. Require all receipt IDs to
+            # agree; a prefix match or the first of conflicting receipts is unsafe.
+            pattern=re.escape('ai-ruling:'+proposal['proposalId']+':')+r'([1-9][0-9]*):(approve|apply)'
+            matches=[re.fullmatch(pattern,r.get('commandId','')) for r in receipts]
+            revisions={int(m[1]) for m in matches if m}
+            if all(matches) and len(revisions)==1:
+                inferred=next(iter(revisions))
+                if 'proposalRevision' not in decision:revision=inferred
+                elif revision!=inferred:revision=None
+            else:revision=None
+        same_digest=decision.get('digest')==proposal['candidateDigest']
+        if type(revision) is not int or revision<1:
+            # An unbound interrupted intent is not evidence of non-execution,
+            # even when a later candidate has a different digest.
+            return decision if same_digest or decision.get('status') in ('unknown','executing') else {}
+        return decision if revision==proposal['revision'] and same_digest else {}
+
     def list(self, account, session_id=None):
         with self.host.lock:
             self.host.kp(account)
@@ -53,9 +77,9 @@ class Rulings:
                 proposal=record['revisions'][str(record['currentRevision'])];request=state['requests'][proposal['requestId']]
                 session=request_session(self.repository,request);context=state['contexts'][proposal['contextRef']]
                 reports=[state['reports'][r] for r in proposal['reportRefs']]
-                rid='proposal:'+proposal['proposalId'];decision=state['settings'].get('rulingDecisions',{}).get(rid,{})
+                rid='proposal:'+proposal['proposalId'];decision=self.decision_for_revision(state['settings'].get('rulingDecisions',{}).get(rid,{}),proposal)
                 status='pending' if proposal['status']=='review_ready' else proposal['status']
-                if decision.get('digest')==proposal['candidateDigest']:status=decision['status']
+                if decision:status=decision['status']
                 if request['status']=='cancelled':status='rejected'
                 publications=[p for p in room['aiControl']['publications'].values() if p['candidateDigest']==proposal['candidateDigest'] and room['aiControl']['approvals'][p['approvalId']]['proposalId']==proposal['proposalId']]
                 if publications:status='completed'
@@ -116,7 +140,7 @@ class Rulings:
                     decisions=args.get('riskDecisions',{})
                     require({r['id'] for r in item['risks']}<=set(decisions),'RISK_REVIEW_REQUIRED')
                     # Durable intent: restart/retry never starts a second publication.
-                    record={'digest':item['digest'],'status':'executing','decidedBy':account,'receipts':[]}
+                    record={'digest':item['digest'],'proposalRevision':item['revision'],'status':'executing','decidedBy':account,'receipts':[]}
                     def save():self.repository.update(lambda s:s['settings'].setdefault('rulingDecisions',{}).update({item['rulingId']:copy.deepcopy(record)}))
                     save()
                     for stage,op in (('approve','ai.proposal.approve'),('apply','publication.apply')):

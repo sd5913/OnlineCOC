@@ -195,7 +195,7 @@ from test_access_batches import tool_call
 @pytest.mark.parametrize('size,expected', [(110*1024,'review_ready'),(270*1024,'failed')])
 def test_cumulative_tool_budget_uses_transport_limit_and_reports_sizes(application,monkeypatch,size,expected):
     app=application;enable(app.host,public=True,private=True,kp=True)
-    monkeypatch.setattr(app.batches,'catalog_query',lambda *args: {'notice':'x'*size})
+    monkeypatch.setattr(app.batches,'catalog_query',lambda *args,**kwargs: {'notice':'x'*size})
     async def callback(count,messages,tools):
         return tool_call('room_manage_catalog') if count==1 else completion({'kind':'plan','text':'已读取目录，等待具体需求。'})
     provider=Fake(callback)

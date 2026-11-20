@@ -48,7 +48,8 @@
     "rulings.css",
     "settings.js",
     "settings.css",
-    "settings.html"
+    "settings.html",
+    "debug.js"
   ],
   "defaultApiBase": "/api/v1/",
   "framing": "same-origin-only",
@@ -70,7 +71,8 @@
       "ai/usage",
       "ai/access",
       "ai/batches",
-      "ai/rulings"
+      "ai/rulings",
+      "ai/debug"
     ],
     "post": [
       "login",

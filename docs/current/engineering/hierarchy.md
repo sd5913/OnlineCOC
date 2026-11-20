@@ -4,8 +4,8 @@
 - 文档子类：工程
 - 状态：有效
 - 创建日期：2026-10-29
-- 最后更新：2026-11-19
-- 最近目录核对：2026-11-19（个人已知目录、创作申请与嵌入入口、190项去重验收，以及包责任者委托登记的ISSUE-002／2份脚本）；2026-11-19（AI高危／权限／自愿披露、累计请求容量与批次输出修正、281项去重回归、引擎标签76项及3个真实模型用例、引擎／包侧委托目录登记）；2026-11-19（AI独立设置页、紧凑裁决、会话定位与81项回归；包工作台脚本由并行责任者确认后代登记）；2026-11-19（树桩镇集中开场/全局统计、可执行裁决、折叠回复与专项验收）；2026-11-19（Stumpsville 安全菜单、旧证据升级、52组验收、SV-ISSUE-001归档及开发参考拆分索引）；2026-11-19（AI 数据展示与引擎／包侧 ISSUE；并行施工者委托代登记的2份开发参考已核对文件存在）；2026-11-18（树桩镇3秒淡出、线索／结果通知及10组专项、12组回归）；2026-11-18（树桩镇行动未完成原因、处理指引及专项验收）；2026-11-18（AI 玩家 JSON 兼容、HTTP 错误分类和215项回归及4次合成API记录）；2026-11-18（树桩镇统一KP裁决队列、AI转交/回执恢复与9组隔离验收）；2026-11-17（树桩镇行动等待优化、检定动画及专项验收文件；并行AI模板施工者交付的测试和截图目录）；2026-11-17（树桩镇房间槽位管理、旧v3房间清理及6组槽位/6组面板验收）；2026-11-17（ISSUE-011首版完成：Room v4、知识服务、SDK/联网、176项工程及384项AI测试、两包与计划归档）；2026-11-17（AI A0—A3、Stumpsville个人知识、设计迁移及计划归档）；2026-11-17（ISSUE-011首版工程设计、接口基线及K0—K5/27项验收计划，未实施）；2026-11-17（新增 PL 已知信息设计细则，更新 AI 计划与 ISSUE-011，尚未实施）；2026-11-16（玩家知识职责评估、引擎 ISSUE-011 与 AI 消费侧计划，仅文档）；2026-11-16（AI 样式稳定、玩家个人场景知识及会话管理原型，55项模块／28组包侧验收）；2026-11-16（树桩镇PL角色/地图/聊天AI三栏、可拖动线索日志浮窗及5组布局验收）；2026-11-16（引用详情二级面板、稳定渲染、简洁分段与65项模块／11组树桩镇补验）；2026-11-16（AI语义回答、结构化选项、CSP样式与86项模块／10组树桩镇验收）；2026-11-16（AI会话分级、玩家直达、执行批次、删除与323项模块／32组包侧验收）；2026-11-16（AI默认不限额、授权用量统计与122项模块/9组树桩镇验收）；2026-11-15（AI格式渲染、可嵌入会话管理/设置、51项模块及7组树桩镇验收）；2026-11-15（树桩镇统一Python面板、Windows进程树托管、旧房间清理及32组/项验收）；2026-11-15（树桩镇对接AI查询计数/频道/末轮收尾、咨询解释边界及17组包侧离线回归）；2026-11-15（ISSUE-009：6次DeepSeek隔离实测、87项回归及答案语义验收缺口）；2026-11-15（ISSUE-009脱敏任务诊断、查询恢复、KP诊断视图及98项工程/10组包侧离线验收）；2026-11-15（ISSUE-009：一次授权DeepSeek查询失败及诊断缺口）；2026-11-15（树桩镇按需空上下文查询指南、旧快照检测与显式真实模型专项）；2026-11-15（树桩镇裁决满幅布局、顶栏折叠及AI查询外发/名称语义4组专项）；2026-11-15（树桩镇0.9.0当前格式、一次性存档转换与新版AI/网页接入；未新增持久迁移工具）；2026-11-15（AI四类查询、Room v3来源复验、包侧事件资料及组件验收）；2026-11-14（后端0.2.0/Room v3严格加载、历史格式快照、只读校验与请求/决定方案）；2026-11-14（新增ISSUE-007旧房间版本策略与ISSUE-008通用请求裁决设计）；2026-11-14（新增AI数据查询与聊天裁决资料草稿及计划索引）；2026-11-14（独立KP房间/裁决/地图页、PL角色发现及新版AI原生组件/引用接入）；2026-11-14（配置包工具、三种嵌入视图/HTML、同源iframe、清单及26项回归）；2026-11-14（指令名称补全、语义引用编辑器及9项专项验收）；2026-11-14（AI房间文件夹对话、短指令引用/补全、包侧交互原型、性能优化及337项去重验收）；2026-11-14（network-web 0.3.0 开房串、公开列表、三页、专项验收与部署）；2026-11-14（KP地图角色列表、网页AI咨询桥/公开SDK构建、两个AI双击入口与5组专项）；2026-11-14（树桩镇导出冲突修复、6组重复启动/缓存专项及用户缓存隔离核验）；2026-11-14（云端0.2.0/0.2.2部署、原账号/房间保留及树桩镇8组公网强制TURN验收）；2026-11-13（树桩镇网页启动诊断、6组专项和只读云端404核对）；2026-11-13（树桩镇0.8.0网页发行/双击入口、包服务与隔离存储桥、真实双浏览器18预设及文档）；2026-11-13（Stumpsville 网页联机调整规划与相关现状/索引同步）；2026-11-13（network-web 0.1.1 本机账密组件、专项测试与验收记录）；2026-11-13（network-web 全部源码、测试、部署、文档及精选验收记录）；2026-11-13（新增公网大厅与按需游戏页草稿、域名接入步骤和相关索引）；2026-11-13（公网 0.2 短房间码、本机宿主识别、双击入口与 54 项验收）；2026-11-13（树桩镇0.7.0 AI咨询/P2P基础接入、双击入口、专项测试及ISSUE-006）；2026-11-13（公网模块完整源码、浏览器、部署、46 项验收及玩家分发脚本）；2026-11-13（AI 独立管理器、加密凭据、会话/组件/API、Stumpsville 接入计划及验收）；2026-11-13（核对公网联机 tmp 接入资料区与本机 SSH 检查产物）；2026-11-13（新增公网联机模块目录与本地接入资料模板）；2026-11-13（树桩镇0.6.0一屏三栏、受限内容本地化及专项验收新增文件）；2026-11-12（DeepSeek 真实联调、49 项补验及累计去重 305 项）；2026-11-12（AI-6 实际 demo、CLI 与最终去重 304 项验收）；2026-11-12（AI-4 上下文/记忆 46 项与 AI-5 HTTP/Edge 8 项）；2026-11-12（AI-3 配置/服务商/编排及 173 项验收）；2026-11-12（AI-2 人工提案、发布/恢复与 229 项验收）；2026-11-12（拆分配置包实例统计与开发指南）；2026-11-12（AI-1 A/B/C、共同执行器与 128＋74 项验收）；2026-11-12（增核独立语音输入工程设计与施工计划）；2026-11-12（AI-0 契约、最小包与 64 项验收）；2026-11-12（增核 AI 语音输入识别调研文档）；2026-11-12（增核独立本地化 L10N-0 实际源码、构建与精选证据）；2026-11-12（增核独立本地化工程设计与施工计划文档）；2026-11-12（增核房间入口、服务编排与配置包职责方案）；2026-11-12（增核房间发现/P2P/配置包同步及云服务器调研文档）；2026-11-12（增核房间 AI 设计及实施验收计划）；2026-11-12（增核配置包本地化方案文档）；2026-11-12（增核stumpsville 0.4.1局域网启动窗口、入口和专项验收）；2026-11-10（本次增核stumpsville 0.4.0十地点预设自动裁决、场景状态和恢复验收；其他范围沿用下列日期）；2026-11-09（本次核对 Python 桌面管理器、LAN 模块及相关发布、测试、归档和文档；mini-detective-pack 核对仍为 2026-11-02，全工程目录核对仍为 2026-11-01）；同日增核调查型线上跑团对照包文档、Mausritter 独立核查、Stumpsville 导入计划与界面参考资源，及 stumpsville 新包的页面导航、组成树、十张界面设计板和0.1.0包侧实现、运行资源及验收文件（含Windows PowerShell 5.1真实启动入口修复）
+- 最后更新：2026-11-20
+- 最近目录核对：2026-11-20（持久定向通知接口与验收新增路径；裁决修订专项新增测试与证据；AI 同房间重启、顶部调试弹窗、当前文档精简与引擎历史复验交付；树桩镇裁决标签、共用卡片与可追溯通知；其余目录未作全量复核）。历次范围见[目录核对归档](../../history/2026-11-20-ai-development-records.md#目录核对流水截至-2026-11-20)。
 - 关联文档：[工程文档索引](README.md)、[文档维护标准](../../standards/document-maintenance.md)
 
 ## 工程实际目录
@@ -339,7 +339,6 @@
 | `安装依赖.exe` | Windows 安装/启动工具、配置、测试或更新问题文档 |
 | `docs/plans/Issues/issue-002-desktop-interaction-validation.md` | 桌面工具验收记录或后续问题 |
 | `engineering/desktop/acceptance-results.json` | 桌面工具验收记录或后续问题 |
-
 | `engineering/backend/src/onlinecoc/chat.py` | 聊天室领域模型、权限、分页及操作 |
 | `engineering/backend/tests/test_chat.py` | 聊天室数据/权限/恢复/故障测试 |
 | `engineering/backend/tests/test_chat_network.py` | 聊天室 SDK 与真实浏览器联机验收 |
@@ -503,7 +502,6 @@
 | --- | --- |
 | `rulepacks/mini-detective-pack/tests/verify_first_setup.py` | 新设备／空目录首次准备、五账号和密码认证回归 |
 | `rulepacks/mini-detective-pack/tests/first-setup-results.json` | 首次准备及认证回归机器结果 |
-
 | `docs/history/2026-11-05-issue-005-online-account-management.md` | 已完成的主机账号维护 Issue 与决策记录 |
 
 主机账号工具新增文件（2026-11-05）：
@@ -556,7 +554,6 @@
 | `rulepacks/stumpsville/docs/plans/interface-design.md` | 树桩镇界面设计、导航、组成树、来源或索引 |
 | `rulepacks/stumpsville/docs/plans/README.md` | 树桩镇界面设计、导航、组成树、来源或索引 |
 | `rulepacks/stumpsville/README.md` | 树桩镇界面设计、导航、组成树、来源或索引 |
-
 | `rulepacks/stumpsville/.gitignore` | 树桩镇独立配置包入口或清单 |
 | `rulepacks/stumpsville/assets/runtime/courtyard.png` | 树桩镇原创运行插画与生成记录 |
 | `rulepacks/stumpsville/assets/runtime/mouse.png` | 树桩镇原创运行插画与生成记录 |
@@ -608,10 +605,8 @@
 | `rulepacks/stumpsville/ui/styles.css` | 树桩镇可交互页面与样式 |
 
 `rulepacks/stumpsville/runtime*/` 为本包独立游玩或恢复存档，`rulepacks/stumpsville/tests/output/` 为隔离验收存档、日志和截图；两者不逐文件登记且不入库。
-
 | `rulepacks/stumpsville/tests/verify_launcher.py` | 树桩镇保留的start.ps1命令行入口回归验收 |
 | `rulepacks/stumpsville/tests/launcher-results.json` | 树桩镇Windows PowerShell 5.1命令行入口5项验收结果 |
-
 | `rulepacks/stumpsville/rules/adjudicate.lua` | 树桩镇自动裁决规则及主持内部结算 |
 | `rulepacks/stumpsville/rules/auto-travel.lua` | 树桩镇自动裁决规则及主持内部结算 |
 | `rulepacks/stumpsville/rules/automation.lua` | 树桩镇自动裁决规则及主持内部结算 |
@@ -619,11 +614,9 @@
 | `rulepacks/stumpsville/rules/inventory-core.lua` | 树桩镇自动裁决规则及主持内部结算 |
 | `rulepacks/stumpsville/tests/automation-results.json` | 树桩镇自动裁决专项验收及机器结果 |
 | `rulepacks/stumpsville/tests/verify_automation.py` | 树桩镇自动裁决专项验收及机器结果 |
-
 | `rulepacks/stumpsville/docs/current/interface.md` | 树桩镇现行导航 Mermaid、悬浮面板与控制台功能树 |
 | `rulepacks/stumpsville/tests/verify_feedback.py` | 树桩镇行动反馈、权限与恢复专项验收 |
 | `rulepacks/stumpsville/tests/feedback-results.json` | 树桩镇持久行动反馈专项机器结果 |
-
 | `rulepacks/stumpsville/config/scene-actions.json` | 树桩镇18个预设行动及固定做法定义 |
 | `rulepacks/stumpsville/rules/scene.lua` | 树桩镇场景原子检定、资源与机关结算 |
 | `rulepacks/stumpsville/tools/scenes.py` | 树桩镇有限库存映射及玩家可见场景事实 |
@@ -633,9 +626,7 @@
 | `rulepacks/stumpsville/tests/verify_scene_recovery.py` | 树桩镇场景升级、恢复与容量边界验收 |
 | `rulepacks/stumpsville/tests/scene-results.json` | 树桩镇18个预设的8组机器验收结果 |
 | `rulepacks/stumpsville/tests/scene-recovery-results.json` | 树桩镇场景恢复、无变化同步与权限边界6组机器结果 |
-
 | `rulepacks/stumpsville/tests/scene-ui-results.json` | 树桩镇场景浏览器4组自动与人工闭环结果 |
-
 | `rulepacks/stumpsville/start-lan.cmd` | 树桩镇可双击的局域网窗口入口 |
 | `rulepacks/stumpsville/tools/lan.py` | 树桩镇网卡发现、端口选择、地址复制及本机服务生命周期 |
 | `rulepacks/stumpsville/tests/verify_lan.py` | 树桩镇真实Tk窗口与局域网启动专项验收 |
@@ -830,7 +821,6 @@ engineering/ai/.test-output/ 和 __pycache__/ 为隔离测试/缓存，不逐文
 | `engineering/acceptance/ai-runtime/deepseek-regression.json` | DeepSeek 真实联调脚本、诊断或回归验收证据 |
 | `engineering/acceptance/ai-runtime/deepseek-regression.xml` | DeepSeek 真实联调脚本、诊断或回归验收证据 |
 <!-- ai-runtime:files:end -->
-
 | `rulepacks/stumpsville/tools/chat.py` | 场景／队伍聊天的持久消息与实时位置权限 |
 | `rulepacks/stumpsville/ui/chat.js` | 场景常驻聊天、管理台浮窗、多私聊与草稿隔离 |
 | `rulepacks/stumpsville/ui/i18n.js` | 本包TextRef消费适配、语言切换与缺译回退 |
@@ -843,7 +833,6 @@ engineering/ai/.test-output/ 和 __pycache__/ 为隔离测试/缓存，不逐文
 | `rulepacks/stumpsville/docs/current/localization.md` | 本包本地化接入与现行覆盖边界 |
 | `rulepacks/stumpsville/tests/verify_workspace.py` | KP独立PL视窗、聊天权限与本地化验收 |
 | `rulepacks/stumpsville/tests/workspace-results.json` | 工作区0.5.0六组真实宿主和浏览器验收结果 |
-
 | `rulepacks/stumpsville/tools/localization.py` | 仅翻译授权响应副本的受限场景内容适配器 |
 | `rulepacks/stumpsville/locales/zh-CN/content.json` | 受限场景与系统结果中文词条 |
 | `rulepacks/stumpsville/locales/en/content.json` | 受限场景与系统结果英文词条 |
@@ -889,11 +878,9 @@ engineering/ai/.test-output/ 和 __pycache__/ 为隔离测试/缓存，不逐文
 | `engineering/ai/web/manager/index.html` | 独立 AI 管理器、会话、组件或开发接口 |
 | `engineering/ai/web/manager/manager.js` | 独立 AI 管理器、会话、组件或开发接口 |
 | `engineering/ai/web/manager/style.css` | 独立 AI 管理器、会话、组件或开发接口 |
-
 | `engineering/acceptance/ai-runtime/manager.json` | AI 管理器完整/专项去重验收与最终源码摘要 |
 | `engineering/acceptance/ai-runtime/manager-ui.json` | AI 管理器完整/专项去重验收与最终源码摘要 |
 | `engineering/acceptance/ai-runtime/manager-ui.xml` | AI 管理器完整/专项去重验收与最终源码摘要 |
-
 | `engineering/acceptance/ai-runtime/manager-final.xml` | AI 管理器验收结果 |
 
 `engineering/ai/.manager/` 保存本机房间地址配置，已 Git 忽略；不保存房间密码。保险库默认位于 Windows 用户 LOCALAPPDATA/OnlineCOC/AI/credentials.json，不纳入项目目录或证据；测试使用 `.test-output/` 下的隔离保险库。Profile 与保险库的 `.lock` 文件用于并发锁，测试缓存、临时存档不逐项登记。
@@ -915,18 +902,13 @@ engineering/ai/.test-output/ 和 __pycache__/ 为隔离测试/缓存，不逐文
 | `docs/plans/Issues/issue-008-generic-request-decision.md` | 通用请求与裁决记录的候选模型、权限/事务及接入评审 ISSUE |
 
 树桩镇 `runtime*/integrations/` 和 `tests/output/` 中的派生配置、AI快照、P2P身份/本机能力令牌、隔离服务日志与浏览器截图均为Git忽略产物，不逐文件登记；其中联网配置含房主凭据，不作为玩家发行资源。
-
 | `engineering/network-p2p/src/onlinecoc_p2p/discovery.py` | 本机已注册宿主的只读发现、进程与回环协议探测 |
 | `engineering/network-p2p/src/onlinecoc_p2p/web/join.js` | 短房间码与一次粘贴加入信息的格式处理 |
 | `engineering/network-p2p/play.cmd` | Windows 双击联机入口，首次自动安装独立依赖 |
-
 | `engineering/network-p2p/tests/test_room_codes.py` | 短码迁移、唯一性、兼容与准入防绕过验收 |
 | `engineering/network-p2p/tests/test_discovery.py` | 本机发现、进程过期、回环限制与凭据隔离验收 |
-
 | `engineering/network-p2p/build/` | Git 忽略的 Python wheel 构建中间文件 |
-
 | `engineering/network-p2p/acceptance/2026-11-13-0.2.0.json` | 0.2 短房间码、本机发现、54 项回归和玩家包的精选证据 |
-
 | `engineering/network-web/.gitignore` | 排除本机凭据、运行时与生成产物 |
 | `engineering/network-web/README.md` | 模块快速使用与验收说明 |
 | `engineering/network-web/acceptance/2026-11-13.json` | 14 项网页专项、54 项旧协议回归及部署摘要 |
@@ -965,13 +947,10 @@ engineering/ai/.test-output/ 和 __pycache__/ 为隔离测试/缓存，不逐文
 | `docs/current/engineering/network-web.md` | 网页模块实际协议、配置、服务器部署内容与验收 |
 | `engineering/network-web/local/` | Git 忽略的配置、导出、部署包、截图与隔离测试产物 |
 | `engineering/network-web/src/onlinecoc_network_web.egg-info/` | Git 忽略的可编辑安装元数据 |
-
 | `engineering/network-web/.pytest_cache/` | Git 忽略的 pytest 缓存 |
-
 | `engineering/network-web/src/onlinecoc_web/web/remember.js` | 可选本机账密记忆、成功后保存、作用域隔离与清除 |
 | `engineering/network-web/tests/test_auth_preferences.py` | 6 位密码规则、浏览器本机记忆/重启/清除/禁存储验收 |
 | `engineering/network-web/acceptance/2026-11-13-0.1.1.json` | 0.1.1 账号体验、20 项本地测试、公网页面及部署源码证据 |
-
 | `engineering/network-web/src/onlinecoc_web/bridge.py` | 版本2包服务声明、身份/方法/路径/查询参数校验 |
 | `engineering/network-web/src/onlinecoc_web/web/storage.js` | 按平台/房间/游戏账号/包/资源版本隔离的声明式存储 |
 | `engineering/network-web/tests/test_bridge.py` | 包桥契约与路径/参数/身份负例 |
@@ -987,17 +966,14 @@ engineering/ai/.test-output/ 和 __pycache__/ 为隔离测试/缓存，不逐文
 | `rulepacks/stumpsville/tests/web-cloud-turn-results.json` | 双浏览器真实云端强制TURN、18预设、恢复/权限及清理的8组验收 |
 | `rulepacks/stumpsville/tests/verify_web_restart.py` | 导出冲突复现、旧缓存/资源更新/中断/损坏及同存档重复启动验证 |
 | `rulepacks/stumpsville/tests/web-restart-results.json` | 6组导出/重启回归及实际缓存隔离副本核验结果 |
-
 | `rulepacks/stumpsville/start-ai.cmd` | 本机AI咨询双击入口 |
 | `rulepacks/stumpsville/start-ai-manager.cmd` | 现有AI服务商管理器双击入口，状态写入包运行目录 |
 | `rulepacks/stumpsville/tools/ai_bridge.py` | 逐玩家个人咨询固定路径/操作白名单，复用公共宿主鉴权 |
 | `rulepacks/stumpsville/tests/verify_map_ai.py` | KP房间角色列表与双网页玩家AI咨询/隔离/恢复专项 |
 | `rulepacks/stumpsville/tests/map-ai-results.json` | 5组地图及网页AI离线服务验收记录 |
-
 | `engineering/network-web/src/onlinecoc_web/creation.py` | 开房串格式、同平台解析及配置包导出方法 |
 | `engineering/network-web/tests/test_room_creation.py` | 单次创建、公开/密码、旧数据、三页浏览器与可选公网验收 |
 | `engineering/network-web/acceptance/2026-11-14-0.3.0.json` | 34项本地、独立公网开房流程与40项部署源码证据 |
-
 | `engineering/ai/scripts/benchmark_local.py` | 隔离房间的本地创建/详情/列表基准与 CPU 分析 |
 | `engineering/ai/src/onlinecoc_ai/references.py` | 权限过滤、修订绑定和外发复验的只读数据引用 |
 | `engineering/ai/tests/test_references.py` | 引用权限/HTTP/外发/版本、会话单次持久提交及详情范围验收 |
@@ -1018,7 +994,6 @@ engineering/ai/.test-output/ 和 __pycache__/ 为隔离测试/缓存，不逐文
 | `engineering/acceptance/ai-runtime/chat-performance-before.json` | 优化前250条无关历史的服务层性能样本 |
 | `engineering/acceptance/ai-runtime/chat-performance-after.json` | 优化后同负载性能及CPU分析 |
 | `engineering/acceptance/ai-runtime/chat-startup.json` | 管理器进程到HTTP就绪的独立启动测量 |
-
 | `engineering/ai/web/components/reference-editor.js` | 语义引用标签、整体增删/替换、撤销剪贴板及授权名称渲染 |
 | `engineering/ai/tests/test_reference_ui.py` | 真实Edge指令补全、语义标签原子编辑与迟到名称清理专项 |
 | `engineering/acceptance/ai-runtime/reference-ui.json` | 指令补全与语义引用最终9项验收及源码摘要 |
@@ -1027,7 +1002,6 @@ engineering/ai/.test-output/ 和 __pycache__/ 为隔离测试/缓存，不逐文
 | `engineering/acceptance/ai-runtime/reference-ui-room.png` | 语义输入改造后的真实管理器对话截图 |
 | `engineering/acceptance/ai-runtime/reference-ui-pack-prototype.png` | 语义标签原型模拟批准加载截图 |
 | `engineering/acceptance/ai-runtime/reference-ui-semantic.png` | 输入区及历史消息中的旅行提灯语义标签截图 |
-
 | `engineering/ai/web/components/reference-commands.js` | 公开指令元数据与按角色展示的候选列表 |
 | `engineering/ai/web/components/tools.js` | 无界面会话/需求/引用/审核/回执工具组合 |
 | `engineering/ai/web/components/views.js` | 单独页面、对话页面与可折叠面板的装配及生命周期 |
@@ -1048,55 +1022,36 @@ engineering/ai/.test-output/ 和 __pycache__/ 为隔离测试/缓存，不逐文
 | `engineering/acceptance/ai-runtime/embed-conversation.png` | 紧凑对话页面真实浏览器截图 |
 | `engineering/acceptance/ai-runtime/embed-collapsible.png` | 可折叠面板展开状态截图 |
 | `engineering/acceptance/ai-runtime/embed-collapsed.png` | 可折叠面板收起状态截图 |
-
 | `rulepacks/stumpsville/tools/visibility.py` | 已鉴权地图位置缓存、逐玩家角色发现/隐藏与故事联系人投影 |
 | `rulepacks/stumpsville/ui/ai-embedded.js` | 新版原生AI对话挂载、受控Transport、身份清理及未知回执恢复 |
-
 | `engineering/backend/src/onlinecoc/version.py` | 后端发行与唯一支持的房间格式常量 |
 | `engineering/backend/src/onlinecoc/room_validation.py` | 只读房间、导出封套与备份验证 |
 | `engineering/backend/tests/test_room_versions.py` | 版本拒绝不写入、当前恢复、外部转换与CLI回归 |
 | `docs/current/engineering/room-format.md` | 当前格式定义、逐版差异、迁移职责和验证方法 |
 | `docs/history/2026-11-14-room-formats-before-0.2.0.json` | 调整前v1/v2及子结构机器定义，不供运行时加载 |
 | `docs/plans/interaction-records.md` | ISSUE 008双模型评估、来源权限与分期接线方案 |
-
 | `engineering/acceptance/room-version-policy/results.json` | Room v3 版本策略、完整回归与恢复生命周期验收证据 |
 | `engineering/acceptance/room-version-policy/regression.xml` | Room v3 版本策略、完整回归与恢复生命周期验收证据 |
 | `engineering/acceptance/room-version-policy/lifecycle.xml` | Room v3 版本策略、完整回归与恢复生命周期验收证据 |
-
 | `engineering/backend/src/onlinecoc/data_queries.py` | 宿主受权查询、事件投影、分页与来源复验 |
-
 | `engineering/backend/src/onlinecoc/data_adapter.py` | 管理员显式安装的可信本机数据适配端口 |
-
 | `engineering/ai/src/onlinecoc_ai/data_queries.py` | 查询工具Schema、HTTP服务封装与动态来源绑定 |
-
 | `engineering/ai/tests/test_data_queries.py` | 查询权限、来源变化、HTTP与模型编排专项 |
-
 | `engineering/ai/tests/test_data_query_ui.py` | 三种真实嵌入视图的聊天引用与预览验收 |
-
 | `engineering/acceptance/ai-runtime/data-query.xml` | AI数据查询专项JUnit证据 |
-
 | `engineering/acceptance/ai-runtime/data-ui.xml` | 三种视图浏览器专项JUnit证据 |
-
 | `docs/current/engineering/ai-data-query.md` | 当前AI数据查询、聊天裁决资料、来源与包侧接入说明 |
-
 | `rulepacks/stumpsville/tools/ai_data.py` | 场景聊天、裁决和逐玩家事件只读适配 |
-
 | `rulepacks/stumpsville/tests/verify_ai_data.py` | 真实隔离宿主与离线模型的资料链路验收 |
-
 | `rulepacks/stumpsville/tests/ai-data-results.json` | 包侧聊天裁决资料验收摘要 |
 | `rulepacks/stumpsville/tests/verify_ai_scopes.py` | 通过真实宿主和模拟模型验证外发/PL权限、指南快照、分页计数、频道/NPC查询及无工具末轮 |
 | `rulepacks/stumpsville/tests/ai-scopes-results.json` | 8组离线模型查询范围、指南快照与新版引擎接线验收摘要 |
 | `rulepacks/stumpsville/tests/verify_ai_demand.py` | 须显式--live的隔离样例房间真实模型按需查询验证 |
 | `rulepacks/stumpsville/tests/ai-demand-results.json` | 真实模型按需查询的状态、工具与用量记录（以passed字段为准） |
-
 | `engineering/acceptance/ai-runtime/data-full.xml` | 全量回归原始记录，旧指令断言已由data-final复验替代 |
-
 | `engineering/acceptance/ai-runtime/data-final.xml` | 最终67项受影响路径复验JUnit |
-
 | `engineering/acceptance/ai-runtime/data-results.json` | 387项去重通过、包侧证据及最终源码摘要 |
-
 | `docs/plans/Issues/issue-009-ai-live-query-diagnostics.md` | AI诊断及查询修复、真实复验与尚未通过的答案语义验收 |
-
 | `engineering/ai/src/onlinecoc_ai/diagnostics.py` | 有界脱敏任务阶段、工具元信息、异常代码位置与日志 |
 | `engineering/ai/tests/test_task_diagnostics.py` | DeepSeek离线协议、查询修正、清理异常与诊断隐私回归 |
 | `engineering/acceptance/ai-runtime/issue-009.xml` | ISSUE-009相关98项工程及Edge界面测试JUnit结果 |
@@ -1160,14 +1115,11 @@ AI 可选限额与用量统计（2026-11-16）：
 | `engineering/ai/tests/test_answers_ui.py` | 三种视图、独立选项、语义名称、草稿与CSP的Edge验收 |
 | `engineering/acceptance/ai-runtime/answer-choices.png` | 授权语义引用、选择卡片与保留草稿的界面截图 |
 | `engineering/acceptance/ai-runtime/ai-responses-results.json` | 86项模块与10组树桩镇回归、源码摘要和模型风格验收边界 |
-
 | `engineering/ai/web/components/reference-details.js` | 授权引用详情、精确修订、键盘弹层与请求竞态保护 |
 | `engineering/ai/web/components/reference-details.css` | 详情弹层的响应式独立样式 |
 | `engineering/ai/tests/test_reference_details_ui.py` | 引用详情权限／过期／乱序与历史节点稳定性浏览器验收 |
-
 | `engineering/acceptance/ai-runtime/reference-details.png` | 可点击引用详情的桌面界面截图 |
 | `engineering/acceptance/ai-runtime/reference-details-results.json` | 65项模块／11组树桩镇补验、覆盖范围与源码摘要 |
-
 | `engineering/ai/src/onlinecoc_ai/rulings.py` | 统一运行时／配置裁决与明确批准绑定 |
 | `engineering/ai/src/onlinecoc_ai/validation/extensions.py` | 包声明的 NPC 模板与规则场景检查 |
 | `engineering/ai/tests/test_rulings.py` | 裁决、幂等批准和模型输出原因验收 |
@@ -1175,11 +1127,9 @@ AI 可选限额与用量统计（2026-11-16）：
 | `engineering/ai/web/components/rulings.css` | 裁决队列样式 |
 | `rulepacks/stumpsville/tools/ai_extensions.py` | 模板规则扩展契约、字段范围及三检材料 |
 | `rulepacks/stumpsville/tests/verify_ai_extensions.py` | 公开 HTTP 配置裁决、规则执行及重启验收 |
-
 | `rulepacks/stumpsville/tests/verify_ai_rulings_live.py` | 显式授权的真实 API 裁决与格式故障注入实验 |
 | `rulepacks/stumpsville/tests/ai-extensions-results.json` | 模板／动作／计算、整批裁决及重启六组验收 |
 | `docs/plans/ai-rulings-experiments.md` | 裁决、修正与决策实验用例和结果判定 |
-
 | `docs/current/engineering/ai-rulings.md` | 统一裁决、自动策略、配置包扩展边界与开发者建议 |
 | `engineering/acceptance/ai-runtime/rulings-results.json` | 离线去重、包侧及真实 API 实验、缺口和源码摘要 |
 | `engineering/acceptance/ai-runtime/ai-rulings.png` | 配置与规则整批裁决界面验收 |
@@ -1192,7 +1142,6 @@ AI 可选限额与用量统计（2026-11-16）：
 | `rulepacks/stumpsville/tests/ai-rulings-live-results.json` | 隔离 DeepSeek 实验结果，含失败、修正与确认用量 |
 | `rulepacks/stumpsville/tests/ai-rulings-live-retest-results.json` | 隔离 DeepSeek 实验结果，含失败、修正与确认用量 |
 | `rulepacks/stumpsville/tests/ai-rulings-live-final-results.json` | 隔离 DeepSeek 实验结果，含失败、修正与确认用量 |
-
 | `engineering/ai/web/components/styles.js` | 可复用 Shadow DOM 样式加载、重挂载保持及失败重试 |
 | `engineering/ai/web/manager/session-prototype.html` | 会话管理可操作原型入口，使用内存演示数据 |
 | `engineering/ai/web/manager/session-prototype.css` | 会话工作台桌面三栏与窄屏样式 |
@@ -1210,14 +1159,11 @@ AI 可选限额与用量统计（2026-11-16）：
 | `engineering/acceptance/ai-runtime/rendering-final-tests.xml` | 配置裁决嵌入完整执行复测通过证据 |
 | `engineering/acceptance/ai-runtime/session-prototype.png` | 桌面会话管理原型截图 |
 | `engineering/acceptance/ai-runtime/session-prototype-mobile.png` | 玩家窄屏会话详情原型截图 |
-
 | `docs/history/2026-11-17-issue-011-player-knowledge-authorization.md` | ISSUE-011首版完成记录与原始问题评估 |
 | `docs/history/2026-11-17-ai-player-knowledge.md` | A0—A3 已完成实施计划与决策背景 |
-
 | `docs/current/design/ai-player-knowledge.md` | PL 已知信息设计边界：固定观察、同版本引用、严格故障拒绝、证据输出与验收 |
 | `docs/history/2026-11-17-player-knowledge-engineering-design.md` | ISSUE-011首版工程设计实施归档 |
 | `docs/history/2026-11-17-player-knowledge-construction-plan.md` | ISSUE-011首版K0—K5与27项验收完成归档 |
-
 | `engineering/ai/src/onlinecoc_ai/known_answers.py` | 严格 PL 证据选择、不可变引用编码与可信排版 |
 | `engineering/ai/src/onlinecoc_ai/knowledge.py` | 个人知识能力、查询及复验消费端 |
 | `engineering/ai/tests/test_known_answers.py` | 模型输出和引用编码边界测试 |
@@ -1232,7 +1178,6 @@ AI 可选限额与用量统计（2026-11-16）：
 | `engineering/backend/src/onlinecoc/room_migration.py` | Room v3 到 v4 显式离线转换 |
 | `engineering/backend/tests/test_knowledge.py` | 知识服务核心权限与快照验收 |
 | `engineering/backend/tests/test_knowledge_network.py` | 知识 HTTP/WS、迁移与发送边界验收 |
-
 | `engineering/ai/examples/knowledge-investigation.py` | 不同玩法的证词固定观察提供方示例 |
 | `engineering/ai/tests/test_known_runtime.py` | 严格PL上下文、跨主体、在途撤权、证词与转交KP测试 |
 | `engineering/ai/tests/test_known_ui.py` | 知识引用原子编辑、原观察详情及撤回清理验收 |
@@ -1248,11 +1193,8 @@ AI 可选限额与用量统计（2026-11-16）：
 | `rulepacks/stumpsville/tests/strict-known-results.json` | 严格知识12组精选验收结果 |
 | `rulepacks/stumpsville/docs/current/player-knowledge.md` | 个人知识接入、旧档现在揭示及开发者边界 |
 | `docs/current/engineering/player-knowledge.md` | 引擎Room v4知识服务、出口边界及验收 |
-
 | `engineering/acceptance/ai-runtime/known-ui-retest.xml` | 最终2项宿主操作台补验通过 |
-
 | `engineering/acceptance/ai-runtime/known-results.json` | 384项AI去重通过、包侧12及8组和源码摘要汇总 |
-
 | `engineering/acceptance/knowledge/ai-host-regression.xml` | ISSUE-011首版知识服务验收：ai-host-regression.xml |
 | `engineering/acceptance/knowledge/backend-regression.xml` | ISSUE-011首版知识服务验收：backend-regression.xml |
 | `engineering/acceptance/knowledge/backend-release.xml` | ISSUE-011首版知识服务验收：backend-release.xml |
@@ -1279,11 +1221,14 @@ AI 可选限额与用量统计（2026-11-16）：
 | `rulepacks/stumpsville/tools/slots.py` | 命名房间槽位、固定ID路径、元信息与上次选择 |
 | `rulepacks/stumpsville/tests/verify_slots.py` | 两槽位真实账号/存档隔离、切换持久化、版本错误与窗口生命周期验收 |
 | `rulepacks/stumpsville/tests/slots-results.json` | 房间槽位6组隔离验收结果 |
-
 | `rulepacks/stumpsville/tools/action_errors.py` | 标准包条件诊断、具体原因和PL/KP处理指引，不暴露宿主诊断 |
 | `rulepacks/stumpsville/tests/verify_action_reasons.py` | 失败具体原因、持久反馈、裁决留队及浏览器专项验收 |
 | `rulepacks/stumpsville/tests/action-reasons-results.json` | 行动失败说明6组隔离验收记录 |
-| `rulepacks/stumpsville/ui/keeper-queue.js` | 统一AI待办、分页、原会话/转交、原生修改裁决及原回执恢复 |
+| `rulepacks/stumpsville/ui/keeper-queue.js` | 统一AI待办、分页、原会话/转交、处理记录子窗口及原回执恢复 |
+| `rulepacks/stumpsville/ui/ruling-card.js` | 人工、AI裁决与结果通知共用卡片结构 |
+| `rulepacks/stumpsville/ui/keeper-rulings.js` | 包侧AI裁决详情、可选备注、显式高危确认与结果通知 |
+| `rulepacks/stumpsville/tests/verify_ruling_workspace.py` | 裁决标签、共用卡片、自动关闭、高危发布与失败定位隔离浏览器验收 |
+| `rulepacks/stumpsville/tests/ruling-workspace-results.json` | 裁决工作区专项结果及历次验证记录 |
 | `rulepacks/stumpsville/tests/verify_keeper_queue.py` | 角色/行动/玩家及辅助AI请求、宿主流程与断线回执的隔离验收 |
 | `rulepacks/stumpsville/tests/keeper-queue-results.json` | 统一KP队列9组真实宿主/Edge离线验收记录 |
 | `rulepacks/stumpsville/ui/dice.js` | 已确认骰点的小窗动画、减少动画、偏好开关及事件去重 |
@@ -1303,22 +1248,16 @@ AI 可选限额与用量统计（2026-11-16）：
 | `engineering/acceptance/ai-runtime/chat-polish-round3-retest.xml` | AI聊天模板迭代的截图或验收证据 |
 | `engineering/acceptance/ai-runtime/chat-polish-round3-targeted.xml` | AI聊天模板迭代的截图或验收证据 |
 | `engineering/acceptance/ai-runtime/chat-polish-round3.xml` | AI聊天模板迭代的截图或验收证据 |
-
-
 | `engineering/acceptance/ai-runtime/capability-fix-core.xml` | JSON适配、HTTP错误脱敏及PL链路66项验收 |
 | `engineering/acceptance/ai-runtime/capability-fix-regression.xml` | 权限、上下文、输出修复和浏览器149项回归 |
 | `engineering/acceptance/ai-runtime/capability-fix-live.json` | DeepSeek合成请求、格式纠正和用量证据 |
 | `engineering/acceptance/ai-runtime/capability-fix-results.json` | 215项去重结果、实测边界与源码摘要 |
-
 | `rulepacks/stumpsville/ui/effects.js` | 本人结果／新线索／持久影响、授权快照差值、3秒淡出队列与去重 |
 | `rulepacks/stumpsville/ui/map.js` | 单侧出口无向去重、观察门状态和避开房间卡片的通路 |
 | `rulepacks/stumpsville/tests/verify_effects_map.py` | 隔离宿主／Edge持久影响、玩家隔离、通路观察与绘制验收 |
 | `rulepacks/stumpsville/tests/effects-map-results.json` | 持久影响与地图专项验收结果 |
-
 | `rulepacks/stumpsville/tests/verify_notifications.py` | 3秒淡出、计时队列、线索与结果合并、定向揭示和真实宿主专项验收 |
-
 | `rulepacks/stumpsville/tests/notifications-results.json` | 3秒淡出、新线索与结果提示10组计时／真实宿主验收记录 |
-
 | `docs/current/engineering/developer-reference/README.md` | 开发者参考分类索引 |
 | `docs/current/engineering/developer-reference/stumpsville.md` | Stumpsville 开发参考导航与适用范围 |
 | `docs/current/engineering/developer-reference/stumpsville-interface.md` | Stumpsville 界面与层级：面板组成树、对象功能与界面源码入口 |
@@ -1336,9 +1275,7 @@ AI 可选限额与用量统计（2026-11-16）：
 | `engineering/acceptance/ai-runtime/data-presentation-keeper.png` | AI 数据语义展示与角色分层验收证据 |
 | `engineering/acceptance/ai-runtime/data-presentation-player.png` | AI 数据语义展示与角色分层验收证据 |
 | `engineering/acceptance/ai-runtime/data-presentation-regression.xml` | AI 数据语义展示与角色分层验收证据 |
-
 | `engineering/acceptance/ai-runtime/data-presentation-results.json` | AI 数据展示最终134项去重结果、初跑记录、源码摘要和未实施边界 |
-
 | `rulepacks/stumpsville/tools/scene_knowledge.py` | 玩家安全行动声明、个人发现条件、严格分面Schema和旧原版兼容 |
 | `rulepacks/stumpsville/tests/verify_menu_knowledge.py` | 18预设、双玩家、HTTP/AI/Edge菜单安全专项 |
 | `rulepacks/stumpsville/tests/verify_menu_upgrade.py` | 真实旧提供方、显式绑定、旧证据失效和重启回滚专项 |
@@ -1347,10 +1284,8 @@ AI 可选限额与用量统计（2026-11-16）：
 | `rulepacks/stumpsville/tests/menu-safety-results.json` | SV-ISSUE-001本轮52组汇总、初跑记录、源码摘要及边界 |
 | `rulepacks/stumpsville/docs/history/README.md` | 包侧归档索引 |
 | `rulepacks/stumpsville/docs/history/` | 已完成或被替代的包侧决策与问题记录 |
-
 | `rulepacks/stumpsville/tests/verify_room_workflow.py` | 房间总览、一键开场、回执恢复、可执行裁决与桌面/窄屏隔离验收 |
 | `rulepacks/stumpsville/tests/room-workflow-results.json` | 开场与裁决工作流专项通过记录 |
-
 | `engineering/ai/web/components/settings.js` | 独立KP服务权限设置页面与原生组件 |
 | `engineering/ai/web/components/settings.css` | 独立KP服务权限设置页面与原生组件 |
 | `engineering/ai/web/components/settings.html` | 独立KP服务权限设置页面与原生组件 |
@@ -1370,9 +1305,7 @@ AI 可选限额与用量统计（2026-11-16）：
 | `engineering/acceptance/ai-runtime/workbench-ui-retest.xml` | AI工作台设置、裁决与加载验收证据 |
 | `engineering/acceptance/ai-runtime/workbench-ui.xml` | AI工作台设置、裁决与加载验收证据 |
 | `rulepacks/stumpsville/tests/verify_workbench.py` | 配置包责任者已创建：紧凑裁决、资料分类、AI设置与加载性能验收 |
-
 | `rulepacks/stumpsville/tests/workbench-results.json` | 紧凑裁决、资料全分类、AI设置与导航加载专项验收 |
-
 | `engineering/ai/src/onlinecoc_ai/change_policy.py` | 完整候选高危分类与可审核差异 |
 | `engineering/ai/src/onlinecoc_ai/knowledge_requests.py` | PL自愿知识申请、真实披露与原回执恢复 |
 | `engineering/ai/src/onlinecoc_ai/validation/live.py` | 按真实实例ID运行作者声明的存量兼容性探针 |
@@ -1391,7 +1324,6 @@ AI 可选限额与用量统计（2026-11-16）：
 | `engineering/acceptance/ai-runtime/policies-debug.xml` | AI高危与权限联调初跑及复验记录 |
 | `engineering/acceptance/ai-runtime/policies-core-retest.xml` | AI高危与权限联调初跑及复验记录 |
 | `engineering/acceptance/ai-runtime/policies-core-final.xml` | AI高危与权限联调初跑及复验记录 |
-
 | `engineering/backend/tests/test_private_probe.py` | 引擎责任者确认：KP名单私有规则离线探针与线上权限隔离 |
 | `rulepacks/stumpsville/tools/ai_gameplay.py` | 包责任者确认：高危作者Schema、编号引用和存量场景 |
 | `rulepacks/stumpsville/tools/publication_sync.py` | 包责任者确认：发布工件三方同步与冲突处理 |
@@ -1411,10 +1343,8 @@ AI 可选限额与用量统计（2026-11-16）：
 | `engineering/acceptance/ai-runtime/policies-settings-mobile.png` | AI权限与资料申请浏览器验收证据 |
 | `engineering/acceptance/ai-runtime/policies-knowledge-review.png` | AI权限与资料申请浏览器验收证据 |
 | `engineering/acceptance/ai-runtime/policies-player-request.png` | AI权限与资料申请浏览器验收证据 |
-
 | `engineering/acceptance/high-risk-publication/post-probe-integration.xml` | 引擎责任者确认：私有探针后的真实集成补验 |
 | `engineering/acceptance/high-risk-publication/results.json` | 引擎责任者维护：188项去重结果、初跑与源码摘要 |
-
 | `engineering/acceptance/ai-runtime/policies-budget-retest.xml` | AI策略、披露与请求容量回归记录（保留初跑与最新去重结果） |
 | `engineering/acceptance/ai-runtime/policies-context.xml` | AI策略、披露与请求容量回归记录（保留初跑与最新去重结果） |
 | `engineering/acceptance/ai-runtime/policies-ui-dedup.xml` | AI策略、披露与请求容量回归记录（保留初跑与最新去重结果） |
@@ -1422,29 +1352,17 @@ AI 可选限额与用量统计（2026-11-16）：
 | `engineering/acceptance/ai-runtime/policies-validation.xml` | AI策略、披露与请求容量回归记录（保留初跑与最新去重结果） |
 | `engineering/acceptance/ai-runtime/policies-results.json` | AI策略、披露与请求容量回归记录（保留初跑与最新去重结果） |
 | `rulepacks/stumpsville/tests/ai-scenarios-live-results.json` | 包责任者维护：真实 DeepSeek 阶段用量、工具证据与验收状态 |
-
 | `rulepacks/stumpsville/tests/ai-permissions-results.json` | 包责任者维护：PL主动披露、KP选择与权限面板3组浏览器验收 |
-
 | `engineering/backend/tests/test_entity_labels.py` | 引擎责任者维护：KP实体检索标签、回退、外发与玩家隔离专项 |
-
 | `engineering/acceptance/entity-search-label/core.xml` | 引擎实体标签15项专项验收记录 |
-
 | `engineering/acceptance/entity-search-label/results.json` | 实体检索标签76项去重结果与源码摘要 |
-
 | `engineering/acceptance/entity-search-label/regression.xml` | 实体标签及既有查询、知识和引用的76项回归记录 |
-
 | `engineering/acceptance/entity-search-label/README.md` | 引擎实体检索标签的范围、76项去重验收与使用边界 |
-
 | `engineering/acceptance/ai-runtime/policies-batch-repair.xml` | 批次输出格式、修正反馈与5次额度验收，保留初跑／回归／最终回放 |
-
 | `engineering/acceptance/ai-runtime/policies-batch-repair-regression.xml` | 批次输出格式、修正反馈与5次额度验收，保留初跑／回归／最终回放 |
-
 | `engineering/acceptance/ai-runtime/policies-batch-repair-final.xml` | 批次输出格式、修正反馈与5次额度验收，保留初跑／回归／最终回放 |
-
 | `engineering/acceptance/ai-runtime/policies-receipts.xml` | 已执行批次来源变化／撤权脱敏、重复批准及既有裁决回归 |
-
 | `engineering/acceptance/ai-runtime/policies-receipts-regression.xml` | 已执行批次来源变化／撤权脱敏、重复批准及既有裁决回归 |
-
 | `engineering/ai/src/onlinecoc_ai/player_requests.py` | 玩家创作意图、KP私有审核会话和人工审批边界 |
 | `engineering/ai/tests/test_player_requests.py` | 个人目录、查询错误分类、创作申请隔离与手动审批专项 |
 | `engineering/ai/tests/test_player_requests_ui.py` | 玩家直提、错误提示、KP接收和私有会话定位浏览器验收 |
@@ -1458,18 +1376,166 @@ AI 可选限额与用量统计（2026-11-16）：
 | `engineering/acceptance/ai-runtime/player-requests-initial.xml` | 玩家查询与创作申请本轮原始测试记录（包括初跑与复验） |
 | `engineering/acceptance/ai-runtime/player-requests-validation.xml` | 玩家查询与创作申请本轮原始测试记录（包括初跑与复验） |
 | `engineering/acceptance/ai-runtime/player-requests-mobile.png` | 玩家直接提交创作申请的390px嵌入页面截图 |
-
 | `engineering/acceptance/ai-runtime/player-requests-embeds.xml` | 玩家查询、申请与嵌入本轮原始验收记录（含复验） |
 | `engineering/acceptance/ai-runtime/player-requests-final.xml` | 玩家查询、申请与嵌入本轮原始验收记录（含复验） |
 | `engineering/acceptance/ai-runtime/player-requests-notice.xml` | 玩家查询、申请与嵌入本轮原始验收记录（含复验） |
 | `engineering/acceptance/ai-runtime/player-requests-regression.xml` | 玩家查询、申请与嵌入本轮原始验收记录（含复验） |
-
 | `engineering/acceptance/ai-runtime/player-requests-results.json` | 个人知识与创作申请190项去重验收、复验关系和源码摘要 |
-
 | `rulepacks/stumpsville/tests/ai-player-requests-results.json` | 包责任者委托登记：12组本人装备／申请／高危审批及嵌入验收 |
 | `rulepacks/stumpsville/tests/ai-player-requests-live-results.json` | 包责任者委托登记：3条原问句DeepSeek通过、6次调用及28259tokens |
-
 | `engineering/acceptance/ai-runtime/player-requests-boundaries.xml` | 原申请人绑定、标签外发及既有申请／严格知识30项定向回归 |
+| `engineering/backend/tests/test_ai_debug_route.py` | 引擎责任者委托登记：只读AI调试HTTP路由与SDK参数隔离验收 |
+| `engineering/acceptance/ai-debug-route/README.md` | 引擎责任者委托登记：16项路由SDK与1项LAN验收范围说明 |
+| `engineering/acceptance/ai-debug-route/test_lan.py` | 引擎责任者委托登记：真实回环LAN只读调试转发验收 |
+| `engineering/acceptance/ai-debug-route/routes.xml` | 引擎责任者委托登记：保留初次LAN环境依赖失败证据 |
+| `engineering/acceptance/ai-debug-route/routes-retest.xml` | 引擎责任者委托登记：路由和SDK 16项复验通过 |
+| `engineering/acceptance/ai-debug-route/lan.xml` | 引擎责任者委托登记：LAN回环1项验收通过 |
+| `engineering/acceptance/ai-debug-route/results.json` | 引擎责任者委托登记：17项结果与源码摘要 |
+| `rulepacks/stumpsville/docs/history/2026-11-19-issue-003-kp-ai-review-debug.md` | SV-ISSUE-003完成归档：来源审核、调试与精确配置追加闭环 |
+| `rulepacks/stumpsville/tools/ai_review.py` | 包责任者委托登记：裁决来源快照与持久AI审核信封 |
+| `rulepacks/stumpsville/tests/verify_ai_review_debug.py` | 包责任者委托登记：审核转交、调试和物品查询隔离验收 |
+| `engineering/ai/src/onlinecoc_ai/reviews.py` | KP来源引用审核、幂等创建与意图/执行分离 |
+| `engineering/ai/src/onlinecoc_ai/debug.py` | 当前授权只读调试投影、正文显式选择和凭据脱敏 |
+| `engineering/ai/web/components/debug.js` | 嵌入定位复制、调试导出和审核来源卡 |
+| `engineering/ai/tests/test_review_debug.py` | 审核主体、审批、导出隔离和实际模型标识验收 |
+| `engineering/ai/tests/test_review_debug_ui.py` | 真实浏览器来源卡与显式导出、失效保护验收 |
+| `engineering/acceptance/ai-runtime/review-debug-core.xml` | 70项初验，保留两个新夹具前置条件失败 |
+| `engineering/acceptance/ai-runtime/review-debug-ui.xml` | 新核心和嵌入24项通过、管理器旧文案断言失败记录 |
+| `docs/current/engineering/ai-debug-review.md` | 来源引用审核、授权调试导出与模型版本标识的现行接口 |
+| `engineering/acceptance/ai-runtime/review-debug-regression.xml` | 189项权限、上下文、审批、契约、服务商及管理器回归 |
+| `engineering/acceptance/ai-runtime/review-debug-ui-retest.xml` | 管理器、权限和调试界面5项浏览器复验 |
+| `engineering/acceptance/ai-runtime/review-debug-http.xml` | 真实HTTP登录、PL权限、no-store和只读导出验收 |
+| `engineering/acceptance/ai-runtime/review-debug-copy.xml` | HTTP无剪贴板的定位回退和导出边界复验 |
+| `rulepacks/stumpsville/tests/verify_ai_review_debug_live.py` | 包责任者委托登记：PL组合申请到KP审核候选的真实模型闭环 |
+| `rulepacks/stumpsville/docs/current/ai-debugging.md` | 包责任者委托登记：KP来源、资料查询和调试排障当前指南 |
+| `engineering/acceptance/ai-runtime/review-debug-legacy.xml` | 旧审核来源显示/外发、玩家申请、HTTP与上下文48项复验 |
+| `engineering/acceptance/ai-runtime/review-debug-model.xml` | 请求/实际模型标识和用量持久化至调试导出验收 |
+| `engineering/acceptance/ai-runtime/review-debug-results.json` | AI来源审核与调试220项去重结果、初验复验关系及源码摘要 |
+| `rulepacks/stumpsville/tests/ai-review-debug-results.json` | 包侧来源审核、引用导航、权限和导出隔离验收结果 |
+| `rulepacks/stumpsville/tests/ai-review-debug-live-results.json` | 真实 DeepSeek 组合申请闭环、调用用量与失败历史 |
+| `engineering/ai/src/onlinecoc_ai/data_edits.py` | 绑定基线的配置节点读取与显式增量展开 |
+| `engineering/ai/tests/test_data_edits.py` | 配置增量、精确版本、重复键与完整候选验收 |
+| `engineering/acceptance/ai-runtime/data-edits-core.xml` | 22项精确增量专项验收 |
+| `engineering/acceptance/ai-runtime/data-edits-copy.xml` | 增量复制与隔离2项复验 |
+| `engineering/acceptance/ai-runtime/data-edits-results.json` | 115项精确增量及相关回归、失败复验关系与51项源码摘要 |
+| `engineering/acceptance/ai-runtime/data-edits-regression.xml` | 93项配置、权限、响应与预算回归初验 |
+| `engineering/acceptance/ai-runtime/data-edits-budget.xml` | 旧预算替身兼容后的定向复验 |
+| `docs/history/2026-11-20-issue-013-ai-session-restart.md` | AI 同房间重启历史复验修复、失败与验收归档 |
+| `engineering/ai/tests/test_session_restart.py` | 同目录重启和连续对话回归 |
+| `engineering/acceptance/ai-runtime/restart-initial.xml` | 重启历史失效首次复现证据 |
+| `engineering/ai/tests/test_debug_dialog_ui.py` | 顶部调试弹窗、范围选择、正文导出和窄屏浏览器验收 |
+| `engineering/acceptance/ai-runtime/debug-dialog-initial.xml` | 静态服务器 MIME 前置失败原始记录 |
+| `engineering/acceptance/ai-runtime/debug-dialog-retest.xml` | 顶部调试弹窗双宽度浏览器复验 |
+| `engineering/acceptance/ai-runtime/debug-modal-390.png` | 390px 调试子窗口截图 |
+| `engineering/acceptance/ai-runtime/debug-modal-1100.png` | 桌面调试子窗口截图 |
+| `engineering/acceptance/ai-runtime/restart-integrated.xml` | 33项会话、个人知识、重启及调试联合回归 |
+| `docs/history/2026-11-20-ai-development-records.md` | AI 阶段证据、早期方案和重复验收统计归档 |
+| `engineering/backend/tests/test_history_context.py` | 引擎责任者交付：只读历史重启复验及执行边界 |
+| `engineering/acceptance/history-context/.gitignore` | 引擎历史专项隔离输出忽略规则 |
+| `engineering/acceptance/history-context/README.md` | 引擎历史复验接口和验收说明 |
+| `engineering/acceptance/history-context/core-initial.xml` | 引擎历史初验及夹具失败证据 |
+| `engineering/acceptance/history-context/core-retest.xml` | 引擎29项历史专项复验 |
+| `engineering/acceptance/history-context/regression.xml` | 引擎110项历史、权限与发布回归 |
+| `engineering/acceptance/history-context/results.json` | 引擎历史专项汇总与源码摘要 |
+| `docs/history/2026-11-20-issue-014-ai-console-rulings-client.md` | 已完成：旧首测操作台裁决接线与浏览器复验归档 |
+| `engineering/acceptance/ai-runtime/full-20261120.xml` | 519项AI全量首轮：515通过、4失败；保留原始失败 |
+| `engineering/acceptance/ai-runtime/access-debug-20261120.xml` | 旧文案断言失败的隔离复现 |
+| `engineering/acceptance/ai-runtime/access-retest-20261120.xml` | 修正文案断言后的权限与会话UI复验 |
+| `engineering/acceptance/ai-runtime/feedback-20261120.xml` | 失败反馈初验：富文本断言类型不匹配记录 |
+| `engineering/acceptance/ai-runtime/feedback-retest-20261120.xml` | 3项顶部弹窗及失败恢复浏览器复验 |
+| `engineering/acceptance/rulings-sdk/test_client.mjs` | 真实旧SDK与合成Transport的8项裁决接线验收 |
+| `engineering/acceptance/rulings-sdk/core.xml` | 8项旧SDK接线、代际与订阅边界通过证据 |
+| `engineering/acceptance/rulings-sdk/README.md` | 旧操作台SDK接口、验证方式与边界 |
+| `engineering/acceptance/rulings-sdk/results.json` | SDK测试结果、方法范围及源码摘要 |
+| `engineering/acceptance/ai-runtime/full-retest-20261120.xml` | 5项审核、发布、设置及紧凑裁决浏览器复验 |
+| `engineering/acceptance/ai-runtime/repair-20261120-results.json` | AI本轮528项去重、存储及真实配置成功率、失败复验和源码摘要 |
+| `engineering/acceptance/ai-runtime/repair-20261120.md` | 本轮重启、调试、失败处理与成功率验收入口 |
+| `docs/history/2026-11-20-issue-015-ai-store-growth.md` | 已完成：AI累计配额故障、保留全历史的压缩实现及验收归档 |
+| `rulepacks/stumpsville/ui/ai-recovery.js` | 包侧交付：HTTP error classification and status-preserving package transport |
+| `rulepacks/stumpsville/tests/verify_ai_recovery.mjs` | 包侧交付：Package transport and queue recovery regression |
+| `rulepacks/stumpsville/tests/verify_ai_recovery_ui.py` | 包侧交付：Actual package browser recovery, debug dialog and exported component validation |
+| `rulepacks/stumpsville/tests/verify_ai_config_matrix.py` | 包侧交付：Public HTTP configuration matrix and isolated restart batches |
+| `rulepacks/stumpsville/tests/verify_ai_config_live.py` | 包侧交付：Opt-in bounded three-batch DeepSeek matrix |
+| `rulepacks/stumpsville/tests/ai-recovery-results.json` | 包侧交付：Initial and final 15-case recovery evidence |
+| `rulepacks/stumpsville/tests/ai-config-matrix-results.json` | 包侧交付：First cumulative room matrix, timeouts and storage exhaustion |
+| `rulepacks/stumpsville/tests/ai-config-matrix-items-results.json` | 包侧交付：Item batch and initial order-sensitive restart assertion |
+| `rulepacks/stumpsville/tests/ai-config-matrix-map-results.json` | 包侧交付：Map batch, scene coverage gap and restart |
+| `rulepacks/stumpsville/tests/ai-config-matrix-rules-results.json` | 包侧交付：Rule batch, unsupported source removal and restart |
+| `rulepacks/stumpsville/tests/ai-config-matrix-restart-results.json` | 包侧交付：Published item plus two/three loopback plans across restart |
+| `rulepacks/stumpsville/tests/ai-config-matrix-summary.json` | 包侧交付：Deduplicated latest results without erasing cumulative storage failure |
+| `rulepacks/stumpsville/tests/ai-config-live-npc-results.json` | 包侧交付：真实DeepSeek NPC增改删首轮失败、修复复验与调用用量 |
+| `rulepacks/stumpsville/tests/ai-repair-handoff.json` | 包侧交付：Root coordinator handoff and new actual file list |
+| `rulepacks/stumpsville/docs/plans/ai-restart-configuration-matrix.md` | 包侧交付：Coverage, failures, limits and live handoff commands |
+| `rulepacks/stumpsville/docs/history/2026-11-20-development-records.md` | 包侧交付：Archived development history replaced by concise current documentation |
+| `engineering/ai/tests/test_management_queries.py` | 真实NPC失败的参数纠错、权威模板读取和来源边界离线重放 |
+| `engineering/acceptance/store-compaction/.gitignore` | 无损压缩实验输出忽略规则 |
+| `engineering/acceptance/store-compaction/test_compression.py` | 15项全历史保留、配额、故障、锁与损坏检查 |
+| `engineering/acceptance/store-compaction/large-fixture-results.json` | 原527 MB失败样本复制后压缩、12次续写和重开结果 |
+| `engineering/acceptance/store-compaction/README.md` | 无损历史压缩行为、兼容边界与验收入口 |
+| `engineering/acceptance/ai-runtime/query-storage-initial-20261120.xml` | 8项管理查询与15项压缩初验全部通过 |
+| `engineering/acceptance/ai-runtime/query-storage-regression-20261120.xml` | 226项AI管理查询、审核、会话与引擎存储回归全部通过 |
+| `rulepacks/stumpsville/tests/ai-config-live-items-results.json` | 真实DeepSeek物品、武器、普通容器新增及实际发放验收 |
+| `rulepacks/stumpsville/tests/ai-config-live-map-rules-results.json` | 真实DeepSeek地图、规则、危险删除拒绝与提示复验 |
+
+| `rulepacks/stumpsville/tests/verify_stale_approval.py` | 同档重启、高危过期批准、重检恢复与冲突保护隔离验收 |
+| `rulepacks/stumpsville/tests/stale-approval-results.json` | 过期高危审批复现与后续修复复验，保留首轮失败 |
+
+| `engineering/ai/tests/test_ruling_revisions.py` | 同摘要新修订、旧回执兼容、未知执行保守阻断及真实重启发布专项 |
+| `engineering/acceptance/ruling-revisions/.gitignore` | 裁决修订验收隔离目录忽略规则 |
+| `engineering/acceptance/ruling-revisions/README.md` | 裁决修订恢复、兼容策略与验收入口 |
+| `engineering/acceptance/ruling-revisions/initial.xml` | 修复前2项旧blocked覆盖新修订的失败证据 |
+| `engineering/acceptance/ruling-revisions/core.xml` | 修复后23项裁决修订与兼容专项通过 |
+| `engineering/acceptance/ruling-revisions/regression.xml` | 76项裁决、权限、来源、重启与高危发布回归通过 |
+| `engineering/acceptance/ruling-revisions/results.json` | 99项去重通过、初验复验对应及源码摘要 |
+
+| `docs/history/2026-11-20-issue-016-review-continuity-notifications.md` | 已完成审核连续性、语义引用、自动归档与通知协作；保留真实模型失败及复验 |
+| `rulepacks/stumpsville/ui/reference-view.js` | 角色、物品和已知场景的只读语义视图与常规页面共用显示函数 |
+
+| `engineering/backend/src/onlinecoc/notifications.py` | 绑定宿主成功动作的持久定向通知、只读收件箱与逐人确认 |
+| `engineering/backend/tests/test_notifications.py` | 26项通知、权限、幂等、HTTP、真实崩溃及备份恢复专项 |
+| `engineering/contracts/notifications.json` | 通知send/ack、持久记录及读取DTO的机器契约 |
+| `docs/current/engineering/notifications.md` | 显式通知操作、受众、原动作绑定、分页确认及恢复边界 |
+| `engineering/acceptance/notifications/.gitignore` | 通知验收隔离输出忽略规则 |
+| `engineering/acceptance/notifications/test_client.mjs` | 通知SDK分页、确认幂等与登录代际隔离4项测试 |
+| `engineering/acceptance/notifications/core.xml` | 首轮20项通知专项全部通过 |
+| `engineering/acceptance/notifications/regression.xml` | 通知26项与现有引擎69项联合回归通过 |
+| `engineering/acceptance/notifications/sdk.xml` | 通知SDK4项通过证据 |
+| `engineering/acceptance/notifications/results.json` | 通知专项99项去重通过与源码及证据摘要 |
+| `engineering/acceptance/notifications/README.md` | 通知验收范围、复验命令及跨模块联测边界 |
+
+| `rulepacks/stumpsville/tests/verify_reference_view.py` | 包侧语义引用角色、物品及旧观察只读渲染与窄屏安全验证 |
+| `rulepacks/stumpsville/tests/reference-view-results.json` | 六组包侧语义引用视图独立验收及历史复验 |
+| `rulepacks/stumpsville/tests/verify_command_notifications.py` | 真实宿主指令包通知、定向隔离、离线补取、确认故障及重启验收 |
+| `rulepacks/stumpsville/tests/command-notification-results.json` | 六组通知联测，保留静态脚本漏装的首轮失败 |
+| `rulepacks/stumpsville/tests/verify_review_identity_live.py` | 有界真实DeepSeek原申请人识别、过期短确认与显式通知批次对照 |
+| `rulepacks/stumpsville/tests/review-identity-live-deepseek-flash-results.json` | Flash三阶段真实验收、原始失败、最终2/2、调用用量与指南摘要 |
+| `rulepacks/stumpsville/tests/review-identity-live-deepseek-v4-pro-results.json` | Pro两阶段真实验收、过期短确认成功、术语失败及未重跑边界 |
+
+| `engineering/ai/src/onlinecoc_ai/history.py` | 过期管理员历史只读授权、意图凭据与重新查询约束 |
+| `engineering/ai/tests/test_history_continuity.py` | 18项过期历史、旧存档、撤权删除、重新查询及模型纠错专项 |
+| `engineering/ai/tests/test_batch_notifications.py` | 12项真实宿主通知审批、受众与回执恢复专项 |
+| `engineering/ai/tests/test_reference_renderer_ui.py` | 4项引用扩展、窄屏、生命周期与历史通知展示浏览器专项 |
+| `engineering/acceptance/review-continuity/.gitignore` | 审核连续性与通知专项证据；首轮及复验详见 README |
+| `engineering/acceptance/review-continuity/core-first.xml` | 审核连续性与通知专项证据；首轮及复验详见 README |
+| `engineering/acceptance/review-continuity/core.xml` | 审核连续性与通知专项证据；首轮及复验详见 README |
+| `engineering/acceptance/review-continuity/final.xml` | 审核连续性与通知专项证据；首轮及复验详见 README |
+| `engineering/acceptance/review-continuity/history-first-fix.xml` | 审核连续性与通知专项证据；首轮及复验详见 README |
+| `engineering/acceptance/review-continuity/history-initial.xml` | 审核连续性与通知专项证据；首轮及复验详见 README |
+| `engineering/acceptance/review-continuity/model-repair.xml` | 审核连续性与通知专项证据；首轮及复验详见 README |
+| `engineering/acceptance/review-continuity/notification-first.xml` | 审核连续性与通知专项证据；首轮及复验详见 README |
+| `engineering/acceptance/review-continuity/README.md` | 审核连续性与通知专项证据；首轮及复验详见 README |
+| `engineering/acceptance/review-continuity/reference-final.xml` | 审核连续性与通知专项证据；首轮及复验详见 README |
+| `engineering/acceptance/review-continuity/reference-renderer-core.xml` | 审核连续性与通知专项证据；首轮及复验详见 README |
+| `engineering/acceptance/review-continuity/reference-renderer-interrupted.json` | 审核连续性与通知专项证据；首轮及复验详见 README |
+| `engineering/acceptance/review-continuity/regression-first.xml` | 审核连续性与通知专项证据；首轮及复验详见 README |
+| `engineering/acceptance/review-continuity/results.json` | 审核连续性与通知专项证据；首轮及复验详见 README |
+| `engineering/acceptance/review-continuity/security-final.xml` | 审核连续性与通知专项证据；首轮及复验详见 README |
+| `engineering/acceptance/review-continuity/ui.xml` | 审核连续性与通知专项证据；首轮及复验详见 README |
+
+| `engineering/acceptance/review-continuity/status-initial.xml` | 新任务错误继承历史过期标记的初验与69项复验 |
+| `engineering/acceptance/review-continuity/status-final.xml` | 新任务错误继承历史过期标记的初验与69项复验 |
+
+| `rulepacks/stumpsville/tests/ai-recovery-ui-results.json` | 真实浏览器恢复、调试窗口与响应拒绝后的继续操作验收结果 |
 
 ## 施工登记
 

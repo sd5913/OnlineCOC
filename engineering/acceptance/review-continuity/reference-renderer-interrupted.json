@@ -1,0 +1,8 @@
+{
+  "scope": "standalone browser renderer fixture",
+  "observedPassedCases": 2,
+  "unfinishedCase": "test_markdown_renderer_fallback_option_change_and_late_result",
+  "cause": "Playwright auto-invoked a function returned by an assignment expression; the injected pending resolver was awaited forever.",
+  "handling": "Stopped only Python processes running this exact test module; wrapped assignment in a void-returning function. No backend/provider was accessed.",
+  "retest": "reference-renderer-core.xml"
+}
