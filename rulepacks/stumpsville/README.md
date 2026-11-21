@@ -1,5 +1,7 @@
 # 树桩镇 Stumpsville
 
+首次游玩请先阅读[玩家简明指南](docs/current/player-guide.md)，按“探路取物”推荐目标开始：记录两条新发现、带回一件新物品、全员返回入口。
+
 0.9.0提供 [网页联机双击入口](start-web.cmd)：本机 KP、浏览器 PL、完整场景行动与聊天、隔离存储和按需资源，本轮验证本地WebRTC；原0.8.0阶段已通过两名真实网页玩家及全部18个预设的公网强制TURN联测，本轮未重做公网验收。**云端桥已更新；真人独立家庭/移动网仍待验收**；操作与边界见[网页联机](docs/current/web.md)。
 
 原 [AI 与 P2P 入口](start-integrated.cmd) 保留 AI 个人会话、KP 转交与咨询回复，以及旧 P2P 基础状态/聊天；旧 P2P 不提供完整树桩镇玩法。2026-11-14已接通网页玩家个人咨询；网页入口默认加载 AI，本机咨询可双击 [start-ai.cmd](start-ai.cmd)，服务商管理可双击 [start-ai-manager.cmd](start-ai-manager.cmd)。AI 已支持 NPC 模板／规则扩展、物品与地图高危候选、运行时指令及整批 KP 裁决，详见[接入说明](docs/current/integrations.md)。

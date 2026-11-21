@@ -5,7 +5,7 @@
 - 状态：有效
 - 创建日期：2026-10-29
 - 最后更新：2026-11-21
-- 最近目录核对：2026-11-21（本轮核对ISSUE-024官方压缩适配、36份精选验收文件、三版AI冻结源码及包侧独立验证，不含临时存档）。本轮见[ISSUE-024](../../history/2026-11-21-issue-024-deepseek-official-compaction.md)，前轮见[ISSUE-023](../../history/2026-11-21-issue-023-context-compression-kp-autonomy.md)。
+- 最近目录核对：2026-11-21（本轮核对ISSUE-024官方压缩适配、36份精选验收文件、三版AI冻结源码及包侧独立验证，不含临时存档；另核对树桩镇新增玩家玩法说明与包内索引）。本轮见[ISSUE-024](../../history/2026-11-21-issue-024-deepseek-official-compaction.md)，前轮见[ISSUE-023](../../history/2026-11-21-issue-023-context-compression-kp-autonomy.md)。
 - 关联文档：[工程文档索引](README.md)、[文档维护标准](../../standards/document-maintenance.md)
 
 ## 工程实际目录
@@ -567,6 +567,7 @@
 | `rulepacks/stumpsville/docs/current/README.md` | 树桩镇当前使用、实现与来源文档 |
 | `rulepacks/stumpsville/docs/current/sources.md` | 树桩镇当前使用、实现与来源文档 |
 | `rulepacks/stumpsville/docs/current/usage.md` | 树桩镇当前使用、实现与来源文档 |
+| `rulepacks/stumpsville/docs/current/player-guide.md` | 树桩镇玩家简明指南、探路取物推荐目标、基本规则及原型来源 |
 | `rulepacks/stumpsville/docs/README.md` | 树桩镇当前使用、实现与来源文档 |
 | `rulepacks/stumpsville/manifest.json` | 树桩镇独立配置包入口或清单 |
 | `rulepacks/stumpsville/rules/check.lua` | 树桩镇宿主 Lua 规则 |
