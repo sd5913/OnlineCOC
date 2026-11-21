@@ -5,7 +5,7 @@
 - 状态：有效
 - 创建日期：2026-10-29
 - 最后更新：2026-11-21
-- 最近目录核对：2026-11-21（本轮在聊天隔离基础上核对ISSUE-023上下文压缩、KP来源采纳、715项AI新增清单、三版AI冻结源码、21项宿主证据和包侧新测试；不含运行存档）。此前默认AI与C评估见[前阶段记录](../../history/2026-11-21-ai-defaults-c-review.md)，本轮证据见[ISSUE-022](../../history/2026-11-21-issue-022-chat-isolation-ruling-status.md)。
+- 最近目录核对：2026-11-21（本轮在聊天隔离基础上核对ISSUE-023上下文压缩、KP来源采纳、715项AI新增清单、三版AI冻结源码、21项宿主证据和包侧新测试；不含运行存档）。此前默认AI与C评估见[前阶段记录](../../history/2026-11-21-ai-defaults-c-review.md)，前轮证据见[ISSUE-022](../../history/2026-11-21-issue-022-chat-isolation-ruling-status.md)，本轮见[ISSUE-023](../../history/2026-11-21-issue-023-context-compression-kp-autonomy.md)。
 - 关联文档：[工程文档索引](README.md)、[文档维护标准](../../standards/document-maintenance.md)
 
 ## 工程实际目录
@@ -2044,7 +2044,7 @@ AI 可选限额与用量统计（2026-11-16）：
 | `engineering/ai/tests/test_chat_isolation_http.py` | ISSUE-022上下文、聊天隔离与已交付原文的实现或验收证据 |
 | `engineering/ai/tests/test_context_usability.py` | ISSUE-022上下文、聊天隔离与已交付原文的实现或验收证据 |
 
-| `docs/plans/Issues/issue-023-context-compression-kp-autonomy.md` | 上下文压缩、KP风险裁决和GitHub交付计划 |
+| `docs/history/2026-11-21-issue-023-context-compression-kp-autonomy.md` | 上下文压缩、KP风险裁决、实际测试统计和GitHub交付归档 |
 
 | `rulepacks/stumpsville/tests/verify_consultation_review.py` | 参考来源风险展示、KP明确接受和执行结果的真实浏览器验证 |
 | `rulepacks/stumpsville/tests/consultation-review-results.json` | 参考来源风险展示、KP明确接受和执行结果的真实浏览器验证 |

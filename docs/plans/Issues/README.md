@@ -32,6 +32,6 @@
 
 | ISSUE-022 | 裁决状态栏、过期原文、聊天隔离与上下文体验 | 三方实现及联合验收完成，已归档；模型语义失败与小样本边界保留 | [完成记录](../../history/2026-11-21-issue-022-chat-isolation-ruling-status.md) |
 
-| ISSUE-023 | 上下文压缩、KP自主方案与主分支发布 | 三方实施与实验中 | [正文](issue-023-context-compression-kp-autonomy.md) |
+| ISSUE-023 | 上下文压缩、KP自主方案与主分支发布 | 已实现并验收、主分支已更新；回答质量待办单列 | [完成记录](../../history/2026-11-21-issue-023-context-compression-kp-autonomy.md) |
 
 ISSUE-001 的正文仍在原位置，本目录只链接它，不复制成第二份。后续新问题统一从本目录登记；编号从 ISSUE-024 继续。配置包作者仅记录证据与需求，由工程责任者判断并处理工程侧问题。与当前功能、版本和运行相关的事实见 [工程索引](../../current/engineering/README.md)。

@@ -1,10 +1,15 @@
 # ISSUE-023：上下文压缩、KP方案自主性与主分支发布
 
-- 文档类型：计划
-- 状态：技术实施与验收完成，待GitHub主分支同步
+- 文档类型：历史
+- 状态：已归档
 - 创建日期：2026-11-21
 - 最后更新：2026-11-21
-- 关联文档：[问题索引](README.md)、[上一轮上下文核查](../../history/2026-11-21-issue-022-chat-isolation-ruling-status.md)
+- 原路径：docs/plans/Issues/issue-023-context-compression-kp-autonomy.md
+- 原状态：技术实施与验收完成，待GitHub主分支同步
+- 归档日期：2026-11-21
+- 归档原因：实现、完整回归和GitHub主分支同步完成；明确的回答质量待办保留在指令可靠性计划
+- 替代文档：[AI上下文](../current/engineering/ai-session-access.md)、[包使用说明](../../rulepacks/stumpsville/docs/current/usage.md)
+- 关联文档：[问题索引](../plans/Issues/README.md)、[上一轮上下文核查](2026-11-21-issue-022-chat-isolation-ruling-status.md)
 
 ## 目标与授权
 
@@ -40,21 +45,21 @@
 - 来源评估正式协议：consultationAssessment携来源数量、说明和完整context摘要；批准consultationReview必须精确匹配。配置风险项consultation-source，同时保留高危整包与C评估确认，批次同样必须人工接受，PL不走此接受路径。宿主重新计算来源判断及摘要，不信客户端派生结果。
 - 包作者指南已移除独立来源只能咨询及C范围风险一律拒绝措辞，新增非关键默认值自行处理和技术反馈自修复要求。
 - 实际Edge合成DTO4组通过：配置与C双评估同次接受、高危指纹、拒绝不夹带接受、缺失评估摘要阻止批准、运行时失败原因及390px安全显示。既有C评估5组复验通过。此项不代替真实宿主权限校验。
-- 旧冻结引擎v2＋AI聊天v2的实际树桩镇基线已复现：独立地图read→活动items读取→合法dataEdits新增护甲仍blocked/CONSULTATION_ONLY且不可裁决，批准前无业务变化。[基线](../../../rulepacks/stumpsville/tests/context-autonomy-baseline-results.json)。一次夹具limit=30超过20导致本地模拟服务断连，已修正夹具并保留原失败；全部0外部模型调用。
-- 宿主正式契约41/41通过（17项来源风险专项＋24项既有发布）。KP接受后支持的候选可发布；旧摘要、撤权、基线变化、结构/执行失败和不支持存储仍拒绝；严格PL不能经确认升级。初次字段误写14失败及中间短理由Schema预期错误保留，不累计分母。[宿主证据](../../../engineering/acceptance/kp-policy-audit/results.json)。
+- 旧冻结引擎v2＋AI聊天v2的实际树桩镇基线已复现：独立地图read→活动items读取→合法dataEdits新增护甲仍blocked/CONSULTATION_ONLY且不可裁决，批准前无业务变化。[基线](../../rulepacks/stumpsville/tests/context-autonomy-baseline-results.json)。一次夹具limit=30超过20导致本地模拟服务断连，已修正夹具并保留原失败；全部0外部模型调用。
+- 宿主正式契约41/41通过（17项来源风险专项＋24项既有发布）。KP接受后支持的候选可发布；旧摘要、撤权、基线变化、结构/执行失败和不支持存储仍拒绝；严格PL不能经确认升级。初次字段误写14失败及中间短理由Schema预期错误保留，不累计分母。[宿主证据](../../engineering/acceptance/kp-policy-audit/results.json)。
 - 压缩公开阶段为context_compress，诊断只显示轮次、前后字节、原文记录数和摘要定位；原文归档到独立context-archives内容寻址gzip文件，不复制回累计状态。主任务技术修复与摘要技术修复分开记账。
 - 已有本机DeepSeek配置已由revision6迁移7，声明模型窗口1048576 tokens、输出8192、工具12轮、任务600秒；不修改密钥、地址或额度，公开报告只保留非私密摘要。应用字节预算与压缩触发值以最终实现实测为准。
 - AI压缩、真实模型实验和最终接口联测已完成，分层统计如下；不同阶段与重复运行不混算。
-- 冻结v1组合的真实资料申请4项、嵌入/调试/导出6项及哈希检查通过。实际配置来源评估3组通过：合法参考生成、缺失/错误证明与PL拒绝、包界面明确接受后只发布一次。运行时批次读取完整host-room-state实体路径仍被HISTORY_REQUERY_REQUIRED误拒绝，已交AI方修正证据识别；未改用另一查询入口掩盖该问题。[联合记录](../../../rulepacks/stumpsville/tests/context-autonomy-results.json)保留失败。
+- 冻结v1组合的真实资料申请4项、嵌入/调试/导出6项及哈希检查通过。实际配置来源评估3组通过：合法参考生成、缺失/错误证明与PL拒绝、包界面明确接受后只发布一次。运行时批次读取完整host-room-state实体路径仍被HISTORY_REQUERY_REQUIRED误拒绝，已交AI方修正证据识别；未改用另一查询入口掩盖该问题。[联合记录](../../rulepacks/stumpsville/tests/context-autonomy-results.json)保留失败。
 - 最终宿主KP策略v1＋AI压缩v2组合4/4组通过，含资料链4项、嵌入/导出6项及原子批次5项。来源采纳真实链4/4组通过：原完整实体路径保持不变，运行时可生成待审，开启普通自动审批也不会跳过来源确认；KP接受后钱币+1并产生一次定向通知。错误/缺失证明及PL拒绝继续有效。包侧全部0外部API，正式房间未改变。
 - v3相对v2仅加强独立资料读取前提/技术拒绝说明、补公开TS类型、同步服务商新建默认值；544个组合源文件摘要核对通过。实际已有服务保留本机配置，新建DeepSeek默认输出8192、窗口1048576、工具12轮、任务600秒；旧值不会因编辑现有服务被重置。来源采纳链在v3再次4/4通过，实际发布、运行时修改、通知与错误证明拒绝均保持。
-- 实模不支持的物品／地点物理删除虽被技术校验阻止，仍出现错误例外建议和误导待审文案；已列入[指令可靠性后续](../ai-command-reliability.md#10-上下文压缩后的新增质量待办)。来源未读却声称参考的首次失败保留，补读取前提后实际来源链通过。不得将安全拦截算作完整回答质量通过。
+- 实模不支持的物品／地点物理删除虽被技术校验阻止，仍出现错误例外建议和误导待审文案；已列入[指令可靠性后续](../plans/ai-command-reliability.md#10-上下文压缩后的新增质量待办)。来源未读却声称参考的首次失败保留，补读取前提后实际来源链通过。不得将安全拦截算作完整回答质量通过。
 
 ## 最终统计与交付核查
 
 - AI完整核心单次回归692/692，0失败/错误/跳过；宿主来源发布契约41/41。包侧v3来源采纳4/4；v2组合内资料链4项、嵌入/导出6项、原子批次5项通过。v3仅提示、公开类型和新建服务默认值变化，最后一项另验JS实际工厂；不将这些重复项累计为总覆盖率。
 - 真实DeepSeek账本49调用、912755tokens、未知用量0；其中摘要11调用，含4次摘要修复。8个支持的动态配置目标最终8/8实际执行，全部有效请求8/9，7/8目标在首次任务内完成（包含自动修复）。负例4/4无业务变更，但清晰且正确拒绝仅1/4。
 - 完整质量为9/18：要求结果可用且事实、权限、状态说明准确，保留修复前失败与错误建议。压缩跨轮业务请求2/4成功，最终发布与创建2/2步骤完成；输入446592→54224、448206→56534字节，最终HP4，只有一份定义发布和一个实例。
-- 真实结果、原始失败及分母见[AI报告](../../../engineering/acceptance/ai-context-compression/README.md)与[机器统计](../../../engineering/acceptance/ai-context-compression/results-summary.json)。原测试oracle遗漏isNpc和过早读取diagnostics均另列，复核没有重做成功业务。
+- 真实结果、原始失败及分母见[AI报告](../../engineering/acceptance/ai-context-compression/README.md)与[机器统计](../../engineering/acceptance/ai-context-compression/results-summary.json)。原测试oracle遗漏isNpc和过早读取diagnostics均另列，复核没有重做成功业务。
 - 入库复核1768个改动/新增文件，约49.9MB；893个Python及357个JSON可解析，68份Markdown本地链接无失效。唯一超过5MiB文件是此前指令可靠性实模账本（约7.4MB），保留用户要求的原始实验依据；密钥模式命中均与已入库脱敏测试的固定假字符串一致，未发现实际凭据或运行存档路径。新增路径已在目录表逐项或冻结目录范围登记，AI v3的217个当前文件和封存账本SHA256复核一致。保留冻结源码原貌，包括batches.py末尾多余空行，不以格式整理改写已验收摘要。
-- GitHub origin/main仍为5c4ff68，当前开发历史可快进；实际推送dry-run通过，尚未提交或推送本次更新。交付将先提交验证后的实现，再用实际提交号归档本记录，正常同步main和spathering，不强推。
+- 实现提交[c49b7fe](https://github.com/sd5913/OnlineCOC/commit/c49b7fe33b4ce53f210f7f118e7c8b61ca5c4a60)已正常快进同步至GitHub main与spathering，本地main也已同步，远端完整SHA一致；未强推。该提交含本轮及此前已授权且相互依赖的工程、包和实验记录。本归档和索引作为后续文档提交，最终分支SHA以Git记录为准。

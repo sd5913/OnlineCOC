@@ -48,3 +48,5 @@
 - [ISSUE-021完成记录](2026-11-21-issue-021-ai-defaults-c-review.md)：新房间默认值、本机账号和C风险最终由KP决定的协作闭环。
 
 - [ISSUE-022：裁决状态、聊天隔离与上下文体验](2026-11-21-issue-022-chat-isolation-ruling-status.md)：固定单行与灰卡原文、独立聊天收发、稳定AI来源、有界需求保留与资料预读；含本机性能对照、18次真实模型实验、语义失败及最终冻结接口联测。
+
+- [ISSUE-023：语义压缩、KP来源采纳与主分支交付](2026-11-21-issue-023-context-compression-kp-autonomy.md)：692项核心回归、49次API统计、实际跨轮配置/实例闭环及保留的回答质量失败；实现已同步GitHub主分支。
