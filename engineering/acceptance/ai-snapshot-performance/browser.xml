@@ -1,0 +1,1 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="0" skipped="0" tests="1" time="5.932" timestamp="2026-11-20T18:37:20.156967+08:00" hostname="LAPTOP-BIFSL64A"><testcase classname="tests.test_progress_ui" name="test_progress_warning_and_regenerate" time="5.568" /></testsuite></testsuites>

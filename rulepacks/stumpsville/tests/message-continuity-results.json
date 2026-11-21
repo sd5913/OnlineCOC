@@ -1,0 +1,51 @@
+{
+  "checkedAt": "2026-11-20T19:24:25.792530+08:00",
+  "checks": [
+    "本机PL正常回复及可视化引用可读，发送和回复使用各自真实时间",
+    "撤回资料后原消息与原时间保持，引用灰显禁用，390px可读",
+    "真实本机审核请求揭示使用原玩家身份，一次提交成功；混合队列按时间升序",
+    "写入成功后刷新失败仍报告已完成，原成功回执存在且不残留待恢复写行动",
+    "同档重启保持原正文及发送回复时间，读取历史不再调用模型"
+  ],
+  "realSaveChanged": false,
+  "externalModelCalls": 0,
+  "evidenceDirectory": "tests/output/message-continuity-204dfef2",
+  "passed": true,
+  "passedCount": 5,
+  "pageErrors": [],
+  "loopbackCalls": 4,
+  "previousRuns": [
+    {
+      "passed": false,
+      "error": "Locator expected to be visible\nActual value: None\nError: element(s) not found \nCall log:\n  - Expect \"to_be_visible\" locator(\"[data-ai-request=\\\"26d5ca245dcc4b98a1b43b5ae4b06700\\\"]\") with timeout 5000ms\n  - waiting for locator(\"[data-ai-request=\\\"26d5ca245dcc4b98a1b43b5ae4b06700\\\"]\")\n\nAria snapshot:\n- banner:\n  - text: ♧ 树桩镇 STUMPSVILLE 主持 KP · kp 已同步\n  - link \"打开PL视窗\":\n    - /url: /sessions/message-kp/?view=player#/play/scene\n  - button \"规则\"\n  - button \"偏好\"\n  - button \"退出\"\n  - text: 语言\n  - combobox \"语言\":\n    - option \"简体中文\" [selected]\n    - option \"English\"\n  - button \"收起顶栏\" [expanded]: ▴\n- navigation \"主导航\":\n  - link \"房间管理\":\n    - /url: \"#/gm/room\"\n  - link \"裁决\":\n    - /url: \"#/gm/rulings\"\n  - link \"地图\":\n    - /url: \"#/gm/map\"\n  - link \"控制台\":\n    - /url: \"#/gm/console\"\n  - link \"地点\":\n    - /url: \"#/gm/locations\"\n  - link \"资料\":\n    - /url: \"#/gm/library\"\n  - link \"场次\":\n    - /url: \"#/gm/session\"\n  - link \"AI 设置\":\n    - /url: \"#/gm/ai-settings\"\n- main:\n  - tablist \"消息与裁决\":\n    - tab \"消息队列\"\n    - tab \"裁决队列 1\" [selected]\n    - tab \"已归档\"\n  - button \"记录\"\n  - button \"刷新\"\n  - button \"设置\"\n  - tabpanel:\n    - article:\n      - time: 14:59\n      - text: 类型：AI 申请 来源内容已失效或当前不可读\n      - button \"已过期 · 来源内容已失效或当前不可读\"\n      - button \"转 AI 处理\"\n      - button \"执行信息揭示\"\n      - button \"归档此项\"\n  - region \"AI 助手\":\n    - strong: AI 助手\n    - text: kp · KP\n    - button \"引用与调试\" [disabled]\n    - button \"KP 审核与设置\"\n    - button \"用量统计\"\n    - main:\n      - navigation:\n        - button \"新建会话\"\n        - combobox \"选择会话\":\n          - option \"选择会话\" [selected]\n          - option \"审核 · 对话请求\"\n          - option \"已发送消息与不可访问引用\"\n        - button \"归档会话\"\n        - button \"会话管理\"\n      - log \"对话记录\":\n        - heading \"从一个想法开始\" [level=2]\n        - paragraph: 引用资料、梳理线索，或准备下一步方案。\n        - button \"梳理房间资料 整理资料与待处理事项\"\n        - button \"设计新内容 准备可供审核的方案\"\n        - button \"引用配置 从已授权目录中选择\"\n      - textbox \"输入需求\": 描述需求，输入 / 选择指令或引用房间数据\n      - button \"插入数据引用\": ＋ 引用\n      - button \"查看引用\" [disabled]\n      - combobox \"发送快捷键\":\n        - option \"Enter 发送\" [selected]\n        - option \"Ctrl + Enter 发送\"\n      - button \"发送消息\" [disabled]: ↑\n      - status: AI 的建议需经 KP 审核后才能加载到游戏。\n  - complementary \"聊天\":\n    - region \"聊天\":\n      - strong: 聊天\n      - button \"建立私聊\"\n      - navigation:\n        - button \"全局\"\n        - button \"所在场景\"\n        - button \"队伍\"\n        - button \"私聊\"\n      - strong: 全局\n      - paragraph: 这里还没有消息\n      - button \"较早记录\"\n      - button \"标为已读\"\n      - textbox \"消息\":\n        - /placeholder: 输入消息…\n      - text: Ctrl + Enter\n      - button \"发送\"",
+      "checks": [
+        "本机PL正常回复及可视化引用可读，发送和回复使用各自真实时间",
+        "撤回资料后原消息与原时间保持，引用灰显禁用，390px可读"
+      ],
+      "evidenceDirectory": "tests/output/message-continuity-423d42f6"
+    },
+    {
+      "passed": true,
+      "error": null,
+      "checks": [
+        "本机PL正常回复及可视化引用可读，发送和回复使用各自真实时间",
+        "撤回资料后原消息与原时间保持，引用灰显禁用，390px可读",
+        "真实本机审核请求揭示使用原玩家身份，一次提交成功；混合队列按时间升序",
+        "同档重启保持原正文及发送回复时间，读取历史不再调用模型"
+      ],
+      "evidenceDirectory": "tests/output/message-continuity-a7952973"
+    },
+    {
+      "passed": true,
+      "error": null,
+      "checks": [
+        "本机PL正常回复及可视化引用可读，发送和回复使用各自真实时间",
+        "撤回资料后原消息与原时间保持，引用灰显禁用，390px可读",
+        "真实本机审核请求揭示使用原玩家身份，一次提交成功；混合队列按时间升序",
+        "写入成功后刷新失败仍报告已完成，原成功回执存在且不残留待恢复写行动",
+        "同档重启保持原正文及发送回复时间，读取历史不再调用模型"
+      ],
+      "evidenceDirectory": "tests/output/message-continuity-5e4c7379"
+    }
+  ]
+}

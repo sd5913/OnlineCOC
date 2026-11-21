@@ -1,0 +1,51 @@
+{
+  "newFiles": [
+    "engineering/acceptance/message-history/.gitignore",
+    "engineering/acceptance/message-history/README.md",
+    "engineering/acceptance/message-history/boundaries-final.xml",
+    "engineering/acceptance/message-history/boundaries.xml",
+    "engineering/acceptance/message-history/first.xml",
+    "engineering/acceptance/message-history/freeze.xml",
+    "engineering/acceptance/message-history/live-results.json",
+    "engineering/acceptance/message-history/live_experiments.py",
+    "engineering/acceptance/message-history/manifest.json",
+    "engineering/acceptance/message-history/receipt-final.xml",
+    "engineering/acceptance/message-history/receipt-visibility.xml",
+    "engineering/acceptance/message-history/record_results.py",
+    "engineering/acceptance/message-history/references.png",
+    "engineering/acceptance/message-history/results.json",
+    "engineering/acceptance/message-history/second.xml",
+    "engineering/acceptance/message-history/test_boundaries.py",
+    "engineering/acceptance/message-history/third.xml",
+    "engineering/ai/src/onlinecoc_ai/messages.py",
+    "engineering/ai/tests/test_message_history.py",
+    "engineering/ai/tests/test_message_history_ui.py"
+  ],
+  "updatedSourceFiles": [
+    "engineering/ai/src/onlinecoc_ai/messages.py",
+    "engineering/ai/src/onlinecoc_ai/api.py",
+    "engineering/ai/src/onlinecoc_ai/sessions.py",
+    "engineering/ai/src/onlinecoc_ai/coordinator.py",
+    "engineering/ai/src/onlinecoc_ai/review_queue.py",
+    "engineering/ai/src/onlinecoc_ai/batches.py",
+    "engineering/ai/src/onlinecoc_ai/reviews.py",
+    "engineering/ai/web/components/chat.js",
+    "engineering/ai/web/components/chat.css",
+    "engineering/ai/web/components/markdown.css",
+    "engineering/ai/web/components/reference-editor.js",
+    "engineering/ai/web/components/reference-details.js",
+    "engineering/ai/web/components/client.js",
+    "engineering/ai/web/components/index.d.ts",
+    "engineering/ai/tests/test_message_history.py",
+    "engineering/ai/tests/test_message_history_ui.py",
+    "engineering/ai/tests/test_known_runtime.py"
+  ],
+  "updatedDocuments": [
+    "docs/current/engineering/ai-session-access.md",
+    "docs/current/engineering/ai-player-knowledge.md",
+    "docs/current/engineering/ai-rulings.md",
+    "docs/current/engineering/ai-responses.md",
+    "docs/current/engineering/ai-pack-embedding.md",
+    "docs/current/engineering/ai-debug-review.md"
+  ]
+}

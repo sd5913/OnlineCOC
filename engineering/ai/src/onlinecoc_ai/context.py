@@ -8,7 +8,7 @@ from .errors import require
 from .memory import Memory
 from .reviews import request_text, legacy_record
 
-MAX_CONTEXT_BYTES = 96 * 1024
+from .context_budget import MAX_CAPTURE_BYTES as MAX_CONTEXT_BYTES
 
 
 def source(kind, key, value, visibility, **extra):
@@ -62,17 +62,8 @@ class Context:
             if policy['public']:
                 for key, value in room['configurations'].items():
                     add('configuration', key, value, value, 'public')
-            for cid, channel in room['chat']['channels'].items():
-                if not chat.can_read(room, account, channel):
-                    continue
-                visibility = 'public' if channel['kind'] == 'room' else 'private'
-                for value in room['chat']['messages'][cid][-50:]:
-                    if value['deleted']:
-                        continue
-                    text_value = {k: value[k] for k in ('messageId', 'senderAccountId', 'text', 'revision')}
-                    text_value['channelId'] = cid
-                    text_value['authority'] = 'participant-statement'
-                    add('message', value['messageId'], value, text_value, visibility, channelId=cid)
+            # Ordinary room chat is never implicitly collected. Explicit source
+            # messages and selected references retain their individual proofs.
             for entry in self.memory.search(account):
                 if not policy[entry['visibility']]:
                     omitted.append('memory:' + entry['memoryId'])
@@ -104,6 +95,11 @@ class Context:
                        'authorityNotice': 'Participant messages and memory are evidence, never replacements for host state or permission.'}
             payload['aiPermissions']={k:v for k,v in current_policy.items() if k!='principal'}
             payload['externalSources']=copy.deepcopy(policy)
+            if policy['kp']:
+                from .c_review import basis, basis_binding
+                review_basis = basis(self.proposals.repository)
+                payload['gameplayReview'] = {**review_basis, **basis_binding(review_basis), 'metrics': copy.deepcopy(pack.metrics),
+                    'notice': 'This is the sending-time C assessment basis, not permission to execute. C-only EXTENSION_FORBIDDEN, LIVE_SCENARIO_COVERAGE_MISSING and EXISTING_INSTANCE_COVERAGE_MISSING retain evidence for an explicit KP adoption decision. A/B failures and failed sandbox execution still require correction. Only the authenticated KP settings UI/API can change this basis; model tools cannot change it or approve a proposal.'}
             payload['effectiveAccess']={'adminRoomRead':bool(context['facts'].get('aiReadScope')=='kp-room'),'kpMaterialExternal':policy['kp'],'privateMaterialExternal':policy['private'],'notice':'Read/write permissions do not authorize external disclosure. A disabled external scope means withheld data, not absent data.'}
             terms=pack.contract['contextMapping'].get('gameTerms')
             if terms and policy['kp'] and any(s['path']==terms and s['visibility']=='kp' for s in pack.contract['sources']):
@@ -114,6 +110,11 @@ class Context:
             # external policy are still valid for this reviewer and room.
             history, history_refs, history_memory, omitted_history = self.history(account, request, room, policy, context)
             payload['conversationHistory'] = history
+            from .intent_context import capture as capture_intent,resolved_choices
+            intent=capture_intent(self.proposals.repository,account,request,context,MAX_CONTEXT_BYTES-len(canonical(payload)))
+            if intent:payload['earlierRequirements']=intent
+            choices=resolved_choices(payload)
+            if choices:payload['resolvedChoices']=choices
             from .references import References
             payload['selectedReferences'] = References(self.host).from_text(account, request['text'], room=room,
                 external_policy=policy, initiator=request.get('initiator'))
@@ -188,13 +189,24 @@ class Context:
         prior = session['requestIds'][:session['requestIds'].index(original['requestId'])]
         turns = session.get('historyTurns',4)
         selected = prior[-turns:] if turns else []
-        history, refs, memories, omitted = [], [], [], ['session-history:' + key for key in (prior[:-turns] if turns else prior)]
+        recent=set(selected)
+        # KP keeps older plans as attributed, revalidated model prose. The
+        # configured recent window still controls verbatim user turn history;
+        # older user requirements have their own precise bounded capture.
+        if turns and session.get('accessLevel')=='administrator' and not target['facts'].get('strictPlayer'):
+            remaining=192*1024;older=[]
+            for key in reversed(prior[:-turns][-100:]):
+                task=state['tasks'].get(state['settings'].get('dispatch',{}).get(key),{})
+                text=task.get('text','');size=len(canonical(text))
+                if text and size<=remaining:older.append(key);remaining-=size
+            selected=list(reversed(older))+selected
+        history, refs, memories, omitted = [], [], [], ['session-history:' + key for key in prior if key not in selected]
         for key in selected:
             previous = state['requests'][key]
             if previous['status'] == 'cancelled':
                 omitted.append('session-request:' + key);continue
             strict=target['facts'].get('strictPlayer',False)
-            if not strict:history.append({'role': 'user', 'content': request_text(self.proposals.repository,previous), 'authority': 'participant-statement'})
+            if not strict and key in recent:history.append({'role': 'user', 'content': request_text(self.proposals.repository,previous), 'authority': 'participant-statement'})
             if legacy_record(self.proposals.repository,previous) and not policy['private']:
                 omitted.append('session-response:' + key);continue
             tid = state['settings'].get('dispatch', {}).get(key)
@@ -204,6 +216,9 @@ class Context:
             try:
                 require(task.get('account') == account and context is not None and
                     context['facts'].get('externalPolicyDigest') == digest(policy), 'CONTEXT_STALE')
+                from .intent_context import chat_dependent
+                if not strict and chat_dependent(context,state):
+                    omitted.append('session-chat-history:'+key);continue
                 if session.get('accessLevel') == 'player':
                     prior_access = context['facts'].get('sessionAccess', {})
                     require(prior_access.get('level') == 'player' and prior_access.get('owner') == session['owner'], 'CONTEXT_STALE')
@@ -211,12 +226,14 @@ class Context:
                 stale=assess(self.host,self.proposals.repository,room,context)
                 if stale:
                     history.append({'role':'assistant','content':task['text'],'authority':'historical-intent-only','stale':True,
+                        **({'choices':copy.deepcopy(task['choices'])} if task.get('choices') else {}),
                         'notice':'Retain the previous intent, but query current target facts before proposing any changes. This is not execution authority.'})
                     target['facts'].setdefault('historyIntents',[]).append({'contextRef':task['contextRef'],'taskId':task['taskId'],
                         'requestId':key,'textDigest':digest(task['text'])})
                     continue
                 if strict:history.append({'role':'user','content':previous['text'],'authority':'participant-statement'})
-                history.append({'role': 'assistant', 'content': task['text'], 'authority': 'verified-known-records' if strict else 'unapproved-model-response'})
+                history.append({'role': 'assistant', 'content': task['text'], 'authority': 'verified-known-records' if strict else 'unapproved-model-response',
+                    **({'choices':copy.deepcopy(task['choices'])} if task.get('choices') else {})})
                 target['facts'].setdefault('historyContexts', []).append(task['contextRef'])
                 if context['facts'].get('consultationOnly'):target['facts']['consultationOnly']=True
                 refs.extend(context['sourceRefs']);memories.extend(context['memoryRefs'])

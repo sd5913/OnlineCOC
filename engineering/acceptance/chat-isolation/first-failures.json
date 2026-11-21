@@ -1,0 +1,7 @@
+[
+ {"stage":"baseline-browser-harness","failure":"Playwright wait_for_function(string) was rejected by the production CSP unsafe-eval restriction","fix":"Poll page.evaluate using the existing test-suite approach; production CSP unchanged"},
+ {"stage":"query-proof-fixture","failure":"Fixture captured the room query with initiator null but replayed with kp, making both initial proofs invalid before traffic","evidence":["before-proof-fixture.json","after-proof-fixture.json"],"fix":"Use initiator kp consistently and validate all evidence before starting traffic; these runs are excluded from results"},
+ {"stage":"v1-successful-approvals","failure":"Successful approvals added large schema-validated evidence, and every chat revalidated all stored approvals","evidence":["after-v1-regression.json","profile-before.txt"],"fix":"Cache only byte-identical, already validated approval structures; retain all current cross-record/authority checks"},
+ {"stage":"profile-import-path","failure":"Profiling harness used data-management/src instead of the actual data-management Python root","fix":"Correct the isolated import path"},
+ {"stage":"approval-cache-miss","failure":"Shared but acyclic JSON subobjects were conservatively treated as cycles, so valid approval records missed the cache","evidence":["after-cache-miss.json"],"fix":"Track active and completed containers separately; reject cycles and non-JSON types while accepting acyclic aliases"}
+]

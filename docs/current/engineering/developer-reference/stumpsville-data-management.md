@@ -4,7 +4,7 @@
 - 文档子类：工程
 - 状态：有效
 - 创建日期：2026-11-19
-- 最后更新：2026-11-19
+- 最后更新：2026-11-21
 - 关联文档：[Stumpsville 导航](stumpsville.md)、[规则与数据定义](stumpsville-rules-data.md)、[玩家知识服务](../player-knowledge.md)
 
 基于本仓库 `rulepacks/stumpsville/`（树桩镇，manifest 版本 `0.9.0`）源码核查。下文路径除链接外均相对该包；KP 为主持，PL 为玩家。只概括当前实现，游戏资料中标注“待终校”的内容仍不是已核实的原版规则。
@@ -37,4 +37,4 @@ KP资料页读取 `admin.configurations`、完整活动规则工件、全部规�
 
 AI 高危配置发布后，`publication_sync.py` 根据旧工件、包侧草稿和批准工件做三方同步；新增地点使用持久命令信封恢复。冲突显示已发布但待同步，不覆盖本地草稿。KP 全读包内资料由宿主传入受信 `kp-room` 范围，PL 不能通过同一参数扩权。详见[AI 权限与裁决](../../../../rulepacks/stumpsville/docs/current/ai-permissions.md)。
 
-配置局部编辑先读取目标节点取得版本引用，再由 AI 模块展开完整候选，保留未修改字段；追加物品保持已有编号，校验重复 id。实际发布仍通过三检与 KP 高危确认，见[调试与查询](../../../../rulepacks/stumpsville/docs/current/ai-debugging.md)。
+配置局部编辑先读取目标节点取得版本引用，再由 AI 模块展开完整候选，保留未修改字段；追加物品保持已有编号，校验重复 id。实际发布仍经 A/B 硬校验、C 评估与 KP 高危确认；受限 C unknown 的人工采纳及依据版本见[工程裁决](../ai-rulings.md#c-类评估与可变依据)，见[调试与查询](../../../../rulepacks/stumpsville/docs/current/ai-debugging.md)。

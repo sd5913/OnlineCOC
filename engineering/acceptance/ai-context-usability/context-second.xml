@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="17" time="72.203" timestamp="2026-11-21T09:22:11.062451+08:00" hostname="LAPTOP-BIFSL64A"><testcase classname="engineering.ai.tests.test_context_usability" name="test_old_parameters_survive_four_turn_window_without_factual_authority" time="1.266" /><testcase classname="engineering.ai.tests.test_context_usability" name="test_retained_requirements_recheck_original_provenance[cancelled]" time="1.064" /><testcase classname="engineering.ai.tests.test_context_usability" name="test_retained_requirements_recheck_original_provenance[session_deleted]" time="1.147" /><testcase classname="engineering.ai.tests.test_context_usability" name="test_retention_is_bounded_reports_omissions_and_respects_history_off" time="1.325" /><testcase classname="engineering.ai.tests.test_context_usability" name="test_only_exact_previously_answered_choices_trigger_bounded_correction" time="21.189"><failure message="TimeoutError">coordinator = &lt;onlinecoc_ai.coordinator.Coordinator object at 0x0000026E742D2B10&gt;
+identifier = 'da1c166eb5d84ce1a4c7ce20781ebdd6', timeout = 20
+
+    async def wait_task(coordinator,identifier,timeout=20):
+        async with asyncio.timeout(timeout):
+            while True:
+                task=coordinator.repository.state()['tasks'][identifier]
+                if task['status'] not in ('queued','generating','validating'):return task
+&gt;               await asyncio.sleep(.02)
+
+engineering\ai\tests\test_coordinator.py:51: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+delay = 0.02, result = None
+
+    async def sleep(delay, result=None):
+        """Coroutine that completes after a given time (in seconds)."""
+        if delay &lt;= 0:
+            await __sleep0()
+            return result
+    
+        if math.isnan(delay):
+            raise ValueError("Invalid delay: NaN (not a number)")
+    
+        loop = events.get_running_loop()
+        future = loop.create_future()
+        h = loop.call_later(delay,
+                            futures._set_result_unless_cancelled,
+                            future, result)
+        try:
+&gt;           return await future
+                   ^^^^^^^^^^^^
+E           asyncio.exceptions.CancelledError
+
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\tasks.py:702: CancelledError
+
+The above exception was the direct cause of the following exception:
+
+application = &lt;onlinecoc_ai.api.Application object at 0x0000026E742D2C40&gt;
+
+    def test_only_exact_previously_answered_choices_trigger_bounded_correction(application):
+        app=application;enable(app.host,public=True,kp=True,private=True);sid=session(app)
+        app.coordinator.context=Context(app.proposals,demand=True)
+        async def run():
+            async def ask(*_):return completion({'kind':'clarification','text':'请选恢复项。','choices':CHOICES})
+            app.coordinator.provider_factory=lambda _:Fake(ask);await app.coordinator.start()
+            try:
+                first=submit(app,sid,'给角色加1点');task=committed(command(app,'ai.request.dispatch',{'requestId':first['requestId']}))
+                assert (await wait_task(app.coordinator,task['taskId']))['status']=='needs_input'
+            finally:await app.coordinator.close()
+            calls=[]
+            async def follow(n,messages,tools):
+                calls.append(n)
+                if n==1:
+                    payload=json.loads(messages[1]['content']);assert payload['resolvedChoices'][0]['selectedText']==CHOICES['options'][0]['text']
+                    return completion({'kind':'clarification','text':'请再次选择。','choices':CHOICES})
+                assert json.loads(messages[-1]['content'])['error']['code']=='REPEATED_RESOLVED_CHOICE'
+                return completion({'kind':'plan','text':'已保留生命选项；当前仅整理方案，不执行。'})
+            app.coordinator.provider_factory=lambda _:Fake(follow);await app.coordinator.start()
+            try:
+                req=submit(app,sid,CHOICES['options'][0]['text']);task=committed(command(app,'ai.request.dispatch',{'requestId':req['requestId']}));result=await wait_task(app.coordinator,task['taskId'])
+                assert result['status']=='review_ready' and len(calls)==2,result
+                assert any(x['code']=='REPEATED_RESOLVED_CHOICE' for x in result['diagnostics']['outputFailures'])
+            finally:await app.coordinator.close()
+&gt;       asyncio.run(run())
+
+engineering\ai\tests\test_context_usability.py:86: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:204: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:127: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\base_events.py:719: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+engineering\ai\tests\test_context_usability.py:82: in run
+    req=submit(app,sid,CHOICES['options'][0]['text']);task=committed(command(app,'ai.request.dispatch',{'requestId':req['requestId']}));result=await wait_task(app.coordinator,task['taskId'])
+                                                                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+engineering\ai\tests\test_coordinator.py:47: in wait_task
+    async with asyncio.timeout(timeout):
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;Timeout [expired]&gt;
+exc_type = &lt;class 'asyncio.exceptions.CancelledError'&gt;
+exc_val = CancelledError(), exc_tb = &lt;traceback object at 0x0000026E7414B500&gt;
+
+    async def __aexit__(
+        self,
+        exc_type: type[BaseException] | None,
+        exc_val: BaseException | None,
+        exc_tb: TracebackType | None,
+    ) -&gt; bool | None:
+        assert self._state in (_State.ENTERED, _State.EXPIRING)
+    
+        if self._timeout_handler is not None:
+            self._timeout_handler.cancel()
+            self._timeout_handler = None
+    
+        if self._state is _State.EXPIRING:
+            self._state = _State.EXPIRED
+    
+            if self._task.uncancel() &lt;= self._cancelling and exc_type is not None:
+                # Since there are no new cancel requests, we're
+                # handling this.
+                if issubclass(exc_type, exceptions.CancelledError):
+&gt;                   raise TimeoutError from exc_val
+E                   TimeoutError
+
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\timeouts.py:114: TimeoutError</failure></testcase><testcase classname="engineering.ai.tests.test_context_usability" name="test_new_material_choice_is_not_suppressed" time="0.000" /><testcase classname="engineering.ai.tests.test_context_usability" name="test_configuration_request_preloads_only_authorized_templates[True]" time="1.055" /><testcase classname="engineering.ai.tests.test_context_usability" name="test_configuration_request_preloads_only_authorized_templates[False]" time="1.133" /><testcase classname="engineering.ai.tests.test_entrypoints" name="test_requests_are_explicit_idempotent_redacted_and_paged" time="1.099" /><testcase classname="engineering.ai.tests.test_entrypoints" name="test_chat_forwarding_binds_original_and_policy" time="1.263" /><testcase classname="engineering.ai.tests.test_entrypoints" name="test_player_can_cancel_after_dispatching_kp_loses_role" time="1.241" /><testcase classname="engineering.ai.tests.test_entrypoints" name="test_plan_without_proposal_rechecks_context_on_read" time="1.185" /><testcase classname="engineering.ai.tests.test_entrypoints" name="test_auto_off_prefix_dedup_edits_withdrawal_and_role" time="1.227" /><testcase classname="engineering.ai.tests.test_entrypoints" name="test_manual_revision_invalidates_approval_and_cancel_revokes" time="22.579" /><testcase classname="engineering.ai.tests.test_entrypoints" name="test_receipt_rechecks_private_sources_and_restart_pending" time="1.866" /><testcase classname="engineering.ai.tests.test_entrypoints" name="test_http_auth_limits_schema_capability_and_disabled_module" time="1.530" /><testcase classname="engineering.ai.tests.test_entrypoints" name="test_cli_uses_same_three_engines" time="10.494" /></testsuite></testsuites>

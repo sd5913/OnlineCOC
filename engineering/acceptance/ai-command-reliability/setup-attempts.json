@@ -1,0 +1,31 @@
+[
+  {
+    "attempt": 1,
+    "status": "failed",
+    "code": "WORKER_EXITED",
+    "reason": "Baseline source copy omitted relative data-management dependency required by isolated -I Lua worker",
+    "realApiRequests": 0,
+    "resolution": "Copied only stable onlinecoc_data source and example fixtures into baseline; kept sandbox unchanged"
+  },
+  {
+    "attempt": "valid-fixture-v2-first",
+    "status": "failed",
+    "reason": "chat.message.share fixture referenced entity.patch; actual API permits only public completed action/behavior receipts",
+    "realApiRequests": 0,
+    "resolution": "Seed a real public fixture.inspect action receipt; preserve command data and preflight checks"
+  },
+  {
+    "attempt": 2,
+    "stage": "valid-fixture-v2",
+    "status": "failed",
+    "reason": "room_read_case",
+    "realApiRequests": 0
+  },
+  {
+    "stage": "valid-v2-input-finalization",
+    "code": "RELATIVE_FIXTURE_PATH",
+    "outcome": "Stopped after 9 calls before unsupported/SV cases; exact original request bodies and evaluations retained in ledger. Added guide and scopes before distinct valid-v3 stage. Counts remain cumulative.",
+    "calls": 9,
+    "tokens": 49466
+  }
+]

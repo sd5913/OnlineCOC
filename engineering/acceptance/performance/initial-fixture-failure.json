@@ -1,0 +1,10 @@
+{
+  "stage": "initial browser readiness check",
+  "reason": "Playwright wait_for_function string polling conflicted with host CSP unsafe-eval prohibition.",
+  "resolution": "Use evaluate polling in test harness; production CSP unchanged.",
+  "productionCodeChanged": false,
+  "benchmarkCompleted": false,
+  "secondFailure": "The harness mistook view.status=active for a command receipt status; fixed to check commandId before receipt status.",
+  "thirdRun": {"singlePageCompleted":true,"chatSendP50Ms":467,"ruleActionP50Ms":1016.3,"fourPageFailure":"DISCONNECTED during chat.read; client view was unavailable. This alone does not establish a socket disconnect. Updated harness records per-operation errors/waits; later runs independently count snapshot reset and socket close. Changed zero-damage mutation workload to read-only dice action to avoid unrelated entity version conflicts."},
+  "baselineMirrorPreparation": ["Initial reconstruction stopped on Windows default GBK decoding; explicit UTF-8 fixed it.","First source SHA check stopped on one extra blank line in reconstructed contracts.py; corrected whitespace, then all five original hashes matched before the added baseline ran."]
+}

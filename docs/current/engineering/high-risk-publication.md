@@ -4,7 +4,7 @@
 - 文档子类：工程
 - 状态：有效
 - 创建日期：2026-11-19
-- 最后更新：2026-11-20
+- 最后更新：2026-11-21
 - 关联文档：[工程索引](README.md)、[房间 AI](ai-runtime.md)、[修改裁决](ai-rulings.md)、[数据查询](ai-data-query.md)、[宿主验收](../../../engineering/acceptance/high-risk-publication/README.md)
 
 ## 适用范围
@@ -22,7 +22,7 @@ Room 仍为 schemaVersion=4。新增批准字段为可选，旧数据可加载�
 - 修改涉及 `item`、`weapon`、`bag` 类型的配置。
 - 配置 ID 命中包契约 `highRisk.configurationIds` 或 `configurationPrefixes`。
 
-地图等业务类型由包契约声明 ID／前缀；地图数据文件变化也满足文件变化条件。`highRisk.ruleFiles/dataFiles/allowRemove` 是包检查器可检查的扩展声明，不代替 KP 批准。A/B/C、包约束和依赖检查仍需通过。
+地图等业务类型由包契约声明 ID／前缀；地图数据文件变化也满足文件变化条件。`highRisk.ruleFiles/dataFiles/allowRemove` 是包检查器可检查的扩展声明，不代替 KP 批准。A/B、包约束和依赖检查必须通过；C 采用下面的报告分类和明确采纳规则。
 
 `ChangeSet.configurations` 支持 `add`、`replace`、`remove`：
 
@@ -70,7 +70,45 @@ Room 仍为 schemaVersion=4。新增批准字段为可选，旧数据可加载�
 | RULE_CYCLE_OR_MISSING | 候选规则依赖缺失或成环 |
 | BASELINE_STALE / SOURCE_STALE | 游戏基线或证据变化，需要重新验证审核 |
 | VALIDATOR_STALE | 包绑定或检查器版本变化，需要重新验证 |
+| C_BASIS_STALE | 当前 C 评估依据已改变，需要重新验证并审核 |
+| C_REVIEW_REQUIRED | 可采纳的 unknown C 报告缺少精确人工采纳证明 |
+| C_BASIS_UNAVAILABLE | 当前依据不可读取、仓库缺失／损坏／锁占用，不能继续发布 |
+| CONSULTATION_REVIEW_REQUIRED | KP 咨询来源的确认摘要缺失或不匹配，须重新展示来源风险并确认 |
+| CONSULTATION_ONLY | 严格玩家或玩家会话上下文不能直接作为 KP 配置发布依据 |
 | PERMISSION_DENIED | 账号、会话读取范围或当前授权不满足条件 |
+
+## KP 接受咨询来源风险
+
+`facts.consultationOnly=true` 表示候选含咨询来源，并不单独禁止当前有效 KP 发布已经映射到宿主支持的 ChangeSet。宿主也独立识别 `facts.dataQueries[].readRefs[].ref.sourceId` 不属于 `host`、`host-room`、`host-room-state` 的来源，不依赖模型或界面的风险布尔值。批准时保留来源标记，额外提交：
+
+```json
+{
+  "consultationReview": { "sourceDigest": "完整当前上下文的摘要" },
+  "riskDecisions": {
+    "consultation-source": "已核对来源及不确定性并接受本次配置修改"
+  }
+}
+```
+
+`publication.consultation_source_digest(context)` 返回完整 `context` 的 canonical SHA-256。摘要涵盖本次完整上下文、引用和查询证明，批准和发布都重新计算；不能只传布尔开关、旧摘要或模型生成的接受声明。风险理由去空白后至少三个字符，原高危和 C 报告风险确认仍适用。Approval 保存 `consultationReview` 与宿主重算的 `consultationAssessment={requiresAcceptance,sourceCount,sourceDigest,notice}`，它们都纳入 `approvalDigest`；这里的 `sourceCount` 是查询证明中按 ref 摘要去重的外部 readRefs 数量，旧标记单独触发风险时可以为 0。
+
+审批仍要求当前 KP、对应审核主体、当前授权版本、当前来源与世界/配置/规则基线、通过的技术检查及有效配置图。`strictPlayer=true` 或 `sessionAccess.level='player'` 的上下文继续拒绝，KP 不能用风险理由把玩家受限上下文直接升级为管理员执行证据。
+
+该机制不增加存储能力：配置/规则候选仍走 `ai.proposal.approve`、`publication.apply`；实例修改仍走现有宿主操作或支持的原子批次；包独立文件不属于该发布事务。没有合法目标映射、实现端口或成功回执时必须保留未执行状态，不能宣称写入成功。技术错误、未知操作、结构无效、悬空引用和失效权限也不属于可接受的咨询风险。
+
+宿主专项见 [KP 策略边界验收](../../../engineering/acceptance/kp-policy-audit/README.md)。AI 上下文、候选映射、风险展示和确认入口由 AI 与包侧另行联测。
+
+## C 评估与动态依据
+
+宿主独立检查三份原始报告及其摘要。A/B 必须 pass 且没有 error finding；C 必须为无 error 的 pass，或为 unknown 且所有 error finding（至少一项）仅来自 `EXTENSION_FORBIDDEN`、`LIVE_SCENARIO_COVERAGE_MISSING`、`EXISTING_INSTANCE_COVERAGE_MISSING`。技术执行失败、超时、沙箱错误及其他代码不能被 KP 采纳绕过，原 unknown 报告也不改写为 pass。
+
+`PreparedBundle.cAssessment` 绑定 `basisRevision/basisDigest/reportDigest`、`requiresAcceptance/adoptable`。宿主从 C.evidence.reviewBasis 的 revision、metricOverrides、liveScenarios、notes 重算依据摘要，检查其附带 binding；reportDigest 为全部三份 reports 的摘要，并重新分类，不信任传入的布尔结论。需要人工采纳时，`ai.proposal.approve.args.cReview` 必须精确包含上述三个标识，同时填写 `gameplay-risk` 理由。高危候选仍需原 `explicitHighRiskDigest` 和 `high-risk` 理由。
+
+AI 服务安装 `Host.ai_c_basis_resolver()`，在宿主锁内提供当前 `{basisRevision,basisDigest}`。批准及发布都重新核对；依据更新后返回 `C_BASIS_STALE`，须重新验证和审核。Approval 保存原 reports、cAssessment、可选 cReview，全部纳入 approvalDigest；发布时复验。C 为 pass 的新报告同样绑定当前依据，但不增加人工采纳要求。旧字段可缺省以便加载历史数据；当前安装依据 resolver 后，没有依据证明的旧批准不能直接发布。
+
+AI 服务关闭时，在宿主锁内把依据回调替换为独立持久化读取器；后续发布每次重新打开并核对当前仓库与 scope，不使用缓存旧值。仓库缺失、损坏或锁占用返回 `C_BASIS_UNAVAILABLE`。新服务注册会替换该读取器。这样已批准候选可在生成服务关闭后继续发布，动态依据复验仍有效；已提交命令重启后的同 ID 回执重放不重复消费配置。
+
+检查器指纹包含 AI `c_review.py`；更改分类或依据规则会使旧执行证据失效。新增宿主测试见[账号与发布验收](../../../engineering/acceptance/local-accounts/README.md)；AI 动态依据更新和界面说明见[裁决文档](ai-rulings.md)。
 
 ## 历史上下文的只读复验
 

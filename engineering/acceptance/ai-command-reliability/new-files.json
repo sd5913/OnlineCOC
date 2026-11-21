@@ -1,0 +1,325 @@
+{
+  "at": "2026-11-20T22:33:59.357959+08:00",
+  "files": [
+    {
+      "path": "engineering/acceptance/ai-command-reliability/.gitignore",
+      "purpose": "AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README）"
+    },
+    {
+      "path": "engineering/acceptance/ai-command-reliability/README.md",
+      "purpose": "AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README）"
+    },
+    {
+      "path": "engineering/acceptance/ai-command-reliability/atomic-first.xml",
+      "purpose": "AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README）"
+    },
+    {
+      "path": "engineering/acceptance/ai-command-reliability/atomic-second.xml",
+      "purpose": "AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README）"
+    },
+    {
+      "path": "engineering/acceptance/ai-command-reliability/atomic-third.xml",
+      "purpose": "AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README）"
+    },
+    {
+      "path": "engineering/acceptance/ai-command-reliability/baseline-reassessment.json",
+      "purpose": "AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README）"
+    },
+    {
+      "path": "engineering/acceptance/ai-command-reliability/baseline-source.json",
+      "purpose": "AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README）"
+    },
+    {
+      "path": "engineering/acceptance/ai-command-reliability/batch-details-1100.png",
+      "purpose": "AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README）"
+    },
+    {
+      "path": "engineering/acceptance/ai-command-reliability/batch-details-390.png",
+      "purpose": "AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README）"
+    },
+    {
+      "path": "engineering/acceptance/ai-command-reliability/batch-ui-first.xml",
+      "purpose": "AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README）"
+    },
+    {
+      "path": "engineering/acceptance/ai-command-reliability/bounded_provider.py",
+      "purpose": "AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README）"
+    },
+    {
+      "path": "engineering/acceptance/ai-command-reliability/budget.json",
+      "purpose": "AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README）"
+    },
+    {
+      "path": "engineering/acceptance/ai-command-reliability/casebook.py",
+      "purpose": "AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README）"
+    },
+    {
+      "path": "engineering/acceptance/ai-command-reliability/cases.json",
+      "purpose": "AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README）"
+    },
+    {
+      "path": "engineering/acceptance/ai-command-reliability/catalog-final.xml",
+      "purpose": "AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README）"
+    },
+    {
+      "path": "engineering/acceptance/ai-command-reliability/coordinator-1795183044989840600.json",
+      "purpose": "AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README）"
+    },
+    {
+      "path": "engineering/acceptance/ai-command-reliability/coordinator-1795183647247512600.json",
+      "purpose": "AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README）"
+    },
+    {
+      "path": "engineering/acceptance/ai-command-reliability/coordinator-1795184194107020600.json",
+      "purpose": "AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README）"
+    },
+    {
+      "path": "engineering/acceptance/ai-command-reliability/coordinator-regression-source.json",
+      "purpose": "AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README）"
+    },
+    {
+      "path": "engineering/acceptance/ai-command-reliability/coordinator-regression.xml",
+      "purpose": "AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README）"
+    },
+    {
+      "path": "engineering/acceptance/ai-command-reliability/coordinator_live.py",
+      "purpose": "AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README）"
+    },
+    {
+      "path": "engineering/acceptance/ai-command-reliability/core-first-source.json",
+      "purpose": "AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README）"
+    },
+    {
+      "path": "engineering/acceptance/ai-command-reliability/core-first.xml",
+      "purpose": "AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README）"
+    },
+    {
+      "path": "engineering/acceptance/ai-command-reliability/core-repaired-source.json",
+      "purpose": "AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README）"
+    },
+    {
+      "path": "engineering/acceptance/ai-command-reliability/core-repaired.xml",
+      "purpose": "AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README）"
+    },
+    {
+      "path": "engineering/acceptance/ai-command-reliability/document-check.json",
+      "purpose": "文档链接与冻结源码摘要检查"
+    },
+    {
+      "path": "engineering/acceptance/ai-command-reliability/engine-interface-source.json",
+      "purpose": "AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README）"
+    },
+    {
+      "path": "engineering/acceptance/ai-command-reliability/evaluate.py",
+      "purpose": "AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README）"
+    },
+    {
+      "path": "engineering/acceptance/ai-command-reliability/failure-register.json",
+      "purpose": "AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README）"
+    },
+    {
+      "path": "engineering/acceptance/ai-command-reliability/feedback-followup-source.json",
+      "purpose": "AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README）"
+    },
+    {
+      "path": "engineering/acceptance/ai-command-reliability/feedback-followup.xml",
+      "purpose": "AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README）"
+    },
+    {
+      "path": "engineering/acceptance/ai-command-reliability/finalize.py",
+      "purpose": "AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README）"
+    },
+    {
+      "path": "engineering/acceptance/ai-command-reliability/followup-1795184808338206200.json",
+      "purpose": "AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README）"
+    },
+    {
+      "path": "engineering/acceptance/ai-command-reliability/followup-1795185119230842500.json",
+      "purpose": "AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README）"
+    },
+    {
+      "path": "engineering/acceptance/ai-command-reliability/followup-verification.json",
+      "purpose": "AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README）"
+    },
+    {
+      "path": "engineering/acceptance/ai-command-reliability/freeze-smoke.xml",
+      "purpose": "AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README）"
+    },
+    {
+      "path": "engineering/acceptance/ai-command-reliability/improved-system.txt",
+      "purpose": "AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README）"
+    },
+    {
+      "path": "engineering/acceptance/ai-command-reliability/independent-reassessment.json",
+      "purpose": "AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README）"
+    },
+    {
+      "path": "engineering/acceptance/ai-command-reliability/live-ledger.json",
+      "purpose": "AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README）"
+    },
+    {
+      "path": "engineering/acceptance/ai-command-reliability/live.py",
+      "purpose": "AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README）"
+    },
+    {
+      "path": "engineering/acceptance/ai-command-reliability/lua-author-check.json",
+      "purpose": "AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README）"
+    },
+    {
+      "path": "engineering/acceptance/ai-command-reliability/new-files.json",
+      "purpose": "本次新增路径交接清单"
+    },
+    {
+      "path": "engineering/acceptance/ai-command-reliability/oracle-check.json",
+      "purpose": "AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README）"
+    },
+    {
+      "path": "engineering/acceptance/ai-command-reliability/probe-cases.json",
+      "purpose": "AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README）"
+    },
+    {
+      "path": "engineering/acceptance/ai-command-reliability/production-freeze.json",
+      "purpose": "AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README）"
+    },
+    {
+      "path": "engineering/acceptance/ai-command-reliability/production-source-before-input-boundaries.json",
+      "purpose": "AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README）"
+    },
+    {
+      "path": "engineering/acceptance/ai-command-reliability/production-source.json",
+      "purpose": "AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README）"
+    },
+    {
+      "path": "engineering/acceptance/ai-command-reliability/recovery-first.xml",
+      "purpose": "AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README）"
+    },
+    {
+      "path": "engineering/acceptance/ai-command-reliability/reference-feedback-source.json",
+      "purpose": "AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README）"
+    },
+    {
+      "path": "engineering/acceptance/ai-command-reliability/reference-feedback.xml",
+      "purpose": "AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README）"
+    },
+    {
+      "path": "engineering/acceptance/ai-command-reliability/reference-input-boundaries-source.json",
+      "purpose": "AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README）"
+    },
+    {
+      "path": "engineering/acceptance/ai-command-reliability/reference-input-boundaries.xml",
+      "purpose": "AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README）"
+    },
+    {
+      "path": "engineering/acceptance/ai-command-reliability/regression-coverage.json",
+      "purpose": "AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README）"
+    },
+    {
+      "path": "engineering/acceptance/ai-command-reliability/repair_saved.py",
+      "purpose": "AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README）"
+    },
+    {
+      "path": "engineering/acceptance/ai-command-reliability/replay-1795183317010503400.json",
+      "purpose": "AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README）"
+    },
+    {
+      "path": "engineering/acceptance/ai-command-reliability/replay_outputs.py",
+      "purpose": "AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README）"
+    },
+    {
+      "path": "engineering/acceptance/ai-command-reliability/results.json",
+      "purpose": "AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README）"
+    },
+    {
+      "path": "engineering/acceptance/ai-command-reliability/run_tests.py",
+      "purpose": "AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README）"
+    },
+    {
+      "path": "engineering/acceptance/ai-command-reliability/saved-repair-1795183760607024700.json",
+      "purpose": "AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README）"
+    },
+    {
+      "path": "engineering/acceptance/ai-command-reliability/saved-repair-1795184015563359400.json",
+      "purpose": "AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README）"
+    },
+    {
+      "path": "engineering/acceptance/ai-command-reliability/saved-repair-1795184146769813400.json",
+      "purpose": "AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README）"
+    },
+    {
+      "path": "engineering/acceptance/ai-command-reliability/setup-attempts.json",
+      "purpose": "AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README）"
+    },
+    {
+      "path": "engineering/acceptance/ai-command-reliability/strict-pack-v2-source.json",
+      "purpose": "AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README）"
+    },
+    {
+      "path": "engineering/acceptance/ai-command-reliability/technical-repair-fixed.xml",
+      "purpose": "AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README）"
+    },
+    {
+      "path": "engineering/acceptance/ai-command-reliability/technical-repair.xml",
+      "purpose": "AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README）"
+    },
+    {
+      "path": "engineering/acceptance/ai-command-reliability/valid-cases.json",
+      "purpose": "AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README）"
+    },
+    {
+      "path": "engineering/acceptance/ai-command-reliability/valid-fixture-checks.json",
+      "purpose": "AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README）"
+    },
+    {
+      "path": "engineering/acceptance/ai-command-reliability/valid-input-source.json",
+      "purpose": "AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README）"
+    },
+    {
+      "path": "engineering/acceptance/ai-command-reliability/valid_cases.py",
+      "purpose": "AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README）"
+    },
+    {
+      "path": "engineering/acceptance/ai-command-reliability/valid_live.py",
+      "purpose": "AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README）"
+    },
+    {
+      "path": "engineering/acceptance/ai-command-reliability/verify_followups.py",
+      "purpose": "AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README）"
+    },
+    {
+      "path": "engineering/acceptance/ai-command-reliability/work/",
+      "purpose": "Git忽略的独立初态、源码快照、真实Host和生成产物，不逐文件登记"
+    },
+    {
+      "path": "engineering/ai/src/onlinecoc_ai/batch_execution.py",
+      "purpose": "AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README）"
+    },
+    {
+      "path": "engineering/ai/src/onlinecoc_ai/reliability.py",
+      "purpose": "AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README）"
+    },
+    {
+      "path": "engineering/ai/src/onlinecoc_ai/runtime_references.py",
+      "purpose": "AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README）"
+    },
+    {
+      "path": "engineering/ai/tests/test_atomic_integration.py",
+      "purpose": "AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README）"
+    },
+    {
+      "path": "engineering/ai/tests/test_atomic_recovery.py",
+      "purpose": "AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README）"
+    },
+    {
+      "path": "engineering/ai/tests/test_batch_details_ui.py",
+      "purpose": "AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README）"
+    },
+    {
+      "path": "engineering/ai/tests/test_command_reliability.py",
+      "purpose": "AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README）"
+    },
+    {
+      "path": "engineering/ai/tests/test_runtime_references.py",
+      "purpose": "AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README）"
+    }
+  ]
+}

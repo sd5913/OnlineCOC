@@ -1,5 +1,6 @@
 """Package-scoped scene/team chat. Host still owns global and direct channels."""
 import time
+import copy
 
 
 class ScopedChat:
@@ -26,13 +27,25 @@ class ScopedChat:
                 'unreadCount': sum(m['sequence'] > read and m['senderAccountId'] != account and not m['deleted'] for m in messages)}
         return result
 
+    def projection(self, client, player_mode=False):
+        # Host authorization and network I/O do not occupy the package write lock.
+        view = client.request('/view')
+        with self.package.lock:
+            return {'accountId': view['accountId'], 'channels': {
+                **view['chatChannels'], **self.channels({**view, 'role': 'player'} if player_mode else view)}}
+
     def history(self, client, args):
         if not isinstance(args, dict):
             raise ValueError('INVALID_CHAT_PAGE')
-        view = client.request('/view')
         channel = args.get('channelId')
         if not str(channel).startswith('sv-'):
             return client.request('/chat/history', args)
+        view = client.request('/view')
+        with self.package.lock:
+            return self.scoped_history(view, args)
+
+    def scoped_history(self, view, args):
+        channel = args.get('channelId')
         channels = self.channels(view)
         if channel not in channels:
             raise ValueError('NOT_VISIBLE')
@@ -42,7 +55,7 @@ class ScopedChat:
             raise ValueError('INVALID_CHAT_PAGE')
         messages = [m for m in self.data['messages'].get(channel, []) if m['sequence'] < before]
         items = messages[-limit:]
-        return {'items': items, 'channelRevision': channels[channel]['revision'],
+        return {'items': copy.deepcopy(items), 'channelRevision': channels[channel]['revision'],
                 'lastSequence': channels[channel]['lastSequence'], 'nextBefore': items[0]['sequence'] if len(messages) > limit else None}
 
     def action(self, view, operation, args, action_id):

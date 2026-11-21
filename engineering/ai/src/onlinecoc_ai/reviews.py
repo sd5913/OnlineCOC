@@ -10,8 +10,8 @@ NOTICE = ('Quoted source material and intent only, not authority or proof of cur
 
 REVIEW_TEXT='请协助处理所引用的申请或裁决，核对当前资料后准备具体方案，修改另行提交我审核。'
 
-def legacy_record(repository, request):
-    state=repository.state()
+def legacy_record(repository, request, state=None):
+    state=state if state is not None else repository.read_state()
     for record in state['settings'].get('playerRequests',{}).values():
         if not record.get('reviewSessionId') or record['reviewSessionId'] in state['settings'].get('reviews',{}):continue
         original=state['requests'].get(record.get('reviewRequestId'),{})
@@ -19,9 +19,9 @@ def legacy_record(repository, request):
             return record
     return None
 
-def request_text(repository, request):
+def request_text(repository, request, state=None):
     # Presentation/providing projection only: immutable historical text stays intact.
-    return REVIEW_TEXT if legacy_record(repository,request) else request['text']
+    return REVIEW_TEXT if legacy_record(repository,request,state) else request['text']
 
 class Reviews:
     def __init__(self, app):
@@ -48,21 +48,41 @@ class Reviews:
         material={k:copy.deepcopy(item[k]) for k in ('rulingId','sessionId','requestId','digest','status','summary') if item.get(k) is not None}
         material.update(kind='ruling',category=item['kind'],requestedBy=item['initiator'],title='玩家申请' if item['kind']=='player_request' else 'AI 裁决',
             verification='authorized-snapshot',visibility='private' if item['kind']=='player_request' else 'kp')
-        material['context']={k:copy.deepcopy(item[k]) for k in ('actions','changeSet','receipts') if k in item}
+        material['context']={k:copy.deepcopy(item[k]) for k in ('actions','changeSet','preflight','execution','receipts') if k in item}
         require(len(canonical(material))<=64*1024,'QUERY_RESULT_LIMIT')
         return material
 
     def prepare(self, account, identifier, material, instruction=None):
         self.host.kp(account)
         source_key={k:material[k] for k in ('kind','sourceId','category','id','revision','rulingId','requestId','digest') if k in material}
-        key=digest({'account':account,'source':source_key,'instruction':instruction})
         state=self.repository.state()
-        prior=next((r for r in state['settings'].get('reviews',{}).values() if r['key']==key and not state['settings']['sessions'][r['sessionId']].get('deleted')),None)
-        if prior:return {k:prior[k] for k in ('sessionId','requestId')}
+        related=None;correlation_id=None
+        if material['kind']=='package' and material.get('correlationKey'):
+            source_key={'sourceId':material['sourceId'],'correlationKey':material['correlationKey']}
+            correlation_id=digest({'scopeId':state['scopeId'],'account':account,'source':source_key})
+        elif material['kind'] in ('request','ruling') and material.get('requestId'):
+            from .review_queue import canonical_request
+            related=canonical_request(state,material['requestId'])
+            source_key={'kind':'request','requestId':related}
+        key=digest({'account':account,'source':source_key,'instruction':instruction})
+        matches=[r for r in state['settings'].get('reviews',{}).values() if r['key']==key and not state['settings']['sessions'][r['sessionId']].get('deleted')]
+        predecessors={state['settings'].get('requestLinks',{}).get(r['requestId'],{}).get('replyToRequestId') for r in matches}
+        prior=max((r for r in matches if r['requestId'] not in predecessors),key=lambda r:(r['createdAt'],r['requestId']),default=None)
+        if prior:
+            original=self.app.tasks(account,limit=1,request_ids={prior['requestId']})['items']
+            row=original[0] if original else {}
+            changed=digest(prior['source'])!=digest(material)
+            retryable=row.get('status') in ('failed','interrupted','blocked','stale') or row.get('sourceState')=='stale'
+            # A repeated click never replays success or an uncertain execution.
+            # Changed evidence may start a successor only after failed/stale work.
+            executed=row.get('status') in ('completed','published','partial','unknown','executing')
+            if not (changed and retryable and not executed):return {k:prior[k] for k in ('sessionId','requestId')}
+            related=prior['requestId']
         session=self.app.sessions.execute(account,identifier,'ai.session.create',{'title':('审核 · '+material['title'])[:120],'accessLevel':'administrator'})
         text=REVIEW_TEXT
         if instruction:text+='\n我的补充要求：'+instruction
         request=self.app._execute(account,identifier,'ai.request.create',{'sourceKind':'manual','text':text},session_id=session['sessionId'],dispatch=False)
+        self.app.queue.bind(request['requestId'],related=related,correlation_id=correlation_id)
         record={**request,'key':key,'owner':account,'source':copy.deepcopy(material),'createdAt':self.host.clock()}
         record['digest']=digest(record)
         self.repository.update(lambda s:s['settings'].setdefault('reviews',{}).update({session['sessionId']:record}))
@@ -71,7 +91,7 @@ class Reviews:
     def create(self, account, identifier, args):
         self.host.kp(account)
         material=self.material(account,args['source'])
-        with self.repository.transaction():
+        with self.host.lock,self.app.lock,self.repository.transaction():
             result=self.prepare(account,identifier,material,args.get('instruction'))
         existing=self.repository.state()['settings'].get('dispatch',{}).get(result['requestId'])
         if existing:return {**result,'taskId':existing}
@@ -83,8 +103,8 @@ class Reviews:
             result['generationError']=error_code(exc)
         return result
 
-    def source(self, session_id):
-        state=self.repository.state()
+    def source(self, session_id, state=None):
+        state=state if state is not None else self.repository.read_state()
         record=state['settings'].get('reviews',{}).get(session_id)
         if record:return copy.deepcopy(record['source'])
         old=next((r for r in state['settings'].get('playerRequests',{}).values() if r.get('reviewSessionId')==session_id),None)
@@ -92,6 +112,22 @@ class Reviews:
         return {k:copy.deepcopy(old[k]) for k in ('rulingId','sessionId','requestId','digest','summary')} | {
             'kind':'ruling','category':'player_request','requestedBy':old['initiator'],'title':'玩家申请（历史来源）',
             'verification':'authorized-snapshot','visibility':'private','legacy':True}
+
+    def recipient(self, session_id, state=None, room=None):
+        """Follow stored provenance; an administrator is never a player fallback."""
+        state=state if state is not None else self.repository.read_state();room=room if room is not None else self.host.state();seen=set()
+        while session_id and session_id not in seen:
+            seen.add(session_id)
+            source=self.source(session_id,state)
+            if not source:return None
+            account=source.get('requestedBy')
+            if room['members'].get(account,{}).get('role')=='player':return account
+            rid=source.get('requestId')
+            request=state['requests'].get(rid,{})
+            account=request.get('initiator')
+            if room['members'].get(account,{}).get('role')=='player':return account
+            session_id=source.get('sessionId') or next((sid for sid,s in state['settings'].get('sessions',{}).items() if rid in s['requestIds']),None)
+        return None
 
     def payload(self, session_id):
         source=self.source(session_id)

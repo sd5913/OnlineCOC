@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="13" time="29.724" timestamp="2026-11-20T14:50:32.533783+08:00" hostname="LAPTOP-BIFSL64A"><testcase classname="tests.test_message_history" name="test_published_player_text_survives_revoke_without_restoring_source[False]" time="1.417" /><testcase classname="tests.test_message_history" name="test_published_player_text_survives_revoke_without_restoring_source[True]" time="1.373" /><testcase classname="tests.test_message_history" name="test_unpublished_or_unproven_legacy_body_is_not_recovered" time="1.379" /><testcase classname="tests.test_message_history" name="test_public_delivery_remembers_legacy_text_but_never_invents_time" time="1.383" /><testcase classname="tests.test_message_history" name="test_deleted_session_is_not_revived_by_delivery_receipt" time="1.418" /><testcase classname="tests.test_message_history" name="test_explicit_completed_followup_archives_predecessors_with_proof" time="1.433" /><testcase classname="tests.test_message_history" name="test_uncertain_predecessor_is_never_closed[partial]" time="1.301" /><testcase classname="tests.test_message_history" name="test_uncertain_predecessor_is_never_closed[unknown]" time="1.330" /><testcase classname="tests.test_message_history" name="test_uncertain_predecessor_is_never_closed[executing]" time="1.263" /><testcase classname="tests.test_message_history" name="test_completion_without_matching_host_receipts_cannot_close_group" time="1.298" /><testcase classname="tests.test_message_history_ui" name="test_unavailable_references_keep_label_and_disable_details" time="4.952"><failure message="AssertionError: assert 'rgb(236, 243, 233)' == 'rgb(236, 238, 236)'&#10;  &#10;  - rgb(236, 238, 236)&#10;  + rgb(236, 243, 233)">browser_page = &lt;Page url='http://127.0.0.1:55903/ai-ui/conversation.html'&gt;
+
+    def test_unavailable_references_keep_label_and_disable_details(browser_page):
+        page=browser_page;page.evaluate(BOOT,{'rows':1})
+        chip=page.locator('.assistant .reference-chip')
+        expect(chip).to_have_text('提灯')
+        page.evaluate("client.aiResolve=async()=&gt;{throw Object.assign(new Error('NOT_VISIBLE'),{code:'NOT_VISIBLE'});};ui.select('s1')")
+        expect(chip).to_have_attribute('aria-disabled','true')
+        expect(chip).to_have_text('提灯')
+        expect(chip).to_be_disabled();chip.dispatch_event('click');expect(page.locator('.reference-details dialog')).not_to_be_visible()
+        expect(page.locator('.assistant')).to_contain_text('先确定角色动机')
+&gt;       assert chip.evaluate("el=&gt;getComputedStyle(el).backgroundColor")=='rgb(236, 238, 236)'
+E       AssertionError: assert 'rgb(236, 243, 233)' == 'rgb(236, 238, 236)'
+E         
+E         - rgb(236, 238, 236)
+E         + rgb(236, 243, 233)
+
+engineering\ai\tests\test_message_history_ui.py:17: AssertionError</failure></testcase><testcase classname="tests.test_message_history_ui" name="test_timestamps_are_real_and_missing_history_is_explicit" time="4.754" /><testcase classname="tests.test_message_history_ui" name="test_transport_errors_keep_status_and_never_expose_body" time="4.688" /></testsuite></testsuites>

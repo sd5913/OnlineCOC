@@ -158,6 +158,8 @@ def test_model_page_counts_do_not_change_proofs_or_reveal_hidden_totals(setup):
 
 def test_channel_reference_resolves_actual_id_before_chat(setup):
     host,service,profile=setup;enable(host,public=True,kp=True,private=True)
+    from test_context import add_message
+    selected=add_message(host,'kp','check chat after this selected message')
     profile['limits']['maxToolRounds']=4
     seen=[]
     def handler(request):
@@ -173,7 +175,7 @@ def test_channel_reference_resolves_actual_id_before_chat(setup):
                 name,args='room_read_data',{'refs':[found['items'][0]['ref']]}
             elif len(tools)==2:
                 cid=found['items'][0]['data']['channelId'];assert cid=='general'
-                name,args='room_read_chat',{'channelId':cid,'limit':50}
+                name,args='room_read_chat',{'channelId':cid,'after':selected['sequence'],'limit':50}
             else:
                 assert found['items']==[]
                 return httpx.Response(200,json={'choices':[{'finish_reason':'stop','message':{'role':'assistant','content':json.dumps({'kind':'plan','text':'One channel; no messages in the authorized window.'})}}],'usage':{'prompt_tokens':10,'completion_tokens':10,'total_tokens':20}})
@@ -183,7 +185,7 @@ def test_channel_reference_resolves_actual_id_before_chat(setup):
         c=Coordinator(service,{profile['profileId']:profile},context=Context(service,demand=True),provider_factory=lambda p:create_provider(p,transport=httpx.MockTransport(handler),credential_loader=lambda _:'offline-key'))
         await c.start()
         try:
-            saved=await wait_task(c,c.enqueue('kp','channel-id','check chat')['taskId'])
+            saved=await wait_task(c,c.enqueue('kp','channel-id',selected['text'],source_kind='chat',source_id=selected['messageId'],source_revision=str(selected['revision']))['taskId'])
             assert saved['status']=='review_ready',saved
             assert all(x['status']=='completed' for x in saved['diagnostics']['toolCalls'])
         finally:await c.close()

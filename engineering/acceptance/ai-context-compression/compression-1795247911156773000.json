@@ -1,0 +1,322 @@
+{
+  "group": "compression",
+  "work": "D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\ai-context-compression\\work\\live-compression-1795247144510978100",
+  "tree": "engineering/acceptance/ai-context-compression/work/v2-critical-fixed-1795247816040380700",
+  "rows": [
+    {
+      "phase": "oracle-review",
+      "status": "passed",
+      "originalReport": "engineering/acceptance/ai-context-compression/compression-1795247144510978100.json",
+      "reason": "Original oracle omitted mandatory isNpc=1; persisted published template matches corrected exact oracle.",
+      "configurationDigest": "5d280fb407709ae08ed6c580d2ff3e2d71014ff8bfe987119bd611a51fd11539",
+      "expectedHp": 4
+    },
+    {
+      "group": "compression",
+      "phase": "spawn",
+      "request": "使用刚才已发布的 sv.ext.npc.compressed 模板，给kp创建一个名为验收小兵、visibility=public的NPC实例；保持模板默认数值，不重新创建或修改模板。准备待批准的运行指令。",
+      "status": "failed",
+      "task": {
+        "taskId": "dfcf306520874eb3a089ba59c23b7294",
+        "requestId": "dfcf306520874eb3a089ba59c23b7294",
+        "account": "kp",
+        "profile": {
+          "adapter": "deepseek-chat",
+          "allowPrivateEndpoint": false,
+          "baseUrl": "https://api.deepseek.com",
+          "credentialRef": "env:ONLINECOC_DEEPSEEK_API_KEY",
+          "enabled": true,
+          "limits": {
+            "dailyTokenBudget": null,
+            "maxConcurrentPerRoom": 1,
+            "maxQueuedPerRoom": 5,
+            "maxRepairAttempts": 5,
+            "maxToolRounds": 12,
+            "maxTransportRetries": 2,
+            "taskTimeoutMs": 600000
+          },
+          "model": "deepseek-flash",
+          "profileId": "deepseek-main",
+          "request": {
+            "connectTimeoutMs": 10000,
+            "maxOutputTokens": 8192,
+            "thinking": "disabled",
+            "totalTimeoutMs": 120000,
+            "contextWindowTokens": 1048576
+          },
+          "revision": 7,
+          "schemaVersion": 1,
+          "versionInfo": {
+            "label": "DeepSeek-V4.1-Flash-1017",
+            "sourceUrl": "https://api-docs.deepseek.com/quick_start/pricing/",
+            "verifiedAt": "2026-11-19"
+          }
+        },
+        "status": "review_ready",
+        "createdAt": 1795247927.2604907,
+        "lease": null,
+        "error": null,
+        "proposalId": null,
+        "text": "已按已发布的 `sv.ext.npc.compressed`（revision 1，defaults: hp/maxHp=4、str/dex/wil 各 10 及对应上限、armor=0、location=1、incapacitated=0、lastRoll=0、isNpc=1）准备一条 `entity.create` 待审动作：创建名为「验收小兵」、visibility=public 的 NPC 实例，不传 numbers，全部沿用模板默认数值，不新建或修改模板。该 NPC 归 KP 名下，未指定玩家 owner，因此不附加玩家通知。待你在审批界面批准后才会实际创建。",
+        "calls": [
+          {
+            "callId": "4c89ee7115e6422a9c80a4856120e2d3",
+            "requestDigest": "8e0b743e408cb609629e2cf4fcc447aae1115212d9447e1df4336d74bf3a6815",
+            "profileRevision": 7,
+            "requestedModel": "deepseek-flash",
+            "responseDigest": "f91c957b4aabfdeda097a5d2c300a132a0f9a7d3b4c7a7e0a01d4cc4252b8649",
+            "usage": {
+              "prompt_tokens": 24393,
+              "completion_tokens": 1281,
+              "total_tokens": 25674
+            },
+            "returnedModel": "deepseek-flash",
+            "systemFingerprint": "bc19ba97cbe016479903222bb1578db6"
+          },
+          {
+            "callId": "8202924e24df4069bbc606b0c50d92ef",
+            "requestDigest": "788c93b21d395ee09b6359e1b01320c3720947cd226d90545bd3a1422bbeb423",
+            "profileRevision": 7,
+            "requestedModel": "deepseek-flash",
+            "responseDigest": "b2a6f13009e18cc6e7e43b038b719e687839195232c705b47f3e2d811f66cb3f",
+            "usage": {
+              "prompt_tokens": 24060,
+              "completion_tokens": 1916,
+              "total_tokens": 25976
+            },
+            "returnedModel": "deepseek-flash",
+            "systemFingerprint": "bc19ba97cbe016479903222bb1578db6"
+          },
+          {
+            "callId": "2f17ff72a1644e0f860337e4435ac1d3",
+            "requestDigest": "8ece6cb48fa6d6312247cb5875897a5fd7f3064e1ff4c082d7a031654bea75b1",
+            "profileRevision": 7,
+            "requestedModel": "deepseek-flash",
+            "responseDigest": "27ac9e144fe1ef0c835b48861b425427edba16765ae2268524c3cd6d95e16de6",
+            "usage": {
+              "prompt_tokens": 15121,
+              "completion_tokens": 100,
+              "total_tokens": 15221
+            },
+            "returnedModel": "deepseek-flash",
+            "systemFingerprint": "bc19ba97cbe016479903222bb1578db6"
+          },
+          {
+            "callId": "116a473afcf24990a1b7d161a0e21fa7",
+            "requestDigest": "400d832beaf10c858e24751ce33ac503c71f22cb689d70d849e4cccaf3e1fa75",
+            "profileRevision": 7,
+            "requestedModel": "deepseek-flash",
+            "responseDigest": "77b52b15a7126c7f27b88414b72446eae0e440fe040e46e1573eb7943f9042e7",
+            "usage": {
+              "prompt_tokens": 18305,
+              "completion_tokens": 189,
+              "total_tokens": 18494
+            },
+            "returnedModel": "deepseek-flash",
+            "systemFingerprint": "bc19ba97cbe016479903222bb1578db6"
+          }
+        ],
+        "usage": 85365,
+        "events": [
+          {
+            "seq": 1,
+            "at": 1795247927.2604918,
+            "stage": "queued",
+            "status": "running",
+            "summary": "已接收，等待生成"
+          }
+        ],
+        "contextRef": "8936306b7ac57b2c64fa9694efee65f2d2180f42464f2878dd3acc1a764fe4b0",
+        "dependencyCheck": {
+          "snapshotAt": 1795247927.10226,
+          "checkedAt": 1795247950.103011,
+          "status": "unchanged",
+          "changes": [],
+          "totalChanges": 0,
+          "canRegenerate": false
+        },
+        "batchId": "e1cb8b11680b49f0bec0b36d4e6476b2",
+        "responseAt": 1795247951.7965813,
+        "messagePublication": {
+          "scopeId": "13bcf05789e44f9794a8beff0cc69875",
+          "sessionId": "e55454d4cf1c493db0e32ae1497ee501",
+          "account": "kp",
+          "accessLevel": "administrator",
+          "contextRef": "8936306b7ac57b2c64fa9694efee65f2d2180f42464f2878dd3acc1a764fe4b0",
+          "textDigest": "81136cf49329748e6491e4369f253244b9713a56bf55dbf6d8922b311134ea56",
+          "responseAt": 1795247951.7965813,
+          "referenceLabels": {}
+        }
+      },
+      "attemptIds": [
+        13,
+        14,
+        15,
+        16
+      ],
+      "ruling": {
+        "sessionId": "e55454d4cf1c493db0e32ae1497ee501",
+        "requestId": "dfcf306520874eb3a089ba59c23b7294",
+        "summary": "已按已发布的 `sv.ext.npc.compressed`（revision 1，defaults: hp/maxHp=4、str/dex/wil 各 10 及对应上限、armor=0、location=1、incapacitated=0、lastRoll=0、isNpc=1）准备一条 `entity.create` 待审动作：创建名为「验收小兵」、visibility=public 的 NPC 实例，不传 numbers，全部沿用模板默认数值，不新建或修改模板。该 NPC 归 KP 名下，未指定玩家 owner，因此不附加玩家通知。待你在审批界面批准后才会实际创建。",
+        "status": "pending",
+        "createdAt": 1795247950.8445532,
+        "digest": "6f6d2e58760b863304249ae6c55380bae7f485c84b2a6e4ef0fb944104df5957",
+        "actions": [
+          {
+            "target": "host",
+            "op": "entity.create",
+            "args": {
+              "configurationId": "sv.ext.npc.compressed",
+              "name": "验收小兵",
+              "visibility": "public",
+              "owner": null
+            }
+          }
+        ],
+        "receipts": [],
+        "rulingId": "batch:e1cb8b11680b49f0bec0b36d4e6476b2",
+        "kind": "runtime",
+        "canDecide": true,
+        "risks": [],
+        "consultationAssessment": {
+          "requiresAcceptance": false,
+          "sourceCount": 0,
+          "sourceDigest": "209aabbf709e11e76b577715d8b60e2b7d2cbf9a8f42381d302079b6ea548be8",
+          "notice": "独立包资料用于方案依据，可能不具备跨存储原子保证。请核对当前目标、完整变更及检查结果后决定；摘要或资料本身不授权执行。"
+        },
+        "preflight": {
+          "status": "passed",
+          "checkedAt": 1795247927.10226,
+          "scope": "host.room.atomic.v1",
+          "items": [
+            {
+              "index": 0,
+              "target": "host",
+              "op": "entity.create",
+              "status": "passed",
+              "result": "7ed933c01e244da1b568473f1484eba8",
+              "preview": true
+            }
+          ]
+        },
+        "initiator": "kp",
+        "sourceState": "fresh",
+        "queueTargetId": "batch:e1cb8b11680b49f0bec0b36d4e6476b2",
+        "queueDigest": "ec04b3aefd4712ab3853101ca5a07495cc43ec4bd3f6857fc3ec0333c46965dc",
+        "correlationId": "b4c59a842fc675671ff1d11edaf5e6cd753bba72f782d8f8bfdc20fd3b0ba533",
+        "queueStatus": "active",
+        "archived": false,
+        "canArchive": true,
+        "canRestore": false,
+        "supersedes": []
+      },
+      "approval": {
+        "requestId": "compression-spawn-1795247911156773000",
+        "status": "committed",
+        "result": {
+          "sessionId": "e55454d4cf1c493db0e32ae1497ee501",
+          "requestId": "dfcf306520874eb3a089ba59c23b7294",
+          "summary": "已按已发布的 `sv.ext.npc.compressed`（revision 1，defaults: hp/maxHp=4、str/dex/wil 各 10 及对应上限、armor=0、location=1、incapacitated=0、lastRoll=0、isNpc=1）准备一条 `entity.create` 待审动作：创建名为「验收小兵」、visibility=public 的 NPC 实例，不传 numbers，全部沿用模板默认数值，不新建或修改模板。该 NPC 归 KP 名下，未指定玩家 owner，因此不附加玩家通知。待你在审批界面批准后才会实际创建。",
+          "status": "completed",
+          "createdAt": 1795247950.8445532,
+          "digest": "6f6d2e58760b863304249ae6c55380bae7f485c84b2a6e4ef0fb944104df5957",
+          "actions": [
+            {
+              "target": "host",
+              "op": "entity.create",
+              "args": {
+                "configurationId": "sv.ext.npc.compressed",
+                "name": "验收小兵",
+                "visibility": "public",
+                "owner": null
+              }
+            }
+          ],
+          "receipts": [
+            {
+              "id": "batch-2221e97bfc2a78c6eb80ae61e79463969b151c2e5b4c70c08466e2e7af66d0eb",
+              "account": "kp",
+              "target": "host",
+              "receipt": {
+                "status": "committed",
+                "commandId": "batch-2221e97bfc2a78c6eb80ae61e79463969b151c2e5b4c70c08466e2e7af66d0eb",
+                "result": "79b5ceada1a54a8fb9a051ac36519669"
+              }
+            }
+          ],
+          "rulingId": "batch:e1cb8b11680b49f0bec0b36d4e6476b2",
+          "kind": "runtime",
+          "canDecide": false,
+          "risks": [],
+          "consultationAssessment": {
+            "requiresAcceptance": false,
+            "sourceCount": 0,
+            "sourceDigest": "209aabbf709e11e76b577715d8b60e2b7d2cbf9a8f42381d302079b6ea548be8",
+            "notice": "独立包资料用于方案依据，可能不具备跨存储原子保证。请核对当前目标、完整变更及检查结果后决定；摘要或资料本身不授权执行。"
+          },
+          "preflight": {
+            "status": "passed",
+            "checkedAt": 1795247953.502929,
+            "scope": "host.room.atomic.v1",
+            "items": [
+              {
+                "index": 0,
+                "target": "host",
+                "op": "entity.create",
+                "status": "passed",
+                "result": "19909da8befe421e903df0512e4a4e56",
+                "preview": true
+              }
+            ]
+          },
+          "execution": {
+            "status": "committed",
+            "scope": "host.room.atomic.v1",
+            "items": [
+              {
+                "index": 0,
+                "target": "host",
+                "op": "entity.create",
+                "status": "committed",
+                "commandId": "batch-2221e97bfc2a78c6eb80ae61e79463969b151c2e5b4c70c08466e2e7af66d0eb",
+                "result": "79b5ceada1a54a8fb9a051ac36519669"
+              }
+            ],
+            "committedCount": 1,
+            "failedCount": 0,
+            "notExecutedCount": 0,
+            "rolledBackCount": 0
+          },
+          "initiator": "kp",
+          "sourceState": "fresh",
+          "queueTargetId": "batch:e1cb8b11680b49f0bec0b36d4e6476b2",
+          "queueDigest": "3ba82de3b7a46926decba8d8e50a173e95bc4d317a8b6473a60bdae29cf34e38",
+          "correlationId": "b4c59a842fc675671ff1d11edaf5e6cd753bba72f782d8f8bfdc20fd3b0ba533",
+          "queueStatus": "history",
+          "archived": false,
+          "canArchive": false,
+          "canRestore": false,
+          "resolution": {
+            "targetId": "batch:e1cb8b11680b49f0bec0b36d4e6476b2",
+            "correlationId": "b4c59a842fc675671ff1d11edaf5e6cd753bba72f782d8f8bfdc20fd3b0ba533",
+            "goalDigest": "2ccd830b6e197d3695419e9b96e7183d7764c194054d37fb10bf3d881107e3c3",
+            "receiptRefs": [
+              {
+                "target": "host",
+                "account": "kp",
+                "commandId": "batch-2221e97bfc2a78c6eb80ae61e79463969b151c2e5b4c70c08466e2e7af66d0eb"
+              }
+            ],
+            "completedAt": 1795247954.4068694
+          },
+          "supersedes": []
+        }
+      },
+      "actualExecution": true,
+      "idempotent": true,
+      "code": "KeyError",
+      "reason": "'diagnostics'",
+      "traceback": "Traceback (most recent call last):\n  File \"D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\ai-context-compression\\live_scenarios.py\", line 187, in main\n    if ARGS.group=='compression':assert task['diagnostics'].get('compression'),'Semantic compression never triggered'\n                                        ~~~~^^^^^^^^^^^^^^^\nKeyError: 'diagnostics'\n"
+    }
+  ]
+}

@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="7" skipped="0" tests="52" time="91.801" timestamp="2026-11-21T09:19:31.905521+08:00" hostname="LAPTOP-BIFSL64A"><testcase classname="engineering.ai.tests.test_context_usability" name="test_old_parameters_survive_four_turn_window_without_factual_authority" time="1.347" /><testcase classname="engineering.ai.tests.test_context_usability" name="test_retained_requirements_recheck_original_provenance[cancelled]" time="1.205"><failure message="onlinecoc_ai.errors.AiError: INPUT_INVALID">application = &lt;onlinecoc_ai.api.Application object at 0x000002775AFCF750&gt;
+change = 'cancelled'
+
+    @pytest.mark.parametrize('change',['cancelled','session_deleted'])
+    def test_retained_requirements_recheck_original_provenance(application,change):
+        app=application;sid=session(app);first=submit(app,sid,'目标生命5')
+        for n in range(5):submit(app,sid,'细节'+str(n))
+        snap,_=capture(app,sid,'继续')
+        from onlinecoc_ai.intent_context import validate
+        validate(app.repository,snap[0])
+&gt;       if change=='cancelled':committed(command(app,'ai.request.cancel',first))
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+engineering\ai\tests\test_context_usability.py:43: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+engineering\ai\tests\test_entrypoints.py:29: in command
+    return app.command(account, {'requestId': identifier or uuid.uuid4().hex,
+engineering\ai\src\onlinecoc_ai\api.py:70: in command
+    return self._command(account, envelope)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+engineering\ai\src\onlinecoc_ai\api.py:77: in _command
+    require(Draft202012Validator(schema).is_valid(args), 'INPUT_INVALID')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+condition = False, code = 'INPUT_INVALID', message = '', path = ''
+
+    def require(condition, code="INPUT_INVALID", message="", path=""):
+        if not condition:
+&gt;           raise AiError(code, message, path)
+E           onlinecoc_ai.errors.AiError: INPUT_INVALID
+
+engineering\ai\src\onlinecoc_ai\errors.py:15: AiError</failure></testcase><testcase classname="engineering.ai.tests.test_context_usability" name="test_retained_requirements_recheck_original_provenance[session_deleted]" time="1.209"><failure message="AssertionError: {'requestId': '672b4482f3f14eb1a40e7071bd05702a', 'status': 'rejected', 'code': 'SESSION_VERSION_CONFLICT'}&#10;assert 'rejected' == 'committed'&#10;  &#10;  - committed&#10;  + rejected">application = &lt;onlinecoc_ai.api.Application object at 0x000002775AF99590&gt;
+change = 'session_deleted'
+
+    @pytest.mark.parametrize('change',['cancelled','session_deleted'])
+    def test_retained_requirements_recheck_original_provenance(application,change):
+        app=application;sid=session(app);first=submit(app,sid,'目标生命5')
+        for n in range(5):submit(app,sid,'细节'+str(n))
+        snap,_=capture(app,sid,'继续')
+        from onlinecoc_ai.intent_context import validate
+        validate(app.repository,snap[0])
+        if change=='cancelled':committed(command(app,'ai.request.cancel',first))
+&gt;       else:committed(command(app,'ai.session.delete',{'sessionId':sid,'revision':1}))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+engineering\ai\tests\test_context_usability.py:44: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+receipt = {'requestId': '672b4482f3f14eb1a40e7071bd05702a', 'status': 'rejected', 'code': 'SESSION_VERSION_CONFLICT'}
+
+    def committed(receipt):
+&gt;       assert receipt['status'] == 'committed', receipt
+E       AssertionError: {'requestId': '672b4482f3f14eb1a40e7071bd05702a', 'status': 'rejected', 'code': 'SESSION_VERSION_CONFLICT'}
+E       assert 'rejected' == 'committed'
+E         
+E         - committed
+E         + rejected
+
+engineering\ai\tests\test_entrypoints.py:34: AssertionError</failure></testcase><testcase classname="engineering.ai.tests.test_context_usability" name="test_retention_is_bounded_reports_omissions_and_respects_history_off" time="1.295"><failure message="AssertionError: {'requestId': '768c70e627bb4298986d012621a6f3d4', 'status': 'rejected', 'code': 'SESSION_VERSION_CONFLICT'}&#10;assert 'rejected' == 'committed'&#10;  &#10;  - committed&#10;  + rejected">application = &lt;onlinecoc_ai.api.Application object at 0x000002775AE36780&gt;
+
+    def test_retention_is_bounded_reports_omissions_and_respects_history_off(application):
+        app=application;sid=session(app);other=session(app);submit(app,other,'禁止串会话的私密目标')
+        for n in range(18):submit(app,sid,str(n)+'界'*600)
+        _,payload=capture(app,sid,'继续')
+        earlier=payload['earlierRequirements'];assert earlier['omittedRequests']&gt;0 and len(canonical(earlier['items']))&lt;=12*1024
+        assert earlier['items'][0]['text'].startswith('0界') and '禁止串会话' not in str(payload)
+&gt;       committed(command(app,'ai.session.update',{'sessionId':sid,'revision':1,'historyTurns':0}))
+
+engineering\ai\tests\test_context_usability.py:54: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+receipt = {'requestId': '768c70e627bb4298986d012621a6f3d4', 'status': 'rejected', 'code': 'SESSION_VERSION_CONFLICT'}
+
+    def committed(receipt):
+&gt;       assert receipt['status'] == 'committed', receipt
+E       AssertionError: {'requestId': '768c70e627bb4298986d012621a6f3d4', 'status': 'rejected', 'code': 'SESSION_VERSION_CONFLICT'}
+E       assert 'rejected' == 'committed'
+E         
+E         - committed
+E         + rejected
+
+engineering\ai\tests\test_entrypoints.py:34: AssertionError</failure></testcase><testcase classname="engineering.ai.tests.test_context_usability" name="test_only_exact_previously_answered_choices_trigger_bounded_correction" time="1.188"><failure message="onlinecoc_ai.errors.AiError: INPUT_INVALID">application = &lt;onlinecoc_ai.api.Application object at 0x000002775AF50510&gt;
+
+    def test_only_exact_previously_answered_choices_trigger_bounded_correction(application):
+        app=application;enable(app.host,public=True,kp=True,private=True);sid=session(app)
+        app.coordinator.context=Context(app.proposals,demand=True)
+        async def run():
+            async def ask(*_):return completion({'kind':'clarification','text':'请选恢复项。','choices':CHOICES})
+            app.coordinator.provider_factory=lambda _:Fake(ask);await app.coordinator.start()
+            try:
+                first=submit(app,sid,'给角色加1点');task=committed(command(app,'ai.request.dispatch',first))
+                assert (await wait_task(app.coordinator,task['taskId']))['status']=='needs_input'
+            finally:await app.coordinator.close()
+            calls=[]
+            async def follow(n,messages,tools):
+                calls.append(n)
+                if n==1:
+                    payload=json.loads(messages[1]['content']);assert payload['resolvedChoices'][0]['selectedText']==CHOICES['options'][0]['text']
+                    return completion({'kind':'clarification','text':'请再次选择。','choices':CHOICES})
+                assert json.loads(messages[-1]['content'])['error']['code']=='REPEATED_RESOLVED_CHOICE'
+                return completion({'kind':'plan','text':'已保留生命选项；当前仅整理方案，不执行。'})
+            app.coordinator.provider_factory=lambda _:Fake(follow);await app.coordinator.start()
+            try:
+                req=submit(app,sid,CHOICES['options'][0]['text']);task=committed(command(app,'ai.request.dispatch',req));result=await wait_task(app.coordinator,task['taskId'])
+                assert result['status']=='review_ready' and len(calls)==2,result
+                assert any(x['code']=='REPEATED_RESOLVED_CHOICE' for x in result['diagnostics']['outputFailures'])
+            finally:await app.coordinator.close()
+&gt;       asyncio.run(run())
+
+engineering\ai\tests\test_context_usability.py:86: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:204: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:127: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\base_events.py:719: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+engineering\ai\tests\test_context_usability.py:69: in run
+    first=submit(app,sid,'给角色加1点');task=committed(command(app,'ai.request.dispatch',first))
+                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+engineering\ai\tests\test_entrypoints.py:29: in command
+    return app.command(account, {'requestId': identifier or uuid.uuid4().hex,
+engineering\ai\src\onlinecoc_ai\api.py:70: in command
+    return self._command(account, envelope)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+engineering\ai\src\onlinecoc_ai\api.py:77: in _command
+    require(Draft202012Validator(schema).is_valid(args), 'INPUT_INVALID')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+condition = False, code = 'INPUT_INVALID', message = '', path = ''
+
+    def require(condition, code="INPUT_INVALID", message="", path=""):
+        if not condition:
+&gt;           raise AiError(code, message, path)
+E           onlinecoc_ai.errors.AiError: INPUT_INVALID
+
+engineering\ai\src\onlinecoc_ai\errors.py:15: AiError</failure></testcase><testcase classname="engineering.ai.tests.test_context_usability" name="test_new_material_choice_is_not_suppressed" time="0.001" /><testcase classname="engineering.ai.tests.test_context_usability" name="test_configuration_request_preloads_only_authorized_templates[True]" time="1.106"><failure message="onlinecoc_ai.errors.AiError: INPUT_INVALID">application = &lt;onlinecoc_ai.api.Application object at 0x000002775AE46690&gt;
+allowed = True
+
+    @pytest.mark.parametrize('allowed',[True,False])
+    def test_configuration_request_preloads_only_authorized_templates(application,allowed):
+        app=application;enable(app.host,public=True,kp=allowed,private=True);sid=session(app);app.coordinator.context=Context(app.proposals,demand=True)
+        seen=[]
+        async def callback(n,messages,tools):
+            payload=json.loads(messages[1]['content']);seen.append(payload)
+            if allowed:
+                page=payload['preparedFacts']['configurations'];assert page['items'] and 'snapshot' in page and page['nextOffset'] is None
+            else:assert 'preparedFacts' not in payload
+            return completion({'kind':'plan','text':'只报告预读范围，不修改模板。'})
+        async def run():
+            app.coordinator.provider_factory=lambda _:Fake(callback);await app.coordinator.start()
+            try:
+                req=submit(app,sid,'修改配置模板默认值，先核对模板');task=committed(command(app,'ai.request.dispatch',req));result=await wait_task(app.coordinator,task['taskId'])
+                assert result['status']=='review_ready',result
+                proof=app.repository.state()['contexts'][result['contextRef']]['facts']
+                assert bool(proof.get('managementReads'))==allowed
+            finally:await app.coordinator.close()
+&gt;       asyncio.run(run());assert len(seen)==1
+        ^^^^^^^^^^^^^^^^^^
+
+engineering\ai\tests\test_context_usability.py:113: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:204: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:127: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\base_events.py:719: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+engineering\ai\tests\test_context_usability.py:108: in run
+    req=submit(app,sid,'修改配置模板默认值，先核对模板');task=committed(command(app,'ai.request.dispatch',req));result=await wait_task(app.coordinator,task['taskId'])
+                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+engineering\ai\tests\test_entrypoints.py:29: in command
+    return app.command(account, {'requestId': identifier or uuid.uuid4().hex,
+engineering\ai\src\onlinecoc_ai\api.py:70: in command
+    return self._command(account, envelope)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+engineering\ai\src\onlinecoc_ai\api.py:77: in _command
+    require(Draft202012Validator(schema).is_valid(args), 'INPUT_INVALID')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+condition = False, code = 'INPUT_INVALID', message = '', path = ''
+
+    def require(condition, code="INPUT_INVALID", message="", path=""):
+        if not condition:
+&gt;           raise AiError(code, message, path)
+E           onlinecoc_ai.errors.AiError: INPUT_INVALID
+
+engineering\ai\src\onlinecoc_ai\errors.py:15: AiError</failure></testcase><testcase classname="engineering.ai.tests.test_context_usability" name="test_configuration_request_preloads_only_authorized_templates[False]" time="1.118"><failure message="onlinecoc_ai.errors.AiError: INPUT_INVALID">application = &lt;onlinecoc_ai.api.Application object at 0x000002775B0C0D10&gt;
+allowed = False
+
+    @pytest.mark.parametrize('allowed',[True,False])
+    def test_configuration_request_preloads_only_authorized_templates(application,allowed):
+        app=application;enable(app.host,public=True,kp=allowed,private=True);sid=session(app);app.coordinator.context=Context(app.proposals,demand=True)
+        seen=[]
+        async def callback(n,messages,tools):
+            payload=json.loads(messages[1]['content']);seen.append(payload)
+            if allowed:
+                page=payload['preparedFacts']['configurations'];assert page['items'] and 'snapshot' in page and page['nextOffset'] is None
+            else:assert 'preparedFacts' not in payload
+            return completion({'kind':'plan','text':'只报告预读范围，不修改模板。'})
+        async def run():
+            app.coordinator.provider_factory=lambda _:Fake(callback);await app.coordinator.start()
+            try:
+                req=submit(app,sid,'修改配置模板默认值，先核对模板');task=committed(command(app,'ai.request.dispatch',req));result=await wait_task(app.coordinator,task['taskId'])
+                assert result['status']=='review_ready',result
+                proof=app.repository.state()['contexts'][result['contextRef']]['facts']
+                assert bool(proof.get('managementReads'))==allowed
+            finally:await app.coordinator.close()
+&gt;       asyncio.run(run());assert len(seen)==1
+        ^^^^^^^^^^^^^^^^^^
+
+engineering\ai\tests\test_context_usability.py:113: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:204: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:127: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\base_events.py:719: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+engineering\ai\tests\test_context_usability.py:108: in run
+    req=submit(app,sid,'修改配置模板默认值，先核对模板');task=committed(command(app,'ai.request.dispatch',req));result=await wait_task(app.coordinator,task['taskId'])
+                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+engineering\ai\tests\test_entrypoints.py:29: in command
+    return app.command(account, {'requestId': identifier or uuid.uuid4().hex,
+engineering\ai\src\onlinecoc_ai\api.py:70: in command
+    return self._command(account, envelope)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+engineering\ai\src\onlinecoc_ai\api.py:77: in _command
+    require(Draft202012Validator(schema).is_valid(args), 'INPUT_INVALID')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+condition = False, code = 'INPUT_INVALID', message = '', path = ''
+
+    def require(condition, code="INPUT_INVALID", message="", path=""):
+        if not condition:
+&gt;           raise AiError(code, message, path)
+E           onlinecoc_ai.errors.AiError: INPUT_INVALID
+
+engineering\ai\src\onlinecoc_ai\errors.py:15: AiError</failure></testcase><testcase classname="engineering.ai.tests.test_sessions" name="test_history_reuses_response_when_unread_world_data_changes" time="1.315" /><testcase classname="engineering.ai.tests.test_sessions" name="test_history_is_bounded_and_never_reads_other_sessions" time="1.395" /><testcase classname="engineering.ai.tests.test_sessions" name="test_repository_rejects_broken_conversation_links[foreign]" time="1.070" /><testcase classname="engineering.ai.tests.test_sessions" name="test_repository_rejects_broken_conversation_links[missing]" time="1.067" /><testcase classname="engineering.ai.tests.test_sessions" name="test_repository_rejects_broken_conversation_links[duplicate]" time="1.074" /><testcase classname="engineering.ai.tests.test_sessions" name="test_repository_rejects_broken_conversation_links[title]" time="1.058" /><testcase classname="engineering.ai.tests.test_sessions" name="test_session_preferences_owner_conflict_and_persistence" time="1.068" /><testcase classname="engineering.ai.tests.test_sessions" name="test_configured_history_bound_preserves_records[0]" time="1.152" /><testcase classname="engineering.ai.tests.test_sessions" name="test_configured_history_bound_preserves_records[2]" time="1.114" /><testcase classname="engineering.ai.tests.test_sessions" name="test_configured_history_bound_preserves_records[4]" time="1.134" /><testcase classname="engineering.ai.tests.test_sessions" name="test_session_preferences_validate_command_and_stored_data[historyTurns--1]" time="1.011" /><testcase classname="engineering.ai.tests.test_sessions" name="test_session_preferences_validate_command_and_stored_data[historyTurns-5]" time="1.053" /><testcase classname="engineering.ai.tests.test_sessions" name="test_session_preferences_validate_command_and_stored_data[historyTurns-True]" time="1.043" /><testcase classname="engineering.ai.tests.test_sessions" name="test_session_preferences_validate_command_and_stored_data[historyTurns-1.5]" time="1.049" /><testcase classname="engineering.ai.tests.test_sessions" name="test_session_preferences_validate_command_and_stored_data[renderMode-html]" time="1.039" /><testcase classname="engineering.ai.tests.test_sessions" name="test_session_preferences_validate_command_and_stored_data[pinned-1]" time="1.044" /><testcase classname="engineering.ai.tests.test_sessions" name="test_session_preferences_validate_command_and_stored_data[showDiagnostics-false]" time="1.058" /><testcase classname="engineering.ai.tests.test_history_continuity" name="test_stale_authorized_response_stays_visible_with_readonly_notice" time="1.133" /><testcase classname="engineering.ai.tests.test_history_continuity" name="test_short_confirmation_retains_stale_intent_without_old_execution_proofs" time="1.238" /><testcase classname="engineering.ai.tests.test_history_continuity" name="test_query_history_identity_witness_and_legacy_boundary[read-True-True]" time="1.213" /><testcase classname="engineering.ai.tests.test_history_continuity" name="test_query_history_identity_witness_and_legacy_boundary[search-False-True]" time="1.217" /><testcase classname="engineering.ai.tests.test_history_continuity" name="test_query_history_identity_witness_and_legacy_boundary[search-True-False]" time="1.150" /><testcase classname="engineering.ai.tests.test_history_continuity" name="test_delivered_body_survives_but_changed_sources_do_not_enter_new_context[deleted]" time="1.188" /><testcase classname="engineering.ai.tests.test_history_continuity" name="test_delivered_body_survives_but_changed_sources_do_not_enter_new_context[hidden]" time="1.182" /><testcase classname="engineering.ai.tests.test_history_continuity" name="test_delivered_body_survives_but_changed_sources_do_not_enter_new_context[authorization]" time="1.225" /><testcase classname="engineering.ai.tests.test_history_continuity" name="test_delivered_body_survives_but_changed_sources_do_not_enter_new_context[policy]" time="1.213" /><testcase classname="engineering.ai.tests.test_history_continuity" name="test_delivered_body_survives_but_changed_sources_do_not_enter_new_context[profile]" time="1.141" /><testcase classname="engineering.ai.tests.test_history_continuity" name="test_delivered_body_survives_but_changed_sources_do_not_enter_new_context[session_deleted]" time="1.191" /><testcase classname="engineering.ai.tests.test_history_continuity" name="test_new_query_witness_does_not_restore_deleted_object" time="1.307" /><testcase classname="engineering.ai.tests.test_history_continuity" name="test_historical_intent_is_rechecked_after_capture_and_has_no_execution_authority" time="1.199" /><testcase classname="engineering.ai.tests.test_history_continuity" name="test_history_scope_mismatch_never_falls_back" time="1.173" /><testcase classname="engineering.ai.tests.test_history_continuity" name="test_short_confirmation_requires_current_target_read_before_batch" time="1.211" /><testcase classname="engineering.ai.tests.test_history_continuity" name="test_model_repairs_stale_intent_by_reading_target_without_reasking" time="1.670" /><testcase classname="engineering.ai.tests.test_history_continuity" name="test_new_generation_public_status_is_not_expired_historical_intent[False]" time="1.420" /><testcase classname="engineering.ai.tests.test_history_continuity" name="test_new_generation_public_status_is_not_expired_historical_intent[True]" time="1.353" /><testcase classname="engineering.ai.tests.test_entrypoints" name="test_requests_are_explicit_idempotent_redacted_and_paged" time="1.128" /><testcase classname="engineering.ai.tests.test_entrypoints" name="test_chat_forwarding_binds_original_and_policy" time="1.209" /><testcase classname="engineering.ai.tests.test_entrypoints" name="test_player_can_cancel_after_dispatching_kp_loses_role" time="1.123" /><testcase classname="engineering.ai.tests.test_entrypoints" name="test_plan_without_proposal_rechecks_context_on_read" time="1.179"><failure message="IndexError: list index out of range">application = &lt;onlinecoc_ai.api.Application object at 0x000002775B2316D0&gt;
+
+    def test_plan_without_proposal_rechecks_context_on_read(application):
+        import asyncio
+        from test_coordinator import Fake, completion, wait_task
+        app = application;enable(app.host, public=True)
+        message=add_message(app.host, 'player1', 'context source')
+        async def callback(*args):return completion({'kind': 'plan', 'text': 'sensitive generated plan'})
+        async def run():
+            app.coordinator.provider_factory = lambda p: Fake(callback)
+            await app.coordinator.start()
+            try:
+                request = committed(command(app, 'ai.request.create', {'sourceKind': 'chat', 'channelId':'general', 'sourceId':message['messageId'], 'sourceRevision':str(message['revision']), 'text':message['text']}))
+                task = committed(command(app, 'ai.request.dispatch', request))
+                assert (await wait_task(app.coordinator, task['taskId']))['status'] == 'review_ready'
+                assert app.tasks('kp')['items'][0]['response'] == 'sensitive generated plan'
+                state = app.host.state();state['chat']['messages']['general'][0].update(deleted=True, text='', revision=2);app.host.commit(state)
+                assert app.tasks('kp')['items'][0]['status'] == 'stale'
+                assert 'response' not in app.tasks('kp')['items'][0]
+            finally:await app.coordinator.close()
+&gt;       asyncio.run(run())
+
+engineering\ai\tests\test_entrypoints.py:114: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:204: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:127: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\base_events.py:719: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    async def run():
+        app.coordinator.provider_factory = lambda p: Fake(callback)
+        await app.coordinator.start()
+        try:
+            request = committed(command(app, 'ai.request.create', {'sourceKind': 'chat', 'channelId':'general', 'sourceId':message['messageId'], 'sourceRevision':str(message['revision']), 'text':message['text']}))
+            task = committed(command(app, 'ai.request.dispatch', request))
+            assert (await wait_task(app.coordinator, task['taskId']))['status'] == 'review_ready'
+            assert app.tasks('kp')['items'][0]['response'] == 'sensitive generated plan'
+            state = app.host.state();state['chat']['messages']['general'][0].update(deleted=True, text='', revision=2);app.host.commit(state)
+&gt;           assert app.tasks('kp')['items'][0]['status'] == 'stale'
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           IndexError: list index out of range
+
+engineering\ai\tests\test_entrypoints.py:111: IndexError</failure></testcase><testcase classname="engineering.ai.tests.test_entrypoints" name="test_auto_off_prefix_dedup_edits_withdrawal_and_role" time="1.218" /><testcase classname="engineering.ai.tests.test_entrypoints" name="test_manual_revision_invalidates_approval_and_cancel_revokes" time="21.877" /><testcase classname="engineering.ai.tests.test_entrypoints" name="test_receipt_rechecks_private_sources_and_restart_pending" time="1.623" /><testcase classname="engineering.ai.tests.test_entrypoints" name="test_http_auth_limits_schema_capability_and_disabled_module" time="1.405" /><testcase classname="engineering.ai.tests.test_entrypoints" name="test_cli_uses_same_three_engines" time="9.228" /></testsuite></testsuites>

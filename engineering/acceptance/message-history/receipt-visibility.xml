@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="3.054" timestamp="2026-11-20T15:04:32.279713+08:00" hostname="LAPTOP-BIFSL64A"><testcase classname="engineering.acceptance.message-history.test_boundaries" name="test_resolution_never_reexposes_hidden_ruling_receipt_ids" time="1.358"><failure message="AssertionError: assert 'resolution' not in {'sessionId': '3a20eb7e2a8041f6bd900f9a4d92526c', 'requestId': 'a108829a4c8f45edaebdb1efbe3f8e54', 'summary': '已执行完成；原引用或访问权限已变化，详情已隐藏，请勿重复执行。', 'status': 'completed', ...}">application = &lt;onlinecoc_ai.api.Application object at 0x0000017E750CD940&gt;
+
+    def test_resolution_never_reexposes_hidden_ruling_receipt_ids(application):
+        app=application;first=batch(app);second=new_batch(app,first['sessionId'],related=first['requestId'])
+        committed(command(app,'ai.batch.approve',{'batchId':second['batchId'],'digest':second['digest']}))
+        room=app.host.state();room['members']['kp']['authorizationEpoch']+=1;app.host.commit(room)
+        item=row(app,'batch:'+second['batchId'])
+        assert item['sourceUnavailable'] and item['status']=='completed'
+&gt;       assert 'resolution' not in item
+E       AssertionError: assert 'resolution' not in {'sessionId': '3a20eb7e2a8041f6bd900f9a4d92526c', 'requestId': 'a108829a4c8f45edaebdb1efbe3f8e54', 'summary': '已执行完成；原引用或访问权限已变化，详情已隐藏，请勿重复执行。', 'status': 'completed', ...}
+
+engineering\acceptance\message-history\test_boundaries.py:54: AssertionError</failure></testcase></testsuite></testsuites>

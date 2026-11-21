@@ -1,0 +1,15 @@
+{
+  "at": "2026-11-21T15:21:58.553354+08:00",
+  "checks": [
+    "reference and C risk are visible; one explicit decision sends both exact proofs and high-risk digest, closes immediately and reports actual publication",
+    "rejection never implicitly accepts reference or C assessment",
+    "missing assessment proof cannot be fabricated or approved by the UI",
+    "runtime assessment fits 390px and escapes text; failed execution stays failed with its actual reason"
+  ],
+  "externalApiCalls": 0,
+  "scope": "Synthetic DTO with actual package UI; server authorization tested separately",
+  "output": "D:\\Studies\\Art Programming\\OnlineCOC\\rulepacks\\stumpsville\\tests\\output\\consultation-review-196529cc",
+  "passed": true,
+  "passedCount": 4,
+  "pageErrors": []
+}

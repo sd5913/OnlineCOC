@@ -56,7 +56,7 @@ export function bindReferenceDetails(target,resolveReferences,{container=target.
   token=value;anchor=source;fingerprint=null;body.replaceChildren();title.textContent='引用详情';status.textContent='正在读取…';
   if(!dialog.open)dialog.showModal();dismiss.focus();return refresh();
  }
- function activate(event){const chip=event.target.closest?.('.reference-chip');if(!chip||!target.contains(chip)||chip.closest('.reference-editor'))return;
+ function activate(event){const chip=event.target.closest?.('.reference-chip');if(!chip||!target.contains(chip)||chip.closest('.reference-editor')||chip.getAttribute('aria-disabled')==='true'||chip.classList.contains('unavailable'))return;
   if(event.type==='keydown'&&!['Enter',' '].includes(event.key))return;event.preventDefault();open(chip.dataset.token,chip);}
  target.addEventListener('click',activate);target.addEventListener('keydown',activate);dismiss.onclick=close;
  dialog.addEventListener('cancel',event=>{event.preventDefault();close();});dialog.onclick=event=>{if(event.target===dialog){const r=dialog.getBoundingClientRect();if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)close();}};

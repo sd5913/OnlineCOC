@@ -12,6 +12,24 @@ def identity(ref):
     return tuple(ref.get(k) for k in ('sourceId','kind','id','scopeId'))
 
 
+def _retained_nodes(old,current):
+    """Configuration-file access is unchanged, but deleted subobjects stay hidden.
+
+    Scalar edits are versions of the same field. Lists require stable unique IDs
+    or an unchanged prefix; arbitrary index reuse is not identity evidence.
+    """
+    if type(old) is dict:
+        return type(current) is dict and ('id' not in old or old['id']==current.get('id')) and all(k in current and _retained_nodes(v,current[k]) for k,v in old.items())
+    if type(old) is list:
+        if type(current) is not list:return False
+        if old and all(type(v) is dict and type(v.get('id')) is str for v in old+current):
+            original={v['id']:v for v in old};present={v['id']:v for v in current}
+            if len(original)==len(old) and len(present)==len(current):
+                return all(k in present and _retained_nodes(v,present[k]) for k,v in original.items())
+        return current[:len(old)]==old
+    return not isinstance(current,(dict,list))
+
+
 def _sources(host, room, account, sources, scope):
     from onlinecoc.ai_sources import check_sources
     for original in sources:
@@ -48,6 +66,7 @@ def _queries(host,room,account,proofs):
         require(witnesses is not None,'HISTORY_PROVENANCE_INCOMPLETE',
             'This legacy search has no retained object identities; a changed result cannot prove historical access')
         kinds=list({item['ref']['kind'] for item in witnesses})
+        if proof['args'].get('roomMode')=='state' or any(item['ref']['sourceId']=='host-room-state' for item in witnesses):options['room_mode']='state'
         available={identity(row['ref']):row for row in rows(host,room,account,kinds=kinds,**options)} if kinds else {}
         for item in witnesses:
             ref=item['ref'];current=available.get(identity(ref))
@@ -60,7 +79,7 @@ def _queries(host,room,account,proofs):
 
 
 def _intent_contexts(repository,room,entries):
-    state=repository.state()
+    state=repository.read_state()
     for entry in entries:
         task=state['tasks'].get(entry.get('taskId'),{})
         request=state['requests'].get(entry.get('requestId'),{})
@@ -71,18 +90,35 @@ def _intent_contexts(repository,room,entries):
         yield entry['contextRef']
 
 
-def assess(host,repository,room,context,seen=None):
-    """Raise on revoked/unprovable access; return a stale code or None otherwise."""
+def assess(host,repository,room,context,seen=None,*,shared=None):
+    """Raise on revoked/unprovable access; return a stale code or None otherwise.
+
+    ``shared`` belongs to one locked public read, never another request. Cached
+    closures still count towards each root's 100-context and cycle checks.
+    """
     require(context is not None,'SOURCE_STALE')
     if context['facts'].get('strictPlayer'):
         check_history_context(host,room,context['reviewPrincipal'],context);return None
     seen={'active':set(),'memo':{}} if seen is None else seen
+    closures=seen.setdefault('closures',{})
     key=digest(context)
     if key in seen['memo']:return seen['memo'][key]
+    if shared is not None and key in shared:
+        value,footprint=shared[key]
+        require(not (seen['active'] & footprint) and len(set(seen['memo']) | seen['active'] | footprint)<=100,'SOURCE_STALE')
+        for node in footprint:
+            seen['memo'][node]=shared[node][0];closures[node]=shared[node][1]
+        return value
     require(key not in seen['active'] and len(seen['active'])+len(seen['memo'])<100,'SOURCE_STALE')
-    seen['active'].add(key)
+    seen['active'].add(key);closure={key}
     def finish(value):
-        seen['active'].remove(key);seen['memo'][key]=value;return value
+        seen['active'].remove(key);seen['memo'][key]=value;closures[key]=frozenset(closure)
+        if shared is not None:shared[key]=(value,closures[key])
+        return value
+    def dependency(previous):
+        value=assess(host,repository,room,previous,seen,shared=shared)
+        closure.update(closures.get(digest(previous),()))
+        return value
     account=context['reviewPrincipal'];principal=member(room,account)
     require(principal['role']=='kp' and principal['authorizationEpoch']==context['authorizationEpoch'],'PERMISSION_DENIED')
     require(context['scopeId']==room['aiControl']['scopeId'],'SCOPE_MISMATCH')
@@ -93,13 +129,18 @@ def assess(host,repository,room,context,seen=None):
     # Intent dependencies must remain readable, but their age never makes a
     # freshly captured task stale. Only reused factual contexts propagate age.
     for ref in _intent_contexts(repository,room,facts.get('historyIntents',[])):
-        assess(host,repository,room,repository.state()['contexts'].get(ref),seen)
+        dependency(repository.read_state()['contexts'].get(ref))
     dependency_stale=False
     for ref in facts.get('historyContexts',[]):
-        previous=repository.state()['contexts'].get(ref)
-        dependency_stale=bool(assess(host,repository,room,previous,seen)) or dependency_stale
+        previous=repository.read_state()['contexts'].get(ref)
+        dependency_stale=bool(dependency(previous)) or dependency_stale
     baseline=copy.deepcopy(context)
     baseline['facts'].pop('historyContexts',None);baseline['facts'].pop('historyIntents',None)
+    if facts.get('generationSnapshot')==1:
+        # Reading a generated answer depends on its actual sources, not every
+        # unrelated entity in the execution baseline. Never modify stored proof.
+        from .validation.common import world_digest
+        baseline['worldDigest']=world_digest(room)
     try:
         check_history_context(host,room,account,baseline)
         if not dependency_stale:return finish(None)
@@ -122,7 +163,7 @@ def assess(host,repository,room,context,seen=None):
     current=room['artifacts'][room['activeRuleset']]
     require(old is not None and set(old['sources'])<=set(current['sources']),'SOURCE_STALE')
     _queries(host,room,account,facts.get('dataQueries',[]))
-    sessions=repository.state()['settings'].get('sessions',{})
+    sessions=repository.read_state()['settings'].get('sessions',{})
     for sid in facts.get('sessionReads',{}):
         require(sid in sessions and not sessions[sid].get('deleted'),'SESSION_ACCESS_CHANGED')
     for section,expected in facts.get('managementReads',{}).items():
@@ -132,11 +173,21 @@ def assess(host,repository,room,context,seen=None):
         require(keys is not None,'HISTORY_PROVENANCE_INCOMPLETE')
         require(all(k in value for k in keys),'SOURCE_STALE')
     from .data_edits import node
+    from .errors import AiError
     for proof in facts.get('configDataReads',[]):
-        require(proof['file'] in current['data'],'SOURCE_STALE')
-        # A file/node read may contain many nested objects. Keep exact subtree
-        # evidence until the authoring adapter supplies stable nested identities.
-        require(digest(node(current['data'][proof['file']],proof['path']))==proof['targetDigest'],'SOURCE_STALE')
+        require(proof['file'] in current['data'] and proof['file'] in old['data'],'SOURCE_STALE')
+        try:
+            previous=node(old['data'][proof['file']],proof['path'])
+            require(digest(previous)==proof['targetDigest'],'HISTORY_PROVENANCE_INCOMPLETE')
+            for size in range(len(proof['path'])):
+                before=node(old['data'][proof['file']],proof['path'][:size])
+                after=node(current['data'][proof['file']],proof['path'][:size])
+                if type(before) is dict and 'id' in before:
+                    require(type(after) is dict and before['id']==after.get('id'),'SOURCE_STALE')
+            require(_retained_nodes(previous,node(current['data'][proof['file']],proof['path'])),'SOURCE_STALE')
+        except AiError as exc:
+            if exc.code=='INPUT_INVALID':raise AiError('SOURCE_STALE') from None
+            raise
     if facts.get('configDataEdits') and not facts.get('configDataReads'):
         require(context['baseRuleset']==room['activeRuleset'],'HISTORY_PROVENANCE_INCOMPLETE')
     return finish(code)
@@ -144,13 +195,13 @@ def assess(host,repository,room,context,seen=None):
 
 def validate_intents(host,repository,room,entries):
     for ref in _intent_contexts(repository,room,entries):
-        assess(host,repository,room,repository.state()['contexts'].get(ref))
+        assess(host,repository,room,repository.read_state()['contexts'].get(ref))
 
 
-def require_current_evidence(context,output):
+def require_current_evidence(context,output,*,required=False):
     """Historical prose may select intent, but a mutation needs current reads."""
     facts=context['facts']
-    if not facts.get('historyIntents') or output.get('kind') not in ('batch','draft'):return
+    if not (required or facts.get('historyIntents') or facts.get('intentRequests')) or output.get('kind') not in ('batch','draft'):return
     refs=context['sourceRefs']
     reads=[ref for proof in facts.get('dataQueries',[]) if proof['operation'] in ('read','case') for ref in proof['args']['refs']]
     if output['kind']=='draft':
@@ -161,9 +212,10 @@ def require_current_evidence(context,output):
         # different actor cannot upgrade a stale plan's actor values.
         known={r['id'] for r in refs if r['kind']=='entity'}
         known_hashes={r['id'] for r in reads if r['sourceId']=='host' and r['kind']=='entity'}
+        room_reads={r['id'] for r in reads if r['sourceId']=='host-room-state' and r['kind']=='room'}
         for action in output['actions']:
             for field in ('id','instanceId','entityId','actorId','targetId','sourceId'):
                 target=action['args'].get(field)
                 if type(target) is str and action['target']=='host' and (field in ('instanceId','entityId','actorId') or action['op'].startswith('relation.') or field=='id' and action['op'].startswith('entity.') and action['op']!='entity.create'):
-                    available=available and (target in known or digest(['host','entity',target]) in known_hashes)
+                    available=available and (target in known or digest(['host','entity',target]) in known_hashes or digest(['host-room-state','room',digest([['entities',target],None])]) in room_reads)
     require(available,'HISTORY_REQUERY_REQUIRED','Retain the already stated intent and recipient. Read current target details before preparing changes; do not ask the user to confirm the same plan again.')

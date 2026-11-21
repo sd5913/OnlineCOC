@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="9.347" timestamp="2026-11-21T00:47:10.197569+08:00" hostname="LAPTOP-BIFSL64A"><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_ai_approval" name="test_approval_stages_evidence_without_loading" time="8.988"><failure message="AssertionError: {'status': 'rejected', 'commandId': 'approve', 'code': 'INPUT_INVALID'}">ai_case = (&lt;onlinecoc.host.Host object at 0x00000284A5804AD0&gt;, &lt;onlinecoc_ai.proposals.Proposals object at 0x00000284A5805FD0&gt;, ...'item', 'defaults': {'quantity': 1, 'unitMass': 0, 'charges': 2, 'bonus': 15}, ...}}], 'sources': {}, 'data': {}, ...})
+
+    def test_approval_stages_evidence_without_loading(ai_case):
+        host,service,proposal,_=ai_case
+&gt;       before=host.state();identifier=approve_case(ai_case);after=host.state()
+                                       ^^^^^^^^^^^^^^^^^^^^^
+
+engineering\acceptance\local-accounts\work\engine\engineering\backend\tests\test_ai_approval.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+case = (&lt;onlinecoc.host.Host object at 0x00000284A5804AD0&gt;, &lt;onlinecoc_ai.proposals.Proposals object at 0x00000284A5805FD0&gt;, ...'item', 'defaults': {'quantity': 1, 'unitMass': 0, 'charges': 2, 'bonus': 15}, ...}}], 'sources': {}, 'data': {}, ...})
+identifier = 'approve'
+
+    def approve_case(case,identifier='approve'):
+        host,service,proposal,delta=case
+        args=approval_args(host,service,proposal)
+        result=host.command('kp',ai_message(host,'ai.proposal.approve',args,identifier))
+&gt;       assert result['status']=='committed',result
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: {'status': 'rejected', 'commandId': 'approve', 'code': 'INPUT_INVALID'}
+
+engineering\acceptance\local-accounts\work\engine\engineering\backend\tests\ai_helpers.py:25: AssertionError</failure></testcase></testsuite></testsuites>

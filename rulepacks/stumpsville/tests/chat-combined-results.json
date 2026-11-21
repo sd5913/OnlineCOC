@@ -1,0 +1,72 @@
+{
+  "at": "2026-11-21T16:03:15.964175+08:00",
+  "output": "D:\\Studies\\Art Programming\\OnlineCOC\\rulepacks\\stumpsville\\tests\\output\\chat-combined-8a55ec6e",
+  "source": "D:\\Studies\\Art Programming\\OnlineCOC\\rulepacks\\stumpsville\\tests\\output\\chat-combined-8a55ec6e\\source",
+  "externalApiCalls": 0,
+  "checks": [
+    "engine and AI frozen file hashes verified; separate combined runtime created",
+    "real package explicit message -> request -> ruling evidence preserved; message edit invalidates selected old evidence",
+    "current frozen host/AI atomic batch: automatic slot repair, consumption/rest/notification, idempotent replay and result UI passed",
+    "real AI component embedding, 1440/390px dialogs, reload, exported module graph and chat service/storage whitelist passed"
+  ],
+  "deliverySkipped": true,
+  "passed": true,
+  "passedCount": 4,
+  "previousRuns": [
+    {
+      "at": "2026-11-21T09:18:47.966435+08:00",
+      "output": "D:\\Studies\\Art Programming\\OnlineCOC\\rulepacks\\stumpsville\\tests\\output\\chat-combined-679e70c2",
+      "source": "D:\\Studies\\Art Programming\\OnlineCOC\\rulepacks\\stumpsville\\tests\\output\\chat-combined-679e70c2\\source",
+      "externalApiCalls": 0,
+      "checks": [
+        "engine and AI frozen file hashes verified; separate combined runtime created",
+        "combined four-page latency, concurrent ruling, unknown receipt recovery and channel permissions passed"
+      ],
+      "passed": false,
+      "error": "AssertionError((403, {'code': 'PERMISSION_DENIED', 'message': 'PERMISSION_DENIED（PERMISSION_DENIED；定位：8677f0b482794bf39b0ddf6ad7eb19d7）', 'traceId': '8677f0b482794bf39b0ddf6ad7eb19d7', 'method': 'POST', 'operation': 'api/v1/ai/data/chat', 'requestId': '8677f0b482794bf39b0ddf6ad7eb19d7', 'httpStatus': 403}))",
+      "passedCount": 2
+    },
+    {
+      "at": "2026-11-21T09:21:24.777534+08:00",
+      "output": "D:\\Studies\\Art Programming\\OnlineCOC\\rulepacks\\stumpsville\\tests\\output\\chat-combined-f36b4169",
+      "source": "D:\\Studies\\Art Programming\\OnlineCOC\\rulepacks\\stumpsville\\tests\\output\\chat-combined-f36b4169\\source",
+      "externalApiCalls": 0,
+      "checks": [
+        "engine and AI frozen file hashes verified; separate combined runtime created",
+        "real package explicit message -> request -> ruling evidence preserved; message edit invalidates selected old evidence",
+        "real AI component embedding, 1440/390px dialogs, reload, exported module graph and chat service/storage whitelist passed"
+      ],
+      "deliverySkipped": true,
+      "passed": true,
+      "passedCount": 3
+    },
+    {
+      "at": "2026-11-21T09:43:59.317764+08:00",
+      "output": "D:\\Studies\\Art Programming\\OnlineCOC\\rulepacks\\stumpsville\\tests\\output\\chat-combined-9036af36",
+      "source": "D:\\Studies\\Art Programming\\OnlineCOC\\rulepacks\\stumpsville\\tests\\output\\chat-combined-9036af36\\source",
+      "externalApiCalls": 0,
+      "checks": [
+        "engine and AI frozen file hashes verified; separate combined runtime created",
+        "real package explicit message -> request -> ruling evidence preserved; message edit invalidates selected old evidence",
+        "real AI component embedding, 1440/390px dialogs, reload, exported module graph and chat service/storage whitelist passed"
+      ],
+      "deliverySkipped": true,
+      "passed": true,
+      "passedCount": 3
+    },
+    {
+      "at": "2026-11-21T15:46:11.933475+08:00",
+      "output": "D:\\Studies\\Art Programming\\OnlineCOC\\rulepacks\\stumpsville\\tests\\output\\chat-combined-db2a7f5e",
+      "source": "D:\\Studies\\Art Programming\\OnlineCOC\\rulepacks\\stumpsville\\tests\\output\\chat-combined-db2a7f5e\\source",
+      "externalApiCalls": 0,
+      "checks": [
+        "engine and AI frozen file hashes verified; separate combined runtime created",
+        "real package explicit message -> request -> ruling evidence preserved; message edit invalidates selected old evidence",
+        "real AI component embedding, 1440/390px dialogs, reload, exported module graph and chat service/storage whitelist passed"
+      ],
+      "deliverySkipped": true,
+      "passed": true,
+      "passedCount": 3
+    }
+  ]
+}

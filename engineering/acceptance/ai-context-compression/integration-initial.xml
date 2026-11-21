@@ -1,0 +1,1383 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="35" skipped="0" tests="681" time="773.909" timestamp="2026-11-21T15:36:01.802586+08:00" hostname="LAPTOP-BIFSL64A"><testcase classname="engineering.ai.tests.test_access_batches" name="test_defaults_binding_and_no_permission_escalation" time="1.283" /><testcase classname="engineering.ai.tests.test_access_batches" name="test_player_auto_dispatch_context_output_and_revoke" time="1.231" /><testcase classname="engineering.ai.tests.test_access_batches" name="test_kp_player_session_has_player_ceiling_and_data_proof" time="1.222" /><testcase classname="engineering.ai.tests.test_access_batches" name="test_batch_human_approval_idempotence_and_player_denial" time="1.271" /><testcase classname="engineering.ai.tests.test_access_batches" name="test_batch_stale_reject_auto_and_bypass_forbidden" time="1.327" /><testcase classname="engineering.ai.tests.test_access_batches" name="test_batch_unknown_reconciles_without_reexecuting" time="1.264" /><testcase classname="engineering.ai.tests.test_access_batches" name="test_preflight_blocks_bad_middle_step_without_any_business_writes" time="1.557" /><testcase classname="engineering.ai.tests.test_access_batches" name="test_delete_cancels_queue_hides_session_and_keeps_usage_audit" time="1.200" /><testcase classname="engineering.ai.tests.test_access_batches" name="test_administrator_tools_respect_external_scope" time="1.329" /><testcase classname="engineering.ai.tests.test_access_batches" name="test_player_contract_tool_and_batch_output_cannot_escalate" time="1.287" /><testcase classname="engineering.ai.tests.test_access_batches" name="test_delete_interrupts_active_generation" time="1.246" /><testcase classname="engineering.ai.tests.test_access_batches" name="test_management_catalog_is_bounded_and_schema_complete" time="1.208" /><testcase classname="engineering.ai.tests.test_access_batches" name="test_other_administrator_can_inspect_draft_without_taking_review_identity" time="1.203" /><testcase classname="engineering.ai.tests.test_access_batches" name="test_player_history_rechecks_package_evidence_during_generation" time="1.413" /><testcase classname="engineering.ai.tests.test_answers" name="test_choices_are_bounded_text_only[&lt;lambda&gt;0]" time="0.001" /><testcase classname="engineering.ai.tests.test_answers" name="test_choices_are_bounded_text_only[&lt;lambda&gt;1]" time="0.001" /><testcase classname="engineering.ai.tests.test_answers" name="test_choices_are_bounded_text_only[&lt;lambda&gt;2]" time="0.001" /><testcase classname="engineering.ai.tests.test_answers" name="test_choices_are_bounded_text_only[&lt;lambda&gt;3]" time="0.001" /><testcase classname="engineering.ai.tests.test_answers" name="test_choices_are_bounded_text_only[&lt;lambda&gt;4]" time="0.001" /><testcase classname="engineering.ai.tests.test_answers" name="test_choices_are_bounded_text_only[&lt;lambda&gt;5]" time="0.001" /><testcase classname="engineering.ai.tests.test_answers" name="test_citations_require_issued_tokens_and_choices_cannot_approve" time="0.001" /><testcase classname="engineering.ai.tests.test_answers" name="test_model_citations_are_exact_tokens_without_changing_evidence" time="1.217" /><testcase classname="engineering.ai.tests.test_answers" name="test_player_model_choices_and_references_are_visible_only_while_authorized" time="1.341" /><testcase classname="engineering.ai.tests.test_answers" name="test_fabricated_model_citation_is_repaired_or_rejected" time="1.268" /><testcase classname="engineering.ai.tests.test_atomic_integration" name="test_real_runtime_failure_rolls_back_whole_batch[0]" time="1.274" /><testcase classname="engineering.ai.tests.test_atomic_integration" name="test_real_runtime_failure_rolls_back_whole_batch[1]" time="1.244" /><testcase classname="engineering.ai.tests.test_atomic_integration" name="test_real_runtime_failure_rolls_back_whole_batch[2]" time="1.262" /><testcase classname="engineering.ai.tests.test_atomic_integration" name="test_unknown_receipt_reconciles_original_id_without_replay" time="1.352" /><testcase classname="engineering.ai.tests.test_atomic_integration" name="test_ai_only_group_commits_and_rolls_back_in_one_store" time="1.338" /><testcase classname="engineering.ai.tests.test_atomic_integration" name="test_cross_store_and_unsupported_host_commands_block_before_execution" time="1.302" /><testcase classname="engineering.ai.tests.test_atomic_integration" name="test_single_memory_receipt_repairs_mirror_after_commit" time="1.302" /><testcase classname="engineering.ai.tests.test_atomic_integration" name="test_single_memory_batch_mirrors_exact_authoritative_fact" time="1.379" /><testcase classname="engineering.ai.tests.test_atomic_integration" name="test_semantic_feedback_repairs_or_preserves_blocked_candidate[True]" time="1.338" /><testcase classname="engineering.ai.tests.test_atomic_integration" name="test_semantic_feedback_repairs_or_preserves_blocked_candidate[False]" time="1.341" /><testcase classname="engineering.ai.tests.test_atomic_integration" name="test_business_failure_is_committed_without_reroll_or_goal_resolution" time="2.676" /><testcase classname="engineering.ai.tests.test_atomic_integration" name="test_more_than_32_actions_have_no_count_cap" time="1.636" /><testcase classname="engineering.ai.tests.test_atomic_integration" name="test_legacy_pending_batch_cannot_enter_sequential_executor" time="1.291" /><testcase classname="engineering.ai.tests.test_atomic_recovery" name="test_session_delete_cancels_live_task_only_after_commit[False]" time="1.499" /><testcase classname="engineering.ai.tests.test_atomic_recovery" name="test_session_delete_cancels_live_task_only_after_commit[True]" time="1.452" /><testcase classname="engineering.ai.tests.test_atomic_recovery" name="test_delete_own_source_session_keeps_batch_audit_and_parent_response" time="1.258" /><testcase classname="engineering.ai.tests.test_atomic_recovery" name="test_recover_old_memory_receipt_cannot_resurrect_revoked_fact" time="1.331" /><testcase classname="engineering.ai.tests.test_atomic_recovery" name="test_revoked_sources_hide_batch_diagnostics_and_receipt_payload" time="1.361" /><testcase classname="engineering.ai.tests.test_base" name="test_real_load_and_full_merge" time="1.003" /><testcase classname="engineering.ai.tests.test_base" name="test_configuration_without_optional_behaviors[False]" time="0.993" /><testcase classname="engineering.ai.tests.test_base" name="test_configuration_without_optional_behaviors[True]" time="1.021" /><testcase classname="engineering.ai.tests.test_base" name="test_load_rejects_invalid_candidates[&lt;lambda&gt;-INCOMPLETE_CANDIDATE]" time="0.490" /><testcase classname="engineering.ai.tests.test_base" name="test_load_rejects_invalid_candidates[&lt;lambda&gt;-PACK_SCHEMA_INVALID]" time="0.931" /><testcase classname="engineering.ai.tests.test_base" name="test_load_rejects_invalid_candidates[&lt;lambda&gt;-SCHEMA_MISSING]" time="0.938" /><testcase classname="engineering.ai.tests.test_base" name="test_load_rejects_invalid_candidates[&lt;lambda&gt;-VERSION_CONFLICT]" time="0.943" /><testcase classname="engineering.ai.tests.test_base" name="test_load_rejects_invalid_candidates[&lt;lambda&gt;-TYPE_CHANGE_FORBIDDEN]" time="0.895" /><testcase classname="engineering.ai.tests.test_base" name="test_load_rejects_invalid_candidates[&lt;lambda&gt;-REFERENCE_CONFLICT]" time="0.868" /><testcase classname="engineering.ai.tests.test_base" name="test_load_rejects_invalid_candidates[&lt;lambda&gt;-RULE_CYCLE_OR_MISSING0]" time="0.860" /><testcase classname="engineering.ai.tests.test_base" name="test_load_rejects_invalid_candidates[&lt;lambda&gt;-RULE_CYCLE_OR_MISSING1]" time="0.842" /><testcase classname="engineering.ai.tests.test_base" name="test_load_rejects_invalid_candidates[&lt;lambda&gt;-RULE_INVALID]" time="0.840" /><testcase classname="engineering.ai.tests.test_base" name="test_load_rejects_invalid_candidates[&lt;lambda&gt;-RULE_FAILED]" time="0.853" /><testcase classname="engineering.ai.tests.test_base" name="test_path_rejection[../x]" time="0.001" /><testcase classname="engineering.ai.tests.test_base" name="test_path_rejection[/x]" time="0.000" /><testcase classname="engineering.ai.tests.test_base" name="test_path_rejection[C:/x]" time="0.000" /><testcase classname="engineering.ai.tests.test_base" name="test_path_rejection[x\\y]" time="0.000" /><testcase classname="engineering.ai.tests.test_base" name="test_path_rejection[a//b]" time="0.000" /><testcase classname="engineering.ai.tests.test_base" name="test_path_rejection[a/../b]" time="0.000" /><testcase classname="engineering.ai.tests.test_base" name="test_path_rejection[a./b]" time="0.000" /><testcase classname="engineering.ai.tests.test_base" name="test_path_rejection[CON.json]" time="0.000" /><testcase classname="engineering.ai.tests.test_base" name="test_path_rejection[a:b]" time="0.000" /><testcase classname="engineering.ai.tests.test_base" name="test_path_rejection[.hidden]" time="0.000" /><testcase classname="engineering.ai.tests.test_base" name="test_junction_or_symlink_escape" time="0.038" /><testcase classname="engineering.ai.tests.test_base" name="test_pack_bad_json_and_limits[{&quot;x&quot;:1,&quot;x&quot;:2}-INPUT_INVALID]" time="0.010" /><testcase classname="engineering.ai.tests.test_base" name="test_pack_bad_json_and_limits[{&quot;x&quot;:NaN}-INPUT_INVALID]" time="0.010" /><testcase classname="engineering.ai.tests.test_base" name="test_pack_bad_json_and_limits[{-INPUT_INVALID]" time="0.005" /><testcase classname="engineering.ai.tests.test_base" name="test_pack_bad_json_and_limits[content3-LIMIT_EXCEEDED]" time="0.005" /><testcase classname="engineering.ai.tests.test_base" name="test_schema_cannot_resolve_external_resources[https://example.invalid/schema]" time="0.001" /><testcase classname="engineering.ai.tests.test_base" name="test_schema_cannot_resolve_external_resources[file:///secrets]" time="0.000" /><testcase classname="engineering.ai.tests.test_base" name="test_schema_cannot_resolve_external_resources[../schema.json]" time="0.000" /><testcase classname="engineering.ai.tests.test_base" name="test_pack_snapshot_and_baseline_changes_are_detected" time="0.456" /><testcase classname="engineering.ai.tests.test_batch_notifications" name="test_review_catalog_exposes_only_server_bound_source_index" time="1.145" /><testcase classname="engineering.ai.tests.test_batch_notifications" name="test_notification_rejects_nonprior_source[-1]" time="1.141" /><testcase classname="engineering.ai.tests.test_batch_notifications" name="test_notification_rejects_nonprior_source[1]" time="1.196" /><testcase classname="engineering.ai.tests.test_batch_notifications" name="test_notification_rejects_nonprior_source[2]" time="1.136" /><testcase classname="engineering.ai.tests.test_batch_notifications" name="test_notification_rejects_nonprior_source[True]" time="1.183" /><testcase classname="engineering.ai.tests.test_batch_notifications" name="test_notification_rejects_unsupported_source[source0]" time="1.162" /><testcase classname="engineering.ai.tests.test_batch_notifications" name="test_notification_rejects_unsupported_source[source1]" time="1.137" /><testcase classname="engineering.ai.tests.test_batch_notifications" name="test_reviewed_notification_waits_for_approval_and_is_targeted_once" time="1.315" /><testcase classname="engineering.ai.tests.test_batch_notifications" name="test_failed_source_cannot_claim_success" time="1.200" /><testcase classname="engineering.ai.tests.test_batch_notifications" name="test_rejected_batch_sends_nothing" time="1.247" /><testcase classname="engineering.ai.tests.test_batch_notifications" name="test_lost_reply_never_blindly_replays_or_sends_early[False]" time="1.292" /><testcase classname="engineering.ai.tests.test_batch_notifications" name="test_lost_reply_never_blindly_replays_or_sends_early[True]" time="1.273" /><testcase classname="engineering.ai.tests.test_chat_isolation" name="test_context_never_auto_collects_ordinary_chat" time="1.222" /><testcase classname="engineering.ai.tests.test_chat_isolation" name="test_broad_room_query_batch_survives_ordinary_chat" time="1.578" /><testcase classname="engineering.ai.tests.test_chat_isolation" name="test_ruling_keeps_only_proven_delivered_summary[value]" time="1.388" /><testcase classname="engineering.ai.tests.test_chat_isolation" name="test_ruling_keeps_only_proven_delivered_summary[removed]" time="1.405" /><testcase classname="engineering.ai.tests.test_chat_isolation" name="test_ruling_keeps_only_proven_delivered_summary[revoked]" time="1.391" /><testcase classname="engineering.ai.tests.test_chat_isolation" name="test_ruling_keeps_only_proven_delivered_summary[unproven]" time="1.393" /><testcase classname="engineering.ai.tests.test_chat_isolation" name="test_selected_message_depends_only_on_that_message[edit]" time="1.231" /><testcase classname="engineering.ai.tests.test_chat_isolation" name="test_selected_message_depends_only_on_that_message[retract]" time="1.219" /><testcase classname="engineering.ai.tests.test_chat_isolation" name="test_default_tools_exclude_chat_but_explicit_reference_allows_it" time="0.001" /><testcase classname="engineering.ai.tests.test_chat_isolation" name="test_legacy_chat_context_is_not_inherited_by_next_default_request" time="1.334" /><testcase classname="engineering.ai.tests.test_chat_isolation" name="test_task_original_request_and_delivered_reply_are_separate_from_source_access[value]" time="1.433" /><testcase classname="engineering.ai.tests.test_chat_isolation" name="test_task_original_request_and_delivered_reply_are_separate_from_source_access[removed]" time="1.387" /><testcase classname="engineering.ai.tests.test_chat_isolation" name="test_task_original_request_and_delivered_reply_are_separate_from_source_access[revoked]" time="1.403" /><testcase classname="engineering.ai.tests.test_chat_isolation" name="test_public_ruling_delivery_preserves_manual_summary_without_inventing_task" time="1.242" /><testcase classname="engineering.ai.tests.test_command_reliability" name="test_negative_search_without_evidence_is_repaired" time="1.318" /><testcase classname="engineering.ai.tests.test_command_reliability" name="test_search_guard_accepts_real_empty_query_and_explicit_failure" time="0.001" /><testcase classname="engineering.ai.tests.test_command_reliability" name="test_blocked_draft_cannot_become_ready_by_returning_plan" time="2.737" /><testcase classname="engineering.ai.tests.test_command_reliability" name="test_rule_feedback_includes_only_requested_rule_and_transitive_dependencies" time="0.001" /><testcase classname="engineering.ai.tests.test_command_reliability" name="test_action_schema_errors_identify_exact_step_and_field" time="1.147" /><testcase classname="engineering.ai.tests.test_command_reliability" name="test_catalog_keeps_whitelist_and_declares_atomic_scope_before_generation" time="1.236" /><testcase classname="engineering.ai.tests.test_command_reliability" name="test_tool_json_and_schema_are_feedback_not_execution[{]" time="0.001" /><testcase classname="engineering.ai.tests.test_command_reliability" name="test_tool_json_and_schema_are_feedback_not_execution[[]]" time="0.001" /><testcase classname="engineering.ai.tests.test_command_reliability" name="test_tool_json_and_schema_are_feedback_not_execution[{&quot;limit&quot;:0}]" time="0.001" /><testcase classname="engineering.ai.tests.test_command_reliability" name="test_tool_json_and_schema_are_feedback_not_execution[{&quot;unexpected&quot;:true}]" time="0.001" /><testcase classname="engineering.ai.tests.test_command_reliability" name="test_bad_tool_arguments_repair_with_declared_schema_without_user_question[{]" time="1.298" /><testcase classname="engineering.ai.tests.test_command_reliability" name="test_bad_tool_arguments_repair_with_declared_schema_without_user_question[{&quot;section&quot;:&quot;invalid&quot;}]" time="1.352" /><testcase classname="engineering.ai.tests.test_command_reliability" name="test_billable_malformed_tool_arguments_reach_coordinator" time="0.003" /><testcase classname="engineering.ai.tests.test_command_reliability" name="test_tool_repairs_stop_at_two_and_do_not_ask_business_question" time="1.329" /><testcase classname="engineering.ai.tests.test_context" name="test_default_excludes_room_and_pack_text" time="1.215" /><testcase classname="engineering.ai.tests.test_context" name="test_public_context_strips_secret_and_never_reads_others_private_chat" time="1.191" /><testcase classname="engineering.ai.tests.test_context" name="test_context_rechecks_source_and_policy_after_generation[edit]" time="1.215" /><testcase classname="engineering.ai.tests.test_context" name="test_context_rechecks_source_and_policy_after_generation[delete]" time="1.241" /><testcase classname="engineering.ai.tests.test_context" name="test_context_rechecks_source_and_policy_after_generation[policy]" time="1.273" /><testcase classname="engineering.ai.tests.test_context" name="test_context_rechecks_source_and_policy_after_generation[revoke]" time="1.244" /><testcase classname="engineering.ai.tests.test_context" name="test_context_rechecks_source_and_policy_after_generation[profile]" time="1.229" /><testcase classname="engineering.ai.tests.test_context" name="test_manual_revision_keeps_original_source_authorization" time="1.384" /><testcase classname="engineering.ai.tests.test_context" name="test_chat_source_requires_actual_current_text_and_external_permission" time="1.248" /><testcase classname="engineering.ai.tests.test_context" name="test_unrelated_read_position_and_ai_history_do_not_change_world" time="1.242" /><testcase classname="engineering.ai.tests.test_context" name="test_scope_mismatch_rejects_cross_room_context" time="1.258" /><testcase classname="engineering.ai.tests.test_context" name="test_context_size_is_bounded" time="1.238"><failure message="Failed: DID NOT RAISE AiError">setup = (&lt;onlinecoc.host.Host object at 0x000001D3000B8490&gt;, &lt;onlinecoc_ai.proposals.Proposals object at 0x000001D3000DC590&gt;, {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...})
+
+    def test_context_size_is_bounded(setup):
+        host,service,_=setup;enable(host,public=True)
+        state=host.state()
+        for i in range(30):
+            entity=copy.deepcopy(state['entities']['token-one']);entity.update(instanceId='large-'+str(i));entity['metadata']['notes']='x'*4000;state['entities'][entity['instanceId']]=entity
+        host.commit(state)
+&gt;       with pytest.raises(AiError,match='CONTEXT_LIMIT_EXCEEDED'):Context(service).capture('kp',request())
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE AiError
+
+engineering\ai\tests\test_context.py:104: Failed</failure></testcase><testcase classname="engineering.ai.tests.test_context" name="test_two_actual_demo_directories_do_not_share_secrets_or_memory" time="1.929" /><testcase classname="engineering.ai.tests.test_context_compression" name="test_compacts_semantically_keeps_current_request_exact_and_recall_archives" time="0.049" /><testcase classname="engineering.ai.tests.test_context_compression" name="test_invalid_summary_repairs_once_and_preserves_failed_feedback" time="0.044" /><testcase classname="engineering.ai.tests.test_context_compression" name="test_persistent_bad_summary_fails_closed_keeps_originals" time="0.042" /><testcase classname="engineering.ai.tests.test_context_compression" name="test_summary_cannot_forge_provenance_or_convert_ai_suggestion_to_confirmation[assistant-not approval]" time="0.001" /><testcase classname="engineering.ai.tests.test_context_compression" name="test_summary_cannot_forge_provenance_or_convert_ai_suggestion_to_confirmation[user-invented quote]" time="0.001" /><testcase classname="engineering.ai.tests.test_context_compression" name="test_guard_change_during_summary_rejects_before_output_and_recall" time="0.043" /><testcase classname="engineering.ai.tests.test_context_compression" name="test_tool_exchanges_stay_paired" time="0.051" /><testcase classname="engineering.ai.tests.test_context_compression" name="test_under_threshold_no_call_and_uncompressible_overflow_no_provider" time="0.006" /><testcase classname="engineering.ai.tests.test_context_compression" name="test_model_budget_reserves_output_protocol_and_declared_window" time="0.001" /><testcase classname="engineering.ai.tests.test_context_compression" name="test_coordinator_bills_summary_and_final_reply_with_visible_progress" time="1.752" /><testcase classname="engineering.ai.tests.test_context_usability" name="test_old_parameters_survive_four_turn_window_without_factual_authority" time="1.361" /><testcase classname="engineering.ai.tests.test_context_usability" name="test_retained_requirements_recheck_original_provenance[cancelled]" time="1.275" /><testcase classname="engineering.ai.tests.test_context_usability" name="test_retained_requirements_recheck_original_provenance[session_deleted]" time="1.286" /><testcase classname="engineering.ai.tests.test_context_usability" name="test_retention_is_bounded_reports_omissions_and_respects_history_off" time="1.788" /><testcase classname="engineering.ai.tests.test_context_usability" name="test_only_exact_previously_answered_choices_trigger_bounded_correction" time="1.542" /><testcase classname="engineering.ai.tests.test_context_usability" name="test_new_material_choice_is_not_suppressed" time="0.001" /><testcase classname="engineering.ai.tests.test_context_usability" name="test_recorded_false_numeric_capability_claim_is_rejected_without_suppressing_real_choice" time="0.001" /><testcase classname="engineering.ai.tests.test_context_usability" name="test_configuration_request_preloads_only_authorized_templates[True]" time="1.347" /><testcase classname="engineering.ai.tests.test_context_usability" name="test_configuration_request_preloads_only_authorized_templates[False]" time="1.326" /><testcase classname="engineering.ai.tests.test_contracts" name="test_valid_model[Profile]" time="0.001" /><testcase classname="engineering.ai.tests.test_contracts" name="test_valid_model[PackContract]" time="0.001" /><testcase classname="engineering.ai.tests.test_contracts" name="test_valid_model[ContextSnapshot]" time="0.001" /><testcase classname="engineering.ai.tests.test_contracts" name="test_valid_model[Request]" time="0.001" /><testcase classname="engineering.ai.tests.test_contracts" name="test_valid_model[Proposal]" time="0.002" /><testcase classname="engineering.ai.tests.test_contracts" name="test_valid_model[ChangeSet]" time="0.002" /><testcase classname="engineering.ai.tests.test_contracts" name="test_valid_model[ValidationReport]" time="0.001" /><testcase classname="engineering.ai.tests.test_contracts" name="test_valid_model[PreparedBundle]" time="0.004" /><testcase classname="engineering.ai.tests.test_contracts" name="test_valid_model[Approval]" time="0.004" /><testcase classname="engineering.ai.tests.test_contracts" name="test_valid_model[Publication]" time="0.001" /><testcase classname="engineering.ai.tests.test_contracts" name="test_valid_model[MemoryEntry]" time="0.001" /><testcase classname="engineering.ai.tests.test_contracts" name="test_valid_model[Scenario]" time="0.001" /><testcase classname="engineering.ai.tests.test_contracts" name="test_valid_model[CheckSpec]" time="0.001" /><testcase classname="engineering.ai.tests.test_contracts" name="test_valid_model[Metric]" time="0.001" /><testcase classname="engineering.ai.tests.test_contracts" name="test_valid_model[AiCommand]" time="0.001" /><testcase classname="engineering.ai.tests.test_contracts" name="test_unknown_authority_fields_rejected[Profile]" time="0.001" /><testcase classname="engineering.ai.tests.test_contracts" name="test_unknown_authority_fields_rejected[PackContract]" time="0.002" /><testcase classname="engineering.ai.tests.test_contracts" name="test_unknown_authority_fields_rejected[ContextSnapshot]" time="0.001" /><testcase classname="engineering.ai.tests.test_contracts" name="test_unknown_authority_fields_rejected[Request]" time="0.001" /><testcase classname="engineering.ai.tests.test_contracts" name="test_unknown_authority_fields_rejected[Proposal]" time="0.002" /><testcase classname="engineering.ai.tests.test_contracts" name="test_unknown_authority_fields_rejected[ChangeSet]" time="0.002" /><testcase classname="engineering.ai.tests.test_contracts" name="test_unknown_authority_fields_rejected[ValidationReport]" time="0.001" /><testcase classname="engineering.ai.tests.test_contracts" name="test_unknown_authority_fields_rejected[PreparedBundle]" time="0.003" /><testcase classname="engineering.ai.tests.test_contracts" name="test_unknown_authority_fields_rejected[Approval]" time="0.004" /><testcase classname="engineering.ai.tests.test_contracts" name="test_unknown_authority_fields_rejected[Publication]" time="0.001" /><testcase classname="engineering.ai.tests.test_contracts" name="test_unknown_authority_fields_rejected[MemoryEntry]" time="0.001" /><testcase classname="engineering.ai.tests.test_contracts" name="test_unknown_authority_fields_rejected[Scenario]" time="0.002" /><testcase classname="engineering.ai.tests.test_contracts" name="test_unknown_authority_fields_rejected[CheckSpec]" time="0.002" /><testcase classname="engineering.ai.tests.test_contracts" name="test_unknown_authority_fields_rejected[Metric]" time="0.001" /><testcase classname="engineering.ai.tests.test_contracts" name="test_unknown_authority_fields_rejected[AiCommand]" time="0.001" /><testcase classname="engineering.ai.tests.test_contracts" name="test_negative_fixtures[case0]" time="0.001" /><testcase classname="engineering.ai.tests.test_contracts" name="test_negative_fixtures[case1]" time="0.002" /><testcase classname="engineering.ai.tests.test_contracts" name="test_negative_fixtures[case2]" time="0.003" /><testcase classname="engineering.ai.tests.test_contracts" name="test_negative_fixtures[case3]" time="0.001" /><testcase classname="engineering.ai.tests.test_contracts" name="test_negative_fixtures[case4]" time="0.002" /><testcase classname="engineering.ai.tests.test_contracts" name="test_negative_fixtures[case5]" time="0.001" /><testcase classname="engineering.ai.tests.test_contracts" name="test_every_schema_is_valid" time="0.274" /><testcase classname="engineering.ai.tests.test_contracts" name="test_ambiguous_or_invalid_json_rejected[{&quot;x&quot;:1,&quot;x&quot;:2}]" time="0.001" /><testcase classname="engineering.ai.tests.test_contracts" name="test_ambiguous_or_invalid_json_rejected[{&quot;nested&quot;:{&quot;x&quot;:1,&quot;x&quot;:2}}]" time="0.001" /><testcase classname="engineering.ai.tests.test_contracts" name="test_ambiguous_or_invalid_json_rejected[{&quot;x&quot;:NaN}]" time="0.001" /><testcase classname="engineering.ai.tests.test_contracts" name="test_ambiguous_or_invalid_json_rejected[{&quot;x&quot;:Infinity}]" time="0.001" /><testcase classname="engineering.ai.tests.test_contracts" name="test_ambiguous_or_invalid_json_rejected[&quot;\ud800&quot;]" time="0.001" /><testcase classname="engineering.ai.tests.test_contracts" name="test_ambiguous_or_invalid_json_rejected[\xff]" time="0.000" /><testcase classname="engineering.ai.tests.test_contracts" name="test_non_json_or_unsafe_numbers_rejected[nan]" time="0.000" /><testcase classname="engineering.ai.tests.test_contracts" name="test_non_json_or_unsafe_numbers_rejected[inf]" time="0.000" /><testcase classname="engineering.ai.tests.test_contracts" name="test_non_json_or_unsafe_numbers_rejected[9007199254740992]" time="0.000" /><testcase classname="engineering.ai.tests.test_contracts" name="test_non_json_or_unsafe_numbers_rejected[1044388881413152506691752710716624382579964249047383780384233483283953907971557456848826811934997558340890106714439262837987573438185793607263236087851365277945956976543709998340361590134383718314428070011855946226376318839397712745672334684344586617496807908705803704071284048740118609114467977783598029006686938976881787785946905630190260940599579453432823469303026696443059025015972399867714215541693835559885291486318237914434496734087811872639496475100189041349008417061675093668333850551032972088269550769983616369411933015213796825837188091833656751221318492846368125550225998300412344784862595674492194617023806505913245610825731835380087608622102834270197698202313169017678006675195485079921636419370285375124784014907159135459982790513399611551794271106831134090584272884279791554849782954323534517065223269061394905987693002122963395687782878948440616007412945674919823050571642377154816321380631045902916136926708342856440730447899971901781465763473223850267253059899795996090799469201774624817718449867455659250178329070473119433165550807568221846571746373296884912819520317457002440926616910874148385078411929804522981857338977648103126085903001302413467189726673216491511131602920781738033436090243804708340403154190336]" time="0.001" /><testcase classname="engineering.ai.tests.test_contracts" name="test_non_json_or_unsafe_numbers_rejected[value4]" time="0.000" /><testcase classname="engineering.ai.tests.test_contracts" name="test_non_json_or_unsafe_numbers_rejected[value5]" time="0.000" /><testcase classname="engineering.ai.tests.test_contracts" name="test_cycles_and_depth_are_bounded" time="0.000" /><testcase classname="engineering.ai.tests.test_contracts" name="test_golden_digests_and_host_interop" time="0.001" /><testcase classname="engineering.ai.tests.test_contracts" name="test_baseline_binds_every_precondition[scopeId]" time="0.001" /><testcase classname="engineering.ai.tests.test_contracts" name="test_baseline_binds_every_precondition[baseRuleset]" time="0.001" /><testcase classname="engineering.ai.tests.test_contracts" name="test_baseline_binds_every_precondition[configDigest]" time="0.001" /><testcase classname="engineering.ai.tests.test_contracts" name="test_baseline_binds_every_precondition[contractDigest]" time="0.000" /><testcase classname="engineering.ai.tests.test_contracts" name="test_baseline_binds_every_precondition[validatorSetDigest]" time="0.000" /><testcase classname="engineering.ai.tests.test_contracts" name="test_baseline_binds_every_precondition[worldDigest]" time="0.000" /><testcase classname="engineering.ai.tests.test_contracts" name="test_candidate_binds_complete_artifact_and_configuration" time="0.001" /><testcase classname="engineering.ai.tests.test_contracts" name="test_mismatched_report_or_candidate_cannot_be_reused[PreparedBundle]" time="0.008" /><testcase classname="engineering.ai.tests.test_contracts" name="test_mismatched_report_or_candidate_cannot_be_reused[Approval]" time="0.008" /><testcase classname="engineering.ai.tests.test_contracts" name="test_change_identity_and_expected_revision" time="0.002" /><testcase classname="engineering.ai.tests.test_contracts" name="test_model_tools_do_not_include_approval_or_mutation" time="0.000" /><testcase classname="engineering.ai.tests.test_contracts" name="test_pack_materials_are_present_and_typed" time="0.008" /><testcase classname="engineering.ai.tests.test_contracts" name="test_provider_template_is_disabled_and_contains_only_secret_reference" time="0.001" /><testcase classname="engineering.ai.tests.test_coordinator" name="test_draft_is_checked_but_never_published" time="6.219"><failure message="AssertionError: {'taskId': '1316ec68015e4d10a5b480370f5f5f4f', 'requestId': '1316ec68015e4d10a5b480370f5f5f4f', 'account': 'kp', 'profile': {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...}, ...}&#10;assert 'failed' == 'review_ready'&#10;  &#10;  - review_ready&#10;  + failed">setup = (&lt;onlinecoc.host.Host object at 0x000001D3000BB8A0&gt;, &lt;onlinecoc_ai.proposals.Proposals object at 0x000001D347154C20&gt;, {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...})
+
+    def test_draft_is_checked_but_never_published(setup):
+        host,service,profile=setup
+        delta=loads((Path(__file__).parents[1]/'examples/bonus-15.json').read_bytes())
+        async def callback(*args):return completion({'kind':'draft','text':'有限次数道具，风险待 KP 审核','changeSet':delta})
+        async def run():
+            c=Coordinator(service,{profile['profileId']:profile},provider_factory=lambda p:Fake(callback));await c.start()
+            try:
+                task=c.enqueue('kp','one','制作道具')
+                result=await wait_task(c,task['taskId'])
+                assert result['status']=='review_ready',result
+                assert service.get('kp',result['proposalId'])['model']==profile['model']
+                assert host.state()['configurations']['fixture.token']['defaults']['bonus']==0
+                assert host.state()['aiControl']['approvals']=={}
+            finally:await c.close()
+&gt;       asyncio.run(run())
+
+engineering\ai\tests\test_coordinator.py:68: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:204: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:127: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\base_events.py:719: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    async def run():
+        c=Coordinator(service,{profile['profileId']:profile},provider_factory=lambda p:Fake(callback));await c.start()
+        try:
+            task=c.enqueue('kp','one','制作道具')
+            result=await wait_task(c,task['taskId'])
+&gt;           assert result['status']=='review_ready',result
+E           AssertionError: {'taskId': '1316ec68015e4d10a5b480370f5f5f4f', 'requestId': '1316ec68015e4d10a5b480370f5f5f4f', 'account': 'kp', 'profile': {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...}, ...}
+E           assert 'failed' == 'review_ready'
+E             
+E             - review_ready
+E             + failed
+
+engineering\ai\tests\test_coordinator.py:63: AssertionError</failure></testcase><testcase classname="engineering.ai.tests.test_coordinator" name="test_blocked_model_does_not_hold_host_lock_and_can_cancel" time="1.358" /><testcase classname="engineering.ai.tests.test_coordinator" name="test_request_dedup_queue_and_budget" time="1.280" /><testcase classname="engineering.ai.tests.test_coordinator" name="test_untrusted_model_and_retry_limits[forged-TOOL_FORBIDDEN]" time="1.244" /><testcase classname="engineering.ai.tests.test_coordinator" name="test_untrusted_model_and_retry_limits[loop-TOOL_ROUND_LIMIT]" time="1.323" /><testcase classname="engineering.ai.tests.test_coordinator" name="test_untrusted_model_and_retry_limits[retry-PROVIDER_UNAVAILABLE]" time="1.547" /><testcase classname="engineering.ai.tests.test_coordinator" name="test_untrusted_model_and_retry_limits[repair-MODEL_OUTPUT_INVALID]" time="1.269" /><testcase classname="engineering.ai.tests.test_coordinator" name="test_expired_task_and_authority_change_fail_closed" time="1.404" /><testcase classname="engineering.ai.tests.test_coordinator" name="test_disabled_service_makes_no_provider_calls" time="1.280" /><testcase classname="engineering.ai.tests.test_coordinator" name="test_retry_budget_records_each_attempt_once" time="1.605" /><testcase classname="engineering.ai.tests.test_coordinator" name="test_restart_interrupts_queued_tasks_and_preserves_budget" time="1.635" /><testcase classname="engineering.ai.tests.test_coordinator" name="test_permissions_changed_during_generation_discard_output" time="1.262" /><testcase classname="engineering.ai.tests.test_coordinator" name="test_profile_changed_during_generation_discards_output_and_runner_survives" time="1.378" /><testcase classname="engineering.ai.tests.test_coordinator" name="test_real_contract_is_exposed_and_repair_names_invalid_field" time="5.905"><failure message="AssertionError: assert ('failed' == 'review_ready'&#10;  &#10;  - review_ready&#10;  + failed)">setup = (&lt;onlinecoc.host.Host object at 0x000001D3000B9260&gt;, &lt;onlinecoc_ai.proposals.Proposals object at 0x000001D30084A190&gt;, {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...})
+
+    def test_real_contract_is_exposed_and_repair_names_invalid_field(setup):
+        from onlinecoc_ai.coordinator import generation_contract
+        from jsonschema import Draft202012Validator
+        _, service, profile = setup
+        delta = loads((Path(__file__).parents[1] / 'examples/bonus-15.json').read_bytes())
+        schema = generation_contract()
+        assert Draft202012Validator(schema).is_valid(delta)
+        assert 'ConfigurationChange' in schema['$defs'] and 'Approval' not in schema['$defs']
+        invalid = copy.deepcopy(delta)
+        invalid['configurations'][0]['expectedRevision'] = 1  # string required
+        async def callback(count, messages, tools):
+            assert 'ConfigurationChange' in messages[0]['content'] and 'expectedRevision' in messages[0]['content']
+            if count == 1:return completion({'kind': 'draft', 'text': 'draft', 'changeSet': invalid})
+            feedback = loads(messages[-1]['content'])
+            assert feedback['error']['path'] == '/configurations/0/expectedRevision'
+            assert feedback['error']['code'] == 'INPUT_INVALID'
+            return completion({'kind': 'draft', 'text': 'corrected draft', 'changeSet': delta})
+        async def run():
+            c = Coordinator(service, {profile['profileId']: profile}, provider_factory=lambda p: Fake(callback))
+            await c.start()
+            try:
+                task = c.enqueue('kp', 'schema-repair', 'make an item')
+                result = await wait_task(c, task['taskId'])
+                assert result['status'] == 'review_ready' and len(result['calls']) == 2
+                assert not service.host.state()['aiControl']['approvals']
+            finally:await c.close()
+&gt;       asyncio.run(run())
+
+engineering\ai\tests\test_coordinator.py:235: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:204: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:127: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\base_events.py:719: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    async def run():
+        c = Coordinator(service, {profile['profileId']: profile}, provider_factory=lambda p: Fake(callback))
+        await c.start()
+        try:
+            task = c.enqueue('kp', 'schema-repair', 'make an item')
+            result = await wait_task(c, task['taskId'])
+&gt;           assert result['status'] == 'review_ready' and len(result['calls']) == 2
+E           AssertionError: assert ('failed' == 'review_ready'
+E             
+E             - review_ready
+E             + failed)
+
+engineering\ai\tests\test_coordinator.py:232: AssertionError</failure></testcase><testcase classname="engineering.ai.tests.test_c_review_defaults" name="test_new_room_defaults_and_repeat_preserve_user_settings" time="1.262" /><testcase classname="engineering.ai.tests.test_c_review_defaults" name="test_new_room_no_implicit_profile_guess[0-profile_unavailable]" time="1.246" /><testcase classname="engineering.ai.tests.test_c_review_defaults" name="test_new_room_no_implicit_profile_guess[2-profile_selection_required]" time="1.259" /><testcase classname="engineering.ai.tests.test_c_review_defaults" name="test_initialization_requires_kp_scope_and_untouched_settings" time="1.260" /><testcase classname="engineering.ai.tests.test_c_review_defaults" name="test_dynamic_thresholds_affect_real_measurements_and_reset" time="12.064" /><testcase classname="engineering.ai.tests.test_c_review_defaults" name="test_c_risk_classification_never_relaxes_execution[EXTENSION_FORBIDDEN-True]" time="0.001" /><testcase classname="engineering.ai.tests.test_c_review_defaults" name="test_c_risk_classification_never_relaxes_execution[LIVE_SCENARIO_COVERAGE_MISSING-True]" time="0.001" /><testcase classname="engineering.ai.tests.test_c_review_defaults" name="test_c_risk_classification_never_relaxes_execution[EXISTING_INSTANCE_COVERAGE_MISSING-True]" time="0.001" /><testcase classname="engineering.ai.tests.test_c_review_defaults" name="test_c_risk_classification_never_relaxes_execution[SCENARIO_EXECUTION_FAILED-False]" time="0.001" /><testcase classname="engineering.ai.tests.test_c_review_defaults" name="test_c_risk_classification_never_relaxes_execution[SANDBOX_UNAVAILABLE-False]" time="0.001" /><testcase classname="engineering.ai.tests.test_c_review_defaults" name="test_c_risk_classification_never_relaxes_execution[RULE_TIMEOUT-False]" time="0.001" /><testcase classname="engineering.ai.tests.test_c_review_defaults" name="test_c_risk_classification_never_relaxes_execution[EXTENSION_EFFECT_FORBIDDEN-False]" time="0.001" /><testcase classname="engineering.ai.tests.test_c_review_defaults" name="test_basis_update_authorization_revision_and_restart" time="2.716" /><testcase classname="engineering.ai.tests.test_c_review_defaults" name="test_changing_basis_invalidates_prepared_and_recheck_binds_new_version" time="6.356"><failure message="AssertionError: {'requestId': 'f1c40046359a4fce990229cb01ccfcdd', 'status': 'unknown', 'code': 'RESULT_UNKNOWN'}&#10;assert 'unknown' == 'committed'&#10;  &#10;  - committed&#10;  + unknown">application = &lt;onlinecoc_ai.api.Application object at 0x000001D3008DA390&gt;
+
+    def test_changing_basis_invalidates_prepared_and_recheck_binds_new_version(application):
+        app = application
+        p = committed(command(app,'ai.draft.create',{'text':'配置修改','changeSet':delta()}))
+&gt;       checked = committed(command(app,'ai.proposal.validate',{'proposalId':p['proposalId'],'revision':1}))
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+engineering\ai\tests\test_c_review_defaults.py:104: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+receipt = {'requestId': 'f1c40046359a4fce990229cb01ccfcdd', 'status': 'unknown', 'code': 'RESULT_UNKNOWN'}
+
+    def committed(receipt):
+&gt;       assert receipt['status'] == 'committed', receipt
+E       AssertionError: {'requestId': 'f1c40046359a4fce990229cb01ccfcdd', 'status': 'unknown', 'code': 'RESULT_UNKNOWN'}
+E       assert 'unknown' == 'committed'
+E         
+E         - committed
+E         + unknown
+
+engineering\ai\tests\test_entrypoints.py:34: AssertionError</failure></testcase><testcase classname="engineering.ai.tests.test_c_review_defaults" name="test_actual_coverage_gap_is_reviewable_and_rejectable" time="9.722"><failure message="AssertionError: {'requestId': 'daebc5b20f66435bb22ee786773a12a6', 'status': 'unknown', 'code': 'RESULT_UNKNOWN'}&#10;assert 'unknown' == 'committed'&#10;  &#10;  - committed&#10;  + unknown">application = &lt;onlinecoc_ai.api.Application object at 0x000001D3008DB050&gt;
+
+    def test_actual_coverage_gap_is_reviewable_and_rejectable(application):
+        app=application;p=uncovered_draft(app)
+&gt;       result=committed(command(app,'ai.proposal.validate',{'proposalId':p['proposalId'],'revision':1}))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+engineering\ai\tests\test_c_review_defaults.py:129: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+receipt = {'requestId': 'daebc5b20f66435bb22ee786773a12a6', 'status': 'unknown', 'code': 'RESULT_UNKNOWN'}
+
+    def committed(receipt):
+&gt;       assert receipt['status'] == 'committed', receipt
+E       AssertionError: {'requestId': 'daebc5b20f66435bb22ee786773a12a6', 'status': 'unknown', 'code': 'RESULT_UNKNOWN'}
+E       assert 'unknown' == 'committed'
+E         
+E         - committed
+E         + unknown
+
+engineering\ai\tests\test_entrypoints.py:34: AssertionError</failure></testcase><testcase classname="engineering.ai.tests.test_c_review_defaults" name="test_added_live_scenarios_run_and_close_coverage_gap" time="8.237"><failure message="AssertionError: {'requestId': 'b37e68a65163406691382024beffe165', 'status': 'unknown', 'code': 'RESULT_UNKNOWN'}&#10;assert 'unknown' == 'committed'&#10;  &#10;  - committed&#10;  + unknown">application = &lt;onlinecoc_ai.api.Application object at 0x000001D3008DB7D0&gt;
+
+    def test_added_live_scenarios_run_and_close_coverage_gap(application):
+        app=application;p=uncovered_draft(app)
+        before=app.host.state()['entities']
+        declaration={'configurationId':'fixture.actor','rule':'fixture.check','actorInput':'actor','input':{'item':'token-one'},'coversData':[],'coversRules':['fixture.check'],'randomSides':100}
+        committed(command(app,'ai.c_basis.update',{**copy.deepcopy(DEFAULT),'liveScenarios':[declaration],'notes':'验证所有当前角色'}))
+&gt;       result=committed(command(app,'ai.proposal.validate',{'proposalId':p['proposalId'],'revision':1}))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+engineering\ai\tests\test_c_review_defaults.py:146: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+receipt = {'requestId': 'b37e68a65163406691382024beffe165', 'status': 'unknown', 'code': 'RESULT_UNKNOWN'}
+
+    def committed(receipt):
+&gt;       assert receipt['status'] == 'committed', receipt
+E       AssertionError: {'requestId': 'b37e68a65163406691382024beffe165', 'status': 'unknown', 'code': 'RESULT_UNKNOWN'}
+E       assert 'unknown' == 'committed'
+E         
+E         - committed
+E         + unknown
+
+engineering\ai\tests\test_entrypoints.py:34: AssertionError</failure></testcase><testcase classname="engineering.ai.tests.test_c_review_defaults" name="test_initialization_recovers_interrupted_host_commit" time="1.082" /><testcase classname="engineering.ai.tests.test_c_review_defaults" name="test_approved_publication_after_ai_close_rechecks_persisted_basis[False]" time="5.834"><failure message="AssertionError: {'requestId': '1823a4ad18a24d52b3000e72e19dbece', 'status': 'unknown', 'code': 'RESULT_UNKNOWN'}&#10;assert 'unknown' == 'committed'&#10;  &#10;  - committed&#10;  + unknown">application = &lt;onlinecoc_ai.api.Application object at 0x000001D300188890&gt;
+changed = False
+
+    @pytest.mark.parametrize('changed',[False,True])
+    def test_approved_publication_after_ai_close_rechecks_persisted_basis(application,changed):
+        from onlinecoc_ai.repository import Repository
+        app=application
+        p=committed(command(app,'ai.draft.create',{'text':'保存后发布','changeSet':delta()}))
+&gt;       committed(command(app,'ai.proposal.validate',{'proposalId':p['proposalId'],'revision':1}))
+
+engineering\ai\tests\test_c_review_defaults.py:173: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+receipt = {'requestId': '1823a4ad18a24d52b3000e72e19dbece', 'status': 'unknown', 'code': 'RESULT_UNKNOWN'}
+
+    def committed(receipt):
+&gt;       assert receipt['status'] == 'committed', receipt
+E       AssertionError: {'requestId': '1823a4ad18a24d52b3000e72e19dbece', 'status': 'unknown', 'code': 'RESULT_UNKNOWN'}
+E       assert 'unknown' == 'committed'
+E         
+E         - committed
+E         + unknown
+
+engineering\ai\tests\test_entrypoints.py:34: AssertionError</failure></testcase><testcase classname="engineering.ai.tests.test_c_review_defaults" name="test_approved_publication_after_ai_close_rechecks_persisted_basis[True]" time="5.738"><failure message="AssertionError: {'requestId': '885bdbbc33d24ce59cc85b414f44e459', 'status': 'unknown', 'code': 'RESULT_UNKNOWN'}&#10;assert 'unknown' == 'committed'&#10;  &#10;  - committed&#10;  + unknown">application = &lt;onlinecoc_ai.api.Application object at 0x000001D300189010&gt;
+changed = True
+
+    @pytest.mark.parametrize('changed',[False,True])
+    def test_approved_publication_after_ai_close_rechecks_persisted_basis(application,changed):
+        from onlinecoc_ai.repository import Repository
+        app=application
+        p=committed(command(app,'ai.draft.create',{'text':'保存后发布','changeSet':delta()}))
+&gt;       committed(command(app,'ai.proposal.validate',{'proposalId':p['proposalId'],'revision':1}))
+
+engineering\ai\tests\test_c_review_defaults.py:173: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+receipt = {'requestId': '885bdbbc33d24ce59cc85b414f44e459', 'status': 'unknown', 'code': 'RESULT_UNKNOWN'}
+
+    def committed(receipt):
+&gt;       assert receipt['status'] == 'committed', receipt
+E       AssertionError: {'requestId': '885bdbbc33d24ce59cc85b414f44e459', 'status': 'unknown', 'code': 'RESULT_UNKNOWN'}
+E       assert 'unknown' == 'committed'
+E         
+E         - committed
+E         + unknown
+
+engineering\ai\tests\test_entrypoints.py:34: AssertionError</failure></testcase><testcase classname="engineering.ai.tests.test_c_review_defaults" name="test_closed_basis_resolver_reports_locked_storage" time="1.389" /><testcase classname="engineering.ai.tests.test_data_edits" name="test_append_from_partial_array_preserves_all_unread_data_and_is_repeatable" time="0.002" /><testcase classname="engineering.ai.tests.test_data_edits" name="test_append_uniqueness_checks_items_outside_returned_page" time="0.001" /><testcase classname="engineering.ai.tests.test_data_edits" name="test_add_replace_remove_are_explicit_and_preserve_siblings" time="0.002" /><testcase classname="engineering.ai.tests.test_data_edits" name="test_rejects_unsafe_edits_atomically[mixed-DATA_EDIT_MIXED_REPLACEMENT]" time="0.002" /><testcase classname="engineering.ai.tests.test_data_edits" name="test_rejects_unsafe_edits_atomically[stale-DATA_EDIT_BASELINE_STALE]" time="0.001" /><testcase classname="engineering.ai.tests.test_data_edits" name="test_rejects_unsafe_edits_atomically[forged-DATA_EDIT_REFERENCE_UNVERIFIED]" time="0.002" /><testcase classname="engineering.ai.tests.test_data_edits" name="test_rejects_unsafe_edits_atomically[incomplete-DATA_EDIT_INCOMPLETE_READ]" time="0.002" /><testcase classname="engineering.ai.tests.test_data_edits" name="test_rejects_unsafe_edits_atomically[overlap-DATA_EDIT_OVERLAP]" time="0.002" /><testcase classname="engineering.ai.tests.test_data_edits" name="test_rejects_unsafe_edits_atomically[array-remove-DATA_EDIT_TARGET_INVALID]" time="0.002" /><testcase classname="engineering.ai.tests.test_data_edits" name="test_rejects_unsafe_edits_atomically[root-DATA_EDIT_INCOMPLETE_READ]" time="0.002" /><testcase classname="engineering.ai.tests.test_data_edits" name="test_rejects_unsafe_edits_atomically[add-existing-DATA_EDIT_TARGET_INVALID]" time="0.002" /><testcase classname="engineering.ai.tests.test_data_edits" name="test_multiple_appends_and_large_object_index_do_not_require_reconstruction" time="0.004" /><testcase classname="engineering.ai.tests.test_data_edits" name="test_read_does_not_issue_ref_on_invalid_path_or_page[args0]" time="0.001" /><testcase classname="engineering.ai.tests.test_data_edits" name="test_read_does_not_issue_ref_on_invalid_path_or_page[args1]" time="0.001" /><testcase classname="engineering.ai.tests.test_data_edits" name="test_read_does_not_issue_ref_on_invalid_path_or_page[args2]" time="0.001" /><testcase classname="engineering.ai.tests.test_data_edits" name="test_read_does_not_issue_ref_on_invalid_path_or_page[args3]" time="0.001" /><testcase classname="engineering.ai.tests.test_data_edits" name="test_real_application_egress_and_session_ceiling[kp-EXTERNAL_SCOPE_DISABLED]" time="1.692" /><testcase classname="engineering.ai.tests.test_data_edits" name="test_real_application_egress_and_session_ceiling[queries-DATA_QUERIES_DISABLED]" time="1.785" /><testcase classname="engineering.ai.tests.test_data_edits" name="test_real_application_egress_and_session_ceiling[player-TOOL_FORBIDDEN]" time="1.729" /><testcase classname="engineering.ai.tests.test_data_edits" name="test_model_increment_compiles_to_checked_manual_candidate[False]" time="9.386"><failure message="AssertionError: {'taskId': '2f3ca7536ade4ac8b59e6d9177466029', 'requestId': '2f3ca7536ade4ac8b59e6d9177466029', 'account': 'kp', 'profile': {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...}, ...}&#10;assert 'failed' == 'review_ready'&#10;  &#10;  - review_ready&#10;  + failed">application = &lt;onlinecoc_ai.api.Application object at 0x000001D30018B290&gt;
+repair = False
+
+    @pytest.mark.parametrize('repair',[False,True])
+    def test_model_increment_compiles_to_checked_manual_candidate(application,repair):
+        app=application;install_game(app);before=copy.deepcopy(app.host.state());captured=[]
+        committed(command(app,'ai.access.update',{'revision':1,'allowPlayerChat':False,'autoApproveBatches':True,'autoApproveConfigurations':True}))
+        async def callback(count,messages,tools):
+            if count==1:
+                assert data_edits.NAME in [t['function']['name'] for t in tools]
+                return tool_call(data_edits.NAME,{'file':'game.json','path':['items'],'limit':1})
+            read_result=next(json.loads(m['content']) for m in messages if m.get('role')=='tool' and 'editRef' in json.loads(m['content']))
+            item={'id':'flame-needle'}
+            if not repair or count&gt;2:item['name']='火焰针剑'
+            output={'kind':'draft','text':'只追加物品定义，等待高危审批。','changeSet':delta(),'dataEdits':[{'op':'append','ref':read_result['editRef'],'keyField':'id','value':item}]}
+            captured.append(output);return completion(output)
+        async def run():
+            app.coordinator.provider_factory=lambda _:Fake(callback);await app.coordinator.start()
+            try:
+                r=submit(app,session(app));dispatched=committed(command(app,'ai.request.dispatch',{'requestId':r['requestId']}))
+                task=await wait_task(app.coordinator,dispatched['taskId'],timeout=40);assert task['status']=='review_ready',task
+                proposal=app.proposals.get('kp',task['proposalId']);full=proposal['changeSet']['data']['game.json']
+                assert full['items'][:-1]==game()['items'] and full['title']==game()['title'] and full['rooms']==game()['rooms']
+                assert all(app.repository.state()['reports'][key]['status']=='pass' for key in proposal['reportRefs'])
+                ruling=next(i for i in app.rulings.list('kp')['items'] if i['kind']=='configuration')
+                assert ruling['highRisk'] and ruling['status']=='pending' and not app.host.state()['aiControl']['publications']
+                assert app.host.state()['activeRuleset']==before['activeRuleset'] and app.host.state()['entities']==before['entities']
+                assert proposal['revision']==(2 if repair else 1) and len(captured)==(2 if repair else 1)
+                facts=app.repository.state()['contexts'][proposal['contextRef']]['facts'];assert facts['configDataEdits'][0]['op']=='append'
+            finally:await app.coordinator.close()
+&gt;       asyncio.run(run())
+
+engineering\ai\tests\test_data_edits.py:126: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:204: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:127: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\base_events.py:719: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    async def run():
+        app.coordinator.provider_factory=lambda _:Fake(callback);await app.coordinator.start()
+        try:
+            r=submit(app,session(app));dispatched=committed(command(app,'ai.request.dispatch',{'requestId':r['requestId']}))
+&gt;           task=await wait_task(app.coordinator,dispatched['taskId'],timeout=40);assert task['status']=='review_ready',task
+                                                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           AssertionError: {'taskId': '2f3ca7536ade4ac8b59e6d9177466029', 'requestId': '2f3ca7536ade4ac8b59e6d9177466029', 'account': 'kp', 'profile': {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...}, ...}
+E           assert 'failed' == 'review_ready'
+E             
+E             - review_ready
+E             + failed
+
+engineering\ai\tests\test_data_edits.py:116: AssertionError</failure></testcase><testcase classname="engineering.ai.tests.test_data_edits" name="test_model_increment_compiles_to_checked_manual_candidate[True]" time="11.296"><failure message="AssertionError: {'taskId': '587d5887ab7141b1a501de8b4962bbc6', 'requestId': '587d5887ab7141b1a501de8b4962bbc6', 'account': 'kp', 'profile': {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...}, ...}&#10;assert 'failed' == 'review_ready'&#10;  &#10;  - review_ready&#10;  + failed">application = &lt;onlinecoc_ai.api.Application object at 0x000001D300A00350&gt;
+repair = True
+
+    @pytest.mark.parametrize('repair',[False,True])
+    def test_model_increment_compiles_to_checked_manual_candidate(application,repair):
+        app=application;install_game(app);before=copy.deepcopy(app.host.state());captured=[]
+        committed(command(app,'ai.access.update',{'revision':1,'allowPlayerChat':False,'autoApproveBatches':True,'autoApproveConfigurations':True}))
+        async def callback(count,messages,tools):
+            if count==1:
+                assert data_edits.NAME in [t['function']['name'] for t in tools]
+                return tool_call(data_edits.NAME,{'file':'game.json','path':['items'],'limit':1})
+            read_result=next(json.loads(m['content']) for m in messages if m.get('role')=='tool' and 'editRef' in json.loads(m['content']))
+            item={'id':'flame-needle'}
+            if not repair or count&gt;2:item['name']='火焰针剑'
+            output={'kind':'draft','text':'只追加物品定义，等待高危审批。','changeSet':delta(),'dataEdits':[{'op':'append','ref':read_result['editRef'],'keyField':'id','value':item}]}
+            captured.append(output);return completion(output)
+        async def run():
+            app.coordinator.provider_factory=lambda _:Fake(callback);await app.coordinator.start()
+            try:
+                r=submit(app,session(app));dispatched=committed(command(app,'ai.request.dispatch',{'requestId':r['requestId']}))
+                task=await wait_task(app.coordinator,dispatched['taskId'],timeout=40);assert task['status']=='review_ready',task
+                proposal=app.proposals.get('kp',task['proposalId']);full=proposal['changeSet']['data']['game.json']
+                assert full['items'][:-1]==game()['items'] and full['title']==game()['title'] and full['rooms']==game()['rooms']
+                assert all(app.repository.state()['reports'][key]['status']=='pass' for key in proposal['reportRefs'])
+                ruling=next(i for i in app.rulings.list('kp')['items'] if i['kind']=='configuration')
+                assert ruling['highRisk'] and ruling['status']=='pending' and not app.host.state()['aiControl']['publications']
+                assert app.host.state()['activeRuleset']==before['activeRuleset'] and app.host.state()['entities']==before['entities']
+                assert proposal['revision']==(2 if repair else 1) and len(captured)==(2 if repair else 1)
+                facts=app.repository.state()['contexts'][proposal['contextRef']]['facts'];assert facts['configDataEdits'][0]['op']=='append'
+            finally:await app.coordinator.close()
+&gt;       asyncio.run(run())
+
+engineering\ai\tests\test_data_edits.py:126: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:204: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:127: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\base_events.py:719: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    async def run():
+        app.coordinator.provider_factory=lambda _:Fake(callback);await app.coordinator.start()
+        try:
+            r=submit(app,session(app));dispatched=committed(command(app,'ai.request.dispatch',{'requestId':r['requestId']}))
+&gt;           task=await wait_task(app.coordinator,dispatched['taskId'],timeout=40);assert task['status']=='review_ready',task
+                                                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           AssertionError: {'taskId': '587d5887ab7141b1a501de8b4962bbc6', 'requestId': '587d5887ab7141b1a501de8b4962bbc6', 'account': 'kp', 'profile': {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...}, ...}
+E           assert 'failed' == 'review_ready'
+E             
+E             - review_ready
+E             + failed
+
+engineering\ai\tests\test_data_edits.py:116: AssertionError</failure></testcase><testcase classname="engineering.ai.tests.test_data_edits" name="test_data_edits_are_only_valid_on_draft" time="0.001" /><testcase classname="engineering.ai.tests.test_data_queries" name="test_search_detail_and_external_policy" time="1.196" /><testcase classname="engineering.ai.tests.test_data_queries" name="test_query_rejects_unbounded_or_identity_input[args0]" time="1.384" /><testcase classname="engineering.ai.tests.test_data_queries" name="test_query_rejects_unbounded_or_identity_input[args1]" time="1.315" /><testcase classname="engineering.ai.tests.test_data_queries" name="test_query_rejects_unbounded_or_identity_input[args2]" time="1.208" /><testcase classname="engineering.ai.tests.test_data_queries" name="test_query_rejects_unbounded_or_identity_input[args3]" time="1.232" /><testcase classname="engineering.ai.tests.test_data_queries" name="test_query_rejects_unbounded_or_identity_input[args4]" time="1.238" /><testcase classname="engineering.ai.tests.test_data_queries" name="test_query_rejects_unbounded_or_identity_input[args5]" time="1.192" /><testcase classname="engineering.ai.tests.test_data_queries" name="test_query_rejects_unbounded_or_identity_input[args6]" time="1.231" /><testcase classname="engineering.ai.tests.test_data_queries" name="test_chat_intersection_window_cursor_and_edit" time="1.226" /><testcase classname="engineering.ai.tests.test_data_queries" name="test_dynamic_evidence_and_explicit_reference_recheck" time="1.278" /><testcase classname="engineering.ai.tests.test_data_queries" name="test_tool_queries_never_read_kp_secret_for_player" time="1.314" /><testcase classname="engineering.ai.tests.test_data_queries" name="test_model_search_read_then_result_keeps_evidence" time="1.439" /><testcase classname="engineering.ai.tests.test_data_queries" name="test_http_query_auth_csrf_and_contract" time="1.782" /><testcase classname="engineering.ai.tests.test_data_queries" name="test_result_limit_and_missing_adapter_are_fail_closed" time="1.373" /><testcase classname="engineering.ai.tests.test_data_queries" name="test_query_evidence_prevents_publish_after_source_edit" time="1.351" /><testcase classname="engineering.ai.tests.test_data_queries" name="test_per_round_multi_call_budget" time="1.843" /><testcase classname="engineering.ai.tests.test_entrypoints" name="test_requests_are_explicit_idempotent_redacted_and_paged" time="1.469" /><testcase classname="engineering.ai.tests.test_entrypoints" name="test_chat_forwarding_binds_original_and_policy" time="1.323" /><testcase classname="engineering.ai.tests.test_entrypoints" name="test_player_can_cancel_after_dispatching_kp_loses_role" time="1.362" /><testcase classname="engineering.ai.tests.test_entrypoints" name="test_plan_without_proposal_rechecks_context_on_read" time="1.349" /><testcase classname="engineering.ai.tests.test_entrypoints" name="test_auto_off_prefix_dedup_edits_withdrawal_and_role" time="1.360" /><testcase classname="engineering.ai.tests.test_entrypoints" name="test_manual_revision_invalidates_approval_and_cancel_revokes" time="5.726"><failure message="AssertionError: {'requestId': '00b1440a4f5e458bb4cd16a55a93d514', 'status': 'unknown', 'code': 'RESULT_UNKNOWN'}&#10;assert 'unknown' == 'committed'&#10;  &#10;  - committed&#10;  + unknown">application = &lt;onlinecoc_ai.api.Application object at 0x000001D30018A090&gt;
+
+    def test_manual_revision_invalidates_approval_and_cancel_revokes(application):
+        app = application
+        proposal = committed(command(app, 'ai.draft.create', {'text': 'manual', 'changeSet': delta()}, identifier='create'))
+        assert app.tasks('kp')['items'][0]['proposalId'] == proposal['proposalId']
+&gt;       committed(command(app, 'ai.proposal.validate', {'proposalId': proposal['proposalId'], 'revision': 1}))
+
+engineering\ai\tests\test_entrypoints.py:152: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+receipt = {'requestId': '00b1440a4f5e458bb4cd16a55a93d514', 'status': 'unknown', 'code': 'RESULT_UNKNOWN'}
+
+    def committed(receipt):
+&gt;       assert receipt['status'] == 'committed', receipt
+E       AssertionError: {'requestId': '00b1440a4f5e458bb4cd16a55a93d514', 'status': 'unknown', 'code': 'RESULT_UNKNOWN'}
+E       assert 'unknown' == 'committed'
+E         
+E         - committed
+E         + unknown
+
+engineering\ai\tests\test_entrypoints.py:34: AssertionError</failure></testcase><testcase classname="engineering.ai.tests.test_entrypoints" name="test_receipt_rechecks_private_sources_and_restart_pending" time="1.818" /><testcase classname="engineering.ai.tests.test_entrypoints" name="test_http_auth_limits_schema_capability_and_disabled_module" time="1.275" /><testcase classname="engineering.ai.tests.test_entrypoints" name="test_cli_uses_same_three_engines" time="10.546" /><testcase classname="engineering.ai.tests.test_gameplay" name="test_exact_d100_probability_and_cost_no_live_effects" time="3.907" /><testcase classname="engineering.ai.tests.test_gameplay" name="test_wrong_owner_and_repeated_use_are_exercised" time="3.806" /><testcase classname="engineering.ai.tests.test_gameplay" name="test_missing_cost_guard_fails_resource_exhaustion" time="6.606" /><testcase classname="engineering.ai.tests.test_gameplay" name="test_positive_fixture_cannot_replace_negative_assertion" time="4.170" /><testcase classname="engineering.ai.tests.test_gameplay" name="test_missing_required_metric_blocks" time="3.693" /><testcase classname="engineering.ai.tests.test_gameplay" name="test_extra_random_call_is_not_paired_with_old_trace" time="5.989" /><testcase classname="engineering.ai.tests.test_gameplay" name="test_sampling_uses_replayable_independent_streams" time="0.442" /><testcase classname="engineering.ai.tests.test_gameplay" name="test_zero_baseline_is_not_divided" time="3.849" /><testcase classname="engineering.ai.tests.test_generation_snapshot" name="test_frozen_tools_and_retained_batch[chat-queued]" time="1.339" /><testcase classname="engineering.ai.tests.test_generation_snapshot" name="test_frozen_tools_and_retained_batch[chat-provider]" time="1.390" /><testcase classname="engineering.ai.tests.test_generation_snapshot" name="test_frozen_tools_and_retained_batch[entity-queued]" time="1.489" /><testcase classname="engineering.ai.tests.test_generation_snapshot" name="test_frozen_tools_and_retained_batch[entity-provider]" time="1.584" /><testcase classname="engineering.ai.tests.test_generation_snapshot" name="test_draft_kept_and_checked_on_original_snapshot" time="6.054"><failure message="AssertionError: {'taskId': 'b2e839ec76cc451493ada9199cc8da7e', 'requestId': 'b2e839ec76cc451493ada9199cc8da7e', 'account': 'kp', 'profile': {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...}, ...}&#10;assert 'failed' == 'review_ready'&#10;  &#10;  - review_ready&#10;  + failed">application = &lt;onlinecoc_ai.api.Application object at 0x000001D3006B28D0&gt;
+
+    def test_draft_kept_and_checked_on_original_snapshot(application):
+        app=application;enable(app.host,public=True,kp=True);app.coordinator.context=Context(app.proposals,demand=True)
+        async def callback(n,messages,tools):
+            if n==1:return tool_call('room_read_management',{'section':'configurations'})
+            room=app.host.state();room['entities']['actor-one']['name']='CHANGED_WHILE_GENERATING';room['entities']['actor-one']['revision']+=1;app.host.commit(room)
+            return completion({'kind':'draft','text':'候选保留并完成本地校验','changeSet':delta()})
+        async def run():
+            app.coordinator.provider_factory=lambda _:Fake(callback);s=session(app);r=dispatch(app,s);await app.coordinator.start()
+            try:
+                result=await wait_task(app.coordinator,r['taskId']);assert result['status']=='review_ready',result
+                assert result['proposalId'] and result['text']
+                proposal=app.repository.state()['proposals'][result['proposalId']]['revisions']['1']
+                assert len(proposal['reportRefs'])==3 and not app.host.state()['aiControl']['publications']
+                assert {'validation_a','validation_b','validation_c'}&lt;={e['stage'] for e in result['events']}
+            finally:await app.coordinator.close()
+&gt;       asyncio.run(run())
+
+engineering\ai\tests\test_generation_snapshot.py:79: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:204: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:127: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\base_events.py:719: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    async def run():
+        app.coordinator.provider_factory=lambda _:Fake(callback);s=session(app);r=dispatch(app,s);await app.coordinator.start()
+        try:
+&gt;           result=await wait_task(app.coordinator,r['taskId']);assert result['status']=='review_ready',result
+                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           AssertionError: {'taskId': 'b2e839ec76cc451493ada9199cc8da7e', 'requestId': 'b2e839ec76cc451493ada9199cc8da7e', 'account': 'kp', 'profile': {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...}, ...}
+E           assert 'failed' == 'review_ready'
+E             
+E             - review_ready
+E             + failed
+
+engineering\ai\tests\test_generation_snapshot.py:73: AssertionError</failure></testcase><testcase classname="engineering.ai.tests.test_generation_snapshot" name="test_live_authority_still_discards_unpublished_output[revoke]" time="1.236" /><testcase classname="engineering.ai.tests.test_generation_snapshot" name="test_live_authority_still_discards_unpublished_output[delete-session]" time="1.299" /><testcase classname="engineering.ai.tests.test_generation_snapshot" name="test_live_authority_still_discards_unpublished_output[disable-egress]" time="1.283" /><testcase classname="engineering.ai.tests.test_generation_snapshot" name="test_live_authority_still_discards_unpublished_output[cancel]" time="1.273" /><testcase classname="engineering.ai.tests.test_generation_snapshot" name="test_progress_visible_while_provider_waits_and_no_extra_stage_writes" time="1.418" /><testcase classname="engineering.ai.tests.test_generation_snapshot" name="test_read_scope_snapshot_reuse_invalidation_and_rollback" time="1.254" /><testcase classname="engineering.ai.tests.test_generation_snapshot" name="test_independent_adapter_is_frozen_and_change_is_reported" time="1.346" /><testcase classname="engineering.ai.tests.test_generation_snapshot" name="test_progress_does_not_persist_full_room_per_tool" time="1.493" /><testcase classname="engineering.ai.tests.test_generation_snapshot" name="test_prior_world_changes_and_inflight_chat_do_not_break_first_tool" time="3.007" /><testcase classname="engineering.ai.tests.test_generation_snapshot" name="test_history_shared_cache_keeps_each_roots_bound_and_checks_each_node_once" time="1.171" /><testcase classname="engineering.ai.tests.test_generation_snapshot" name="test_history_shared_cache_rejects_cycles_and_revocation_on_next_read" time="1.193" /><testcase classname="engineering.ai.tests.test_generation_snapshot" name="test_room_read_authorization_uses_current_supplied_state" time="1.160" /><testcase classname="engineering.ai.tests.test_history_continuity" name="test_stale_authorized_response_stays_visible_with_readonly_notice" time="1.282" /><testcase classname="engineering.ai.tests.test_history_continuity" name="test_short_confirmation_retains_stale_intent_without_old_execution_proofs" time="1.290" /><testcase classname="engineering.ai.tests.test_history_continuity" name="test_query_history_identity_witness_and_legacy_boundary[read-True-True]" time="1.344" /><testcase classname="engineering.ai.tests.test_history_continuity" name="test_query_history_identity_witness_and_legacy_boundary[search-False-True]" time="1.338" /><testcase classname="engineering.ai.tests.test_history_continuity" name="test_query_history_identity_witness_and_legacy_boundary[search-True-False]" time="1.333" /><testcase classname="engineering.ai.tests.test_history_continuity" name="test_delivered_body_survives_but_changed_sources_do_not_enter_new_context[deleted]" time="1.328" /><testcase classname="engineering.ai.tests.test_history_continuity" name="test_delivered_body_survives_but_changed_sources_do_not_enter_new_context[hidden]" time="1.376" /><testcase classname="engineering.ai.tests.test_history_continuity" name="test_delivered_body_survives_but_changed_sources_do_not_enter_new_context[authorization]" time="1.275" /><testcase classname="engineering.ai.tests.test_history_continuity" name="test_delivered_body_survives_but_changed_sources_do_not_enter_new_context[policy]" time="1.301" /><testcase classname="engineering.ai.tests.test_history_continuity" name="test_delivered_body_survives_but_changed_sources_do_not_enter_new_context[profile]" time="1.323" /><testcase classname="engineering.ai.tests.test_history_continuity" name="test_delivered_body_survives_but_changed_sources_do_not_enter_new_context[session_deleted]" time="1.339" /><testcase classname="engineering.ai.tests.test_history_continuity" name="test_new_query_witness_does_not_restore_deleted_object" time="1.368" /><testcase classname="engineering.ai.tests.test_history_continuity" name="test_historical_intent_is_rechecked_after_capture_and_has_no_execution_authority" time="1.369" /><testcase classname="engineering.ai.tests.test_history_continuity" name="test_history_scope_mismatch_never_falls_back" time="1.323" /><testcase classname="engineering.ai.tests.test_history_continuity" name="test_short_confirmation_requires_current_target_read_before_batch" time="1.389" /><testcase classname="engineering.ai.tests.test_history_continuity" name="test_model_repairs_stale_intent_by_reading_target_without_reasking" time="1.734" /><testcase classname="engineering.ai.tests.test_history_continuity" name="test_new_generation_public_status_is_not_expired_historical_intent[False]" time="1.458"><failure message="AssertionError: assert (not None and not 'fresh')&#10; +  where None = &lt;built-in method get of dict object at 0x000001D301069700&gt;('historicalReadOnly')&#10; +    where &lt;built-in method get of dict object at 0x000001D301069700&gt; = {'requestId': '0384a357d5c048d385e151cd0305e1a8', 'sessionId': '470d7fa11dd641e2a6df3aea6d14badd', 'status': 'review_ready', 'createdAt': 1795246942.5839496, ...}.get&#10; +  and   'fresh' = &lt;built-in method get of dict object at 0x000001D301069700&gt;('sourceState')&#10;[+1 more line; full report in element text]">application = &lt;onlinecoc_ai.api.Application object at 0x000001D344E11550&gt;
+change_during_generation = False
+
+    @pytest.mark.parametrize('change_during_generation',[False,True])
+    def test_new_generation_public_status_is_not_expired_historical_intent(application,change_during_generation):
+        from onlinecoc_ai.coordinator import Coordinator
+        app=application;sid,old=history_case(app,demand=True)
+        app.coordinator=Coordinator(app.proposals,app.coordinator.profiles,context=Context(app.proposals,demand=True))
+        app.runtime.coordinator=app.coordinator;app.coordinator.application=app
+        async def run():
+            entered=asyncio.Event();release=asyncio.Event()
+            async def callback(*_):
+                entered.set();await release.wait()
+                return completion({'kind':'plan','text':'已保留原意图，继续准备当前方案'})
+            app.coordinator.provider_factory=lambda _:Fake(callback);await app.coordinator.start()
+            try:
+                req=submit(app,sid,'是的，按此方案处理')
+                dispatched=committed(command(app,'ai.request.dispatch',{'requestId':req['requestId']}))
+                await asyncio.wait_for(entered.wait(),5)
+                if change_during_generation:
+                    room=app.host.state();room['entities']['actor-one']['name']='生成期间再次变化';room['entities']['actor-one']['revision']+=1;app.host.commit(room)
+                row=next(i for i in app.sessions.get('kp',sid)['items'] if i['requestId']==req['requestId'])
+                assert row['status']=='generating' and not row.get('historicalReadOnly'),row
+                release.set();task=await wait_task(app.coordinator,dispatched['taskId'])
+                row=next(i for i in app.sessions.get('kp',sid)['items'] if i['requestId']==req['requestId'])
+                if change_during_generation:
+                    assert task['status']=='review_ready' and row['response']==task['text'],row
+                    assert not row.get('error')
+                else:
+                    assert task['status']=='review_ready' and row['status']=='review_ready',row
+                    assert not row.get('historicalReadOnly') and not row.get('sourceState')
+                old_row=next(i for i in app.sessions.get('kp',sid)['items'] if i.get('taskId')==old['taskId'])
+                assert old_row['historicalReadOnly'] and old_row['response']==old['text']
+            finally:release.set();await app.coordinator.close()
+&gt;       asyncio.run(run())
+
+engineering\ai\tests\test_history_continuity.py:226: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:204: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:127: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\base_events.py:719: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    async def run():
+        entered=asyncio.Event();release=asyncio.Event()
+        async def callback(*_):
+            entered.set();await release.wait()
+            return completion({'kind':'plan','text':'已保留原意图，继续准备当前方案'})
+        app.coordinator.provider_factory=lambda _:Fake(callback);await app.coordinator.start()
+        try:
+            req=submit(app,sid,'是的，按此方案处理')
+            dispatched=committed(command(app,'ai.request.dispatch',{'requestId':req['requestId']}))
+            await asyncio.wait_for(entered.wait(),5)
+            if change_during_generation:
+                room=app.host.state();room['entities']['actor-one']['name']='生成期间再次变化';room['entities']['actor-one']['revision']+=1;app.host.commit(room)
+            row=next(i for i in app.sessions.get('kp',sid)['items'] if i['requestId']==req['requestId'])
+            assert row['status']=='generating' and not row.get('historicalReadOnly'),row
+            release.set();task=await wait_task(app.coordinator,dispatched['taskId'])
+            row=next(i for i in app.sessions.get('kp',sid)['items'] if i['requestId']==req['requestId'])
+            if change_during_generation:
+                assert task['status']=='review_ready' and row['response']==task['text'],row
+                assert not row.get('error')
+            else:
+                assert task['status']=='review_ready' and row['status']=='review_ready',row
+&gt;               assert not row.get('historicalReadOnly') and not row.get('sourceState')
+E               AssertionError: assert (not None and not 'fresh')
+E                +  where None = &lt;built-in method get of dict object at 0x000001D301069700&gt;('historicalReadOnly')
+E                +    where &lt;built-in method get of dict object at 0x000001D301069700&gt; = {'requestId': '0384a357d5c048d385e151cd0305e1a8', 'sessionId': '470d7fa11dd641e2a6df3aea6d14badd', 'status': 'review_ready', 'createdAt': 1795246942.5839496, ...}.get
+E                +  and   'fresh' = &lt;built-in method get of dict object at 0x000001D301069700&gt;('sourceState')
+E                +    where &lt;built-in method get of dict object at 0x000001D301069700&gt; = {'requestId': '0384a357d5c048d385e151cd0305e1a8', 'sessionId': '470d7fa11dd641e2a6df3aea6d14badd', 'status': 'review_ready', 'createdAt': 1795246942.5839496, ...}.get
+
+engineering\ai\tests\test_history_continuity.py:222: AssertionError</failure></testcase><testcase classname="engineering.ai.tests.test_history_continuity" name="test_new_generation_public_status_is_not_expired_historical_intent[True]" time="1.454" /><testcase classname="engineering.ai.tests.test_knowledge_port" name="test_only_details_issue_evidence_and_principal_is_server_bound" time="0.001" /><testcase classname="engineering.ai.tests.test_knowledge_port" name="test_failure_cannot_fall_back_to_public_entities[blocked]" time="0.001" /><testcase classname="engineering.ai.tests.test_knowledge_port" name="test_failure_cannot_fall_back_to_public_entities[unavailable]" time="0.001" /><testcase classname="engineering.ai.tests.test_knowledge_port" name="test_private_export_and_proof_owner_are_checked" time="0.001" /><testcase classname="engineering.ai.tests.test_knowledge_port" name="test_ai_egress_is_checked_and_proofs_share_one_capture" time="0.001" /><testcase classname="engineering.ai.tests.test_known_answers" name="test_model_can_only_select_issued_evidence[&lt;lambda&gt;0]" time="0.001" /><testcase classname="engineering.ai.tests.test_known_answers" name="test_model_can_only_select_issued_evidence[&lt;lambda&gt;1]" time="0.001" /><testcase classname="engineering.ai.tests.test_known_answers" name="test_model_can_only_select_issued_evidence[&lt;lambda&gt;2]" time="0.001" /><testcase classname="engineering.ai.tests.test_known_answers" name="test_model_can_only_select_issued_evidence[&lt;lambda&gt;3]" time="0.001" /><testcase classname="engineering.ai.tests.test_known_answers" name="test_model_can_only_select_issued_evidence[&lt;lambda&gt;4]" time="0.001" /><testcase classname="engineering.ai.tests.test_known_answers" name="test_model_can_only_select_issued_evidence[&lt;lambda&gt;5]" time="0.001" /><testcase classname="engineering.ai.tests.test_known_answers" name="test_model_can_only_select_issued_evidence[&lt;lambda&gt;6]" time="0.001" /><testcase classname="engineering.ai.tests.test_known_answers" name="test_reference_encodes_exact_snapshot_and_scope_without_current_entity_lookup" time="0.000" /><testcase classname="engineering.ai.tests.test_known_answers" name="test_fixed_order_and_labels_use_only_captured_data" time="0.001" /><testcase classname="engineering.ai.tests.test_known_answers" name="test_search_summary_cannot_be_rendered_as_read_evidence" time="0.000" /><testcase classname="engineering.ai.tests.test_known_answers" name="test_malformed_answers_fail_closed[{&quot;kind&quot;:&quot;known&quot;,&quot;kind&quot;:&quot;known&quot;}]" time="0.001" /><testcase classname="engineering.ai.tests.test_known_answers" name="test_malformed_answers_fail_closed[{&quot;kind&quot;:&quot;known&quot;,&quot;evidence&quot;:NaN,&quot;next&quot;:&quot;none&quot;}]" time="0.001" /><testcase classname="engineering.ai.tests.test_known_answers" name="test_malformed_answers_fail_closed[not json]" time="0.001" /><testcase classname="engineering.ai.tests.test_known_answers" name="test_empty_result_does_not_assert_nonexistence_and_data_is_not_markup" time="0.001" /><testcase classname="engineering.ai.tests.test_known_answers" name="test_structured_evidence_has_readable_labels_and_no_technical_ids" time="0.002" /><testcase classname="engineering.ai.tests.test_known_answers" name="test_presentation_is_bounded_and_literal_with_deep_or_large_values" time="0.001" /><testcase classname="engineering.ai.tests.test_known_answers" name="test_legacy_known_json_is_reformatted_without_touching_other_messages" time="0.001" /><testcase classname="engineering.ai.tests.test_known_runtime" name="test_unconfigured_player_never_falls_back_or_calls_model" time="1.237" /><testcase classname="engineering.ai.tests.test_known_runtime" name="test_initial_context_contains_no_pack_guide_world_or_old_model_history" time="1.216" /><testcase classname="engineering.ai.tests.test_known_runtime" name="test_snapshot_reference_cannot_cross_account_or_follow_world_update" time="1.205" /><testcase classname="engineering.ai.tests.test_known_runtime" name="test_model_secret_prose_is_repaired_and_never_stored_or_replayed" time="1.400" /><testcase classname="engineering.ai.tests.test_known_runtime" name="test_inflight_revoke_suppresses_entire_response" time="1.349" /><testcase classname="engineering.ai.tests.test_known_runtime" name="test_private_export_block_and_kp_player_session_ceiling" time="1.280" /><testcase classname="engineering.ai.tests.test_known_runtime" name="test_second_package_witness_testimony_stays_personal_and_fixed" time="1.244" /><testcase classname="engineering.ai.tests.test_known_runtime" name="test_ask_kp_option_is_queued_for_human_without_model_redispatch" time="1.220" /><testcase classname="engineering.ai.tests.test_known_runtime" name="test_player_real_adapter_json_mode_and_http_error_projection[200]" time="1.466" /><testcase classname="engineering.ai.tests.test_known_runtime" name="test_player_real_adapter_json_mode_and_http_error_projection[400]" time="1.366" /><testcase classname="engineering.ai.tests.test_known_runtime" name="test_legacy_response_projection_still_requires_live_authorization" time="1.474" /><testcase classname="engineering.ai.tests.test_management_queries" name="test_bad_management_query_can_recover_into_checked_unpublished_draft[room_manage_catalog-args0]" time="6.212"><failure message="AssertionError: {'taskId': '82f85773a1194b35942f282e06d0ae90', 'requestId': '82f85773a1194b35942f282e06d0ae90', 'account': 'kp', 'profile': {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...}, ...}&#10;assert 'failed' == 'review_ready'&#10;  &#10;  - review_ready&#10;  + failed">application = &lt;onlinecoc_ai.api.Application object at 0x000001D3013B4590&gt;
+name = 'room_manage_catalog'
+args = {'operations': ['config.create', 'configuration.create']}
+
+    @pytest.mark.parametrize('name,args',[
+        ('room_manage_catalog',{'operations':['config.create','configuration.create']}),
+        ('room_manage_catalog',{'operations':['config.list','configuration.update']}),
+        ('room_read_management',{'section':'invented'}),
+        ('room_read_management',{'section':'configurations','limit':0}),
+        ('room_read_sessions',{'limit':100}),
+    ])
+    def test_bad_management_query_can_recover_into_checked_unpublished_draft(application,name,args):
+        app=application;enable(app.host,public=True,kp=True,private=True)
+        async def callback(count,messages,tools):
+            if count==1:return tool_call(name,args)
+            result=json.loads(messages[-1]['content'])
+            if count==2:
+                assert result['error']['code']=='INPUT_INVALID'
+                assert 'No data was returned' in result['notice']
+                return tool_call('room_read_management',{'section':'configurations'})
+            assert any(row['id']=='fixture.token' and row['value']['defaults']['bonus']==0 for row in result['items'])
+            return completion({'kind':'draft','text':'Checked configuration candidate','changeSet':delta()})
+        async def run():
+            app.coordinator.provider_factory=lambda _:Fake(callback);await app.coordinator.start()
+            try:
+                sid=committed(command(app,'ai.session.create',{'title':'Management recovery'}))['sessionId']
+                req=submit(app,sid,'Prepare a configuration draft')
+                dispatched=committed(command(app,'ai.request.dispatch',{'requestId':req['requestId']}))
+                task=await wait_task(app.coordinator,dispatched['taskId'])
+                assert task['status']=='review_ready',task
+                assert task['diagnostics']['toolCalls'][0]['status']=='rejected'
+                context=app.repository.state()['contexts'][task['contextRef']]
+                assert 'configurations' in context['facts']['managementReads']
+                assert not context['facts'].get('consultationOnly')
+                row=next(r for r in app.rulings.list('kp')['items'] if r['rulingId']=='proposal:'+task['proposalId'])
+                assert row['status']=='pending' and row['canDecide']
+                assert app.host.state()['configurations']['fixture.token']['defaults']['bonus']==0
+            finally:await app.coordinator.close()
+&gt;       asyncio.run(run())
+
+engineering\ai\tests\test_management_queries.py:49: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:204: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:127: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\base_events.py:719: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    async def run():
+        app.coordinator.provider_factory=lambda _:Fake(callback);await app.coordinator.start()
+        try:
+            sid=committed(command(app,'ai.session.create',{'title':'Management recovery'}))['sessionId']
+            req=submit(app,sid,'Prepare a configuration draft')
+            dispatched=committed(command(app,'ai.request.dispatch',{'requestId':req['requestId']}))
+            task=await wait_task(app.coordinator,dispatched['taskId'])
+&gt;           assert task['status']=='review_ready',task
+E           AssertionError: {'taskId': '82f85773a1194b35942f282e06d0ae90', 'requestId': '82f85773a1194b35942f282e06d0ae90', 'account': 'kp', 'profile': {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...}, ...}
+E           assert 'failed' == 'review_ready'
+E             
+E             - review_ready
+E             + failed
+
+engineering\ai\tests\test_management_queries.py:40: AssertionError</failure></testcase><testcase classname="engineering.ai.tests.test_management_queries" name="test_bad_management_query_can_recover_into_checked_unpublished_draft[room_manage_catalog-args1]" time="6.182"><failure message="AssertionError: {'taskId': 'c2ab4ee252394646a17a3ba6001288d4', 'requestId': 'c2ab4ee252394646a17a3ba6001288d4', 'account': 'kp', 'profile': {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...}, ...}&#10;assert 'failed' == 'review_ready'&#10;  &#10;  - review_ready&#10;  + failed">application = &lt;onlinecoc_ai.api.Application object at 0x000001D3011A6F90&gt;
+name = 'room_manage_catalog'
+args = {'operations': ['config.list', 'configuration.update']}
+
+    @pytest.mark.parametrize('name,args',[
+        ('room_manage_catalog',{'operations':['config.create','configuration.create']}),
+        ('room_manage_catalog',{'operations':['config.list','configuration.update']}),
+        ('room_read_management',{'section':'invented'}),
+        ('room_read_management',{'section':'configurations','limit':0}),
+        ('room_read_sessions',{'limit':100}),
+    ])
+    def test_bad_management_query_can_recover_into_checked_unpublished_draft(application,name,args):
+        app=application;enable(app.host,public=True,kp=True,private=True)
+        async def callback(count,messages,tools):
+            if count==1:return tool_call(name,args)
+            result=json.loads(messages[-1]['content'])
+            if count==2:
+                assert result['error']['code']=='INPUT_INVALID'
+                assert 'No data was returned' in result['notice']
+                return tool_call('room_read_management',{'section':'configurations'})
+            assert any(row['id']=='fixture.token' and row['value']['defaults']['bonus']==0 for row in result['items'])
+            return completion({'kind':'draft','text':'Checked configuration candidate','changeSet':delta()})
+        async def run():
+            app.coordinator.provider_factory=lambda _:Fake(callback);await app.coordinator.start()
+            try:
+                sid=committed(command(app,'ai.session.create',{'title':'Management recovery'}))['sessionId']
+                req=submit(app,sid,'Prepare a configuration draft')
+                dispatched=committed(command(app,'ai.request.dispatch',{'requestId':req['requestId']}))
+                task=await wait_task(app.coordinator,dispatched['taskId'])
+                assert task['status']=='review_ready',task
+                assert task['diagnostics']['toolCalls'][0]['status']=='rejected'
+                context=app.repository.state()['contexts'][task['contextRef']]
+                assert 'configurations' in context['facts']['managementReads']
+                assert not context['facts'].get('consultationOnly')
+                row=next(r for r in app.rulings.list('kp')['items'] if r['rulingId']=='proposal:'+task['proposalId'])
+                assert row['status']=='pending' and row['canDecide']
+                assert app.host.state()['configurations']['fixture.token']['defaults']['bonus']==0
+            finally:await app.coordinator.close()
+&gt;       asyncio.run(run())
+
+engineering\ai\tests\test_management_queries.py:49: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:204: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:127: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\base_events.py:719: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    async def run():
+        app.coordinator.provider_factory=lambda _:Fake(callback);await app.coordinator.start()
+        try:
+            sid=committed(command(app,'ai.session.create',{'title':'Management recovery'}))['sessionId']
+            req=submit(app,sid,'Prepare a configuration draft')
+            dispatched=committed(command(app,'ai.request.dispatch',{'requestId':req['requestId']}))
+            task=await wait_task(app.coordinator,dispatched['taskId'])
+&gt;           assert task['status']=='review_ready',task
+E           AssertionError: {'taskId': 'c2ab4ee252394646a17a3ba6001288d4', 'requestId': 'c2ab4ee252394646a17a3ba6001288d4', 'account': 'kp', 'profile': {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...}, ...}
+E           assert 'failed' == 'review_ready'
+E             
+E             - review_ready
+E             + failed
+
+engineering\ai\tests\test_management_queries.py:40: AssertionError</failure></testcase><testcase classname="engineering.ai.tests.test_management_queries" name="test_bad_management_query_can_recover_into_checked_unpublished_draft[room_read_management-args2]" time="5.815"><failure message="AssertionError: {'taskId': '70d4e2cdce1d453897b628bb2c64be34', 'requestId': '70d4e2cdce1d453897b628bb2c64be34', 'account': 'kp', 'profile': {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...}, ...}&#10;assert 'failed' == 'review_ready'&#10;  &#10;  - review_ready&#10;  + failed">application = &lt;onlinecoc_ai.api.Application object at 0x000001D3011A6150&gt;
+name = 'room_read_management', args = {'section': 'invented'}
+
+    @pytest.mark.parametrize('name,args',[
+        ('room_manage_catalog',{'operations':['config.create','configuration.create']}),
+        ('room_manage_catalog',{'operations':['config.list','configuration.update']}),
+        ('room_read_management',{'section':'invented'}),
+        ('room_read_management',{'section':'configurations','limit':0}),
+        ('room_read_sessions',{'limit':100}),
+    ])
+    def test_bad_management_query_can_recover_into_checked_unpublished_draft(application,name,args):
+        app=application;enable(app.host,public=True,kp=True,private=True)
+        async def callback(count,messages,tools):
+            if count==1:return tool_call(name,args)
+            result=json.loads(messages[-1]['content'])
+            if count==2:
+                assert result['error']['code']=='INPUT_INVALID'
+                assert 'No data was returned' in result['notice']
+                return tool_call('room_read_management',{'section':'configurations'})
+            assert any(row['id']=='fixture.token' and row['value']['defaults']['bonus']==0 for row in result['items'])
+            return completion({'kind':'draft','text':'Checked configuration candidate','changeSet':delta()})
+        async def run():
+            app.coordinator.provider_factory=lambda _:Fake(callback);await app.coordinator.start()
+            try:
+                sid=committed(command(app,'ai.session.create',{'title':'Management recovery'}))['sessionId']
+                req=submit(app,sid,'Prepare a configuration draft')
+                dispatched=committed(command(app,'ai.request.dispatch',{'requestId':req['requestId']}))
+                task=await wait_task(app.coordinator,dispatched['taskId'])
+                assert task['status']=='review_ready',task
+                assert task['diagnostics']['toolCalls'][0]['status']=='rejected'
+                context=app.repository.state()['contexts'][task['contextRef']]
+                assert 'configurations' in context['facts']['managementReads']
+                assert not context['facts'].get('consultationOnly')
+                row=next(r for r in app.rulings.list('kp')['items'] if r['rulingId']=='proposal:'+task['proposalId'])
+                assert row['status']=='pending' and row['canDecide']
+                assert app.host.state()['configurations']['fixture.token']['defaults']['bonus']==0
+            finally:await app.coordinator.close()
+&gt;       asyncio.run(run())
+
+engineering\ai\tests\test_management_queries.py:49: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:204: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:127: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\base_events.py:719: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    async def run():
+        app.coordinator.provider_factory=lambda _:Fake(callback);await app.coordinator.start()
+        try:
+            sid=committed(command(app,'ai.session.create',{'title':'Management recovery'}))['sessionId']
+            req=submit(app,sid,'Prepare a configuration draft')
+            dispatched=committed(command(app,'ai.request.dispatch',{'requestId':req['requestId']}))
+            task=await wait_task(app.coordinator,dispatched['taskId'])
+&gt;           assert task['status']=='review_ready',task
+E           AssertionError: {'taskId': '70d4e2cdce1d453897b628bb2c64be34', 'requestId': '70d4e2cdce1d453897b628bb2c64be34', 'account': 'kp', 'profile': {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...}, ...}
+E           assert 'failed' == 'review_ready'
+E             
+E             - review_ready
+E             + failed
+
+engineering\ai\tests\test_management_queries.py:40: AssertionError</failure></testcase><testcase classname="engineering.ai.tests.test_management_queries" name="test_bad_management_query_can_recover_into_checked_unpublished_draft[room_read_management-args3]" time="5.853"><failure message="AssertionError: {'taskId': '0e979348533d482bb79538935873481c', 'requestId': '0e979348533d482bb79538935873481c', 'account': 'kp', 'profile': {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...}, ...}&#10;assert 'failed' == 'review_ready'&#10;  &#10;  - review_ready&#10;  + failed">application = &lt;onlinecoc_ai.api.Application object at 0x000001D3011A5E50&gt;
+name = 'room_read_management', args = {'section': 'configurations', 'limit': 0}
+
+    @pytest.mark.parametrize('name,args',[
+        ('room_manage_catalog',{'operations':['config.create','configuration.create']}),
+        ('room_manage_catalog',{'operations':['config.list','configuration.update']}),
+        ('room_read_management',{'section':'invented'}),
+        ('room_read_management',{'section':'configurations','limit':0}),
+        ('room_read_sessions',{'limit':100}),
+    ])
+    def test_bad_management_query_can_recover_into_checked_unpublished_draft(application,name,args):
+        app=application;enable(app.host,public=True,kp=True,private=True)
+        async def callback(count,messages,tools):
+            if count==1:return tool_call(name,args)
+            result=json.loads(messages[-1]['content'])
+            if count==2:
+                assert result['error']['code']=='INPUT_INVALID'
+                assert 'No data was returned' in result['notice']
+                return tool_call('room_read_management',{'section':'configurations'})
+            assert any(row['id']=='fixture.token' and row['value']['defaults']['bonus']==0 for row in result['items'])
+            return completion({'kind':'draft','text':'Checked configuration candidate','changeSet':delta()})
+        async def run():
+            app.coordinator.provider_factory=lambda _:Fake(callback);await app.coordinator.start()
+            try:
+                sid=committed(command(app,'ai.session.create',{'title':'Management recovery'}))['sessionId']
+                req=submit(app,sid,'Prepare a configuration draft')
+                dispatched=committed(command(app,'ai.request.dispatch',{'requestId':req['requestId']}))
+                task=await wait_task(app.coordinator,dispatched['taskId'])
+                assert task['status']=='review_ready',task
+                assert task['diagnostics']['toolCalls'][0]['status']=='rejected'
+                context=app.repository.state()['contexts'][task['contextRef']]
+                assert 'configurations' in context['facts']['managementReads']
+                assert not context['facts'].get('consultationOnly')
+                row=next(r for r in app.rulings.list('kp')['items'] if r['rulingId']=='proposal:'+task['proposalId'])
+                assert row['status']=='pending' and row['canDecide']
+                assert app.host.state()['configurations']['fixture.token']['defaults']['bonus']==0
+            finally:await app.coordinator.close()
+&gt;       asyncio.run(run())
+
+engineering\ai\tests\test_management_queries.py:49: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:204: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:127: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\base_events.py:719: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    async def run():
+        app.coordinator.provider_factory=lambda _:Fake(callback);await app.coordinator.start()
+        try:
+            sid=committed(command(app,'ai.session.create',{'title':'Management recovery'}))['sessionId']
+            req=submit(app,sid,'Prepare a configuration draft')
+            dispatched=committed(command(app,'ai.request.dispatch',{'requestId':req['requestId']}))
+            task=await wait_task(app.coordinator,dispatched['taskId'])
+&gt;           assert task['status']=='review_ready',task
+E           AssertionError: {'taskId': '0e979348533d482bb79538935873481c', 'requestId': '0e979348533d482bb79538935873481c', 'account': 'kp', 'profile': {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...}, ...}
+E           assert 'failed' == 'review_ready'
+E             
+E             - review_ready
+E             + failed
+
+engineering\ai\tests\test_management_queries.py:40: AssertionError</failure></testcase><testcase classname="engineering.ai.tests.test_management_queries" name="test_bad_management_query_can_recover_into_checked_unpublished_draft[room_read_sessions-args4]" time="6.089"><failure message="AssertionError: {'taskId': 'eb2e25307a934e758aa10648b4af2248', 'requestId': 'eb2e25307a934e758aa10648b4af2248', 'account': 'kp', 'profile': {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...}, ...}&#10;assert 'failed' == 'review_ready'&#10;  &#10;  - review_ready&#10;  + failed">application = &lt;onlinecoc_ai.api.Application object at 0x000001D3011A53D0&gt;
+name = 'room_read_sessions', args = {'limit': 100}
+
+    @pytest.mark.parametrize('name,args',[
+        ('room_manage_catalog',{'operations':['config.create','configuration.create']}),
+        ('room_manage_catalog',{'operations':['config.list','configuration.update']}),
+        ('room_read_management',{'section':'invented'}),
+        ('room_read_management',{'section':'configurations','limit':0}),
+        ('room_read_sessions',{'limit':100}),
+    ])
+    def test_bad_management_query_can_recover_into_checked_unpublished_draft(application,name,args):
+        app=application;enable(app.host,public=True,kp=True,private=True)
+        async def callback(count,messages,tools):
+            if count==1:return tool_call(name,args)
+            result=json.loads(messages[-1]['content'])
+            if count==2:
+                assert result['error']['code']=='INPUT_INVALID'
+                assert 'No data was returned' in result['notice']
+                return tool_call('room_read_management',{'section':'configurations'})
+            assert any(row['id']=='fixture.token' and row['value']['defaults']['bonus']==0 for row in result['items'])
+            return completion({'kind':'draft','text':'Checked configuration candidate','changeSet':delta()})
+        async def run():
+            app.coordinator.provider_factory=lambda _:Fake(callback);await app.coordinator.start()
+            try:
+                sid=committed(command(app,'ai.session.create',{'title':'Management recovery'}))['sessionId']
+                req=submit(app,sid,'Prepare a configuration draft')
+                dispatched=committed(command(app,'ai.request.dispatch',{'requestId':req['requestId']}))
+                task=await wait_task(app.coordinator,dispatched['taskId'])
+                assert task['status']=='review_ready',task
+                assert task['diagnostics']['toolCalls'][0]['status']=='rejected'
+                context=app.repository.state()['contexts'][task['contextRef']]
+                assert 'configurations' in context['facts']['managementReads']
+                assert not context['facts'].get('consultationOnly')
+                row=next(r for r in app.rulings.list('kp')['items'] if r['rulingId']=='proposal:'+task['proposalId'])
+                assert row['status']=='pending' and row['canDecide']
+                assert app.host.state()['configurations']['fixture.token']['defaults']['bonus']==0
+            finally:await app.coordinator.close()
+&gt;       asyncio.run(run())
+
+engineering\ai\tests\test_management_queries.py:49: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:204: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:127: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\base_events.py:719: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    async def run():
+        app.coordinator.provider_factory=lambda _:Fake(callback);await app.coordinator.start()
+        try:
+            sid=committed(command(app,'ai.session.create',{'title':'Management recovery'}))['sessionId']
+            req=submit(app,sid,'Prepare a configuration draft')
+            dispatched=committed(command(app,'ai.request.dispatch',{'requestId':req['requestId']}))
+            task=await wait_task(app.coordinator,dispatched['taskId'])
+&gt;           assert task['status']=='review_ready',task
+E           AssertionError: {'taskId': 'eb2e25307a934e758aa10648b4af2248', 'requestId': 'eb2e25307a934e758aa10648b4af2248', 'account': 'kp', 'profile': {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...}, ...}
+E           assert 'failed' == 'review_ready'
+E             
+E             - review_ready
+E             + failed
+
+engineering\ai\tests\test_management_queries.py:40: AssertionError</failure></testcase><testcase classname="engineering.ai.tests.test_management_queries" name="test_authoritative_templates_are_paginated_kp_only_and_changes_invalidate_proof" time="1.133" /><testcase classname="engineering.ai.tests.test_management_queries" name="test_configuration_read_cannot_recover_from_disabled_external_scope" time="1.299" /><testcase classname="engineering.ai.tests.test_management_queries" name="test_mixed_search_warns_model_without_relabeling_or_removing_evidence" time="0.000" /><testcase classname="engineering.ai.tests.test_manager" name="test_local_boundary_bootstrap_csrf_and_lock" time="0.038" /><testcase classname="engineering.ai.tests.test_manager" name="test_profile_cas_disable_delete_and_secret_rejected_in_config" time="0.076" /><testcase classname="engineering.ai.tests.test_manager" name="test_real_dpapi_key_roundtrip_no_plaintext_and_legacy_fallback" time="0.058" /><testcase classname="engineering.ai.tests.test_manager" name="test_room_endpoint_is_bounded[https://127.0.0.1:8765]" time="0.001" /><testcase classname="engineering.ai.tests.test_manager" name="test_room_endpoint_is_bounded[http://192.168.1.2:8765]" time="0.001" /><testcase classname="engineering.ai.tests.test_manager" name="test_room_endpoint_is_bounded[http://example.com:8765]" time="0.001" /><testcase classname="engineering.ai.tests.test_manager" name="test_room_endpoint_is_bounded[http://user:pass@127.0.0.1:8765]" time="0.001" /><testcase classname="engineering.ai.tests.test_manager" name="test_room_endpoint_is_bounded[http://127.0.0.1:8765/api]" time="0.001" /><testcase classname="engineering.ai.tests.test_manager" name="test_room_endpoint_is_bounded[http://127.0.0.1:8765?x=1]" time="0.001" /><testcase classname="engineering.ai.tests.test_manager" name="test_room_endpoint_is_bounded[http://127.0.0.1:99999]" time="0.001" /><testcase classname="engineering.ai.tests.test_manager" name="test_room_profiles_persist_but_login_does_not" time="0.017" /><testcase classname="engineering.ai.tests.test_manager" name="test_room_bridge_never_exposes_host_control_or_shares_sessions" time="0.007" /><testcase classname="engineering.ai.tests.test_manager" name="test_session_ownership_archive_idempotence_and_reopen" time="1.245" /><testcase classname="engineering.ai.tests.test_manager" name="test_manager_static_modules_have_correct_mime_and_headers" time="0.051" /><testcase classname="engineering.ai.tests.test_manager" name="test_late_room_login_cannot_restore_locked_session" time="0.012" /><testcase classname="engineering.ai.tests.test_manager" name="test_concurrent_profile_edits_have_exactly_one_winner" time="0.023" /><testcase classname="engineering.ai.tests.test_manager" name="test_advisory_lock_is_bounded" time="0.056" /><testcase classname="engineering.ai.tests.test_manager" name="test_running_room_refreshes_profile_and_fails_closed" time="0.761" /><testcase classname="engineering.ai.tests.test_manager_cli" name="test_actual_cli_start_and_one_use_bootstrap" time="2.019" /><testcase classname="engineering.ai.tests.test_memory" name="test_draft_is_not_fact_and_confirmed_memory_survives_restart" time="2.510" /><testcase classname="engineering.ai.tests.test_memory" name="test_source_change_invalidates_memory_and_descendants" time="1.289" /><testcase classname="engineering.ai.tests.test_memory" name="test_stale_ai_store_draft_cannot_reconfirm_revoked_room_memory" time="1.215" /><testcase classname="engineering.ai.tests.test_memory" name="test_revoke_and_expiry_never_leave_usable_summary" time="1.244" /><testcase classname="engineering.ai.tests.test_memory" name="test_secret_summary_cannot_be_downgraded_to_public" time="1.173" /><testcase classname="engineering.ai.tests.test_memory" name="test_player_cannot_confirm_and_private_memory_is_not_shared" time="1.247" /><testcase classname="engineering.ai.tests.test_memory" name="test_scope_fork_does_not_reuse_old_memory" time="1.187" /><testcase classname="engineering.ai.tests.test_memory" name="test_context_approval_binding_tracks_memory_revision" time="1.273" /><testcase classname="engineering.ai.tests.test_message_history" name="test_published_player_text_survives_revoke_without_restoring_source[False]" time="1.409" /><testcase classname="engineering.ai.tests.test_message_history" name="test_published_player_text_survives_revoke_without_restoring_source[True]" time="1.395" /><testcase classname="engineering.ai.tests.test_message_history" name="test_unpublished_or_unproven_legacy_body_is_not_recovered" time="1.577" /><testcase classname="engineering.ai.tests.test_message_history" name="test_public_delivery_remembers_legacy_text_but_never_invents_time" time="1.450" /><testcase classname="engineering.ai.tests.test_message_history" name="test_deleted_session_is_not_revived_by_delivery_receipt" time="1.429" /><testcase classname="engineering.ai.tests.test_message_history" name="test_explicit_completed_followup_archives_predecessors_with_proof" time="1.566" /><testcase classname="engineering.ai.tests.test_message_history" name="test_uncertain_predecessor_is_never_closed[partial]" time="1.456" /><testcase classname="engineering.ai.tests.test_message_history" name="test_uncertain_predecessor_is_never_closed[unknown]" time="1.470" /><testcase classname="engineering.ai.tests.test_message_history" name="test_uncertain_predecessor_is_never_closed[executing]" time="1.383" /><testcase classname="engineering.ai.tests.test_message_history" name="test_completion_without_matching_host_receipts_cannot_close_group" time="1.355" /><testcase classname="engineering.ai.tests.test_message_history" name="test_legacy_final_reply_migrates_after_revoke_and_survives_restart" time="3.755" /><testcase classname="engineering.ai.tests.test_message_history" name="test_nested_review_recipient_remains_original_player" time="1.288" /><testcase classname="engineering.ai.tests.test_message_history" name="test_public_http_routes_record_only_authorized_deliveries[tasks]" time="1.529" /><testcase classname="engineering.ai.tests.test_message_history" name="test_public_http_routes_record_only_authorized_deliveries[session]" time="1.505" /><testcase classname="engineering.ai.tests.test_pack_rules" name="test_valid_constraints_and_old_instances_preserved" time="0.992" /><testcase classname="engineering.ai.tests.test_pack_rules" name="test_out_of_range_is_traced_to_rule_clause" time="1.022" /><testcase classname="engineering.ai.tests.test_pack_rules" name="test_cost_change_outside_extension_is_rejected" time="0.998" /><testcase classname="engineering.ai.tests.test_pack_rules" name="test_missing_or_unknown_required_evidence_never_passes[&lt;lambda&gt;0]" time="1.039" /><testcase classname="engineering.ai.tests.test_pack_rules" name="test_missing_or_unknown_required_evidence_never_passes[&lt;lambda&gt;1]" time="0.927" /><testcase classname="engineering.ai.tests.test_pack_rules" name="test_missing_or_unknown_required_evidence_never_passes[&lt;lambda&gt;2]" time="0.939" /><testcase classname="engineering.ai.tests.test_pack_rules" name="test_missing_or_unknown_required_evidence_never_passes[&lt;lambda&gt;3]" time="0.959" /><testcase classname="engineering.ai.tests.test_pack_rules" name="test_missing_or_unknown_required_evidence_never_passes[&lt;lambda&gt;4]" time="0.915" /><testcase classname="engineering.ai.tests.test_pack_rules" name="test_old_flow_is_not_assumed_to_use_old_configs" time="0.904" /><testcase classname="engineering.ai.tests.test_pack_rules" name="test_versioned_reference_and_unique_checkers" time="0.456" /><testcase classname="engineering.ai.tests.test_pack_rules" name="test_missing_numeric_field_is_not_zero" time="0.462" /><testcase classname="engineering.ai.tests.test_pack_rules" name="test_scenario_checker_covers_permission_and_cost" time="2.399" /><testcase classname="engineering.ai.tests.test_pilot" name="test_actual_pack_baseline_metrics_and_no_live_effects" time="5.917"><failure message="TypeError: assessment() missing 1 required positional argument: 'value'">pilot = (&lt;onlinecoc.host.Host object at 0x000001D347804F30&gt;, &lt;onlinecoc_ai.proposals.Proposals object at 0x000001D3003A3070&gt;)
+
+    def test_actual_pack_baseline_metrics_and_no_live_effects(pilot):
+        host, service = pilot
+        context, state, artifact = service.snapshot('kp');before = copy.deepcopy(host.state())
+        assert artifact['sources'] == service.pack.sources
+        assert artifact['data'] == service.pack.data
+        assert state['configurations'] == service.pack.configurations
+        proposal = service.create('kp', '增加新技能初始值', delta())
+&gt;       result = service.validate('kp', proposal['proposalId'], 1)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+engineering\ai\tests\test_pilot.py:53: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;onlinecoc_ai.proposals.Proposals object at 0x000001D3003A3070&gt;
+account = 'kp', proposal_id = '4755b4f5221e422a839f7ec88faf8f13', revision = 1
+generation = None, progress = None
+
+    def validate(self, account, proposal_id, revision, *, generation=None, progress=None):
+        proposal = self.get(account, proposal_id, revision,generation=generation)
+        store = self.repository.state()
+        require(store["proposals"][proposal_id]["currentRevision"] == revision, "PROPOSAL_STALE")
+        context = store["contexts"][proposal["contextRef"]]
+        from .consultation import require_current,assessment
+        require_current(context,{'kind':'draft'})
+        snapshot = store["snapshots"][proposal["contextRef"]]
+        args = (self.pack, snapshot["state"], snapshot["artifact"], context, proposal["changeSet"])
+        # All potentially long-running operations happen without the Host lock.
+        if progress:progress('validation_a')
+        a, artifact = check_base(*args)
+        if progress:progress('validation_b')
+        b=check_rules(*args)
+        if progress:progress('validation_c')
+        from .c_review import basis, assessment
+        review_basis = basis(self.repository)
+        reports = [a, b, assess(*args, basis=review_basis)]
+        c_assessment = assessment(reports, review_basis)
+        passed = c_assessment['adoptable']
+        bundle = None
+        if passed:
+            bundle = validate("PreparedBundle", {"schemaVersion": 1, "proposalId": proposal_id, "proposalRevision": revision,
+                "scopeId": context["scopeId"], "context": context, "changeSet": proposal["changeSet"], "artifact": artifact,
+&gt;               "reports": reports, "cAssessment": c_assessment, 'consultationAssessment':assessment(context), "candidateDigest": proposal["candidateDigest"], "baselineDigest": baseline_digest(context), "createdAt": self.host.clock()})
+                                                                                          ^^^^^^^^^^^^^^^^^^^
+E           TypeError: assessment() missing 1 required positional argument: 'value'
+
+engineering\ai\src\onlinecoc_ai\proposals.py:160: TypeError</failure></testcase><testcase classname="engineering.ai.tests.test_pilot" name="test_demo_edit_stale_reject_publish_and_restore" time="5.739"><failure message="TypeError: assessment() missing 1 required positional argument: 'value'">pilot = (&lt;onlinecoc.host.Host object at 0x000001D3002E29C0&gt;, &lt;onlinecoc_ai.proposals.Proposals object at 0x000001D3007E0830&gt;)
+tmp_path = WindowsPath('D:/Studies/Art Programming/OnlineCOC/engineering/acceptance/ai-context-compression/work/integration-initial-1795246559058548000/pytest-tmp/test_demo_edit_stale_reject_pu0')
+
+    def test_demo_edit_stale_reject_publish_and_restore(pilot, tmp_path):
+        host, service = pilot
+        proposal = service.create('kp', '新技能初值 15', delta())
+&gt;       service.validate('kp', proposal['proposalId'], 1);original = approve(host, proposal, 'first-approval')
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+engineering\ai\tests\test_pilot.py:72: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;onlinecoc_ai.proposals.Proposals object at 0x000001D3007E0830&gt;
+account = 'kp', proposal_id = '34c21fdcefd948f5b4db78389bf76874', revision = 1
+generation = None, progress = None
+
+    def validate(self, account, proposal_id, revision, *, generation=None, progress=None):
+        proposal = self.get(account, proposal_id, revision,generation=generation)
+        store = self.repository.state()
+        require(store["proposals"][proposal_id]["currentRevision"] == revision, "PROPOSAL_STALE")
+        context = store["contexts"][proposal["contextRef"]]
+        from .consultation import require_current,assessment
+        require_current(context,{'kind':'draft'})
+        snapshot = store["snapshots"][proposal["contextRef"]]
+        args = (self.pack, snapshot["state"], snapshot["artifact"], context, proposal["changeSet"])
+        # All potentially long-running operations happen without the Host lock.
+        if progress:progress('validation_a')
+        a, artifact = check_base(*args)
+        if progress:progress('validation_b')
+        b=check_rules(*args)
+        if progress:progress('validation_c')
+        from .c_review import basis, assessment
+        review_basis = basis(self.repository)
+        reports = [a, b, assess(*args, basis=review_basis)]
+        c_assessment = assessment(reports, review_basis)
+        passed = c_assessment['adoptable']
+        bundle = None
+        if passed:
+            bundle = validate("PreparedBundle", {"schemaVersion": 1, "proposalId": proposal_id, "proposalRevision": revision,
+                "scopeId": context["scopeId"], "context": context, "changeSet": proposal["changeSet"], "artifact": artifact,
+&gt;               "reports": reports, "cAssessment": c_assessment, 'consultationAssessment':assessment(context), "candidateDigest": proposal["candidateDigest"], "baselineDigest": baseline_digest(context), "createdAt": self.host.clock()})
+                                                                                          ^^^^^^^^^^^^^^^^^^^
+E           TypeError: assessment() missing 1 required positional argument: 'value'
+
+engineering\ai\src\onlinecoc_ai\proposals.py:160: TypeError</failure></testcase><testcase classname="engineering.ai.tests.test_pilot" name="test_demo_pack_author_constraints_and_existing_flow_block" time="7.404" /><testcase classname="engineering.ai.tests.test_player_requests" name="test_direct_intent_requires_no_provider_knowledge_or_egress_and_is_deduplicated" time="1.200" /><testcase classname="engineering.ai.tests.test_player_requests" name="test_intent_owner_level_policy_and_input_cannot_be_forged" time="1.297" /><testcase classname="engineering.ai.tests.test_player_requests" name="test_cancelled_and_deleted_intents_cannot_be_accepted" time="1.305" /><testcase classname="engineering.ai.tests.test_player_requests" name="test_kp_accept_creates_private_review_once_without_state_changes" time="1.366" /><testcase classname="engineering.ai.tests.test_player_requests" name="test_kp_reject_and_archive_do_not_create_review" time="1.306" /><testcase classname="engineering.ai.tests.test_player_requests" name="test_accepted_request_batch_remains_manual_with_auto_approval_enabled" time="1.334" /><testcase classname="engineering.ai.tests.test_player_requests" name="test_query_blockers_have_distinct_safe_errors_without_model_calls[unconfigured-KNOWLEDGE_UNAVAILABLE]" time="1.216" /><testcase classname="engineering.ai.tests.test_player_requests" name="test_query_blockers_have_distinct_safe_errors_without_model_calls[private-EXTERNAL_SCOPE_DISABLED]" time="1.289" /><testcase classname="engineering.ai.tests.test_player_requests" name="test_query_blockers_have_distinct_safe_errors_without_model_calls[queries-DATA_QUERIES_DISABLED]" time="1.214" /><testcase classname="engineering.ai.tests.test_player_requests" name="test_query_blockers_have_distinct_safe_errors_without_model_calls[egress-KNOWLEDGE_EGRESS_DISABLED]" time="1.256" /><testcase classname="engineering.ai.tests.test_player_requests" name="test_keyword_miss_returns_explicit_personal_index_and_never_other_players" time="1.280" /><testcase classname="engineering.ai.tests.test_player_requests" name="test_preloaded_known_index_can_be_read_and_creative_choice_is_not_auto_submitted" time="1.413" /><testcase classname="engineering.ai.tests.test_player_requests" name="test_recoverable_invalid_knowledge_query_can_retry_then_read_index" time="1.411" /><testcase classname="engineering.ai.tests.test_player_requests" name="test_player_request_reference_is_label_only_in_kp_review" time="1.281" /><testcase classname="engineering.ai.tests.test_player_requests" name="test_ordinary_configuration_from_player_review_cannot_auto_publish" time="5.778"><failure message="AssertionError: {'requestId': 'f57a2ff53bba4e0f8a5a286e4fabd3f8', 'status': 'unknown', 'code': 'RESULT_UNKNOWN'}&#10;assert 'unknown' == 'committed'&#10;  &#10;  - committed&#10;  + unknown">application = &lt;onlinecoc_ai.api.Application object at 0x000001D301282B10&gt;
+
+    def test_ordinary_configuration_from_player_review_cannot_auto_publish(application):
+        from onlinecoc_ai.validation.common import validator_digest
+        app=application;pack=app.proposals.pack
+        pack.contract['extensionPoints'].append({'namespace':'ordinary.','typeRefs':['actor'],'allowedPaths':['/defaults'],'allowExistingIds':[],'rulePrefixes':[]})
+        app.host.register_ai(app.proposals.prepared,{'contract':pack.contract,'digest':pack.digest,'validatorSetDigest':validator_digest()})
+        s,r=create(app);p=app.sessions.access('kp')
+        committed(command(app,'ai.access.update',{'revision':p['revision'],'allowPlayerChat':True,'autoApproveBatches':True,'autoApproveConfigurations':True}))
+        accepted=committed(decide(app,r));request=app.repository.state()['requests'][accepted['reviewRequestId']]
+        snapshot,_=Context(app.proposals).capture('kp',request)
+        original=next(c for c in app.host.state()['configurations'].values() if c['typeRef']=='actor')
+        value={**copy.deepcopy(original),'configurationId':'ordinary.actor','revision':'1'}
+        change={'schemaVersion':1,'configurations':[{'kind':'add','id':value['configurationId'],'expectedRevision':None,'value':value}],'sources':{},'data':{},'suggestions':[]}
+        proposal=app.proposals.create('kp',request['text'],change,snapshot=snapshot,request=request)
+&gt;       committed(command(app,'ai.proposal.validate',{'proposalId':proposal['proposalId'],'revision':1}))
+
+engineering\ai\tests\test_player_requests.py:193: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+receipt = {'requestId': 'f57a2ff53bba4e0f8a5a286e4fabd3f8', 'status': 'unknown', 'code': 'RESULT_UNKNOWN'}
+
+    def committed(receipt):
+&gt;       assert receipt['status'] == 'committed', receipt
+E       AssertionError: {'requestId': 'f57a2ff53bba4e0f8a5a286e4fabd3f8', 'status': 'unknown', 'code': 'RESULT_UNKNOWN'}
+E       assert 'unknown' == 'committed'
+E         
+E         - committed
+E         + unknown
+
+engineering\ai\tests\test_entrypoints.py:34: AssertionError</failure></testcase><testcase classname="engineering.ai.tests.test_player_requests" name="test_restart_preserves_accepted_review_without_duplicate_dispatch" time="1.390" /><testcase classname="engineering.ai.tests.test_player_requests" name="test_cancelled_query_failure_keeps_cancelled_status" time="1.232" /><testcase classname="engineering.ai.tests.test_player_requests" name="test_review_context_identifies_original_player_for_my_character_intent" time="1.301" /><testcase classname="engineering.ai.tests.test_player_requests" name="test_reference_label_cannot_bypass_disabled_private_egress_during_kp_accept" time="1.295" /><testcase classname="engineering.ai.tests.test_policies" name="test_high_risk_requires_exact_manual_fingerprint_and_retains_diff" time="5.711"><failure message="AssertionError: {'requestId': 'f4ef7be551b2406ab64a10393ab48a66', 'status': 'unknown', 'code': 'RESULT_UNKNOWN'}&#10;assert 'unknown' == 'committed'&#10;  &#10;  - committed&#10;  + unknown">application = &lt;onlinecoc_ai.api.Application object at 0x000001D30154D6D0&gt;
+
+    def test_high_risk_requires_exact_manual_fingerprint_and_retains_diff(application):
+        app=application;access(app)
+        p=committed(command(app,'ai.draft.create',{'text':'更新物品','changeSet':delta()}))
+&gt;       committed(command(app,'ai.proposal.validate',{'proposalId':p['proposalId'],'revision':1}))
+
+engineering\ai\tests\test_policies.py:20: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+receipt = {'requestId': 'f4ef7be551b2406ab64a10393ab48a66', 'status': 'unknown', 'code': 'RESULT_UNKNOWN'}
+
+    def committed(receipt):
+&gt;       assert receipt['status'] == 'committed', receipt
+E       AssertionError: {'requestId': 'f4ef7be551b2406ab64a10393ab48a66', 'status': 'unknown', 'code': 'RESULT_UNKNOWN'}
+E       assert 'unknown' == 'committed'
+E         
+E         - committed
+E         + unknown
+
+engineering\ai\tests\test_entrypoints.py:34: AssertionError</failure></testcase><testcase classname="engineering.ai.tests.test_policies" name="test_more_than_eight_actions_execute_without_truncation" time="1.342" /><testcase classname="engineering.ai.tests.test_policies" name="test_batch_storage_has_no_business_count_limit" time="7.635" /><testcase classname="engineering.ai.tests.test_policies" name="test_policy_switches_are_enforced_for_new_and_pending_writes" time="1.136" /><testcase classname="engineering.ai.tests.test_policies" name="test_ordinary_actor_configuration_still_supports_explicit_auto_policy" time="5.683"><failure message="AssertionError: {'requestId': '3943e1fd1ef6442296d78e0fef7049ae', 'status': 'unknown', 'code': 'RESULT_UNKNOWN'}&#10;assert 'unknown' == 'committed'&#10;  &#10;  - committed&#10;  + unknown">application = &lt;onlinecoc_ai.api.Application object at 0x000001D300189FD0&gt;
+
+    def test_ordinary_actor_configuration_still_supports_explicit_auto_policy(application):
+        app=application
+        # Extend this isolated fixture's author-declared namespace before rebinding.
+        pack=app.proposals.pack
+        pack.contract['extensionPoints'].append({'namespace':'ordinary.','typeRefs':['actor'],'allowedPaths':['/defaults'], 'allowExistingIds':[], 'rulePrefixes':[]})
+        from onlinecoc_ai.validation.common import validator_digest
+        app.host.register_ai(app.proposals.prepared,{'contract':pack.contract,'digest':pack.digest,'validatorSetDigest':validator_digest()})
+        committed(command(app,'ai.access.update',{'revision':1,'allowPlayerChat':False,'autoApproveBatches':False,'autoApproveConfigurations':True}))
+        original=next(c for c in app.host.state()['configurations'].values() if c['typeRef']=='actor')
+        value={**copy.deepcopy(original),'configurationId':'ordinary.actor','revision':'1'}
+        change={'schemaVersion':1,'configurations':[{'kind':'add','id':value['configurationId'],'expectedRevision':None,'value':value}],'sources':{},'data':{},'suggestions':[]}
+        p=committed(command(app,'ai.draft.create',{'text':'普通角色模板','changeSet':change}))
+&gt;       committed(command(app,'ai.proposal.validate',{'proposalId':p['proposalId'],'revision':1}))
+
+engineering\ai\tests\test_policies.py:80: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+receipt = {'requestId': '3943e1fd1ef6442296d78e0fef7049ae', 'status': 'unknown', 'code': 'RESULT_UNKNOWN'}
+
+    def committed(receipt):
+&gt;       assert receipt['status'] == 'committed', receipt
+E       AssertionError: {'requestId': '3943e1fd1ef6442296d78e0fef7049ae', 'status': 'unknown', 'code': 'RESULT_UNKNOWN'}
+E       assert 'unknown' == 'committed'
+E         
+E         - committed
+E         + unknown
+
+engineering\ai\tests\test_entrypoints.py:34: AssertionError</failure></testcase><testcase classname="engineering.ai.tests.test_policies" name="test_admin_room_scope_is_default_and_revocable_without_player_escalation" time="1.175" /><testcase classname="engineering.ai.tests.test_policies" name="test_player_request_is_explicit_private_and_real_observation_is_required" time="1.299" /><testcase classname="engineering.ai.tests.test_policies" name="test_rejected_request_has_no_disclosure_and_disabled_policy_blocks_new_request" time="1.214" /><testcase classname="engineering.ai.tests.test_policies" name="test_remove_schema_and_no_configuration_count_limit" time="0.035" /><testcase classname="engineering.ai.tests.test_policies" name="test_stable_array_uses_current_baseline_and_candidate_references" time="0.001" /><testcase classname="engineering.ai.tests.test_policies" name="test_live_probes_bind_real_ids_and_do_not_hide_changed_or_unlisted_failures[success-True]" time="0.001" /><testcase classname="engineering.ai.tests.test_policies" name="test_live_probes_bind_real_ids_and_do_not_hide_changed_or_unlisted_failures[declared-block-True]" time="0.001" /><testcase classname="engineering.ai.tests.test_policies" name="test_live_probes_bind_real_ids_and_do_not_hide_changed_or_unlisted_failures[changed-error-False]" time="0.001" /><testcase classname="engineering.ai.tests.test_policies" name="test_live_probes_bind_real_ids_and_do_not_hide_changed_or_unlisted_failures[unlisted-error-False]" time="0.001" /><testcase classname="engineering.ai.tests.test_policies" name="test_cumulative_tool_budget_uses_transport_limit_and_reports_sizes[112640-review_ready]" time="1.234"><failure message="AssertionError: {'taskId': 'd67d8f8ef6eb45c7a44b510b79589374', 'requestId': 'd67d8f8ef6eb45c7a44b510b79589374', 'account': 'kp', 'profile': {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...}, ...}&#10;assert 'failed' == 'review_ready'&#10;  &#10;  - review_ready&#10;  + failed">application = &lt;onlinecoc_ai.api.Application object at 0x000001D3001884D0&gt;
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001D3006382F0&gt;
+size = 112640, expected = 'review_ready'
+
+    @pytest.mark.parametrize('size,expected', [(110*1024,'review_ready'),(270*1024,'failed')])
+    def test_cumulative_tool_budget_uses_transport_limit_and_reports_sizes(application,monkeypatch,size,expected):
+        app=application;enable(app.host,public=True,private=True,kp=True)
+        monkeypatch.setattr(app.batches,'catalog_query',lambda *args,**kwargs: {'notice':'x'*size})
+        async def callback(count,messages,tools):
+            return tool_call('room_manage_catalog') if count==1 else completion({'kind':'plan','text':'已读取目录，等待具体需求。'})
+        provider=Fake(callback)
+        async def run():
+            app.coordinator.provider_factory=lambda _:provider;await app.coordinator.start()
+            try:
+                request=submit(app,session(app),'读取管理目录')
+                dispatched=committed(command(app,'ai.request.dispatch',{'requestId':request['requestId']}))
+                result=await wait_task(app.coordinator,dispatched['taskId'])
+                assert result['status']==expected,result
+                budget=result['diagnostics']['contextBudget']
+                assert budget['limitBytes']==256*1024 and budget['toolMessageBytes']&gt;=size
+                assert 'x'*100 not in str(result['diagnostics'])
+                if expected=='failed':assert result['error']=='CONTEXT_LIMIT_EXCEEDED' and provider.calls==1
+                else:assert provider.calls==2 and 96*1024&lt;budget['bytes']&lt;budget['limitBytes']
+            finally:await app.coordinator.close()
+&gt;       asyncio.run(run())
+
+engineering\ai\tests\test_policies.py:216: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:204: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:127: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\base_events.py:719: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    async def run():
+        app.coordinator.provider_factory=lambda _:provider;await app.coordinator.start()
+        try:
+            request=submit(app,session(app),'读取管理目录')
+            dispatched=committed(command(app,'ai.request.dispatch',{'requestId':request['requestId']}))
+            result=await wait_task(app.coordinator,dispatched['taskId'])
+&gt;           assert result['status']==expected,result
+E           AssertionError: {'taskId': 'd67d8f8ef6eb45c7a44b510b79589374', 'requestId': 'd67d8f8ef6eb45c7a44b510b79589374', 'account': 'kp', 'profile': {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...}, ...}
+E           assert 'failed' == 'review_ready'
+E             
+E             - review_ready
+E             + failed
+
+engineering\ai\tests\test_policies.py:209: AssertionError</failure></testcase><testcase classname="engineering.ai.tests.test_policies" name="test_cumulative_tool_budget_uses_transport_limit_and_reports_sizes[276480-failed]" time="1.269"><failure message="KeyError: 'contextBudget'">application = &lt;onlinecoc_ai.api.Application object at 0x000001D347583D10&gt;
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001D3003C9940&gt;
+size = 276480, expected = 'failed'
+
+    @pytest.mark.parametrize('size,expected', [(110*1024,'review_ready'),(270*1024,'failed')])
+    def test_cumulative_tool_budget_uses_transport_limit_and_reports_sizes(application,monkeypatch,size,expected):
+        app=application;enable(app.host,public=True,private=True,kp=True)
+        monkeypatch.setattr(app.batches,'catalog_query',lambda *args,**kwargs: {'notice':'x'*size})
+        async def callback(count,messages,tools):
+            return tool_call('room_manage_catalog') if count==1 else completion({'kind':'plan','text':'已读取目录，等待具体需求。'})
+        provider=Fake(callback)
+        async def run():
+            app.coordinator.provider_factory=lambda _:provider;await app.coordinator.start()
+            try:
+                request=submit(app,session(app),'读取管理目录')
+                dispatched=committed(command(app,'ai.request.dispatch',{'requestId':request['requestId']}))
+                result=await wait_task(app.coordinator,dispatched['taskId'])
+                assert result['status']==expected,result
+                budget=result['diagnostics']['contextBudget']
+                assert budget['limitBytes']==256*1024 and budget['toolMessageBytes']&gt;=size
+                assert 'x'*100 not in str(result['diagnostics'])
+                if expected=='failed':assert result['error']=='CONTEXT_LIMIT_EXCEEDED' and provider.calls==1
+                else:assert provider.calls==2 and 96*1024&lt;budget['bytes']&lt;budget['limitBytes']
+            finally:await app.coordinator.close()
+&gt;       asyncio.run(run())
+
+engineering\ai\tests\test_policies.py:216: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:204: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:127: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\base_events.py:719: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    async def run():
+        app.coordinator.provider_factory=lambda _:provider;await app.coordinator.start()
+        try:
+            request=submit(app,session(app),'读取管理目录')
+            dispatched=committed(command(app,'ai.request.dispatch',{'requestId':request['requestId']}))
+            result=await wait_task(app.coordinator,dispatched['taskId'])
+            assert result['status']==expected,result
+&gt;           budget=result['diagnostics']['contextBudget']
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           KeyError: 'contextBudget'
+
+engineering\ai\tests\test_policies.py:210: KeyError</failure></testcase><testcase classname="engineering.ai.tests.test_policies" name="test_management_catalog_indexes_before_returning_selected_schemas" time="1.192" /><testcase classname="engineering.ai.tests.test_policies" name="test_unused_extension_remove_requires_policy_without_making_actor_edits_high_risk[True]" time="0.001" /><testcase classname="engineering.ai.tests.test_policies" name="test_unused_extension_remove_requires_policy_without_making_actor_edits_high_risk[False]" time="0.001" /><testcase classname="engineering.ai.tests.test_policies" name="test_malformed_batch_gets_exact_schema_and_cannot_escape_to_plan[correct-after-plan]" time="1.361" /><testcase classname="engineering.ai.tests.test_policies" name="test_malformed_batch_gets_exact_schema_and_cannot_escape_to_plan[clarification]" time="1.319" /><testcase classname="engineering.ai.tests.test_policies" name="test_malformed_batch_gets_exact_schema_and_cannot_escape_to_plan[exhausted]" time="1.296" /><testcase classname="engineering.ai.tests.test_policies" name="test_batch_self_mutation_preserves_safe_execution_status_after_source_change_and_revocation[completed]" time="1.347" /><testcase classname="engineering.ai.tests.test_policies" name="test_batch_self_mutation_preserves_safe_execution_status_after_source_change_and_revocation[partial]" time="1.433" /><testcase classname="engineering.ai.tests.test_policies" name="test_batch_self_mutation_preserves_safe_execution_status_after_source_change_and_revocation[pending]" time="1.307" /><testcase classname="engineering.ai.tests.test_providers" name="test_deepseek_wire_format_and_secret_stays_in_header" time="0.003" /><testcase classname="engineering.ai.tests.test_providers" name="test_compatible_endpoint_omits_vendor_options" time="0.002" /><testcase classname="engineering.ai.tests.test_providers" name="test_http_failures_are_bounded_and_redacted[401-PROVIDER_AUTH_FAILED-False]" time="0.003" /><testcase classname="engineering.ai.tests.test_providers" name="test_http_failures_are_bounded_and_redacted[403-PROVIDER_AUTH_FAILED-False]" time="0.003" /><testcase classname="engineering.ai.tests.test_providers" name="test_http_failures_are_bounded_and_redacted[429-PROVIDER_RATE_LIMITED-True]" time="0.003" /><testcase classname="engineering.ai.tests.test_providers" name="test_http_failures_are_bounded_and_redacted[500-PROVIDER_UNAVAILABLE-True]" time="0.002" /><testcase classname="engineering.ai.tests.test_providers" name="test_http_failures_are_bounded_and_redacted[503-PROVIDER_UNAVAILABLE-True]" time="0.002" /><testcase classname="engineering.ai.tests.test_providers" name="test_http_failures_are_bounded_and_redacted[302-PROVIDER_REDIRECT_REJECTED-False]" time="0.005" /><testcase classname="engineering.ai.tests.test_providers" name="test_http_failures_are_bounded_and_redacted[400-PROVIDER_REQUEST_INVALID-False]" time="0.003" /><testcase classname="engineering.ai.tests.test_providers" name="test_http_failures_are_bounded_and_redacted[422-PROVIDER_REQUEST_INVALID-False]" time="0.003" /><testcase classname="engineering.ai.tests.test_providers" name="test_http_failures_are_bounded_and_redacted[402-PROVIDER_BALANCE_INSUFFICIENT-False]" time="0.003" /><testcase classname="engineering.ai.tests.test_providers" name="test_http_failures_are_bounded_and_redacted[404-PROVIDER_NOT_FOUND-False]" time="0.004" /><testcase classname="engineering.ai.tests.test_providers" name="test_http_failures_are_bounded_and_redacted[408-PROVIDER_TIMEOUT-True]" time="0.003" /><testcase classname="engineering.ai.tests.test_providers" name="test_http_failures_are_bounded_and_redacted[413-PROVIDER_REQUEST_TOO_LARGE-False]" time="0.003" /><testcase classname="engineering.ai.tests.test_providers" name="test_http_failures_are_bounded_and_redacted[409-PROVIDER_HTTP_ERROR-False]" time="0.003" /><testcase classname="engineering.ai.tests.test_providers" name="test_http_failures_are_bounded_and_redacted[204-PROVIDER_HTTP_ERROR-False]" time="0.003" /><testcase classname="engineering.ai.tests.test_providers" name="test_empty_model_content_is_rejected[]" time="0.003" /><testcase classname="engineering.ai.tests.test_providers" name="test_empty_model_content_is_rejected[   ]" time="0.003" /><testcase classname="engineering.ai.tests.test_providers" name="test_bad_answer_json_keeps_usage_for_coordinator_repair[{]" time="0.003" /><testcase classname="engineering.ai.tests.test_providers" name="test_bad_answer_json_keeps_usage_for_coordinator_repair[[]]" time="0.003" /><testcase classname="engineering.ai.tests.test_providers" name="test_bad_answer_json_keeps_usage_for_coordinator_repair[{&quot;x&quot;:1,&quot;x&quot;:2}]" time="0.003" /><testcase classname="engineering.ai.tests.test_providers" name="test_bad_answer_json_keeps_usage_for_coordinator_repair[{&quot;n&quot;:NaN}]" time="0.019" /><testcase classname="engineering.ai.tests.test_providers" name="test_truncation_usage_and_unknown_reasoning" time="0.006" /><testcase classname="engineering.ai.tests.test_providers" name="test_connection_failure_and_total_timeout" time="0.106" /><testcase classname="engineering.ai.tests.test_providers" name="test_unsafe_url_is_rejected[file:///x]" time="0.001" /><testcase classname="engineering.ai.tests.test_providers" name="test_unsafe_url_is_rejected[https://key:password@example.com]" time="0.002" /><testcase classname="engineering.ai.tests.test_providers" name="test_unsafe_url_is_rejected[https://example.com?key=secret]" time="0.001" /><testcase classname="engineering.ai.tests.test_providers" name="test_unsafe_url_is_rejected[http://127.0.0.1]" time="0.001" /><testcase classname="engineering.ai.tests.test_providers" name="test_unsafe_url_is_rejected[https://example.com:99999]" time="0.001" /><testcase classname="engineering.ai.tests.test_providers" name="test_unsafe_url_is_rejected[https://example.com/\r\nx]" time="0.001" /><testcase classname="engineering.ai.tests.test_providers" name="test_dns_pinning_blocks_rebinding_and_preserves_original_host" time="0.001" /><testcase classname="engineering.ai.tests.test_providers" name="test_local_profile_management_never_stores_key" time="0.019" /><testcase classname="engineering.ai.tests.test_providers" name="test_probe_requires_json_and_a_real_tool_call" time="0.004" /><testcase classname="engineering.ai.tests.test_providers" name="test_json_mode_guard_preserves_caller_history_and_tool_envelope[Return only {&quot;ok&quot;:true}.-deepseek-chat]" time="0.003" /><testcase classname="engineering.ai.tests.test_providers" name="test_json_mode_guard_preserves_caller_history_and_tool_envelope[Return only {&quot;ok&quot;:true}.-compatible-chat]" time="0.003" /><testcase classname="engineering.ai.tests.test_providers" name="test_json_mode_guard_preserves_caller_history_and_tool_envelope[Return JSON only.-deepseek-chat]" time="0.004" /><testcase classname="engineering.ai.tests.test_providers" name="test_json_mode_guard_preserves_caller_history_and_tool_envelope[Return JSON only.-compatible-chat]" time="0.004" /><testcase classname="engineering.ai.tests.test_references" name="test_search_resolve_privacy_and_revision" time="1.151" /><testcase classname="engineering.ai.tests.test_references" name="test_context_references_are_bound_and_obey_external_policy" time="1.247" /><testcase classname="engineering.ai.tests.test_references" name="test_session_mutation_and_receipt_use_one_durable_commit" time="1.154" /><testcase classname="engineering.ai.tests.test_references" name="test_detail_does_not_scan_other_session_tasks" time="1.199" /><testcase classname="engineering.ai.tests.test_references" name="test_runtime_data_cannot_be_requested_on_behalf_of_player" time="1.189" /><testcase classname="engineering.ai.tests.test_references" name="test_reference_http_boundary" time="1.337" /><testcase classname="engineering.ai.tests.test_review_debug" name="test_review_source_is_separate_from_kp_message_and_deduplicated" time="1.329" /><testcase classname="engineering.ai.tests.test_review_debug" name="test_forwarded_request_resolves_real_source_and_does_not_change_original" time="1.213" /><testcase classname="engineering.ai.tests.test_review_debug" name="test_all_forwarded_reviews_stay_manual_with_auto_on" time="1.262" /><testcase classname="engineering.ai.tests.test_review_debug" name="test_review_source_obeys_external_scope" time="1.327" /><testcase classname="engineering.ai.tests.test_review_debug" name="test_ruling_digest_and_snapshot_size_checked" time="1.271" /><testcase classname="engineering.ai.tests.test_review_debug" name="test_debug_is_readonly_metadata_default_with_authorized_content_opt_in" time="1.370" /><testcase classname="engineering.ai.tests.test_review_debug" name="test_debug_rejects_ambiguous_or_invalid_options[options0]" time="1.162" /><testcase classname="engineering.ai.tests.test_review_debug" name="test_debug_rejects_ambiguous_or_invalid_options[options1]" time="1.241" /><testcase classname="engineering.ai.tests.test_review_debug" name="test_debug_rejects_ambiguous_or_invalid_options[options2]" time="1.231" /><testcase classname="engineering.ai.tests.test_review_debug" name="test_debug_rejects_ambiguous_or_invalid_options[options3]" time="1.154" /><testcase classname="engineering.ai.tests.test_review_debug" name="test_debug_rejects_ambiguous_or_invalid_options[options4]" time="1.191" /><testcase classname="engineering.ai.tests.test_review_debug" name="test_debug_rechecks_deleted_session_and_player_switch" time="1.233" /><testcase classname="engineering.ai.tests.test_review_debug" name="test_pure_schema_catalog_available_without_kp_egress" time="1.300" /><testcase classname="engineering.ai.tests.test_review_debug" name="test_provider_records_actual_model_without_equating_alias_and_version" time="0.003" /><testcase classname="engineering.ai.tests.test_review_debug" name="test_real_http_debug_authorization_no_store_and_no_receipt" time="1.271" /><testcase classname="engineering.ai.tests.test_review_debug" name="test_legacy_accepted_review_retains_original_player_source" time="1.298" /><testcase classname="engineering.ai.tests.test_review_debug" name="test_task_and_debug_preserve_requested_and_actual_model_ids" time="1.272" /><testcase classname="engineering.ai.tests.test_review_followup" name="test_ruling_keeps_authorized_old_body_after_success" time="1.255" /><testcase classname="engineering.ai.tests.test_review_followup" name="test_config_history_reads_preserve_authorized_nodes[append-True]" time="2.086" /><testcase classname="engineering.ai.tests.test_review_followup" name="test_config_history_reads_preserve_authorized_nodes[value-True]" time="2.135" /><testcase classname="engineering.ai.tests.test_review_followup" name="test_config_history_reads_preserve_authorized_nodes[delete-False]" time="2.083" /><testcase classname="engineering.ai.tests.test_review_followup" name="test_config_history_reads_preserve_authorized_nodes[hidden-False]" time="2.118" /><testcase classname="engineering.ai.tests.test_review_followup" name="test_player_reference_does_not_dump_actions_into_chat[False]" time="0.001" /><testcase classname="engineering.ai.tests.test_review_followup" name="test_player_reference_does_not_dump_actions_into_chat[True]" time="0.001" /><testcase classname="engineering.ai.tests.test_review_followup" name="test_explicit_followup_replaces_pending_without_losing_original" time="1.278" /><testcase classname="engineering.ai.tests.test_review_followup" name="test_same_session_and_same_text_without_relationship_remain_separate" time="1.285" /><testcase classname="engineering.ai.tests.test_review_followup" name="test_pending_request_does_not_replace_candidate_before_checks" time="1.205" /><testcase classname="engineering.ai.tests.test_review_followup" name="test_submission_key_replays_once_and_rejects_changed_payload" time="1.175" /><testcase classname="engineering.ai.tests.test_review_followup" name="test_cross_session_reply_is_rejected" time="1.283" /><testcase classname="engineering.ai.tests.test_review_followup" name="test_same_request_cannot_create_two_batches" time="1.243" /><testcase classname="engineering.ai.tests.test_review_followup" name="test_archive_restore_is_versioned_and_keeps_supersession" time="1.407" /><testcase classname="engineering.ai.tests.test_review_followup" name="test_execution_records_cannot_be_archived_or_auto_replaced[executing]" time="1.341" /><testcase classname="engineering.ai.tests.test_review_followup" name="test_execution_records_cannot_be_archived_or_auto_replaced[unknown]" time="1.350" /><testcase classname="engineering.ai.tests.test_review_followup" name="test_execution_records_cannot_be_archived_or_auto_replaced[partial]" time="1.349" /><testcase classname="engineering.ai.tests.test_review_followup" name="test_execution_records_cannot_be_archived_or_auto_replaced[completed]" time="1.406" /><testcase classname="engineering.ai.tests.test_review_followup" name="test_explicit_package_business_key_reuses_review_across_revision_and_category" time="1.367" /><testcase classname="engineering.ai.tests.test_review_followup" name="test_package_without_business_key_does_not_merge_changed_draft" time="1.394" /><testcase classname="engineering.ai.tests.test_review_followup" name="test_invalid_new_generation_retains_real_failure_without_inventing_body" time="1.399" /><testcase classname="engineering.ai.tests.test_review_followup" name="test_changed_source_after_failure_creates_one_successor_and_retry_reuses_it" time="1.396" /><testcase classname="engineering.ai.tests.test_review_followup" name="test_archived_stale_reply_keeps_its_authorized_body" time="1.512" /><testcase classname="engineering.ai.tests.test_review_followup" name="test_single_same_request_configuration_candidate_and_inactive_host_approval" time="6.218"><failure message="TypeError: assessment() missing 1 required positional argument: 'value'">application = &lt;onlinecoc_ai.api.Application object at 0x000001D301280290&gt;
+
+    def test_single_same_request_configuration_candidate_and_inactive_host_approval(application):
+        from test_entrypoints import delta
+        from test_access_batches import session,submit
+        app=application;s=session(app);r=submit(app,s,'修订配置');request=app.repository.state()['requests'][r['requestId']]
+        p=app.proposals.create('kp','修订配置',delta(),request=request)
+        assert app.proposals.create('kp','修订配置',delta(),request=request)['proposalId']==p['proposalId']
+&gt;       app.proposals.validate('kp',p['proposalId'],1)
+
+engineering\ai\tests\test_review_followup.py:192: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;onlinecoc_ai.proposals.Proposals object at 0x000001D3011C6270&gt;
+account = 'kp', proposal_id = 'f95e7796059742f292352462ea89e8c0', revision = 1
+generation = None, progress = None
+
+    def validate(self, account, proposal_id, revision, *, generation=None, progress=None):
+        proposal = self.get(account, proposal_id, revision,generation=generation)
+        store = self.repository.state()
+        require(store["proposals"][proposal_id]["currentRevision"] == revision, "PROPOSAL_STALE")
+        context = store["contexts"][proposal["contextRef"]]
+        from .consultation import require_current,assessment
+        require_current(context,{'kind':'draft'})
+        snapshot = store["snapshots"][proposal["contextRef"]]
+        args = (self.pack, snapshot["state"], snapshot["artifact"], context, proposal["changeSet"])
+        # All potentially long-running operations happen without the Host lock.
+        if progress:progress('validation_a')
+        a, artifact = check_base(*args)
+        if progress:progress('validation_b')
+        b=check_rules(*args)
+        if progress:progress('validation_c')
+        from .c_review import basis, assessment
+        review_basis = basis(self.repository)
+        reports = [a, b, assess(*args, basis=review_basis)]
+        c_assessment = assessment(reports, review_basis)
+        passed = c_assessment['adoptable']
+        bundle = None
+        if passed:
+            bundle = validate("PreparedBundle", {"schemaVersion": 1, "proposalId": proposal_id, "proposalRevision": revision,
+                "scopeId": context["scopeId"], "context": context, "changeSet": proposal["changeSet"], "artifact": artifact,
+&gt;               "reports": reports, "cAssessment": c_assessment, 'consultationAssessment':assessment(context), "candidateDigest": proposal["candidateDigest"], "baselineDigest": baseline_digest(context), "createdAt": self.host.clock()})
+                                                                                          ^^^^^^^^^^^^^^^^^^^
+E           TypeError: assessment() missing 1 required positional argument: 'value'
+
+engineering\ai\src\onlinecoc_ai\proposals.py:160: TypeError</failure></testcase><testcase classname="engineering.ai.tests.test_review_followup" name="test_outstanding_approval_is_protected_from_archive_and_supersession" time="6.065"><failure message="TypeError: assessment() missing 1 required positional argument: 'value'">application = &lt;onlinecoc_ai.api.Application object at 0x000001D300E7D250&gt;
+
+    def test_outstanding_approval_is_protected_from_archive_and_supersession(application):
+        from test_entrypoints import delta
+        from test_access_batches import session,submit
+        app=application;s=session(app);r=submit(app,s,'配置方案');request=app.repository.state()['requests'][r['requestId']]
+&gt;       p=app.proposals.create('kp','配置方案',delta(),request=request);app.proposals.validate('kp',p['proposalId'],1)
+                                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+engineering\ai\tests\test_review_followup.py:201: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;onlinecoc_ai.proposals.Proposals object at 0x000001D3010CE120&gt;
+account = 'kp', proposal_id = '6b64833fc9a44c658444306d434ce3d6', revision = 1
+generation = None, progress = None
+
+    def validate(self, account, proposal_id, revision, *, generation=None, progress=None):
+        proposal = self.get(account, proposal_id, revision,generation=generation)
+        store = self.repository.state()
+        require(store["proposals"][proposal_id]["currentRevision"] == revision, "PROPOSAL_STALE")
+        context = store["contexts"][proposal["contextRef"]]
+        from .consultation import require_current,assessment
+        require_current(context,{'kind':'draft'})
+        snapshot = store["snapshots"][proposal["contextRef"]]
+        args = (self.pack, snapshot["state"], snapshot["artifact"], context, proposal["changeSet"])
+        # All potentially long-running operations happen without the Host lock.
+        if progress:progress('validation_a')
+        a, artifact = check_base(*args)
+        if progress:progress('validation_b')
+        b=check_rules(*args)
+        if progress:progress('validation_c')
+        from .c_review import basis, assessment
+        review_basis = basis(self.repository)
+        reports = [a, b, assess(*args, basis=review_basis)]
+        c_assessment = assessment(reports, review_basis)
+        passed = c_assessment['adoptable']
+        bundle = None
+        if passed:
+            bundle = validate("PreparedBundle", {"schemaVersion": 1, "proposalId": proposal_id, "proposalRevision": revision,
+                "scopeId": context["scopeId"], "context": context, "changeSet": proposal["changeSet"], "artifact": artifact,
+&gt;               "reports": reports, "cAssessment": c_assessment, 'consultationAssessment':assessment(context), "candidateDigest": proposal["candidateDigest"], "baselineDigest": baseline_digest(context), "createdAt": self.host.clock()})
+                                                                                          ^^^^^^^^^^^^^^^^^^^
+E           TypeError: assessment() missing 1 required positional argument: 'value'
+
+engineering\ai\src\onlinecoc_ai\proposals.py:160: TypeError</failure></testcase><testcase classname="engineering.ai.tests.test_review_followup" name="test_player_text_submission_key_deduplicates_business_request" time="1.272" /><testcase classname="engineering.ai.tests.test_rulings" name="test_chat_approval_is_bound_to_batch_and_not_another_model_request" time="1.355" /><testcase classname="engineering.ai.tests.test_rulings" name="test_config_is_one_checked_ruling_and_publishes_once" time="6.428"><failure message="AssertionError: {'requestId': '0a91e24a1d014d4599bed7a7fa1789c4', 'status': 'unknown', 'code': 'RESULT_UNKNOWN'}&#10;assert 'unknown' == 'committed'&#10;  &#10;  - committed&#10;  + unknown">application = &lt;onlinecoc_ai.api.Application object at 0x000001D300E7ED50&gt;
+
+    def test_config_is_one_checked_ruling_and_publishes_once(application):
+        app=application;p=committed(command(app,'ai.draft.create',{'text':'配置修改','changeSet':delta()}))
+&gt;       result=committed(command(app,'ai.proposal.validate',{'proposalId':p['proposalId'],'revision':1}))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+engineering\ai\tests\test_rulings.py:17: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+receipt = {'requestId': '0a91e24a1d014d4599bed7a7fa1789c4', 'status': 'unknown', 'code': 'RESULT_UNKNOWN'}
+
+    def committed(receipt):
+&gt;       assert receipt['status'] == 'committed', receipt
+E       AssertionError: {'requestId': '0a91e24a1d014d4599bed7a7fa1789c4', 'status': 'unknown', 'code': 'RESULT_UNKNOWN'}
+E       assert 'unknown' == 'committed'
+E         
+E         - committed
+E         + unknown
+
+engineering\ai\tests\test_entrypoints.py:34: AssertionError</failure></testcase><testcase classname="engineering.ai.tests.test_rulings" name="test_high_risk_config_never_uses_auto_approval" time="5.982"><failure message="AssertionError: {'requestId': 'da8b149df7c74e1c9e3c9d660855684a', 'status': 'unknown', 'code': 'RESULT_UNKNOWN'}&#10;assert 'unknown' == 'committed'&#10;  &#10;  - committed&#10;  + unknown">application = &lt;onlinecoc_ai.api.Application object at 0x000001D300E7D850&gt;
+
+    def test_high_risk_config_never_uses_auto_approval(application):
+        app=application
+        committed(command(app,'ai.access.update',{'revision':1,'allowPlayerChat':False,'autoApproveBatches':False,'autoApproveConfigurations':True}))
+        p=committed(command(app,'ai.draft.create',{'text':'自动配置','changeSet':delta()}))
+&gt;       committed(command(app,'ai.proposal.validate',{'proposalId':p['proposalId'],'revision':1}))
+
+engineering\ai\tests\test_rulings.py:31: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+receipt = {'requestId': 'da8b149df7c74e1c9e3c9d660855684a', 'status': 'unknown', 'code': 'RESULT_UNKNOWN'}
+
+    def committed(receipt):
+&gt;       assert receipt['status'] == 'committed', receipt
+E       AssertionError: {'requestId': 'da8b149df7c74e1c9e3c9d660855684a', 'status': 'unknown', 'code': 'RESULT_UNKNOWN'}
+E       assert 'unknown' == 'committed'
+E         
+E         - committed
+E         + unknown
+
+engineering\ai\tests\test_entrypoints.py:34: AssertionError</failure></testcase><testcase classname="engineering.ai.tests.test_rulings" name="test_player_cannot_decide_and_stale_digest_cannot_execute" time="1.154" /><testcase classname="engineering.ai.tests.test_rulings" name="test_consultation_evidence_requires_current_target_and_explicit_kp_acceptance" time="5.753"><failure message="AssertionError: {'requestId': '7541546559ff41359822b63311713d4b', 'status': 'unknown', 'code': 'RESULT_UNKNOWN'}&#10;assert 'unknown' == 'committed'&#10;  &#10;  - committed&#10;  + unknown">application = &lt;onlinecoc_ai.api.Application object at 0x000001D300E7C050&gt;
+
+    def test_consultation_evidence_requires_current_target_and_explicit_kp_acceptance(application):
+        app=application
+        committed(command(app,'ai.access.update',{'revision':1,'allowPlayerChat':False,'autoApproveBatches':False,'autoApproveConfigurations':True}))
+        snapshot=app.proposals.snapshot('kp');snapshot[0]['facts']['consultationOnly']=True
+        p=app.proposals.create('kp','只读包证据候选',delta(),snapshot=snapshot)
+        assert command(app,'ai.proposal.validate',{'proposalId':p['proposalId'],'revision':1})['code']=='HISTORY_REQUERY_REQUIRED'
+        snapshot[0]['facts']['managementReads']={'configurations':app.batches.read('kp','configurations')['snapshot']}
+        p=app.proposals.create('kp','已重读当前目标的来源候选',delta(),snapshot=snapshot)
+&gt;       committed(command(app,'ai.proposal.validate',{'proposalId':p['proposalId'],'revision':1}))
+
+engineering\ai\tests\test_rulings.py:50: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+receipt = {'requestId': '7541546559ff41359822b63311713d4b', 'status': 'unknown', 'code': 'RESULT_UNKNOWN'}
+
+    def committed(receipt):
+&gt;       assert receipt['status'] == 'committed', receipt
+E       AssertionError: {'requestId': '7541546559ff41359822b63311713d4b', 'status': 'unknown', 'code': 'RESULT_UNKNOWN'}
+E       assert 'unknown' == 'committed'
+E         
+E         - committed
+E         + unknown
+
+engineering\ai\tests\test_entrypoints.py:34: AssertionError</failure></testcase><testcase classname="engineering.ai.tests.test_rulings" name="test_invalid_model_output_has_specific_cause[[]-MODEL_OBJECT_REQUIRED]" time="0.001" /><testcase classname="engineering.ai.tests.test_rulings" name="test_invalid_model_output_has_specific_cause[null-MODEL_OBJECT_REQUIRED]" time="0.001" /><testcase classname="engineering.ai.tests.test_rulings" name="test_invalid_model_output_has_specific_cause[broken-MODEL_JSON_INVALID]" time="0.001" /><testcase classname="engineering.ai.tests.test_rulings" name="test_invalid_model_output_has_specific_cause[{&quot;kind&quot;:&quot;other&quot;,&quot;text&quot;:&quot;a&quot;}-MODEL_KIND_INVALID]" time="0.001" /><testcase classname="engineering.ai.tests.test_rulings" name="test_single_json_fence_is_accepted_without_extracting_arbitrary_text" time="0.000" /><testcase classname="engineering.ai.tests.test_rulings" name="test_two_repairs_cap_legacy_profile_without_consuming_tool_rounds[True]" time="1.299" /><testcase classname="engineering.ai.tests.test_rulings" name="test_two_repairs_cap_legacy_profile_without_consuming_tool_rounds[False]" time="1.308" /><testcase classname="engineering.ai.tests.test_rulings" name="test_user_decision_pauses_instead_of_retrying[clarification]" time="1.232" /><testcase classname="engineering.ai.tests.test_rulings" name="test_user_decision_pauses_instead_of_retrying[plan]" time="1.234" /><testcase classname="engineering.ai.tests.test_rulings" name="test_basic_lua_error_repairs_same_proposal_before_review" time="7.207"><failure message="AssertionError: {'taskId': '63780d17602a4c73830188f1d866e50b', 'requestId': '63780d17602a4c73830188f1d866e50b', 'account': 'kp', 'profile': {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...}, ...}&#10;assert 'failed' == 'review_ready'&#10;  &#10;  - review_ready&#10;  + failed">setup = (&lt;onlinecoc.host.Host object at 0x000001D30155C160&gt;, &lt;onlinecoc_ai.proposals.Proposals object at 0x000001D3010CCD70&gt;, {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...})
+
+    def test_basic_lua_error_repairs_same_proposal_before_review(setup):
+        import asyncio,copy
+        from test_coordinator import Coordinator,Fake,completion,wait_task
+        _,service,profile=setup
+        change=delta();broken=copy.deepcopy(change)
+        broken['sources'][next(iter(service.pack.sources))]='return rule('
+        async def callback(count,*args):return completion({'kind':'draft','text':'调整属性','changeSet':broken if count==1 else change})
+        provider=Fake(callback)
+        async def run():
+            c=Coordinator(service,{profile['profileId']:profile},provider_factory=lambda p:provider);await c.start()
+            try:
+                task=c.enqueue('kp','repair-lua','调整属性');result=await wait_task(c,task['taskId'],60)
+                assert result['status']=='review_ready',result
+                records=c.repository.state()['proposals'];assert provider.calls==2 and len(records)==1
+                assert next(iter(records.values()))['currentRevision']==2
+            finally:await c.close()
+&gt;       asyncio.run(run())
+
+engineering\ai\tests\test_rulings.py:130: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:204: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:127: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\base_events.py:719: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    async def run():
+        c=Coordinator(service,{profile['profileId']:profile},provider_factory=lambda p:provider);await c.start()
+        try:
+            task=c.enqueue('kp','repair-lua','调整属性');result=await wait_task(c,task['taskId'],60)
+&gt;           assert result['status']=='review_ready',result
+E           AssertionError: {'taskId': '63780d17602a4c73830188f1d866e50b', 'requestId': '63780d17602a4c73830188f1d866e50b', 'account': 'kp', 'profile': {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...}, ...}
+E           assert 'failed' == 'review_ready'
+E             
+E             - review_ready
+E             + failed
+
+engineering\ai\tests\test_rulings.py:126: AssertionError</failure></testcase><testcase classname="engineering.ai.tests.test_ruling_revisions" name="test_restart_revise_same_digest_requires_fresh_manual_approval[False]" time="5.584"><failure message="AssertionError: {'requestId': '1048b5ad5f074f95b54f07b81bf614a7', 'status': 'unknown', 'code': 'RESULT_UNKNOWN'}&#10;assert 'unknown' == 'committed'&#10;  &#10;  - committed&#10;  + unknown">application = &lt;onlinecoc_ai.api.Application object at 0x000001D301283A10&gt;
+legacy = False
+
+    @pytest.mark.parametrize('legacy', [False, True])
+    def test_restart_revise_same_digest_requires_fresh_manual_approval(application, legacy):
+        original = application
+&gt;       proposal = create_checked(original)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^
+
+engineering\ai\tests\test_ruling_revisions.py:33: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+engineering\ai\tests\test_ruling_revisions.py:24: in create_checked
+    check = committed(command(app, 'ai.proposal.validate', {'proposalId': proposal['proposalId'], 'revision': 1}))
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+receipt = {'requestId': '1048b5ad5f074f95b54f07b81bf614a7', 'status': 'unknown', 'code': 'RESULT_UNKNOWN'}
+
+    def committed(receipt):
+&gt;       assert receipt['status'] == 'committed', receipt
+E       AssertionError: {'requestId': '1048b5ad5f074f95b54f07b81bf614a7', 'status': 'unknown', 'code': 'RESULT_UNKNOWN'}
+E       assert 'unknown' == 'committed'
+E         
+E         - committed
+E         + unknown
+
+engineering\ai\tests\test_entrypoints.py:34: AssertionError</failure></testcase><testcase classname="engineering.ai.tests.test_ruling_revisions" name="test_restart_revise_same_digest_requires_fresh_manual_approval[True]" time="5.851"><failure message="AssertionError: {'requestId': 'd445ae0225e44046972a504e5259ad15', 'status': 'unknown', 'code': 'RESULT_UNKNOWN'}&#10;assert 'unknown' == 'committed'&#10;  &#10;  - committed&#10;  + unknown">application = &lt;onlinecoc_ai.api.Application object at 0x000001D3008D9610&gt;
+legacy = True
+
+    @pytest.mark.parametrize('legacy', [False, True])
+    def test_restart_revise_same_digest_requires_fresh_manual_approval(application, legacy):
+        original = application
+&gt;       proposal = create_checked(original)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^
+
+engineering\ai\tests\test_ruling_revisions.py:33: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+engineering\ai\tests\test_ruling_revisions.py:24: in create_checked
+    check = committed(command(app, 'ai.proposal.validate', {'proposalId': proposal['proposalId'], 'revision': 1}))
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+receipt = {'requestId': 'd445ae0225e44046972a504e5259ad15', 'status': 'unknown', 'code': 'RESULT_UNKNOWN'}
+
+    def committed(receipt):
+&gt;       assert receipt['status'] == 'committed', receipt
+E       AssertionError: {'requestId': 'd445ae0225e44046972a504e5259ad15', 'status': 'unknown', 'code': 'RESULT_UNKNOWN'}
+E       assert 'unknown' == 'committed'
+E         
+E         - committed
+E         + unknown
+
+engineering\ai\tests\test_entrypoints.py:34: AssertionError</failure></testcase><testcase classname="engineering.ai.tests.test_ruling_revisions" name="test_legacy_unbound_intent_still_blocks_after_revision_and_reopen[unknown]" time="5.639"><failure message="AssertionError: {'requestId': '99a2e9c3fbf94d90ae9def82776d7cef', 'status': 'unknown', 'code': 'RESULT_UNKNOWN'}&#10;assert 'unknown' == 'committed'&#10;  &#10;  - committed&#10;  + unknown">application = &lt;onlinecoc_ai.api.Application object at 0x000001D3008D8410&gt;
+status = 'unknown'
+
+    @pytest.mark.parametrize('status', ['unknown', 'executing'])
+    def test_legacy_unbound_intent_still_blocks_after_revision_and_reopen(application, status):
+        app = application
+&gt;       proposal = create_checked(app)
+                   ^^^^^^^^^^^^^^^^^^^
+
+engineering\ai\tests\test_ruling_revisions.py:91: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+engineering\ai\tests\test_ruling_revisions.py:24: in create_checked
+    check = committed(command(app, 'ai.proposal.validate', {'proposalId': proposal['proposalId'], 'revision': 1}))
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+receipt = {'requestId': '99a2e9c3fbf94d90ae9def82776d7cef', 'status': 'unknown', 'code': 'RESULT_UNKNOWN'}
+
+    def committed(receipt):
+&gt;       assert receipt['status'] == 'committed', receipt
+E       AssertionError: {'requestId': '99a2e9c3fbf94d90ae9def82776d7cef', 'status': 'unknown', 'code': 'RESULT_UNKNOWN'}
+E       assert 'unknown' == 'committed'
+E         
+E         - committed
+E         + unknown
+
+engineering\ai\tests\test_entrypoints.py:34: AssertionError</failure></testcase><testcase classname="engineering.ai.tests.test_ruling_revisions" name="test_legacy_unbound_intent_still_blocks_after_revision_and_reopen[executing]" time="5.699"><failure message="AssertionError: {'requestId': '631f875a96a7411eaac8e7c7119182ee', 'status': 'unknown', 'code': 'RESULT_UNKNOWN'}&#10;assert 'unknown' == 'committed'&#10;  &#10;  - committed&#10;  + unknown">application = &lt;onlinecoc_ai.api.Application object at 0x000001D3008D8110&gt;
+status = 'executing'
+
+    @pytest.mark.parametrize('status', ['unknown', 'executing'])
+    def test_legacy_unbound_intent_still_blocks_after_revision_and_reopen(application, status):
+        app = application
+&gt;       proposal = create_checked(app)
+                   ^^^^^^^^^^^^^^^^^^^
+
+engineering\ai\tests\test_ruling_revisions.py:91: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+engineering\ai\tests\test_ruling_revisions.py:24: in create_checked
+    check = committed(command(app, 'ai.proposal.validate', {'proposalId': proposal['proposalId'], 'revision': 1}))
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+receipt = {'requestId': '631f875a96a7411eaac8e7c7119182ee', 'status': 'unknown', 'code': 'RESULT_UNKNOWN'}
+
+    def committed(receipt):
+&gt;       assert receipt['status'] == 'committed', receipt
+E       AssertionError: {'requestId': '631f875a96a7411eaac8e7c7119182ee', 'status': 'unknown', 'code': 'RESULT_UNKNOWN'}
+E       assert 'unknown' == 'committed'
+E         
+E         - committed
+E         + unknown
+
+engineering\ai\tests\test_entrypoints.py:34: AssertionError</failure></testcase><testcase classname="engineering.ai.tests.test_ruling_revisions" name="test_decision_binding_requires_unambiguous_exact_revision[1-receipt_ids0-False]" time="0.001" /><testcase classname="engineering.ai.tests.test_ruling_revisions" name="test_decision_binding_requires_unambiguous_exact_revision[2-receipt_ids1-True]" time="0.001" /><testcase classname="engineering.ai.tests.test_ruling_revisions" name="test_decision_binding_requires_unambiguous_exact_revision[None-receipt_ids2-False]" time="0.001" /><testcase classname="engineering.ai.tests.test_ruling_revisions" name="test_decision_binding_requires_unambiguous_exact_revision[None-receipt_ids3-False]" time="0.001" /><testcase classname="engineering.ai.tests.test_ruling_revisions" name="test_decision_binding_requires_unambiguous_exact_revision[None-receipt_ids4-True]" time="0.001" /><testcase classname="engineering.ai.tests.test_ruling_revisions" name="test_decision_binding_requires_unambiguous_exact_revision[None-receipt_ids5-True]" time="0.001" /><testcase classname="engineering.ai.tests.test_ruling_revisions" name="test_decision_binding_requires_unambiguous_exact_revision[None-receipt_ids6-True]" time="0.001" /><testcase classname="engineering.ai.tests.test_ruling_revisions" name="test_decision_binding_requires_unambiguous_exact_revision[None-receipt_ids7-True]" time="0.001" /><testcase classname="engineering.ai.tests.test_ruling_revisions" name="test_decision_binding_requires_unambiguous_exact_revision[None-receipt_ids8-True]" time="0.001" /><testcase classname="engineering.ai.tests.test_ruling_revisions" name="test_decision_binding_requires_unambiguous_exact_revision[None-receipt_ids9-True]" time="0.001" /><testcase classname="engineering.ai.tests.test_ruling_revisions" name="test_decision_binding_requires_unambiguous_exact_revision[None-receipt_ids10-True]" time="0.001" /><testcase classname="engineering.ai.tests.test_ruling_revisions" name="test_decision_binding_requires_unambiguous_exact_revision[2-receipt_ids11-True]" time="0.001" /><testcase classname="engineering.ai.tests.test_ruling_revisions" name="test_decision_binding_requires_unambiguous_exact_revision[True-receipt_ids12-True]" time="0.001" /><testcase classname="engineering.ai.tests.test_ruling_revisions" name="test_decision_binding_requires_unambiguous_exact_revision[1-receipt_ids13-True]" time="0.001" /><testcase classname="engineering.ai.tests.test_ruling_revisions" name="test_unbound_unknown_intent_cannot_be_erased_by_a_different_digest[blocked-False]" time="0.001" /><testcase classname="engineering.ai.tests.test_ruling_revisions" name="test_unbound_unknown_intent_cannot_be_erased_by_a_different_digest[completed-False]" time="0.001" /><testcase classname="engineering.ai.tests.test_ruling_revisions" name="test_unbound_unknown_intent_cannot_be_erased_by_a_different_digest[unknown-True]" time="0.001" /><testcase classname="engineering.ai.tests.test_ruling_revisions" name="test_unbound_unknown_intent_cannot_be_erased_by_a_different_digest[executing-True]" time="0.001" /><testcase classname="engineering.ai.tests.test_ruling_revisions" name="test_same_revision_different_candidate_never_inherits_decision_receipts" time="0.000" /><testcase classname="engineering.ai.tests.test_runtime_references" name="test_reference_projection_never_expands_player_or_disabled_kp_egress[False-True]" time="0.001" /><testcase classname="engineering.ai.tests.test_runtime_references" name="test_reference_projection_never_expands_player_or_disabled_kp_egress[True-False]" time="0.001" /><testcase classname="engineering.ai.tests.test_runtime_references" name="test_reference_projection_never_expands_player_or_disabled_kp_egress[False-False]" time="0.001" /><testcase classname="engineering.ai.tests.test_runtime_references" name="test_reference_projection_requires_read_entity_and_tracks_frozen_definition_node" time="0.001" /><testcase classname="engineering.ai.tests.test_runtime_references" name="test_invalid_optional_declaration_does_not_expand_or_break_query" time="0.000" /><testcase classname="engineering.ai.tests.test_runtime_references" name="test_numeric_reference_accepts_integral_float_but_not_boolean_fraction_or_nonfinite[1.0-True]" time="0.001" /><testcase classname="engineering.ai.tests.test_runtime_references" name="test_numeric_reference_accepts_integral_float_but_not_boolean_fraction_or_nonfinite[True-False]" time="0.001" /><testcase classname="engineering.ai.tests.test_runtime_references" name="test_numeric_reference_accepts_integral_float_but_not_boolean_fraction_or_nonfinite[1.5-False]" time="0.001" /><testcase classname="engineering.ai.tests.test_runtime_references" name="test_numeric_reference_accepts_integral_float_but_not_boolean_fraction_or_nonfinite[nan-False]" time="0.001" /><testcase classname="engineering.ai.tests.test_runtime_references" name="test_numeric_reference_accepts_integral_float_but_not_boolean_fraction_or_nonfinite[inf-False]" time="0.001" /><testcase classname="engineering.ai.tests.test_runtime_references" name="test_nonobject_terms_and_definition_elements_do_not_break_authorized_query[None]" time="0.001" /><testcase classname="engineering.ai.tests.test_runtime_references" name="test_nonobject_terms_and_definition_elements_do_not_break_authorized_query[invalid1]" time="0.001" /><testcase classname="engineering.ai.tests.test_runtime_references" name="test_nonobject_terms_and_definition_elements_do_not_break_authorized_query[3]" time="0.001" /><testcase classname="engineering.ai.tests.test_runtime_references" name="test_nonobject_terms_and_definition_elements_do_not_break_authorized_query[invalid]" time="0.001" /><testcase classname="engineering.ai.tests.test_runtime_references" name="test_extension_discriminator_has_exact_technical_feedback_without_changing_defaults" time="0.003" /><testcase classname="engineering.ai.tests.test_sandbox" name="test_ai_and_host_share_execution_policy" time="0.000" /><testcase classname="engineering.ai.tests.test_sandbox" name="test_top_level_loop_is_bounded" time="0.706" /><testcase classname="engineering.ai.tests.test_sandbox" name="test_memory_and_output_limits[local t={} while true do table.insert(t, string.format('%08000d',1)) end]" time="0.919" /><testcase classname="engineering.ai.tests.test_sandbox" name="test_memory_and_output_limits[return rule('huge', {}, function(r) return string.format('%09000000d',1) end)]" time="0.886" /><testcase classname="engineering.ai.tests.test_sandbox" name="test_lua_cannot_access_host_bridges[os.getenv('ONLINECOC_DEEPSEEK_API_KEY')]" time="0.903" /><testcase classname="engineering.ai.tests.test_sandbox" name="test_lua_cannot_access_host_bridges[io.open('save.json','w')]" time="0.831" /><testcase classname="engineering.ai.tests.test_sandbox" name="test_lua_cannot_access_host_bridges[require('socket')]" time="0.839" /><testcase classname="engineering.ai.tests.test_sandbox" name="test_lua_cannot_access_host_bridges[python.eval('1')]" time="0.887" /><testcase classname="engineering.ai.tests.test_sandbox" name="test_lua_cannot_access_host_bridges[debug.getregistry()]" time="0.861" /><testcase classname="engineering.ai.tests.test_sandbox" name="test_lua_cannot_access_host_bridges[_G.os]" time="0.857" /><testcase classname="engineering.ai.tests.test_sandbox" name="test_lua_cannot_access_host_bridges[r.read.__globals__]" time="0.831" /><testcase classname="engineering.ai.tests.test_sandbox" name="test_lua_cannot_access_host_bridges[r.read['__self__']]" time="0.843" /><testcase classname="engineering.ai.tests.test_sandbox" name="test_secrets_are_removed_before_process_creation" time="0.396" /><testcase classname="engineering.ai.tests.test_sandbox" name="test_worker_failure_is_not_success" time="0.394" /><testcase classname="engineering.ai.tests.test_sessions" name="test_history_reuses_response_when_unread_world_data_changes" time="1.194" /><testcase classname="engineering.ai.tests.test_sessions" name="test_history_is_bounded_and_never_reads_other_sessions" time="1.319" /><testcase classname="engineering.ai.tests.test_sessions" name="test_repository_rejects_broken_conversation_links[foreign]" time="1.220" /><testcase classname="engineering.ai.tests.test_sessions" name="test_repository_rejects_broken_conversation_links[missing]" time="1.187" /><testcase classname="engineering.ai.tests.test_sessions" name="test_repository_rejects_broken_conversation_links[duplicate]" time="1.221" /><testcase classname="engineering.ai.tests.test_sessions" name="test_repository_rejects_broken_conversation_links[title]" time="1.209" /><testcase classname="engineering.ai.tests.test_sessions" name="test_session_preferences_owner_conflict_and_persistence" time="1.268" /><testcase classname="engineering.ai.tests.test_sessions" name="test_configured_history_bound_preserves_records[0]" time="1.292" /><testcase classname="engineering.ai.tests.test_sessions" name="test_configured_history_bound_preserves_records[2]" time="1.246" /><testcase classname="engineering.ai.tests.test_sessions" name="test_configured_history_bound_preserves_records[4]" time="1.309" /><testcase classname="engineering.ai.tests.test_sessions" name="test_session_preferences_validate_command_and_stored_data[historyTurns--1]" time="1.227" /><testcase classname="engineering.ai.tests.test_sessions" name="test_session_preferences_validate_command_and_stored_data[historyTurns-5]" time="1.264" /><testcase classname="engineering.ai.tests.test_sessions" name="test_session_preferences_validate_command_and_stored_data[historyTurns-True]" time="1.202" /><testcase classname="engineering.ai.tests.test_sessions" name="test_session_preferences_validate_command_and_stored_data[historyTurns-1.5]" time="1.163" /><testcase classname="engineering.ai.tests.test_sessions" name="test_session_preferences_validate_command_and_stored_data[renderMode-html]" time="1.300" /><testcase classname="engineering.ai.tests.test_sessions" name="test_session_preferences_validate_command_and_stored_data[pinned-1]" time="1.249" /><testcase classname="engineering.ai.tests.test_sessions" name="test_session_preferences_validate_command_and_stored_data[showDiagnostics-false]" time="1.242" /><testcase classname="engineering.ai.tests.test_session_restart" name="test_same_room_restart_keeps_conversation_and_fresh_followup" time="5.062" /><testcase classname="engineering.ai.tests.test_session_restart" name="test_player_restart_preserves_fixed_evidence_but_revocation_still_hides_it" time="5.906" /><testcase classname="engineering.ai.tests.test_session_restart" name="test_restart_does_not_reauthorize_pending_runtime_batch" time="2.899" /><testcase classname="engineering.ai.tests.test_task_diagnostics" name="test_failure_diagnostics_redact_messages_and_preserve_primary" time="1.294" /><testcase classname="engineering.ai.tests.test_task_diagnostics" name="test_cleanup_error_does_not_replace_result_or_cancellation[False]" time="1.219" /><testcase classname="engineering.ai.tests.test_task_diagnostics" name="test_cleanup_error_does_not_replace_result_or_cancellation[True]" time="1.257" /><testcase classname="engineering.ai.tests.test_task_diagnostics" name="test_tool_metadata_is_bounded_and_contains_no_argument_values" time="0.001" /><testcase classname="engineering.ai.tests.test_task_diagnostics" name="test_deepseek_wire_query_replay_and_parameter_repair[None]" time="1.389" /><testcase classname="engineering.ai.tests.test_task_diagnostics" name="test_deepseek_wire_query_replay_and_parameter_repair[bad1]" time="1.464" /><testcase classname="engineering.ai.tests.test_task_diagnostics" name="test_deepseek_wire_query_replay_and_parameter_repair[bad2]" time="1.769" /><testcase classname="engineering.ai.tests.test_task_diagnostics" name="test_deepseek_wire_query_replay_and_parameter_repair[bad3]" time="1.481" /><testcase classname="engineering.ai.tests.test_task_diagnostics" name="test_provider_error_and_cleanup_keep_stable_code" time="1.273" /><testcase classname="engineering.ai.tests.test_task_diagnostics" name="test_model_page_counts_do_not_change_proofs_or_reveal_hidden_totals" time="1.262" /><testcase classname="engineering.ai.tests.test_task_diagnostics" name="test_channel_reference_resolves_actual_id_before_chat" time="1.380" /><testcase classname="engineering.ai.tests.test_task_diagnostics" name="test_last_round_closes_tools_and_returns_bounded_partial_answer" time="1.477" /><testcase classname="engineering.ai.tests.test_task_diagnostics" name="test_http_diagnostics_keep_only_valid_status_without_remote_text[400]" time="0.001" /><testcase classname="engineering.ai.tests.test_task_diagnostics" name="test_http_diagnostics_keep_only_valid_status_without_remote_text[422]" time="0.001" /><testcase classname="engineering.ai.tests.test_task_diagnostics" name="test_http_diagnostics_keep_only_valid_status_without_remote_text[None]" time="0.001" /><testcase classname="engineering.ai.tests.test_task_diagnostics" name="test_http_diagnostics_keep_only_valid_status_without_remote_text[private error]" time="0.001" /><testcase classname="engineering.ai.tests.test_task_diagnostics" name="test_http_diagnostics_keep_only_valid_status_without_remote_text[True]" time="0.001" /><testcase classname="engineering.ai.tests.test_task_diagnostics" name="test_http_diagnostics_keep_only_valid_status_without_remote_text[99]" time="0.001" /><testcase classname="engineering.ai.tests.test_task_diagnostics" name="test_http_diagnostics_keep_only_valid_status_without_remote_text[600]" time="0.001" /><testcase classname="engineering.ai.tests.test_usage" name="test_unlimited_default_still_records_and_opt_in_reuses_ledger" time="1.376" /><testcase classname="engineering.ai.tests.test_usage" name="test_totals_owner_dispatch_session_filters_and_pagination" time="1.371" /><testcase classname="engineering.ai.tests.test_usage" name="test_old_records_restart_and_utc_date_filters" time="2.526" /><testcase classname="engineering.ai.tests.test_usage" name="test_invalid_usage_queries[options0]" time="1.217" /><testcase classname="engineering.ai.tests.test_usage" name="test_invalid_usage_queries[options1]" time="1.186" /><testcase classname="engineering.ai.tests.test_usage" name="test_invalid_usage_queries[options2]" time="1.209" /><testcase classname="engineering.ai.tests.test_usage" name="test_invalid_usage_queries[options3]" time="1.210" /><testcase classname="engineering.ai.tests.test_usage" name="test_invalid_usage_queries[options4]" time="1.323" /><testcase classname="engineering.ai.tests.test_usage" name="test_invalid_usage_queries[options5]" time="1.228" /><testcase classname="engineering.ai.tests.test_usage" name="test_invalid_usage_queries[options6]" time="1.274" /><testcase classname="engineering.ai.tests.test_usage" name="test_invalid_usage_queries[options7]" time="1.292" /><testcase classname="engineering.ai.tests.test_usage" name="test_http_auth_parameter_injection_and_duplicate_filters" time="1.419" /><testcase classname="engineering.ai.tests.test_usage" name="test_retry_and_cancel_classification" time="1.662" /><testcase classname="engineering.ai.tests.test_workbench" name="test_task_session_lookup_respects_owner_archive_and_delete" time="1.360" /></testsuite></testsuites>

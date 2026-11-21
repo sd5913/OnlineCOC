@@ -1,0 +1,30 @@
+{
+  "at": "2026-11-21T15:27:22.240310+08:00",
+  "checks": [
+    "C risk is readable with basis version, evidence, limitations, three actions and optional note",
+    "explicit adopt button submits exact C proof, closes immediately and reports publication separately from warning",
+    "reject does not submit C acceptance",
+    "stale basis disables approval and rechecks the same proposal revision",
+    "long C findings escape HTML and fit 390px without script errors"
+  ],
+  "realApiCalls": 0,
+  "scope": "synthetic DTO, actual Edge, no server policy proof",
+  "output": "D:\\Studies\\Art Programming\\OnlineCOC\\rulepacks\\stumpsville\\tests\\output\\c-review-ui-54f7617b",
+  "passed": true,
+  "previousRuns": [
+    {
+      "at": "2026-11-21T00:35:15.377685+08:00",
+      "checks": [
+        "C risk is readable with basis version, evidence, limitations, three actions and optional note",
+        "explicit adopt button submits exact C proof, closes immediately and reports publication separately from warning",
+        "reject does not submit C acceptance",
+        "stale basis disables approval and rechecks the same proposal revision",
+        "long C findings escape HTML and fit 390px without script errors"
+      ],
+      "realApiCalls": 0,
+      "scope": "synthetic DTO, actual Edge, no server policy proof",
+      "output": "D:\\Studies\\Art Programming\\OnlineCOC\\rulepacks\\stumpsville\\tests\\output\\c-review-ui-24f43589",
+      "passed": true
+    }
+  ]
+}

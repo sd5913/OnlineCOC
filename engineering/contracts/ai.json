@@ -212,6 +212,11 @@
             },
             "thinking": {
               "const": "disabled"
+            },
+            "contextWindowTokens": {
+              "type": "integer",
+              "minimum": 16384,
+              "maximum": 2097152
             }
           },
           "required": [
@@ -1608,6 +1613,12 @@
         },
         "createdAt": {
           "type": "number"
+        },
+        "cAssessment": {
+          "$ref": "#/$defs/CAssessment"
+        },
+        "consultationAssessment": {
+          "$ref": "#/$defs/ConsultationAssessment"
         }
       },
       "required": [
@@ -1723,6 +1734,18 @@
         "explicitHighRiskDigest": {
           "type": "string",
           "pattern": "^[a-f0-9]{64}$"
+        },
+        "cAssessment": {
+          "$ref": "#/$defs/CAssessment"
+        },
+        "cReview": {
+          "$ref": "#/$defs/CReview"
+        },
+        "consultationAssessment": {
+          "$ref": "#/$defs/ConsultationAssessment"
+        },
+        "consultationReview": {
+          "$ref": "#/$defs/ConsultationReview"
         }
       },
       "required": [
@@ -2063,6 +2086,223 @@
           "type": "boolean"
         }
       }
+    },
+    "CReview": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "basisRevision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "basisDigest": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "reportDigest": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "basisRevision",
+        "basisDigest",
+        "reportDigest"
+      ]
+    },
+    "CAssessment": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "basisRevision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "basisDigest": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "reportDigest": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "requiresAcceptance": {
+          "type": "boolean"
+        },
+        "adoptable": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "basisRevision",
+        "basisDigest",
+        "reportDigest",
+        "requiresAcceptance",
+        "adoptable"
+      ]
+    },
+    "CReviewBasis": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "metricOverrides": {
+          "type": "object",
+          "maxProperties": 64,
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "absoluteDelta": {
+                "type": "number",
+                "minimum": 0
+              },
+              "risk": {
+                "enum": [
+                  "low",
+                  "medium",
+                  "high"
+                ]
+              }
+            },
+            "required": [
+              "absoluteDelta",
+              "risk"
+            ]
+          }
+        },
+        "liveScenarios": {
+          "type": "array",
+          "maxItems": 32,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "configurationId": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              },
+              "rule": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              },
+              "actorInput": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              },
+              "input": {
+                "type": "object",
+                "maxProperties": 32,
+                "additionalProperties": {
+                  "$ref": "#/$defs/JsonValue"
+                }
+              },
+              "coversData": {
+                "type": "array",
+                "maxItems": 64,
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                }
+              },
+              "coversRules": {
+                "type": "array",
+                "maxItems": 64,
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                }
+              },
+              "expectedErrors": {
+                "type": "array",
+                "maxItems": 32,
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200,
+                  "not": {
+                    "const": "*"
+                  }
+                }
+              },
+              "randomSides": {
+                "type": "integer",
+                "minimum": 2,
+                "maximum": 10000
+              }
+            },
+            "required": [
+              "configurationId",
+              "rule",
+              "actorInput",
+              "input",
+              "coversData",
+              "coversRules"
+            ]
+          }
+        },
+        "notes": {
+          "type": "string",
+          "maxLength": 2000
+        }
+      },
+      "required": [
+        "revision",
+        "metricOverrides",
+        "liveScenarios",
+        "notes"
+      ]
+    },
+    "ConsultationAssessment": {
+      "type": "object",
+      "properties": {
+        "requiresAcceptance": {
+          "type": "boolean"
+        },
+        "sourceCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "sourceDigest": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "notice": {
+          "type": "string",
+          "maxLength": 1000
+        }
+      },
+      "required": [
+        "requiresAcceptance",
+        "sourceCount",
+        "sourceDigest",
+        "notice"
+      ],
+      "additionalProperties": false
+    },
+    "ConsultationReview": {
+      "type": "object",
+      "properties": {
+        "sourceDigest": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "sourceDigest"
+      ],
+      "additionalProperties": false
     }
   }
 }

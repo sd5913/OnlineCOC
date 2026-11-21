@@ -1,0 +1,280 @@
+{
+  "checkedAt": "2026-11-21T09:27:58.556685+08:00",
+  "checks": [
+    "四个真实页面带聊天与AI历史并发，状态、聊天、行动、裁决、AI读取及发送接受均完成",
+    "AI生成期间向申请玩家私聊，生成保留正文和候选；原候选可批准且实际只增加一次钱币",
+    "窗口显示运行中进度；返回有序带时间的模型、工具、校验与完成事件，审批后含实际命令回执",
+    "相关角色值改变后保留原生成正文并列出变化；KP可准备按最新资料重新生成，未点击发送不擅自调用模型或覆盖实际数值",
+    "状态查询503不销毁既有AI窗口和消息；恢复后继续复用同组件",
+    "完成过程可展开回看，390px进度卡可读且不越出视口"
+  ],
+  "measurements": {
+    "packageStateWithFourPages": {
+      "samples": 8,
+      "p50Ms": 53.5,
+      "p95Ms": 89.99,
+      "maxMs": 89.99
+    },
+    "chatSendWithFourPages": {
+      "samples": 8,
+      "p50Ms": 109.28,
+      "p95Ms": 125.16,
+      "maxMs": 125.16
+    },
+    "actionCheckWithFourPages": {
+      "samples": 8,
+      "p50Ms": 683.13,
+      "p95Ms": 783.78,
+      "maxMs": 783.78
+    },
+    "rulingWithFourPages": {
+      "samples": 8,
+      "p50Ms": 54.57,
+      "p95Ms": 89.61,
+      "maxMs": 89.61
+    },
+    "aiTasksWithFourPages": {
+      "samples": 8,
+      "p50Ms": 78.39,
+      "p95Ms": 86.07,
+      "maxMs": 86.07
+    },
+    "aiSubmitAndDispatchAcceptance": {
+      "samples": 4,
+      "p50Ms": 942.74,
+      "p95Ms": 970.33,
+      "maxMs": 970.33
+    },
+    "privateChatDuringAiGeneration": {
+      "samples": 3,
+      "p50Ms": 110.47,
+      "p95Ms": 167.76,
+      "maxMs": 167.76
+    },
+    "packageStateAfterDependencyChange": {
+      "samples": 3,
+      "p50Ms": 57.87,
+      "p95Ms": 202.47,
+      "maxMs": 202.47
+    },
+    "aiTasksAfterDependencyChange": {
+      "samples": 3,
+      "p50Ms": 212.75,
+      "p95Ms": 227.39,
+      "maxMs": 227.39
+    },
+    "aiRulingsAfterDependencyChange": {
+      "samples": 3,
+      "p50Ms": 260.41,
+      "p95Ms": 267.76,
+      "maxMs": 267.76
+    },
+    "aiSessionAfterDependencyChange": {
+      "samples": 3,
+      "p50Ms": 239.58,
+      "p95Ms": 637.22,
+      "maxMs": 637.22
+    }
+  },
+  "realSaveChanged": false,
+  "externalModelCalls": 0,
+  "evidenceDirectory": "tests/output/performance-workflow-3c05f3aa",
+  "source": "D:\\Studies\\Art Programming\\OnlineCOC\\rulepacks\\stumpsville\\tests\\output\\chat-combined-f36b4169\\source",
+  "fixture": {
+    "seedChat": 32,
+    "seedAiTasks": 8,
+    "browserPages": 4,
+    "packageBytes": 241422
+  },
+  "workspaceGeometry": {
+    "#main": {
+      "y": 82,
+      "height": 878,
+      "clientHeight": 878,
+      "scrollHeight": 878,
+      "scrollTop": 0,
+      "display": "flex",
+      "overflow": "hidden",
+      "rows": "none"
+    },
+    ".rulings-grid": {
+      "y": 90,
+      "height": 862,
+      "clientHeight": 862,
+      "scrollHeight": 862,
+      "scrollTop": 0,
+      "display": "grid",
+      "overflow": "hidden",
+      "rows": "862px"
+    },
+    ".ruling-queues": {
+      "y": 90,
+      "height": 862,
+      "clientHeight": 860,
+      "scrollHeight": 860,
+      "scrollTop": 0,
+      "display": "flex",
+      "overflow": "visible",
+      "rows": "minmax(65px, 0.16fr) minmax(220px, 1fr)"
+    },
+    ".queue-heading": {
+      "y": 103,
+      "height": 93,
+      "clientHeight": 92,
+      "scrollHeight": 92,
+      "scrollTop": 0,
+      "display": "flex",
+      "overflow": "visible",
+      "rows": "none"
+    },
+    "#keeper-queue-status": {
+      "y": 206,
+      "height": 27,
+      "clientHeight": 27,
+      "scrollHeight": 27,
+      "scrollTop": 0,
+      "display": "block",
+      "overflow": "hidden",
+      "rows": "none"
+    },
+    ".ruling-ai": {
+      "y": 90,
+      "height": 862,
+      "clientHeight": 862,
+      "scrollHeight": 862,
+      "scrollTop": 0,
+      "display": "flex",
+      "overflow": "hidden",
+      "rows": "none"
+    },
+    ".native-ai-body": {
+      "y": 90,
+      "height": 862,
+      "clientHeight": 862,
+      "scrollHeight": 862,
+      "scrollTop": 0,
+      "display": "block",
+      "overflow": "visible",
+      "rows": "none"
+    }
+  },
+  "httpSummary": {
+    "count": 389,
+    "failedStatuses": [
+      {
+        "route": "me",
+        "status": 401,
+        "serverTiming": "package;dur=13.43"
+      },
+      {
+        "route": "me",
+        "status": 401,
+        "serverTiming": "package;dur=67.22"
+      },
+      {
+        "route": "me",
+        "status": 401,
+        "serverTiming": "package;dur=36.8"
+      },
+      {
+        "route": "me",
+        "status": 401,
+        "serverTiming": "package;dur=71.45"
+      },
+      {
+        "route": "state",
+        "status": 503,
+        "serverTiming": null
+      }
+    ],
+    "withServerTiming": 388
+  },
+  "passed": true,
+  "passedCount": 6,
+  "loopbackCalls": 18,
+  "pageErrors": [],
+  "previousRuns": [
+    {
+      "passed": false,
+      "error": "{'waitingFor': 'd44609e341d2441e80cf6929a76677e1', 'last': {'requestId': 'd44609e341d2441e80cf6929a76677e1', 'sessionId': 'a4e6f9f1ad294d1c991d6ef9eb043a6d', 'status': 'received', 'createdAt': 1795171706.827033, 'text': '性能查询 0', 'initiator': 'kp', 'taskId': None, 'proposalId': None, 'error': None, 'response': None, 'queueTargetId': 'request:d44609e341d2441e80cf6929a76677e1', 'queueDigest': 'c8af92da46c32a5cdbd68fe76700e9ee40ed19c10539aa2942038bbf2a3d7d7f', 'correlationId': '77039b55b1b0f8dced2f4cf57319cfa0fb8adf0c3bd6f164a8b2cde2149a9e83', 'queueStatus': 'active', 'archived': False, 'canArchive': True, 'canRestore': False, 'supersedes': [], 'sentAt': 1795171706.827033}}",
+      "checks": [],
+      "evidenceDirectory": "tests/output/performance-workflow-6be0ebc7"
+    },
+    {
+      "passed": false,
+      "error": "{'requestId': 'f11737250cb04d04ac2c45b045716814', 'sessionId': '188b6dab607d48828c1e7a2c7c4b3df8', 'status': 'failed', 'createdAt': 1795171904.6725018, 'events': [{'seq': 1, 'at': 1795171905.1085005, 'stage': 'queued', 'status': 'completed', 'summary': '已接收，等待生成', 'durationMs': 33.57}, {'seq': 2, 'at': 1795171905.1420817, 'stage': 'profile_check', 'status': 'completed', 'summary': '检查服务配置', 'durationMs': 394.54}, {'seq': 3, 'at': 1795171905.5366282, 'stage': 'context_capture', 'status': 'completed', 'summary': '使用发送时资料快照', 'durationMs': 225.27}, {'seq': 4, 'at': 1795171905.7619078, 'stage': 'provider_complete', 'status': 'completed', 'summary': '等待 AI 服务回复', 'durationMs': 2148.95}, {'seq': 5, 'at': 1795171907.9108677, 'stage': 'tool_execute', 'status': 'failed', 'summary': '读取已授权资料', 'tool': 'room_search_data', 'durationMs': 21.81, 'code': 'BASELINE_STALE'}], 'text': '给木栗增加一枚钱币，请准备审批方案', 'initiator': 'kp', 'taskId': '064ca2c7a93846ec91d6fdc2071a0b5b', 'proposalId': None, 'error': 'BASELINE_STALE', 'response': None, 'modelCalls': [{'requestedModel': 'test-only', 'returnedModel': None, 'systemFingerprint': None, 'usage': {'prompt_tokens': 20, 'completion_tokens': 20, 'total_tokens': 40}, 'profileRevision': 1}], 'diagnostics': {'schemaVersion': 1, 'stage': 'tool_execute', 'turn': 0, 'toolCalls': [{'name': 'room_search_data', 'status': 'failed', 'argumentsDigest': 'c35862bdb4a83cc4d746960c17c68c3b5824dd7c1ef56b515f114f116910400c', 'keys': ['limit', 'query', 'types'], 'unknownKeys': False, 'turn': 0, 'types': ['entity'], 'hasQuery': True}], 'errors': [{'stage': 'tool_execute', 'code': 'BASELINE_STALE', 'exceptionType': 'DomainError', 'frames': [{'module': 'onlinecoc_ai.coordinator', 'function': '_generate', 'line': 565}, {'module': 'onlinecoc_ai.data_queries', 'function': 'attach', 'line': 55}, {'module': 'onlinecoc.host', 'function': 'validate_ai_sources', 'line': 447}, {'module': 'onlinecoc_ai.generation', 'function': '<lambda>', 'line': 48}, {'module': 'onlinecoc_ai.access', 'function': 'validate_context', 'line': 61}, {'module': 'onlinecoc.publication', 'function': 'check_history_context', 'line': 83}, {'module': 'onlinecoc.publication', 'function': '_check_context', 'line': 115}, {'module': 'onlinecoc.errors', 'function': 'require', 'line': 7}]}], 'outputFailures': [], 'contextBudget': {'bytes': 54079, 'limitBytes': 262144, 'toolSchemaBytes': 6335, 'toolMessageBytes': 0}}, 'queueTargetId': 'request:f11737250cb04d04ac2c45b045716814', 'queueDigest': '4469e0593eec459eafceae6a09c718cf9bce1f83db836ff7fe06a3767143c499', 'correlationId': '6299359e9632f06a3ef09dad2828090a60ddc122de0765e67f316a2a2947449a', 'queueStatus': 'active', 'archived': False, 'canArchive': True, 'canRestore': False, 'supersedes': [], 'sentAt': 1795171904.6725018}",
+      "checks": [
+        "四个真实页面带聊天与AI历史并发，状态、聊天、行动、裁决、AI读取及发送接受均完成"
+      ],
+      "evidenceDirectory": "tests/output/performance-workflow-26c439c5"
+    },
+    {
+      "passed": false,
+      "error": "timed out",
+      "checks": [
+        "四个真实页面带聊天与AI历史并发，状态、聊天、行动、裁决、AI读取及发送接受均完成",
+        "AI生成期间向申请玩家私聊，生成保留正文和候选；原候选可批准且实际只增加一次钱币",
+        "窗口显示运行中进度；返回有序带时间的模型、工具、校验与完成事件，审批后含实际命令回执"
+      ],
+      "evidenceDirectory": "tests/output/performance-workflow-72ae347e"
+    },
+    {
+      "passed": false,
+      "error": "timed out",
+      "checks": [
+        "四个真实页面带聊天与AI历史并发，状态、聊天、行动、裁决、AI读取及发送接受均完成",
+        "AI生成期间向申请玩家私聊，生成保留正文和候选；原候选可批准且实际只增加一次钱币",
+        "窗口显示运行中进度；返回有序带时间的模型、工具、校验与完成事件，审批后含实际命令回执"
+      ],
+      "evidenceDirectory": "tests/output/performance-workflow-8e691f53"
+    },
+    {
+      "passed": false,
+      "error": "Locator.scroll_into_view_if_needed: Timeout 29995ms exceeded.\nCall log:\n  - attempting scroll into view action\n    2 × waiting for element to be stable\n      - element is not visible\n    - retrying scroll into view action\n    - waiting 20ms\n    2 × waiting for element to be stable\n      - element is not visible\n    - retrying scroll into view action\n      - waiting 100ms\n    58 × waiting for element to be stable\n       - element is not visible\n     - retrying scroll into view action\n       - waiting 500ms\n",
+      "checks": [
+        "四个真实页面带聊天与AI历史并发，状态、聊天、行动、裁决、AI读取及发送接受均完成",
+        "AI生成期间向申请玩家私聊，生成保留正文和候选；原候选可批准且实际只增加一次钱币",
+        "窗口显示运行中进度；返回有序带时间的模型、工具、校验与完成事件，审批后含实际命令回执",
+        "相关角色值改变后保留原生成正文并列出变化；KP可准备按最新资料重新生成，未点击发送不擅自调用模型或覆盖实际数值",
+        "状态查询503不销毁既有AI窗口和消息；恢复后继续复用同组件"
+      ],
+      "evidenceDirectory": "tests/output/performance-workflow-05b7f194"
+    },
+    {
+      "passed": true,
+      "error": null,
+      "checks": [
+        "四个真实页面带聊天与AI历史并发，状态、聊天、行动、裁决、AI读取及发送接受均完成",
+        "AI生成期间向申请玩家私聊，生成保留正文和候选；原候选可批准且实际只增加一次钱币",
+        "窗口显示运行中进度；返回有序带时间的模型、工具、校验与完成事件，审批后含实际命令回执",
+        "相关角色值改变后保留原生成正文并列出变化；KP可准备按最新资料重新生成，未点击发送不擅自调用模型或覆盖实际数值",
+        "状态查询503不销毁既有AI窗口和消息；恢复后继续复用同组件",
+        "完成过程可展开回看，390px进度卡可读且不越出视口"
+      ],
+      "evidenceDirectory": "tests/output/performance-workflow-07fd2211"
+    },
+    {
+      "passed": true,
+      "error": null,
+      "checks": [
+        "四个真实页面带聊天与AI历史并发，状态、聊天、行动、裁决、AI读取及发送接受均完成",
+        "AI生成期间向申请玩家私聊，生成保留正文和候选；原候选可批准且实际只增加一次钱币",
+        "窗口显示运行中进度；返回有序带时间的模型、工具、校验与完成事件，审批后含实际命令回执",
+        "相关角色值改变后保留原生成正文并列出变化；KP可准备按最新资料重新生成，未点击发送不擅自调用模型或覆盖实际数值",
+        "状态查询503不销毁既有AI窗口和消息；恢复后继续复用同组件",
+        "完成过程可展开回看，390px进度卡可读且不越出视口"
+      ],
+      "evidenceDirectory": "tests/output/performance-workflow-4e3e3687"
+    },
+    {
+      "passed": false,
+      "error": "Locator expected to be in viewport\nActual value: viewport ratio 0 \nCall log:\n  - Expect \"to_be_in_viewport\" locator(\".queue-heading\") with timeout 5000ms\n  - waiting for locator(\".queue-heading\")\n    14 × locator resolved to <header class=\"queue-heading\">…</header>\n       - unexpected value \"viewport ratio 0\"\n\nAria snapshot:\n- tablist \"消息与裁决\":\n  - tab \"消息队列\"\n  - tab \"裁决队列 1\" [selected]\n  - tab \"已归档\"\n- button \"记录\"\n- button \"刷新\"\n- button \"设置\"",
+      "checks": [
+        "四个真实页面带聊天与AI历史并发，状态、聊天、行动、裁决、AI读取及发送接受均完成",
+        "AI生成期间向申请玩家私聊，生成保留正文和候选；原候选可批准且实际只增加一次钱币",
+        "窗口显示运行中进度；返回有序带时间的模型、工具、校验与完成事件，审批后含实际命令回执"
+      ],
+      "evidenceDirectory": "tests/output/performance-workflow-59ff3969"
+    }
+  ]
+}

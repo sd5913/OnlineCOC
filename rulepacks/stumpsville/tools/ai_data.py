@@ -2,8 +2,19 @@
 import hashlib
 import copy
 import json
+import os
+import threading
 from pathlib import Path
 
+# Only game facts enter broad configuration queries. Operational containers
+# have their own explicit chat/event/ruling projections below; a new storage
+# field must not silently become an AI fact or invalidate unrelated proposals.
+GAME_FACT_ROOTS = frozenset({
+    'locations', 'published', 'notes', 'discoveries', 'actorDiscoveries',
+    'doors', 'recap', 'recapDraft', 'recapPrivate', 'sceneState', 'encounters',
+    'loot', 'roster', 'npcs', 'bindings', 'locationKnowledge', 'mapPlayerActors',
+    'mapNpcActors', 'mapRatCount', 'ruleRevisions', 'activeRevision',
+})
 
 def fingerprint(value):
     return hashlib.sha256(json.dumps(value,sort_keys=True,ensure_ascii=True,separators=(',',':')).encode()).hexdigest()
@@ -19,18 +30,40 @@ def known_locations(state, entities, account):
 
 class Adapter:
     kinds=("channel","chat","event","ruling","config")
-    def __init__(self,path):self.path=Path(path)
+    def __init__(self,path):
+        self.path=Path(path)
+        self._label_lock=threading.RLock()
+        self._label_signature=None
+        self._binding_labels={}
+
+    def _labels(self):
+        # Only presentation labels are retained, never evidence or permissions.
+        # Package publication uses atomic replacement; inode and timestamps
+        # also invalidate a same-sized replacement or an in-place edit.
+        def signature(value):
+            # Windows stat() and fstat() expose different ctime semantics.
+            return (value.st_dev,value.st_ino,value.st_size,value.st_mtime_ns)
+        with self._label_lock:
+            try:current=signature(self.path.stat())
+            except FileNotFoundError:
+                self._label_signature=None;self._binding_labels={};return {}
+            if current!=self._label_signature:
+                with self.path.open('rb') as stream:
+                    raw=stream.read(8*1024*1024+1)
+                    loaded=signature(os.fstat(stream.fileno()))
+                if len(raw)>8*1024*1024:raise ValueError('PACKAGE_DATA_LIMIT')
+                state=json.loads(raw);labels={}
+                if state.get('format')==2:
+                    for account,actor in state.get('bindings',{}).items():labels.setdefault(actor,account)
+                self._binding_labels=labels;self._label_signature=loaded
+            return self._binding_labels
 
     def reference_label(self,kind,key,fallback):
         labels={'sv.npc':'NPC 模板','sv.character':'角色模板','sv.location':'地点模板','sv.scene':'场景状态模板'}
         if kind=='config':return labels.get(key,fallback)
-        if kind=='entity' and self.path.exists():
-            with self.path.open('rb') as stream:raw=stream.read(8*1024*1024+1)
-            if len(raw)>8*1024*1024:raise ValueError('PACKAGE_DATA_LIMIT')
-            state=json.loads(raw)
-            if state.get('format')==2:
-                owner=next((account for account,actor in state.get('bindings',{}).items() if actor==key),None)
-                if owner:return f'{fallback}（{owner} 的树桩镇角色）'[:160]
+        if kind=='entity':
+            owner=self._labels().get(key)
+            if owner:return f'{fallback}（{owner} 的树桩镇角色）'[:160]
         return fallback
 
     def known_configurations(self,room,account):
@@ -91,9 +124,8 @@ class Adapter:
                            'label':label,'data':data,'visibility':'private'})
         if full:
             labels={'locations':'地图地点与主持秘密','published':'已发布地点资料','notes':'玩家手记',
-                'discoveries':'玩家个人线索','actorDiscoveries':'人物发现记录','jobs':'行动指令与恢复回执',
-                'requests':'行动申请与裁决','receipts':'行动执行回执','ruleRevisions':'规则与配置修订',
-                'scopedChat':'场景与队伍聊天','doors':'地图通道状态','recapPrivate':'主持私密回顾',
+                'discoveries':'玩家个人线索','actorDiscoveries':'人物发现记录','ruleRevisions':'规则与配置修订',
+                'doors':'地图通道状态','recapPrivate':'主持私密回顾',
                 'sceneState':'场景机关状态','encounters':'遭遇表','roster':'人物名册','npcs':'主持生物'}
             def emit(path,value,label):
                 raw=json.dumps(value,ensure_ascii=False)
@@ -108,7 +140,7 @@ class Adapter:
                 values.append({'sourceId':'stumpsville','kind':'config','id':'package-state:'+hashlib.sha256(path.encode()).hexdigest(),
                     'revision':fingerprint(value),'label':label,'data':{'path':path,'value':copy.deepcopy(value)},'visibility':'kp'})
             for key,value in state.items():
-                emit('/'+key,value,labels.get(key,'包内资料 '+key))
+                if key in GAME_FACT_ROOTS:emit('/'+key,value,labels.get(key,'包内资料 '+key))
         for cid,messages in state.get('scopedChat',{}).get('messages',{}).items():
             if cid not in channels:continue
             add('channel',cid,cid,{'channelId':cid,'lastSequence':messages[-1]['sequence'] if messages else 0})

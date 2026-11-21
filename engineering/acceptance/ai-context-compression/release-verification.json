@@ -1,0 +1,21 @@
+{
+  "checkedAt": "2026-11-21T08:26:23.553979+00:00",
+  "aiV3CurrentFiles": 217,
+  "allCurrentHashesMatchV3": true,
+  "fullCoreTestsMatchV3": true,
+  "fullCoreToV3Differences": [
+    "engineering/ai/web/components/providers.js"
+  ],
+  "separateDefaultFactoryCheck": "provider-defaults-review.json",
+  "fullCore": {
+    "tests": 692,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "seconds": 1039.355,
+    "passed": 692
+  },
+  "linksValid": true,
+  "acceptanceScriptsParse": true,
+  "ledgerSha256": "995ca43932d02ca36c36b6f8702f2383e3829da042272abc34306455e387020c"
+}

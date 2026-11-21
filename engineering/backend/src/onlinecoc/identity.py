@@ -30,6 +30,7 @@ class Identity:
         g,s=self.store.snapshot();s["sessions"].pop(hashlib.sha256(token.encode()).hexdigest(),None);self.store.commit(g,s)
     def password(self,account,password):
         require(len(password)>=8);g,s=self.store.snapshot();require(account in s["accounts"])
+        require(not s['accounts'][account].get('deleted') and not s['accounts'][account].get('hostAdminPending'),'ACCOUNT_UNAVAILABLE')
         s["accounts"][account]["passwordHash"]=self.hasher.hash(password)
         s["sessions"]={k:v for k,v in s["sessions"].items() if v["accountId"]!=account};self.store.commit(g,s)
     def host_change(self, data):
@@ -56,6 +57,7 @@ class Identity:
                                       'passwordHash':self.hasher.hash(password), 'disabled':False}
         else:
             require(account in s['accounts'], 'NOT_VISIBLE')
+            require(not s['accounts'][account].get('deleted') and not s['accounts'][account].get('hostAdminPending'),'ACCOUNT_UNAVAILABLE')
             s['accounts'][account]['passwordHash'] = self.hasher.hash(password)
             s['sessions'] = {k:v for k,v in s['sessions'].items() if v['accountId'] != account}
         result = {'requestId':data['requestId'], 'operation':op, 'accountId':account,

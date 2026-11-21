@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="4.062" timestamp="2026-11-21T09:12:29.966061+08:00" hostname="LAPTOP-BIFSL64A"><testcase classname="engineering.ai.tests.test_chat_isolation_http" name="test_real_http_browser_retains_task_and_ruling_originals" time="2.285"><failure message="AssertionError: assert 403 == 401&#10; +  where 403 = &lt;Response [403 Forbidden]&gt;.status_code&#10; +    where &lt;Response [403 Forbidden]&gt; = get('/api/v1/ai/rulings')&#10; +      where get = &lt;httpx.Client object at 0x00000205D2E0FA10&gt;.get">application = &lt;onlinecoc_ai.api.Application object at 0x00000205D2C2D010&gt;
+
+    def test_real_http_browser_retains_task_and_ruling_originals(application):
+        app=application;s,task=generated(app,'/entities/actor-one')
+        async def idle():pass
+        sock=socket.socket();sock.bind(('127.0.0.1',0));port=sock.getsockname()[1];origin=f'http://127.0.0.1:{port}'
+        server=uvicorn.Server(uvicorn.Config(create_app(app.host,ai_runtime=SimpleNamespace(application=app,start=idle,close=idle)),log_level='error'))
+        worker=threading.Thread(target=lambda:server.run(sockets=[sock]),daemon=True);worker.start()
+        try:
+            deadline=time.monotonic()+10
+            while not server.started and time.monotonic()&lt;deadline:time.sleep(.01)
+            assert server.started
+            with httpx.Client(base_url=origin,headers={'origin':origin},trust_env=False) as client:
+&gt;               assert client.get('/api/v1/ai/rulings').status_code==401
+E               AssertionError: assert 403 == 401
+E                +  where 403 = &lt;Response [403 Forbidden]&gt;.status_code
+E                +    where &lt;Response [403 Forbidden]&gt; = get('/api/v1/ai/rulings')
+E                +      where get = &lt;httpx.Client object at 0x00000205D2E0FA10&gt;.get
+
+engineering\ai\tests\test_chat_isolation_http.py:27: AssertionError</failure></testcase></testsuite></testsuites>

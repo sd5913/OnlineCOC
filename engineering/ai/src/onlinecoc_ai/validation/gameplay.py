@@ -2,6 +2,7 @@
 import hashlib
 import math
 import random
+import copy
 
 from onlinecoc.errors import DomainError
 
@@ -59,7 +60,15 @@ def metric_value(metric, outputs):
     return value, math.sqrt(variance / len(numbers))
 
 
-def assess(pack, state, baseline, context, changes, artifact=None):
+def assess(pack, state, baseline, context, changes, artifact=None, *, basis=None):
+    from ..c_review import DEFAULT, basis_binding
+    value = copy.deepcopy(basis if basis is not None else DEFAULT)
+    result = _assess(pack, state, baseline, context, changes, artifact, basis=value)
+    result['evidence']['reviewBasis'] = {**value, **basis_binding(value)}
+    return result
+
+
+def _assess(pack, state, baseline, context, changes, artifact=None, *, basis):
     base, artifact = check_base(pack, state, baseline, context, changes)
     if base["status"] != "pass":
         return report("C", context, changes, "unknown", [finding("BASE_CHECK_REQUIRED")], risk="unknown")
@@ -67,7 +76,9 @@ def assess(pack, state, baseline, context, changes, artifact=None):
     findings, coverage, comparisons, executions = [], [], [], []
     status, risk = "pass", "low"
     ranks = {"low": 0, "medium": 1, "high": 2}
-    metrics = {m["metricId"]: m for m in pack.metrics}
+    metrics = {m["metricId"]: copy.deepcopy(m) for m in pack.metrics}
+    for identifier, threshold in basis['metricOverrides'].items():
+        if identifier in metrics:metrics[identifier]['threshold'] = copy.deepcopy(threshold)
     required = set(pack.contract["requiredMetrics"]) | {m["metricId"] for m in pack.metrics if m["required"]}
     measured = set()
     try:
@@ -112,7 +123,7 @@ def assess(pack, state, baseline, context, changes, artifact=None):
                             suggestion="KP must review the measured change and remaining choices"))
                 coverage.append(identifier)
             except (AiError, DomainError, KeyError, IndexError, TypeError) as exc:
-                findings.append(finding(getattr(exc, "code", "SCENARIO_MATERIAL_INVALID"), path=identifier))
+                findings.append(finding(getattr(exc, "code", "SCENARIO_MATERIAL_INVALID"), getattr(exc, 'detail', ''), path=identifier))
                 status = "unknown"
         missing = sorted(required - measured)
         if missing:
@@ -125,7 +136,7 @@ def assess(pack, state, baseline, context, changes, artifact=None):
         from .extensions import assess_extensions
         extension_evidence=assess_extensions(pack,state,baseline,artifact,changes,context['reviewPrincipal'])
         from .live import assess_live
-        live_evidence=assess_live(pack,state,baseline,artifact,changes,context['reviewPrincipal']) if code_changed and extension_evidence is None else None
+        live_evidence=assess_live(pack,state,baseline,artifact,changes,context['reviewPrincipal'], additional=basis['liveScenarios']) if code_changed and extension_evidence is None else None
         if live_evidence:
             executions.append({'liveValidation':live_evidence})
             risk='high'
@@ -156,4 +167,10 @@ def assess(pack, state, baseline, context, changes, artifact=None):
              "measuredMetrics": sorted(measured), "limitations": ["Only declared scenarios and metrics are covered", "Existing instance values are not migrated", "KP judgment is required for subjective gameplay impact"]},
             risk if status == "pass" else "unknown", pack.contract["reviewPolicy"]["items"])
     except (AiError, DomainError) as exc:
-        return report("C", context, changes, "unknown", [finding(exc.code)], coverage, risk="unknown", review=pack.contract["reviewPolicy"]["items"])
+        findings.append(finding(exc.code, getattr(exc, 'detail', ''), getattr(exc, 'path', ''),
+            evidence=getattr(exc, 'evidence', None), suggestion='KP may review coverage limits; execution failures must be corrected before publication'))
+        return report("C", context, changes, "unknown", findings, coverage,
+            {'comparisons': comparisons, 'scenarios': executions, 'requiredMetrics': sorted(required),
+             'measuredMetrics': sorted(measured), 'limitations': ['Evaluation stopped at the reported boundary; remaining coverage is unverified',
+                 'Existing values are preserved; KP adoption is a risk decision, not proof of gameplay correctness']},
+            risk="unknown", review=pack.contract["reviewPolicy"]["items"])

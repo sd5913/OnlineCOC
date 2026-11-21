@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="5" skipped="0" tests="35" time="39.833" timestamp="2026-11-20T20:44:23.328747+08:00" hostname="LAPTOP-BIFSL64A"><testcase classname="engineering.acceptance.atomic-batches.test_atomic" name="test_preflight_no_mutation_and_sequential_dependency" time="1.308"><failure message="AssertionError: {'status': 'blocked', 'checkedAt': 1795178665.0050972, 'scope': 'host.room.atomic.v1', 'items': [{'index': 0, 'target'...y.update', 'status': 'blocked', ...}, {'index': 1, 'target': 'host', 'op': 'action.invoke', 'status': 'blocked', ...}]}&#10;assert 'blocked' == 'passed'&#10;  &#10;  - passed&#10;  + blocked">host = &lt;onlinecoc.host.Host object at 0x000002270B90F770&gt;
+
+    def test_preflight_no_mutation_and_sequential_dependency(host):
+        actions=[action('entity.update',id='actor-player1',numbers={'hp':12}),rule('atomic.pre',amount=12)]
+        before=canonical(host.state());g=host.store.generation
+        result=host.preflight_batch('kp',actions)
+&gt;       assert result['status']=='passed',result
+E       AssertionError: {'status': 'blocked', 'checkedAt': 1795178665.0050972, 'scope': 'host.room.atomic.v1', 'items': [{'index': 0, 'target'...y.update', 'status': 'blocked', ...}, {'index': 1, 'target': 'host', 'op': 'action.invoke', 'status': 'blocked', ...}]}
+E       assert 'blocked' == 'passed'
+E         
+E         - passed
+E         + blocked
+
+engineering\acceptance\atomic-batches\test_atomic.py:50: AssertionError</failure></testcase><testcase classname="engineering.acceptance.atomic-batches.test_atomic" name="test_failure_discards_first_middle_last[0]" time="0.982" /><testcase classname="engineering.acceptance.atomic-batches.test_atomic" name="test_failure_discards_first_middle_last[1]" time="1.221" /><testcase classname="engineering.acceptance.atomic-batches.test_atomic" name="test_failure_discards_first_middle_last[2]" time="1.284"><failure message="assert (1 == 2)">host = &lt;onlinecoc.host.Host object at 0x000002270BC63A80&gt;, position = 2
+
+    @pytest.mark.parametrize('position',[0,1,2])
+    def test_failure_discards_first_middle_last(host,position):
+        actions=[patch('first'),rule(amount=2),patch('last')];actions[position]=rule('atomic.fail')
+        before=business(host);result=run(host,actions)
+        assert result['status']=='rejected',result
+        ex=result['result'];assert ex['committedCount']==0 and ex['failedCount']==1
+&gt;       assert ex['rolledBackCount']==position and ex['notExecutedCount']==2-position
+E       assert (1 == 2)
+
+engineering\acceptance\atomic-batches\test_atomic.py:61: AssertionError</failure></testcase><testcase classname="engineering.acceptance.atomic-batches.test_atomic" name="test_success_dependency_receipt_and_dedupe" time="0.708"><failure message="AssertionError: {'status': 'rejected', 'commandId': 'batch', 'result': {'status': 'failed', 'scope': 'host.room.atomic.v1', 'items': [...t': 'host', 'op': 'action.invoke', 'status': 'not_executed', ...}], 'committedCount': 0, ...}, 'code': 'INPUT_INVALID'}&#10;assert ('rejected' == 'committed'&#10;  &#10;  - committed&#10;  + rejected)">host = &lt;onlinecoc.host.Host object at 0x000002270BC63490&gt;
+
+    def test_success_dependency_receipt_and_dedupe(host):
+        actions=[action('entity.update',id='actor-player1',numbers={'hp':12}),rule('atomic.pre',amount=12)]
+        result=run(host,actions)
+&gt;       assert result['status']=='committed' and result['result']['committedCount']==2,result
+E       AssertionError: {'status': 'rejected', 'commandId': 'batch', 'result': {'status': 'failed', 'scope': 'host.room.atomic.v1', 'items': [...t': 'host', 'op': 'action.invoke', 'status': 'not_executed', ...}], 'committedCount': 0, ...}, 'code': 'INPUT_INVALID'}
+E       assert ('rejected' == 'committed'
+E         
+E         - committed
+E         + rejected)
+
+engineering\acceptance\atomic-batches\test_atomic.py:71: AssertionError</failure></testcase><testcase classname="engineering.acceptance.atomic-batches.test_atomic" name="test_unsupported_is_rejected_before_any_effect[bad0]" time="0.680" /><testcase classname="engineering.acceptance.atomic-batches.test_atomic" name="test_unsupported_is_rejected_before_any_effect[bad1]" time="0.610" /><testcase classname="engineering.acceptance.atomic-batches.test_atomic" name="test_unsupported_is_rejected_before_any_effect[bad2]" time="0.580" /><testcase classname="engineering.acceptance.atomic-batches.test_atomic" name="test_unsupported_is_rejected_before_any_effect[bad3]" time="0.721" /><testcase classname="engineering.acceptance.atomic-batches.test_atomic" name="test_unsupported_is_rejected_before_any_effect[bad4]" time="0.771" /><testcase classname="engineering.acceptance.atomic-batches.test_atomic" name="test_unsupported_is_rejected_before_any_effect[bad5]" time="0.846" /><testcase classname="engineering.acceptance.atomic-batches.test_atomic" name="test_unsupported_is_rejected_before_any_effect[bad6]" time="0.622" /><testcase classname="engineering.acceptance.atomic-batches.test_atomic" name="test_unsupported_is_rejected_before_any_effect[bad7]" time="0.625" /><testcase classname="engineering.acceptance.atomic-batches.test_atomic" name="test_unsupported_is_rejected_before_any_effect[bad8]" time="0.625" /><testcase classname="engineering.acceptance.atomic-batches.test_atomic" name="test_runtime_preflight_never_rolls" time="0.963" /><testcase classname="engineering.acceptance.atomic-batches.test_atomic" name="test_false_game_result_is_committed_once" time="1.048"><failure message="AssertionError: {'status': 'rejected', 'commandId': 'batch', 'result': {'status': 'failed', 'scope': 'host.room.atomic.v1', 'items': [...et': 'host', 'op': 'entity.patch', 'status': 'not_executed', ...}], 'committedCount': 0, ...}, 'code': 'INPUT_INVALID'}&#10;assert ('rejected' == 'committed'&#10;  &#10;  - committed&#10;  + rejected)">host = &lt;onlinecoc.host.Host object at 0x000002270BDEA810&gt;
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000002270BDB0E90&gt;
+
+    def test_false_game_result_is_committed_once(host,monkeypatch):
+        calls=[]
+        def rng(sides):calls.append(sides);return 18
+        monkeypatch.setattr('onlinecoc.atomic_batches.secrets.randbelow',rng)
+        actions=[rule('atomic.false'),patch()];result=run(host,actions)
+&gt;       assert result['status']=='committed' and result['result']['items'][0]['result'] is False,result
+E       AssertionError: {'status': 'rejected', 'commandId': 'batch', 'result': {'status': 'failed', 'scope': 'host.room.atomic.v1', 'items': [...et': 'host', 'op': 'entity.patch', 'status': 'not_executed', ...}], 'committedCount': 0, ...}, 'code': 'INPUT_INVALID'}
+E       assert ('rejected' == 'committed'
+E         
+E         - committed
+E         + rejected)
+
+engineering\acceptance\atomic-batches\test_atomic.py:108: AssertionError</failure></testcase><testcase classname="engineering.acceptance.atomic-batches.test_atomic" name="test_crash_restart_reuses_trace_and_single_effect[after_batch_intent]" time="2.381" /><testcase classname="engineering.acceptance.atomic-batches.test_atomic" name="test_crash_restart_reuses_trace_and_single_effect[after_batch_random]" time="2.751" /><testcase classname="engineering.acceptance.atomic-batches.test_atomic" name="test_crash_restart_reuses_trace_and_single_effect[after_batch_item]" time="2.716" /><testcase classname="engineering.acceptance.atomic-batches.test_atomic" name="test_crash_restart_reuses_trace_and_single_effect[after_batch_terminal]" time="2.391" /><testcase classname="engineering.acceptance.atomic-batches.test_atomic" name="test_recovery_refuses_changed_room_without_overwrite" time="2.409" /><testcase classname="engineering.acceptance.atomic-batches.test_atomic" name="test_reentrant_change_never_overwritten[after_batch_item]" time="0.848" /><testcase classname="engineering.acceptance.atomic-batches.test_atomic" name="test_reentrant_change_never_overwritten[before_batch_terminal]" time="0.804" /><testcase classname="engineering.acceptance.atomic-batches.test_atomic" name="test_notification_commit_only_and_deduplicated" time="0.641" /><testcase classname="engineering.acceptance.atomic-batches.test_atomic" name="test_notification_failure_discards_business" time="0.612" /><testcase classname="engineering.acceptance.atomic-batches.test_atomic" name="test_bad_notification_index_blocks_before_effect[True]" time="0.697" /><testcase classname="engineering.acceptance.atomic-batches.test_atomic" name="test_bad_notification_index_blocks_before_effect[-1]" time="0.756" /><testcase classname="engineering.acceptance.atomic-batches.test_atomic" name="test_bad_notification_index_blocks_before_effect[1]" time="0.811" /><testcase classname="engineering.acceptance.atomic-batches.test_atomic" name="test_bad_notification_index_blocks_before_effect[100]" time="0.670" /><testcase classname="engineering.acceptance.atomic-batches.test_atomic" name="test_schema_diagnostic_and_no_private_exception" time="1.313" /><testcase classname="engineering.acceptance.atomic-batches.test_atomic" name="test_player_permission_and_receipt_redaction" time="2.652" /><testcase classname="engineering.acceptance.atomic-batches.test_atomic" name="test_no_autonomous_flow_tick" time="0.843" /><testcase classname="engineering.acceptance.atomic-batches.test_atomic" name="test_publish_reply_loss_is_success" time="0.612" /><testcase classname="engineering.acceptance.atomic-batches.test_atomic" name="test_two_threads_serialize_without_lost_update" time="1.671"><failure message="AssertionError: assert (2 == 2 and False)&#10; +  where 2 = len([{'status': 'committed', 'commandId': '0', 'result': {'status': 'committed', 'scope': 'host.room.atomic.v1', 'items': ...target': 'host', 'op': 'action.invoke', 'status': 'failed', ...}], 'committedCount': 0, ...}, 'code': 'INPUT_INVALID'}])&#10; +  and   False = all(&lt;generator object test_two_threads_serialize_without_lost_update.&lt;locals&gt;.&lt;genexpr&gt; at 0x000002270BD36DC0&gt;)">host = &lt;onlinecoc.host.Host object at 0x000002270C1A28E0&gt;
+
+    def test_two_threads_serialize_without_lost_update(host):
+        outputs=[]
+        def worker(cid):outputs.append(run(host,[rule(amount=1)],cid=cid))
+        threads=[threading.Thread(target=worker,args=(str(i),)) for i in range(2)]
+        for t in threads:t.start()
+        for t in threads:t.join(15)
+&gt;       assert len(outputs)==2 and all(r['status']=='committed' for r in outputs)
+E       AssertionError: assert (2 == 2 and False)
+E        +  where 2 = len([{'status': 'committed', 'commandId': '0', 'result': {'status': 'committed', 'scope': 'host.room.atomic.v1', 'items': ...target': 'host', 'op': 'action.invoke', 'status': 'failed', ...}], 'committedCount': 0, ...}, 'code': 'INPUT_INVALID'}])
+E        +  and   False = all(&lt;generator object test_two_threads_serialize_without_lost_update.&lt;locals&gt;.&lt;genexpr&gt; at 0x000002270BD36DC0&gt;)
+
+engineering\acceptance\atomic-batches\test_atomic.py:228: AssertionError</failure></testcase><testcase classname="engineering.acceptance.atomic-batches.test_atomic" name="test_scope_list_is_explicit" time="0.001" /></testsuite></testsuites>

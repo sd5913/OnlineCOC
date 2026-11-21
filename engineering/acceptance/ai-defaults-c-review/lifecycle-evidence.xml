@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="38" time="98.289" timestamp="2026-11-21T01:00:25.087230+08:00" hostname="LAPTOP-BIFSL64A"><testcase classname="engineering.ai.tests.test_c_review_defaults" name="test_new_room_defaults_and_repeat_preserve_user_settings" time="1.277" /><testcase classname="engineering.ai.tests.test_c_review_defaults" name="test_new_room_no_implicit_profile_guess[0-profile_unavailable]" time="1.056" /><testcase classname="engineering.ai.tests.test_c_review_defaults" name="test_new_room_no_implicit_profile_guess[2-profile_selection_required]" time="1.120" /><testcase classname="engineering.ai.tests.test_c_review_defaults" name="test_initialization_requires_kp_scope_and_untouched_settings" time="1.095" /><testcase classname="engineering.ai.tests.test_c_review_defaults" name="test_dynamic_thresholds_affect_real_measurements_and_reset" time="9.979" /><testcase classname="engineering.ai.tests.test_c_review_defaults" name="test_c_risk_classification_never_relaxes_execution[EXTENSION_FORBIDDEN-True]" time="0.001" /><testcase classname="engineering.ai.tests.test_c_review_defaults" name="test_c_risk_classification_never_relaxes_execution[LIVE_SCENARIO_COVERAGE_MISSING-True]" time="0.001" /><testcase classname="engineering.ai.tests.test_c_review_defaults" name="test_c_risk_classification_never_relaxes_execution[EXISTING_INSTANCE_COVERAGE_MISSING-True]" time="0.001" /><testcase classname="engineering.ai.tests.test_c_review_defaults" name="test_c_risk_classification_never_relaxes_execution[SCENARIO_EXECUTION_FAILED-False]" time="0.001" /><testcase classname="engineering.ai.tests.test_c_review_defaults" name="test_c_risk_classification_never_relaxes_execution[SANDBOX_UNAVAILABLE-False]" time="0.001" /><testcase classname="engineering.ai.tests.test_c_review_defaults" name="test_c_risk_classification_never_relaxes_execution[RULE_TIMEOUT-False]" time="0.001" /><testcase classname="engineering.ai.tests.test_c_review_defaults" name="test_c_risk_classification_never_relaxes_execution[EXTENSION_EFFECT_FORBIDDEN-False]" time="0.001" /><testcase classname="engineering.ai.tests.test_c_review_defaults" name="test_basis_update_authorization_revision_and_restart" time="2.453" /><testcase classname="engineering.ai.tests.test_c_review_defaults" name="test_changing_basis_invalidates_prepared_and_recheck_binds_new_version" time="15.371" /><testcase classname="engineering.ai.tests.test_c_review_defaults" name="test_actual_coverage_gap_is_reviewable_and_rejectable" time="12.743" /><testcase classname="engineering.ai.tests.test_c_review_defaults" name="test_added_live_scenarios_run_and_close_coverage_gap" time="9.509" /><testcase classname="engineering.ai.tests.test_c_review_defaults" name="test_initialization_recovers_interrupted_host_commit" time="1.074" /><testcase classname="engineering.ai.tests.test_c_review_defaults" name="test_approved_publication_after_ai_close_rechecks_persisted_basis[False]" time="9.191"><failure message="onlinecoc_data.store.StoreError: STORE_CLOSED">application = &lt;onlinecoc_ai.api.Application object at 0x0000015FDFE734D0&gt;
+changed = False
+
+    @pytest.mark.parametrize('changed',[False,True])
+    def test_approved_publication_after_ai_close_rechecks_persisted_basis(application,changed):
+        from onlinecoc_ai.repository import Repository
+        app=application
+        p=committed(command(app,'ai.draft.create',{'text':'保存后发布','changeSet':delta()}))
+        committed(command(app,'ai.proposal.validate',{'proposalId':p['proposalId'],'revision':1}))
+        item=app.rulings.list('kp')['items'][0]
+        approved=committed(app.rulings.host_command('kp','approve-before-close','ai.proposal.approve',{'proposalId':p['proposalId'],'proposalRevision':1,
+            'explicitHighRiskDigest':item['digest'],'riskDecisions':{r['id']:'Test acceptance' for r in item['risks']}}))
+        path=app.repository.store.path;scope=app.host.state()['aiControl']['scopeId'];app.proposals.close()
+        if changed:
+            other=Repository(path,scope)
+            try:other.update(lambda s:s['settings'].update(cReviewBasis={**copy.deepcopy(DEFAULT),'revision':2,'notes':'Changed while AI closed'}))
+            finally:other.close()
+&gt;       result=app.rulings.host_command('kp','apply-after-close','publication.apply',{'approvalId':approved['approvalId']})
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+engineering\ai\tests\test_c_review_defaults.py:182: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+engineering\ai\src\onlinecoc_ai\rulings.py:137: in host_command
+    return self.host.command(account,{'protocolVersion':1,'type':'command','requestId':identifier,'roomId':room['roomId'],
+engineering\backend\src\onlinecoc\host.py:195: in command
+    result=self.manage(s,account,op,args,prepared=prepared,command_id=p['commandId'])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+engineering\backend\src\onlinecoc\host.py:355: in manage
+    return apply(self,s,account,args,command_id)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+engineering\backend\src\onlinecoc\publication.py:218: in apply
+    check_context(host, state, account, approval["context"])
+engineering\backend\src\onlinecoc\publication.py:71: in check_context
+    _check_context(host, state, account, context, history=False)
+engineering\backend\src\onlinecoc\publication.py:118: in _check_context
+    host.validate_ai_sources(state, account, context)
+engineering\backend\src\onlinecoc\host.py:477: in validate_ai_sources
+    if validator:validator(state,context)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^
+engineering\ai\src\onlinecoc_ai\api.py:28: in &lt;lambda&gt;
+    self.host.ai_access_validator = lambda room, context: validate_context(self.host, self.repository, room, context)
+                                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+engineering\ai\src\onlinecoc_ai\access.py:43: in validate_context
+    current = policy(repository)
+              ^^^^^^^^^^^^^^^^^^
+engineering\ai\src\onlinecoc_ai\access.py:14: in policy
+    return {**DEFAULT_POLICY, **read()['settings'].get('accessPolicy', {})}
+                                ^^^^^^
+engineering\ai\src\onlinecoc_ai\repository.py:75: in read_state
+    if not hasattr(self.read_local,'snapshot'):return self.state()
+                                                      ^^^^^^^^^^^^
+engineering\ai\src\onlinecoc_ai\repository.py:60: in state
+    return self.store.snapshot()[1]
+           ^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;onlinecoc_data.store.FileDataStore object at 0x0000015FDD6E9790&gt;
+
+    def snapshot(self):
+        with self.mutex:
+&gt;           if self.closed: raise StoreError("STORE_CLOSED")
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           onlinecoc_data.store.StoreError: STORE_CLOSED
+
+engineering\data-management\onlinecoc_data\store.py:170: StoreError</failure></testcase><testcase classname="engineering.ai.tests.test_c_review_defaults" name="test_approved_publication_after_ai_close_rechecks_persisted_basis[True]" time="11.620" /><testcase classname="engineering.ai.tests.test_c_review_defaults" name="test_closed_basis_resolver_reports_locked_storage" time="1.260" /><testcase classname="engineering.ai.tests.test_command_reliability" name="test_negative_search_without_evidence_is_repaired" time="1.359" /><testcase classname="engineering.ai.tests.test_command_reliability" name="test_search_guard_accepts_real_empty_query_and_explicit_failure" time="0.001"><failure message="onlinecoc_ai.errors.AiError: MODEL_EVIDENCE_REQUIRED: The room data is not loaded. No successful room query supports this negative search claim. Use the authorized room search/read tools, read matching records, and answer only from their results. If tools are unavailable or a query fails, explicitly state that the search could not be completed; do not claim the target is absent.">def test_search_guard_accepts_real_empty_query_and_explicit_failure():
+        from onlinecoc_ai.reliability import require_search_evidence
+        payload={'dataAccess':{'mode':'demand'}}
+        require_search_evidence('查询角色',payload,{'facts':{'dataQueries':[{'count':0}]}},{'kind':'plan','text':'没有找到角色记录'})
+&gt;       require_search_evidence('查询角色',payload,{'facts':{}},{'kind':'plan','text':'查询没有完成，无法确认记录。'})
+
+engineering\ai\tests\test_command_reliability.py:40: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+request = '查询角色', payload = {'dataAccess': {'mode': 'demand'}}
+snapshot = {'facts': {}}, output = {'kind': 'plan', 'text': '查询没有完成，无法确认记录。'}
+
+    def require_search_evidence(request,payload,snapshot,output):
+        """An unloaded demand context cannot support a claimed negative search result."""
+        import re
+        if output.get('kind')!='plan' or payload.get('dataAccess',{}).get('mode')!='demand':return
+        if not re.search(r'查询|查找|搜索|检索|找出|search|look up|find',request,re.I):return
+        if not re.search(r'没有找到|未找到|不存在|没有.{0,12}(记录|对象)|not found|could not find|no records',output.get('text',''),re.I):return
+        facts=snapshot.get('facts',{})
+        if facts.get('dataQueries') or facts.get('managementReads') or facts.get('sessionReads'):return
+&gt;       raise AiError('MODEL_EVIDENCE_REQUIRED','The room data is not loaded. No successful room query supports this negative search claim. Use the authorized room search/read tools, read matching records, and answer only from their results. If tools are unavailable or a query fails, explicitly state that the search could not be completed; do not claim the target is absent.',path='/text')
+E       onlinecoc_ai.errors.AiError: MODEL_EVIDENCE_REQUIRED: The room data is not loaded. No successful room query supports this negative search claim. Use the authorized room search/read tools, read matching records, and answer only from their results. If tools are unavailable or a query fails, explicitly state that the search could not be completed; do not claim the target is absent.
+
+engineering\ai\src\onlinecoc_ai\reliability.py:15: AiError</failure></testcase><testcase classname="engineering.ai.tests.test_command_reliability" name="test_blocked_draft_cannot_become_ready_by_returning_plan" time="2.698" /><testcase classname="engineering.ai.tests.test_command_reliability" name="test_rule_feedback_includes_only_requested_rule_and_transitive_dependencies" time="0.001" /><testcase classname="engineering.ai.tests.test_command_reliability" name="test_action_schema_errors_identify_exact_step_and_field" time="1.147" /><testcase classname="engineering.ai.tests.test_command_reliability" name="test_catalog_keeps_whitelist_and_declares_atomic_scope_before_generation" time="1.153" /><testcase classname="engineering.ai.tests.test_command_reliability" name="test_tool_json_and_schema_are_feedback_not_execution[{]" time="0.001" /><testcase classname="engineering.ai.tests.test_command_reliability" name="test_tool_json_and_schema_are_feedback_not_execution[[]]" time="0.001" /><testcase classname="engineering.ai.tests.test_command_reliability" name="test_tool_json_and_schema_are_feedback_not_execution[{&quot;limit&quot;:0}]" time="0.001" /><testcase classname="engineering.ai.tests.test_command_reliability" name="test_tool_json_and_schema_are_feedback_not_execution[{&quot;unexpected&quot;:true}]" time="0.001" /><testcase classname="engineering.ai.tests.test_command_reliability" name="test_bad_tool_arguments_repair_with_declared_schema_without_user_question[{]" time="1.297" /><testcase classname="engineering.ai.tests.test_command_reliability" name="test_bad_tool_arguments_repair_with_declared_schema_without_user_question[{&quot;section&quot;:&quot;invalid&quot;}]" time="1.291" /><testcase classname="engineering.ai.tests.test_command_reliability" name="test_billable_malformed_tool_arguments_reach_coordinator" time="0.034" /><testcase classname="engineering.ai.tests.test_command_reliability" name="test_tool_repairs_stop_at_two_and_do_not_ask_business_question" time="1.308" /><testcase classname="engineering.ai.tests.test_c_review_ui" name="test_c_adoption_is_explicit_and_note_optional[1100]" time="2.075" /><testcase classname="engineering.ai.tests.test_c_review_ui" name="test_c_adoption_is_explicit_and_note_optional[390]" time="2.079" /><testcase classname="engineering.ai.tests.test_c_review_ui" name="test_edit_basis_version_conflict_feedback_and_clear[1100]" time="2.045" /><testcase classname="engineering.ai.tests.test_c_review_ui" name="test_edit_basis_version_conflict_feedback_and_clear[390]" time="2.005" /></testsuite></testsuites>

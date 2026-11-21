@@ -1,0 +1,783 @@
+{
+  "artifactRevision": "bef56a02492212abf091cde96d299eaabd3081c910e5779c5c77fbbfe643edea",
+  "publicActionIds": [
+    "sv.adjudicate",
+    "sv.check",
+    "sv.create",
+    "sv.damage",
+    "sv.generate",
+    "sv.grant",
+    "sv.inventory",
+    "sv.morale",
+    "sv.profile",
+    "sv.ready",
+    "sv.remove",
+    "sv.rest",
+    "sv.scene.resolve",
+    "sv.transfer",
+    "sv.travel",
+    "sv.travel.auto",
+    "sv.world"
+  ],
+  "actions": [
+    {
+      "id": "sv.adjudicate",
+      "inputs": {
+        "actor": "actor",
+        "kind": "text",
+        "attribute": "text",
+        "mode": "text",
+        "operation": "text",
+        "slot": "amount",
+        "value": "amount"
+      },
+      "mode": "action",
+      "dependencies": [
+        "sv.check.core",
+        "sv.inventory.core"
+      ],
+      "public": true,
+      "kp": true,
+      "nodes": [],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "actor": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "kind": {
+            "type": "string",
+            "maxLength": 1000
+          },
+          "attribute": {
+            "type": "string",
+            "maxLength": 1000
+          },
+          "mode": {
+            "type": "string",
+            "maxLength": 1000
+          },
+          "operation": {
+            "type": "string",
+            "maxLength": 1000
+          },
+          "slot": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 1000000
+          },
+          "value": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 1000000
+          }
+        },
+        "required": [
+          "actor",
+          "kind",
+          "attribute",
+          "mode",
+          "operation",
+          "slot",
+          "value"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "sv.check",
+      "inputs": {
+        "actor": "actor",
+        "attribute": "text",
+        "mode": "text"
+      },
+      "mode": "action",
+      "dependencies": [
+        "sv.automation",
+        "sv.check.core"
+      ],
+      "public": true,
+      "kp": false,
+      "nodes": [],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "actor": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "attribute": {
+            "type": "string",
+            "maxLength": 1000
+          },
+          "mode": {
+            "type": "string",
+            "maxLength": 1000
+          }
+        },
+        "required": [
+          "actor",
+          "attribute",
+          "mode"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "sv.create",
+      "inputs": {
+        "actor": "actor"
+      },
+      "mode": "action",
+      "dependencies": [],
+      "public": true,
+      "kp": false,
+      "nodes": [],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "actor": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          }
+        },
+        "required": [
+          "actor"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "sv.damage",
+      "inputs": {
+        "actor": "actor",
+        "amount": "amount",
+        "attribute": "text"
+      },
+      "mode": "action",
+      "dependencies": [
+        "sv.layout"
+      ],
+      "public": true,
+      "kp": true,
+      "nodes": [],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "actor": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "amount": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 1000000
+          },
+          "attribute": {
+            "type": "string",
+            "maxLength": 1000
+          }
+        },
+        "required": [
+          "actor",
+          "amount",
+          "attribute"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "sv.generate",
+      "inputs": {
+        "actor": "actor",
+        "kind": "text"
+      },
+      "mode": "action",
+      "dependencies": [],
+      "public": true,
+      "kp": true,
+      "nodes": [],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "actor": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "kind": {
+            "type": "string",
+            "maxLength": 1000
+          }
+        },
+        "required": [
+          "actor",
+          "kind"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "sv.grant",
+      "inputs": {
+        "actor": "actor",
+        "item": "amount",
+        "slot": "amount",
+        "uses": "amount"
+      },
+      "mode": "action",
+      "dependencies": [
+        "sv.layout"
+      ],
+      "public": true,
+      "kp": true,
+      "nodes": [],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "actor": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "item": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 1000000
+          },
+          "slot": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 1000000
+          },
+          "uses": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 1000000
+          }
+        },
+        "required": [
+          "actor",
+          "item",
+          "slot",
+          "uses"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "sv.inventory",
+      "inputs": {
+        "actor": "actor",
+        "operation": "text",
+        "slot": "amount",
+        "value": "amount"
+      },
+      "mode": "action",
+      "dependencies": [
+        "sv.automation",
+        "sv.inventory.core"
+      ],
+      "public": true,
+      "kp": false,
+      "nodes": [],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "actor": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "operation": {
+            "type": "string",
+            "maxLength": 1000
+          },
+          "slot": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 1000000
+          },
+          "value": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 1000000
+          }
+        },
+        "required": [
+          "actor",
+          "operation",
+          "slot",
+          "value"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "sv.morale",
+      "inputs": {
+        "actor": "actor"
+      },
+      "mode": "action",
+      "dependencies": [],
+      "public": true,
+      "kp": true,
+      "nodes": [],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "actor": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          }
+        },
+        "required": [
+          "actor"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "sv.profile",
+      "inputs": {
+        "actor": "actor",
+        "strength": "amount",
+        "dexterity": "amount",
+        "will": "amount",
+        "hp": "amount",
+        "pips": "amount"
+      },
+      "mode": "action",
+      "dependencies": [],
+      "public": true,
+      "kp": true,
+      "nodes": [],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "actor": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "strength": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 1000000
+          },
+          "dexterity": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 1000000
+          },
+          "will": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 1000000
+          },
+          "hp": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 1000000
+          },
+          "pips": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 1000000
+          }
+        },
+        "required": [
+          "actor",
+          "strength",
+          "dexterity",
+          "will",
+          "hp",
+          "pips"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "sv.ready",
+      "inputs": {
+        "actor": "actor",
+        "ready": "choice"
+      },
+      "mode": "action",
+      "dependencies": [],
+      "public": true,
+      "kp": false,
+      "nodes": [],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "actor": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "ready": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "actor",
+          "ready"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "sv.remove",
+      "inputs": {
+        "actor": "actor",
+        "slot": "amount"
+      },
+      "mode": "action",
+      "dependencies": [],
+      "public": true,
+      "kp": true,
+      "nodes": [],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "actor": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "slot": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 1000000
+          }
+        },
+        "required": [
+          "actor",
+          "slot"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "sv.rest",
+      "inputs": {
+        "actor": "actor",
+        "kind": "text",
+        "attribute": "text"
+      },
+      "mode": "action",
+      "dependencies": [],
+      "public": true,
+      "kp": true,
+      "nodes": [],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "actor": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "kind": {
+            "type": "string",
+            "maxLength": 1000
+          },
+          "attribute": {
+            "type": "string",
+            "maxLength": 1000
+          }
+        },
+        "required": [
+          "actor",
+          "kind",
+          "attribute"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "sv.scene.resolve",
+      "inputs": {
+        "actor": "actor",
+        "scene": "actor",
+        "world": "actor",
+        "action": "text",
+        "choice": "text"
+      },
+      "mode": "action",
+      "dependencies": [
+        "sv.layout",
+        "sv.damage",
+        "sv.grant",
+        "sv.world"
+      ],
+      "public": true,
+      "kp": true,
+      "nodes": [],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "actor": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "scene": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "world": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "action": {
+            "type": "string",
+            "maxLength": 1000
+          },
+          "choice": {
+            "type": "string",
+            "maxLength": 1000
+          }
+        },
+        "required": [
+          "actor",
+          "scene",
+          "world",
+          "action",
+          "choice"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "sv.transfer",
+      "inputs": {
+        "actor": "actor",
+        "target": "actor",
+        "slot": "amount",
+        "destination": "amount"
+      },
+      "mode": "action",
+      "dependencies": [
+        "sv.layout"
+      ],
+      "public": true,
+      "kp": true,
+      "nodes": [],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "actor": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "target": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "slot": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 1000000
+          },
+          "destination": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 1000000
+          }
+        },
+        "required": [
+          "actor",
+          "target",
+          "slot",
+          "destination"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "sv.travel",
+      "inputs": {
+        "actor": "actor",
+        "location": "amount"
+      },
+      "mode": "action",
+      "dependencies": [],
+      "public": true,
+      "kp": true,
+      "nodes": [],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "actor": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "location": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 1000000
+          }
+        },
+        "required": [
+          "actor",
+          "location"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "sv.travel.auto",
+      "inputs": {
+        "actor": "actor",
+        "destination": "actor"
+      },
+      "mode": "action",
+      "dependencies": [
+        "sv.automation"
+      ],
+      "public": true,
+      "kp": false,
+      "nodes": [],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "actor": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "destination": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          }
+        },
+        "required": [
+          "actor",
+          "destination"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "sv.world",
+      "inputs": {
+        "actor": "actor",
+        "operation": "text",
+        "value": "amount"
+      },
+      "mode": "action",
+      "dependencies": [],
+      "public": true,
+      "kp": true,
+      "nodes": [],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "actor": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "operation": {
+            "type": "string",
+            "maxLength": 1000
+          },
+          "value": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 1000000
+          }
+        },
+        "required": [
+          "actor",
+          "operation",
+          "value"
+        ],
+        "additionalProperties": false
+      }
+    }
+  ],
+  "sourceSha256": {
+    "rulepacks/stumpsville/rules/adjudicate.lua": "fd9a0a60de3efdf58de1f3caac59a1250ac68c7287bd162c1413ef21edab3161",
+    "rulepacks/stumpsville/rules/auto-travel.lua": "b8cf67f629b8cf0a9c680f37b64f74d2bf52e66b37bd56d6477e59ba9a19f84b",
+    "rulepacks/stumpsville/rules/automation.lua": "c6c5520883fd78d734cc0b5a3d57a85e790fc34597a724394848cb81f3141545",
+    "rulepacks/stumpsville/rules/check-core.lua": "702fe6f55e94b97ffbe07b7b07294af8c357c74fd82e1de33b422126d23b1afd",
+    "rulepacks/stumpsville/rules/check.lua": "61971a2d95803fdad262dbfbbe547c220eac8a183a661aa0fb701adb9e1016bd",
+    "rulepacks/stumpsville/rules/create.lua": "6cf2659367d198d5f69ead39c37258f52e692fa62019bc46c8357027986e99e3",
+    "rulepacks/stumpsville/rules/damage.lua": "b1921710bd46959e9503fc25e553074ea603183e8a9b14cfba39a5d5b759d0b5",
+    "rulepacks/stumpsville/rules/generate.lua": "642ee4c4f1aa18c7483f955a0aa495d294f0374db2a46108c25eede5a498defb",
+    "rulepacks/stumpsville/rules/grant.lua": "7f3ba65b227979141ed9866a5d94ce8b22b52ea8fe81471f4b02679100a766a4",
+    "rulepacks/stumpsville/rules/inventory-core.lua": "dc107f5ed924549c65bd158cb9d7c38cf97052479ec0b87e43686983bf862660",
+    "rulepacks/stumpsville/rules/inventory.lua": "7b2c7231bc2b9d21022ad7f91e4dd0d21fce2d709e9f52bf45135625ab064d74",
+    "rulepacks/stumpsville/rules/layout.lua": "8eeedd1970c7a779d9bec05f3e7c3e57c26a4f6103bf88a7f1753539fa7a39bd",
+    "rulepacks/stumpsville/rules/morale.lua": "12a95d8b1ce7a2fb9a6bde69e09bc335deb5fd4f99b6bcea3a5652140702be02",
+    "rulepacks/stumpsville/rules/profile.lua": "0c90979a408d64e51413c8531db8b2794fa3547dd6222edff25949718d54e2b9",
+    "rulepacks/stumpsville/rules/ready.lua": "be363e19a19e3ae424355e750b5ecc71dc33e476b55b30af0be39ce09807b9b8",
+    "rulepacks/stumpsville/rules/remove.lua": "24b0c73dba05b1056962ca66ff42f17bfa8160a4488dd76ac8547e07f8c1a533",
+    "rulepacks/stumpsville/rules/rest.lua": "5329678bd081571cba6ad13b209a81cda97454c36abcaaf617e411b7870caea4",
+    "rulepacks/stumpsville/rules/scene.lua": "70b60d8a55804c753ec56a476d27393cff2a7466a8b83693db30fafa67e5897d",
+    "rulepacks/stumpsville/rules/transfer.lua": "6b6de73ec637cba49054bb6a9a528d64348196025ee906af042f72c414250fb7",
+    "rulepacks/stumpsville/rules/travel.lua": "3525ccd020f0ba285a8bf25142e89455f05ba9628cf068c7415bf31b737fd536",
+    "rulepacks/stumpsville/rules/world.lua": "7571bd19c84ccbbb1692de226284e7d6bcfb4182a917a0953ce5b87b947445bd",
+    "rulepacks/stumpsville/config/configurations.json": "2714b5c5da179d75bd5c15286872735c747bb0317f0caed72ad157888d309101",
+    "rulepacks/stumpsville/config/game.json": "4952a1b90ff5c3bf8438cc28d7cbc0066337b5133d16ea0cf9ed0b2fa63df086",
+    "rulepacks/stumpsville/config/scene-actions.json": "a7adee0a366fbd84b4f316e8a5a539c726168b28cc6f4263746366308e56bd7a",
+    "engineering/backend/src/onlinecoc/ai_api.py": "7a76fae109e05134615e468d6cde4bcc886a8f71203e04ec5497bcc3dd621630",
+    "engineering/backend/src/onlinecoc/ai_contracts.py": "eb4c5a5cdedeb02398f9bf08e6c8713308cffb373007c8e569e735f7f4e94678",
+    "engineering/backend/src/onlinecoc/ai_sources.py": "5be3cbe061bd99a0be5a7387a3b575c21c74d27f80d6f54c9309150df4a6aec0",
+    "engineering/backend/src/onlinecoc/assets.py": "e3b1c6fe8df0da49aa6fe6d023dc87e3cf6f6f34771afc222dde066e829838c2",
+    "engineering/backend/src/onlinecoc/atomic_batches.py": "564338a8fc0d0e34d241e9fd974fbc9c3e60e77e30027200e72afdb559ee85b6",
+    "engineering/backend/src/onlinecoc/chat.py": "517355bad8942507bd3e166b80e50d9f871a5f81297c3187ba0d9fa7fe37431f",
+    "engineering/backend/src/onlinecoc/cli.py": "2181b82a915f3599da822057606fd2e5db8729f42679764a2268a3ea3cabe671",
+    "engineering/backend/src/onlinecoc/contracts.py": "538d31ab50df7c4992ddd003af6afcd27328c2fedd46ebbc42db9bd5d34b4f56",
+    "engineering/backend/src/onlinecoc/data_adapter.py": "f1e439ce95ffecad46cd51ef62b6dd59d413625dce935be8b0e11ea50456d24e",
+    "engineering/backend/src/onlinecoc/data_queries.py": "d5f7b0cbc53d6fd83bd50b1ee26f46dced7a8bb4bfbbd98fb57c43d337b09790",
+    "engineering/backend/src/onlinecoc/errors.py": "6dd146a3ac9bceb5d04f09abb5a144f4382735330f09b59417a3825f4652dddf",
+    "engineering/backend/src/onlinecoc/execution.py": "f109163603d2dc5177463d7f38311358075c2a4267be27a0f73ae18f60d0ebd8",
+    "engineering/backend/src/onlinecoc/gateway.py": "947ebe7c4fadf095b25ee92aacdd138b260d086ced880d621217639a0ce79138",
+    "engineering/backend/src/onlinecoc/host.py": "56b0c9ddf3767356b2c1593e1cff5ea53f1256887ecc105fc3b85ef0e6be3e13",
+    "engineering/backend/src/onlinecoc/host_control.py": "99ce3dbd37723b9673f006f127d4a9f07837076f11e969179180b778f2291b10",
+    "engineering/backend/src/onlinecoc/identity.py": "2f6703e95b3c59b2870618f82f0cb9a564d4c491e5c92a164ec39141b3aeeb63",
+    "engineering/backend/src/onlinecoc/lua_runtime.py": "7bc72d2f7e957f5a2b1f4a28e3e44fcb4d207b46d8c94719ce0f4af6ac67517b",
+    "engineering/backend/src/onlinecoc/model.py": "47ac78a6b354649d7b571c670a4ca2a5e589a3789cfb9312a17009dc38ff8e31",
+    "engineering/backend/src/onlinecoc/notifications.py": "944c4293579cdec345382821e6a08a3946f33588c2e6e8400462aa22864b5287",
+    "engineering/backend/src/onlinecoc/publication.py": "34bd0f507f91e5c93bea15919fdb484a1b66827e5b6be2ecd89b359332eefc30",
+    "engineering/backend/src/onlinecoc/registry.py": "7cd791c4fedc2f10cf7426646bc3abd18e26f5cb0bbabc86bbc4bf719a180b4a",
+    "engineering/backend/src/onlinecoc/room_lifecycle.py": "eb14fa9bbb81c4441090c8dcd1526f8de2cdcb7fc4b43f09d423481748b483eb",
+    "engineering/backend/src/onlinecoc/room_migration.py": "56a27ad17e676ac336f6b12c58643b09ebee5b8ed60816c5426f0176e531ff6e",
+    "engineering/backend/src/onlinecoc/room_read.py": "541f3b4ec00f98ed843800cca0240e1b1cb44867cc0ce3fdbbb6d911ae600154",
+    "engineering/backend/src/onlinecoc/room_validation.py": "ba52626e80e83f68381289e30264a73d5cc6c63b4bc9d992f125aca543f6805d",
+    "engineering/backend/src/onlinecoc/server.py": "bc5a65b861a0216803cff227954aa74e6612b2f8f1773bd08d6cc598a5450a23",
+    "engineering/backend/src/onlinecoc/version.py": "1b5cf11a096d130a6702e6370686c3f21b2cf673bf43dc0ea86e97023ca806eb",
+    "engineering/backend/src/onlinecoc/worker_entry.py": "686f0f86e5c523edcb25ca69cae78e3264e6778accf197aa11aa92300373635e",
+    "engineering/backend/src/onlinecoc/worker_process.py": "dc451662822013ec99ac2d1c3902d73876cef4e9decdbeedc282cebc74906fea",
+    "engineering/backend/src/onlinecoc/__init__.py": "41362a5ea4931c546433d4c48290c5707bf02dbbea1c3aafa9f43d1225e47003",
+    "engineering/backend/src/onlinecoc/knowledge/models.py": "93d658f525c9c8526c24b80d460e0c3db5af7716d72d5f105096eab132eb5cee",
+    "engineering/backend/src/onlinecoc/knowledge/provider.py": "292e689f12edf258b52c53368a870e30980fe510155ff9d803726a23b5018924",
+    "engineering/backend/src/onlinecoc/knowledge/service.py": "6d606d227583559abd19d548e03422dd64f3e2964ab657b51858ab5b76909ac5",
+    "engineering/backend/src/onlinecoc/knowledge/__init__.py": "0f65906a26d2c907bb921f50d216877102f6bdf3efb6b6844cc53e2dd077c104",
+    "engineering/contracts/ai-operations.json": "2b6db3e8ce7811a3a25da12a501de766d542af485d81a61f668037a034594ef8",
+    "engineering/contracts/ai.json": "48ab0351c291769dadc706792102e14e90e16b2aecce20f7ba085e46e34f73ce",
+    "engineering/contracts/atomic-batches.json": "f84398517944d73bbc218996ad31d482951900ceead5c0c6648a8d2454e2501d",
+    "engineering/contracts/host-control.json": "dae9925bcb8d23b045685aa35da55a0cfe01048076a611d6802dd58cd731f1a1",
+    "engineering/contracts/knowledge.json": "3b1f7d7ec106f46eeb781bdcdf1f453a3e0b5f54611c1d3d3f3ccf61e5e67b87",
+    "engineering/contracts/messages.json": "a296e181c36db1289ff40c85a8e89dc0bbe0ac6abd97bf8e958f53741719e7e7",
+    "engineering/contracts/models.json": "23e76c62823c405827ba31f24f0750379e0f372ff2fdd61b3baf633c531b2ee2",
+    "engineering/contracts/notifications.json": "26a811d64627bbc04655ff291473f5ab26467ec29b9370b9296137a5a60301bc",
+    "engineering/contracts/operations.json": "25aab0af9a348532753f29762f0886f3b674cc3142796dcbefef45209baf7527"
+  }
+}

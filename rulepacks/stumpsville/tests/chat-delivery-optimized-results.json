@@ -1,0 +1,85 @@
+{
+  "at": "2026-11-21T09:09:57.552974+08:00",
+  "label": "optimized",
+  "source": "rulepacks\\stumpsville\\tests\\output\\defaults-components-549d5799\\source",
+  "output": "D:\\Studies\\Art Programming\\OnlineCOC\\rulepacks\\stumpsville\\tests\\output\\chat-delivery-optimized-b1324766",
+  "externalApiCalls": 0,
+  "checks": [
+    "four real pages deliver six distinct chat messages without transport failure",
+    "chat submits while an unrelated ruling response is held, with no shared busy rejection",
+    "newly typed draft survives completion of an earlier message",
+    "lost success response blocks new sends and recovers original ID exactly once, preserving the new draft",
+    "host history bypasses package write lock; metadata/history isolate private and inaccessible scene channels; edit/retract and party delivery work"
+  ],
+  "measurements": {
+    "sendComposerReady": {
+      "samples": 6,
+      "p50Ms": 223.89,
+      "p95Ms": 2020.41,
+      "maxMs": 2020.41
+    },
+    "receiverVisible": {
+      "samples": 6,
+      "p50Ms": 1300.74,
+      "p95Ms": 2223.79,
+      "maxMs": 2223.79
+    },
+    "failures": []
+  },
+  "fixture": {
+    "chatHistory": 16,
+    "pages": 4,
+    "visibility": [
+      "visible",
+      "visible",
+      "visible",
+      "visible"
+    ]
+  },
+  "chatWhileRulingPending": true,
+  "concurrentToast": "正在提交行动，等待服务器确认…",
+  "passed": true,
+  "pageErrors": [],
+  "previousRuns": [
+    {
+      "at": "2026-11-21T09:06:37.801165+08:00",
+      "label": "optimized",
+      "source": "rulepacks\\stumpsville\\tests\\output\\defaults-components-549d5799\\source",
+      "output": "D:\\Studies\\Art Programming\\OnlineCOC\\rulepacks\\stumpsville\\tests\\output\\chat-delivery-optimized-59b81743",
+      "externalApiCalls": 0,
+      "checks": [
+        "four real pages deliver six distinct chat messages without transport failure",
+        "chat submits while an unrelated ruling response is held, with no shared busy rejection"
+      ],
+      "measurements": {
+        "sendComposerReady": {
+          "samples": 6,
+          "p50Ms": 223.86,
+          "p95Ms": 2029.15,
+          "maxMs": 2029.15
+        },
+        "receiverVisible": {
+          "samples": 6,
+          "p50Ms": 1038.4,
+          "p95Ms": 2834.19,
+          "maxMs": 2834.19
+        },
+        "failures": []
+      },
+      "fixture": {
+        "chatHistory": 16,
+        "pages": 4,
+        "visibility": [
+          "visible",
+          "visible",
+          "visible",
+          "visible"
+        ]
+      },
+      "chatWhileRulingPending": true,
+      "concurrentToast": "正在提交行动，等待服务器确认…",
+      "passed": true,
+      "pageErrors": []
+    }
+  ]
+}

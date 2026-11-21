@@ -4,8 +4,8 @@
 - 文档子类：工程
 - 状态：有效
 - 创建日期：2026-10-29
-- 最后更新：2026-11-20
-- 最近目录核对：2026-11-20（持久定向通知接口与验收新增路径；裁决修订专项新增测试与证据；AI 同房间重启、顶部调试弹窗、当前文档精简与引擎历史复验交付；树桩镇裁决标签、共用卡片与可追溯通知；其余目录未作全量复核）。历次范围见[目录核对归档](../../history/2026-11-20-ai-development-records.md#目录核对流水截至-2026-11-20)。
+- 最后更新：2026-11-21
+- 最近目录核对：2026-11-21（本轮在聊天隔离基础上核对ISSUE-023上下文压缩、KP来源采纳、715项AI新增清单、三版AI冻结源码、21项宿主证据和包侧新测试；不含运行存档）。此前默认AI与C评估见[前阶段记录](../../history/2026-11-21-ai-defaults-c-review.md)，本轮证据见[ISSUE-022](../../history/2026-11-21-issue-022-chat-isolation-ruling-status.md)。
 - 关联文档：[工程文档索引](README.md)、[文档维护标准](../../standards/document-maintenance.md)
 
 ## 工程实际目录
@@ -1536,6 +1536,618 @@ AI 可选限额与用量统计（2026-11-16）：
 | `engineering/acceptance/review-continuity/status-final.xml` | 新任务错误继承历史过期标记的初验与69项复验 |
 
 | `rulepacks/stumpsville/tests/ai-recovery-ui-results.json` | 真实浏览器恢复、调试窗口与响应拒绝后的继续操作验收结果 |
+
+| `docs/history/2026-11-20-issue-017-review-history-queue-references.md` | 历史原文、重复裁决及紧凑玩家引用的完成归档、失败和联合验收 |
+| `rulepacks/stumpsville/tests/verify_review_followup.py` | 历史正文、关联裁决、手动归档及紧凑玩家引用的真实宿主与浏览器联合验收 |
+| `rulepacks/stumpsville/tests/review-followup-results.json` | 六组真实宿主联合验收结果，保留夹具失败和PL事务嵌套产品回归 |
+| `rulepacks/stumpsville/tests/verify_review_queue_ui.py` | 包侧队列整理封套、分类计数、后续入口和窄屏详情的独立浏览器验收 |
+| `rulepacks/stumpsville/tests/review-queue-ui-results.json` | 包侧四组队列UI验收与首轮夹具布局失败证据 |
+| `engineering/acceptance/queue-schema/.gitignore` | 忽略队列契约验收的临时运行目录 |
+| `engineering/acceptance/queue-schema/test_schema.py` | 归档、提交键及来源关联命令的严格Schema验收 |
+| `engineering/acceptance/queue-schema/core.xml` | 55项队列Schema验收结果 |
+| `engineering/acceptance/queue-schema/change-manifest.json` | 本轮命令Schema变更和未改变命令的核对清单 |
+| `engineering/acceptance/queue-schema/README.md` | 队列契约责任范围、验收入口和交付边界 |
+| `engineering/acceptance/queue-schema/results.json` | 队列契约验收汇总、源码摘要与新增文件清单 |
+| `engineering/ai/src/onlinecoc_ai/review_queue.py` | 独立队列整理元数据、关联替代、提交键和归档CAS |
+| `engineering/ai/tests/test_review_followup.py` | 历史正文、裁决去重与队列整理的确定性回归 |
+| `engineering/ai/tests/test_review_followup_ui.py` | 紧凑引用、继续请求及历史原文的通用组件浏览器回归 |
+| `engineering/acceptance/review-followup/.gitignore` | 忽略本轮AI验收的隔离生成目录 |
+| `engineering/acceptance/review-followup/README.md` | 历史、队列、紧凑引用的责任边界与失败复验说明 |
+| `engineering/acceptance/review-followup/boundaries-final.xml` | 队列归档边界最终验收 |
+| `engineering/acceptance/review-followup/boundaries-initial.xml` | 队列归档边界首次失败证据 |
+| `engineering/acceptance/review-followup/dispatch-final.xml` | 派发与归档并发修复后验收 |
+| `engineering/acceptance/review-followup/first.xml` | 历史及引用首阶段修复后验收 |
+| `engineering/acceptance/review-followup/freeze.xml` | 核心阶段冻结验收 |
+| `engineering/acceptance/review-followup/history-ui.png` | 通用组件保留历史原文的浏览器证据 |
+| `engineering/acceptance/review-followup/initial.xml` | 首轮夹具错误及旧展开格式断言记录 |
+| `engineering/acceptance/review-followup/manifest.json` | 本轮28个实际新增源码与验收文件清单 |
+| `engineering/acceptance/review-followup/nodes-final.xml` | 历史节点授权修复后的回归 |
+| `engineering/acceptance/review-followup/nodes-verified.xml` | 历史节点专项复验 |
+| `engineering/acceptance/review-followup/nodes.xml` | 历史节点文本变化首次失败证据 |
+| `engineering/acceptance/review-followup/pl-dispatch-initial.xml` | PL自动派发事务嵌套首次失败 |
+| `engineering/acceptance/review-followup/pl-final.xml` | PL派发与提交重试修复后验收 |
+| `engineering/acceptance/review-followup/player-retry-initial.xml` | 直接创作申请重试键首次失败 |
+| `engineering/acceptance/review-followup/public-paths.xml` | 最后61项公共路径回归 |
+| `engineering/acceptance/review-followup/queue-first.xml` | 队列整理与去重阶段验收 |
+| `engineering/acceptance/review-followup/record_results.py` | 汇总XML并按用例ID保存最新去重结果 |
+| `engineering/acceptance/review-followup/regression.xml` | AI既有能力回归 |
+| `engineering/acceptance/review-followup/results.json` | 230项最新去重结果、各轮失败及源码摘要 |
+| `engineering/acceptance/review-followup/test_history_nodes.py` | 历史文本、删除和撤权的授权边界测试 |
+| `engineering/acceptance/review-followup/test_player_retry.py` | 创作申请重试及新意图提交键浏览器验证 |
+| `engineering/acceptance/review-followup/test_queue_boundaries.py` | 生成、取消、归档并发及重启边界测试 |
+| `engineering/acceptance/review-followup/ui-first.xml` | 通用历史、引用和继续请求界面验收 |
+
+| `docs/history/2026-11-20-issue-018-message-history-resolution.md` | 消息与时间留存、灰引用、完成归档及本机诊断的协作结果、失败和验收边界 |
+| `rulepacks/stumpsville/tests/verify_queue_chronology.py` | 混合来源裁决DOM时间顺序、归档切换和查询错误恢复验证 |
+| `rulepacks/stumpsville/tests/queue-chronology-results.json` | 队列时间线三组浏览器验收及失败历史 |
+| `rulepacks/stumpsville/tests/verify_local_errors.py` | 本机代理分类、日志定位与真实回环拒连验证 |
+| `rulepacks/stumpsville/tests/local-errors-results.json` | 本机错误链九组验收和安全日志证据 |
+| `rulepacks/stumpsville/tests/verify_message_continuity.py` | 本机原消息、失权引用、真实时间、揭示收件人与同档重启联合验收 |
+| `rulepacks/stumpsville/tests/message-continuity-results.json` | 本机五组整链验收及首轮夹具待办状态失败证据 |
+| `engineering/ai/src/onlinecoc_ai/messages.py` | 会话主体绑定的消息发布证明、交付快照和旧最终正文迁移 |
+| `engineering/ai/tests/test_message_history.py` | 正文留存、失权引用、时间、完成回执与受众边界专项 |
+| `engineering/ai/tests/test_message_history_ui.py` | 灰色禁用引用和真实消息时间的浏览器专项 |
+| `engineering/acceptance/message-history/.gitignore` | 忽略会话历史专项的隔离生成数据 |
+| `engineering/acceptance/message-history/README.md` | 会话发布、时间、失权引用及需求完成验收说明 |
+| `engineering/acceptance/message-history/boundaries-final.xml` | 七项来源与错误定位边界最终验证 |
+| `engineering/acceptance/message-history/boundaries.xml` | 边界验证首次夹具转义失败证据 |
+| `engineering/acceptance/message-history/first.xml` | 历史专项首轮四通过一失败记录 |
+| `engineering/acceptance/message-history/freeze.xml` | 核心冻结111项回归 |
+| `engineering/acceptance/message-history/live-results.json` | DeepSeek两用例、10调用51510 tokens及30次查询延迟记录 |
+| `engineering/acceptance/message-history/live_experiments.py` | 有调用与Token上限的隔离真实模型实验 |
+| `engineering/acceptance/message-history/manifest.json` | 本轮20项新增文件与6份当前工程文档清单 |
+| `engineering/acceptance/message-history/receipt-final.xml` | 完成凭证权限过滤修复后48项定向回归 |
+| `engineering/acceptance/message-history/receipt-visibility.xml` | 失权后完成凭证重曝命令定位的首次失败 |
+| `engineering/acceptance/message-history/record_results.py` | 按真实测试文件归一用例并生成去重验收统计 |
+| `engineering/acceptance/message-history/references.png` | 灰色失权引用与消息时间浏览器证据 |
+| `engineering/acceptance/message-history/results.json` | 119项最新去重记录、各轮失败及源码摘要 |
+| `engineering/acceptance/message-history/second.xml` | 历史和引用第二轮验收失败记录 |
+| `engineering/acceptance/message-history/test_boundaries.py` | 旧消息受众、错误安全定位和完成凭证权限边界 |
+| `engineering/acceptance/message-history/third.xml` | 引用灰色样式覆盖缺陷的第三轮证据 |
+| `engineering/acceptance/http-errors/.gitignore` | 忽略HTTP错误链隔离运行数据 |
+| `engineering/acceptance/http-errors/README.md` | 宿主HTTP与SDK错误定位、修复边界和验收说明 |
+| `engineering/acceptance/http-errors/http-probe.xml` | 首轮真实HTTP错误行为核查 |
+| `engineering/acceptance/http-errors/initial-probe.json` | 修复前SDK六类错误形状采样 |
+| `engineering/acceptance/http-errors/probe_transport.mjs` | SDK传输错误初始探针 |
+| `engineering/acceptance/http-errors/record_results.py` | HTTP错误链验收汇总生成器 |
+| `engineering/acceptance/http-errors/repair-results.json` | SDK修复后15项与既有12项回归汇总及源码摘要 |
+| `engineering/acceptance/http-errors/results.json` | HTTP错误链初审基线结果 |
+| `engineering/acceptance/http-errors/sdk-initial.xml` | SDK联测首次夹具路由失败证据 |
+| `engineering/acceptance/http-errors/sdk-regression.xml` | 既有通知与裁决SDK回归 |
+| `engineering/acceptance/http-errors/sdk-retest.xml` | SDK错误形状修复后真实HTTP验收 |
+| `engineering/acceptance/http-errors/serve_fixture.py` | 隔离宿主错误路由夹具 |
+| `engineering/acceptance/http-errors/test_http_errors.py` | 宿主HTTP拒绝及异常分类验证 |
+| `engineering/acceptance/http-errors/test_transport.mjs` | SDK HTTP、网络、解析及会话错误验证 |
+
+| `docs/history/2026-11-20-issue-019-performance-generation-progress.md` | 三方性能优化、发送快照与过程展示的完成归档、失败及四页联合验收 |
+| `rulepacks/stumpsville/tests/verify_local_performance.py` | 包代理与组合请求的真实回环TCP性能、并发身份隔离对照 |
+| `rulepacks/stumpsville/tests/local-performance-results.json` | 连接池优化前后单并发和四并发计时、源码摘要及隔离证据 |
+| `rulepacks/stumpsville/tests/verify_request_coalescing.py` | 聊天与裁决读取并发合并及迟到旧身份响应的真实浏览器验收 |
+| `rulepacks/stumpsville/tests/request-coalescing-results.json` | 三组读取合并、账号切换和刷新意图保留结果 |
+| `rulepacks/stumpsville/tests/verify_ai_binding_labels.py` | 角色引用标签文件复用、并发读取与原子替换失效验证 |
+| `rulepacks/stumpsville/tests/ai-binding-labels-results.json` | 四组标签缓存验收及Windows stat/fstat时间语义首次失败 |
+| `rulepacks/stumpsville/tests/verify_performance_workflow.py` | 四页面真实宿主性能及生成中私聊、审批、暂时刷新失败的联合验收脚本 |
+| `rulepacks/stumpsville/tests/performance-workflow-results.json` | 四页面性能与生成连续性联合结果，保留夹具、历史基线误拒绝和重查超时各轮证据 |
+| `engineering/acceptance/performance/.gitignore` | 忽略性能验收的隔离宿主、源码镜像和浏览器工作目录 |
+| `engineering/acceptance/performance/README.md` | 引擎性能归因、前后对比、保护边界及残余尾延迟 |
+| `engineering/acceptance/performance/baseline.json` | 1000聊天和回执规模的原始引擎基线 |
+| `engineering/acceptance/performance/baseline_sources.py` | 按基线摘要核对并重建旧源码隔离镜像 |
+| `engineering/acceptance/performance/benchmark.py` | 真实宿主、SDK与浏览器单页及四页负载测量 |
+| `engineering/acceptance/performance/boundaries-initial.xml` | 边界回归首次斜杠断言夹具失败记录 |
+| `engineering/acceptance/performance/boundaries.xml` | 35项Schema复用、存储与分片撤权保护验证 |
+| `engineering/acceptance/performance/core.xml` | 64项基础存储、聊天、模型与崩溃回归 |
+| `engineering/acceptance/performance/current-scale-baseline.json` | 约416KB与100回执合成房间的优化前样本 |
+| `engineering/acceptance/performance/current-scale-optimized.json` | 同规模优化后样本及快照reset和连接关闭计数 |
+| `engineering/acceptance/performance/host_fixture.py` | 独立性能宿主、合成历史与安全访问夹具 |
+| `engineering/acceptance/performance/initial-fixture-failure.json` | CSP等初始夹具失败与早期SDK不可写等待证据 |
+| `engineering/acceptance/performance/optimized.json` | 1000历史规模优化后计时与源码摘要 |
+| `engineering/acceptance/performance/profile-baseline.txt` | 单次真实聊天提交的CPU剖析原始记录 |
+| `engineering/acceptance/performance/profile_command.py` | 可重复的隔离CPU剖析入口 |
+| `engineering/acceptance/performance/record_results.py` | 汇总前后性能、保护回归及新增文件 |
+| `engineering/acceptance/performance/regression.xml` | 宿主、通知、知识及真实聊天浏览器62项回归 |
+| `engineering/acceptance/performance/results.json` | 161次执行、160独立用例和全部前后测量汇总 |
+| `engineering/acceptance/performance/test_boundaries.py` | 缓存键、跨记录约束、字节兼容及权限边界测试 |
+| `engineering/acceptance/performance/worker-probe.json` | 新鲜规则进程启动开销与候选方案对照 |
+| `engineering/acceptance/performance/worker_probe.py` | 规则执行隔离进程启动探针 |
+
+| `engineering/acceptance/ai-snapshot-performance/.gitignore` | 忽略隔离AI验收工作目录和运行数据 |
+| `engineering/acceptance/ai-snapshot-performance/baseline-rate-limit.json` | AI性能与发送快照的阶段原始验收证据，最终结论见同目录README |
+| `engineering/acceptance/ai-snapshot-performance/baseline-setup-error.json` | AI性能与发送快照的阶段原始验收证据，最终结论见同目录README |
+| `engineering/acceptance/ai-snapshot-performance/baseline-source.json` | AI性能与发送快照的阶段原始验收证据，最终结论见同目录README |
+| `engineering/acceptance/ai-snapshot-performance/baseline.json` | AI性能与发送快照的阶段原始验收证据，最终结论见同目录README |
+| `engineering/acceptance/ai-snapshot-performance/benchmark.py` | 非空AI历史存档的单并发与四并发查询测量 |
+| `engineering/acceptance/ai-snapshot-performance/browser.xml` | AI性能与发送快照的阶段原始验收证据，最终结论见同目录README |
+| `engineering/acceptance/ai-snapshot-performance/cache-regression.xml` | AI性能与发送快照的阶段原始验收证据，最终结论见同目录README |
+| `engineering/acceptance/ai-snapshot-performance/document-check.json` | AI当前文档链接及文件摘要核对 |
+| `engineering/acceptance/ai-snapshot-performance/final-core-all.xml` | AI性能与发送快照的阶段原始验收证据，最终结论见同目录README |
+| `engineering/acceptance/ai-snapshot-performance/final-core.xml` | AI性能与发送快照的阶段原始验收证据，最终结论见同目录README |
+| `engineering/acceptance/ai-snapshot-performance/final-regression.xml` | AI性能与发送快照的阶段原始验收证据，最终结论见同目录README |
+| `engineering/acceptance/ai-snapshot-performance/freeze-core.xml` | AI性能与发送快照的阶段原始验收证据，最终结论见同目录README |
+| `engineering/acceptance/ai-snapshot-performance/history-cache.xml` | AI性能与发送快照的阶段原始验收证据，最终结论见同目录README |
+| `engineering/acceptance/ai-snapshot-performance/history-diagnosis.xml` | AI性能与发送快照的阶段原始验收证据，最终结论见同目录README |
+| `engineering/acceptance/ai-snapshot-performance/history-final.xml` | AI性能与发送快照的阶段原始验收证据，最终结论见同目录README |
+| `engineering/acceptance/ai-snapshot-performance/history-performance-before.json` | 历史图重复授权复制和重查的原始性能证据 |
+| `engineering/acceptance/ai-snapshot-performance/history-performance.json` | 同历史图优化后剖析与调用次数对照 |
+| `engineering/acceptance/ai-snapshot-performance/history-tool-first.xml` | AI性能与发送快照的阶段原始验收证据，最终结论见同目录README |
+| `engineering/acceptance/ai-snapshot-performance/history-tool-fixed.xml` | AI性能与发送快照的阶段原始验收证据，最终结论见同目录README |
+| `engineering/acceptance/ai-snapshot-performance/history_benchmark.py` | 14上下文历史图及真实依赖改变的性能剖析 |
+| `engineering/acceptance/ai-snapshot-performance/interrupted-regression.json` | AI性能与发送快照的阶段原始验收证据，最终结论见同目录README |
+| `engineering/acceptance/ai-snapshot-performance/live-preflight.json` | 真实实验预留额度阻断与零调用记录 |
+| `engineering/acceptance/ai-snapshot-performance/live-results.json` | 单次DeepSeek实验、2次调用13485 tokens及隔离发布结果 |
+| `engineering/acceptance/ai-snapshot-performance/live_experiment.py` | 有界真实DeepSeek生成中聊天及隔离发布实验 |
+| `engineering/acceptance/ai-snapshot-performance/manifest.json` | 本轮AI新增源码与验收文件清单 |
+| `engineering/acceptance/ai-snapshot-performance/optimized-final.json` | AI性能与发送快照的阶段原始验收证据，最终结论见同目录README |
+| `engineering/acceptance/ai-snapshot-performance/optimized.json` | AI性能与发送快照的阶段原始验收证据，最终结论见同目录README |
+| `engineering/acceptance/ai-snapshot-performance/progress.png` | AI处理过程与重新生成入口的浏览器截图 |
+| `engineering/acceptance/ai-snapshot-performance/README.md` | AI性能、发送快照与过程展示的验收范围和首次失败说明 |
+| `engineering/acceptance/ai-snapshot-performance/record_results.py` | 原始XML去重汇总与源码摘要生成 |
+| `engineering/acceptance/ai-snapshot-performance/results.json` | 200项唯一用例结果、全部尝试及最终源码摘要 |
+| `engineering/acceptance/ai-snapshot-performance/smoke.xml` | AI性能与发送快照的阶段原始验收证据，最终结论见同目录README |
+| `engineering/acceptance/ai-snapshot-performance/snapshot-first.xml` | AI性能与发送快照的阶段原始验收证据，最终结论见同目录README |
+| `engineering/acceptance/ai-snapshot-performance/storage-growth.json` | 四次工具读取后AI持久增量与有效上下文数量 |
+| `engineering/acceptance/ai-snapshot-performance/tools-diagnosis.xml` | AI性能与发送快照的阶段原始验收证据，最终结论见同目录README |
+| `engineering/acceptance/ai-snapshot-performance/tools-fixed.xml` | AI性能与发送快照的阶段原始验收证据，最终结论见同目录README |
+| `engineering/ai/src/onlinecoc_ai/generation.py` | 发送时只读生成快照、实时权限保护与具体依赖变化校验 |
+| `engineering/ai/tests/test_generation_snapshot.py` | 冻结生成、历史图缓存、权限撤销与存储增量专项 |
+| `engineering/ai/tests/test_progress_ui.py` | 通用过程卡与资料变化后重新生成入口的浏览器专项 |
+
+| `docs/plans/Issues/issue-020-batch-partial-slot-diagnostics.md` | 零成功批次误显部分完成及物品槽位混淆的现场、隔离修复和正式跑测边界 |
+
+| `docs/plans/ai-command-reliability.md` | 全类型指令生成样例、真实 API 测试、自动修复与整批事务实施计划 |
+
+| `rulepacks/stumpsville/ui/batch-details.js` | 批次有序指令、逐项预检/结果与安全通知摘要展示 |
+| `rulepacks/stumpsville/tests/verify_batch_details.py` | 合成DTO隔离浏览器：序号、撤销、旧首项失败、未知回执与窄屏展示 |
+| `rulepacks/stumpsville/tests/batch-details-results.json` | 逐项批次展示9组浏览器结果，保留夹具MIME与导航失败 |
+
+| `rulepacks/stumpsville/tests/verify_batch_workflow.py` | 真实隔离宿主与合成模型：槽位自动修复、批次批准、通知与重放联合验收 |
+
+| `docs/current/engineering/atomic-batches.md` | 原子批次当前接口与限制 |
+| `engineering/acceptance/atomic-batches/.gitignore` | 原子批次隔离验收、源码摘要与保留的历史执行证据 |
+| `engineering/acceptance/atomic-batches/README.md` | 原子批次隔离验收、源码摘要与保留的历史执行证据 |
+| `engineering/acceptance/atomic-batches/admission.xml` | 原子批次隔离验收、源码摘要与保留的历史执行证据 |
+| `engineering/acceptance/atomic-batches/conflict.xml` | 原子批次隔离验收、源码摘要与保留的历史执行证据 |
+| `engineering/acceptance/atomic-batches/conftest.py` | 原子批次隔离验收、源码摘要与保留的历史执行证据 |
+| `engineering/acceptance/atomic-batches/core.xml` | 原子批次隔离验收、源码摘要与保留的历史执行证据 |
+| `engineering/acceptance/atomic-batches/count-limit.xml` | 原子批次隔离验收、源码摘要与保留的历史执行证据 |
+| `engineering/acceptance/atomic-batches/crash_worker.py` | 原子批次隔离验收、源码摘要与保留的历史执行证据 |
+| `engineering/acceptance/atomic-batches/extended.xml` | 原子批次隔离验收、源码摘要与保留的历史执行证据 |
+| `engineering/acceptance/atomic-batches/final.xml` | 原子批次隔离验收、源码摘要与保留的历史执行证据 |
+| `engineering/acceptance/atomic-batches/initial-failures.json` | 原子批次隔离验收、源码摘要与保留的历史执行证据 |
+| `engineering/acceptance/atomic-batches/initial.xml` | 原子批次隔离验收、源码摘要与保留的历史执行证据 |
+| `engineering/acceptance/atomic-batches/record_results.py` | 原子批次隔离验收、源码摘要与保留的历史执行证据 |
+| `engineering/acceptance/atomic-batches/regression.xml` | 原子批次隔离验收、源码摘要与保留的历史执行证据 |
+| `engineering/acceptance/atomic-batches/results.json` | 原子批次隔离验收、源码摘要与保留的历史执行证据 |
+| `engineering/acceptance/atomic-batches/test_atomic.py` | 原子批次隔离验收、源码摘要与保留的历史执行证据 |
+| `engineering/acceptance/atomic-batches/test_stumpsville.py` | 原子批次隔离验收、源码摘要与保留的历史执行证据 |
+| `engineering/backend/src/onlinecoc/atomic_batches.py` | 原子批次宿主实现 |
+| `engineering/contracts/atomic-batches.json` | 原子批次机器契约 |
+
+| `engineering/acceptance/stumpsville-action-matrix/.gitignore` | 树桩镇17类行动最小上下文、参数、24例真实宿主结果及幂等证据 |
+| `engineering/acceptance/stumpsville-action-matrix/build_cases.py` | 树桩镇17类行动最小上下文、参数、24例真实宿主结果及幂等证据 |
+| `engineering/acceptance/stumpsville-action-matrix/cases.json` | 树桩镇17类行动最小上下文、参数、24例真实宿主结果及幂等证据 |
+| `engineering/acceptance/stumpsville-action-matrix/catalog.json` | 树桩镇17类行动最小上下文、参数、24例真实宿主结果及幂等证据 |
+| `engineering/acceptance/stumpsville-action-matrix/contexts.json` | 树桩镇17类行动最小上下文、参数、24例真实宿主结果及幂等证据 |
+| `engineering/acceptance/stumpsville-action-matrix/finalize.py` | 树桩镇17类行动最小上下文、参数、24例真实宿主结果及幂等证据 |
+| `engineering/acceptance/stumpsville-action-matrix/prestates.json` | 树桩镇17类行动最小上下文、参数、24例真实宿主结果及幂等证据 |
+| `engineering/acceptance/stumpsville-action-matrix/README.md` | 树桩镇17类行动最小上下文、参数、24例真实宿主结果及幂等证据 |
+| `engineering/acceptance/stumpsville-action-matrix/results.json` | 树桩镇17类行动最小上下文、参数、24例真实宿主结果及幂等证据 |
+| `engineering/acceptance/stumpsville-action-matrix/run_matrix.py` | 树桩镇17类行动最小上下文、参数、24例真实宿主结果及幂等证据 |
+| `engineering/acceptance/stumpsville-action-matrix/runs/run-001.json` | 树桩镇17类行动最小上下文、参数、24例真实宿主结果及幂等证据 |
+
+| `rulepacks/stumpsville/tests/batch-workflow-results.json` | 真实隔离Host与AI自动修复及浏览器执行联合验收，保留所有尝试 |
+
+| `engineering/acceptance/ai-command-reliability/.gitignore` | AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README） |
+| `engineering/acceptance/ai-command-reliability/README.md` | AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README） |
+| `engineering/acceptance/ai-command-reliability/atomic-first.xml` | AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README） |
+| `engineering/acceptance/ai-command-reliability/atomic-second.xml` | AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README） |
+| `engineering/acceptance/ai-command-reliability/atomic-third.xml` | AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README） |
+| `engineering/acceptance/ai-command-reliability/baseline-reassessment.json` | AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README） |
+| `engineering/acceptance/ai-command-reliability/baseline-source.json` | AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README） |
+| `engineering/acceptance/ai-command-reliability/batch-details-1100.png` | AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README） |
+| `engineering/acceptance/ai-command-reliability/batch-details-390.png` | AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README） |
+| `engineering/acceptance/ai-command-reliability/batch-ui-first.xml` | AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README） |
+| `engineering/acceptance/ai-command-reliability/bounded_provider.py` | AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README） |
+| `engineering/acceptance/ai-command-reliability/budget.json` | AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README） |
+| `engineering/acceptance/ai-command-reliability/casebook.py` | AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README） |
+| `engineering/acceptance/ai-command-reliability/cases.json` | AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README） |
+| `engineering/acceptance/ai-command-reliability/catalog-final.xml` | AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README） |
+| `engineering/acceptance/ai-command-reliability/coordinator-1795183044989840600.json` | AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README） |
+| `engineering/acceptance/ai-command-reliability/coordinator-1795183647247512600.json` | AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README） |
+| `engineering/acceptance/ai-command-reliability/coordinator-1795184194107020600.json` | AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README） |
+| `engineering/acceptance/ai-command-reliability/coordinator-regression-source.json` | AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README） |
+| `engineering/acceptance/ai-command-reliability/coordinator-regression.xml` | AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README） |
+| `engineering/acceptance/ai-command-reliability/coordinator_live.py` | AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README） |
+| `engineering/acceptance/ai-command-reliability/core-first-source.json` | AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README） |
+| `engineering/acceptance/ai-command-reliability/core-first.xml` | AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README） |
+| `engineering/acceptance/ai-command-reliability/core-repaired-source.json` | AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README） |
+| `engineering/acceptance/ai-command-reliability/core-repaired.xml` | AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README） |
+| `engineering/acceptance/ai-command-reliability/document-check.json` | 文档链接与冻结源码摘要检查 |
+| `engineering/acceptance/ai-command-reliability/engine-interface-source.json` | AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README） |
+| `engineering/acceptance/ai-command-reliability/evaluate.py` | AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README） |
+| `engineering/acceptance/ai-command-reliability/failure-register.json` | AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README） |
+| `engineering/acceptance/ai-command-reliability/feedback-followup-source.json` | AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README） |
+| `engineering/acceptance/ai-command-reliability/feedback-followup.xml` | AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README） |
+| `engineering/acceptance/ai-command-reliability/finalize.py` | AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README） |
+| `engineering/acceptance/ai-command-reliability/followup-1795184808338206200.json` | AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README） |
+| `engineering/acceptance/ai-command-reliability/followup-1795185119230842500.json` | AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README） |
+| `engineering/acceptance/ai-command-reliability/followup-verification.json` | AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README） |
+| `engineering/acceptance/ai-command-reliability/freeze-smoke.xml` | AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README） |
+| `engineering/acceptance/ai-command-reliability/improved-system.txt` | AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README） |
+| `engineering/acceptance/ai-command-reliability/independent-reassessment.json` | AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README） |
+| `engineering/acceptance/ai-command-reliability/live-ledger.json` | AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README） |
+| `engineering/acceptance/ai-command-reliability/live.py` | AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README） |
+| `engineering/acceptance/ai-command-reliability/lua-author-check.json` | AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README） |
+| `engineering/acceptance/ai-command-reliability/new-files.json` | 本次新增路径交接清单 |
+| `engineering/acceptance/ai-command-reliability/oracle-check.json` | AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README） |
+| `engineering/acceptance/ai-command-reliability/probe-cases.json` | AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README） |
+| `engineering/acceptance/ai-command-reliability/production-freeze.json` | AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README） |
+| `engineering/acceptance/ai-command-reliability/production-source-before-input-boundaries.json` | AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README） |
+| `engineering/acceptance/ai-command-reliability/production-source.json` | AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README） |
+| `engineering/acceptance/ai-command-reliability/recovery-first.xml` | AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README） |
+| `engineering/acceptance/ai-command-reliability/reference-feedback-source.json` | AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README） |
+| `engineering/acceptance/ai-command-reliability/reference-feedback.xml` | AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README） |
+| `engineering/acceptance/ai-command-reliability/reference-input-boundaries-source.json` | AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README） |
+| `engineering/acceptance/ai-command-reliability/reference-input-boundaries.xml` | AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README） |
+| `engineering/acceptance/ai-command-reliability/regression-coverage.json` | AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README） |
+| `engineering/acceptance/ai-command-reliability/repair_saved.py` | AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README） |
+| `engineering/acceptance/ai-command-reliability/replay-1795183317010503400.json` | AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README） |
+| `engineering/acceptance/ai-command-reliability/replay_outputs.py` | AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README） |
+| `engineering/acceptance/ai-command-reliability/results.json` | AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README） |
+| `engineering/acceptance/ai-command-reliability/run_tests.py` | AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README） |
+| `engineering/acceptance/ai-command-reliability/saved-repair-1795183760607024700.json` | AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README） |
+| `engineering/acceptance/ai-command-reliability/saved-repair-1795184015563359400.json` | AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README） |
+| `engineering/acceptance/ai-command-reliability/saved-repair-1795184146769813400.json` | AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README） |
+| `engineering/acceptance/ai-command-reliability/setup-attempts.json` | AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README） |
+| `engineering/acceptance/ai-command-reliability/strict-pack-v2-source.json` | AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README） |
+| `engineering/acceptance/ai-command-reliability/technical-repair-fixed.xml` | AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README） |
+| `engineering/acceptance/ai-command-reliability/technical-repair.xml` | AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README） |
+| `engineering/acceptance/ai-command-reliability/valid-cases.json` | AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README） |
+| `engineering/acceptance/ai-command-reliability/valid-fixture-checks.json` | AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README） |
+| `engineering/acceptance/ai-command-reliability/valid-input-source.json` | AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README） |
+| `engineering/acceptance/ai-command-reliability/valid_cases.py` | AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README） |
+| `engineering/acceptance/ai-command-reliability/valid_live.py` | AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README） |
+| `engineering/acceptance/ai-command-reliability/verify_followups.py` | AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README） |
+| `engineering/acceptance/ai-command-reliability/work/` | Git忽略的隔离API请求原件、运行存储、日志与快照；只含合成测试数据，不逐项入库 |
+| `engineering/ai/src/onlinecoc_ai/batch_execution.py` | AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README） |
+| `engineering/ai/src/onlinecoc_ai/reliability.py` | AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README） |
+| `engineering/ai/src/onlinecoc_ai/runtime_references.py` | AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README） |
+| `engineering/ai/tests/test_atomic_integration.py` | AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README） |
+| `engineering/ai/tests/test_atomic_recovery.py` | AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README） |
+| `engineering/ai/tests/test_batch_details_ui.py` | AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README） |
+| `engineering/ai/tests/test_command_reliability.py` | AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README） |
+| `engineering/ai/tests/test_runtime_references.py` | AI指令可靠性实现/回归/分轮实验与失败证据（详见验收README） |
+
+| `docs/history/2026-11-21-ai-defaults-c-review.md` | 默认初始化、账号管理、C类评估实施及有界实验归档 |
+| `docs/history/2026-11-21-issue-021-ai-defaults-c-review.md` | ISSUE-021三方实现与联合验收归档 |
+
+| `rulepacks/stumpsville/tools/accounts.py` | 启动面板账号标签，使用本机公开CLI与同请求恢复 |
+| `rulepacks/stumpsville/tests/verify_panel_defaults.py` | 默认AI与账号标签的隔离原生UI和真实宿主验收 |
+| `rulepacks/stumpsville/tests/panel-defaults-results.json` | 面板默认与账号管理分轮结果，保留首次夹具失败 |
+
+| `rulepacks/stumpsville/tests/verify_c_review_ui.py` | C类评估、显式采纳证明与过期重检的浏览器隔离验收 |
+| `rulepacks/stumpsville/tests/c-review-ui-results.json` | C类包侧5组展示/交互与窄屏结果 |
+
+| `engineering/acceptance/engine-accounts-interface-snapshot/.gitignore` | 本机账号事务、C发布证明及其专项/回归证据（详见local-accounts验收） |
+| `engineering/acceptance/engine-accounts-interface-snapshot/v1/source.json` | 本机账号事务、C发布证明及其专项/回归证据（详见local-accounts验收） |
+| `engineering/acceptance/engine-accounts-interface-snapshot/v2/source.json` | 本机账号事务、C发布证明及其专项/回归证据（详见local-accounts验收） |
+| `engineering/acceptance/engine-accounts-interface-snapshot/v3/source.json` | 本机账号事务、C发布证明及其专项/回归证据（详见local-accounts验收） |
+| `engineering/acceptance/local-accounts/.gitignore` | 本机账号事务、C发布证明及其专项/回归证据（详见local-accounts验收） |
+| `engineering/acceptance/local-accounts/README.md` | 本机账号事务、C发布证明及其专项/回归证据（详见local-accounts验收） |
+| `engineering/acceptance/local-accounts/c-command.xml` | 本机账号事务、C发布证明及其专项/回归证据（详见local-accounts验收） |
+| `engineering/acceptance/local-accounts/c-first.xml` | 本机账号事务、C发布证明及其专项/回归证据（详见local-accounts验收） |
+| `engineering/acceptance/local-accounts/c-fixed.xml` | 本机账号事务、C发布证明及其专项/回归证据（详见local-accounts验收） |
+| `engineering/acceptance/local-accounts/checkpoint.py` | 本机账号事务、C发布证明及其专项/回归证据（详见local-accounts验收） |
+| `engineering/acceptance/local-accounts/client.xml` | 本机账号事务、C发布证明及其专项/回归证据（详见local-accounts验收） |
+| `engineering/acceptance/local-accounts/conftest.py` | 本机账号事务、C发布证明及其专项/回归证据（详见local-accounts验收） |
+| `engineering/acceptance/local-accounts/crash_worker.py` | 本机账号事务、C发布证明及其专项/回归证据（详见local-accounts验收） |
+| `engineering/acceptance/local-accounts/durability.xml` | 本机账号事务、C发布证明及其专项/回归证据（详见local-accounts验收） |
+| `engineering/acceptance/local-accounts/final.xml` | 本机账号事务、C发布证明及其专项/回归证据（详见local-accounts验收） |
+| `engineering/acceptance/local-accounts/finalize.py` | 本机账号事务、C发布证明及其专项/回归证据（详见local-accounts验收） |
+| `engineering/acceptance/local-accounts/initial-failures.json` | 本机账号事务、C发布证明及其专项/回归证据（详见local-accounts验收） |
+| `engineering/acceptance/local-accounts/initial.xml` | 本机账号事务、C发布证明及其专项/回归证据（详见local-accounts验收） |
+| `engineering/acceptance/local-accounts/lifecycle-fixed.xml` | 本机账号事务、C发布证明及其专项/回归证据（详见local-accounts验收） |
+| `engineering/acceptance/local-accounts/network-fixed.xml` | 本机账号事务、C发布证明及其专项/回归证据（详见local-accounts验收） |
+| `engineering/acceptance/local-accounts/persisted.xml` | 本机账号事务、C发布证明及其专项/回归证据（详见local-accounts验收） |
+| `engineering/acceptance/local-accounts/prepare.py` | 本机账号事务、C发布证明及其专项/回归证据（详见local-accounts验收） |
+| `engineering/acceptance/local-accounts/regression-fixed.xml` | 本机账号事务、C发布证明及其专项/回归证据（详见local-accounts验收） |
+| `engineering/acceptance/local-accounts/regression.xml` | 本机账号事务、C发布证明及其专项/回归证据（详见local-accounts验收） |
+| `engineering/acceptance/local-accounts/results.json` | 本机账号事务、C发布证明及其专项/回归证据（详见local-accounts验收） |
+| `engineering/acceptance/local-accounts/serve_fixture.py` | 本机账号事务、C发布证明及其专项/回归证据（详见local-accounts验收） |
+| `engineering/acceptance/local-accounts/source.json` | 本机账号事务、C发布证明及其专项/回归证据（详见local-accounts验收） |
+| `engineering/acceptance/local-accounts/test_accounts.py` | 本机账号事务、C发布证明及其专项/回归证据（详见local-accounts验收） |
+| `engineering/acceptance/local-accounts/test_c_command_recovery.py` | 本机账号事务、C发布证明及其专项/回归证据（详见local-accounts验收） |
+| `engineering/acceptance/local-accounts/test_c_gate.py` | 本机账号事务、C发布证明及其专项/回归证据（详见local-accounts验收） |
+| `engineering/acceptance/local-accounts/test_client.py` | 本机账号事务、C发布证明及其专项/回归证据（详见local-accounts验收） |
+| `engineering/acceptance/local-accounts/test_durability.py` | 本机账号事务、C发布证明及其专项/回归证据（详见local-accounts验收） |
+| `engineering/acceptance/local-accounts/triage.xml` | 本机账号事务、C发布证明及其专项/回归证据（详见local-accounts验收） |
+| `engineering/backend/src/onlinecoc/host_control_client.py` | 本机账号事务、C发布证明及其专项/回归证据（详见local-accounts验收） |
+| `engineering/backend/src/onlinecoc/local_accounts.py` | 本机账号事务、C发布证明及其专项/回归证据（详见local-accounts验收） |
+| `engineering/acceptance/local-accounts/work/` | Git忽略的合成账号、DPAPI目录、故障夹具和隔离引擎，不逐项入库 |
+| `engineering/acceptance/engine-accounts-interface-snapshot/v1/engineering/` | Git忽略的v1只读联测工程镜像，保留source.json摘要 |
+| `engineering/acceptance/engine-accounts-interface-snapshot/v2/engineering/` | Git忽略的v2只读联测工程镜像，保留source.json摘要 |
+| `engineering/acceptance/engine-accounts-interface-snapshot/v3/engineering/` | Git忽略的v3只读联测工程镜像，保留source.json摘要 |
+
+| `engineering/acceptance/ai-c-review-interface-snapshot/.gitignore` | 新房间默认权限、C类KP采纳/动态依据、回归与API分轮证据（详见ai-defaults-c-review验收） |
+| `engineering/acceptance/ai-c-review-interface-snapshot/source-v2.json` | 新房间默认权限、C类KP采纳/动态依据、回归与API分轮证据（详见ai-defaults-c-review验收） |
+| `engineering/acceptance/ai-c-review-interface-snapshot/source.json` | 新房间默认权限、C类KP采纳/动态依据、回归与API分轮证据（详见ai-defaults-c-review验收） |
+| `engineering/acceptance/ai-c-review-interface-snapshot/v1/` | Git忽略的隔离工程镜像或合成实验运行数据，不逐文件入库；摘要和精选证据另列 |
+| `engineering/acceptance/ai-c-review-interface-snapshot/v2/` | Git忽略的隔离工程镜像或合成实验运行数据，不逐文件入库；摘要和精选证据另列 |
+| `engineering/acceptance/ai-defaults-c-review/.gitignore` | 新房间默认权限、C类KP采纳/动态依据、回归与API分轮证据（详见ai-defaults-c-review验收） |
+| `engineering/acceptance/ai-defaults-c-review/README.md` | 新房间默认权限、C类KP采纳/动态依据、回归与API分轮证据（详见ai-defaults-c-review验收） |
+| `engineering/acceptance/ai-defaults-c-review/active-tree.json` | 新房间默认权限、C类KP采纳/动态依据、回归与API分轮证据（详见ai-defaults-c-review验收） |
+| `engineering/acceptance/ai-defaults-c-review/actual-c-publication-1795193350815570100.json` | 新房间默认权限、C类KP采纳/动态依据、回归与API分轮证据（详见ai-defaults-c-review验收） |
+| `engineering/acceptance/ai-defaults-c-review/actual-c-publication-1795193884905932300.json` | 新房间默认权限、C类KP采纳/动态依据、回归与API分轮证据（详见ai-defaults-c-review验收） |
+| `engineering/acceptance/ai-defaults-c-review/actual-c-review-after.png` | 新房间默认权限、C类KP采纳/动态依据、回归与API分轮证据（详见ai-defaults-c-review验收） |
+| `engineering/acceptance/ai-defaults-c-review/actual-c-review-before.png` | 新房间默认权限、C类KP采纳/动态依据、回归与API分轮证据（详见ai-defaults-c-review验收） |
+| `engineering/acceptance/ai-defaults-c-review/bounded_provider.py` | 新房间默认权限、C类KP采纳/动态依据、回归与API分轮证据（详见ai-defaults-c-review验收） |
+| `engineering/acceptance/ai-defaults-c-review/budget.json` | 新房间默认权限、C类KP采纳/动态依据、回归与API分轮证据（详见ai-defaults-c-review验收） |
+| `engineering/acceptance/ai-defaults-c-review/coordinator_live.py` | 新房间默认权限、C类KP采纳/动态依据、回归与API分轮证据（详见ai-defaults-c-review验收） |
+| `engineering/acceptance/ai-defaults-c-review/core-integrated-source.json` | 新房间默认权限、C类KP采纳/动态依据、回归与API分轮证据（详见ai-defaults-c-review验收） |
+| `engineering/acceptance/ai-defaults-c-review/core-integrated.xml` | 新房间默认权限、C类KP采纳/动态依据、回归与API分轮证据（详见ai-defaults-c-review验收） |
+| `engineering/acceptance/ai-defaults-c-review/core-v3-final-source.json` | 新房间默认权限、C类KP采纳/动态依据、回归与API分轮证据（详见ai-defaults-c-review验收） |
+| `engineering/acceptance/ai-defaults-c-review/core-v3-final.xml` | 新房间默认权限、C类KP采纳/动态依据、回归与API分轮证据（详见ai-defaults-c-review验收） |
+| `engineering/acceptance/ai-defaults-c-review/coverage-first-source.json` | 新房间默认权限、C类KP采纳/动态依据、回归与API分轮证据（详见ai-defaults-c-review验收） |
+| `engineering/acceptance/ai-defaults-c-review/coverage-first.xml` | 新房间默认权限、C类KP采纳/动态依据、回归与API分轮证据（详见ai-defaults-c-review验收） |
+| `engineering/acceptance/ai-defaults-c-review/coverage-fixed-source.json` | 新房间默认权限、C类KP采纳/动态依据、回归与API分轮证据（详见ai-defaults-c-review验收） |
+| `engineering/acceptance/ai-defaults-c-review/coverage-fixed.xml` | 新房间默认权限、C类KP采纳/动态依据、回归与API分轮证据（详见ai-defaults-c-review验收） |
+| `engineering/acceptance/ai-defaults-c-review/defaults-first-source.json` | 新房间默认权限、C类KP采纳/动态依据、回归与API分轮证据（详见ai-defaults-c-review验收） |
+| `engineering/acceptance/ai-defaults-c-review/defaults-first.xml` | 新房间默认权限、C类KP采纳/动态依据、回归与API分轮证据（详见ai-defaults-c-review验收） |
+| `engineering/acceptance/ai-defaults-c-review/document-check.json` | 新房间默认权限、C类KP采纳/动态依据、回归与API分轮证据（详见ai-defaults-c-review验收） |
+| `engineering/acceptance/ai-defaults-c-review/evidence-repair-1795194368156215900.json` | 新房间默认权限、C类KP采纳/动态依据、回归与API分轮证据（详见ai-defaults-c-review验收） |
+| `engineering/acceptance/ai-defaults-c-review/failure-register.json` | 新房间默认权限、C类KP采纳/动态依据、回归与API分轮证据（详见ai-defaults-c-review验收） |
+| `engineering/acceptance/ai-defaults-c-review/finalize.py` | 新房间默认权限、C类KP采纳/动态依据、回归与API分轮证据（详见ai-defaults-c-review验收） |
+| `engineering/acceptance/ai-defaults-c-review/independent-oracle-check.json` | 新房间默认权限、C类KP采纳/动态依据、回归与API分轮证据（详见ai-defaults-c-review验收） |
+| `engineering/acceptance/ai-defaults-c-review/integrated-current-source.json` | 新房间默认权限、C类KP采纳/动态依据、回归与API分轮证据（详见ai-defaults-c-review验收） |
+| `engineering/acceptance/ai-defaults-c-review/integrated-source.json` | 新房间默认权限、C类KP采纳/动态依据、回归与API分轮证据（详见ai-defaults-c-review验收） |
+| `engineering/acceptance/ai-defaults-c-review/integrated-v3-source.json` | 新房间默认权限、C类KP采纳/动态依据、回归与API分轮证据（详见ai-defaults-c-review验收） |
+| `engineering/acceptance/ai-defaults-c-review/lifecycle-evidence-fixed-source.json` | 新房间默认权限、C类KP采纳/动态依据、回归与API分轮证据（详见ai-defaults-c-review验收） |
+| `engineering/acceptance/ai-defaults-c-review/lifecycle-evidence-fixed.xml` | 新房间默认权限、C类KP采纳/动态依据、回归与API分轮证据（详见ai-defaults-c-review验收） |
+| `engineering/acceptance/ai-defaults-c-review/lifecycle-evidence-source.json` | 新房间默认权限、C类KP采纳/动态依据、回归与API分轮证据（详见ai-defaults-c-review验收） |
+| `engineering/acceptance/ai-defaults-c-review/lifecycle-evidence.xml` | 新房间默认权限、C类KP采纳/动态依据、回归与API分轮证据（详见ai-defaults-c-review验收） |
+| `engineering/acceptance/ai-defaults-c-review/live-ledger.json` | 新房间默认权限、C类KP采纳/动态依据、回归与API分轮证据（详见ai-defaults-c-review验收） |
+| `engineering/acceptance/ai-defaults-c-review/natural-1795193315656682400.json` | 新房间默认权限、C类KP采纳/动态依据、回归与API分轮证据（详见ai-defaults-c-review验收） |
+| `engineering/acceptance/ai-defaults-c-review/new-files.json` | 新房间默认权限、C类KP采纳/动态依据、回归与API分轮证据（详见ai-defaults-c-review验收） |
+| `engineering/acceptance/ai-defaults-c-review/repair_evidence.py` | 新房间默认权限、C类KP采纳/动态依据、回归与API分轮证据（详见ai-defaults-c-review验收） |
+| `engineering/acceptance/ai-defaults-c-review/replay-1795194105655650000.json` | 新房间默认权限、C类KP采纳/动态依据、回归与API分轮证据（详见ai-defaults-c-review验收） |
+| `engineering/acceptance/ai-defaults-c-review/replay_saved.py` | 新房间默认权限、C类KP采纳/动态依据、回归与API分轮证据（详见ai-defaults-c-review验收） |
+| `engineering/acceptance/ai-defaults-c-review/results.json` | 新房间默认权限、C类KP采纳/动态依据、回归与API分轮证据（详见ai-defaults-c-review验收） |
+| `engineering/acceptance/ai-defaults-c-review/run_tests.py` | 新房间默认权限、C类KP采纳/动态依据、回归与API分轮证据（详见ai-defaults-c-review验收） |
+| `engineering/acceptance/ai-defaults-c-review/setup-attempts.json` | 新房间默认权限、C类KP采纳/动态依据、回归与API分轮证据（详见ai-defaults-c-review验收） |
+| `engineering/acceptance/ai-defaults-c-review/strict-pack-source.json` | 新房间默认权限、C类KP采纳/动态依据、回归与API分轮证据（详见ai-defaults-c-review验收） |
+| `engineering/acceptance/ai-defaults-c-review/ui-first-source.json` | 新房间默认权限、C类KP采纳/动态依据、回归与API分轮证据（详见ai-defaults-c-review验收） |
+| `engineering/acceptance/ai-defaults-c-review/ui-first.xml` | 新房间默认权限、C类KP采纳/动态依据、回归与API分轮证据（详见ai-defaults-c-review验收） |
+| `engineering/acceptance/ai-defaults-c-review/verify_c_publication.py` | 新房间默认权限、C类KP采纳/动态依据、回归与API分轮证据（详见ai-defaults-c-review验收） |
+| `engineering/acceptance/ai-defaults-c-review/work/` | Git忽略的隔离工程镜像或合成实验运行数据，不逐文件入库；摘要和精选证据另列 |
+| `engineering/ai/src/onlinecoc_ai/c_review.py` | 新房间默认权限、C类KP采纳/动态依据、回归与API分轮证据（详见ai-defaults-c-review验收） |
+| `engineering/ai/src/onlinecoc_ai/room_defaults.py` | 新房间默认权限、C类KP采纳/动态依据、回归与API分轮证据（详见ai-defaults-c-review验收） |
+| `engineering/ai/tests/test_c_review_defaults.py` | 新房间默认权限、C类KP采纳/动态依据、回归与API分轮证据（详见ai-defaults-c-review验收） |
+| `engineering/ai/tests/test_c_review_ui.py` | 新房间默认权限、C类KP采纳/动态依据、回归与API分轮证据（详见ai-defaults-c-review验收） |
+
+| `docs/history/2026-11-21-issue-022-chat-isolation-ruling-status.md` | 固定裁决状态行、过期原文与聊天隔离/性能联合实施 |
+
+| `rulepacks/stumpsville/tests/verify_chat_delivery.py` | 四页聊天收发对照、裁决并发、原ID恢复与频道权限验收 |
+| `rulepacks/stumpsville/tests/chat-delivery-baseline-results.json` | ISSUE-022旧聊天实现基线及夹具首失败 |
+| `rulepacks/stumpsville/tests/chat-delivery-optimized-results.json` | ISSUE-022包侧聊天优化、恢复和权限结果 |
+| `engineering/acceptance/chat-isolation/.gitignore` | ISSUE-022聊天隔离、并发性能与接口冻结证据 |
+| `engineering/acceptance/chat-isolation/README.md` | ISSUE-022聊天隔离、并发性能与接口冻结证据 |
+| `engineering/acceptance/chat-isolation/after-cache-miss.json` | ISSUE-022聊天隔离、并发性能与接口冻结证据 |
+| `engineering/acceptance/chat-isolation/after-control.json` | ISSUE-022聊天隔离、并发性能与接口冻结证据 |
+| `engineering/acceptance/chat-isolation/after-proof-fixture.json` | ISSUE-022聊天隔离、并发性能与接口冻结证据 |
+| `engineering/acceptance/chat-isolation/after-source.json` | ISSUE-022聊天隔离、并发性能与接口冻结证据 |
+| `engineering/acceptance/chat-isolation/after-v1-regression.json` | ISSUE-022聊天隔离、并发性能与接口冻结证据 |
+| `engineering/acceptance/chat-isolation/after.json` | ISSUE-022聊天隔离、并发性能与接口冻结证据 |
+| `engineering/acceptance/chat-isolation/before-control.json` | ISSUE-022聊天隔离、并发性能与接口冻结证据 |
+| `engineering/acceptance/chat-isolation/before-proof-fixture.json` | ISSUE-022聊天隔离、并发性能与接口冻结证据 |
+| `engineering/acceptance/chat-isolation/before-source.json` | ISSUE-022聊天隔离、并发性能与接口冻结证据 |
+| `engineering/acceptance/chat-isolation/before.json` | ISSUE-022聊天隔离、并发性能与接口冻结证据 |
+| `engineering/acceptance/chat-isolation/bench.py` | ISSUE-022聊天隔离、并发性能与接口冻结证据 |
+| `engineering/acceptance/chat-isolation/cache-fixed.xml` | ISSUE-022聊天隔离、并发性能与接口冻结证据 |
+| `engineering/acceptance/chat-isolation/conftest.py` | ISSUE-022聊天隔离、并发性能与接口冻结证据 |
+| `engineering/acceptance/chat-isolation/finalize.py` | ISSUE-022聊天隔离、并发性能与接口冻结证据 |
+| `engineering/acceptance/chat-isolation/first-failures.json` | ISSUE-022聊天隔离、并发性能与接口冻结证据 |
+| `engineering/acceptance/chat-isolation/fixture.py` | ISSUE-022聊天隔离、并发性能与接口冻结证据 |
+| `engineering/acceptance/chat-isolation/freeze.py` | ISSUE-022聊天隔离、并发性能与接口冻结证据 |
+| `engineering/acceptance/chat-isolation/initial.xml` | ISSUE-022聊天隔离、并发性能与接口冻结证据 |
+| `engineering/acceptance/chat-isolation/new-files.json` | ISSUE-022聊天隔离、并发性能与接口冻结证据 |
+| `engineering/acceptance/chat-isolation/prepare.py` | ISSUE-022聊天隔离、并发性能与接口冻结证据 |
+| `engineering/acceptance/chat-isolation/profile-0.txt` | ISSUE-022聊天隔离、并发性能与接口冻结证据 |
+| `engineering/acceptance/chat-isolation/profile-1.txt` | ISSUE-022聊天隔离、并发性能与接口冻结证据 |
+| `engineering/acceptance/chat-isolation/profile-2.txt` | ISSUE-022聊天隔离、并发性能与接口冻结证据 |
+| `engineering/acceptance/chat-isolation/profile-3.txt` | ISSUE-022聊天隔离、并发性能与接口冻结证据 |
+| `engineering/acceptance/chat-isolation/profile-4.txt` | ISSUE-022聊天隔离、并发性能与接口冻结证据 |
+| `engineering/acceptance/chat-isolation/profile-before.txt` | ISSUE-022聊天隔离、并发性能与接口冻结证据 |
+| `engineering/acceptance/chat-isolation/profile_chat.py` | ISSUE-022聊天隔离、并发性能与接口冻结证据 |
+| `engineering/acceptance/chat-isolation/regression.xml` | ISSUE-022聊天隔离、并发性能与接口冻结证据 |
+| `engineering/acceptance/chat-isolation/results.json` | ISSUE-022聊天隔离、并发性能与接口冻结证据 |
+| `engineering/acceptance/chat-isolation/serve.py` | ISSUE-022聊天隔离、并发性能与接口冻结证据 |
+| `engineering/acceptance/chat-isolation/test_isolation.py` | ISSUE-022聊天隔离、并发性能与接口冻结证据 |
+| `engineering/acceptance/chat-isolation/work/` | ISSUE-022聊天隔离、并发性能与接口冻结证据 |
+| `engineering/acceptance/engine-chat-interface-snapshot/.gitignore` | ISSUE-022聊天隔离、并发性能与接口冻结证据 |
+| `engineering/acceptance/engine-chat-interface-snapshot/v1/engineering/` | ISSUE-022聊天隔离、并发性能与接口冻结证据 |
+| `engineering/acceptance/engine-chat-interface-snapshot/v1/source.json` | ISSUE-022聊天隔离、并发性能与接口冻结证据 |
+| `engineering/acceptance/engine-chat-interface-snapshot/v2/engineering/` | ISSUE-022聊天隔离、并发性能与接口冻结证据 |
+| `engineering/acceptance/engine-chat-interface-snapshot/v2/source.json` | ISSUE-022聊天隔离、并发性能与接口冻结证据 |
+| `rulepacks/stumpsville/tests/verify_chat_sources.py` | ISSUE-022聊天隔离、并发性能与接口冻结证据 |
+| `rulepacks/stumpsville/tests/chat-sources-baseline-results.json` | ISSUE-022聊天隔离、并发性能与接口冻结证据 |
+| `rulepacks/stumpsville/tests/chat-sources-results.json` | ISSUE-022聊天隔离、并发性能与接口冻结证据 |
+| `rulepacks/stumpsville/tests/verify_chat_combined.py` | ISSUE-022聊天隔离、并发性能与接口冻结证据 |
+| `rulepacks/stumpsville/tests/chat-combined-results.json` | ISSUE-022聊天隔离、并发性能与接口冻结证据 |
+| `rulepacks/stumpsville/tests/chat-delivery-combined-results.json` | ISSUE-022聊天隔离、并发性能与接口冻结证据 |
+
+| `engineering/acceptance/ai-chat-interface-snapshot/v1/engineering/` | AI冻结接口源码，详细文件摘要见同版source.json |
+| `engineering/acceptance/ai-chat-interface-snapshot/v1/source.json` | ISSUE-022上下文、聊天隔离与已交付原文的实现或验收证据 |
+| `engineering/acceptance/ai-chat-interface-snapshot/v2/engineering/` | AI冻结接口源码，详细文件摘要见同版source.json |
+| `engineering/acceptance/ai-chat-interface-snapshot/v2/source.json` | ISSUE-022上下文、聊天隔离与已交付原文的实现或验收证据 |
+| `engineering/acceptance/ai-chat-isolation/.gitignore` | ISSUE-022上下文、聊天隔离与已交付原文的实现或验收证据 |
+| `engineering/acceptance/ai-chat-isolation/README.md` | ISSUE-022上下文、聊天隔离与已交付原文的实现或验收证据 |
+| `engineering/acceptance/ai-chat-isolation/context-first-source.json` | ISSUE-022上下文、聊天隔离与已交付原文的实现或验收证据 |
+| `engineering/acceptance/ai-chat-isolation/context-first.xml` | ISSUE-022上下文、聊天隔离与已交付原文的实现或验收证据 |
+| `engineering/acceptance/ai-chat-isolation/history-first-source.json` | ISSUE-022上下文、聊天隔离与已交付原文的实现或验收证据 |
+| `engineering/acceptance/ai-chat-isolation/history-first.xml` | ISSUE-022上下文、聊天隔离与已交付原文的实现或验收证据 |
+| `engineering/acceptance/ai-chat-isolation/history-fixed-v3-source.json` | ISSUE-022上下文、聊天隔离与已交付原文的实现或验收证据 |
+| `engineering/acceptance/ai-chat-isolation/history-fixed-v3.xml` | ISSUE-022上下文、聊天隔离与已交付原文的实现或验收证据 |
+| `engineering/acceptance/ai-chat-isolation/http-and-source-fixed-source.json` | ISSUE-022上下文、聊天隔离与已交付原文的实现或验收证据 |
+| `engineering/acceptance/ai-chat-isolation/http-and-source-fixed.xml` | ISSUE-022上下文、聊天隔离与已交付原文的实现或验收证据 |
+| `engineering/acceptance/ai-chat-isolation/http-bound-port-source.json` | ISSUE-022上下文、聊天隔离与已交付原文的实现或验收证据 |
+| `engineering/acceptance/ai-chat-isolation/http-bound-port.xml` | ISSUE-022上下文、聊天隔离与已交付原文的实现或验收证据 |
+| `engineering/acceptance/ai-chat-isolation/http-direct-source.json` | ISSUE-022上下文、聊天隔离与已交付原文的实现或验收证据 |
+| `engineering/acceptance/ai-chat-isolation/http-direct.xml` | ISSUE-022上下文、聊天隔离与已交付原文的实现或验收证据 |
+| `engineering/acceptance/ai-chat-isolation/integrated-first-source.json` | ISSUE-022上下文、聊天隔离与已交付原文的实现或验收证据 |
+| `engineering/acceptance/ai-chat-isolation/integrated-first.xml` | ISSUE-022上下文、聊天隔离与已交付原文的实现或验收证据 |
+| `engineering/acceptance/ai-chat-isolation/reproduction-source.json` | ISSUE-022上下文、聊天隔离与已交付原文的实现或验收证据 |
+| `engineering/acceptance/ai-chat-isolation/reproduction.xml` | ISSUE-022上下文、聊天隔离与已交付原文的实现或验收证据 |
+| `engineering/acceptance/ai-chat-isolation/run_tests.py` | ISSUE-022上下文、聊天隔离与已交付原文的实现或验收证据 |
+| `engineering/acceptance/ai-chat-isolation/work/` | ISSUE-022上下文、聊天隔离与已交付原文的实现或验收证据 |
+| `engineering/acceptance/ai-context-usability/.gitignore` | ISSUE-022上下文、聊天隔离与已交付原文的实现或验收证据 |
+| `engineering/acceptance/ai-context-usability/README.md` | ISSUE-022上下文、聊天隔离与已交付原文的实现或验收证据 |
+| `engineering/acceptance/ai-context-usability/bounded_provider.py` | ISSUE-022上下文、聊天隔离与已交付原文的实现或验收证据 |
+| `engineering/acceptance/ai-context-usability/budget.json` | ISSUE-022上下文、聊天隔离与已交付原文的实现或验收证据 |
+| `engineering/acceptance/ai-context-usability/context-before.json` | ISSUE-022上下文、聊天隔离与已交付原文的实现或验收证据 |
+| `engineering/acceptance/ai-context-usability/context-corrected-source.json` | ISSUE-022上下文、聊天隔离与已交付原文的实现或验收证据 |
+| `engineering/acceptance/ai-context-usability/context-corrected.xml` | ISSUE-022上下文、聊天隔离与已交付原文的实现或验收证据 |
+| `engineering/acceptance/ai-context-usability/context-fixed-source.json` | ISSUE-022上下文、聊天隔离与已交付原文的实现或验收证据 |
+| `engineering/acceptance/ai-context-usability/context-fixed.xml` | ISSUE-022上下文、聊天隔离与已交付原文的实现或验收证据 |
+| `engineering/acceptance/ai-context-usability/context-second-source.json` | ISSUE-022上下文、聊天隔离与已交付原文的实现或验收证据 |
+| `engineering/acceptance/ai-context-usability/context-second.xml` | ISSUE-022上下文、聊天隔离与已交付原文的实现或验收证据 |
+| `engineering/acceptance/ai-context-usability/core-failures-fixed-source.json` | ISSUE-022上下文、聊天隔离与已交付原文的实现或验收证据 |
+| `engineering/acceptance/ai-context-usability/core-failures-fixed.xml` | ISSUE-022上下文、聊天隔离与已交付原文的实现或验收证据 |
+| `engineering/acceptance/ai-context-usability/core-v2-source.json` | ISSUE-022上下文、聊天隔离与已交付原文的实现或验收证据 |
+| `engineering/acceptance/ai-context-usability/core-v2.xml` | ISSUE-022上下文、聊天隔离与已交付原文的实现或验收证据 |
+| `engineering/acceptance/ai-context-usability/document-check.json` | ISSUE-022上下文、聊天隔离与已交付原文的实现或验收证据 |
+| `engineering/acceptance/ai-context-usability/early-failure-source.json` | ISSUE-022上下文、聊天隔离与已交付原文的实现或验收证据 |
+| `engineering/acceptance/ai-context-usability/early-failure.xml` | ISSUE-022上下文、聊天隔离与已交付原文的实现或验收证据 |
+| `engineering/acceptance/ai-context-usability/failure-register.json` | ISSUE-022上下文、聊天隔离与已交付原文的实现或验收证据 |
+| `engineering/acceptance/ai-context-usability/independent-audit.json` | ISSUE-022上下文、聊天隔离与已交付原文的实现或验收证据 |
+| `engineering/acceptance/ai-context-usability/inheritance-and-choice-source.json` | ISSUE-022上下文、聊天隔离与已交付原文的实现或验收证据 |
+| `engineering/acceptance/ai-context-usability/inheritance-and-choice.xml` | ISSUE-022上下文、聊天隔离与已交付原文的实现或验收证据 |
+| `engineering/acceptance/ai-context-usability/live-after-13-1795224663994047400.json` | ISSUE-022上下文、聊天隔离与已交付原文的实现或验收证据 |
+| `engineering/acceptance/ai-context-usability/live-after-1795224465250881100.json` | ISSUE-022上下文、聊天隔离与已交付原文的实现或验收证据 |
+| `engineering/acceptance/ai-context-usability/live-before-1795224329641832900.json` | ISSUE-022上下文、聊天隔离与已交付原文的实现或验收证据 |
+| `engineering/acceptance/ai-context-usability/live-ledger.json` | ISSUE-022上下文、聊天隔离与已交付原文的实现或验收证据 |
+| `engineering/acceptance/ai-context-usability/live_trials.py` | ISSUE-022上下文、聊天隔离与已交付原文的实现或验收证据 |
+| `engineering/acceptance/ai-context-usability/new-files.json` | ISSUE-022上下文、聊天隔离与已交付原文的实现或验收证据 |
+| `engineering/acceptance/ai-context-usability/preparation-fixed-source.json` | ISSUE-022上下文、聊天隔离与已交付原文的实现或验收证据 |
+| `engineering/acceptance/ai-context-usability/preparation-fixed.xml` | ISSUE-022上下文、聊天隔离与已交付原文的实现或验收证据 |
+| `engineering/acceptance/ai-context-usability/results.json` | ISSUE-022上下文、聊天隔离与已交付原文的实现或验收证据 |
+| `engineering/acceptance/ai-context-usability/ruling-key-fixed-source.json` | ISSUE-022上下文、聊天隔离与已交付原文的实现或验收证据 |
+| `engineering/acceptance/ai-context-usability/ruling-key-fixed.xml` | ISSUE-022上下文、聊天隔离与已交付原文的实现或验收证据 |
+| `engineering/acceptance/ai-context-usability/run_tests.py` | ISSUE-022上下文、聊天隔离与已交付原文的实现或验收证据 |
+| `engineering/acceptance/ai-context-usability/technical-feedback-fixed-source.json` | ISSUE-022上下文、聊天隔离与已交付原文的实现或验收证据 |
+| `engineering/acceptance/ai-context-usability/technical-feedback-fixed.xml` | ISSUE-022上下文、聊天隔离与已交付原文的实现或验收证据 |
+| `engineering/acceptance/ai-context-usability/technical-feedback-verified-source.json` | ISSUE-022上下文、聊天隔离与已交付原文的实现或验收证据 |
+| `engineering/acceptance/ai-context-usability/technical-feedback-verified.xml` | ISSUE-022上下文、聊天隔离与已交付原文的实现或验收证据 |
+| `engineering/acceptance/ai-context-usability/work/` | ISSUE-022上下文、聊天隔离与已交付原文的实现或验收证据 |
+| `engineering/ai/src/onlinecoc_ai/intent_context.py` | ISSUE-022上下文、聊天隔离与已交付原文的实现或验收证据 |
+| `engineering/ai/src/onlinecoc_ai/preparation.py` | ISSUE-022上下文、聊天隔离与已交付原文的实现或验收证据 |
+| `engineering/ai/src/onlinecoc_ai/ruling_history.py` | ISSUE-022上下文、聊天隔离与已交付原文的实现或验收证据 |
+| `engineering/ai/tests/test_chat_isolation.py` | ISSUE-022上下文、聊天隔离与已交付原文的实现或验收证据 |
+| `engineering/ai/tests/test_chat_isolation_http.py` | ISSUE-022上下文、聊天隔离与已交付原文的实现或验收证据 |
+| `engineering/ai/tests/test_context_usability.py` | ISSUE-022上下文、聊天隔离与已交付原文的实现或验收证据 |
+
+| `docs/plans/Issues/issue-023-context-compression-kp-autonomy.md` | 上下文压缩、KP风险裁决和GitHub交付计划 |
+
+| `rulepacks/stumpsville/tests/verify_consultation_review.py` | 参考来源风险展示、KP明确接受和执行结果的真实浏览器验证 |
+| `rulepacks/stumpsville/tests/consultation-review-results.json` | 参考来源风险展示、KP明确接受和执行结果的真实浏览器验证 |
+
+| `rulepacks/stumpsville/tests/verify_context_autonomy.py` | 实际树桩镇资料到配置候选、KP接受和发布的隔离验收 |
+| `rulepacks/stumpsville/tests/context-autonomy-baseline-results.json` | 实际树桩镇资料到配置候选、KP接受和发布的隔离验收 |
+
+| `engineering/acceptance/engine-kp-policy-interface-snapshot/.gitignore` | ISSUE-023宿主来源风险接受、发布校验及冻结接口证据 |
+| `engineering/acceptance/engine-kp-policy-interface-snapshot/v1/engineering/` | ISSUE-023宿主来源风险接受、发布校验及冻结接口证据 |
+| `engineering/acceptance/engine-kp-policy-interface-snapshot/v1/source.json` | ISSUE-023宿主来源风险接受、发布校验及冻结接口证据 |
+| `engineering/acceptance/kp-policy-audit/.gitignore` | ISSUE-023宿主来源风险接受、发布校验及冻结接口证据 |
+| `engineering/acceptance/kp-policy-audit/README.md` | ISSUE-023宿主来源风险接受、发布校验及冻结接口证据 |
+| `engineering/acceptance/kp-policy-audit/compatibility-source.json` | ISSUE-023宿主来源风险接受、发布校验及冻结接口证据 |
+| `engineering/acceptance/kp-policy-audit/failures.json` | ISSUE-023宿主来源风险接受、发布校验及冻结接口证据 |
+| `engineering/acceptance/kp-policy-audit/finalize.py` | ISSUE-023宿主来源风险接受、发布校验及冻结接口证据 |
+| `engineering/acceptance/kp-policy-audit/first-field-error.xml` | ISSUE-023宿主来源风险接受、发布校验及冻结接口证据 |
+| `engineering/acceptance/kp-policy-audit/first-source.json` | ISSUE-023宿主来源风险接受、发布校验及冻结接口证据 |
+| `engineering/acceptance/kp-policy-audit/fixed.xml` | ISSUE-023宿主来源风险接受、发布校验及冻结接口证据 |
+| `engineering/acceptance/kp-policy-audit/freeze.py` | ISSUE-023宿主来源风险接受、发布校验及冻结接口证据 |
+| `engineering/acceptance/kp-policy-audit/new-files.json` | ISSUE-023宿主来源风险接受、发布校验及冻结接口证据 |
+| `engineering/acceptance/kp-policy-audit/official.xml` | ISSUE-023宿主来源风险接受、发布校验及冻结接口证据 |
+| `engineering/acceptance/kp-policy-audit/parameter-expectation.xml` | ISSUE-023宿主来源风险接受、发布校验及冻结接口证据 |
+| `engineering/acceptance/kp-policy-audit/prepare.py` | ISSUE-023宿主来源风险接受、发布校验及冻结接口证据 |
+| `engineering/acceptance/kp-policy-audit/results.json` | ISSUE-023宿主来源风险接受、发布校验及冻结接口证据 |
+| `engineering/acceptance/kp-policy-audit/source.json` | ISSUE-023宿主来源风险接受、发布校验及冻结接口证据 |
+| `engineering/acceptance/kp-policy-audit/special.xml` | ISSUE-023宿主来源风险接受、发布校验及冻结接口证据 |
+| `engineering/acceptance/kp-policy-audit/test_kp_policy.py` | ISSUE-023宿主来源风险接受、发布校验及冻结接口证据 |
+| `engineering/acceptance/kp-policy-audit/work/` | ISSUE-023宿主来源风险接受、发布校验及冻结接口证据 |
+
+| `rulepacks/stumpsville/tests/context-autonomy-results.json` | 真实树桩镇配置/运行时参考来源接受、权限和幂等结果 |
+
+| `engineering/acceptance/ai-compression-interface-snapshot/contracts-v1/ai-operations.json` | ISSUE-023 AI语义压缩、来源风险采纳与实际实验的可追溯源码/证据 |
+| `engineering/acceptance/ai-compression-interface-snapshot/contracts-v1/ai.json` | ISSUE-023 AI语义压缩、来源风险采纳与实际实验的可追溯源码/证据 |
+| `engineering/acceptance/ai-compression-interface-snapshot/contracts-v1/consultation.py` | ISSUE-023 AI语义压缩、来源风险采纳与实际实验的可追溯源码/证据 |
+| `engineering/acceptance/ai-compression-interface-snapshot/contracts-v1/source.json` | ISSUE-023 AI语义压缩、来源风险采纳与实际实验的可追溯源码/证据 |
+| `engineering/acceptance/ai-compression-interface-snapshot/v1/source.json` | ISSUE-023 AI语义压缩、来源风险采纳与实际实验的可追溯源码/证据 |
+| `engineering/acceptance/ai-compression-interface-snapshot/v2/source.json` | ISSUE-023 AI语义压缩、来源风险采纳与实际实验的可追溯源码/证据 |
+| `engineering/acceptance/ai-compression-interface-snapshot/v3/source.json` | ISSUE-023 AI语义压缩、来源风险采纳与实际实验的可追溯源码/证据 |
+| `engineering/acceptance/ai-context-compression/.gitignore` | ISSUE-023 AI语义压缩、来源风险采纳与实际实验的可追溯源码/证据 |
+| `engineering/acceptance/ai-context-compression/README.md` | ISSUE-023 AI语义压缩、来源风险采纳与实际实验的可追溯源码/证据 |
+| `engineering/acceptance/ai-context-compression/bounded_provider.py` | ISSUE-023 AI语义压缩、来源风险采纳与实际实验的可追溯源码/证据 |
+| `engineering/acceptance/ai-context-compression/budget.json` | ISSUE-023 AI语义压缩、来源风险采纳与实际实验的可追溯源码/证据 |
+| `engineering/acceptance/ai-context-compression/compression-1795247144510978100.json` | ISSUE-023 AI语义压缩、来源风险采纳与实际实验的可追溯源码/证据 |
+| `engineering/acceptance/ai-context-compression/compression-1795247324248927700.json` | ISSUE-023 AI语义压缩、来源风险采纳与实际实验的可追溯源码/证据 |
+| `engineering/acceptance/ai-context-compression/compression-1795247490062917900.json` | ISSUE-023 AI语义压缩、来源风险采纳与实际实验的可追溯源码/证据 |
+| `engineering/acceptance/ai-context-compression/compression-1795247911156773000.json` | ISSUE-023 AI语义压缩、来源风险采纳与实际实验的可追溯源码/证据 |
+| `engineering/acceptance/ai-context-compression/compression-completed-review.json` | ISSUE-023 AI语义压缩、来源风险采纳与实际实验的可追溯源码/证据 |
+| `engineering/acceptance/ai-context-compression/compression-initial-source.json` | ISSUE-023 AI语义压缩、来源风险采纳与实际实验的可追溯源码/证据 |
+| `engineering/acceptance/ai-context-compression/compression-initial.xml` | ISSUE-023 AI语义压缩、来源风险采纳与实际实验的可追溯源码/证据 |
+| `engineering/acceptance/ai-context-compression/consultation-1795248177952401900.json` | ISSUE-023 AI语义压缩、来源风险采纳与实际实验的可追溯源码/证据 |
+| `engineering/acceptance/ai-context-compression/consultation-1795248549857621900.json` | ISSUE-023 AI语义压缩、来源风险采纳与实际实验的可追溯源码/证据 |
+| `engineering/acceptance/ai-context-compression/final-core-source.json` | ISSUE-023 AI语义压缩、来源风险采纳与实际实验的可追溯源码/证据 |
+| `engineering/acceptance/ai-context-compression/final-core.xml` | ISSUE-023 AI语义压缩、来源风险采纳与实际实验的可追溯源码/证据 |
+| `engineering/acceptance/ai-context-compression/frozen-repro-source.json` | ISSUE-023 AI语义压缩、来源风险采纳与实际实验的可追溯源码/证据 |
+| `engineering/acceptance/ai-context-compression/frozen-repro.xml` | ISSUE-023 AI语义压缩、来源风险采纳与实际实验的可追溯源码/证据 |
+| `engineering/acceptance/ai-context-compression/integration-initial-source.json` | ISSUE-023 AI语义压缩、来源风险采纳与实际实验的可追溯源码/证据 |
+| `engineering/acceptance/ai-context-compression/integration-initial.xml` | ISSUE-023 AI语义压缩、来源风险采纳与实际实验的可追溯源码/证据 |
+| `engineering/acceptance/ai-context-compression/items-1795248206108486700.json` | ISSUE-023 AI语义压缩、来源风险采纳与实际实验的可追溯源码/证据 |
+| `engineering/acceptance/ai-context-compression/live-ledger.json` | ISSUE-023 AI语义压缩、来源风险采纳与实际实验的可追溯源码/证据 |
+| `engineering/acceptance/ai-context-compression/live_scenarios.py` | ISSUE-023 AI语义压缩、来源风险采纳与实际实验的可追溯源码/证据 |
+| `engineering/acceptance/ai-context-compression/management-recheck-source.json` | ISSUE-023 AI语义压缩、来源风险采纳与实际实验的可追溯源码/证据 |
+| `engineering/acceptance/ai-context-compression/management-recheck.xml` | ISSUE-023 AI语义压缩、来源风险采纳与实际实验的可追溯源码/证据 |
+| `engineering/acceptance/ai-context-compression/map-1795248371462053900.json` | ISSUE-023 AI语义压缩、来源风险采纳与实际实验的可追溯源码/证据 |
+| `engineering/acceptance/ai-context-compression/map-1795248575201243400.json` | ISSUE-023 AI语义压缩、来源风险采纳与实际实验的可追溯源码/证据 |
+| `engineering/acceptance/ai-context-compression/new-files.json` | ISSUE-023 AI语义压缩、来源风险采纳与实际实验的可追溯源码/证据 |
+| `engineering/acceptance/ai-context-compression/npc-1795248289799830800.json` | ISSUE-023 AI语义压缩、来源风险采纳与实际实验的可追溯源码/证据 |
+| `engineering/acceptance/ai-context-compression/offline-review.json` | ISSUE-023 AI语义压缩、来源风险采纳与实际实验的可追溯源码/证据 |
+| `engineering/acceptance/ai-context-compression/pl-1795248201266683700.json` | ISSUE-023 AI语义压缩、来源风险采纳与实际实验的可追溯源码/证据 |
+| `engineering/acceptance/ai-context-compression/profile-migration.json` | ISSUE-023 AI语义压缩、来源风险采纳与实际实验的可追溯源码/证据 |
+| `engineering/acceptance/ai-context-compression/provider-defaults-review.json` | ISSUE-023 AI语义压缩、来源风险采纳与实际实验的可追溯源码/证据 |
+| `engineering/acceptance/ai-context-compression/release-core-source.json` | ISSUE-023 AI语义压缩、来源风险采纳与实际实验的可追溯源码/证据 |
+| `engineering/acceptance/ai-context-compression/release-core.xml` | ISSUE-023 AI语义压缩、来源风险采纳与实际实验的可追溯源码/证据 |
+| `engineering/acceptance/ai-context-compression/release-verification.json` | ISSUE-023 AI语义压缩、来源风险采纳与实际实验的可追溯源码/证据 |
+| `engineering/acceptance/ai-context-compression/results-summary.json` | ISSUE-023 AI语义压缩、来源风险采纳与实际实验的可追溯源码/证据 |
+| `engineering/acceptance/ai-context-compression/review_results.py` | ISSUE-023 AI语义压缩、来源风险采纳与实际实验的可追溯源码/证据 |
+| `engineering/acceptance/ai-context-compression/run_tests.py` | ISSUE-023 AI语义压缩、来源风险采纳与实际实验的可追溯源码/证据 |
+| `engineering/acceptance/ai-context-compression/strict-pack-source.json` | ISSUE-023 AI语义压缩、来源风险采纳与实际实验的可追溯源码/证据 |
+| `engineering/acceptance/ai-context-compression/targeted-fixed-source.json` | ISSUE-023 AI语义压缩、来源风险采纳与实际实验的可追溯源码/证据 |
+| `engineering/acceptance/ai-context-compression/targeted-fixed.xml` | ISSUE-023 AI语义压缩、来源风险采纳与实际实验的可追溯源码/证据 |
+| `engineering/acceptance/ai-context-compression/targeted-v1-source.json` | ISSUE-023 AI语义压缩、来源风险采纳与实际实验的可追溯源码/证据 |
+| `engineering/acceptance/ai-context-compression/targeted-v1.xml` | ISSUE-023 AI语义压缩、来源风险采纳与实际实验的可追溯源码/证据 |
+| `engineering/acceptance/ai-context-compression/v2-concurrency-source.json` | ISSUE-023 AI语义压缩、来源风险采纳与实际实验的可追溯源码/证据 |
+| `engineering/acceptance/ai-context-compression/v2-concurrency.xml` | ISSUE-023 AI语义压缩、来源风险采纳与实际实验的可追溯源码/证据 |
+| `engineering/acceptance/ai-context-compression/v2-critical-fixed-source.json` | ISSUE-023 AI语义压缩、来源风险采纳与实际实验的可追溯源码/证据 |
+| `engineering/acceptance/ai-context-compression/v2-critical-fixed.xml` | ISSUE-023 AI语义压缩、来源风险采纳与实际实验的可追溯源码/证据 |
+| `engineering/acceptance/ai-context-compression/v2-critical-source.json` | ISSUE-023 AI语义压缩、来源风险采纳与实际实验的可追溯源码/证据 |
+| `engineering/acceptance/ai-context-compression/v2-critical.xml` | ISSUE-023 AI语义压缩、来源风险采纳与实际实验的可追溯源码/证据 |
+| `engineering/acceptance/ai-context-compression/v2-release-fixed-source.json` | ISSUE-023 AI语义压缩、来源风险采纳与实际实验的可追溯源码/证据 |
+| `engineering/acceptance/ai-context-compression/v2-release-fixed.xml` | ISSUE-023 AI语义压缩、来源风险采纳与实际实验的可追溯源码/证据 |
+| `engineering/acceptance/ai-context-compression/v2-release-source.json` | ISSUE-023 AI语义压缩、来源风险采纳与实际实验的可追溯源码/证据 |
+| `engineering/acceptance/ai-context-compression/v2-release.xml` | ISSUE-023 AI语义压缩、来源风险采纳与实际实验的可追溯源码/证据 |
+| `engineering/ai/src/onlinecoc_ai/compression.py` | ISSUE-023 AI语义压缩、来源风险采纳与实际实验的可追溯源码/证据 |
+| `engineering/ai/src/onlinecoc_ai/consultation.py` | ISSUE-023 AI语义压缩、来源风险采纳与实际实验的可追溯源码/证据 |
+| `engineering/ai/src/onlinecoc_ai/context_budget.py` | ISSUE-023 AI语义压缩、来源风险采纳与实际实验的可追溯源码/证据 |
+| `engineering/ai/tests/test_context_compression.py` | ISSUE-023 AI语义压缩、来源风险采纳与实际实验的可追溯源码/证据 |
+
+| `engineering/acceptance/ai-compression-interface-snapshot/v1/engineering/` | ISSUE-023 AI冻结源码；具体文件与SHA256见同版source.json，禁止覆盖历史版本 |
+| `engineering/acceptance/ai-compression-interface-snapshot/v2/engineering/` | ISSUE-023 AI冻结源码；具体文件与SHA256见同版source.json，禁止覆盖历史版本 |
+| `engineering/acceptance/ai-compression-interface-snapshot/v3/engineering/` | ISSUE-023 AI冻结源码；具体文件与SHA256见同版source.json，禁止覆盖历史版本 |
+| `docs/current/engineering/chat-isolation.md` | 聊天与AI状态依赖隔离的当前工程说明 |
+| `engineering/acceptance/ai-command-reliability/probe-source/casebook.py` | 指令可靠性实验的独立来源探针与复核脚本 |
+| `engineering/acceptance/ai-command-reliability/probe-source/evaluate.py` | 指令可靠性实验的独立来源探针与复核脚本 |
+| `engineering/acceptance/ai-command-reliability/probe-source/live.py` | 指令可靠性实验的独立来源探针与复核脚本 |
 
 ## 施工登记
 

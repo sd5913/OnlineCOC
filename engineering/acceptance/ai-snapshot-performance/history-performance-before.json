@@ -1,0 +1,392 @@
+{
+  "metrics": [
+    {
+      "phase": "generate",
+      "index": 0,
+      "seconds": 0.396,
+      "status": "review_ready",
+      "code": null
+    },
+    {
+      "phase": "generate",
+      "index": 1,
+      "seconds": 0.413,
+      "status": "review_ready",
+      "code": null
+    },
+    {
+      "phase": "generate",
+      "index": 2,
+      "seconds": 0.417,
+      "status": "review_ready",
+      "code": null
+    },
+    {
+      "phase": "generate",
+      "index": 3,
+      "seconds": 0.489,
+      "status": "review_ready",
+      "code": null
+    },
+    {
+      "phase": "generate",
+      "index": 4,
+      "seconds": 0.704,
+      "status": "review_ready",
+      "code": null
+    },
+    {
+      "phase": "generate",
+      "index": 5,
+      "seconds": 0.908,
+      "status": "review_ready",
+      "code": null
+    },
+    {
+      "phase": "generate",
+      "index": 6,
+      "seconds": 0.745,
+      "status": "review_ready",
+      "code": null
+    },
+    {
+      "phase": "generate",
+      "index": 7,
+      "seconds": 0.779,
+      "status": "review_ready",
+      "code": null
+    },
+    {
+      "phase": "generate",
+      "index": 8,
+      "seconds": 1.166,
+      "status": "review_ready",
+      "code": null
+    },
+    {
+      "phase": "generate",
+      "index": 9,
+      "seconds": 1.403,
+      "status": "review_ready",
+      "code": null
+    },
+    {
+      "phase": "generate",
+      "index": 10,
+      "seconds": 1.16,
+      "status": "review_ready",
+      "code": null
+    },
+    {
+      "phase": "generate",
+      "index": 11,
+      "seconds": 1.547,
+      "status": "review_ready",
+      "code": null
+    },
+    {
+      "phase": "generate",
+      "index": 12,
+      "seconds": 3.709,
+      "status": "review_ready",
+      "code": null
+    },
+    {
+      "phase": "generate",
+      "index": 13,
+      "seconds": 5.672,
+      "status": "review_ready",
+      "code": null
+    },
+    {
+      "phase": "session-get",
+      "seconds": 3.142,
+      "rows": 14
+    }
+  ],
+  "profile": [
+    {
+      "file": "sessions.py",
+      "line": 61,
+      "function": "get",
+      "calls": 1,
+      "totalSeconds": 3.142
+    },
+    {
+      "file": "api.py",
+      "line": 259,
+      "function": "tasks",
+      "calls": 1,
+      "totalSeconds": 3.099
+    },
+    {
+      "file": "api.py",
+      "line": 265,
+      "function": "_tasks",
+      "calls": 1,
+      "totalSeconds": 3.091
+    },
+    {
+      "file": "api.py",
+      "line": 294,
+      "function": "history_state",
+      "calls": 14,
+      "totalSeconds": 3.032
+    },
+    {
+      "file": "history.py",
+      "line": 92,
+      "function": "assess",
+      "calls": 304,
+      "totalSeconds": 3.028
+    },
+    {
+      "file": "copy.py",
+      "line": 110,
+      "function": "deepcopy",
+      "calls": 4466091,
+      "totalSeconds": 2.605
+    },
+    {
+      "file": "copy.py",
+      "line": 198,
+      "function": "_deepcopy_dict",
+      "calls": 178884,
+      "totalSeconds": 2.601
+    },
+    {
+      "file": "publication.py",
+      "line": 74,
+      "function": "check_history_context",
+      "calls": 105,
+      "totalSeconds": 2.582
+    },
+    {
+      "file": "store.py",
+      "line": 168,
+      "function": "snapshot",
+      "calls": 136,
+      "totalSeconds": 2.572
+    },
+    {
+      "file": "host.py",
+      "line": 39,
+      "function": "state",
+      "calls": 132,
+      "totalSeconds": 2.545
+    },
+    {
+      "file": "room_read.py",
+      "line": 11,
+      "function": "authorize",
+      "calls": 129,
+      "totalSeconds": 2.499
+    },
+    {
+      "file": "api.py",
+      "line": 48,
+      "function": "<lambda>",
+      "calls": 129,
+      "totalSeconds": 2.498
+    },
+    {
+      "file": "copy.py",
+      "line": 172,
+      "function": "_deepcopy_list",
+      "calls": 144777,
+      "totalSeconds": 2.328
+    },
+    {
+      "file": "publication.py",
+      "line": 86,
+      "function": "_check_context",
+      "calls": 105,
+      "totalSeconds": 2.226
+    },
+    {
+      "file": "host.py",
+      "line": 445,
+      "function": "validate_ai_sources",
+      "calls": 105,
+      "totalSeconds": 2.202
+    },
+    {
+      "file": "ai_sources.py",
+      "line": 8,
+      "function": "check_sources",
+      "calls": 105,
+      "totalSeconds": 2.041
+    },
+    {
+      "file": "data_queries.py",
+      "line": 137,
+      "function": "query",
+      "calls": 9,
+      "totalSeconds": 0.387
+    },
+    {
+      "file": "history.py",
+      "line": 54,
+      "function": "_queries",
+      "calls": 3,
+      "totalSeconds": 0.365
+    },
+    {
+      "file": "ai_contracts.py",
+      "line": 15,
+      "function": "validate_ai",
+      "calls": 105,
+      "totalSeconds": 0.356
+    },
+    {
+      "file": "validators.py",
+      "line": 448,
+      "function": "validate",
+      "calls": 105,
+      "totalSeconds": 0.353
+    },
+    {
+      "file": "validators.py",
+      "line": 349,
+      "function": "iter_errors",
+      "calls": 105,
+      "totalSeconds": 0.352
+    },
+    {
+      "file": "_keywords.py",
+      "line": 274,
+      "function": "ref",
+      "calls": 2136,
+      "totalSeconds": 0.352
+    },
+    {
+      "file": "validators.py",
+      "line": 396,
+      "function": "descend",
+      "calls": 18918,
+      "totalSeconds": 0.344
+    },
+    {
+      "file": "_keywords.py",
+      "line": 290,
+      "function": "properties",
+      "calls": 105,
+      "totalSeconds": 0.339
+    },
+    {
+      "file": "data_queries.py",
+      "line": 43,
+      "function": "rows",
+      "calls": 15,
+      "totalSeconds": 0.319
+    },
+    {
+      "file": "_keywords.py",
+      "line": 36,
+      "function": "additionalProperties",
+      "calls": 504,
+      "totalSeconds": 0.294
+    },
+    {
+      "file": "_keywords.py",
+      "line": 337,
+      "function": "anyOf",
+      "calls": 2031,
+      "totalSeconds": 0.26
+    },
+    {
+      "file": "copy.py",
+      "line": 212,
+      "function": "_keep_alive",
+      "calls": 323661,
+      "totalSeconds": 0.212
+    },
+    {
+      "file": "data_queries.py",
+      "line": 245,
+      "function": "recheck",
+      "calls": 105,
+      "totalSeconds": 0.15
+    },
+    {
+      "file": "_keywords.py",
+      "line": 59,
+      "function": "items",
+      "calls": 729,
+      "totalSeconds": 0.131
+    }
+  ],
+  "aiBytes": 159468,
+  "contexts": [
+    {
+      "history": 0,
+      "intents": 0,
+      "queries": 0
+    },
+    {
+      "history": 1,
+      "intents": 0,
+      "queries": 0
+    },
+    {
+      "history": 2,
+      "intents": 0,
+      "queries": 0
+    },
+    {
+      "history": 3,
+      "intents": 0,
+      "queries": 0
+    },
+    {
+      "history": 4,
+      "intents": 0,
+      "queries": 0
+    },
+    {
+      "history": 4,
+      "intents": 0,
+      "queries": 0
+    },
+    {
+      "history": 4,
+      "intents": 0,
+      "queries": 0
+    },
+    {
+      "history": 4,
+      "intents": 0,
+      "queries": 0
+    },
+    {
+      "history": 4,
+      "intents": 0,
+      "queries": 0
+    },
+    {
+      "history": 4,
+      "intents": 0,
+      "queries": 0
+    },
+    {
+      "history": 4,
+      "intents": 0,
+      "queries": 0
+    },
+    {
+      "history": 4,
+      "intents": 0,
+      "queries": 0
+    },
+    {
+      "history": 4,
+      "intents": 0,
+      "queries": 2
+    },
+    {
+      "history": 3,
+      "intents": 1,
+      "queries": 2
+    }
+  ]
+}

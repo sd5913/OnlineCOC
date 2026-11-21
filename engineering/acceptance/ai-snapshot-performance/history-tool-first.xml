@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="4.121" timestamp="2026-11-20T18:55:43.094860+08:00" hostname="LAPTOP-BIFSL64A"><testcase classname="tests.test_generation_snapshot" name="test_prior_world_changes_and_inflight_chat_do_not_break_first_tool" time="2.457"><failure message="AssertionError: {'taskId': 'b4816cfb54ba4032a226607cae7ec2b6', 'requestId': 'b4816cfb54ba4032a226607cae7ec2b6', 'account': 'kp', 'profile': {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...}, ...}&#10;assert 'failed' == 'review_ready'&#10;  &#10;  - review_ready&#10;  + failed">application = &lt;onlinecoc_ai.api.Application object at 0x00000162C7034440&gt;
+
+    def test_prior_world_changes_and_inflight_chat_do_not_break_first_tool(application):
+        app=application;enable(app.host,public=True,private=True,kp=True);app.coordinator.context=Context(app.proposals,demand=True)
+        mode={'batch':False}
+        async def callback(n,messages,tools):
+            if not mode['batch']:return completion({'kind':'plan','text':'已记下本轮需求，尚未执行修改'})
+            if n==1:
+                add_message(app.host,'player1','生成中的普通聊天')
+                return tool_call('room_search_data',{'types':['entity'],'query':''})
+            return completion({'kind':'batch','text':'准备本次明确指定的改名','actions':[{'target':'host','op':'entity.patch','args':{'id':'actor-one','name':'CURRENT_CANDIDATE'}}]})
+        async def run():
+            app.coordinator.provider_factory=lambda _:Fake(callback);s=session(app);await app.coordinator.start()
+            try:
+                for index in range(6):
+                    if index==3:
+                        room=app.host.state();room['entities']['actor-one']['name']='PRIOR_WORLD_CHANGE';room['entities']['actor-one']['revision']+=1;app.host.commit(room)
+                    request=submit(app,s,'独立记录第'+str(index)+'轮')
+                    result=committed(command(app,'ai.request.dispatch',{'requestId':request['requestId']}))
+                    assert (await wait_task(app.coordinator,result['taskId']))['status']=='review_ready'
+                mode['batch']=True;request=dispatch(app,s)
+                result=await wait_task(app.coordinator,request['taskId']);assert result['status']=='review_ready',result
+                assert result['dependencyCheck']['status']=='unchanged'
+                batch=app.repository.state()['settings']['batches'][result['batchId']]
+                receipt=committed(command(app,'ai.batch.approve',{'batchId':batch['batchId'],'digest':batch['digest']}))
+                assert receipt['status']=='completed'
+                assert app.host.state()['entities']['actor-one']['name']=='CURRENT_CANDIDATE'
+            finally:await app.coordinator.close()
+&gt;       asyncio.run(run())
+
+engineering\ai\tests\test_generation_snapshot.py:214: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:204: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:127: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\base_events.py:719: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    async def run():
+        app.coordinator.provider_factory=lambda _:Fake(callback);s=session(app);await app.coordinator.start()
+        try:
+            for index in range(6):
+                if index==3:
+                    room=app.host.state();room['entities']['actor-one']['name']='PRIOR_WORLD_CHANGE';room['entities']['actor-one']['revision']+=1;app.host.commit(room)
+                request=submit(app,s,'独立记录第'+str(index)+'轮')
+                result=committed(command(app,'ai.request.dispatch',{'requestId':request['requestId']}))
+                assert (await wait_task(app.coordinator,result['taskId']))['status']=='review_ready'
+            mode['batch']=True;request=dispatch(app,s)
+&gt;           result=await wait_task(app.coordinator,request['taskId']);assert result['status']=='review_ready',result
+                                                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           AssertionError: {'taskId': 'b4816cfb54ba4032a226607cae7ec2b6', 'requestId': 'b4816cfb54ba4032a226607cae7ec2b6', 'account': 'kp', 'profile': {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...}, ...}
+E           assert 'failed' == 'review_ready'
+E             
+E             - review_ready
+E             + failed
+
+engineering\ai\tests\test_generation_snapshot.py:207: AssertionError</failure></testcase></testsuite></testsuites>

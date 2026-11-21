@@ -1,0 +1,505 @@
+{
+  "kind": "oracle-self-check-not-model-output",
+  "total": 71,
+  "passed": 71,
+  "cases": [
+    {
+      "caseId": "host:entity.create",
+      "formatPassed": true,
+      "semanticPassed": true,
+      "execution": "not_run",
+      "errors": []
+    },
+    {
+      "caseId": "host:entity.patch",
+      "formatPassed": true,
+      "semanticPassed": true,
+      "execution": "not_run",
+      "errors": []
+    },
+    {
+      "caseId": "host:entity.update",
+      "formatPassed": true,
+      "semanticPassed": true,
+      "execution": "not_run",
+      "errors": []
+    },
+    {
+      "caseId": "host:entity.archive",
+      "formatPassed": true,
+      "semanticPassed": true,
+      "execution": "not_run",
+      "errors": []
+    },
+    {
+      "caseId": "host:relation.set",
+      "formatPassed": true,
+      "semanticPassed": true,
+      "execution": "not_run",
+      "errors": []
+    },
+    {
+      "caseId": "host:relation.remove",
+      "formatPassed": true,
+      "semanticPassed": true,
+      "execution": "not_run",
+      "errors": []
+    },
+    {
+      "caseId": "host:progress.set",
+      "formatPassed": true,
+      "semanticPassed": true,
+      "execution": "not_run",
+      "errors": []
+    },
+    {
+      "caseId": "host:asset.attach",
+      "formatPassed": true,
+      "semanticPassed": true,
+      "execution": "not_run",
+      "errors": []
+    },
+    {
+      "caseId": "host:asset.remove",
+      "formatPassed": true,
+      "semanticPassed": true,
+      "execution": "not_run",
+      "errors": []
+    },
+    {
+      "caseId": "host:flow.respond",
+      "formatPassed": true,
+      "semanticPassed": true,
+      "execution": "not_run",
+      "errors": []
+    },
+    {
+      "caseId": "host:flow.retry",
+      "formatPassed": true,
+      "semanticPassed": true,
+      "execution": "not_run",
+      "errors": []
+    },
+    {
+      "caseId": "host:flow.cancel",
+      "formatPassed": true,
+      "semanticPassed": true,
+      "execution": "not_run",
+      "errors": []
+    },
+    {
+      "caseId": "host:room.status",
+      "formatPassed": true,
+      "semanticPassed": true,
+      "execution": "not_run",
+      "errors": []
+    },
+    {
+      "caseId": "host:member.add",
+      "formatPassed": true,
+      "semanticPassed": true,
+      "execution": "not_run",
+      "errors": []
+    },
+    {
+      "caseId": "host:member.update",
+      "formatPassed": true,
+      "semanticPassed": true,
+      "execution": "not_run",
+      "errors": []
+    },
+    {
+      "caseId": "host:notification.send",
+      "formatPassed": true,
+      "semanticPassed": true,
+      "execution": "not_run",
+      "errors": []
+    },
+    {
+      "caseId": "host:action.invoke",
+      "formatPassed": true,
+      "semanticPassed": true,
+      "execution": "not_run",
+      "errors": []
+    },
+    {
+      "caseId": "host:behavior.invoke",
+      "formatPassed": true,
+      "semanticPassed": true,
+      "execution": "not_run",
+      "errors": []
+    },
+    {
+      "caseId": "host:chat.direct.open",
+      "formatPassed": true,
+      "semanticPassed": true,
+      "execution": "not_run",
+      "errors": []
+    },
+    {
+      "caseId": "host:chat.channel.create",
+      "formatPassed": true,
+      "semanticPassed": true,
+      "execution": "not_run",
+      "errors": []
+    },
+    {
+      "caseId": "host:chat.channel.update",
+      "formatPassed": true,
+      "semanticPassed": true,
+      "execution": "not_run",
+      "errors": []
+    },
+    {
+      "caseId": "host:chat.message.send",
+      "formatPassed": true,
+      "semanticPassed": true,
+      "execution": "not_run",
+      "errors": []
+    },
+    {
+      "caseId": "host:chat.message.share",
+      "formatPassed": true,
+      "semanticPassed": true,
+      "execution": "not_run",
+      "errors": []
+    },
+    {
+      "caseId": "host:chat.message.edit",
+      "formatPassed": true,
+      "semanticPassed": true,
+      "execution": "not_run",
+      "errors": []
+    },
+    {
+      "caseId": "host:chat.message.retract",
+      "formatPassed": true,
+      "semanticPassed": true,
+      "execution": "not_run",
+      "errors": []
+    },
+    {
+      "caseId": "ai:ai.session.create",
+      "formatPassed": true,
+      "semanticPassed": true,
+      "execution": "not_run",
+      "errors": []
+    },
+    {
+      "caseId": "ai:ai.session.update",
+      "formatPassed": true,
+      "semanticPassed": true,
+      "execution": "not_run",
+      "errors": []
+    },
+    {
+      "caseId": "ai:ai.session.delete",
+      "formatPassed": true,
+      "semanticPassed": true,
+      "execution": "not_run",
+      "errors": []
+    },
+    {
+      "caseId": "ai:ai.memory.create",
+      "formatPassed": true,
+      "semanticPassed": true,
+      "execution": "not_run",
+      "errors": []
+    },
+    {
+      "caseId": "ai:ai.memory.confirm",
+      "formatPassed": true,
+      "semanticPassed": true,
+      "execution": "not_run",
+      "errors": []
+    },
+    {
+      "caseId": "ai:ai.memory.revoke",
+      "formatPassed": true,
+      "semanticPassed": true,
+      "execution": "not_run",
+      "errors": []
+    },
+    {
+      "caseId": "pack:sv.create",
+      "formatPassed": true,
+      "semanticPassed": true,
+      "execution": "not_run",
+      "errors": []
+    },
+    {
+      "caseId": "pack:sv.profile",
+      "formatPassed": true,
+      "semanticPassed": true,
+      "execution": "not_run",
+      "errors": []
+    },
+    {
+      "caseId": "pack:sv.ready",
+      "formatPassed": true,
+      "semanticPassed": true,
+      "execution": "not_run",
+      "errors": []
+    },
+    {
+      "caseId": "pack:sv.check",
+      "formatPassed": true,
+      "semanticPassed": true,
+      "execution": "not_run",
+      "errors": []
+    },
+    {
+      "caseId": "pack:sv.inventory",
+      "formatPassed": true,
+      "semanticPassed": true,
+      "execution": "not_run",
+      "errors": []
+    },
+    {
+      "caseId": "pack:sv.grant",
+      "formatPassed": true,
+      "semanticPassed": true,
+      "execution": "not_run",
+      "errors": []
+    },
+    {
+      "caseId": "pack:sv.remove",
+      "formatPassed": true,
+      "semanticPassed": true,
+      "execution": "not_run",
+      "errors": []
+    },
+    {
+      "caseId": "pack:sv.transfer",
+      "formatPassed": true,
+      "semanticPassed": true,
+      "execution": "not_run",
+      "errors": []
+    },
+    {
+      "caseId": "pack:sv.damage",
+      "formatPassed": true,
+      "semanticPassed": true,
+      "execution": "not_run",
+      "errors": []
+    },
+    {
+      "caseId": "pack:sv.rest",
+      "formatPassed": true,
+      "semanticPassed": true,
+      "execution": "not_run",
+      "errors": []
+    },
+    {
+      "caseId": "pack:sv.morale",
+      "formatPassed": true,
+      "semanticPassed": true,
+      "execution": "not_run",
+      "errors": []
+    },
+    {
+      "caseId": "pack:sv.travel",
+      "formatPassed": true,
+      "semanticPassed": true,
+      "execution": "not_run",
+      "errors": []
+    },
+    {
+      "caseId": "pack:sv.travel.auto",
+      "formatPassed": true,
+      "semanticPassed": true,
+      "execution": "not_run",
+      "errors": []
+    },
+    {
+      "caseId": "pack:sv.world",
+      "formatPassed": true,
+      "semanticPassed": true,
+      "execution": "not_run",
+      "errors": []
+    },
+    {
+      "caseId": "pack:sv.generate",
+      "formatPassed": true,
+      "semanticPassed": true,
+      "execution": "not_run",
+      "errors": []
+    },
+    {
+      "caseId": "pack:sv.adjudicate",
+      "formatPassed": true,
+      "semanticPassed": true,
+      "execution": "not_run",
+      "errors": []
+    },
+    {
+      "caseId": "pack:sv.scene.resolve",
+      "formatPassed": true,
+      "semanticPassed": true,
+      "execution": "not_run",
+      "errors": []
+    },
+    {
+      "caseId": "configuration:add",
+      "formatPassed": true,
+      "semanticPassed": true,
+      "execution": "not_run",
+      "errors": []
+    },
+    {
+      "caseId": "configuration:replace",
+      "formatPassed": true,
+      "semanticPassed": true,
+      "execution": "not_run",
+      "errors": []
+    },
+    {
+      "caseId": "configuration:remove",
+      "formatPassed": true,
+      "semanticPassed": true,
+      "execution": "not_run",
+      "errors": []
+    },
+    {
+      "caseId": "data:append",
+      "formatPassed": true,
+      "semanticPassed": true,
+      "execution": "not_run",
+      "errors": []
+    },
+    {
+      "caseId": "data:add",
+      "formatPassed": true,
+      "semanticPassed": true,
+      "execution": "not_run",
+      "errors": []
+    },
+    {
+      "caseId": "data:replace",
+      "formatPassed": true,
+      "semanticPassed": true,
+      "execution": "not_run",
+      "errors": []
+    },
+    {
+      "caseId": "data:remove",
+      "formatPassed": true,
+      "semanticPassed": true,
+      "execution": "not_run",
+      "errors": []
+    },
+    {
+      "caseId": "lua:valid",
+      "formatPassed": true,
+      "semanticPassed": true,
+      "execution": "not_run",
+      "errors": [],
+      "luaStaging": "passed"
+    },
+    {
+      "caseId": "lua:forbidden",
+      "formatPassed": true,
+      "semanticPassed": true,
+      "execution": "not_run",
+      "errors": []
+    },
+    {
+      "caseId": "answer:plan",
+      "formatPassed": true,
+      "semanticPassed": true,
+      "execution": "not_run",
+      "errors": []
+    },
+    {
+      "caseId": "answer:ambiguity",
+      "formatPassed": true,
+      "semanticPassed": true,
+      "execution": "not_run",
+      "errors": []
+    },
+    {
+      "caseId": "tool:room_read_context",
+      "formatPassed": true,
+      "semanticPassed": true,
+      "execution": "not_run",
+      "errors": []
+    },
+    {
+      "caseId": "tool:pack_read_contract",
+      "formatPassed": true,
+      "semanticPassed": true,
+      "execution": "not_run",
+      "errors": []
+    },
+    {
+      "caseId": "tool:room_manage_catalog",
+      "formatPassed": true,
+      "semanticPassed": true,
+      "execution": "not_run",
+      "errors": []
+    },
+    {
+      "caseId": "tool:room_read_management",
+      "formatPassed": true,
+      "semanticPassed": true,
+      "execution": "not_run",
+      "errors": []
+    },
+    {
+      "caseId": "tool:room_read_sessions",
+      "formatPassed": true,
+      "semanticPassed": true,
+      "execution": "not_run",
+      "errors": []
+    },
+    {
+      "caseId": "tool:pack_read_config_data",
+      "formatPassed": true,
+      "semanticPassed": true,
+      "execution": "not_run",
+      "errors": []
+    },
+    {
+      "caseId": "tool:room_search_data",
+      "formatPassed": true,
+      "semanticPassed": true,
+      "execution": "not_run",
+      "errors": []
+    },
+    {
+      "caseId": "tool:room_read_data",
+      "formatPassed": true,
+      "semanticPassed": true,
+      "execution": "not_run",
+      "errors": []
+    },
+    {
+      "caseId": "tool:room_read_chat",
+      "formatPassed": true,
+      "semanticPassed": true,
+      "execution": "not_run",
+      "errors": []
+    },
+    {
+      "caseId": "tool:room_read_case",
+      "formatPassed": true,
+      "semanticPassed": true,
+      "execution": "not_run",
+      "errors": []
+    },
+    {
+      "caseId": "tool:room_search_knowledge",
+      "formatPassed": true,
+      "semanticPassed": true,
+      "execution": "not_run",
+      "errors": []
+    },
+    {
+      "caseId": "tool:room_read_knowledge",
+      "formatPassed": true,
+      "semanticPassed": true,
+      "execution": "not_run",
+      "errors": []
+    }
+  ]
+}

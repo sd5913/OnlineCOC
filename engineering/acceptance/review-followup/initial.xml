@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="33" failures="1" skipped="0" tests="57" time="2.719" timestamp="2026-11-20T13:22:06.729738+08:00" hostname="LAPTOP-BIFSL64A"><testcase classname="tests.test_review_followup" name="test_ruling_keeps_authorized_old_body_after_success" time="0.002"><error message="failed on setup with &quot;FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\review-followup\\work\\initial'&quot;">self = WindowsPath('D:/Studies/Art Programming/OnlineCOC/engineering/acceptance/review-followup/work/initial')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+&gt;           os.mkdir(self, mode)
+E           FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\review-followup\\work\\initial'
+
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\pathlib\__init__.py:1011: FileNotFoundError</error></testcase><testcase classname="tests.test_review_followup" name="test_config_history_reads_preserve_authorized_nodes[append-True]" time="0.001"><error message="failed on setup with &quot;FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\review-followup\\work\\initial'&quot;">self = WindowsPath('D:/Studies/Art Programming/OnlineCOC/engineering/acceptance/review-followup/work/initial')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+&gt;           os.mkdir(self, mode)
+E           FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\review-followup\\work\\initial'
+
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\pathlib\__init__.py:1011: FileNotFoundError</error></testcase><testcase classname="tests.test_review_followup" name="test_config_history_reads_preserve_authorized_nodes[value-True]" time="0.001"><error message="failed on setup with &quot;FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\review-followup\\work\\initial'&quot;">self = WindowsPath('D:/Studies/Art Programming/OnlineCOC/engineering/acceptance/review-followup/work/initial')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+&gt;           os.mkdir(self, mode)
+E           FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\review-followup\\work\\initial'
+
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\pathlib\__init__.py:1011: FileNotFoundError</error></testcase><testcase classname="tests.test_review_followup" name="test_config_history_reads_preserve_authorized_nodes[delete-False]" time="0.001"><error message="failed on setup with &quot;FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\review-followup\\work\\initial'&quot;">self = WindowsPath('D:/Studies/Art Programming/OnlineCOC/engineering/acceptance/review-followup/work/initial')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+&gt;           os.mkdir(self, mode)
+E           FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\review-followup\\work\\initial'
+
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\pathlib\__init__.py:1011: FileNotFoundError</error></testcase><testcase classname="tests.test_review_followup" name="test_config_history_reads_preserve_authorized_nodes[hidden-False]" time="0.001"><error message="failed on setup with &quot;FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\review-followup\\work\\initial'&quot;">self = WindowsPath('D:/Studies/Art Programming/OnlineCOC/engineering/acceptance/review-followup/work/initial')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+&gt;           os.mkdir(self, mode)
+E           FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\review-followup\\work\\initial'
+
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\pathlib\__init__.py:1011: FileNotFoundError</error></testcase><testcase classname="tests.test_review_followup" name="test_player_reference_does_not_dump_actions_into_chat[False]" time="0.001" /><testcase classname="tests.test_review_followup" name="test_player_reference_does_not_dump_actions_into_chat[True]" time="0.003" /><testcase classname="tests.test_history_continuity" name="test_stale_authorized_response_stays_visible_with_readonly_notice" time="0.001"><error message="failed on setup with &quot;FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\review-followup\\work\\initial'&quot;">self = WindowsPath('D:/Studies/Art Programming/OnlineCOC/engineering/acceptance/review-followup/work/initial')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+&gt;           os.mkdir(self, mode)
+E           FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\review-followup\\work\\initial'
+
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\pathlib\__init__.py:1011: FileNotFoundError</error></testcase><testcase classname="tests.test_history_continuity" name="test_short_confirmation_retains_stale_intent_without_old_execution_proofs" time="0.001"><error message="failed on setup with &quot;FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\review-followup\\work\\initial'&quot;">self = WindowsPath('D:/Studies/Art Programming/OnlineCOC/engineering/acceptance/review-followup/work/initial')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+&gt;           os.mkdir(self, mode)
+E           FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\review-followup\\work\\initial'
+
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\pathlib\__init__.py:1011: FileNotFoundError</error></testcase><testcase classname="tests.test_history_continuity" name="test_query_history_identity_witness_and_legacy_boundary[read-True-True]" time="0.001"><error message="failed on setup with &quot;FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\review-followup\\work\\initial'&quot;">self = WindowsPath('D:/Studies/Art Programming/OnlineCOC/engineering/acceptance/review-followup/work/initial')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+&gt;           os.mkdir(self, mode)
+E           FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\review-followup\\work\\initial'
+
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\pathlib\__init__.py:1011: FileNotFoundError</error></testcase><testcase classname="tests.test_history_continuity" name="test_query_history_identity_witness_and_legacy_boundary[search-False-True]" time="0.001"><error message="failed on setup with &quot;FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\review-followup\\work\\initial'&quot;">self = WindowsPath('D:/Studies/Art Programming/OnlineCOC/engineering/acceptance/review-followup/work/initial')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+&gt;           os.mkdir(self, mode)
+E           FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\review-followup\\work\\initial'
+
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\pathlib\__init__.py:1011: FileNotFoundError</error></testcase><testcase classname="tests.test_history_continuity" name="test_query_history_identity_witness_and_legacy_boundary[search-True-False]" time="0.001"><error message="failed on setup with &quot;FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\review-followup\\work\\initial'&quot;">self = WindowsPath('D:/Studies/Art Programming/OnlineCOC/engineering/acceptance/review-followup/work/initial')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+&gt;           os.mkdir(self, mode)
+E           FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\review-followup\\work\\initial'
+
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\pathlib\__init__.py:1011: FileNotFoundError</error></testcase><testcase classname="tests.test_history_continuity" name="test_stale_history_never_restores_deleted_or_revoked_body[deleted]" time="0.001"><error message="failed on setup with &quot;FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\review-followup\\work\\initial'&quot;">self = WindowsPath('D:/Studies/Art Programming/OnlineCOC/engineering/acceptance/review-followup/work/initial')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+&gt;           os.mkdir(self, mode)
+E           FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\review-followup\\work\\initial'
+
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\pathlib\__init__.py:1011: FileNotFoundError</error></testcase><testcase classname="tests.test_history_continuity" name="test_stale_history_never_restores_deleted_or_revoked_body[hidden]" time="0.001"><error message="failed on setup with &quot;FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\review-followup\\work\\initial'&quot;">self = WindowsPath('D:/Studies/Art Programming/OnlineCOC/engineering/acceptance/review-followup/work/initial')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+&gt;           os.mkdir(self, mode)
+E           FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\review-followup\\work\\initial'
+
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\pathlib\__init__.py:1011: FileNotFoundError</error></testcase><testcase classname="tests.test_history_continuity" name="test_stale_history_never_restores_deleted_or_revoked_body[authorization]" time="0.001"><error message="failed on setup with &quot;FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\review-followup\\work\\initial'&quot;">self = WindowsPath('D:/Studies/Art Programming/OnlineCOC/engineering/acceptance/review-followup/work/initial')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+&gt;           os.mkdir(self, mode)
+E           FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\review-followup\\work\\initial'
+
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\pathlib\__init__.py:1011: FileNotFoundError</error></testcase><testcase classname="tests.test_history_continuity" name="test_stale_history_never_restores_deleted_or_revoked_body[policy]" time="0.001"><error message="failed on setup with &quot;FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\review-followup\\work\\initial'&quot;">self = WindowsPath('D:/Studies/Art Programming/OnlineCOC/engineering/acceptance/review-followup/work/initial')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+&gt;           os.mkdir(self, mode)
+E           FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\review-followup\\work\\initial'
+
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\pathlib\__init__.py:1011: FileNotFoundError</error></testcase><testcase classname="tests.test_history_continuity" name="test_stale_history_never_restores_deleted_or_revoked_body[profile]" time="0.001"><error message="failed on setup with &quot;FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\review-followup\\work\\initial'&quot;">self = WindowsPath('D:/Studies/Art Programming/OnlineCOC/engineering/acceptance/review-followup/work/initial')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+&gt;           os.mkdir(self, mode)
+E           FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\review-followup\\work\\initial'
+
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\pathlib\__init__.py:1011: FileNotFoundError</error></testcase><testcase classname="tests.test_history_continuity" name="test_stale_history_never_restores_deleted_or_revoked_body[session_deleted]" time="0.001"><error message="failed on setup with &quot;FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\review-followup\\work\\initial'&quot;">self = WindowsPath('D:/Studies/Art Programming/OnlineCOC/engineering/acceptance/review-followup/work/initial')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+&gt;           os.mkdir(self, mode)
+E           FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\review-followup\\work\\initial'
+
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\pathlib\__init__.py:1011: FileNotFoundError</error></testcase><testcase classname="tests.test_history_continuity" name="test_new_query_witness_does_not_restore_deleted_object" time="0.001"><error message="failed on setup with &quot;FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\review-followup\\work\\initial'&quot;">self = WindowsPath('D:/Studies/Art Programming/OnlineCOC/engineering/acceptance/review-followup/work/initial')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+&gt;           os.mkdir(self, mode)
+E           FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\review-followup\\work\\initial'
+
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\pathlib\__init__.py:1011: FileNotFoundError</error></testcase><testcase classname="tests.test_history_continuity" name="test_historical_intent_is_rechecked_after_capture_and_has_no_execution_authority" time="0.001"><error message="failed on setup with &quot;FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\review-followup\\work\\initial'&quot;">self = WindowsPath('D:/Studies/Art Programming/OnlineCOC/engineering/acceptance/review-followup/work/initial')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+&gt;           os.mkdir(self, mode)
+E           FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\review-followup\\work\\initial'
+
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\pathlib\__init__.py:1011: FileNotFoundError</error></testcase><testcase classname="tests.test_history_continuity" name="test_history_scope_mismatch_never_falls_back" time="0.001"><error message="failed on setup with &quot;FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\review-followup\\work\\initial'&quot;">self = WindowsPath('D:/Studies/Art Programming/OnlineCOC/engineering/acceptance/review-followup/work/initial')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+&gt;           os.mkdir(self, mode)
+E           FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\review-followup\\work\\initial'
+
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\pathlib\__init__.py:1011: FileNotFoundError</error></testcase><testcase classname="tests.test_history_continuity" name="test_short_confirmation_requires_current_target_read_before_batch" time="0.001"><error message="failed on setup with &quot;FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\review-followup\\work\\initial'&quot;">self = WindowsPath('D:/Studies/Art Programming/OnlineCOC/engineering/acceptance/review-followup/work/initial')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+&gt;           os.mkdir(self, mode)
+E           FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\review-followup\\work\\initial'
+
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\pathlib\__init__.py:1011: FileNotFoundError</error></testcase><testcase classname="tests.test_history_continuity" name="test_model_repairs_stale_intent_by_reading_target_without_reasking" time="0.001"><error message="failed on setup with &quot;FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\review-followup\\work\\initial'&quot;">self = WindowsPath('D:/Studies/Art Programming/OnlineCOC/engineering/acceptance/review-followup/work/initial')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+&gt;           os.mkdir(self, mode)
+E           FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\review-followup\\work\\initial'
+
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\pathlib\__init__.py:1011: FileNotFoundError</error></testcase><testcase classname="tests.test_history_continuity" name="test_new_generation_public_status_is_not_expired_historical_intent[False]" time="0.001"><error message="failed on setup with &quot;FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\review-followup\\work\\initial'&quot;">self = WindowsPath('D:/Studies/Art Programming/OnlineCOC/engineering/acceptance/review-followup/work/initial')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+&gt;           os.mkdir(self, mode)
+E           FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\review-followup\\work\\initial'
+
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\pathlib\__init__.py:1011: FileNotFoundError</error></testcase><testcase classname="tests.test_history_continuity" name="test_new_generation_public_status_is_not_expired_historical_intent[True]" time="0.001"><error message="failed on setup with &quot;FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\review-followup\\work\\initial'&quot;">self = WindowsPath('D:/Studies/Art Programming/OnlineCOC/engineering/acceptance/review-followup/work/initial')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+&gt;           os.mkdir(self, mode)
+E           FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\review-followup\\work\\initial'
+
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\pathlib\__init__.py:1011: FileNotFoundError</error></testcase><testcase classname="tests.test_rulings" name="test_chat_approval_is_bound_to_batch_and_not_another_model_request" time="0.001"><error message="failed on setup with &quot;FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\review-followup\\work\\initial'&quot;">self = WindowsPath('D:/Studies/Art Programming/OnlineCOC/engineering/acceptance/review-followup/work/initial')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+&gt;           os.mkdir(self, mode)
+E           FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\review-followup\\work\\initial'
+
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\pathlib\__init__.py:1011: FileNotFoundError</error></testcase><testcase classname="tests.test_rulings" name="test_config_is_one_checked_ruling_and_publishes_once" time="0.001"><error message="failed on setup with &quot;FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\review-followup\\work\\initial'&quot;">self = WindowsPath('D:/Studies/Art Programming/OnlineCOC/engineering/acceptance/review-followup/work/initial')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+&gt;           os.mkdir(self, mode)
+E           FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\review-followup\\work\\initial'
+
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\pathlib\__init__.py:1011: FileNotFoundError</error></testcase><testcase classname="tests.test_rulings" name="test_high_risk_config_never_uses_auto_approval" time="0.001"><error message="failed on setup with &quot;FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\review-followup\\work\\initial'&quot;">self = WindowsPath('D:/Studies/Art Programming/OnlineCOC/engineering/acceptance/review-followup/work/initial')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+&gt;           os.mkdir(self, mode)
+E           FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\review-followup\\work\\initial'
+
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\pathlib\__init__.py:1011: FileNotFoundError</error></testcase><testcase classname="tests.test_rulings" name="test_player_cannot_decide_and_stale_digest_cannot_execute" time="0.001"><error message="failed on setup with &quot;FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\review-followup\\work\\initial'&quot;">self = WindowsPath('D:/Studies/Art Programming/OnlineCOC/engineering/acceptance/review-followup/work/initial')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+&gt;           os.mkdir(self, mode)
+E           FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\review-followup\\work\\initial'
+
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\pathlib\__init__.py:1011: FileNotFoundError</error></testcase><testcase classname="tests.test_rulings" name="test_consultation_only_evidence_cannot_enter_publish_queue_or_auto_approve" time="0.001"><error message="failed on setup with &quot;FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\review-followup\\work\\initial'&quot;">self = WindowsPath('D:/Studies/Art Programming/OnlineCOC/engineering/acceptance/review-followup/work/initial')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+&gt;           os.mkdir(self, mode)
+E           FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\review-followup\\work\\initial'
+
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\pathlib\__init__.py:1011: FileNotFoundError</error></testcase><testcase classname="tests.test_rulings" name="test_invalid_model_output_has_specific_cause[[]-MODEL_OBJECT_REQUIRED]" time="0.001" /><testcase classname="tests.test_rulings" name="test_invalid_model_output_has_specific_cause[null-MODEL_OBJECT_REQUIRED]" time="0.001" /><testcase classname="tests.test_rulings" name="test_invalid_model_output_has_specific_cause[broken-MODEL_JSON_INVALID]" time="0.001" /><testcase classname="tests.test_rulings" name="test_invalid_model_output_has_specific_cause[{&quot;kind&quot;:&quot;other&quot;,&quot;text&quot;:&quot;a&quot;}-MODEL_KIND_INVALID]" time="0.001" /><testcase classname="tests.test_rulings" name="test_single_json_fence_is_accepted_without_extracting_arbitrary_text" time="0.001" /><testcase classname="tests.test_rulings" name="test_five_repairs_do_not_consume_tool_rounds[True]" time="0.001"><error message="failed on setup with &quot;FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\review-followup\\work\\initial'&quot;">self = WindowsPath('D:/Studies/Art Programming/OnlineCOC/engineering/acceptance/review-followup/work/initial')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+&gt;           os.mkdir(self, mode)
+E           FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\review-followup\\work\\initial'
+
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\pathlib\__init__.py:1011: FileNotFoundError</error></testcase><testcase classname="tests.test_rulings" name="test_five_repairs_do_not_consume_tool_rounds[False]" time="0.001"><error message="failed on setup with &quot;FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\review-followup\\work\\initial'&quot;">self = WindowsPath('D:/Studies/Art Programming/OnlineCOC/engineering/acceptance/review-followup/work/initial')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+&gt;           os.mkdir(self, mode)
+E           FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\review-followup\\work\\initial'
+
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\pathlib\__init__.py:1011: FileNotFoundError</error></testcase><testcase classname="tests.test_rulings" name="test_user_decision_pauses_instead_of_retrying[clarification]" time="0.001"><error message="failed on setup with &quot;FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\review-followup\\work\\initial'&quot;">self = WindowsPath('D:/Studies/Art Programming/OnlineCOC/engineering/acceptance/review-followup/work/initial')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+&gt;           os.mkdir(self, mode)
+E           FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\review-followup\\work\\initial'
+
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\pathlib\__init__.py:1011: FileNotFoundError</error></testcase><testcase classname="tests.test_rulings" name="test_user_decision_pauses_instead_of_retrying[plan]" time="0.001"><error message="failed on setup with &quot;FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\review-followup\\work\\initial'&quot;">self = WindowsPath('D:/Studies/Art Programming/OnlineCOC/engineering/acceptance/review-followup/work/initial')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+&gt;           os.mkdir(self, mode)
+E           FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\review-followup\\work\\initial'
+
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\pathlib\__init__.py:1011: FileNotFoundError</error></testcase><testcase classname="tests.test_rulings" name="test_basic_lua_error_repairs_same_proposal_before_review" time="0.001"><error message="failed on setup with &quot;FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\review-followup\\work\\initial'&quot;">self = WindowsPath('D:/Studies/Art Programming/OnlineCOC/engineering/acceptance/review-followup/work/initial')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+&gt;           os.mkdir(self, mode)
+E           FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\review-followup\\work\\initial'
+
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\pathlib\__init__.py:1011: FileNotFoundError</error></testcase><testcase classname="tests.test_known_answers" name="test_model_can_only_select_issued_evidence[&lt;lambda&gt;0]" time="0.001" /><testcase classname="tests.test_known_answers" name="test_model_can_only_select_issued_evidence[&lt;lambda&gt;1]" time="0.001" /><testcase classname="tests.test_known_answers" name="test_model_can_only_select_issued_evidence[&lt;lambda&gt;2]" time="0.001" /><testcase classname="tests.test_known_answers" name="test_model_can_only_select_issued_evidence[&lt;lambda&gt;3]" time="0.001" /><testcase classname="tests.test_known_answers" name="test_model_can_only_select_issued_evidence[&lt;lambda&gt;4]" time="0.001" /><testcase classname="tests.test_known_answers" name="test_model_can_only_select_issued_evidence[&lt;lambda&gt;5]" time="0.001" /><testcase classname="tests.test_known_answers" name="test_model_can_only_select_issued_evidence[&lt;lambda&gt;6]" time="0.001" /><testcase classname="tests.test_known_answers" name="test_reference_encodes_exact_snapshot_and_scope_without_current_entity_lookup" time="0.001" /><testcase classname="tests.test_known_answers" name="test_fixed_order_and_labels_use_only_captured_data" time="0.001" /><testcase classname="tests.test_known_answers" name="test_search_summary_cannot_be_rendered_as_read_evidence" time="0.000" /><testcase classname="tests.test_known_answers" name="test_malformed_answers_fail_closed[{&quot;kind&quot;:&quot;known&quot;,&quot;kind&quot;:&quot;known&quot;}]" time="0.001" /><testcase classname="tests.test_known_answers" name="test_malformed_answers_fail_closed[{&quot;kind&quot;:&quot;known&quot;,&quot;evidence&quot;:NaN,&quot;next&quot;:&quot;none&quot;}]" time="0.000" /><testcase classname="tests.test_known_answers" name="test_malformed_answers_fail_closed[not json]" time="0.000" /><testcase classname="tests.test_known_answers" name="test_empty_result_does_not_assert_nonexistence_and_data_is_not_markup" time="0.001" /><testcase classname="tests.test_known_answers" name="test_structured_evidence_has_readable_labels_and_no_technical_ids" time="0.000" /><testcase classname="tests.test_known_answers" name="test_presentation_is_bounded_and_literal_with_deep_or_large_values" time="0.001" /><testcase classname="tests.test_known_answers" name="test_legacy_known_json_is_reformatted_without_touching_other_messages" time="0.003"><failure message="AssertionError: assert ('已记录行动' in '观察记录 · [[knowledge:eyJkaWdlc3QiOiJkaWdlc3QiLCJpZCI6Im9ic2VydmF0aW9uLTEiLCJyZXZpc2lvbiI6IjEiLCJzY2hlbWFWZXJzaW9uIjoxLCJzY29wZUlkIjoic2NvcGUtcGxheWVyMSJ9@1]]\n\n**已知资料**\n\n点击引用查看完整资料。')">def test_legacy_known_json_is_reformatted_without_touching_other_messages():
+        from onlinecoc_ai.known_answers import format_legacy,_literal
+        record=item();raw={'actions':[{'label':'检查器具','choices':[{'label':'交谈','process':'记录回应'}]}],'entityId':'INTERNAL_ID'}
+        old='观察记录 · '+reference_token(record['ref'])+'\n\n'+_literal(raw)
+        shown=format_legacy(old)
+&gt;       assert '已记录行动' in shown and '处理说明' in shown and 'INTERNAL_ID' not in shown
+E       AssertionError: assert ('已记录行动' in '观察记录 · [[knowledge:eyJkaWdlc3QiOiJkaWdlc3QiLCJpZCI6Im9ic2VydmF0aW9uLTEiLCJyZXZpc2lvbiI6IjEiLCJzY2hlbWFWZXJzaW9uIjoxLCJzY29wZUlkIjoic2NvcGUtcGxheWVyMSJ9@1]]\n\n**已知资料**\n\n点击引用查看完整资料。')
+
+engineering\ai\tests\test_known_answers.py:86: AssertionError</failure></testcase></testsuite></testsuites>

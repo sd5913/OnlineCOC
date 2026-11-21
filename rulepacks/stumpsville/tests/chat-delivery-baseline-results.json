@@ -1,0 +1,117 @@
+{
+  "at": "2026-11-21T09:03:41.162197+08:00",
+  "label": "baseline",
+  "source": "rulepacks\\stumpsville\\tests\\output\\defaults-components-549d5799\\source",
+  "output": "D:\\Studies\\Art Programming\\OnlineCOC\\rulepacks\\stumpsville\\tests\\output\\chat-delivery-baseline-240ddce2",
+  "externalApiCalls": 0,
+  "checks": [
+    "four real pages deliver six distinct chat messages without transport failure"
+  ],
+  "measurements": {
+    "sendComposerReady": {
+      "samples": 6,
+      "p50Ms": 226.0,
+      "p95Ms": 2040.03,
+      "maxMs": 2040.03
+    },
+    "receiverVisible": {
+      "samples": 6,
+      "p50Ms": 2582.56,
+      "p95Ms": 4410.37,
+      "maxMs": 4410.37
+    },
+    "failures": []
+  },
+  "fixture": {
+    "chatHistory": 16,
+    "pages": 4,
+    "visibility": [
+      "visible",
+      "visible",
+      "visible",
+      "visible"
+    ]
+  },
+  "chatWhileRulingPending": false,
+  "concurrentToast": "请等待当前操作完成",
+  "passed": true,
+  "pageErrors": [],
+  "previousRuns": [
+    {
+      "at": "2026-11-21T08:58:03.750609+08:00",
+      "label": "baseline",
+      "source": "rulepacks\\stumpsville\\tests\\output\\defaults-components-549d5799\\source",
+      "output": "D:\\Studies\\Art Programming\\OnlineCOC\\rulepacks\\stumpsville\\tests\\output\\chat-delivery-baseline-99fcba8e",
+      "externalApiCalls": 0,
+      "checks": [
+        "four real pages deliver six distinct chat messages without transport failure"
+      ],
+      "measurements": {
+        "sendComposerReady": {
+          "samples": 6,
+          "p50Ms": 224.75,
+          "p95Ms": 2030.46,
+          "maxMs": 2030.46
+        },
+        "receiverVisible": {
+          "samples": 6,
+          "p50Ms": 2583.52,
+          "p95Ms": 4390.03,
+          "maxMs": 4390.03
+        },
+        "failures": []
+      },
+      "fixture": {
+        "chatHistory": 16,
+        "pages": 4,
+        "visibility": [
+          "visible",
+          "visible",
+          "visible",
+          "visible"
+        ]
+      },
+      "passed": false,
+      "error": "Error('Page.wait_for_function: EvalError: Evaluating a string as JavaScript violates the following Content Security Policy directive because \\'unsafe-eval\\' is not an allowed source of script: script-src \\'self\\'\".\\n\\n    at eval (<anonymous>)\\n    at predicate (eval at evaluate (:370:30), <anonymous>:4:60)\\n    at next (eval at evaluate (:370:30), <anonymous>:29:33)')",
+      "pageErrors": []
+    },
+    {
+      "at": "2026-11-21T09:02:13.657837+08:00",
+      "label": "baseline",
+      "source": "rulepacks\\stumpsville\\tests\\output\\defaults-components-549d5799\\source",
+      "output": "D:\\Studies\\Art Programming\\OnlineCOC\\rulepacks\\stumpsville\\tests\\output\\chat-delivery-baseline-5213b99f",
+      "externalApiCalls": 0,
+      "checks": [
+        "four real pages deliver six distinct chat messages without transport failure"
+      ],
+      "measurements": {
+        "sendComposerReady": {
+          "samples": 6,
+          "p50Ms": 226.07,
+          "p95Ms": 2041.84,
+          "maxMs": 2041.84
+        },
+        "receiverVisible": {
+          "samples": 6,
+          "p50Ms": 2582.28,
+          "p95Ms": 4402.92,
+          "maxMs": 4402.92
+        },
+        "failures": []
+      },
+      "fixture": {
+        "chatHistory": 16,
+        "pages": 4,
+        "visibility": [
+          "visible",
+          "visible",
+          "visible",
+          "visible"
+        ]
+      },
+      "passed": false,
+      "error": "AssertionError('Locator expected not to be empty\\nActual value: empty \\nCall log:\\n  - Expect \"not_to_be_empty\" locator(\"#toast\") with timeout 20000ms\\n  - waiting for locator(\"#toast\")\\n    43 × locator resolved to <div id=\"toast\" role=\"status\" aria-live=\"polite\"></div>\\n       - unexpected value \"empty\"\\n\\nAria snapshot:\\n- banner:\\n  - text: ♧ 树桩镇 STUMPSVILLE 主持 KP · kp 已同步\\n  - link \"打开PL视窗\":\\n    - /url: /sessions/delivery-0/?view=player#/play/scene\\n  - button \"规则\"\\n  - button \"偏好\"\\n  - button \"退出\"\\n  - text: 语言\\n  - combobox \"语言\":\\n    - option \"简体中文\" [selected]\\n    - option \"English\"\\n  - button \"收起顶栏\" [expanded]: ▴\\n- navigation \"主导航\":\\n  - link \"房间管理\":\\n    - /url: \"#/gm/room\"\\n  - link \"裁决\":\\n    - /url: \"#/gm/rulings\"\\n  - link \"地图\":\\n    - /url: \"#/gm/map\"\\n  - link \"控制台\":\\n    - /url: \"#/gm/console\"\\n  - link \"地点\":\\n    - /url: \"#/gm/locations\"\\n  - link \"资料\":\\n    - /url: \"#/gm/library\"\\n  - link \"场次\":\\n    - /url: \"#/gm/session\"\\n  - link \"AI 设置\":\\n    - /url: \"#/gm/ai-settings\"\\n- main:\\n  - tablist \"消息与裁决\":\\n    - tab \"消息队列\"\\n    - tab \"裁决队列 1\" [selected]\\n    - tab \"已归档\"\\n  - button \"记录\"\\n  - button \"刷新\"\\n  - button \"设置\"\\n  - tabpanel:\\n    - article:\\n      - time: 09:02\\n      - text: 类型：玩家行动 player1\\n      - button \"自由行动 · CHAT-CONCURRENCY-RULING\"\\n      - button \"处理\"\\n      - button \"拒绝\"\\n      - button \"转 AI 处理\"\\n  - region \"AI 助手\":\\n    - strong: AI 助手\\n    - text: kp · KP\\n    - button \"引用与调试\" [disabled]\\n    - button \"KP 审核与设置\"\\n    - button \"用量统计\"\\n    - main:\\n      - navigation:\\n        - button \"新建会话\"\\n        - combobox \"选择会话\":\\n          - option \"选择会话\" [selected]\\n        - button \"归档会话\"\\n        - button \"会话管理\"\\n      - log \"对话记录\":\\n        - heading \"从一个想法开始\" [level=2]\\n        - paragraph: 引用资料、梳理线索，或准备下一步方案。\\n        - button \"梳理房间资料 整理资料与待处理事项\"\\n        - button \"设计新内容 准备可供审核的方案\"\\n        - button \"引用配置 从已授权目录中选择\"\\n      - textbox \"输入需求\": 描述需求，输入 / 选择指令或引用房间数据\\n      - button \"插入数据引用\": ＋ 引用\\n      - button \"查看引用\" [disabled]\\n      - combobox \"发送快捷键\":\\n        - option \"Enter 发送\" [selected]\\n        - option \"Ctrl + Enter 发送\"\\n      - button \"发送消息\" [disabled]: ↑\\n      - status: AI 的建议需经 KP 审核后才能加载到游戏。\\n  - complementary \"聊天\":\\n    - region \"聊天\":\\n      - strong: 聊天\\n      - button \"建立私聊\"\\n      - navigation:\\n        - button \"全局6\"\\n        - button \"所在场景\"\\n        - button \"队伍\"\\n        - button \"私聊\"\\n      - strong: 全局\\n      - article:\\n        - text: kp · 09:02:31\\n        - paragraph: 聊天历史 0\\n        - button \"编辑\"\\n        - button \"撤回\"\\n      - article:\\n        - text: kp · 09:02:31\\n        - paragraph: 聊天历史 1\\n        - button \"编辑\"\\n        - button \"撤回\"\\n      - article:\\n        - text: kp · 09:02:31\\n        - paragraph: 聊天历史 2\\n        - button \"编辑\"\\n        - button \"撤回\"\\n      - article:\\n        - text: kp · 09:02:31\\n        - paragraph: 聊天历史 3\\n        - button \"编辑\"\\n        - button \"撤回\"\\n      - article:\\n        - text: kp · 09:02:32\\n        - paragraph: 聊天历史 4\\n        - button \"编辑\"\\n        - button \"撤回\"\\n      - article:\\n        - text: kp · 09:02:32\\n        - paragraph: 聊天历史 5\\n        - button \"编辑\"\\n        - button \"撤回\"\\n      - article:\\n        - text: kp · 09:02:32\\n        - paragraph: 聊天历史 6\\n        - button \"编辑\"\\n        - button \"撤回\"\\n      - article:\\n        - text: kp · 09:02:32\\n        - paragraph: 聊天历史 7\\n        - button \"编辑\"\\n        - button \"撤回\"\\n      - article:\\n        - text: kp · 09:02:32\\n        - paragraph: 聊天历史 8\\n        - button \"编辑\"\\n        - button \"撤回\"\\n      - article:\\n        - text: kp · 09:02:32\\n        - paragraph: 聊天历史 9\\n        - button \"编辑\"\\n        - button \"撤回\"\\n      - article:\\n        - text: kp · 09:02:32\\n        - paragraph: 聊天历史 10\\n        - button \"编辑\"\\n        - button \"撤回\"\\n      - article:\\n        - text: kp · 09:02:32\\n        - paragraph: 聊天历史 11\\n        - button \"编辑\"\\n        - button \"撤回\"\\n      - article:\\n        - text: kp · 09:02:32\\n        - paragraph: 聊天历史 12\\n        - button \"编辑\"\\n        - button \"撤回\"\\n      - article:\\n        - text: kp · 09:02:32\\n        - paragraph: 聊天历史 13\\n        - button \"编辑\"\\n        - button \"撤回\"\\n      - article:\\n        - text: kp · 09:02:33\\n        - paragraph: 聊天历史 14\\n        - button \"编辑\"\\n        - button \"撤回\"\\n      - article:\\n        - text: kp · 09:02:33\\n        - paragraph: 聊天历史 15\\n        - button \"编辑\"\\n        - button \"撤回\"\\n      - article:\\n        - text: player1 · 09:02:39\\n        - paragraph: CHAT-BENCH-baseline-0\\n      - article:\\n        - text: player1 · 09:02:41\\n        - paragraph: CHAT-BENCH-baseline-1\\n      - article:\\n        - text: player1 · 09:02:44\\n        - paragraph: CHAT-BENCH-baseline-2\\n      - article:\\n        - text: player1 · 09:02:46\\n        - paragraph: CHAT-BENCH-baseline-3\\n      - article:\\n        - text: player1 · 09:02:49\\n        - paragraph: CHAT-BENCH-baseline-4\\n      - article:\\n        - text: player1 · 09:02:51\\n        - paragraph: CHAT-BENCH-baseline-5\\n      - button \"较早记录\"\\n      - button \"标为已读\"\\n      - textbox \"消息\":\\n        - /placeholder: 输入消息…\\n      - text: Ctrl + Enter\\n      - button \"发送\"\\n- dialog \"裁决详情\":\\n  - heading \"裁决详情\" [level=2]\\n  - button \"关闭\"\\n  - heading \"自由行动\" [level=3]\\n  - paragraph: 木栗 · 入口隧道\\n  - paragraph: CHAT-CONCURRENCY-RULING\\n  - text: 决定\\n  - combobox \"决定\":\\n    - option \"批准\"\\n    - option \"拒绝\" [selected]\\n  - text: 执行动作\\n  - combobox \"执行动作\":\\n    - option \"仅回复\" [selected]\\n    - option \"属性检定\"\\n    - option \"伤害结算\"\\n    - option \"休息恢复\"\\n    - option \"授予物品\"\\n  - group: 回复（可选）\\n  - button \"拒绝并回复\"\\n  - button \"转 AI 处理\"\\n  - group: 调试\\n  - alert\\n  - button \"取消\"')",
+      "pageErrors": []
+    }
+  ]
+}

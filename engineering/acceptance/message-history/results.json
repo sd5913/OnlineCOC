@@ -1,0 +1,705 @@
+{
+  "schemaVersion": 1,
+  "scope": "ISSUE-018 AI message history and explicit completion",
+  "rounds": [
+    {
+      "evidence": "first.xml",
+      "passed": 4,
+      "total": 5,
+      "failures": [
+        "test_message_history::test_deleted_session_is_not_revived_by_delivery_receipt"
+      ]
+    },
+    {
+      "evidence": "second.xml",
+      "passed": 11,
+      "total": 13,
+      "failures": [
+        "test_message_history::test_explicit_completed_followup_archives_predecessors_with_proof",
+        "test_message_history_ui::test_unavailable_references_keep_label_and_disable_details"
+      ]
+    },
+    {
+      "evidence": "third.xml",
+      "passed": 12,
+      "total": 13,
+      "failures": [
+        "test_message_history_ui::test_unavailable_references_keep_label_and_disable_details"
+      ]
+    },
+    {
+      "evidence": "freeze.xml",
+      "passed": 111,
+      "total": 111,
+      "failures": []
+    },
+    {
+      "evidence": "boundaries.xml",
+      "passed": 6,
+      "total": 7,
+      "failures": [
+        "test_boundaries::test_http_error_does_not_attach_unsafe_identifiers"
+      ]
+    },
+    {
+      "evidence": "boundaries-final.xml",
+      "passed": 7,
+      "total": 7,
+      "failures": []
+    },
+    {
+      "evidence": "receipt-visibility.xml",
+      "passed": 0,
+      "total": 1,
+      "failures": [
+        "test_boundaries::test_resolution_never_reexposes_hidden_ruling_receipt_ids"
+      ]
+    },
+    {
+      "evidence": "receipt-final.xml",
+      "passed": 48,
+      "total": 48,
+      "failures": []
+    }
+  ],
+  "uniqueLatest": {
+    "passed": 119,
+    "total": 119,
+    "cases": [
+      {
+        "id": "test_message_history::test_published_player_text_survives_revoke_without_restoring_source[False]",
+        "status": "passed",
+        "evidence": "receipt-final.xml"
+      },
+      {
+        "id": "test_message_history::test_published_player_text_survives_revoke_without_restoring_source[True]",
+        "status": "passed",
+        "evidence": "receipt-final.xml"
+      },
+      {
+        "id": "test_message_history::test_unpublished_or_unproven_legacy_body_is_not_recovered",
+        "status": "passed",
+        "evidence": "receipt-final.xml"
+      },
+      {
+        "id": "test_message_history::test_public_delivery_remembers_legacy_text_but_never_invents_time",
+        "status": "passed",
+        "evidence": "receipt-final.xml"
+      },
+      {
+        "id": "test_message_history::test_deleted_session_is_not_revived_by_delivery_receipt",
+        "status": "passed",
+        "evidence": "receipt-final.xml"
+      },
+      {
+        "id": "test_message_history::test_explicit_completed_followup_archives_predecessors_with_proof",
+        "status": "passed",
+        "evidence": "receipt-final.xml"
+      },
+      {
+        "id": "test_message_history::test_uncertain_predecessor_is_never_closed[partial]",
+        "status": "passed",
+        "evidence": "receipt-final.xml"
+      },
+      {
+        "id": "test_message_history::test_uncertain_predecessor_is_never_closed[unknown]",
+        "status": "passed",
+        "evidence": "receipt-final.xml"
+      },
+      {
+        "id": "test_message_history::test_uncertain_predecessor_is_never_closed[executing]",
+        "status": "passed",
+        "evidence": "receipt-final.xml"
+      },
+      {
+        "id": "test_message_history::test_completion_without_matching_host_receipts_cannot_close_group",
+        "status": "passed",
+        "evidence": "receipt-final.xml"
+      },
+      {
+        "id": "test_message_history_ui::test_unavailable_references_keep_label_and_disable_details",
+        "status": "passed",
+        "evidence": "freeze.xml"
+      },
+      {
+        "id": "test_message_history_ui::test_timestamps_are_real_and_missing_history_is_explicit",
+        "status": "passed",
+        "evidence": "freeze.xml"
+      },
+      {
+        "id": "test_message_history_ui::test_transport_errors_keep_status_and_never_expose_body",
+        "status": "passed",
+        "evidence": "freeze.xml"
+      },
+      {
+        "id": "test_message_history::test_legacy_final_reply_migrates_after_revoke_and_survives_restart",
+        "status": "passed",
+        "evidence": "receipt-final.xml"
+      },
+      {
+        "id": "test_message_history::test_nested_review_recipient_remains_original_player",
+        "status": "passed",
+        "evidence": "receipt-final.xml"
+      },
+      {
+        "id": "test_message_history::test_public_http_routes_record_only_authorized_deliveries[tasks]",
+        "status": "passed",
+        "evidence": "receipt-final.xml"
+      },
+      {
+        "id": "test_message_history::test_public_http_routes_record_only_authorized_deliveries[session]",
+        "status": "passed",
+        "evidence": "receipt-final.xml"
+      },
+      {
+        "id": "test_known_runtime::test_unconfigured_player_never_falls_back_or_calls_model",
+        "status": "passed",
+        "evidence": "freeze.xml"
+      },
+      {
+        "id": "test_known_runtime::test_initial_context_contains_no_pack_guide_world_or_old_model_history",
+        "status": "passed",
+        "evidence": "freeze.xml"
+      },
+      {
+        "id": "test_known_runtime::test_snapshot_reference_cannot_cross_account_or_follow_world_update",
+        "status": "passed",
+        "evidence": "freeze.xml"
+      },
+      {
+        "id": "test_known_runtime::test_model_secret_prose_is_repaired_and_never_stored_or_replayed",
+        "status": "passed",
+        "evidence": "freeze.xml"
+      },
+      {
+        "id": "test_known_runtime::test_inflight_revoke_suppresses_entire_response",
+        "status": "passed",
+        "evidence": "freeze.xml"
+      },
+      {
+        "id": "test_known_runtime::test_private_export_block_and_kp_player_session_ceiling",
+        "status": "passed",
+        "evidence": "freeze.xml"
+      },
+      {
+        "id": "test_known_runtime::test_second_package_witness_testimony_stays_personal_and_fixed",
+        "status": "passed",
+        "evidence": "freeze.xml"
+      },
+      {
+        "id": "test_known_runtime::test_ask_kp_option_is_queued_for_human_without_model_redispatch",
+        "status": "passed",
+        "evidence": "freeze.xml"
+      },
+      {
+        "id": "test_known_runtime::test_player_real_adapter_json_mode_and_http_error_projection[200]",
+        "status": "passed",
+        "evidence": "freeze.xml"
+      },
+      {
+        "id": "test_known_runtime::test_player_real_adapter_json_mode_and_http_error_projection[400]",
+        "status": "passed",
+        "evidence": "freeze.xml"
+      },
+      {
+        "id": "test_known_runtime::test_legacy_response_projection_still_requires_live_authorization",
+        "status": "passed",
+        "evidence": "freeze.xml"
+      },
+      {
+        "id": "test_review_followup::test_ruling_keeps_authorized_old_body_after_success",
+        "status": "passed",
+        "evidence": "receipt-final.xml"
+      },
+      {
+        "id": "test_review_followup::test_config_history_reads_preserve_authorized_nodes[append-True]",
+        "status": "passed",
+        "evidence": "receipt-final.xml"
+      },
+      {
+        "id": "test_review_followup::test_config_history_reads_preserve_authorized_nodes[value-True]",
+        "status": "passed",
+        "evidence": "receipt-final.xml"
+      },
+      {
+        "id": "test_review_followup::test_config_history_reads_preserve_authorized_nodes[delete-False]",
+        "status": "passed",
+        "evidence": "receipt-final.xml"
+      },
+      {
+        "id": "test_review_followup::test_config_history_reads_preserve_authorized_nodes[hidden-False]",
+        "status": "passed",
+        "evidence": "receipt-final.xml"
+      },
+      {
+        "id": "test_review_followup::test_player_reference_does_not_dump_actions_into_chat[False]",
+        "status": "passed",
+        "evidence": "receipt-final.xml"
+      },
+      {
+        "id": "test_review_followup::test_player_reference_does_not_dump_actions_into_chat[True]",
+        "status": "passed",
+        "evidence": "receipt-final.xml"
+      },
+      {
+        "id": "test_review_followup::test_explicit_followup_replaces_pending_without_losing_original",
+        "status": "passed",
+        "evidence": "receipt-final.xml"
+      },
+      {
+        "id": "test_review_followup::test_same_session_and_same_text_without_relationship_remain_separate",
+        "status": "passed",
+        "evidence": "receipt-final.xml"
+      },
+      {
+        "id": "test_review_followup::test_pending_request_does_not_replace_candidate_before_checks",
+        "status": "passed",
+        "evidence": "receipt-final.xml"
+      },
+      {
+        "id": "test_review_followup::test_submission_key_replays_once_and_rejects_changed_payload",
+        "status": "passed",
+        "evidence": "receipt-final.xml"
+      },
+      {
+        "id": "test_review_followup::test_cross_session_reply_is_rejected",
+        "status": "passed",
+        "evidence": "receipt-final.xml"
+      },
+      {
+        "id": "test_review_followup::test_same_request_cannot_create_two_batches",
+        "status": "passed",
+        "evidence": "receipt-final.xml"
+      },
+      {
+        "id": "test_review_followup::test_archive_restore_is_versioned_and_keeps_supersession",
+        "status": "passed",
+        "evidence": "receipt-final.xml"
+      },
+      {
+        "id": "test_review_followup::test_execution_records_cannot_be_archived_or_auto_replaced[executing]",
+        "status": "passed",
+        "evidence": "receipt-final.xml"
+      },
+      {
+        "id": "test_review_followup::test_execution_records_cannot_be_archived_or_auto_replaced[unknown]",
+        "status": "passed",
+        "evidence": "receipt-final.xml"
+      },
+      {
+        "id": "test_review_followup::test_execution_records_cannot_be_archived_or_auto_replaced[partial]",
+        "status": "passed",
+        "evidence": "receipt-final.xml"
+      },
+      {
+        "id": "test_review_followup::test_execution_records_cannot_be_archived_or_auto_replaced[completed]",
+        "status": "passed",
+        "evidence": "receipt-final.xml"
+      },
+      {
+        "id": "test_review_followup::test_explicit_package_business_key_reuses_review_across_revision_and_category",
+        "status": "passed",
+        "evidence": "receipt-final.xml"
+      },
+      {
+        "id": "test_review_followup::test_package_without_business_key_does_not_merge_changed_draft",
+        "status": "passed",
+        "evidence": "receipt-final.xml"
+      },
+      {
+        "id": "test_review_followup::test_invalid_new_generation_retains_real_failure_without_inventing_body",
+        "status": "passed",
+        "evidence": "receipt-final.xml"
+      },
+      {
+        "id": "test_review_followup::test_changed_source_after_failure_creates_one_successor_and_retry_reuses_it",
+        "status": "passed",
+        "evidence": "receipt-final.xml"
+      },
+      {
+        "id": "test_review_followup::test_archived_stale_reply_keeps_its_authorized_body",
+        "status": "passed",
+        "evidence": "receipt-final.xml"
+      },
+      {
+        "id": "test_review_followup::test_single_same_request_configuration_candidate_and_inactive_host_approval",
+        "status": "passed",
+        "evidence": "receipt-final.xml"
+      },
+      {
+        "id": "test_review_followup::test_outstanding_approval_is_protected_from_archive_and_supersession",
+        "status": "passed",
+        "evidence": "receipt-final.xml"
+      },
+      {
+        "id": "test_review_followup::test_player_text_submission_key_deduplicates_business_request",
+        "status": "passed",
+        "evidence": "receipt-final.xml"
+      },
+      {
+        "id": "test_review_debug::test_review_source_is_separate_from_kp_message_and_deduplicated",
+        "status": "passed",
+        "evidence": "freeze.xml"
+      },
+      {
+        "id": "test_review_debug::test_forwarded_request_resolves_real_source_and_does_not_change_original",
+        "status": "passed",
+        "evidence": "freeze.xml"
+      },
+      {
+        "id": "test_review_debug::test_all_forwarded_reviews_stay_manual_with_auto_on",
+        "status": "passed",
+        "evidence": "freeze.xml"
+      },
+      {
+        "id": "test_review_debug::test_review_source_obeys_external_scope",
+        "status": "passed",
+        "evidence": "freeze.xml"
+      },
+      {
+        "id": "test_review_debug::test_ruling_digest_and_snapshot_size_checked",
+        "status": "passed",
+        "evidence": "freeze.xml"
+      },
+      {
+        "id": "test_review_debug::test_debug_is_readonly_metadata_default_with_authorized_content_opt_in",
+        "status": "passed",
+        "evidence": "freeze.xml"
+      },
+      {
+        "id": "test_review_debug::test_debug_rejects_ambiguous_or_invalid_options[options0]",
+        "status": "passed",
+        "evidence": "freeze.xml"
+      },
+      {
+        "id": "test_review_debug::test_debug_rejects_ambiguous_or_invalid_options[options1]",
+        "status": "passed",
+        "evidence": "freeze.xml"
+      },
+      {
+        "id": "test_review_debug::test_debug_rejects_ambiguous_or_invalid_options[options2]",
+        "status": "passed",
+        "evidence": "freeze.xml"
+      },
+      {
+        "id": "test_review_debug::test_debug_rejects_ambiguous_or_invalid_options[options3]",
+        "status": "passed",
+        "evidence": "freeze.xml"
+      },
+      {
+        "id": "test_review_debug::test_debug_rejects_ambiguous_or_invalid_options[options4]",
+        "status": "passed",
+        "evidence": "freeze.xml"
+      },
+      {
+        "id": "test_review_debug::test_debug_rechecks_deleted_session_and_player_switch",
+        "status": "passed",
+        "evidence": "freeze.xml"
+      },
+      {
+        "id": "test_review_debug::test_pure_schema_catalog_available_without_kp_egress",
+        "status": "passed",
+        "evidence": "freeze.xml"
+      },
+      {
+        "id": "test_review_debug::test_provider_records_actual_model_without_equating_alias_and_version",
+        "status": "passed",
+        "evidence": "freeze.xml"
+      },
+      {
+        "id": "test_review_debug::test_real_http_debug_authorization_no_store_and_no_receipt",
+        "status": "passed",
+        "evidence": "freeze.xml"
+      },
+      {
+        "id": "test_review_debug::test_legacy_accepted_review_retains_original_player_source",
+        "status": "passed",
+        "evidence": "freeze.xml"
+      },
+      {
+        "id": "test_review_debug::test_task_and_debug_preserve_requested_and_actual_model_ids",
+        "status": "passed",
+        "evidence": "freeze.xml"
+      },
+      {
+        "id": "test_entrypoints::test_requests_are_explicit_idempotent_redacted_and_paged",
+        "status": "passed",
+        "evidence": "freeze.xml"
+      },
+      {
+        "id": "test_entrypoints::test_chat_forwarding_binds_original_and_policy",
+        "status": "passed",
+        "evidence": "freeze.xml"
+      },
+      {
+        "id": "test_entrypoints::test_player_can_cancel_after_dispatching_kp_loses_role",
+        "status": "passed",
+        "evidence": "freeze.xml"
+      },
+      {
+        "id": "test_entrypoints::test_plan_without_proposal_rechecks_context_on_read",
+        "status": "passed",
+        "evidence": "freeze.xml"
+      },
+      {
+        "id": "test_entrypoints::test_auto_off_prefix_dedup_edits_withdrawal_and_role",
+        "status": "passed",
+        "evidence": "freeze.xml"
+      },
+      {
+        "id": "test_entrypoints::test_manual_revision_invalidates_approval_and_cancel_revokes",
+        "status": "passed",
+        "evidence": "freeze.xml"
+      },
+      {
+        "id": "test_entrypoints::test_receipt_rechecks_private_sources_and_restart_pending",
+        "status": "passed",
+        "evidence": "freeze.xml"
+      },
+      {
+        "id": "test_entrypoints::test_http_auth_limits_schema_capability_and_disabled_module",
+        "status": "passed",
+        "evidence": "freeze.xml"
+      },
+      {
+        "id": "test_entrypoints::test_cli_uses_same_three_engines",
+        "status": "passed",
+        "evidence": "freeze.xml"
+      },
+      {
+        "id": "test_sessions::test_history_reuses_valid_response_and_separates_stale_intent",
+        "status": "passed",
+        "evidence": "freeze.xml"
+      },
+      {
+        "id": "test_sessions::test_history_is_bounded_and_never_reads_other_sessions",
+        "status": "passed",
+        "evidence": "freeze.xml"
+      },
+      {
+        "id": "test_sessions::test_repository_rejects_broken_conversation_links[foreign]",
+        "status": "passed",
+        "evidence": "freeze.xml"
+      },
+      {
+        "id": "test_sessions::test_repository_rejects_broken_conversation_links[missing]",
+        "status": "passed",
+        "evidence": "freeze.xml"
+      },
+      {
+        "id": "test_sessions::test_repository_rejects_broken_conversation_links[duplicate]",
+        "status": "passed",
+        "evidence": "freeze.xml"
+      },
+      {
+        "id": "test_sessions::test_repository_rejects_broken_conversation_links[title]",
+        "status": "passed",
+        "evidence": "freeze.xml"
+      },
+      {
+        "id": "test_sessions::test_session_preferences_owner_conflict_and_persistence",
+        "status": "passed",
+        "evidence": "freeze.xml"
+      },
+      {
+        "id": "test_sessions::test_configured_history_bound_preserves_records[0]",
+        "status": "passed",
+        "evidence": "freeze.xml"
+      },
+      {
+        "id": "test_sessions::test_configured_history_bound_preserves_records[2]",
+        "status": "passed",
+        "evidence": "freeze.xml"
+      },
+      {
+        "id": "test_sessions::test_configured_history_bound_preserves_records[4]",
+        "status": "passed",
+        "evidence": "freeze.xml"
+      },
+      {
+        "id": "test_sessions::test_session_preferences_validate_command_and_stored_data[historyTurns--1]",
+        "status": "passed",
+        "evidence": "freeze.xml"
+      },
+      {
+        "id": "test_sessions::test_session_preferences_validate_command_and_stored_data[historyTurns-5]",
+        "status": "passed",
+        "evidence": "freeze.xml"
+      },
+      {
+        "id": "test_sessions::test_session_preferences_validate_command_and_stored_data[historyTurns-True]",
+        "status": "passed",
+        "evidence": "freeze.xml"
+      },
+      {
+        "id": "test_sessions::test_session_preferences_validate_command_and_stored_data[historyTurns-1.5]",
+        "status": "passed",
+        "evidence": "freeze.xml"
+      },
+      {
+        "id": "test_sessions::test_session_preferences_validate_command_and_stored_data[renderMode-html]",
+        "status": "passed",
+        "evidence": "freeze.xml"
+      },
+      {
+        "id": "test_sessions::test_session_preferences_validate_command_and_stored_data[pinned-1]",
+        "status": "passed",
+        "evidence": "freeze.xml"
+      },
+      {
+        "id": "test_sessions::test_session_preferences_validate_command_and_stored_data[showDiagnostics-false]",
+        "status": "passed",
+        "evidence": "freeze.xml"
+      },
+      {
+        "id": "test_access_batches::test_defaults_binding_and_no_permission_escalation",
+        "status": "passed",
+        "evidence": "freeze.xml"
+      },
+      {
+        "id": "test_access_batches::test_player_auto_dispatch_context_output_and_revoke",
+        "status": "passed",
+        "evidence": "freeze.xml"
+      },
+      {
+        "id": "test_access_batches::test_kp_player_session_has_player_ceiling_and_data_proof",
+        "status": "passed",
+        "evidence": "freeze.xml"
+      },
+      {
+        "id": "test_access_batches::test_batch_human_approval_idempotence_and_player_denial",
+        "status": "passed",
+        "evidence": "freeze.xml"
+      },
+      {
+        "id": "test_access_batches::test_batch_stale_reject_auto_and_bypass_forbidden",
+        "status": "passed",
+        "evidence": "freeze.xml"
+      },
+      {
+        "id": "test_access_batches::test_batch_unknown_reconciles_without_reexecuting",
+        "status": "passed",
+        "evidence": "freeze.xml"
+      },
+      {
+        "id": "test_access_batches::test_batch_stops_after_partial_failure_and_restart_never_replays",
+        "status": "passed",
+        "evidence": "freeze.xml"
+      },
+      {
+        "id": "test_access_batches::test_delete_cancels_queue_hides_session_and_keeps_usage_audit",
+        "status": "passed",
+        "evidence": "freeze.xml"
+      },
+      {
+        "id": "test_access_batches::test_administrator_tools_respect_external_scope",
+        "status": "passed",
+        "evidence": "freeze.xml"
+      },
+      {
+        "id": "test_access_batches::test_player_contract_tool_and_batch_output_cannot_escalate",
+        "status": "passed",
+        "evidence": "freeze.xml"
+      },
+      {
+        "id": "test_access_batches::test_delete_interrupts_active_generation",
+        "status": "passed",
+        "evidence": "freeze.xml"
+      },
+      {
+        "id": "test_access_batches::test_management_catalog_is_bounded_and_schema_complete",
+        "status": "passed",
+        "evidence": "freeze.xml"
+      },
+      {
+        "id": "test_access_batches::test_other_administrator_can_inspect_draft_without_taking_review_identity",
+        "status": "passed",
+        "evidence": "freeze.xml"
+      },
+      {
+        "id": "test_access_batches::test_player_history_rechecks_package_evidence_during_generation",
+        "status": "passed",
+        "evidence": "freeze.xml"
+      },
+      {
+        "id": "test_boundaries::test_unproven_legacy_reply_never_migrates[generating]",
+        "status": "passed",
+        "evidence": "receipt-final.xml"
+      },
+      {
+        "id": "test_boundaries::test_unproven_legacy_reply_never_migrates[validating]",
+        "status": "passed",
+        "evidence": "receipt-final.xml"
+      },
+      {
+        "id": "test_boundaries::test_unproven_legacy_reply_never_migrates[failed]",
+        "status": "passed",
+        "evidence": "receipt-final.xml"
+      },
+      {
+        "id": "test_boundaries::test_unproven_legacy_reply_never_migrates[context-missing]",
+        "status": "passed",
+        "evidence": "receipt-final.xml"
+      },
+      {
+        "id": "test_boundaries::test_unproven_legacy_reply_never_migrates[context-tampered]",
+        "status": "passed",
+        "evidence": "receipt-final.xml"
+      },
+      {
+        "id": "test_boundaries::test_unproven_legacy_reply_never_migrates[owner-mismatch]",
+        "status": "passed",
+        "evidence": "receipt-final.xml"
+      },
+      {
+        "id": "test_boundaries::test_http_error_does_not_attach_unsafe_identifiers",
+        "status": "passed",
+        "evidence": "receipt-final.xml"
+      },
+      {
+        "id": "test_boundaries::test_resolution_never_reexposes_hidden_ruling_receipt_ids",
+        "status": "passed",
+        "evidence": "receipt-final.xml"
+      }
+    ]
+  },
+  "live": {
+    "model": "deepseek-flash",
+    "providerCalls": 10,
+    "usageTokens": 51510,
+    "successes": 2,
+    "total": 2,
+    "sourceConfigUnchanged": true,
+    "latencyPassed": true
+  },
+  "latency": {
+    "samples": 30,
+    "maxSeconds": 0.0894,
+    "boundary": "public ASGI HTTP during live provider wait"
+  },
+  "sourceHashes": {
+    "engineering/ai/src/onlinecoc_ai/messages.py": "7cd741a921b079b0e6fc81077b230a313d0ed094b093b78c9d2f38f19eebcce3",
+    "engineering/ai/src/onlinecoc_ai/api.py": "ff938792bbd1d19d66e5647494a9a53b6a51c8fb86db9686392d25aa71001caa",
+    "engineering/ai/src/onlinecoc_ai/sessions.py": "e92f8d1572ae1c99490516cb4f7facd39b3752a56d44ca2c76c740e79881fa53",
+    "engineering/ai/src/onlinecoc_ai/coordinator.py": "b6c1a374098fb0b6bdf01c1488474f665a0e9a0249ed0dd020ce947559f345b6",
+    "engineering/ai/src/onlinecoc_ai/review_queue.py": "931a6abd90fa1f8f2477a4b7d0b540e44f69f2feefcdafd4cb93babebe247e05",
+    "engineering/ai/src/onlinecoc_ai/batches.py": "6e3dc6fbd82afb692175acf2fbaf7d18dd7a22a6a0dd33db0dec900c6ab478cc",
+    "engineering/ai/src/onlinecoc_ai/reviews.py": "3df8c1ff6da41f21412720c39a04d4b0cfb25d484dc316e5fd426115c939c491",
+    "engineering/ai/web/components/chat.js": "8c9b97df52f1ee57eaadd7ce50aa3ed228f0a66917cd4c6e7efb2a340f83449c",
+    "engineering/ai/web/components/chat.css": "5eb370ec0426fee869521e66d673ef78870332ea2afdffa90cd44cbcfa6c9e36",
+    "engineering/ai/web/components/markdown.css": "ee6ff731d3dd4b8ddaf21ec2bb910b64ea0178dba1b6e7ea4b2b1d632b36daca",
+    "engineering/ai/web/components/reference-editor.js": "93bb44e9188710c77863e442c3b68c7c7a1f120ab16ec79fabd5a0f9ca2b0915",
+    "engineering/ai/web/components/reference-details.js": "ddb721e4325d6ab3fbce2c2628d2005ae347161ce6e626d5e58b111ac0243d9b",
+    "engineering/ai/web/components/client.js": "4d592c9c1fad4e9764aa711fbb4ab910598b44609976620e0a3835f502d2d5c3",
+    "engineering/ai/web/components/index.d.ts": "bfdd38a1bd8eaee42bba35cd02b611d5e808dafa56ce00c118c5600169cdf458",
+    "engineering/ai/tests/test_message_history.py": "aae2a58264f9b8d97c4ab57c9b979f049ae3c468ad661d2b1815e649436d3658",
+    "engineering/ai/tests/test_message_history_ui.py": "738424ffe10c1a6bbfcfea2598a61b756e9503bc0acdcd446e54e517367f3dd1",
+    "engineering/ai/tests/test_known_runtime.py": "31e3a3e39441d5e1f23bc854abcb85849be0ce4311b3ec9199b7d1c6498705d6",
+    "docs/current/engineering/ai-session-access.md": "07b12e94d56fd85948101eb0adfeb5c3d6f7805ef9a6a27b9c988b63c9495d16",
+    "docs/current/engineering/ai-player-knowledge.md": "48b0435984d38351665f8a9751af7ae16a5e55f9a5aa87c0ea0da70eb00b96ab",
+    "docs/current/engineering/ai-rulings.md": "b56e502201b327decc8c926cc6ffda99a38731fc789f8e001cbbcacffb9695cd",
+    "docs/current/engineering/ai-responses.md": "3adab9f9b9a8cc29ffafe73efbd02c3219510a42e1fd5a299d8b84c30a5d10c8",
+    "docs/current/engineering/ai-pack-embedding.md": "987f85ae222953ba519faeb39d87b77fb614c7a4199f22112f9c66f60563d232",
+    "docs/current/engineering/ai-debug-review.md": "8be0d6f975a21d20e61d327d2134dbc9eeade8863e57c554fe610b6235cf3c56"
+  }
+}

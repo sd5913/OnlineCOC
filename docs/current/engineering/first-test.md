@@ -15,6 +15,8 @@
 
 ## 2. 安装与开始游玩
 
+可信组合调用方可使用[房间内原子批次](atomic-batches.md)完成逐项预检和整批提交。支持的 21 种操作、持久随机轨迹、失败丢弃、通知边界及单条记忆事实回执以该文档为准；跨存储和外部等待组合不会静默拆批。
+
 Windows 用户可直接使用根目录的安装与启动 exe，见 [桌面工具说明](desktop-tools.md)。它使用独立的项目内运行时和环境，不依赖下面的手工开发环境；两者默认指向同一份 `.runtime/demo`，不能同时打开该存档。以下命令仍是有效的开发和运维入口。
 
 以下 PowerShell 命令均从项目根目录执行。验证环境为 Windows x64、CPython 3.14.2；Lua 来自 `lupa.lua54`，不需要系统 Lua 或本机 C 编译器。精确版本和平台 wheel 摘要见 [依赖清单](../../../engineering/dependency-manifest.json)。其他 Python/平台组合需另行生成锁并验收。
@@ -54,7 +56,11 @@ flowchart LR
 
 `onlinecoc_data` 单独维护快照、CAS、查询与导出，不认识角色、Lua、HTTP。`Host(..., store_factory=...)` 可注入同契约实现；默认文件实现，内存实现仅用于测试。`RoomRepository` 和 `IdentityStore` 使用同一存储契约但拥有独立数据集。事务中的完整变更集以新状态快照提交，`expected_generation` 是内部 CAS；网络客户端只接触授权视图 token。
 
+文件提交复用已生成的 payload 规范字节组成原格式封套，避免重复序列化；容量检查每次仍重新扫描实际代文件和暂存文件，使用目录项元数据减少 Windows 上逐文件查询。规范字节、摘要链、CAS、文件同步、原子发布、发布后丢回复恢复及历史无损压缩语义均保持不变，不缓存过期配额或跳过同步。
+
 聊天室以独立 `chat.py` 领域模块管理频道、消息与个人已读，复用房间事务和文件存储，不绑定网络适配器；联系人目录、历史分页和写命令均有 HTTP 与进程内入口。
+
+宿主在实际提交时完整校验一次状态，管理命令不再提前重复校验同一状态。聊天 Schema 按原模型拆分外层与消息：只复用字节完全相同、原生 JSON 消息的纯 Schema 校验结果，内存缓存最多 10000 项／8 MiB 键字节；字段改动、非法 Python 类型或新消息重新校验。频道关系、当前成员、引用、回复顺序、公开附件和行动回执等跨记录约束每次继续检查。投影中的目录与同一请求共用快照，周期推进也复用已经取得的流程清单；对外快照仍为独立副本。
 
 持久定向通知由 `notifications.py` 管理，复用 Room v4 outbox 与命令回执。`notification.send` 必须明确提交受众、文字和已成功的来源动作；`GET /api/v1/notifications` 读取本人未确认项，`notification.ack` 逐人确认。离线补取、来源绑定、幂等和客户端展示去重边界见[定向通知](notifications.md)，不以快照差值代替持久事件。
 
@@ -120,8 +126,14 @@ engineering/.venv/Scripts/python engineering/backend/scripts/run.py --data-dir e
 
 本机适配器每约 250ms 检查投影变化，使用 begin/part/end 完整快照，客户端收齐后原子替换；后续更改再次发送最新快照。慢连接不堆积历史增量，单次发送超过 2 秒关闭，重连重新获取完整视图。能力返回 `resumeWindow: 0`，没有跨连接增量回放；Outbox 已与提交同存，但此适配器用最新状态实现最终同步。权限变化也用新投影移除字段/对象，彻底撤权发送 reset 后断开。聊天订阅仅发送可见频道元信息和修订，不携带历史正文；频道修订变化后客户端查询历史并使旧页缓存失效，频道消失时清空缓存，详见 [聊天室同步约定](chat-backend.md#7-实时同步与缓存)。
 
+投影获取及最终分片的持锁复验在线程中执行，避免同步等待房间锁阻塞 HTTP／WebSocket 事件循环；最终授权检查与发送调度仍处于同一锁边界。没有外部知识策略且房间存储 generation 未变化时跳过重复投影，每轮仍校验登录会话；有知识提供方时继续实时复验，不能只依赖存储代号。并发改变投影可能触发安全 reset，此时 SDK 暂时等待完整快照，不等同于物理连接关闭。隔离浏览器负载、分段成本和验证范围见[性能验收](../../../engineering/acceptance/performance/README.md)。
+
 普通 API 请求 64 KiB；AI 人工草稿入口 8 MiB；上传素材 10 MiB；投影 2 MiB；单文件存储 512 MiB；Lua 内存 32 MiB、工作进程内存 512 MiB、JSON 输入/输出各 8 MiB、默认 10 秒、API 调用 2048 次、拟效果 256 条、规则文件 64 个、流程节点 32 个。inspect、正式运行与 [AI 离线检查](ai-runtime.md)共用清理环境的受限子进程；Windows 使用单进程 Job Object。HTTP 命令入口最多 128 个在途请求，主机内部另有有界准入。持久流程不保存协程栈，等待期限不因重启重置。暂停房间不推进待办；恢复后已过期等待按超时分支处理。
 
 客户端只在收到完整快照后允许新写入，保留原始命令封套用于同 ID 重试；页面刷新会丢失内存命令封套，结果不明时先按 commandId 查询，不能换 ID 盲目重复操作。正式离线队列、长期客户端缓存及多语言 SDK 尚不在此版本。
+
+`client-sdk/client.js` 的 `HttpTransport.request` 抛出的错误提供 `code`、`errorKind`、`status`、`operation`、`requestId`、`commandId`。HTTP 拒绝保留数值状态码和合法机器错误码；无合法 JSON 错误码时使用 `HTTP_ERROR`，不会把非 JSON 的 500 误当网络断连。`fetch` 失败使用 `NETWORK_ERROR/network`，没有 HTTP 响应时 `status=null`；成功状态的正文无法解析则使用 `INVALID_RESPONSE/response` 并保留状态码。本地请求序列化失败为 `INVALID_REQUEST/client`。命令离线和相同 ID 不同输入分别为 `DISCONNECTED/client`、`COMMAND_ID_CONFLICT/client`；账号切换后丢弃旧请求结果，返回 `SESSION_CHANGED/session` 并清空旧请求定位。
+
+诊断定位取自本地原请求：命令使用 `op` 与封套 ID，其余使用去掉查询参数的 `METHOD path`；缺失或格式不安全的字段为 `null`。错误不复制响应正文、服务器 detail/message、Cookie、CSRF 或底层异常；共享 HTTP error Schema 仍为 `{code}`，这些定位字段是 SDK 补充的本地信息。HTTP 200 中的 `rejected`／`unknown` 回执原样返回。HTTP 失败、网络中断或解析失败本身都不能证明写操作未提交，应查询原 commandId／AI requestId；SDK 不自动重放。真实回环 HTTP、连接拒绝、业务回执与会话隔离证据见[错误链验收](../../../engineering/acceptance/http-errors/README.md)。
 
 常见错误：`VERSION_CONFLICT` 刷新后重新确认；`STALE_CATALOG` 重新选择动作；`RULE_TIMEOUT/RULE_FAILED` 检查脚本，失败不提交拟效果；`FLOW_ALREADY_RESOLVED` 查询原待办；`STORE_LOCKED` 停止另一个宿主；`STORE_CORRUPT_OR_UNSUPPORTED` 保留故障目录并从有效备份恢复；`STORE_FULL` 不得删除中间代。

@@ -1,0 +1,10 @@
+{
+  "date": "2026-11-21",
+  "externalAttemptLimit": 80,
+  "totalTokenLimit": 650000,
+  "maxTechnicalRepairsPerCase": 2,
+  "maxTransportRetriesPerCase": 2,
+  "concurrency": 1,
+  "priorSealedLedger": "../ai-command-reliability/live-ledger.json",
+  "unknownUsage": "full conservative reservation retained"
+}

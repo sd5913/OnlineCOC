@@ -1,0 +1,36 @@
+{
+  "checks": [
+    {
+      "caseId": "c-coverage-adopt",
+      "exactOnlyChange": "r.roll(6) + 1 -> r.roll(6) + 2",
+      "passed": true,
+      "sourceSha256": "5329678bd081571cba6ad13b209a81cda97454c36abcaaf617e411b7870caea4",
+      "candidateSha256": "c015cf47fd4a2fc746c19c4f2001ebd24b9338df725cd6b20f9bc6aeaf3d1a2b"
+    },
+    {
+      "caseId": "c-dynamic-basis",
+      "exactOnlyChange": "r.roll(6) + 1 -> r.roll(6) + 2",
+      "passed": true,
+      "sourceSha256": "5329678bd081571cba6ad13b209a81cda97454c36abcaaf617e411b7870caea4",
+      "candidateSha256": "c015cf47fd4a2fc746c19c4f2001ebd24b9338df725cd6b20f9bc6aeaf3d1a2b"
+    },
+    {
+      "caseId": "player-known",
+      "assertion": "Synthetic KP secret absent from every external input",
+      "attemptIds": [
+        16,
+        17
+      ],
+      "passed": true
+    },
+    {
+      "caseId": "player-hidden",
+      "assertion": "Synthetic KP secret absent from every external input",
+      "attemptIds": [
+        18,
+        19
+      ],
+      "passed": true
+    }
+  ]
+}

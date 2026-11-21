@@ -17,10 +17,13 @@ class PlayerRequests:
         require(session['owner']==account and session['accessLevel']=='player','PERMISSION_DENIED')
         require(not session['archived'],'SESSION_ARCHIVED')
         rid=args.get('requestId')
+        token,prior=self.app.queue.submission(account,session['sessionId'],'player',args)
+        if prior:rid=prior['requestId']
         if rid is None:
             require(args['text'].strip(),'INPUT_INVALID')
             rid=self.app._execute(account,'player-intent:'+identifier,'ai.request.create',
                 {'sourceKind':'manual','text':args['text']},session_id=session['sessionId'],dispatch=False)['requestId']
+        self.app.queue.save_submission(token,rid)
         state=self.repository.state()
         require(rid in state['settings']['sessions'][session['sessionId']]['requestIds'],'NOT_VISIBLE')
         request=state['requests'][rid]
@@ -57,6 +60,7 @@ class PlayerRequests:
 
     def decide(self, account, args):
         self.host.kp(account)
+        self.app.queue.require_active(args['rulingId'])
         record=self.repository.state()['settings'].get('playerRequests',{}).get(args['rulingId'])
         require(record and record['digest']==args['digest'],'RULING_STALE')
         if record['status'] in ('accepted','rejected'):return self._item(account,record)

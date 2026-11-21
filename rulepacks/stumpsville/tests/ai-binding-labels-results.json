@@ -1,0 +1,22 @@
+{
+  "checkedAt": "2026-11-20T19:12:28.263084+08:00",
+  "checks": [
+    "200次并发角色标签读取仅解析一次约350KB文件，标签与账号绑定正确",
+    "同大小且保留mtime的原子替换仍立即更新绑定，未知角色保持原名称",
+    "文件删除和非当前格式不会残留上次账号标签",
+    "损坏JSON与超8MiB仍报原有错误，缓存不掩盖文件边界"
+  ],
+  "realSaveChanged": false,
+  "externalModelCalls": 0,
+  "evidenceDirectory": "tests/output/ai-binding-labels-239e82a8",
+  "passed": true,
+  "passedCount": 4,
+  "labelFileReads": 5,
+  "previousRuns": [
+    {
+      "passed": false,
+      "error": "AssertionError((200, ['木栗（player1 的树桩镇角色）', '木栗（player1 的树桩镇角色）']))",
+      "evidenceDirectory": "tests/output/ai-binding-labels-e2fc0376"
+    }
+  ]
+}

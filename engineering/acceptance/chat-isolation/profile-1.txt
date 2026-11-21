@@ -1,0 +1,28 @@
+         544751 function calls (377373 primitive calls) in 0.258 seconds
+
+   Ordered by: cumulative time
+   List reduced from 221 to 20 due to restriction <20>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.000    0.000    0.223    0.223 host.py:144(command)
+        1    0.001    0.001    0.185    0.185 host.py:44(commit)
+        1    0.000    0.000    0.127    0.127 model.py:52(validate)
+      132    0.000    0.000    0.116    0.001 contracts.py:116(validate_model)
+ 151923/5    0.046    0.000    0.115    0.023 copy.py:110(deepcopy)
+   9096/5    0.041    0.000    0.115    0.023 copy.py:198(_deepcopy_dict)
+ 6077/532    0.006    0.000    0.097    0.000 copy.py:172(_deepcopy_list)
+        2    0.000    0.000    0.072    0.036 host.py:41(state)
+        2    0.000    0.000    0.072    0.036 store.py:168(snapshot)
+        1    0.003    0.003    0.060    0.060 chat.py:200(validate)
+        1    0.002    0.002    0.057    0.057 store.py:173(commit)
+        1    0.003    0.003    0.056    0.056 contracts.py:74(_chat_schema)
+      138    0.000    0.000    0.053    0.000 validators.py:349(iter_errors)
+  153/138    0.002    0.000    0.051    0.000 _keywords.py:290(properties)
+     1203    0.027    0.000    0.049    0.000 contracts.py:47(_json_tree)
+2794/2058    0.008    0.000    0.049    0.000 validators.py:396(descend)
+  197/191    0.000    0.000    0.048    0.000 {built-in method builtins.next}
+        1    0.001    0.001    0.047    0.047 model.py:87(validate_world)
+        1    0.000    0.000    0.036    0.036 fixture.py:40(message)
+     1209    0.001    0.000    0.023    0.000 store.py:15(canonical)
+
+

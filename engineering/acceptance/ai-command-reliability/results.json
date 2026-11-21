@@ -1,0 +1,159 @@
+{
+  "schemaVersion": 1,
+  "finishedAt": "2026-11-20T22:25:37.116903+08:00",
+  "apiStopped": true,
+  "budget": {
+    "registeredAttempts": 199,
+    "knownResponses": 198,
+    "knownTokens": 1556280,
+    "accountedTokens": 1600498,
+    "uncertain": [
+      {
+        "attemptId": 194,
+        "reservedTokens": 44218
+      }
+    ],
+    "limits": {
+      "schemaVersion": 1,
+      "createdAt": "2026-11-20T20:38:19.412425+08:00",
+      "externalAttemptLimit": 200,
+      "totalTokenLimit": 1750000,
+      "technicalRepairsPerCase": 2,
+      "transportRetriesPerCase": 2,
+      "concurrentRequests": 1,
+      "timeoutSeconds": 180,
+      "accounting": "Count every started HTTP request, including retries. Before sending reserve UTF-8 request bytes plus maximum output tokens; settle known usage to actual total_tokens; retain full reservation for uncertain billing. Refuse any request exceeding either limit.",
+      "stages": [
+        "baseline first output for every generated category",
+        "improved paired failures and fixed holdout variants; bounded repairs"
+      ],
+      "baselineGuide": "Initial direct probe did not inject guide content; it captured guide as a source snapshot only. Later valid fixtures are not a same-input guide A/B experiment.",
+      "data": "Synthetic minimal input only; independent stores; credentials read-only, never logged; no formal state/configuration mutations",
+      "onExhaustion": "Record blocked and uncovered cases, retain all denominators; do not claim full real coverage.",
+      "revision": 4,
+      "adjustedAt": "2026-11-20T22:13:16.588183+08:00",
+      "adjustmentReason": "Coordinator authorized only unfinished slot-7 variant and exposed Lua/adjudicate/NPC repair verification; request cap stays 200 and no new scenario categories. Prior budget rejection preserved."
+    }
+  },
+  "stageAttempts": {
+    "baseline": 71,
+    "valid-v2": 9,
+    "valid-v3": 71,
+    "coordinator-v1": 29,
+    "coordinator-v2": 12,
+    "saved-failure-repair": 7
+  },
+  "validFirstResponse": {
+    "total": 71,
+    "formatPassed": 71,
+    "strictSemanticPassed": 63,
+    "strictRate": 0.8873239436619719,
+    "independentReviewPassed": 67,
+    "reviewRate": 0.9436619718309859,
+    "categories": {
+      "answer": {
+        "total": 2,
+        "formatPassed": 2,
+        "strictSemanticPassed": 2
+      },
+      "configuration": {
+        "total": 3,
+        "formatPassed": 3,
+        "strictSemanticPassed": 3
+      },
+      "data-edit": {
+        "total": 4,
+        "formatPassed": 4,
+        "strictSemanticPassed": 4
+      },
+      "lua": {
+        "total": 2,
+        "formatPassed": 2,
+        "strictSemanticPassed": 1
+      },
+      "pack-action": {
+        "total": 17,
+        "formatPassed": 17,
+        "strictSemanticPassed": 15
+      },
+      "query": {
+        "total": 12,
+        "formatPassed": 12,
+        "strictSemanticPassed": 12
+      },
+      "whitelist": {
+        "total": 31,
+        "formatPassed": 31,
+        "strictSemanticPassed": 26
+      }
+    }
+  },
+  "exactOutputReplay": {
+    "total": 71,
+    "statuses": {
+      "batch_completed": 41,
+      "preflight_unsupported": 2,
+      "no_mutation": 6,
+      "error": 1,
+      "publication_committed": 3,
+      "data_compile_passed": 4,
+      "validation_blocked": 1,
+      "query_passed": 12,
+      "preflight_blocked": 1
+    },
+    "negativeGameResults": [
+      {
+        "caseId": "host:action.invoke",
+        "index": 0,
+        "result": {
+          "cost": 1,
+          "passed": false,
+          "rolled": 91,
+          "target": 60
+        }
+      },
+      {
+        "caseId": "pack:sv.check",
+        "index": 0,
+        "result": {
+          "mode": "normal",
+          "target": 10,
+          "attribute": "str",
+          "passed": false,
+          "rolled": 18,
+          "first": 18,
+          "second": 0
+        }
+      }
+    ]
+  },
+  "naturalSlots": {
+    "finalUniqueCases": 2,
+    "passed": 2,
+    "evidence": [
+      "coordinator-1795183647247512600.json",
+      "coordinator-1795184194107020600.json"
+    ],
+    "earlierFailureAndBudgetBlockPreserved": true
+  },
+  "regression": {
+    "uniqueCurrentCoreCases": 626,
+    "counts": {
+      "passed": 626
+    },
+    "uiBatchDetails": {
+      "passed": 2,
+      "total": 2
+    }
+  },
+  "sourceConfigUnchanged": true,
+  "formalSaveWrites": 0,
+  "currentSource": "production-source.json",
+  "failureRegister": "failure-register.json",
+  "closedLoopConsumption": {
+    "total": 5,
+    "passed": 5,
+    "apiCalls": 0,
+    "evidence": "followup-verification.json"
+  }
+}

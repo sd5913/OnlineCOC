@@ -1,0 +1,145 @@
+{
+  "checkedAt": "2026-11-21T00:37:21.869491+08:00",
+  "checks": [
+    "ordered-actions-and-non-guaranteed-preflight",
+    "dialog-closes-before-command-result",
+    "notification-retains-per-action-outcome-and-locator",
+    "blocked-preflight-cannot-be-approved-in-package-ui",
+    "legacy-first-rejection-is-zero-success-without-invented-rollback",
+    "unknown-is-not-guessed-as-failure-or-success",
+    "business-outcome-is-distinct-from-transaction-commit",
+    "diagnostic-escaping-and-mobile-layout",
+    "terminal-archive-and-no-browser-errors"
+  ],
+  "realProviderCalls": 0,
+  "realSaveChanged": false,
+  "scope": "synthetic DTO browser presentation; does not prove engine atomicity",
+  "evidenceDirectory": "tests/output/batch-details-3b5ab836",
+  "passed": true,
+  "passedCount": 9,
+  "pageErrors": [],
+  "previousRuns": [
+    {
+      "passed": false,
+      "checks": [],
+      "error": "Page.evaluate: TypeError: Failed to fetch dynamically imported module: http://127.0.0.1:61714/batch-details.js",
+      "evidenceDirectory": "tests/output/batch-details-e30ce743"
+    },
+    {
+      "passed": true,
+      "checks": [
+        "ordered-actions-and-non-guaranteed-preflight",
+        "dialog-closes-before-command-result",
+        "notification-retains-per-action-outcome-and-locator",
+        "blocked-preflight-cannot-be-approved-in-package-ui",
+        "legacy-first-rejection-is-zero-success-without-invented-rollback",
+        "unknown-is-not-guessed-as-failure-or-success",
+        "diagnostic-escaping-and-mobile-layout",
+        "terminal-archive-and-no-browser-errors"
+      ],
+      "error": null,
+      "evidenceDirectory": "tests/output/batch-details-74232001"
+    },
+    {
+      "passed": false,
+      "checks": [],
+      "error": "Page.set_content: Execution context was destroyed, most likely because of a navigation\nCall log:\n  - setting frame content, waiting until \"load\"\n",
+      "evidenceDirectory": "tests/output/batch-details-8ce522f2"
+    },
+    {
+      "passed": true,
+      "checks": [
+        "ordered-actions-and-non-guaranteed-preflight",
+        "dialog-closes-before-command-result",
+        "notification-retains-per-action-outcome-and-locator",
+        "blocked-preflight-cannot-be-approved-in-package-ui",
+        "legacy-first-rejection-is-zero-success-without-invented-rollback",
+        "unknown-is-not-guessed-as-failure-or-success",
+        "diagnostic-escaping-and-mobile-layout",
+        "terminal-archive-and-no-browser-errors"
+      ],
+      "error": null,
+      "evidenceDirectory": "tests/output/batch-details-5caea633"
+    },
+    {
+      "passed": true,
+      "checks": [
+        "ordered-actions-and-non-guaranteed-preflight",
+        "dialog-closes-before-command-result",
+        "notification-retains-per-action-outcome-and-locator",
+        "blocked-preflight-cannot-be-approved-in-package-ui",
+        "legacy-first-rejection-is-zero-success-without-invented-rollback",
+        "unknown-is-not-guessed-as-failure-or-success",
+        "business-outcome-is-distinct-from-transaction-commit",
+        "diagnostic-escaping-and-mobile-layout",
+        "terminal-archive-and-no-browser-errors"
+      ],
+      "error": null,
+      "evidenceDirectory": "tests/output/batch-details-427cdcdf"
+    },
+    {
+      "passed": true,
+      "checks": [
+        "ordered-actions-and-non-guaranteed-preflight",
+        "dialog-closes-before-command-result",
+        "notification-retains-per-action-outcome-and-locator",
+        "blocked-preflight-cannot-be-approved-in-package-ui",
+        "legacy-first-rejection-is-zero-success-without-invented-rollback",
+        "unknown-is-not-guessed-as-failure-or-success",
+        "business-outcome-is-distinct-from-transaction-commit",
+        "diagnostic-escaping-and-mobile-layout",
+        "terminal-archive-and-no-browser-errors"
+      ],
+      "error": null,
+      "evidenceDirectory": "tests/output/batch-details-09300237"
+    },
+    {
+      "passed": true,
+      "checks": [
+        "ordered-actions-and-non-guaranteed-preflight",
+        "dialog-closes-before-command-result",
+        "notification-retains-per-action-outcome-and-locator",
+        "blocked-preflight-cannot-be-approved-in-package-ui",
+        "legacy-first-rejection-is-zero-success-without-invented-rollback",
+        "unknown-is-not-guessed-as-failure-or-success",
+        "business-outcome-is-distinct-from-transaction-commit",
+        "diagnostic-escaping-and-mobile-layout",
+        "terminal-archive-and-no-browser-errors"
+      ],
+      "error": null,
+      "evidenceDirectory": "tests/output/batch-details-8540775d"
+    },
+    {
+      "passed": true,
+      "checks": [
+        "ordered-actions-and-non-guaranteed-preflight",
+        "dialog-closes-before-command-result",
+        "notification-retains-per-action-outcome-and-locator",
+        "blocked-preflight-cannot-be-approved-in-package-ui",
+        "legacy-first-rejection-is-zero-success-without-invented-rollback",
+        "unknown-is-not-guessed-as-failure-or-success",
+        "business-outcome-is-distinct-from-transaction-commit",
+        "diagnostic-escaping-and-mobile-layout",
+        "terminal-archive-and-no-browser-errors"
+      ],
+      "error": null,
+      "evidenceDirectory": "tests/output/batch-details-302c8c6c"
+    },
+    {
+      "passed": true,
+      "checks": [
+        "ordered-actions-and-non-guaranteed-preflight",
+        "dialog-closes-before-command-result",
+        "notification-retains-per-action-outcome-and-locator",
+        "blocked-preflight-cannot-be-approved-in-package-ui",
+        "legacy-first-rejection-is-zero-success-without-invented-rollback",
+        "unknown-is-not-guessed-as-failure-or-success",
+        "business-outcome-is-distinct-from-transaction-commit",
+        "diagnostic-escaping-and-mobile-layout",
+        "terminal-archive-and-no-browser-errors"
+      ],
+      "error": null,
+      "evidenceDirectory": "tests/output/batch-details-1ef98cb9"
+    }
+  ]
+}

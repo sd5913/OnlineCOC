@@ -1,0 +1,77 @@
+{
+  "createdAt": "2026-11-20T14:39:21.868850+08:00",
+  "httpTests": 4,
+  "passed": 4,
+  "failed": 0,
+  "sdkScenarios": 6,
+  "observedHttpScenarios": [
+    {
+      "scenario": "business-denial",
+      "operation": "entity.update",
+      "requestId": "request-business-denial",
+      "httpStatus": 200,
+      "code": "PERMISSION_DENIED",
+      "receiptStatus": "rejected",
+      "contentType": "application/json",
+      "cacheControl": "no-store"
+    },
+    {
+      "operation": "entity.update",
+      "requestId": "request-invalid-arguments",
+      "httpStatus": 409,
+      "code": "INPUT_INVALID"
+    },
+    {
+      "scenario": "StoreError",
+      "operation": "GET /api/v1/view",
+      "requestId": null,
+      "httpStatus": 503,
+      "code": "STORAGE_UNAVAILABLE",
+      "receiptStatus": null,
+      "contentType": "application/json",
+      "cacheControl": "no-store"
+    },
+    {
+      "scenario": "OSError",
+      "operation": "GET /api/v1/view",
+      "requestId": null,
+      "httpStatus": 500,
+      "code": null,
+      "receiptStatus": null,
+      "contentType": "text/plain; charset=utf-8",
+      "cacheControl": null
+    },
+    {
+      "scenario": "RuntimeError",
+      "operation": "GET /api/v1/view",
+      "requestId": null,
+      "httpStatus": 500,
+      "code": null,
+      "receiptStatus": null,
+      "contentType": "text/plain; charset=utf-8",
+      "cacheControl": null
+    }
+  ],
+  "productionCodeChanged": false,
+  "productionRoomAccessed": false,
+  "modelCalls": 0,
+  "actualScreenshotFailureReproduced": false,
+  "newFiles": [
+    "engineering/acceptance/http-errors/.gitignore",
+    "engineering/acceptance/http-errors/probe_transport.mjs",
+    "engineering/acceptance/http-errors/initial-probe.json",
+    "engineering/acceptance/http-errors/test_http_errors.py",
+    "engineering/acceptance/http-errors/http-probe.xml",
+    "engineering/acceptance/http-errors/README.md",
+    "engineering/acceptance/http-errors/results.json"
+  ],
+  "hierarchyOwner": "Stumpsville coordinator",
+  "sha256": {
+    "engineering/client-sdk/client.js": "69dadfe46ad6234116ba4955d7e9d756267897e765f4ee8902dc42e0a957be6a",
+    "engineering/backend/src/onlinecoc/server.py": "bf370872d26279c3be220c101f4c5bd38b863c87f0cc0178b26a7883b4dc4949",
+    "engineering/backend/src/onlinecoc/host.py": "4f495c117bc164d0606bdefe56b197a282de3a12f4239a4ccb88310592dd1c17",
+    "engineering/contracts/messages.json": "a296e181c36db1289ff40c85a8e89dc0bbe0ac6abd97bf8e958f53741719e7e7",
+    "engineering/acceptance/http-errors/probe_transport.mjs": "4faa031f7b1a18b212dbff3549da345f51e808da766e6fadba6cd83713812ad7",
+    "engineering/acceptance/http-errors/test_http_errors.py": "9ad29abb76d51edebcb5557914e3f49c935f5d8289ddf2aaf264861628a42eb1"
+  }
+}

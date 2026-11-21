@@ -1,0 +1,21 @@
+{
+  "stage": "valid-v3",
+  "cases": 71,
+  "guideSha256": "ce5348535c4b5489e7fa0762c54cf5ac11320000e42522f7289c67ed7c7cb651",
+  "guideCases": 17,
+  "caseSha256": "ba4ed9bc257ac09b2b83f6da24c2b3d53b7de27e75c31fad3f0c3e9cab0b0f34",
+  "systemSha256": "0ec231a3acd048517916eb580d7245a52c93c19231ec27ec34ac497589f417e9",
+  "strictPack": "D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\ai-command-reliability\\work\\strict-real-pack\\integrations\\ai-pack-ffa3a00c664567c86a08",
+  "unsupportedCases": [
+    "host:flow.respond",
+    "host:flow.retry",
+    "host:flow.cancel",
+    "host:member.add"
+  ],
+  "strictPackSource": {
+    "packPath": "D:\\Studies\\Art Programming\\OnlineCOC\\rulepacks\\stumpsville\\tests\\output\\reliability-source-20261120\\integrations\\ai-pack-ffa3a00c664567c86a08",
+    "guideSha256": "ce5348535c4b5489e7fa0762c54cf5ac11320000e42522f7289c67ed7c7cb651",
+    "manifestSha256": "7403d725d3aa04e2c1f2d0c05fa6c8179851fd246034d0bf72f44673aac8c39b",
+    "formalDataIncluded": false
+  }
+}

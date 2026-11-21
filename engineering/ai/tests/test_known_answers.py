@@ -83,7 +83,7 @@ def test_legacy_known_json_is_reformatted_without_touching_other_messages():
     record=item();raw={'actions':[{'label':'检查器具','choices':[{'label':'交谈','process':'记录回应'}]}],'entityId':'INTERNAL_ID'}
     old='观察记录 · '+reference_token(record['ref'])+'\n\n'+_literal(raw)
     shown=format_legacy(old)
-    assert '已记录行动' in shown and '处理说明' in shown and 'INTERNAL_ID' not in shown
+    assert '点击引用查看完整资料' in shown and '处理说明' not in shown and 'INTERNAL_ID' not in shown
     assert format_legacy(shown)==shown
     assert format_legacy('配置草稿：'+json.dumps(raw))=='配置草稿：'+json.dumps(raw)
     assert format_legacy('观察记录 · '+reference_token(record['ref'])+'\n\n普通正文')=='观察记录 · '+reference_token(record['ref'])+'\n\n普通正文'

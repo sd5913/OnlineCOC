@@ -1,0 +1,35 @@
+{
+  "beforeSha256": "40a4bc34a24b6fb6510c083b98f7a8685dcf124d88a23ec8a06adf4e87632868",
+  "afterSha256": "2b6db3e8ce7811a3a25da12a501de766d542af485d81a61f668037a034594ef8",
+  "modifiedOperations": [
+    "ai.player.request",
+    "ai.review.create",
+    "ai.session.submit"
+  ],
+  "addedOperations": [
+    "ai.queue.archive"
+  ],
+  "unchangedOperations": [
+    "ai.access.update",
+    "ai.batch.approve",
+    "ai.batch.reconcile",
+    "ai.batch.reject",
+    "ai.draft.create",
+    "ai.knowledge.reconcile",
+    "ai.knowledge.request",
+    "ai.memory.confirm",
+    "ai.memory.create",
+    "ai.memory.revoke",
+    "ai.proposal.revise",
+    "ai.proposal.validate",
+    "ai.request.cancel",
+    "ai.request.create",
+    "ai.request.dispatch",
+    "ai.ruling.decide",
+    "ai.session.create",
+    "ai.session.delete",
+    "ai.session.update",
+    "ai.settings.update"
+  ],
+  "removedOperations": []
+}

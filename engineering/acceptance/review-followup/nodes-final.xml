@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="8" time="24.344" timestamp="2026-11-20T13:34:47.665912+08:00" hostname="LAPTOP-BIFSL64A"><testcase classname="engineering.acceptance.review-followup.test_history_nodes" name="test_text_node_history_has_current_authority_but_not_old_value_equality[text-True-truth]" time="2.579"><failure message="onlinecoc_ai.errors.AiError: HISTORY_PROVENANCE_INCOMPLETE">application = &lt;onlinecoc_ai.api.Application object at 0x000001803126FA10&gt;
+field = 'truth', change = 'text', readable = True
+
+    @pytest.mark.parametrize('field',['truth','description'])
+    @pytest.mark.parametrize('change,readable',[('text',True),('delete-field',False),('delete-object',False),('revoke',False)])
+    def test_text_node_history_has_current_authority_but_not_old_value_equality(application,field,change,readable):
+        app=application;install_game(app);room=app.host.state();active=room['artifacts'][room['activeRuleset']]
+        data=copy.deepcopy(active['data']);data['game.json']['locations']={'a':{'id':'a','truth':'原来的机关连接','description':'原来的场景描述'}}
+        artifact=stage(active['sources'],data);room['artifacts'][artifact['revision']]=artifact;room['activeRuleset']=artifact['revision'];app.host.commit(room)
+        context=app.proposals.snapshot('kp')[0]
+        context['facts']['configDataReads']=[{'file':'game.json','path':['locations','a',field],'targetDigest':digest(data['game.json']['locations']['a'][field])}]
+        if change=='text':data['game.json']['locations']['a'][field]='更新后的文本'
+        elif change=='delete-field':del data['game.json']['locations']['a'][field]
+        elif change=='delete-object':del data['game.json']['locations']['a']
+        else:room['members']['kp']['authorizationEpoch']+=1
+        updated=stage(active['sources'],data);room['artifacts'][updated['revision']]=updated;room['activeRuleset']=updated['revision'];app.host.commit(room)
+&gt;       if readable:assert assess(app.host,app.repository,room,context) in ('SOURCE_STALE','BASELINE_STALE')
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+engineering\acceptance\review-followup\test_history_nodes.py:30: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+engineering\ai\src\onlinecoc_ai\history.py:156: in assess
+    require(digest(previous)==proof['targetDigest'],'HISTORY_PROVENANCE_INCOMPLETE')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+condition = False, code = 'HISTORY_PROVENANCE_INCOMPLETE', message = ''
+path = ''
+
+    def require(condition, code="INPUT_INVALID", message="", path=""):
+        if not condition:
+&gt;           raise AiError(code, message, path)
+E           onlinecoc_ai.errors.AiError: HISTORY_PROVENANCE_INCOMPLETE
+
+engineering\ai\src\onlinecoc_ai\errors.py:15: AiError</failure></testcase><testcase classname="engineering.acceptance.review-followup.test_history_nodes" name="test_text_node_history_has_current_authority_but_not_old_value_equality[text-True-description]" time="2.804"><failure message="onlinecoc_ai.errors.AiError: HISTORY_PROVENANCE_INCOMPLETE">application = &lt;onlinecoc_ai.api.Application object at 0x00000180314EBB10&gt;
+field = 'description', change = 'text', readable = True
+
+    @pytest.mark.parametrize('field',['truth','description'])
+    @pytest.mark.parametrize('change,readable',[('text',True),('delete-field',False),('delete-object',False),('revoke',False)])
+    def test_text_node_history_has_current_authority_but_not_old_value_equality(application,field,change,readable):
+        app=application;install_game(app);room=app.host.state();active=room['artifacts'][room['activeRuleset']]
+        data=copy.deepcopy(active['data']);data['game.json']['locations']={'a':{'id':'a','truth':'原来的机关连接','description':'原来的场景描述'}}
+        artifact=stage(active['sources'],data);room['artifacts'][artifact['revision']]=artifact;room['activeRuleset']=artifact['revision'];app.host.commit(room)
+        context=app.proposals.snapshot('kp')[0]
+        context['facts']['configDataReads']=[{'file':'game.json','path':['locations','a',field],'targetDigest':digest(data['game.json']['locations']['a'][field])}]
+        if change=='text':data['game.json']['locations']['a'][field]='更新后的文本'
+        elif change=='delete-field':del data['game.json']['locations']['a'][field]
+        elif change=='delete-object':del data['game.json']['locations']['a']
+        else:room['members']['kp']['authorizationEpoch']+=1
+        updated=stage(active['sources'],data);room['artifacts'][updated['revision']]=updated;room['activeRuleset']=updated['revision'];app.host.commit(room)
+&gt;       if readable:assert assess(app.host,app.repository,room,context) in ('SOURCE_STALE','BASELINE_STALE')
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+engineering\acceptance\review-followup\test_history_nodes.py:30: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+engineering\ai\src\onlinecoc_ai\history.py:156: in assess
+    require(digest(previous)==proof['targetDigest'],'HISTORY_PROVENANCE_INCOMPLETE')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+condition = False, code = 'HISTORY_PROVENANCE_INCOMPLETE', message = ''
+path = ''
+
+    def require(condition, code="INPUT_INVALID", message="", path=""):
+        if not condition:
+&gt;           raise AiError(code, message, path)
+E           onlinecoc_ai.errors.AiError: HISTORY_PROVENANCE_INCOMPLETE
+
+engineering\ai\src\onlinecoc_ai\errors.py:15: AiError</failure></testcase><testcase classname="engineering.acceptance.review-followup.test_history_nodes" name="test_text_node_history_has_current_authority_but_not_old_value_equality[delete-field-False-truth]" time="2.438" /><testcase classname="engineering.acceptance.review-followup.test_history_nodes" name="test_text_node_history_has_current_authority_but_not_old_value_equality[delete-field-False-description]" time="3.265" /><testcase classname="engineering.acceptance.review-followup.test_history_nodes" name="test_text_node_history_has_current_authority_but_not_old_value_equality[delete-object-False-truth]" time="2.770" /><testcase classname="engineering.acceptance.review-followup.test_history_nodes" name="test_text_node_history_has_current_authority_but_not_old_value_equality[delete-object-False-description]" time="3.199" /><testcase classname="engineering.acceptance.review-followup.test_history_nodes" name="test_text_node_history_has_current_authority_but_not_old_value_equality[revoke-False-truth]" time="3.005" /><testcase classname="engineering.acceptance.review-followup.test_history_nodes" name="test_text_node_history_has_current_authority_but_not_old_value_equality[revoke-False-description]" time="2.766" /></testsuite></testsuites>

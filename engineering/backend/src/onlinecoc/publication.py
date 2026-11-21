@@ -3,9 +3,32 @@ import copy
 import uuid
 
 from .ai_contracts import (approval_digest, baseline_digest, candidate_digest, digest, validate_ai,
-                           validate_artifact, validate_bundle, validator_digest, world_digest)
+                           validate_artifact, validate_bundle, validate_c_assessment, validator_digest, world_digest)
 from .errors import require
 from .model import member
+
+
+def consultation_source_digest(context):
+    """Bind KP acceptance to the exact source evidence, not a UI boolean."""
+    return digest(context)
+
+
+def consultation_assessment(context):
+    foreign={digest(row['ref']) for proof in context['facts'].get('dataQueries',[]) for row in proof.get('readRefs',[])
+             if row['ref']['sourceId'] not in ('host','host-room','host-room-state')}
+    return {'requiresAcceptance':bool(foreign or context['facts'].get('consultationOnly')),
+            'sourceCount':len(foreign),'sourceDigest':consultation_source_digest(context),
+            'notice':'独立包资料用于方案依据，可能不具备跨存储原子保证。请核对当前目标、完整变更及检查结果后决定；摘要或资料本身不授权执行。'}
+
+
+def check_consultation_review(context, decisions, review):
+    assessment=consultation_assessment(context)
+    if assessment['requiresAcceptance']:
+        require(len(decisions.get('consultation-source','').strip())>=3,'RISK_REVIEW_REQUIRED')
+        require(review=={'sourceDigest':assessment['sourceDigest']},'CONSULTATION_REVIEW_REQUIRED')
+    elif review is not None:
+        require(review=={'sourceDigest':assessment['sourceDigest']},'DIGEST_MISMATCH')
+    return assessment
 
 
 def is_high_risk(state, changes, contract):
@@ -118,10 +141,28 @@ def _check_context(host, state, account, context, *, history):
     host.validate_ai_sources(state, account, context)
 
 
+def check_c_basis(host, bundle, c_review=None):
+    proof = validate_c_assessment(bundle)
+    resolver = host.ai_c_basis_resolver
+    if proof is None:
+        require(resolver is None, 'C_BASIS_STALE')
+        require(c_review is None, 'DIGEST_MISMATCH')
+        return
+    require(resolver is not None, 'AI_SERVICE_UNAVAILABLE')
+    current = resolver()
+    require(current == {key:proof[key] for key in ('basisRevision','basisDigest')}, 'C_BASIS_STALE')
+    if bundle['cAssessment']['requiresAcceptance']:
+        require(c_review == proof, 'C_REVIEW_REQUIRED')
+    elif c_review is not None:
+        require(c_review == proof, 'DIGEST_MISMATCH')
+
+
 def approve(host, state, account, args, prepared):
     require(prepared is not None, "AI_SERVICE_UNAVAILABLE")
     validate_bundle(prepared)
-    require(not prepared['context']['facts'].get('consultationOnly') and not prepared['context']['facts'].get('strictPlayer'), 'CONSULTATION_ONLY')
+    check_c_basis(host, prepared, args.get('cReview'))
+    facts=prepared['context']['facts']
+    require(not facts.get('strictPlayer') and facts.get('sessionAccess',{}).get('level')!='player', 'CONSULTATION_ONLY')
     require(prepared["proposalId"] == args["proposalId"] and prepared["proposalRevision"] == args["proposalRevision"], "PROPOSAL_STALE")
     control = state["aiControl"]
     require(control["proposalHeads"].get(args["proposalId"]) == args["proposalRevision"], "PROPOSAL_STALE")
@@ -136,13 +177,16 @@ def approve(host, state, account, args, prepared):
     items = {item["id"]: item for item in policy["items"]}
     needed = {key for key, value in items.items() if value["required"]}
     allowed = set(items)
+    if consultation_assessment(prepared['context'])['requiresAcceptance']:
+        needed.add('consultation-source');allowed.add('consultation-source')
     if high_risk:
         needed.add('high-risk'); allowed.add('high-risk')
-    if any(r["risk"] in ("medium", "high", "unknown") for r in prepared["reports"]):
+    if any(r["risk"] in ("medium", "high", "unknown") for r in prepared["reports"]) or prepared.get('cAssessment',{}).get('requiresAcceptance'):
         needed.add("gameplay-risk")
         allowed.add("gameplay-risk")
     decisions = args["riskDecisions"]
     require(needed <= set(decisions) <= allowed and all(len(value.strip()) >= 3 for value in decisions.values()), "RISK_REVIEW_REQUIRED")
+    consultation=check_consultation_review(prepared['context'],decisions,args.get('consultationReview'))
     identifier = uuid.uuid4().hex
     context = prepared["context"]
     value = {"schemaVersion": 1, "approvalId": identifier, "proposalId": prepared["proposalId"],
@@ -155,6 +199,12 @@ def approve(host, state, account, args, prepared):
         "reports": copy.deepcopy(prepared["reports"]), "createdAt": host.clock()}
     if high_risk:
         value['explicitHighRiskDigest'] = args['explicitHighRiskDigest']
+    for key in ('cAssessment',):
+        if key in prepared:value[key] = copy.deepcopy(prepared[key])
+    if 'cReview' in args:value['cReview'] = copy.deepcopy(args['cReview'])
+    if consultation['requiresAcceptance'] or 'consultationReview' in args:
+        value['consultationAssessment']=consultation
+        value['consultationReview']=copy.deepcopy(args['consultationReview'])
     value["approvalDigest"] = approval_digest(value)
     validate_ai("Approval", value)
     state["artifacts"][value["artifactRevision"]] = copy.deepcopy(prepared["artifact"])
@@ -176,7 +226,8 @@ def apply(host, state, account, args, command_id):
     require(member(state, account)["role"] == "kp", "PERMISSION_DENIED")
     approval = control["approvals"].get(args["approvalId"])
     require(approval is not None and approval["reviewer"] == account, "NOT_VISIBLE")
-    require(not approval['context']['facts'].get('strictPlayer'),'CONSULTATION_ONLY')
+    facts=approval['context']['facts']
+    require(not facts.get('strictPlayer') and facts.get('sessionAccess',{}).get('level')!='player','CONSULTATION_ONLY')
     if approval["status"] == "consumed":
         publication = next(p for p in control["publications"].values() if p["approvalId"] == approval["approvalId"])
         return copy.deepcopy(publication)
@@ -188,7 +239,14 @@ def apply(host, state, account, args, command_id):
     require(artifact is not None, "ARTIFACT_MISSING")
     bundle = {k: copy.deepcopy(approval[k]) for k in ("schemaVersion", "proposalId", "proposalRevision", "scopeId", "context", "changeSet", "reports", "candidateDigest", "baselineDigest", "createdAt")}
     bundle["artifact"] = artifact
+    if 'cAssessment' in approval:bundle['cAssessment'] = copy.deepcopy(approval['cAssessment'])
     validate_bundle(bundle)
+    check_c_basis(host, bundle, approval.get('cReview'))
+    consultation=check_consultation_review(approval['context'],approval['riskDecisions'],approval.get('consultationReview'))
+    if 'consultationAssessment' in approval:
+        require(approval['consultationAssessment']==consultation,'DIGEST_MISMATCH')
+    if bundle.get('cAssessment',{}).get('requiresAcceptance'):
+        require(len(approval['riskDecisions'].get('gameplay-risk','').strip()) >= 3, 'RISK_REVIEW_REQUIRED')
     require(approval["contextDigest"] == digest(approval["context"]) and approval["contractDigest"] == approval["context"]["contractDigest"] and
             approval["validatorSetDigest"] == approval["context"]["validatorSetDigest"], "DIGEST_MISMATCH")
     check_context(host, state, account, approval["context"])

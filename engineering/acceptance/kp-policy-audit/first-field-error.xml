@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="14" skipped="0" tests="15" time="94.980" timestamp="2026-11-21T15:21:12.394366+08:00" hostname="LAPTOP-BIFSL64A"><testcase classname="engineering.acceptance.kp-policy-audit.work.engineering.backend.tests.test_kp_policy" name="test_consultation_requires_exact_acceptance[missing-reason]" time="7.361"><failure message="KeyError: 'sources'">ai_case = (&lt;onlinecoc.host.Host object at 0x00000138434E0D70&gt;, &lt;onlinecoc_ai.proposals.Proposals object at 0x00000138434E2120&gt;, ...'item', 'defaults': {'quantity': 1, 'unitMass': 0, 'charges': 2, 'bonus': 15}, ...}}], 'sources': {}, 'data': {}, ...})
+bad = 'missing-reason'
+
+    @pytest.mark.parametrize('bad',['missing-reason','short-reason','missing-digest','old-digest'])
+    def test_consultation_requires_exact_acceptance(ai_case,bad):
+&gt;    host,args,_=prepare(ai_case)
+                 ^^^^^^^^^^^^^^^^
+
+engineering\acceptance\kp-policy-audit\work\engineering\backend\tests\test_kp_policy.py:23: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+engineering\acceptance\kp-policy-audit\work\engineering\backend\tests\test_kp_policy.py:16: in prepare
+    args['riskDecisions'].update({'consultation-risk':'接受咨询来源的不确定性','consultation-source-digest':consultation_source_digest(bundle['context'])})
+                                                                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+context = {'schemaVersion': 1, 'scopeId': '831e9a3a929b4a88b7ed9d42a6077a61', 'initiator': 'kp', 'reviewPrincipal': 'kp', ...}
+
+    def consultation_source_digest(context):
+        """Bind KP acceptance to the exact source evidence, not a UI boolean."""
+&gt;       return digest({'scopeId':context['scopeId'],'sources':context['sources'],
+                                                              ^^^^^^^^^^^^^^^^^^
+                       'dataQueries':context['facts'].get('dataQueries',[])})
+E       KeyError: 'sources'
+
+engineering\acceptance\kp-policy-audit\work\engineering\backend\src\onlinecoc\publication.py:13: KeyError</failure></testcase><testcase classname="engineering.acceptance.kp-policy-audit.work.engineering.backend.tests.test_kp_policy" name="test_consultation_requires_exact_acceptance[short-reason]" time="6.288"><failure message="KeyError: 'sources'">ai_case = (&lt;onlinecoc.host.Host object at 0x00000138448E8550&gt;, &lt;onlinecoc_ai.proposals.Proposals object at 0x00000138448E8E10&gt;, ...'item', 'defaults': {'quantity': 1, 'unitMass': 0, 'charges': 2, 'bonus': 15}, ...}}], 'sources': {}, 'data': {}, ...})
+bad = 'short-reason'
+
+    @pytest.mark.parametrize('bad',['missing-reason','short-reason','missing-digest','old-digest'])
+    def test_consultation_requires_exact_acceptance(ai_case,bad):
+&gt;    host,args,_=prepare(ai_case)
+                 ^^^^^^^^^^^^^^^^
+
+engineering\acceptance\kp-policy-audit\work\engineering\backend\tests\test_kp_policy.py:23: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+engineering\acceptance\kp-policy-audit\work\engineering\backend\tests\test_kp_policy.py:16: in prepare
+    args['riskDecisions'].update({'consultation-risk':'接受咨询来源的不确定性','consultation-source-digest':consultation_source_digest(bundle['context'])})
+                                                                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+context = {'schemaVersion': 1, 'scopeId': 'cd222b8754024a63bc83896661bb4a43', 'initiator': 'kp', 'reviewPrincipal': 'kp', ...}
+
+    def consultation_source_digest(context):
+        """Bind KP acceptance to the exact source evidence, not a UI boolean."""
+&gt;       return digest({'scopeId':context['scopeId'],'sources':context['sources'],
+                                                              ^^^^^^^^^^^^^^^^^^
+                       'dataQueries':context['facts'].get('dataQueries',[])})
+E       KeyError: 'sources'
+
+engineering\acceptance\kp-policy-audit\work\engineering\backend\src\onlinecoc\publication.py:13: KeyError</failure></testcase><testcase classname="engineering.acceptance.kp-policy-audit.work.engineering.backend.tests.test_kp_policy" name="test_consultation_requires_exact_acceptance[missing-digest]" time="6.317"><failure message="KeyError: 'sources'">ai_case = (&lt;onlinecoc.host.Host object at 0x00000138448E9590&gt;, &lt;onlinecoc_ai.proposals.Proposals object at 0x00000138448EA350&gt;, ...'item', 'defaults': {'quantity': 1, 'unitMass': 0, 'charges': 2, 'bonus': 15}, ...}}], 'sources': {}, 'data': {}, ...})
+bad = 'missing-digest'
+
+    @pytest.mark.parametrize('bad',['missing-reason','short-reason','missing-digest','old-digest'])
+    def test_consultation_requires_exact_acceptance(ai_case,bad):
+&gt;    host,args,_=prepare(ai_case)
+                 ^^^^^^^^^^^^^^^^
+
+engineering\acceptance\kp-policy-audit\work\engineering\backend\tests\test_kp_policy.py:23: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+engineering\acceptance\kp-policy-audit\work\engineering\backend\tests\test_kp_policy.py:16: in prepare
+    args['riskDecisions'].update({'consultation-risk':'接受咨询来源的不确定性','consultation-source-digest':consultation_source_digest(bundle['context'])})
+                                                                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+context = {'schemaVersion': 1, 'scopeId': '1a301a20f22a4327a200487e9b3f7db4', 'initiator': 'kp', 'reviewPrincipal': 'kp', ...}
+
+    def consultation_source_digest(context):
+        """Bind KP acceptance to the exact source evidence, not a UI boolean."""
+&gt;       return digest({'scopeId':context['scopeId'],'sources':context['sources'],
+                                                              ^^^^^^^^^^^^^^^^^^
+                       'dataQueries':context['facts'].get('dataQueries',[])})
+E       KeyError: 'sources'
+
+engineering\acceptance\kp-policy-audit\work\engineering\backend\src\onlinecoc\publication.py:13: KeyError</failure></testcase><testcase classname="engineering.acceptance.kp-policy-audit.work.engineering.backend.tests.test_kp_policy" name="test_consultation_requires_exact_acceptance[old-digest]" time="6.979"><failure message="KeyError: 'sources'">ai_case = (&lt;onlinecoc.host.Host object at 0x00000138435BB100&gt;, &lt;onlinecoc_ai.proposals.Proposals object at 0x00000138435BBBB0&gt;, ...'item', 'defaults': {'quantity': 1, 'unitMass': 0, 'charges': 2, 'bonus': 15}, ...}}], 'sources': {}, 'data': {}, ...})
+bad = 'old-digest'
+
+    @pytest.mark.parametrize('bad',['missing-reason','short-reason','missing-digest','old-digest'])
+    def test_consultation_requires_exact_acceptance(ai_case,bad):
+&gt;    host,args,_=prepare(ai_case)
+                 ^^^^^^^^^^^^^^^^
+
+engineering\acceptance\kp-policy-audit\work\engineering\backend\tests\test_kp_policy.py:23: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+engineering\acceptance\kp-policy-audit\work\engineering\backend\tests\test_kp_policy.py:16: in prepare
+    args['riskDecisions'].update({'consultation-risk':'接受咨询来源的不确定性','consultation-source-digest':consultation_source_digest(bundle['context'])})
+                                                                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+context = {'schemaVersion': 1, 'scopeId': '8bf8337b468242bd8c2594fc85e1c27d', 'initiator': 'kp', 'reviewPrincipal': 'kp', ...}
+
+    def consultation_source_digest(context):
+        """Bind KP acceptance to the exact source evidence, not a UI boolean."""
+&gt;       return digest({'scopeId':context['scopeId'],'sources':context['sources'],
+                                                              ^^^^^^^^^^^^^^^^^^
+                       'dataQueries':context['facts'].get('dataQueries',[])})
+E       KeyError: 'sources'
+
+engineering\acceptance\kp-policy-audit\work\engineering\backend\src\onlinecoc\publication.py:13: KeyError</failure></testcase><testcase classname="engineering.acceptance.kp-policy-audit.work.engineering.backend.tests.test_kp_policy" name="test_kp_consultation_supported_candidate_publishes_once" time="6.789"><failure message="KeyError: 'sources'">ai_case = (&lt;onlinecoc.host.Host object at 0x0000013844998510&gt;, &lt;onlinecoc_ai.proposals.Proposals object at 0x0000013844998FC0&gt;, ...'item', 'defaults': {'quantity': 1, 'unitMass': 0, 'charges': 2, 'bonus': 15}, ...}}], 'sources': {}, 'data': {}, ...})
+
+    def test_kp_consultation_supported_candidate_publishes_once(ai_case):
+&gt;    host,args,bundle=prepare(ai_case);before=host.state()
+                      ^^^^^^^^^^^^^^^^
+
+engineering\acceptance\kp-policy-audit\work\engineering\backend\tests\test_kp_policy.py:33: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+engineering\acceptance\kp-policy-audit\work\engineering\backend\tests\test_kp_policy.py:16: in prepare
+    args['riskDecisions'].update({'consultation-risk':'接受咨询来源的不确定性','consultation-source-digest':consultation_source_digest(bundle['context'])})
+                                                                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+context = {'schemaVersion': 1, 'scopeId': '5b87acb015bb479fb071e2ffa3a21c38', 'initiator': 'kp', 'reviewPrincipal': 'kp', ...}
+
+    def consultation_source_digest(context):
+        """Bind KP acceptance to the exact source evidence, not a UI boolean."""
+&gt;       return digest({'scopeId':context['scopeId'],'sources':context['sources'],
+                                                              ^^^^^^^^^^^^^^^^^^
+                       'dataQueries':context['facts'].get('dataQueries',[])})
+E       KeyError: 'sources'
+
+engineering\acceptance\kp-policy-audit\work\engineering\backend\src\onlinecoc\publication.py:13: KeyError</failure></testcase><testcase classname="engineering.acceptance.kp-policy-audit.work.engineering.backend.tests.test_kp_policy" name="test_player_context_never_elevated_by_kp_acceptance[flags0]" time="6.685"><failure message="KeyError: 'sources'">ai_case = (&lt;onlinecoc.host.Host object at 0x000001384358B410&gt;, &lt;onlinecoc_ai.proposals.Proposals object at 0x0000013844B04050&gt;, ...'item', 'defaults': {'quantity': 1, 'unitMass': 0, 'charges': 2, 'bonus': 15}, ...}}], 'sources': {}, 'data': {}, ...})
+flags = {'strictPlayer': True}
+
+    @pytest.mark.parametrize('flags',[{'strictPlayer':True},{'sessionAccess':{'level':'player'}}])
+    def test_player_context_never_elevated_by_kp_acceptance(ai_case,flags):
+&gt;    host,args,_=prepare(ai_case,flags);r=approve(host,args)
+                 ^^^^^^^^^^^^^^^^^^^^^^
+
+engineering\acceptance\kp-policy-audit\work\engineering\backend\tests\test_kp_policy.py:46: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+engineering\acceptance\kp-policy-audit\work\engineering\backend\tests\test_kp_policy.py:16: in prepare
+    args['riskDecisions'].update({'consultation-risk':'接受咨询来源的不确定性','consultation-source-digest':consultation_source_digest(bundle['context'])})
+                                                                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+context = {'schemaVersion': 1, 'scopeId': 'aab0ae0308ee4fb3b78699ae0f718843', 'initiator': 'kp', 'reviewPrincipal': 'kp', ...}
+
+    def consultation_source_digest(context):
+        """Bind KP acceptance to the exact source evidence, not a UI boolean."""
+&gt;       return digest({'scopeId':context['scopeId'],'sources':context['sources'],
+                                                              ^^^^^^^^^^^^^^^^^^
+                       'dataQueries':context['facts'].get('dataQueries',[])})
+E       KeyError: 'sources'
+
+engineering\acceptance\kp-policy-audit\work\engineering\backend\src\onlinecoc\publication.py:13: KeyError</failure></testcase><testcase classname="engineering.acceptance.kp-policy-audit.work.engineering.backend.tests.test_kp_policy" name="test_player_context_never_elevated_by_kp_acceptance[flags1]" time="6.915"><failure message="KeyError: 'sources'">ai_case = (&lt;onlinecoc.host.Host object at 0x00000138449F29C0&gt;, &lt;onlinecoc_ai.proposals.Proposals object at 0x00000138449F3570&gt;, ...'item', 'defaults': {'quantity': 1, 'unitMass': 0, 'charges': 2, 'bonus': 15}, ...}}], 'sources': {}, 'data': {}, ...})
+flags = {'sessionAccess': {'level': 'player'}}
+
+    @pytest.mark.parametrize('flags',[{'strictPlayer':True},{'sessionAccess':{'level':'player'}}])
+    def test_player_context_never_elevated_by_kp_acceptance(ai_case,flags):
+&gt;    host,args,_=prepare(ai_case,flags);r=approve(host,args)
+                 ^^^^^^^^^^^^^^^^^^^^^^
+
+engineering\acceptance\kp-policy-audit\work\engineering\backend\tests\test_kp_policy.py:46: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+engineering\acceptance\kp-policy-audit\work\engineering\backend\tests\test_kp_policy.py:16: in prepare
+    args['riskDecisions'].update({'consultation-risk':'接受咨询来源的不确定性','consultation-source-digest':consultation_source_digest(bundle['context'])})
+                                                                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+context = {'schemaVersion': 1, 'scopeId': '9a1f53965bc948508d162adbee8a80a9', 'initiator': 'kp', 'reviewPrincipal': 'kp', ...}
+
+    def consultation_source_digest(context):
+        """Bind KP acceptance to the exact source evidence, not a UI boolean."""
+&gt;       return digest({'scopeId':context['scopeId'],'sources':context['sources'],
+                                                              ^^^^^^^^^^^^^^^^^^
+                       'dataQueries':context['facts'].get('dataQueries',[])})
+E       KeyError: 'sources'
+
+engineering\acceptance\kp-policy-audit\work\engineering\backend\src\onlinecoc\publication.py:13: KeyError</failure></testcase><testcase classname="engineering.acceptance.kp-policy-audit.work.engineering.backend.tests.test_kp_policy" name="test_pl_cannot_approve_kp_consultation" time="7.244"><failure message="KeyError: 'sources'">ai_case = (&lt;onlinecoc.host.Host object at 0x000001384353EF10&gt;, &lt;onlinecoc_ai.proposals.Proposals object at 0x000001384353E690&gt;, ...'item', 'defaults': {'quantity': 1, 'unitMass': 0, 'charges': 2, 'bonus': 15}, ...}}], 'sources': {}, 'data': {}, ...})
+
+    def test_pl_cannot_approve_kp_consultation(ai_case):
+&gt;    host,args,_=prepare(ai_case)
+                 ^^^^^^^^^^^^^^^^
+
+engineering\acceptance\kp-policy-audit\work\engineering\backend\tests\test_kp_policy.py:50: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+engineering\acceptance\kp-policy-audit\work\engineering\backend\tests\test_kp_policy.py:16: in prepare
+    args['riskDecisions'].update({'consultation-risk':'接受咨询来源的不确定性','consultation-source-digest':consultation_source_digest(bundle['context'])})
+                                                                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+context = {'schemaVersion': 1, 'scopeId': 'a318dd86cd274661804a07893d4c8697', 'initiator': 'kp', 'reviewPrincipal': 'kp', ...}
+
+    def consultation_source_digest(context):
+        """Bind KP acceptance to the exact source evidence, not a UI boolean."""
+&gt;       return digest({'scopeId':context['scopeId'],'sources':context['sources'],
+                                                              ^^^^^^^^^^^^^^^^^^
+                       'dataQueries':context['facts'].get('dataQueries',[])})
+E       KeyError: 'sources'
+
+engineering\acceptance\kp-policy-audit\work\engineering\backend\src\onlinecoc\publication.py:13: KeyError</failure></testcase><testcase classname="engineering.acceptance.kp-policy-audit.work.engineering.backend.tests.test_kp_policy" name="test_publication_rechecks_acceptance_and_current_conditions[reason]" time="6.706"><failure message="KeyError: 'sources'">ai_case = (&lt;onlinecoc.host.Host object at 0x0000013844878C50&gt;, &lt;onlinecoc_ai.proposals.Proposals object at 0x0000013844878450&gt;, ...'item', 'defaults': {'quantity': 1, 'unitMass': 0, 'charges': 2, 'bonus': 15}, ...}}], 'sources': {}, 'data': {}, ...})
+change = 'reason'
+
+    @pytest.mark.parametrize('change',['reason','digest','authority','world'])
+    def test_publication_rechecks_acceptance_and_current_conditions(ai_case,change):
+&gt;    host,args,_=prepare(ai_case);r=approve(host,args);assert r['status']=='committed',r
+                 ^^^^^^^^^^^^^^^^
+
+engineering\acceptance\kp-policy-audit\work\engineering\backend\tests\test_kp_policy.py:56: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+engineering\acceptance\kp-policy-audit\work\engineering\backend\tests\test_kp_policy.py:16: in prepare
+    args['riskDecisions'].update({'consultation-risk':'接受咨询来源的不确定性','consultation-source-digest':consultation_source_digest(bundle['context'])})
+                                                                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+context = {'schemaVersion': 1, 'scopeId': '2868223aa0e7430ea4f27eb2f062b703', 'initiator': 'kp', 'reviewPrincipal': 'kp', ...}
+
+    def consultation_source_digest(context):
+        """Bind KP acceptance to the exact source evidence, not a UI boolean."""
+&gt;       return digest({'scopeId':context['scopeId'],'sources':context['sources'],
+                                                              ^^^^^^^^^^^^^^^^^^
+                       'dataQueries':context['facts'].get('dataQueries',[])})
+E       KeyError: 'sources'
+
+engineering\acceptance\kp-policy-audit\work\engineering\backend\src\onlinecoc\publication.py:13: KeyError</failure></testcase><testcase classname="engineering.acceptance.kp-policy-audit.work.engineering.backend.tests.test_kp_policy" name="test_publication_rechecks_acceptance_and_current_conditions[digest]" time="6.754"><failure message="KeyError: 'sources'">ai_case = (&lt;onlinecoc.host.Host object at 0x0000013844878150&gt;, &lt;onlinecoc_ai.proposals.Proposals object at 0x000001384487BB50&gt;, ...'item', 'defaults': {'quantity': 1, 'unitMass': 0, 'charges': 2, 'bonus': 15}, ...}}], 'sources': {}, 'data': {}, ...})
+change = 'digest'
+
+    @pytest.mark.parametrize('change',['reason','digest','authority','world'])
+    def test_publication_rechecks_acceptance_and_current_conditions(ai_case,change):
+&gt;    host,args,_=prepare(ai_case);r=approve(host,args);assert r['status']=='committed',r
+                 ^^^^^^^^^^^^^^^^
+
+engineering\acceptance\kp-policy-audit\work\engineering\backend\tests\test_kp_policy.py:56: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+engineering\acceptance\kp-policy-audit\work\engineering\backend\tests\test_kp_policy.py:16: in prepare
+    args['riskDecisions'].update({'consultation-risk':'接受咨询来源的不确定性','consultation-source-digest':consultation_source_digest(bundle['context'])})
+                                                                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+context = {'schemaVersion': 1, 'scopeId': '3c287ed7eb3147249a12fd22780ec9c8', 'initiator': 'kp', 'reviewPrincipal': 'kp', ...}
+
+    def consultation_source_digest(context):
+        """Bind KP acceptance to the exact source evidence, not a UI boolean."""
+&gt;       return digest({'scopeId':context['scopeId'],'sources':context['sources'],
+                                                              ^^^^^^^^^^^^^^^^^^
+                       'dataQueries':context['facts'].get('dataQueries',[])})
+E       KeyError: 'sources'
+
+engineering\acceptance\kp-policy-audit\work\engineering\backend\src\onlinecoc\publication.py:13: KeyError</failure></testcase><testcase classname="engineering.acceptance.kp-policy-audit.work.engineering.backend.tests.test_kp_policy" name="test_publication_rechecks_acceptance_and_current_conditions[authority]" time="6.352"><failure message="KeyError: 'sources'">ai_case = (&lt;onlinecoc.host.Host object at 0x0000013844AF64E0&gt;, &lt;onlinecoc_ai.proposals.Proposals object at 0x0000013844AF5A90&gt;, ...'item', 'defaults': {'quantity': 1, 'unitMass': 0, 'charges': 2, 'bonus': 15}, ...}}], 'sources': {}, 'data': {}, ...})
+change = 'authority'
+
+    @pytest.mark.parametrize('change',['reason','digest','authority','world'])
+    def test_publication_rechecks_acceptance_and_current_conditions(ai_case,change):
+&gt;    host,args,_=prepare(ai_case);r=approve(host,args);assert r['status']=='committed',r
+                 ^^^^^^^^^^^^^^^^
+
+engineering\acceptance\kp-policy-audit\work\engineering\backend\tests\test_kp_policy.py:56: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+engineering\acceptance\kp-policy-audit\work\engineering\backend\tests\test_kp_policy.py:16: in prepare
+    args['riskDecisions'].update({'consultation-risk':'接受咨询来源的不确定性','consultation-source-digest':consultation_source_digest(bundle['context'])})
+                                                                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+context = {'schemaVersion': 1, 'scopeId': '858f3ec63cc547ba8030596d5d8940a5', 'initiator': 'kp', 'reviewPrincipal': 'kp', ...}
+
+    def consultation_source_digest(context):
+        """Bind KP acceptance to the exact source evidence, not a UI boolean."""
+&gt;       return digest({'scopeId':context['scopeId'],'sources':context['sources'],
+                                                              ^^^^^^^^^^^^^^^^^^
+                       'dataQueries':context['facts'].get('dataQueries',[])})
+E       KeyError: 'sources'
+
+engineering\acceptance\kp-policy-audit\work\engineering\backend\src\onlinecoc\publication.py:13: KeyError</failure></testcase><testcase classname="engineering.acceptance.kp-policy-audit.work.engineering.backend.tests.test_kp_policy" name="test_publication_rechecks_acceptance_and_current_conditions[world]" time="6.632"><failure message="KeyError: 'sources'">ai_case = (&lt;onlinecoc.host.Host object at 0x0000013844AF58B0&gt;, &lt;onlinecoc_ai.proposals.Proposals object at 0x0000013844AF7110&gt;, ...'item', 'defaults': {'quantity': 1, 'unitMass': 0, 'charges': 2, 'bonus': 15}, ...}}], 'sources': {}, 'data': {}, ...})
+change = 'world'
+
+    @pytest.mark.parametrize('change',['reason','digest','authority','world'])
+    def test_publication_rechecks_acceptance_and_current_conditions(ai_case,change):
+&gt;    host,args,_=prepare(ai_case);r=approve(host,args);assert r['status']=='committed',r
+                 ^^^^^^^^^^^^^^^^
+
+engineering\acceptance\kp-policy-audit\work\engineering\backend\tests\test_kp_policy.py:56: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+engineering\acceptance\kp-policy-audit\work\engineering\backend\tests\test_kp_policy.py:16: in prepare
+    args['riskDecisions'].update({'consultation-risk':'接受咨询来源的不确定性','consultation-source-digest':consultation_source_digest(bundle['context'])})
+                                                                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+context = {'schemaVersion': 1, 'scopeId': '4196e197fd144efe8ffe41ecd81be0e1', 'initiator': 'kp', 'reviewPrincipal': 'kp', ...}
+
+    def consultation_source_digest(context):
+        """Bind KP acceptance to the exact source evidence, not a UI boolean."""
+&gt;       return digest({'scopeId':context['scopeId'],'sources':context['sources'],
+                                                              ^^^^^^^^^^^^^^^^^^
+                       'dataQueries':context['facts'].get('dataQueries',[])})
+E       KeyError: 'sources'
+
+engineering\acceptance\kp-policy-audit\work\engineering\backend\src\onlinecoc\publication.py:13: KeyError</failure></testcase><testcase classname="engineering.acceptance.kp-policy-audit.work.engineering.backend.tests.test_kp_policy" name="test_technical_failure_is_not_accepted_as_risk" time="6.381"><failure message="KeyError: 'sources'">ai_case = (&lt;onlinecoc.host.Host object at 0x0000013843179710&gt;, &lt;onlinecoc_ai.proposals.Proposals object at 0x0000013843179C50&gt;, ...'item', 'defaults': {'quantity': 1, 'unitMass': 0, 'charges': 2, 'bonus': 15}, ...}}], 'sources': {}, 'data': {}, ...})
+
+    def test_technical_failure_is_not_accepted_as_risk(ai_case):
+&gt;    host,args,bundle=prepare(ai_case)
+                      ^^^^^^^^^^^^^^^^
+
+engineering\acceptance\kp-policy-audit\work\engineering\backend\tests\test_kp_policy.py:70: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+engineering\acceptance\kp-policy-audit\work\engineering\backend\tests\test_kp_policy.py:16: in prepare
+    args['riskDecisions'].update({'consultation-risk':'接受咨询来源的不确定性','consultation-source-digest':consultation_source_digest(bundle['context'])})
+                                                                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+context = {'schemaVersion': 1, 'scopeId': '0113eec5ad74440c8af9750606f2caec', 'initiator': 'kp', 'reviewPrincipal': 'kp', ...}
+
+    def consultation_source_digest(context):
+        """Bind KP acceptance to the exact source evidence, not a UI boolean."""
+&gt;       return digest({'scopeId':context['scopeId'],'sources':context['sources'],
+                                                              ^^^^^^^^^^^^^^^^^^
+                       'dataQueries':context['facts'].get('dataQueries',[])})
+E       KeyError: 'sources'
+
+engineering\acceptance\kp-policy-audit\work\engineering\backend\src\onlinecoc\publication.py:13: KeyError</failure></testcase><testcase classname="engineering.acceptance.kp-policy-audit.work.engineering.backend.tests.test_kp_policy" name="test_unsupported_storage_change_is_not_success" time="6.790"><failure message="KeyError: 'sources'">ai_case = (&lt;onlinecoc.host.Host object at 0x0000013843178130&gt;, &lt;onlinecoc_ai.proposals.Proposals object at 0x00000138430DB770&gt;, ...'item', 'defaults': {'quantity': 1, 'unitMass': 0, 'charges': 2, 'bonus': 15}, ...}}], 'sources': {}, 'data': {}, ...})
+
+    def test_unsupported_storage_change_is_not_success(ai_case):
+&gt;    host,args,bundle=prepare(ai_case)
+                      ^^^^^^^^^^^^^^^^
+
+engineering\acceptance\kp-policy-audit\work\engineering\backend\tests\test_kp_policy.py:76: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+engineering\acceptance\kp-policy-audit\work\engineering\backend\tests\test_kp_policy.py:16: in prepare
+    args['riskDecisions'].update({'consultation-risk':'接受咨询来源的不确定性','consultation-source-digest':consultation_source_digest(bundle['context'])})
+                                                                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+context = {'schemaVersion': 1, 'scopeId': '9b72172c7125487b9d3b761acbb52e2f', 'initiator': 'kp', 'reviewPrincipal': 'kp', ...}
+
+    def consultation_source_digest(context):
+        """Bind KP acceptance to the exact source evidence, not a UI boolean."""
+&gt;       return digest({'scopeId':context['scopeId'],'sources':context['sources'],
+                                                              ^^^^^^^^^^^^^^^^^^
+                       'dataQueries':context['facts'].get('dataQueries',[])})
+E       KeyError: 'sources'
+
+engineering\acceptance\kp-policy-audit\work\engineering\backend\src\onlinecoc\publication.py:13: KeyError</failure></testcase><testcase classname="engineering.acceptance.kp-policy-audit.work.engineering.backend.tests.test_kp_policy" name="test_source_digest_binds_scope_sources_and_queries" time="0.001" /></testsuite></testsuites>

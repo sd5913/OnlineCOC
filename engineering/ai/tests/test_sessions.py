@@ -13,7 +13,7 @@ def submit(app, sid, text, account='kp'):
     return committed(command(app, 'ai.session.submit', {'sessionId': sid, 'text': text}, account))
 
 
-def test_history_reuses_valid_response_and_separates_stale_intent(application):
+def test_history_reuses_response_when_unread_world_data_changes(application):
     app = application
     sid = committed(command(app, 'ai.session.create', {'title': '上下文连续性'}))['sessionId']
     async def callback(*args):return completion({'kind': 'plan', 'text': '以前的未批准方案'})
@@ -32,8 +32,8 @@ def test_history_reuses_valid_response_and_separates_stale_intent(application):
             room = app.host.state();room['entities']['actor-one']['name'] = '世界已改变';app.host.commit(room)
             snapshot, changed = Context(app.proposals).capture('kp', request)
             assert [h['role'] for h in changed['conversationHistory']] == ['user','assistant']
-            assert changed['conversationHistory'][1]['authority']=='historical-intent-only'
-            assert snapshot[0]['facts']['historyIntents']
+            assert changed['conversationHistory'][1]['authority']=='unapproved-model-response'
+            assert not snapshot[0]['facts'].get('historyIntents')
         finally:await app.coordinator.close()
     asyncio.run(run())
 

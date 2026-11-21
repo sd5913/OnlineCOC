@@ -102,8 +102,23 @@ class FileDataStore:
             finally: os.close(fd)
 
     def _disk_bytes(self):
-        return (sum(path.stat().st_size for _, paths in self._generation_files() for path in paths.values())
-                + sum(path.stat().st_size for path in self.staging.glob('*.tmp')))
+        # DirEntry reuses Windows enumeration metadata; keep a fresh quota scan
+        # and the same name/symlink checks without repeated Path stat calls.
+        total=0
+        with os.scandir(self.generations) as entries:
+            for entry in entries:
+                name=entry.name
+                if not (name.endswith('.json') or name.endswith('.json.gz')):continue
+                if not re.fullmatch(r'[0-9]{12,}\.json(?:\.gz)?',name) or entry.is_symlink():
+                    raise StoreError('STORE_CORRUPT')
+                number=int(name.removesuffix('.gz').removesuffix('.json'))
+                if number<1 or name!=f'{number:012d}.json'+('.gz' if name.endswith('.gz') else ''):
+                    raise StoreError('STORE_CORRUPT')
+                total+=entry.stat().st_size
+        with os.scandir(self.staging) as entries:
+            for entry in entries:
+                if entry.name.endswith('.tmp'):total+=entry.stat().st_size
+        return total
 
     def compress_history(self, expected_generation=None):
         """Reversibly archive old snapshots; preserve every generation and byte.
@@ -161,8 +176,10 @@ class FileDataStore:
             if expected_generation != self.generation: raise StoreError("VERSION_CONFLICT")
             data = canonical(value)
             env = {"format":self.FORMAT,"generation":self.generation+1,"parent":self.head,
-                   "digest":digest(data),"length":len(data),"payload":value}
-            raw = canonical(env)
+                   "digest":digest(data),"length":len(data)}
+            # payload sorts last: preserve the original canonical envelope bytes
+            # without serializing the complete payload twice.
+            raw = canonical(env)[:-1]+b',"payload":'+data+b'}'
             used = self._disk_bytes()
             if used + len(raw)*2 > self.max_bytes and self.auto_compress:
                 self.compress_history(expected_generation)

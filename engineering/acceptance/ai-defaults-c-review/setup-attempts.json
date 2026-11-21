@@ -1,0 +1,19 @@
+{
+  "attempts": [
+    {
+      "stage": "natural-fixtures-first",
+      "result": "failed",
+      "caseId": "player-known",
+      "code": "NOT_VISIBLE",
+      "reason": "Reused fixture-prefix knowledge descriptor excluded sv.character. No external call.",
+      "resolution": "Use an explicitly authored synthetic sv.character identity-only descriptor."
+    },
+    {
+      "stage": "dynamic-live-scenario-first",
+      "result": "failed",
+      "code": "RANDOM_COVERAGE_UNKNOWN",
+      "reason": "d100 test rule was probed with the original fixed d20 policy.",
+      "resolution": "Supplementary declaration supports bounded randomSides; report now retains underlying execution cause. Regression passed."
+    }
+  ]
+}

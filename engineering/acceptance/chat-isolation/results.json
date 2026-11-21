@@ -1,0 +1,102 @@
+{
+  "scope": "ISSUE-022 engine chat isolation",
+  "apiCalls": 0,
+  "syntheticOnly": true,
+  "productionHashes": {
+    "contracts.py": "37a965819c6b86c7613ff07faceda9e5b751a4bd484677715332d302e950c7cf",
+    "host.py": "8a6fc6fce951d50e22ab7737b4b18efc660a176a74b806a761b1db3f4feb4ce8",
+    "server.py": "2cb4bcc880004470559c57466249275fbd76fc6cc2804fa08360f2de3c6d2544",
+    "ai_api.py": "e0ab371541d65c50187bf9a241969225edda9440ebc629ae932508c4ff17f27b",
+    "data_queries.py": "b1941bd2fbeef56ff3bb5fa4aac035f390679d8d4727301c6b530e36b76fecaf"
+  },
+  "tests": {
+    "initial.xml": {
+      "tests": 13,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "cache-fixed.xml": {
+      "tests": 14,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "regression.xml": {
+      "tests": 85,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "finalUniqueTests": 99,
+  "passedTestExecutions": 112,
+  "benchmarks": {
+    "before.json": {
+      "sendMs": {
+        "p50": 80.34999999403954,
+        "p95": 93.79999999701977,
+        "max": 591.8000000119209
+      },
+      "allPagesSyncedMs": {
+        "p50": 327.46500000939704,
+        "p95": 782.7190999960294,
+        "max": 1353.728999994928
+      },
+      "chatFailureRate": 0.0,
+      "approvalFailureRate": 1.0,
+      "sequenceUnique": true
+    },
+    "after.json": {
+      "sendMs": {
+        "p50": 116.59999999403954,
+        "p95": 130,
+        "max": 130.1000000089407
+      },
+      "allPagesSyncedMs": {
+        "p50": 310.19055000069784,
+        "p95": 1054.3032999994466,
+        "max": 1073.2235999894328
+      },
+      "chatFailureRate": 0.0,
+      "approvalFailureRate": 0.0,
+      "sequenceUnique": true
+    },
+    "before-control.json": {
+      "sendMs": {
+        "p50": 1147.6499999985099,
+        "p95": 1297.1000000089407,
+        "max": 1298.2000000029802
+      },
+      "allPagesSyncedMs": {
+        "p50": 1252.4999000015669,
+        "p95": 2106.1017000029096,
+        "max": 2697.643399995286
+      },
+      "chatFailureRate": 0.0,
+      "approvalFailureRate": 0.0,
+      "sequenceUnique": true
+    },
+    "after-control.json": {
+      "sendMs": {
+        "p50": 120.8500000089407,
+        "p95": 135.69999998807907,
+        "max": 137
+      },
+      "allPagesSyncedMs": {
+        "p50": 316.4796499913791,
+        "p95": 1080.9962000057567,
+        "max": 1132.093399995938
+      },
+      "chatFailureRate": 0.0,
+      "approvalFailureRate": 0.0,
+      "sequenceUnique": true
+    }
+  },
+  "interfaceSnapshot": "engineering/acceptance/engine-chat-interface-snapshot/v2",
+  "limitations": [
+    "Single-machine synthetic fixture; 30 sends and 4 approvals per run, no WAN claim",
+    "Package UI and current AI history integration have separate joint evidence"
+  ],
+  "firstFailures": "first-failures.json"
+}

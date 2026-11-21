@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="5" skipped="0" tests="22" time="12.792" timestamp="2026-11-21T15:55:20.760194+08:00" hostname="LAPTOP-BIFSL64A"><testcase classname="engineering.ai.tests.test_context_compression" name="test_compacts_semantically_keeps_current_request_exact_and_recall_archives" time="0.050" /><testcase classname="engineering.ai.tests.test_context_compression" name="test_invalid_summary_repairs_once_and_preserves_failed_feedback" time="0.048" /><testcase classname="engineering.ai.tests.test_context_compression" name="test_persistent_bad_summary_fails_closed_keeps_originals" time="0.035" /><testcase classname="engineering.ai.tests.test_context_compression" name="test_summary_cannot_forge_provenance_or_convert_ai_suggestion_to_confirmation[assistant-not approval]" time="0.001" /><testcase classname="engineering.ai.tests.test_context_compression" name="test_summary_cannot_forge_provenance_or_convert_ai_suggestion_to_confirmation[user-not approval]" time="0.001" /><testcase classname="engineering.ai.tests.test_context_compression" name="test_guard_change_during_summary_rejects_before_output_and_recall" time="0.034" /><testcase classname="engineering.ai.tests.test_context_compression" name="test_tool_exchanges_stay_paired" time="0.050" /><testcase classname="engineering.ai.tests.test_context_compression" name="test_under_threshold_no_call_and_uncompressible_overflow_no_provider" time="0.007" /><testcase classname="engineering.ai.tests.test_context_compression" name="test_model_budget_reserves_output_protocol_and_declared_window" time="0.001" /><testcase classname="engineering.ai.tests.test_context_compression" name="test_coordinator_bills_summary_and_final_reply_with_visible_progress" time="1.745"><failure message="AssertionError: {'taskId': '97efdfd1f8574be3b8e87e082807ab0a', 'requestId': '97efdfd1f8574be3b8e87e082807ab0a', 'account': 'kp', 'profile': {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...}, ...}&#10;assert 'failed' == 'review_ready'&#10;  &#10;  - review_ready&#10;  + failed">application = &lt;onlinecoc_ai.api.Application object at 0x00000190BCDF1160&gt;
+
+    def test_coordinator_bills_summary_and_final_reply_with_visible_progress(application):
+        from onlinecoc_ai.context import Context
+        app=application;enable(app.host,public=True,kp=True,private=True)
+        app.coordinator.context=Context(app.proposals,demand=True)
+        app.coordinator.profiles['deepseek-main']['request'].update(contextWindowTokens=131072,maxOutputTokens=8192)
+        sid=committed(command(app,'ai.session.create',{'title':'压缩测试'}))['sessionId']
+        for n in range(18):submit(app,sid,'参数'+str(n)+'；'+('背景信息无变化。'*600))
+        calls=[]
+        async def call(n,msgs,tools):
+            calls.append(msgs)
+            if msgs[0]['content']==INSTRUCTION:return completion(summary(msgs))
+            assert any('contextSummary' in (m.get('content') or '') for m in msgs)
+            assert any(t['function']['name']=='room_read_compressed' for t in tools)
+            return completion({'kind':'plan','text':'已整理需求，未执行变更。'})
+        async def run():
+            app.coordinator.provider_factory=lambda p:Fake(call);await app.coordinator.start()
+            try:
+                req=submit(app,sid,'保留先前约定，汇总即可');tid=committed(command(app,'ai.request.dispatch',{'requestId':req['requestId']}))['taskId']
+                task=await wait_task(app.coordinator,tid)
+                assert task['status']=='review_ready',task
+                assert task['usage']==len(calls)*20 and len(task['calls'])==len(calls)&gt;1
+                assert task['diagnostics']['compression'] and any(e['stage']=='context_compress' for e in task['events'])
+                assert not task.get('proposalId') and not task.get('batchId')
+            finally:await app.coordinator.close()
+&gt;       asyncio.run(run())
+
+engineering\ai\tests\test_context_compression.py:145: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:204: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:127: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\base_events.py:719: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    async def run():
+        app.coordinator.provider_factory=lambda p:Fake(call);await app.coordinator.start()
+        try:
+            req=submit(app,sid,'保留先前约定，汇总即可');tid=committed(command(app,'ai.request.dispatch',{'requestId':req['requestId']}))['taskId']
+            task=await wait_task(app.coordinator,tid)
+&gt;           assert task['status']=='review_ready',task
+E           AssertionError: {'taskId': '97efdfd1f8574be3b8e87e082807ab0a', 'requestId': '97efdfd1f8574be3b8e87e082807ab0a', 'account': 'kp', 'profile': {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...}, ...}
+E           assert 'failed' == 'review_ready'
+E             
+E             - review_ready
+E             + failed
+
+engineering\ai\tests\test_context_compression.py:140: AssertionError</failure></testcase><testcase classname="engineering.ai.tests.test_context_compression" name="test_identical_revalidated_records_reuse_persisted_semantic_summary" time="0.078" /><testcase classname="engineering.ai.tests.test_context_compression" name="test_current_entity_evidence_accepts_only_complete_stable_room_path[path0-None-True]" time="0.001" /><testcase classname="engineering.ai.tests.test_context_compression" name="test_current_entity_evidence_accepts_only_complete_stable_room_path[path1-None-False]" time="0.001" /><testcase classname="engineering.ai.tests.test_context_compression" name="test_current_entity_evidence_accepts_only_complete_stable_room_path[path2-None-False]" time="0.001" /><testcase classname="engineering.ai.tests.test_context_compression" name="test_current_entity_evidence_accepts_only_complete_stable_room_path[path3-0-False]" time="0.001" /><testcase classname="engineering.ai.tests.test_context_compression" name="test_nonverbatim_quote_becomes_explicit_record_locator_not_fabricated_quote" time="0.000" /><testcase classname="engineering.ai.tests.test_context" name="test_context_size_is_bounded" time="1.570"><failure message="AssertionError: Regex pattern did not match.&#10;  Expected regex: 'CONTEXT_LIMIT_EXCEEDED'&#10;[+1 more line; full report in element text]">setup = (&lt;onlinecoc.host.Host object at 0x00000190BCD0DA90&gt;, &lt;onlinecoc_ai.proposals.Proposals object at 0x00000190BCD0DE50&gt;, {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...})
+
+    def test_context_size_is_bounded(setup):
+        host,service,_=setup;enable(host,public=True)
+        state=host.state()
+        for i in range(600):
+            entity=copy.deepcopy(state['entities']['token-one']);entity.update(instanceId='large-'+str(i));entity['metadata']['notes']='x'*4000;state['entities'][entity['instanceId']]=entity
+        host.commit(state)
+&gt;       with pytest.raises(AiError,match='CONTEXT_LIMIT_EXCEEDED'):Context(service).capture('kp',request())
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'CONTEXT_LIMIT_EXCEEDED'
+E         Actual message: "INPUT_INVALID: ['entity:actor-one', 'entity:token-one', 'entity:large-0', 'entity:large-1', 'entity:large-2', 'entity:large-3', 'entity:large-4', 'entity:large-5', 'entity:large-6', 'entity:large-7', 'entity:large-8', 'entity:large-9', 'entity:large-10', 'entity:large-11', 'entity:large-12', 'entity:large-13', 'entity:large-14', 'entity:large-15', 'entity:large-16', 'entity:large-17', 'entity:large-18', 'entity:large-19', 'entity:large-20', 'entity:large-21', 'entity:large-22', 'entity:large-23', 'entity:large-24', 'entity:large-25', 'entity:large-26', 'entity:large-27', 'entity:large-28', 'entity:large-29', 'entity:large-30', 'entity:large-31', 'entity:large-32', 'entity:large-33', 'entity:large-34', 'entity:large-35', 'entity:large-36', 'entity:large-37', 'entity:large-38', 'entity:large-39', 'entity:large-40', 'entity:large-41', 'entity:large-42', 'entity:large-43', 'entity:large-44', 'entity:large-45', 'entity:large-46', 'entity:large-47', 'entity:large-48', 'entity:large-49', 'entity:large-50', 'entity:large-51', 'entity:large-52', 'entity:large-53', 'entity:large-54', 'entity:large-55', 'entity:large-56', 'entity:large-57', 'entity:large-58', 'entity:large-59', 'entity:large-60', 'entity:large-61', 'entity:large-62', 'entity:large-63', 'entity:large-64', 'entity:large-65', 'entity:large-66', 'entity:large-67', 'entity:large-68', 'entity:large-69', 'entity:large-70', 'entity:large-71', 'entity:large-72', 'entity:large-73', 'entity:large-74', 'entity:large-75', 'entity:large-76', 'entity:large-77', 'entity:large-78', 'entity:large-79', 'entity:large-80', 'entity:large-81', 'entity:large-82', 'entity:large-83', 'entity:large-84', 'entity:large-85', 'entity:large-86', 'entity:large-87', 'entity:large-88', 'entity:large-89', 'entity:large-90', 'entity:large-91', 'entity:large-92', 'entity:large-93', 'entity:large-94', 'entity:large-95', 'entity:large-96', 'entity:large-97', 'entity:large-98', 'entity:large-99', 'entity:large-100', 'entity:large-101', 'entity:large-102', 'entity:large-103', 'entity:large-104', 'entity:large-105', 'entity:large-106', 'entity:large-107', 'entity:large-108', 'entity:large-109', 'entity:large-110', 'entity:large-111', 'entity:large-112', 'entity:large-113', 'entity:large-114', 'entity:large-115', 'entity:large-116', 'entity:large-117', 'entity:large-118', 'entity:large-119', 'entity:large-120', 'entity:large-121', 'entity:large-122', 'entity:large-123', 'entity:large-124', 'entity:large-125', 'entity:large-126', 'entity:large-127', 'entity:large-128', 'entity:large-129', 'entity:large-130', 'entity:large-131', 'entity:large-132', 'entity:large-133', 'entity:large-134', 'entity:large-135', 'entity:large-136', 'entity:large-137', 'entity:large-138', 'entity:large-139', 'entity:large-140', 'entity:large-141', 'entity:large-142', 'entity:large-143', 'entity:large-144', 'entity:large-145', 'entity:large-146', 'entity:large-147', 'entity:large-148', 'entity:large-149', 'entity:large-150', 'entity:large-151', 'entity:large-152', 'entity:large-153', 'entity:large-154', 'entity:large-155', 'entity:large-156', 'entity:large-157', 'entity:large-158', 'entity:large-159', 'entity:large-160', 'entity:large-161', 'entity:large-162', 'entity:large-163', 'entity:large-164', 'entity:large-165', 'entity:large-166', 'entity:large-167', 'entity:large-168', 'entity:large-169', 'entity:large-170', 'entity:large-171', 'entity:large-172', 'entity:large-173', 'entity:large-174', 'entity:large-175', 'entity:large-176', 'entity:large-177', 'entity:large-178', 'entity:large-179', 'entity:large-180', 'entity:large-181', 'entity:large-182', 'entity:large-183', 'entity:large-184', 'entity:large-185', 'entity:large-186', 'entity:large-187', 'entity:large-188', 'entity:large-189', 'entity:large-190', 'entity:large-191', 'entity:large-192', 'entity:large-193', 'entity:large-194', 'entity:large-195', 'entity:large-196', 'entity:large-197', 'entity:large-198', 'entity:large-199', 'entity:large-200', 'entity:large-201', 'entity:large-202', 'entity:large-203', 'entity:large-204', 'entity:large-205', 'entity:large-206', 'entity:large-207', 'entity:large-208', 'entity:large-209', 'entity:large-210', 'entity:large-211', 'entity:large-212', 'entity:large-213', 'entity:large-214', 'entity:large-215', 'entity:large-216', 'entity:large-217', 'entity:large-218', 'entity:large-219', 'entity:large-220', 'entity:large-221', 'entity:large-222', 'entity:large-223', 'entity:large-224', 'entity:large-225', 'entity:large-226', 'entity:large-227', 'entity:large-228', 'entity:large-229', 'entity:large-230', 'entity:large-231', 'entity:large-232', 'entity:large-233', 'entity:large-234', 'entity:large-235', 'entity:large-236', 'entity:large-237', 'entity:large-238', 'entity:large-239', 'entity:large-240', 'entity:large-241', 'entity:large-242', 'entity:large-243', 'entity:large-244', 'entity:large-245', 'entity:large-246', 'entity:large-247', 'entity:large-248', 'entity:large-249', 'entity:large-250', 'entity:large-251', 'entity:large-252', 'entity:large-253', 'entity:large-254', 'entity:large-255', 'entity:large-256', 'entity:large-257', 'entity:large-258', 'entity:large-259', 'entity:large-260', 'entity:large-261', 'entity:large-262', 'entity:large-263', 'entity:large-264', 'entity:large-265', 'entity:large-266', 'entity:large-267', 'entity:large-268', 'entity:large-269', 'entity:large-270', 'entity:large-271', 'entity:large-272', 'entity:large-273', 'entity:large-274', 'entity:large-275', 'entity:large-276', 'entity:large-277', 'entity:large-278', 'entity:large-279', 'entity:large-280', 'entity:large-281', 'entity:large-282', 'entity:large-283', 'entity:large-284', 'entity:large-285', 'entity:large-286', 'entity:large-287', 'entity:large-288', 'entity:large-289', 'entity:large-290', 'entity:large-291', 'entity:large-292', 'entity:large-293', 'entity:large-294', 'entity:large-295', 'entity:large-296', 'entity:large-297', 'entity:large-298', 'entity:large-299', 'entity:large-300', 'entity:large-301', 'entity:large-302', 'entity:large-303', 'entity:large-304', 'entity:large-305', 'entity:large-306', 'entity:large-307', 'entity:large-308', 'entity:large-309', 'entity:large-310', 'entity:large-311', 'entity:large-312', 'entity:large-313', 'entity:large-314', 'entity:large-315', 'entity:large-316', 'entity:large-317', 'entity:large-318', 'entity:large-319', 'entity:large-320', 'entity:large-321', 'entity:large-322', 'entity:large-323', 'entity:large-324', 'entity:large-325', 'entity:large-326', 'entity:large-327', 'entity:large-328', 'entity:large-329', 'entity:large-330', 'entity:large-331', 'entity:large-332', 'entity:large-333', 'entity:large-334', 'entity:large-335', 'entity:large-336', 'entity:large-337', 'entity:large-338', 'entity:large-339', 'entity:large-340', 'entity:large-341', 'entity:large-342', 'entity:large-343', 'entity:large-344', 'entity:large-345', 'entity:large-346', 'entity:large-347', 'entity:large-348', 'entity:large-349', 'entity:large-350', 'entity:large-351', 'entity:large-352', 'entity:large-353', 'entity:large-354', 'entity:large-355', 'entity:large-356', 'entity:large-357', 'entity:large-358', 'entity:large-359', 'entity:large-360', 'entity:large-361', 'entity:large-362', 'entity:large-363', 'entity:large-364', 'entity:large-365', 'entity:large-366', 'entity:large-367', 'entity:large-368', 'entity:large-369', 'entity:large-370', 'entity:large-371', 'entity:large-372', 'entity:large-373', 'entity:large-374', 'entity:large-375', 'entity:large-376', 'entity:large-377', 'entity:large-378', 'entity:large-379', 'entity:large-380', 'entity:large-381', 'entity:large-382', 'entity:large-383', 'entity:large-384', 'entity:large-385', 'entity:large-386', 'entity:large-387', 'entity:large-388', 'entity:large-389', 'entity:large-390', 'entity:large-391', 'entity:large-392', 'entity:large-393', 'entity:large-394', 'entity:large-395', 'entity:large-396', 'entity:large-397', 'entity:large-398', 'entity:large-399', 'entity:large-400', 'entity:large-401', 'entity:large-402', 'entity:large-403', 'entity:large-404', 'entity:large-405', 'entity:large-406', 'entity:large-407', 'entity:large-408', 'entity:large-409', 'entity:large-410', 'entity:large-411', 'entity:large-412', 'entity:large-413', 'entity:large-414', 'entity:large-415', 'entity:large-416', 'entity:large-417', 'entity:large-418', 'entity:large-419', 'entity:large-420', 'entity:large-421', 'entity:large-422', 'entity:large-423', 'entity:large-424', 'entity:large-425', 'entity:large-426', 'entity:large-427', 'entity:large-428', 'entity:large-429', 'entity:large-430', 'entity:large-431', 'entity:large-432', 'entity:large-433', 'entity:large-434', 'entity:large-435', 'entity:large-436', 'entity:large-437', 'entity:large-438', 'entity:large-439', 'entity:large-440', 'entity:large-441', 'entity:large-442', 'entity:large-443', 'entity:large-444', 'entity:large-445', 'entity:large-446', 'entity:large-447', 'entity:large-448', 'entity:large-449', 'entity:large-450', 'entity:large-451', 'entity:large-452', 'entity:large-453', 'entity:large-454', 'entity:large-455', 'entity:large-456', 'entity:large-457', 'entity:large-458', 'entity:large-459', 'entity:large-460', 'entity:large-461', 'entity:large-462', 'entity:large-463', 'entity:large-464', 'entity:large-465', 'entity:large-466', 'entity:large-467', 'entity:large-468', 'entity:large-469', 'entity:large-470', 'entity:large-471', 'entity:large-472', 'entity:large-473', 'entity:large-474', 'entity:large-475', 'entity:large-476', 'entity:large-477', 'entity:large-478', 'entity:large-479', 'entity:large-480', 'entity:large-481', 'entity:large-482', 'entity:large-483', 'entity:large-484', 'entity:large-485', 'entity:large-486', 'entity:large-487', 'entity:large-488', 'entity:large-489', 'entity:large-490', 'entity:large-491', 'entity:large-492', 'entity:large-493', 'entity:large-494', 'entity:large-495', 'entity:large-496', 'entity:large-497', 'entity:large-498', 'entity:large-499', 'entity:large-500', 'entity:large-501', 'entity:large-502', 'entity:large-503', 'entity:large-504', 'entity:large-505', 'entity:large-506', 'entity:large-507', 'entity:large-508', 'entity:large-509', 'entity:large-510', 'entity:large-511', 'entity:large-512', 'entity:large-513', 'entity:large-514', 'entity:large-515', 'entity:large-516', 'entity:large-517', 'entity:large-518', 'entity:large-519', 'entity:large-520', 'entity:large-521', 'entity:large-522', 'entity:large-523', 'entity:large-524', 'entity:large-525', 'entity:large-526', 'entity:large-527', 'entity:large-528', 'entity:large-529', 'entity:large-530', 'entity:large-531', 'entity:large-532', 'entity:large-533', 'entity:large-534', 'entity:large-535', 'entity:large-536', 'entity:large-537', 'entity:large-538', 'entity:large-539', 'entity:large-540', 'entity:large-541', 'entity:large-542', 'entity:large-543', 'entity:large-544', 'entity:large-545', 'entity:large-546', 'entity:large-547', 'entity:large-548', 'entity:large-549', 'entity:large-550', 'entity:large-551', 'entity:large-552', 'entity:large-553', 'entity:large-554', 'entity:large-555', 'entity:large-556', 'entity:large-557', 'entity:large-558', 'entity:large-559', 'entity:large-560', 'entity:large-561', 'entity:large-562', 'entity:large-563', 'entity:large-564', 'entity:large-565', 'entity:large-566', 'entity:large-567', 'entity:large-568', 'entity:large-569', 'entity:large-570', 'entity:large-571', 'entity:large-572', 'entity:large-573', 'entity:large-574', 'entity:large-575', 'entity:large-576', 'entity:large-577', 'entity:large-578', 'entity:large-579', 'entity:large-580', 'entity:large-581', 'entity:large-582', 'entity:large-583', 'entity:large-584', 'entity:large-585', 'entity:large-586', 'entity:large-587', 'entity:large-588', 'entity:large-589', 'entity:large-590', 'entity:large-591', 'entity:large-592', 'entity:large-593', 'entity:large-594', 'entity:large-595', 'entity:large-596', 'entity:large-597', 'entity:large-598', 'entity:large-599', 'configuration:fixture.actor', 'configuration:fixture.token'] is too long"
+
+engineering\ai\tests\test_context.py:104: AssertionError</failure></testcase><testcase classname="engineering.ai.tests.test_policies" name="test_cumulative_tool_budget_uses_transport_limit_and_reports_sizes[112640-review_ready]" time="1.299"><failure message="AssertionError: {'taskId': '9b8661640d104bcdae8ba760392c0c75', 'requestId': '9b8661640d104bcdae8ba760392c0c75', 'account': 'kp', 'profile': {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...}, ...}&#10;assert 'failed' == 'review_ready'&#10;  &#10;  - review_ready&#10;  + failed">application = &lt;onlinecoc_ai.api.Application object at 0x00000190BCD0F250&gt;
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000190BD1783E0&gt;
+size = 112640, expected = 'review_ready'
+
+    @pytest.mark.parametrize('size,expected', [(110*1024,'review_ready'),(270*1024,'review_ready'),(790*1024,'failed')])
+    def test_cumulative_tool_budget_uses_transport_limit_and_reports_sizes(application,monkeypatch,size,expected):
+        app=application;enable(app.host,public=True,private=True,kp=True)
+        monkeypatch.setattr(app.batches,'catalog_query',lambda *args,**kwargs: {'notice':'x'*size})
+        async def callback(count,messages,tools):
+            return tool_call('room_manage_catalog') if count==1 else completion({'kind':'plan','text':'已读取目录，等待具体需求。'})
+        provider=Fake(callback)
+        async def run():
+            app.coordinator.provider_factory=lambda _:provider;await app.coordinator.start()
+            try:
+                request=submit(app,session(app),'读取管理目录')
+                dispatched=committed(command(app,'ai.request.dispatch',{'requestId':request['requestId']}))
+                result=await wait_task(app.coordinator,dispatched['taskId'])
+                assert result['status']==expected,result
+                budget=result['diagnostics']['contextBudget']
+                assert budget['limitBytes']==768*1024-2048 and budget['toolMessageBytes']&gt;=size
+                assert 'x'*100 not in str(result['diagnostics'])
+                if expected=='failed':assert result['error']=='CONTEXT_LIMIT_EXCEEDED' and provider.calls==1
+                else:assert provider.calls==2 and 96*1024&lt;budget['bytes']&lt;budget['limitBytes']
+            finally:await app.coordinator.close()
+&gt;       asyncio.run(run())
+
+engineering\ai\tests\test_policies.py:216: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:204: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:127: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\base_events.py:719: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    async def run():
+        app.coordinator.provider_factory=lambda _:provider;await app.coordinator.start()
+        try:
+            request=submit(app,session(app),'读取管理目录')
+            dispatched=committed(command(app,'ai.request.dispatch',{'requestId':request['requestId']}))
+            result=await wait_task(app.coordinator,dispatched['taskId'])
+&gt;           assert result['status']==expected,result
+E           AssertionError: {'taskId': '9b8661640d104bcdae8ba760392c0c75', 'requestId': '9b8661640d104bcdae8ba760392c0c75', 'account': 'kp', 'profile': {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...}, ...}
+E           assert 'failed' == 'review_ready'
+E             
+E             - review_ready
+E             + failed
+
+engineering\ai\tests\test_policies.py:209: AssertionError</failure></testcase><testcase classname="engineering.ai.tests.test_policies" name="test_cumulative_tool_budget_uses_transport_limit_and_reports_sizes[276480-review_ready]" time="1.285"><failure message="AssertionError: {'taskId': '4392c96e5a1245e6a8b6433646b925b2', 'requestId': '4392c96e5a1245e6a8b6433646b925b2', 'account': 'kp', 'profile': {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...}, ...}&#10;assert 'failed' == 'review_ready'&#10;  &#10;  - review_ready&#10;  + failed">application = &lt;onlinecoc_ai.api.Application object at 0x00000190BD17AB10&gt;
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000190BD17B490&gt;
+size = 276480, expected = 'review_ready'
+
+    @pytest.mark.parametrize('size,expected', [(110*1024,'review_ready'),(270*1024,'review_ready'),(790*1024,'failed')])
+    def test_cumulative_tool_budget_uses_transport_limit_and_reports_sizes(application,monkeypatch,size,expected):
+        app=application;enable(app.host,public=True,private=True,kp=True)
+        monkeypatch.setattr(app.batches,'catalog_query',lambda *args,**kwargs: {'notice':'x'*size})
+        async def callback(count,messages,tools):
+            return tool_call('room_manage_catalog') if count==1 else completion({'kind':'plan','text':'已读取目录，等待具体需求。'})
+        provider=Fake(callback)
+        async def run():
+            app.coordinator.provider_factory=lambda _:provider;await app.coordinator.start()
+            try:
+                request=submit(app,session(app),'读取管理目录')
+                dispatched=committed(command(app,'ai.request.dispatch',{'requestId':request['requestId']}))
+                result=await wait_task(app.coordinator,dispatched['taskId'])
+                assert result['status']==expected,result
+                budget=result['diagnostics']['contextBudget']
+                assert budget['limitBytes']==768*1024-2048 and budget['toolMessageBytes']&gt;=size
+                assert 'x'*100 not in str(result['diagnostics'])
+                if expected=='failed':assert result['error']=='CONTEXT_LIMIT_EXCEEDED' and provider.calls==1
+                else:assert provider.calls==2 and 96*1024&lt;budget['bytes']&lt;budget['limitBytes']
+            finally:await app.coordinator.close()
+&gt;       asyncio.run(run())
+
+engineering\ai\tests\test_policies.py:216: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:204: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:127: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\base_events.py:719: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    async def run():
+        app.coordinator.provider_factory=lambda _:provider;await app.coordinator.start()
+        try:
+            request=submit(app,session(app),'读取管理目录')
+            dispatched=committed(command(app,'ai.request.dispatch',{'requestId':request['requestId']}))
+            result=await wait_task(app.coordinator,dispatched['taskId'])
+&gt;           assert result['status']==expected,result
+E           AssertionError: {'taskId': '4392c96e5a1245e6a8b6433646b925b2', 'requestId': '4392c96e5a1245e6a8b6433646b925b2', 'account': 'kp', 'profile': {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...}, ...}
+E           assert 'failed' == 'review_ready'
+E             
+E             - review_ready
+E             + failed
+
+engineering\ai\tests\test_policies.py:209: AssertionError</failure></testcase><testcase classname="engineering.ai.tests.test_policies" name="test_cumulative_tool_budget_uses_transport_limit_and_reports_sizes[808960-failed]" time="1.273"><failure message="KeyError: 'contextBudget'">application = &lt;onlinecoc_ai.api.Application object at 0x00000190BD1AE7A0&gt;
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000190BD131D90&gt;
+size = 808960, expected = 'failed'
+
+    @pytest.mark.parametrize('size,expected', [(110*1024,'review_ready'),(270*1024,'review_ready'),(790*1024,'failed')])
+    def test_cumulative_tool_budget_uses_transport_limit_and_reports_sizes(application,monkeypatch,size,expected):
+        app=application;enable(app.host,public=True,private=True,kp=True)
+        monkeypatch.setattr(app.batches,'catalog_query',lambda *args,**kwargs: {'notice':'x'*size})
+        async def callback(count,messages,tools):
+            return tool_call('room_manage_catalog') if count==1 else completion({'kind':'plan','text':'已读取目录，等待具体需求。'})
+        provider=Fake(callback)
+        async def run():
+            app.coordinator.provider_factory=lambda _:provider;await app.coordinator.start()
+            try:
+                request=submit(app,session(app),'读取管理目录')
+                dispatched=committed(command(app,'ai.request.dispatch',{'requestId':request['requestId']}))
+                result=await wait_task(app.coordinator,dispatched['taskId'])
+                assert result['status']==expected,result
+                budget=result['diagnostics']['contextBudget']
+                assert budget['limitBytes']==768*1024-2048 and budget['toolMessageBytes']&gt;=size
+                assert 'x'*100 not in str(result['diagnostics'])
+                if expected=='failed':assert result['error']=='CONTEXT_LIMIT_EXCEEDED' and provider.calls==1
+                else:assert provider.calls==2 and 96*1024&lt;budget['bytes']&lt;budget['limitBytes']
+            finally:await app.coordinator.close()
+&gt;       asyncio.run(run())
+
+engineering\ai\tests\test_policies.py:216: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:204: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:127: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\base_events.py:719: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    async def run():
+        app.coordinator.provider_factory=lambda _:provider;await app.coordinator.start()
+        try:
+            request=submit(app,session(app),'读取管理目录')
+            dispatched=committed(command(app,'ai.request.dispatch',{'requestId':request['requestId']}))
+            result=await wait_task(app.coordinator,dispatched['taskId'])
+            assert result['status']==expected,result
+&gt;           budget=result['diagnostics']['contextBudget']
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           KeyError: 'contextBudget'
+
+engineering\ai\tests\test_policies.py:210: KeyError</failure></testcase><testcase classname="engineering.ai.tests.test_history_continuity" name="test_new_generation_public_status_is_not_expired_historical_intent[False]" time="1.599" /><testcase classname="engineering.ai.tests.test_history_continuity" name="test_new_generation_public_status_is_not_expired_historical_intent[True]" time="1.500" /></testsuite></testsuites>

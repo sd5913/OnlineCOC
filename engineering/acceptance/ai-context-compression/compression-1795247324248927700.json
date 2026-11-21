@@ -1,0 +1,234 @@
+{
+  "group": "compression",
+  "work": "D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\ai-context-compression\\work\\live-compression-1795247144510978100",
+  "tree": "engineering/acceptance/ai-context-compression/work/targeted-fixed-1795246950787318700",
+  "rows": [
+    {
+      "phase": "oracle-review",
+      "status": "passed",
+      "originalReport": "engineering/acceptance/ai-context-compression/compression-1795247144510978100.json",
+      "reason": "Original oracle omitted mandatory isNpc=1; persisted published template matches corrected exact oracle.",
+      "configurationDigest": "5d280fb407709ae08ed6c580d2ff3e2d71014ff8bfe987119bd611a51fd11539",
+      "expectedHp": 4
+    },
+    {
+      "group": "compression",
+      "phase": "spawn",
+      "request": "使用刚才已发布的 sv.ext.npc.compressed 模板，给kp创建一个名为验收小兵、visibility=public的NPC实例；保持模板默认数值，不重新创建或修改模板。准备待批准的运行指令。",
+      "status": "failed",
+      "task": {
+        "taskId": "2af8b15833454d4eba155366fc860165",
+        "requestId": "2af8b15833454d4eba155366fc860165",
+        "account": "kp",
+        "profile": {
+          "adapter": "deepseek-chat",
+          "allowPrivateEndpoint": false,
+          "baseUrl": "https://api.deepseek.com",
+          "credentialRef": "env:ONLINECOC_DEEPSEEK_API_KEY",
+          "enabled": true,
+          "limits": {
+            "dailyTokenBudget": null,
+            "maxConcurrentPerRoom": 1,
+            "maxQueuedPerRoom": 5,
+            "maxRepairAttempts": 5,
+            "maxToolRounds": 12,
+            "maxTransportRetries": 2,
+            "taskTimeoutMs": 600000
+          },
+          "model": "deepseek-flash",
+          "profileId": "deepseek-main",
+          "request": {
+            "connectTimeoutMs": 10000,
+            "maxOutputTokens": 8192,
+            "thinking": "disabled",
+            "totalTimeoutMs": 120000,
+            "contextWindowTokens": 1048576
+          },
+          "revision": 7,
+          "schemaVersion": 1,
+          "versionInfo": {
+            "label": "DeepSeek-V4.1-Flash-1017",
+            "sourceUrl": "https://api-docs.deepseek.com/quick_start/pricing/",
+            "verifiedAt": "2026-11-19"
+          }
+        },
+        "status": "failed",
+        "createdAt": 1795247338.1736941,
+        "lease": null,
+        "error": "COMPRESSION_PROVENANCE_INVALID",
+        "proposalId": null,
+        "text": null,
+        "calls": [
+          {
+            "callId": "8337f30525c94df9b285838ae179f3a0",
+            "requestDigest": "99f002ae55ed449e88000d5bce24be0d3a75474ca6baf2a7de909e0fb4e866df",
+            "profileRevision": 7,
+            "requestedModel": "deepseek-flash",
+            "responseDigest": "5fb141c56e8c696f6412ec78250b6ce45570f34824d032766417a163225fa842",
+            "usage": {
+              "prompt_tokens": 21665,
+              "completion_tokens": 26,
+              "total_tokens": 21691
+            },
+            "returnedModel": "deepseek-flash",
+            "systemFingerprint": "bc19ba97cbe016479903222bb1578db6"
+          },
+          {
+            "callId": "19d416e267fc471d9e64178698c3c91c",
+            "requestDigest": "a4cba1531b87281026622c0d4a138fb7af5fcbe06019ffe444a6c9ce0534f222",
+            "profileRevision": 7,
+            "requestedModel": "deepseek-flash",
+            "responseDigest": "b49b3cb20851311a2122baec146e49681e3f6aa7c1b8fa36eed2d8aed03ddfe0",
+            "usage": {
+              "prompt_tokens": 21705,
+              "completion_tokens": 1749,
+              "total_tokens": 23454
+            },
+            "returnedModel": "deepseek-flash",
+            "systemFingerprint": "bc19ba97cbe016479903222bb1578db6"
+          }
+        ],
+        "usage": 45145,
+        "events": [
+          {
+            "seq": 1,
+            "at": 1795247338.173695,
+            "stage": "queued",
+            "status": "completed",
+            "summary": "已接收，等待生成",
+            "durationMs": 820.66
+          },
+          {
+            "seq": 2,
+            "at": 1795247338.994368,
+            "stage": "profile_check",
+            "status": "completed",
+            "summary": "检查服务配置",
+            "durationMs": 719.19
+          },
+          {
+            "seq": 3,
+            "at": 1795247339.713566,
+            "stage": "context_capture",
+            "status": "completed",
+            "summary": "使用发送时资料快照",
+            "durationMs": 37.5
+          },
+          {
+            "seq": 4,
+            "at": 1795247339.7510827,
+            "stage": "tool_execute",
+            "status": "completed",
+            "summary": "读取已授权资料",
+            "tool": "room_read_management",
+            "durationMs": 580.15
+          },
+          {
+            "seq": 5,
+            "at": 1795247340.3312447,
+            "stage": "context_compress",
+            "status": "completed",
+            "summary": "压缩上下文并保留可追溯原文",
+            "durationMs": 2399.33
+          },
+          {
+            "seq": 6,
+            "at": 1795247342.7305884,
+            "stage": "context_compress",
+            "status": "failed",
+            "summary": "压缩上下文并保留可追溯原文",
+            "durationMs": 8602.1,
+            "code": "COMPRESSION_PROVENANCE_INVALID"
+          }
+        ],
+        "contextRef": "7dcd03db171ac1d260820a8d779b28e7955e39faa939cd67e27e4f11882bddc0",
+        "diagnostics": {
+          "schemaVersion": 1,
+          "stage": "context_compress",
+          "turn": 0,
+          "toolCalls": [
+            {
+              "name": "room_read_management",
+              "status": "completed",
+              "argumentsDigest": "130e4c29592000d07db33d74aa747ae63cfac27a51a733198c012168742f630a",
+              "keys": [
+                "limit",
+                "section"
+              ],
+              "unknownKeys": false,
+              "turn": 0,
+              "automatic": true
+            }
+          ],
+          "errors": [
+            {
+              "stage": "context_compress",
+              "code": "COMPRESSION_PROVENANCE_INVALID",
+              "exceptionType": "AiError",
+              "frames": [
+                {
+                  "module": "onlinecoc_ai.coordinator",
+                  "function": "_generate",
+                  "line": 526
+                },
+                {
+                  "module": "onlinecoc_ai.compression",
+                  "function": "fit",
+                  "line": 118
+                },
+                {
+                  "module": "onlinecoc_ai.compression",
+                  "function": "_summarize",
+                  "line": 75
+                },
+                {
+                  "module": "onlinecoc_ai.compression",
+                  "function": "one",
+                  "line": 61
+                },
+                {
+                  "module": "onlinecoc_ai.compression",
+                  "function": "validate_summary",
+                  "line": 152
+                },
+                {
+                  "module": "onlinecoc_ai.errors",
+                  "function": "require",
+                  "line": 15
+                }
+              ]
+            }
+          ],
+          "outputFailures": [],
+          "preflightChecks": [],
+          "compression": [
+            {
+              "round": 1,
+              "beforeBytes": 447554,
+              "recordCount": 37,
+              "status": "failed",
+              "code": "COMPRESSION_PROVENANCE_INVALID",
+              "repairs": [
+                {
+                  "attempt": 1,
+                  "code": "COMPRESSION_INVALID"
+                },
+                {
+                  "attempt": 2,
+                  "code": "COMPRESSION_PROVENANCE_INVALID"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "attemptIds": [
+        8,
+        9
+      ],
+      "code": "AssertionError",
+      "reason": "COMPRESSION_PROVENANCE_INVALID",
+      "traceback": "Traceback (most recent call last):\n  File \"D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\ai-context-compression\\live_scenarios.py\", line 175, in main\n    assert task['status']=='review_ready',task.get('error') or task['status']\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: COMPRESSION_PROVENANCE_INVALID\n"
+    }
+  ]
+}

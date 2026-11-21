@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "createdAt": "2026-11-20T20:38:19.412425+08:00",
+  "externalAttemptLimit": 200,
+  "totalTokenLimit": 1750000,
+  "technicalRepairsPerCase": 2,
+  "transportRetriesPerCase": 2,
+  "concurrentRequests": 1,
+  "timeoutSeconds": 180,
+  "accounting": "Count every started HTTP request, including retries. Before sending reserve UTF-8 request bytes plus maximum output tokens; settle known usage to actual total_tokens; retain full reservation for uncertain billing. Refuse any request exceeding either limit.",
+  "stages": [
+    "baseline first output for every generated category",
+    "improved paired failures and fixed holdout variants; bounded repairs"
+  ],
+  "baselineGuide": "Initial direct probe did not inject guide content; it captured guide as a source snapshot only. Later valid fixtures are not a same-input guide A/B experiment.",
+  "data": "Synthetic minimal input only; independent stores; credentials read-only, never logged; no formal state/configuration mutations",
+  "onExhaustion": "Record blocked and uncovered cases, retain all denominators; do not claim full real coverage.",
+  "revision": 4,
+  "adjustedAt": "2026-11-20T22:13:16.588183+08:00",
+  "adjustmentReason": "Coordinator authorized only unfinished slot-7 variant and exposed Lua/adjudicate/NPC repair verification; request cap stays 200 and no new scenario categories. Prior budget rejection preserved."
+}

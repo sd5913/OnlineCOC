@@ -1,0 +1,68 @@
+{
+  "createdAt": "2026-11-20T14:54:39.350017+08:00",
+  "scope": "SDK error classification and two AI HTTP delivered=True call sites",
+  "finalSdkTests": [
+    {
+      "file": "engineering/acceptance/http-errors/sdk-retest.xml",
+      "tests": 15,
+      "passed": 15,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "file": "engineering/acceptance/http-errors/sdk-regression.xml",
+      "tests": 12,
+      "passed": 12,
+      "failed": 0,
+      "skipped": 0
+    }
+  ],
+  "preservedInitialFailure": {
+    "file": "engineering/acceptance/http-errors/sdk-initial.xml",
+    "tests": 14,
+    "passed": 6,
+    "failed": 8,
+    "skipped": 0
+  },
+  "initialFailureReason": "Test probe route was appended after root StaticFiles mount; fixed fixture route ordering.",
+  "preservedAudit": {
+    "summary": "engineering/acceptance/http-errors/results.json",
+    "httpTests": 4
+  },
+  "aiDeliveryIntegrationOwner": "AI module thread; evidence in engineering/acceptance/message-history/",
+  "serverErrorEnvelopeChanged": false,
+  "automaticRetryAdded": false,
+  "productionRoomAccessed": false,
+  "productionProcessChanged": false,
+  "modelCalls": 0,
+  "actualScreenshotFailureReproduced": false,
+  "modifiedSources": [
+    "engineering/client-sdk/client.js",
+    "engineering/backend/src/onlinecoc/ai_api.py",
+    "docs/current/engineering/first-test.md"
+  ],
+  "newFiles": [
+    "engineering/acceptance/http-errors/.gitignore",
+    "engineering/acceptance/http-errors/README.md",
+    "engineering/acceptance/http-errors/http-probe.xml",
+    "engineering/acceptance/http-errors/initial-probe.json",
+    "engineering/acceptance/http-errors/probe_transport.mjs",
+    "engineering/acceptance/http-errors/record_results.py",
+    "engineering/acceptance/http-errors/repair-results.json",
+    "engineering/acceptance/http-errors/results.json",
+    "engineering/acceptance/http-errors/sdk-initial.xml",
+    "engineering/acceptance/http-errors/sdk-regression.xml",
+    "engineering/acceptance/http-errors/sdk-retest.xml",
+    "engineering/acceptance/http-errors/serve_fixture.py",
+    "engineering/acceptance/http-errors/test_http_errors.py",
+    "engineering/acceptance/http-errors/test_transport.mjs"
+  ],
+  "hierarchyOwner": "Stumpsville coordinator",
+  "sha256": {
+    "engineering/client-sdk/client.js": "627526d925a77344315c323c4ebd3700f4f5d6efea145a0177287f4daee87b14",
+    "engineering/backend/src/onlinecoc/ai_api.py": "7a76fae109e05134615e468d6cde4bcc886a8f71203e04ec5497bcc3dd621630",
+    "engineering/backend/src/onlinecoc/server.py": "bf370872d26279c3be220c101f4c5bd38b863c87f0cc0178b26a7883b4dc4949",
+    "engineering/contracts/messages.json": "a296e181c36db1289ff40c85a8e89dc0bbe0ac6abd97bf8e958f53741719e7e7",
+    "docs/current/engineering/first-test.md": "f52b7310679212107c9a78ec50f8d89ba7475480e4132b0a7b19ae205caad28d"
+  }
+}

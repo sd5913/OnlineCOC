@@ -19,6 +19,7 @@ import time
 import urllib.request
 import urllib.error
 import webbrowser
+import uuid
 
 sys.dont_write_bytecode = True
 import httpx
@@ -27,7 +28,7 @@ from fastapi.responses import Response
 import uvicorn
 import websockets
 
-from client import Client, HostError
+from client import Client, HostError, stateless_cookies
 from package import PACK, Package, PackageError, bundle
 from chat import ScopedChat
 from localization import localize_projection, localize_result
@@ -41,6 +42,7 @@ STATIC = {'': ('ui/index.html', 'text/html; charset=utf-8'),
           'app.js': ('ui/app.js', 'text/javascript; charset=utf-8'),
           'chat.js': ('ui/chat.js', 'text/javascript; charset=utf-8'),
           'ruling-card.js': ('ui/ruling-card.js', 'text/javascript; charset=utf-8'),
+          'batch-details.js': ('ui/batch-details.js', 'text/javascript; charset=utf-8'),
           'reference-view.js': ('ui/reference-view.js', 'text/javascript; charset=utf-8'),
           'keeper-rulings.js': ('ui/keeper-rulings.js', 'text/javascript; charset=utf-8'),
           'keeper-queue.js': ('ui/keeper-queue.js', 'text/javascript; charset=utf-8'),
@@ -123,6 +125,7 @@ class Runtime:
         self.connections, self.seen_accounts = {}, {}
         self.visits = deque(maxlen=60)
         self.modules = Modules(self)
+        self.bootstrap_ai = None
 
     def observe_request(self, peer, path, status):
         try:
@@ -177,7 +180,9 @@ class Runtime:
             self.log.close()
         self.log = (self.data / 'host.log').open('a', encoding='utf-8')
         log_offset = self.log.tell()
-        self.process = OwnedProcess(self.command + ['serve', '--port', self.backend.rsplit(':', 1)[1]] + self.modules.host_args(),
+        control_dir = getattr(self.args, 'host_control_dir', None)
+        control_args = ['--host-control-dir', str(control_dir)] if control_dir else []
+        self.process = OwnedProcess(self.command + ['serve', '--port', self.backend.rsplit(':', 1)[1]] + control_args + self.modules.host_args(),
                                         env=self.env, stdout=self.log, stderr=self.log,
                                         creationflags=getattr(subprocess, 'CREATE_NO_WINDOW', 0))
         for _ in range(150):
@@ -222,15 +227,39 @@ class Runtime:
         client = Client(self.backend, 'kp', password)
         try:
             self.package.action(client, {'id': 'initial-install-0001', 'operation': 'initialize', 'args': {}})
+            if self.modules.ai_config:
+                self.initialize_new_room_ai(client)
         finally:
             client.request('/logout', {})
+
+    def initialize_new_room_ai(self, client):
+        """Explicit first-room setup only; ordinary starts preserve chosen policy."""
+        try:
+            settings = client.request('/ai/settings')
+            scope = settings['scopeId']
+            view = client.request('/view')
+            receipt = client.request('/ai/commands', {
+                'requestId': str(uuid.uuid5(uuid.NAMESPACE_URL, 'stumpsville-ai-initialize:'+scope)),
+                'authorityEpoch': view['authorityEpoch'], 'op': 'ai.room.initialize',
+                'args': {'scopeId': scope, 'profileId': None}})
+            if receipt.get('status') != 'committed':
+                raise HostError({'code': receipt.get('code', 'AI_INITIALIZATION_INCOMPLETE')})
+            self.bootstrap_ai = receipt['result']
+        except (HostError, KeyError, OSError, ValueError) as error:
+            # The room was created successfully. Surface AI setup separately,
+            # without retrying or overriding policy during a later restart.
+            self.bootstrap_ai = {'serviceStatus': 'initialization_failed',
+                'code': getattr(error, 'response', {}).get('code', 'AI_INITIALIZATION_INCOMPLETE')}
 
     def client(self, cookie):
         client = Client.__new__(Client)
         client.base = self.backend
         client.csrf = None
-        client.opener = urllib.request.build_opener()
-        client.opener.addheaders = [('Cookie', cookie)]
+        client.transport = getattr(self, 'http_client', None)
+        client.cookie = cookie
+        if client.transport is None:
+            client.opener = urllib.request.build_opener()
+            client.opener.addheaders = [('Cookie', cookie)]
         client.csrf = client.request('/me')['csrf']
         return client
 
@@ -240,19 +269,27 @@ def create_app(runtime):
     async def lifespan(app):
         try:
             await asyncio.to_thread(runtime.start)
-            # Only public AI component assets use this pool; account API calls
-            # keep their own cookie/CSRF forwarding and authorization.
-            async with httpx.AsyncClient(timeout=10, trust_env=False) as resources:
-                app.state.ai_resources = resources
-                yield
+            # Pools carry connections, never account state. Each call supplies
+            # its own Cookie/CSRF; even login Set-Cookie cannot populate a jar.
+            with httpx.Client(timeout=25, trust_env=False, follow_redirects=False,
+                              cookies=stateless_cookies()) as client:
+                runtime.http_client = client
+                async with httpx.AsyncClient(timeout=30, trust_env=False, follow_redirects=False,
+                                             cookies=stateless_cookies()) as upstream:
+                    app.state.upstream = upstream
+                    app.state.ai_resources = upstream
+                    yield
         finally:
+            runtime.http_client = None
             await asyncio.to_thread(runtime.close)
 
     app = FastAPI(lifespan=lifespan, docs_url=None, redoc_url=None, openapi_url=None)
 
     @app.middleware('http')
     async def track_reachability(request, call_next):
+        started = time.perf_counter()
         result = await call_next(request)
+        result.headers['Server-Timing'] = 'package;dur=' + str(round((time.perf_counter()-started)*1000, 2))
         runtime.observe_request(request.client.host if request.client else 'unknown', request.url.path, result.status_code)
         return result
 
@@ -271,6 +308,41 @@ def create_app(runtime):
 
     @app.api_route('/{path:path}', methods=['GET', 'POST'])
     async def handle(path, request: Request):
+        trace_id = uuid.uuid4().hex
+        body = b''
+        def error_response(data, status):
+            # Only routing/receipt identifiers are exposed; never body text, cookies or URLs.
+            try:
+                submitted = json.loads(body) if body else {}
+            except (ValueError, UnicodeError):
+                submitted = {}
+            submitted = submitted if isinstance(submitted, dict) else {}
+            payload = submitted.get('payload', submitted)
+            payload = payload if isinstance(payload, dict) else {}
+            def identifier(value):
+                return value if isinstance(value, str) and re.fullmatch(r'[A-Za-z0-9_.:/-]{1,200}', value) else None
+            details = {'traceId':trace_id, 'method':request.method,
+                       'operation':identifier(payload.get('op') or submitted.get('operation')) or identifier(path) or 'unknown-route',
+                       'requestId':identifier(submitted.get('requestId') or submitted.get('id')) or trace_id,
+                       'httpStatus':status}
+            command_id = identifier(payload.get('commandId'))
+            if command_id:
+                details['commandId'] = command_id
+            upstream_operation = identifier(data.get('operation'))
+            if upstream_operation and upstream_operation != details['operation']:
+                details['upstreamOperation'] = upstream_operation
+            data = {**data, **details}
+            message = data.get('message') or data.get('code') or '请求失败'
+            action = '。请核对原行动回执后恢复' if request.method=='POST' and path in {'package/action','api/v1/commands','api/v1/ai/commands'} and status>=500 else '。请稍后刷新或重试查询' if request.method=='GET' and status>=500 else ''
+            data['message'] = message + action + '（' + str(data.get('code') or 'REQUEST_FAILED') + '；定位：' + trace_id + '）'
+            logging.getLogger('stumpsville').error('request_failed trace=%s method=%s operation=%s request=%s status=%s code=%s', trace_id, request.method, details['operation'], details['requestId'], status, data.get('code'))
+            try:
+                with (runtime.data / 'request-errors.log').open('a', encoding='utf-8') as log:
+                    log.write(json.dumps({'time':time.time(), **details, 'code':data.get('code'),
+                        **{key:data[key] for key in ('errorKind','osError') if key in data}}, ensure_ascii=False)+'\n')
+            except OSError:
+                logging.getLogger('stumpsville').error('Cannot persist request diagnostic trace=%s',trace_id)
+            return response(data, status)
         try:
             check_origin(request.headers, request.method == 'POST')
             slot, path = slot_path(path)
@@ -295,11 +367,19 @@ def create_app(runtime):
                 for key in ('content-type', 'x-csrf-token'):
                     if request.headers.get(key):
                         headers[key] = request.headers[key]
-                async with httpx.AsyncClient(timeout=30, follow_redirects=False, trust_env=False) as upstream:
-                    result = await upstream.request(request.method, runtime.backend + '/' + path,
-                        params=request.query_params, content=body, headers=headers)
+                result = await request.app.state.upstream.request(request.method, runtime.backend + '/' + path,
+                    params=request.query_params, content=body, headers=headers)
                 if path == 'api/v1/logout' and result.is_success:
                     runtime.forget_connection(cookie)
+                if not result.is_success:
+                    try:
+                        value = result.json()
+                        if not isinstance(value, dict):
+                            value = {}
+                    except ValueError:
+                        value = {}
+                    return error_response({**value, 'code':value.get('code') or 'HOST_HTTP_ERROR',
+                        'message':value.get('message') or value.get('code') or ('主机返回 HTTP ' + str(result.status_code))}, result.status_code)
                 output = response(result.content, result.status_code, result.headers.get('content-type', 'application/json'))
                 for raw in result.headers.get_list('set-cookie'):
                     if not slot:
@@ -341,11 +421,10 @@ def create_app(runtime):
                     if view['role'] != 'kp':
                         return response({'code': 'KP_REQUIRED'}, 403)
                     return response(runtime.modules.status())
+                if path == 'package/chat/state' and request.method == 'GET':
+                    return response(await asyncio.to_thread(ScopedChat(runtime.package).projection, client, request.query_params.get('player') == '1'))
                 if path == 'package/chat/history' and request.method == 'POST':
-                    def history():
-                        with runtime.package.lock:
-                            return ScopedChat(runtime.package).history(client, json.loads(body))
-                    return response(await asyncio.to_thread(history))
+                    return response(await asyncio.to_thread(ScopedChat(runtime.package).history, client, json.loads(body)))
                 if path == 'package/ai-source' and request.method == 'POST':
                     return response(await asyncio.to_thread(runtime.package.review_source, client, json.loads(body)))
                 if path == 'package/ai' and request.method == 'POST':
@@ -376,7 +455,7 @@ def create_app(runtime):
             if path.startswith('ai-ui/') and not path.endswith('.html') and runtime.modules.ai_config:
                 ai_files = json.loads((ROOT/'engineering/ai/web/components/pack-manifest.json').read_text(encoding='utf-8'))['runtimeFiles']
                 if path[6:] in ai_files:
-                    result = await request.app.state.ai_resources.get(runtime.backend + '/' + path)
+                    result = await request.app.state.ai_resources.get(runtime.backend + '/' + path, timeout=10)
                     return response(result.content, result.status_code, 'text/css; charset=utf-8' if path.endswith('.css') else 'text/javascript; charset=utf-8')
             if path in STATIC:
                 filename, mime = STATIC[path]
@@ -387,18 +466,19 @@ def create_app(runtime):
                     return response(file.read_bytes(), mime='image/png')
             return response({'code': 'NOT_FOUND'}, 404)
         except urllib.error.HTTPError as error:
-            return response({'code': '登录失效，请重新登录'}, error.code)
+            return error_response({'code':'HOST_HTTP_ERROR','message':'主机返回 HTTP '+str(error.code)}, error.code)
         except HostError as error:
             if path == 'package/action' and error.response.get('failure'):
                 # A domain rejection is a result, so the web service bridge also
                 # preserves its explanation instead of reducing it to a code.
                 return response(error.response)
-            return response(error.response, error.response.get('httpStatus', 409))
+            return error_response(error.response, error.response.get('httpStatus', 409))
         except (PackageError, ValueError, KeyError, TypeError) as error:
-            return response({'code': str(error)}, 400)
-        except (OSError, httpx.HTTPError):
-            logging.getLogger('stumpsville').exception('Local host request failed')
-            return response({'code': '主机连接失败，请恢复原行动'}, 503)
+            return error_response({'code':str(error)}, 400)
+        except (OSError, httpx.HTTPError) as error:
+            code, message = ('HOST_TIMEOUT','等待主机响应超时') if isinstance(error, (TimeoutError,httpx.TimeoutException)) else ('HOST_UNREACHABLE','无法连接本机主机服务') if isinstance(error, (ConnectionError,urllib.error.URLError,httpx.NetworkError)) else ('HOST_PROTOCOL_ERROR','主机连接协议异常') if isinstance(error,httpx.HTTPError) else ('LOCAL_IO_ERROR','本机文件或资源读取失败')
+            logging.getLogger('stumpsville').exception('Local request failed trace=%s kind=%s', trace_id, type(error).__name__)
+            return error_response({'code':code,'message':message,'errorKind':type(error).__name__,'osError':getattr(error,'errno',None)}, 503 if code in {'HOST_TIMEOUT','HOST_UNREACHABLE'} else 502 if code=='HOST_PROTOCOL_ERROR' else 500)
 
     @app.websocket('/{path:path}')
     async def websocket_proxy(socket: WebSocket, path):

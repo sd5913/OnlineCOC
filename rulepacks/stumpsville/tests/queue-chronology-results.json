@@ -1,0 +1,79 @@
+{
+  "checkedAt": "2026-11-21T09:29:10.694868+08:00",
+  "checks": [
+    "390px固定12px单行，未知回执替代旧状态且核对后清除；滚动不移动；过期卡灰底原文无绿色提示",
+    "不同来源统一DOM按时间升序，倒序响应不改变排列，移动后的按钮仍可操作",
+    "新申请追加在下方，归档切换不混入旧卡片，390px无横向溢出",
+    "查询失败保留可追溯原因，查询恢复后清除旧错误"
+  ],
+  "externalModelCalls": 0,
+  "evidenceDirectory": "tests/output/queue-chronology-09f855ab",
+  "passed": true,
+  "passedCount": 4,
+  "pageErrors": [],
+  "previousRuns": [
+    {
+      "passed": true,
+      "error": null,
+      "checks": [
+        "不同来源统一DOM按时间升序，倒序响应不改变排列，移动后的按钮仍可操作",
+        "新申请追加在下方，归档切换不混入旧卡片，390px无横向溢出",
+        "查询失败保留可追溯原因，查询恢复后清除旧错误"
+      ],
+      "evidenceDirectory": "tests/output/queue-chronology-b4237459"
+    },
+    {
+      "passed": true,
+      "error": null,
+      "checks": [
+        "不同来源统一DOM按时间升序，倒序响应不改变排列，移动后的按钮仍可操作",
+        "新申请追加在下方，归档切换不混入旧卡片，390px无横向溢出",
+        "查询失败保留可追溯原因，查询恢复后清除旧错误"
+      ],
+      "evidenceDirectory": "tests/output/queue-chronology-f986b780"
+    },
+    {
+      "passed": true,
+      "error": null,
+      "checks": [
+        "不同来源统一DOM按时间升序，倒序响应不改变排列，移动后的按钮仍可操作",
+        "新申请追加在下方，归档切换不混入旧卡片，390px无横向溢出",
+        "查询失败保留可追溯原因，查询恢复后清除旧错误"
+      ],
+      "evidenceDirectory": "tests/output/queue-chronology-10c07d59"
+    },
+    {
+      "passed": true,
+      "error": null,
+      "checks": [
+        "不同来源统一DOM按时间升序，倒序响应不改变排列，移动后的按钮仍可操作",
+        "新申请追加在下方，归档切换不混入旧卡片，390px无横向溢出",
+        "查询失败保留可追溯原因，查询恢复后清除旧错误"
+      ],
+      "evidenceDirectory": "tests/output/queue-chronology-ac65710c"
+    },
+    {
+      "passed": false,
+      "error": "",
+      "checks": [],
+      "evidenceDirectory": "tests/output/queue-chronology-855f3ecb"
+    },
+    {
+      "passed": false,
+      "error": "Traceback (most recent call last):\n  File \"D:\\Studies\\Art Programming\\OnlineCOC\\rulepacks\\stumpsville\\tests\\verify_queue_chronology.py\", line 52, in main\n    assert page.locator('#status').evaluate('n=>n.scrollWidth<=n.clientWidth&&n.scrollHeight<=n.clientHeight')\n           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n",
+      "checks": [],
+      "evidenceDirectory": "tests/output/queue-chronology-a3cbdd04"
+    },
+    {
+      "passed": true,
+      "error": null,
+      "checks": [
+        "390px固定12px单行，未知回执替代旧状态且核对后清除；滚动不移动；过期卡灰底原文无绿色提示",
+        "不同来源统一DOM按时间升序，倒序响应不改变排列，移动后的按钮仍可操作",
+        "新申请追加在下方，归档切换不混入旧卡片，390px无横向溢出",
+        "查询失败保留可追溯原因，查询恢复后清除旧错误"
+      ],
+      "evidenceDirectory": "tests/output/queue-chronology-9d6e840f"
+    }
+  ]
+}

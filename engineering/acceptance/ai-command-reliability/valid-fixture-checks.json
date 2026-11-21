@@ -1,0 +1,1236 @@
+[
+  {
+    "caseId": "host:entity.create",
+    "schema": "passed",
+    "preflight": {
+      "status": "passed",
+      "checkedAt": 1795182000,
+      "scope": "host.room.atomic.v1",
+      "items": [
+        {
+          "index": 0,
+          "target": "host",
+          "op": "entity.create",
+          "status": "passed",
+          "result": "40148ce9116e45338965de54aa021a7d",
+          "preview": true
+        }
+      ]
+    }
+  },
+  {
+    "caseId": "host:entity.patch",
+    "schema": "passed",
+    "preflight": {
+      "status": "passed",
+      "checkedAt": 1795182000,
+      "scope": "host.room.atomic.v1",
+      "items": [
+        {
+          "index": 0,
+          "target": "host",
+          "op": "entity.patch",
+          "status": "passed",
+          "result": "actor-one",
+          "preview": true
+        }
+      ]
+    }
+  },
+  {
+    "caseId": "host:entity.update",
+    "schema": "passed",
+    "preflight": {
+      "status": "passed",
+      "checkedAt": 1795182000,
+      "scope": "host.room.atomic.v1",
+      "items": [
+        {
+          "index": 0,
+          "target": "host",
+          "op": "entity.update",
+          "status": "passed",
+          "result": "actor-one",
+          "preview": true
+        }
+      ]
+    }
+  },
+  {
+    "caseId": "host:entity.archive",
+    "schema": "passed",
+    "preflight": {
+      "status": "passed",
+      "checkedAt": 1795182000,
+      "scope": "host.room.atomic.v1",
+      "items": [
+        {
+          "index": 0,
+          "target": "host",
+          "op": "entity.archive",
+          "status": "passed",
+          "result": true,
+          "preview": true
+        }
+      ]
+    }
+  },
+  {
+    "caseId": "host:relation.set",
+    "schema": "passed",
+    "preflight": {
+      "status": "passed",
+      "checkedAt": 1795182000,
+      "scope": "host.room.atomic.v1",
+      "items": [
+        {
+          "index": 0,
+          "target": "host",
+          "op": "relation.set",
+          "status": "passed",
+          "result": "ae16f63a882e467dbf0ef0ff66483046",
+          "preview": true
+        }
+      ]
+    }
+  },
+  {
+    "caseId": "host:relation.remove",
+    "schema": "passed",
+    "preflight": {
+      "status": "passed",
+      "checkedAt": 1795182000,
+      "scope": "host.room.atomic.v1",
+      "items": [
+        {
+          "index": 0,
+          "target": "host",
+          "op": "relation.remove",
+          "status": "passed",
+          "result": true,
+          "preview": true
+        }
+      ]
+    }
+  },
+  {
+    "caseId": "host:progress.set",
+    "schema": "passed",
+    "preflight": {
+      "status": "passed",
+      "checkedAt": 1795182000,
+      "scope": "host.room.atomic.v1",
+      "items": [
+        {
+          "index": 0,
+          "target": "host",
+          "op": "progress.set",
+          "status": "passed",
+          "result": "entity:actor-one:searched",
+          "preview": true
+        }
+      ]
+    }
+  },
+  {
+    "caseId": "host:asset.attach",
+    "schema": "passed",
+    "preflight": {
+      "status": "passed",
+      "checkedAt": 1795182000,
+      "scope": "host.room.atomic.v1",
+      "items": [
+        {
+          "index": 0,
+          "target": "host",
+          "op": "asset.attach",
+          "status": "passed",
+          "result": true,
+          "preview": true
+        }
+      ]
+    }
+  },
+  {
+    "caseId": "host:asset.remove",
+    "schema": "passed",
+    "preflight": {
+      "status": "passed",
+      "checkedAt": 1795182000,
+      "scope": "host.room.atomic.v1",
+      "items": [
+        {
+          "index": 0,
+          "target": "host",
+          "op": "asset.remove",
+          "status": "passed",
+          "result": true,
+          "preview": true
+        }
+      ]
+    }
+  },
+  {
+    "caseId": "host:flow.respond",
+    "schema": "passed",
+    "preflight": {
+      "status": "unsupported",
+      "checkedAt": 1795182000,
+      "scope": "host.room.atomic.v1",
+      "items": [
+        {
+          "index": 0,
+          "target": "host",
+          "op": "flow.respond",
+          "status": "unsupported",
+          "code": "BATCH_UNSUPPORTED",
+          "reason": "该操作或组合不在同一房间原子事务支持范围。",
+          "path": "/actions/0/args"
+        }
+      ]
+    }
+  },
+  {
+    "caseId": "host:flow.retry",
+    "schema": "passed",
+    "preflight": {
+      "status": "unsupported",
+      "checkedAt": 1795182000,
+      "scope": "host.room.atomic.v1",
+      "items": [
+        {
+          "index": 0,
+          "target": "host",
+          "op": "flow.retry",
+          "status": "unsupported",
+          "code": "BATCH_UNSUPPORTED",
+          "reason": "该操作或组合不在同一房间原子事务支持范围。",
+          "path": "/actions/0/args"
+        }
+      ]
+    }
+  },
+  {
+    "caseId": "host:flow.cancel",
+    "schema": "passed",
+    "preflight": {
+      "status": "unsupported",
+      "checkedAt": 1795182000,
+      "scope": "host.room.atomic.v1",
+      "items": [
+        {
+          "index": 0,
+          "target": "host",
+          "op": "flow.cancel",
+          "status": "unsupported",
+          "code": "BATCH_UNSUPPORTED",
+          "reason": "该操作或组合不在同一房间原子事务支持范围。",
+          "path": "/actions/0/args"
+        }
+      ]
+    }
+  },
+  {
+    "caseId": "host:room.status",
+    "schema": "passed",
+    "preflight": {
+      "status": "passed",
+      "checkedAt": 1795182000,
+      "scope": "host.room.atomic.v1",
+      "items": [
+        {
+          "index": 0,
+          "target": "host",
+          "op": "room.status",
+          "status": "passed",
+          "result": true,
+          "preview": true
+        }
+      ]
+    }
+  },
+  {
+    "caseId": "host:member.add",
+    "schema": "passed",
+    "preflight": {
+      "status": "unsupported",
+      "checkedAt": 1795182000,
+      "scope": "host.room.atomic.v1",
+      "items": [
+        {
+          "index": 0,
+          "target": "host",
+          "op": "member.add",
+          "status": "unsupported",
+          "code": "BATCH_UNSUPPORTED",
+          "reason": "该操作或组合不在同一房间原子事务支持范围。",
+          "path": "/actions/0/args"
+        }
+      ]
+    }
+  },
+  {
+    "caseId": "host:member.update",
+    "schema": "passed",
+    "preflight": {
+      "status": "passed",
+      "checkedAt": 1795182000,
+      "scope": "host.room.atomic.v1",
+      "items": [
+        {
+          "index": 0,
+          "target": "host",
+          "op": "member.update",
+          "status": "passed",
+          "result": true,
+          "preview": true
+        }
+      ]
+    }
+  },
+  {
+    "caseId": "host:notification.send",
+    "schema": "passed",
+    "preflight": {
+      "status": "passed",
+      "checkedAt": 1795182000,
+      "scope": "host.room.atomic.v1",
+      "items": [
+        {
+          "index": 0,
+          "target": "host",
+          "op": "entity.patch",
+          "status": "passed",
+          "result": "actor-one",
+          "preview": true
+        },
+        {
+          "index": 1,
+          "target": "host",
+          "op": "notification.send",
+          "status": "passed",
+          "result": {
+            "notificationId": "ce068ffbd93ce312da71232a72cc99066583dc3741db58f75a753fc27d833296",
+            "sequence": 1
+          },
+          "preview": true
+        }
+      ]
+    }
+  },
+  {
+    "caseId": "host:action.invoke",
+    "schema": "passed",
+    "preflight": {
+      "status": "runtime_required",
+      "checkedAt": 1795182000,
+      "scope": "host.room.atomic.v1",
+      "items": [
+        {
+          "index": 0,
+          "target": "host",
+          "op": "action.invoke",
+          "status": "runtime_required",
+          "ruleId": "fixture.check",
+          "code": "BATCH_RUNTIME_REQUIRED",
+          "reason": "需要正式运行判定；预检未消耗随机数。",
+          "path": "/actions/0/args",
+          "object": "actor-one"
+        }
+      ]
+    }
+  },
+  {
+    "caseId": "host:behavior.invoke",
+    "schema": "passed",
+    "preflight": {
+      "status": "passed",
+      "checkedAt": 1795182000,
+      "scope": "host.room.atomic.v1",
+      "items": [
+        {
+          "index": 0,
+          "target": "host",
+          "op": "behavior.invoke",
+          "status": "passed",
+          "result": {
+            "ok": true
+          },
+          "preview": true
+        }
+      ]
+    }
+  },
+  {
+    "caseId": "host:chat.direct.open",
+    "schema": "passed",
+    "preflight": {
+      "status": "passed",
+      "checkedAt": 1795182000,
+      "scope": "host.room.atomic.v1",
+      "items": [
+        {
+          "index": 0,
+          "target": "host",
+          "op": "chat.direct.open",
+          "status": "passed",
+          "result": {
+            "channelId": "1fc4233313884bcaa31df8bd62b6f66b"
+          },
+          "preview": true
+        }
+      ]
+    }
+  },
+  {
+    "caseId": "host:chat.channel.create",
+    "schema": "passed",
+    "preflight": {
+      "status": "passed",
+      "checkedAt": 1795182000,
+      "scope": "host.room.atomic.v1",
+      "items": [
+        {
+          "index": 0,
+          "target": "host",
+          "op": "chat.channel.create",
+          "status": "passed",
+          "result": {
+            "channelId": "715dd2fa0e43413b91d96bcad210aae7"
+          },
+          "preview": true
+        }
+      ]
+    }
+  },
+  {
+    "caseId": "host:chat.channel.update",
+    "schema": "passed",
+    "preflight": {
+      "status": "passed",
+      "checkedAt": 1795182000,
+      "scope": "host.room.atomic.v1",
+      "items": [
+        {
+          "index": 0,
+          "target": "host",
+          "op": "chat.channel.update",
+          "status": "passed",
+          "result": {
+            "channelId": "general",
+            "revision": 2
+          },
+          "preview": true
+        }
+      ]
+    }
+  },
+  {
+    "caseId": "host:chat.message.send",
+    "schema": "passed",
+    "preflight": {
+      "status": "passed",
+      "checkedAt": 1795182000,
+      "scope": "host.room.atomic.v1",
+      "items": [
+        {
+          "index": 0,
+          "target": "host",
+          "op": "chat.message.send",
+          "status": "passed",
+          "result": {
+            "channelId": "general",
+            "messageId": "9e57e7b2f544485aa5ab499699e5be6c",
+            "sequence": 2,
+            "revision": 1
+          },
+          "preview": true
+        }
+      ]
+    }
+  },
+  {
+    "caseId": "host:chat.message.share",
+    "schema": "passed",
+    "preflight": {
+      "status": "passed",
+      "checkedAt": 1795182000,
+      "scope": "host.room.atomic.v1",
+      "items": [
+        {
+          "index": 0,
+          "target": "host",
+          "op": "chat.message.share",
+          "status": "passed",
+          "result": {
+            "channelId": "general",
+            "messageId": "79a3e398acd24137b5a95137437ab111",
+            "sequence": 2,
+            "revision": 1
+          },
+          "preview": true
+        }
+      ]
+    }
+  },
+  {
+    "caseId": "host:chat.message.edit",
+    "schema": "passed",
+    "preflight": {
+      "status": "passed",
+      "checkedAt": 1795182000,
+      "scope": "host.room.atomic.v1",
+      "items": [
+        {
+          "index": 0,
+          "target": "host",
+          "op": "chat.message.edit",
+          "status": "passed",
+          "result": {
+            "channelId": "general",
+            "messageId": "05b58b6a076b468dbd0f6f46a5db6682",
+            "revision": 2
+          },
+          "preview": true
+        }
+      ]
+    }
+  },
+  {
+    "caseId": "host:chat.message.retract",
+    "schema": "passed",
+    "preflight": {
+      "status": "passed",
+      "checkedAt": 1795182000,
+      "scope": "host.room.atomic.v1",
+      "items": [
+        {
+          "index": 0,
+          "target": "host",
+          "op": "chat.message.retract",
+          "status": "passed",
+          "result": {
+            "channelId": "general",
+            "messageId": "ad15d5146d704635ba459753264c6493",
+            "revision": 2
+          },
+          "preview": true
+        }
+      ]
+    }
+  },
+  {
+    "caseId": "ai:ai.session.create",
+    "schema": "passed",
+    "preflight": {
+      "status": "passed",
+      "scope": "ai.store.atomic.v1",
+      "checkedAt": 1795182000,
+      "items": [
+        {
+          "index": 0,
+          "target": "ai",
+          "op": "ai.session.create",
+          "status": "passed",
+          "preview": true,
+          "result": {
+            "pinned": false,
+            "historyTurns": 4,
+            "renderMode": "formatted",
+            "showDiagnostics": true,
+            "sessionId": "3914157f8dbe46678d8cb13f5c55901b",
+            "owner": "kp",
+            "title": "调查笔记",
+            "revision": 1,
+            "accessLevel": "administrator",
+            "archived": false,
+            "createdAt": 1795182000,
+            "updatedAt": 1795182000
+          }
+        }
+      ]
+    }
+  },
+  {
+    "caseId": "ai:ai.session.update",
+    "schema": "passed",
+    "preflight": {
+      "status": "passed",
+      "scope": "ai.store.atomic.v1",
+      "checkedAt": 1795182000,
+      "items": [
+        {
+          "index": 0,
+          "target": "ai",
+          "op": "ai.session.update",
+          "status": "passed",
+          "preview": true,
+          "result": {
+            "pinned": false,
+            "historyTurns": 4,
+            "renderMode": "formatted",
+            "showDiagnostics": true,
+            "sessionId": "26c6ec6c38174f71b35f1543e4c90e50",
+            "owner": "kp",
+            "title": "线索",
+            "revision": 2,
+            "accessLevel": "administrator",
+            "archived": false,
+            "createdAt": 1795182000,
+            "updatedAt": 1795182000
+          }
+        }
+      ]
+    }
+  },
+  {
+    "caseId": "ai:ai.session.delete",
+    "schema": "passed",
+    "preflight": {
+      "status": "passed",
+      "scope": "ai.store.atomic.v1",
+      "checkedAt": 1795182000,
+      "items": [
+        {
+          "index": 0,
+          "target": "ai",
+          "op": "ai.session.delete",
+          "status": "passed",
+          "preview": true,
+          "result": {
+            "pinned": false,
+            "historyTurns": 4,
+            "renderMode": "formatted",
+            "showDiagnostics": true,
+            "sessionId": "ee792e7e7c004b038a6de1e2ab99358f",
+            "owner": "kp",
+            "title": "被测试会话",
+            "revision": 2,
+            "accessLevel": "administrator",
+            "archived": true,
+            "createdAt": 1795182000,
+            "updatedAt": 1795182000,
+            "deleted": true
+          }
+        }
+      ]
+    }
+  },
+  {
+    "caseId": "ai:ai.memory.create",
+    "schema": "passed",
+    "preflight": {
+      "status": "passed",
+      "scope": "ai.store.atomic.v1",
+      "checkedAt": 1795182000,
+      "items": [
+        {
+          "index": 0,
+          "target": "ai",
+          "op": "ai.memory.create",
+          "status": "passed",
+          "preview": true,
+          "result": {
+            "schemaVersion": 1,
+            "memoryId": "78b14215f1a74387814caa1bfd07d21f",
+            "scopeId": "6f9abe3803f442b689eb8dc4e4b0b1c3",
+            "kind": "summary",
+            "content": "角色仍在入口",
+            "sourceRefs": [
+              {
+                "kind": "entity",
+                "id": "actor-one",
+                "revision": 1,
+                "visibility": "public",
+                "digest": "ca2aeeb54c109c95cf0108d6394d70faf02388f5e557f0fb17e69f8129e89fff"
+              }
+            ],
+            "visibility": "kp",
+            "owner": "kp",
+            "status": "draft",
+            "validUntil": null,
+            "supersedes": null,
+            "revision": 1,
+            "createdAt": 1795182000
+          }
+        }
+      ]
+    }
+  },
+  {
+    "caseId": "ai:ai.memory.confirm",
+    "schema": "passed",
+    "preflight": {
+      "status": "passed",
+      "scope": "host.memory.single.v1",
+      "checkedAt": 1795182000,
+      "items": [
+        {
+          "index": 0,
+          "target": "ai",
+          "op": "ai.memory.confirm",
+          "status": "passed"
+        }
+      ]
+    }
+  },
+  {
+    "caseId": "ai:ai.memory.revoke",
+    "schema": "passed",
+    "preflight": {
+      "status": "passed",
+      "scope": "host.memory.single.v1",
+      "checkedAt": 1795182000,
+      "items": [
+        {
+          "index": 0,
+          "target": "ai",
+          "op": "ai.memory.revoke",
+          "status": "passed"
+        }
+      ]
+    }
+  },
+  {
+    "caseId": "data:append",
+    "compile": "passed"
+  },
+  {
+    "caseId": "data:add",
+    "compile": "passed"
+  },
+  {
+    "caseId": "data:replace",
+    "compile": "passed"
+  },
+  {
+    "caseId": "data:remove",
+    "compile": "passed"
+  },
+  {
+    "caseId": "tool:room_read_context",
+    "toolExecution": "passed",
+    "resultDigest": "dbe5be156068569f290ab4cfee7e1a7fb8dd057ece05abe79293258dbedcd77b"
+  },
+  {
+    "caseId": "tool:pack_read_contract",
+    "toolExecution": "passed",
+    "resultDigest": "293ec412d5698514eddd5beba8df5e4abf8c79e8b372bed45bc7576b75fc2aa4"
+  },
+  {
+    "caseId": "tool:room_manage_catalog",
+    "toolExecution": "passed",
+    "resultDigest": "90fd35894a712df0df8d73f4165817d7811284684deeb1ae88dffd4fec87b1b1"
+  },
+  {
+    "caseId": "tool:room_read_management",
+    "toolExecution": "passed",
+    "resultDigest": "133a9c6fabc30855ccf690ac579a9b51ec4c626e6a13d04d3355a10bf7f7bbf4"
+  },
+  {
+    "caseId": "tool:room_read_sessions",
+    "toolExecution": "passed",
+    "resultDigest": "d339fc0e1c5db0929b64c9fe5386d695e270fed79ba6dafc3de0009f08b4dfda"
+  },
+  {
+    "caseId": "tool:pack_read_config_data",
+    "toolExecution": "passed",
+    "resultDigest": "986fa86a600cf030a7b1ad20ea02ff9a8476985000e035e581d39a498d67c5a5"
+  },
+  {
+    "caseId": "tool:room_search_data",
+    "toolExecution": "passed",
+    "resultDigest": "cff166f437677e26058461138e86628044a7fb7b7b1e861207d2d07ca3ae7078"
+  },
+  {
+    "caseId": "tool:room_read_data",
+    "toolExecution": "passed",
+    "resultDigest": "43ef1ccc88ac650618f53e6e9679600d8935807475f8099892e741427b4cde56"
+  },
+  {
+    "caseId": "tool:room_read_chat",
+    "toolExecution": "passed",
+    "resultDigest": "2d6cac0e4b2ff22019ce76a1fddbb0bb77c3c37f8992c827f580759d2e71ee14"
+  },
+  {
+    "caseId": "tool:room_read_case",
+    "toolExecution": "passed",
+    "resultDigest": "bb7c8e4b99e979a041edd77a652a9be2df00a9b05fd498681c87ebdb2f9e4f14"
+  },
+  {
+    "caseId": "tool:room_search_knowledge",
+    "toolExecution": "passed",
+    "resultDigest": "6a0789bf6635fbfb28841e0390582a72c410da92364366b588876d25e0383344"
+  },
+  {
+    "caseId": "tool:room_read_knowledge",
+    "toolExecution": "passed",
+    "resultDigest": "db639887589a32ccbe439066f10a195297eb052ef505e95226f5e2523e517ed4"
+  },
+  {
+    "caseId": "pack:sv.create",
+    "preflight": {
+      "status": "runtime_required",
+      "checkedAt": 1795182000,
+      "scope": "host.room.atomic.v1",
+      "items": [
+        {
+          "index": 0,
+          "target": "host",
+          "op": "action.invoke",
+          "status": "runtime_required",
+          "ruleId": "sv.create",
+          "code": "BATCH_RUNTIME_REQUIRED",
+          "reason": "需要正式运行判定；预检未消耗随机数。",
+          "path": "/actions/0/args",
+          "object": "draft"
+        }
+      ]
+    },
+    "matrixCaseId": "create-positive"
+  },
+  {
+    "caseId": "pack:sv.profile",
+    "preflight": {
+      "status": "passed",
+      "checkedAt": 1795182000,
+      "scope": "host.room.atomic.v1",
+      "items": [
+        {
+          "index": 0,
+          "target": "host",
+          "op": "action.invoke",
+          "status": "passed",
+          "ruleId": "sv.profile",
+          "result": {
+            "character": "actor",
+            "approved": true
+          },
+          "preview": true
+        }
+      ]
+    },
+    "matrixCaseId": "profile-positive"
+  },
+  {
+    "caseId": "pack:sv.ready",
+    "preflight": {
+      "status": "passed",
+      "checkedAt": 1795182000,
+      "scope": "host.room.atomic.v1",
+      "items": [
+        {
+          "index": 0,
+          "target": "host",
+          "op": "action.invoke",
+          "status": "passed",
+          "ruleId": "sv.ready",
+          "result": {
+            "ready": true
+          },
+          "preview": true
+        }
+      ]
+    },
+    "matrixCaseId": "ready-positive"
+  },
+  {
+    "caseId": "pack:sv.check",
+    "preflight": {
+      "status": "runtime_required",
+      "checkedAt": 1795182000,
+      "scope": "host.room.atomic.v1",
+      "items": [
+        {
+          "index": 0,
+          "target": "host",
+          "op": "action.invoke",
+          "status": "runtime_required",
+          "ruleId": "sv.check",
+          "code": "BATCH_RUNTIME_REQUIRED",
+          "reason": "需要正式运行判定；预检未消耗随机数。",
+          "path": "/actions/0/args",
+          "object": "actor"
+        }
+      ]
+    },
+    "matrixCaseId": "check-positive"
+  },
+  {
+    "caseId": "pack:sv.inventory",
+    "preflight": {
+      "status": "passed",
+      "checkedAt": 1795182000,
+      "scope": "host.room.atomic.v1",
+      "items": [
+        {
+          "index": 0,
+          "target": "host",
+          "op": "action.invoke",
+          "status": "passed",
+          "ruleId": "sv.inventory",
+          "result": {
+            "uses": 2,
+            "slot": 5,
+            "target": 1,
+            "operation": "use",
+            "overloaded": false
+          },
+          "preview": true
+        }
+      ]
+    },
+    "matrixCaseId": "inventory-positive"
+  },
+  {
+    "caseId": "pack:sv.grant",
+    "preflight": {
+      "status": "passed",
+      "checkedAt": 1795182000,
+      "scope": "host.room.atomic.v1",
+      "items": [
+        {
+          "index": 0,
+          "target": "host",
+          "op": "action.invoke",
+          "status": "passed",
+          "ruleId": "sv.grant",
+          "result": {
+            "slot": 5,
+            "item": 3,
+            "overloaded": false
+          },
+          "preview": true
+        }
+      ]
+    },
+    "matrixCaseId": "grant-positive"
+  },
+  {
+    "caseId": "pack:sv.remove",
+    "preflight": {
+      "status": "passed",
+      "checkedAt": 1795182000,
+      "scope": "host.room.atomic.v1",
+      "items": [
+        {
+          "index": 0,
+          "target": "host",
+          "op": "action.invoke",
+          "status": "passed",
+          "ruleId": "sv.remove",
+          "result": {
+            "removed": 2,
+            "slot": 5
+          },
+          "preview": true
+        }
+      ]
+    },
+    "matrixCaseId": "remove-positive"
+  },
+  {
+    "caseId": "pack:sv.transfer",
+    "preflight": {
+      "status": "passed",
+      "checkedAt": 1795182000,
+      "scope": "host.room.atomic.v1",
+      "items": [
+        {
+          "index": 0,
+          "target": "host",
+          "op": "action.invoke",
+          "status": "passed",
+          "ruleId": "sv.transfer",
+          "result": {
+            "overloaded": false,
+            "recipient": "target",
+            "item": 3,
+            "slot": 6
+          },
+          "preview": true
+        }
+      ]
+    },
+    "matrixCaseId": "transfer-positive"
+  },
+  {
+    "caseId": "pack:sv.damage",
+    "preflight": {
+      "status": "passed",
+      "checkedAt": 1795182000,
+      "scope": "host.room.atomic.v1",
+      "items": [
+        {
+          "index": 0,
+          "target": "host",
+          "op": "action.invoke",
+          "status": "passed",
+          "ruleId": "sv.damage",
+          "result": {
+            "dead": false,
+            "critical": false,
+            "attribute": "str",
+            "damage": 2,
+            "hp": 2,
+            "remaining": 10,
+            "save": 0,
+            "overflow": 0
+          },
+          "preview": true
+        }
+      ]
+    },
+    "matrixCaseId": "damage-positive"
+  },
+  {
+    "caseId": "pack:sv.rest",
+    "preflight": {
+      "status": "runtime_required",
+      "checkedAt": 1795182000,
+      "scope": "host.room.atomic.v1",
+      "items": [
+        {
+          "index": 0,
+          "target": "host",
+          "op": "action.invoke",
+          "status": "runtime_required",
+          "ruleId": "sv.rest",
+          "code": "BATCH_RUNTIME_REQUIRED",
+          "reason": "需要正式运行判定；预检未消耗随机数。",
+          "path": "/actions/0/args",
+          "object": "actor"
+        }
+      ]
+    },
+    "matrixCaseId": "rest-positive"
+  },
+  {
+    "caseId": "pack:sv.morale",
+    "preflight": {
+      "status": "runtime_required",
+      "checkedAt": 1795182000,
+      "scope": "host.room.atomic.v1",
+      "items": [
+        {
+          "index": 0,
+          "target": "host",
+          "op": "action.invoke",
+          "status": "runtime_required",
+          "ruleId": "sv.morale",
+          "code": "BATCH_RUNTIME_REQUIRED",
+          "reason": "需要正式运行判定；预检未消耗随机数。",
+          "path": "/actions/0/args",
+          "object": "npc"
+        }
+      ]
+    },
+    "matrixCaseId": "morale-positive"
+  },
+  {
+    "caseId": "pack:sv.travel",
+    "preflight": {
+      "status": "passed",
+      "checkedAt": 1795182000,
+      "scope": "host.room.atomic.v1",
+      "items": [
+        {
+          "index": 0,
+          "target": "host",
+          "op": "action.invoke",
+          "status": "passed",
+          "ruleId": "sv.travel",
+          "result": {
+            "location": 2
+          },
+          "preview": true
+        }
+      ]
+    },
+    "matrixCaseId": "travel-positive"
+  },
+  {
+    "caseId": "pack:sv.travel.auto",
+    "preflight": {
+      "status": "passed",
+      "checkedAt": 1795182000,
+      "scope": "host.room.atomic.v1",
+      "items": [
+        {
+          "index": 0,
+          "target": "host",
+          "op": "action.invoke",
+          "status": "passed",
+          "ruleId": "sv.travel.auto",
+          "result": {
+            "automatic": true,
+            "location": 2
+          },
+          "preview": true
+        }
+      ]
+    },
+    "matrixCaseId": "travel-auto-positive"
+  },
+  {
+    "caseId": "pack:sv.world",
+    "preflight": {
+      "status": "passed",
+      "checkedAt": 1795182000,
+      "scope": "host.room.atomic.v1",
+      "items": [
+        {
+          "index": 0,
+          "target": "host",
+          "op": "action.invoke",
+          "status": "passed",
+          "ruleId": "sv.world",
+          "result": {
+            "phase": 1,
+            "round": 0
+          },
+          "preview": true
+        }
+      ]
+    },
+    "matrixCaseId": "world-positive"
+  },
+  {
+    "caseId": "pack:sv.generate",
+    "preflight": {
+      "status": "runtime_required",
+      "checkedAt": 1795182000,
+      "scope": "host.room.atomic.v1",
+      "items": [
+        {
+          "index": 0,
+          "target": "host",
+          "op": "action.invoke",
+          "status": "runtime_required",
+          "ruleId": "sv.generate",
+          "code": "BATCH_RUNTIME_REQUIRED",
+          "reason": "需要正式运行判定；预检未消耗随机数。",
+          "path": "/actions/0/args",
+          "object": "world"
+        }
+      ]
+    },
+    "matrixCaseId": "generate-positive"
+  },
+  {
+    "caseId": "pack:sv.adjudicate",
+    "preflight": {
+      "status": "runtime_required",
+      "checkedAt": 1795182000,
+      "scope": "host.room.atomic.v1",
+      "items": [
+        {
+          "index": 0,
+          "target": "host",
+          "op": "action.invoke",
+          "status": "runtime_required",
+          "ruleId": "sv.adjudicate",
+          "code": "BATCH_RUNTIME_REQUIRED",
+          "reason": "需要正式运行判定；预检未消耗随机数。",
+          "path": "/actions/0/args",
+          "object": "actor"
+        }
+      ]
+    },
+    "matrixCaseId": "adjudicate-positive"
+  },
+  {
+    "caseId": "pack:sv.scene.resolve",
+    "preflight": {
+      "status": "passed",
+      "checkedAt": 1795182000,
+      "scope": "host.room.atomic.v1",
+      "items": [
+        {
+          "index": 0,
+          "target": "host",
+          "op": "action.invoke",
+          "status": "passed",
+          "ruleId": "sv.scene.resolve",
+          "result": {
+            "sceneState": {
+              "villagersContacted": 0,
+              "moneyRemaining": 140,
+              "villagersFreed": 0,
+              "agingKnown": 0,
+              "paddleRemaining": 1,
+              "hallDoor": 0,
+              "ernieSpoken": 0,
+              "snakeAlert": 0,
+              "gateOpen": 0,
+              "spidersAlert": 0,
+              "fluteRemaining": 1,
+              "ratsAlert": 0,
+              "laddersKnown": 0,
+              "paintingRead": 0,
+              "ironOpen": 0,
+              "snakeKnown": 0,
+              "trapKnown": 1,
+              "ratsTalked": 0,
+              "snakeCalmed": 0,
+              "webKnown": 0,
+              "gateTrap": 0,
+              "potsRemaining": 0,
+              "northKnown": 0,
+              "caveOpen": 0,
+              "ernieAwake": 0,
+              "cheese1": 1,
+              "ernieKnown": 0,
+              "cheese10": 8,
+              "trapState": 0,
+              "ratsObserved": 0,
+              "ratsDeal": 0,
+              "factoryKnown": 0,
+              "gateKnown": 0,
+              "idolRemaining": 1,
+              "potsKnown": 0,
+              "clothRemaining": 1,
+              "roofKnown": 0,
+              "poolKnown": 0
+            },
+            "doors": {},
+            "reveals": [
+              2
+            ],
+            "public": {
+              "choice": "inspect",
+              "process": "本做法不需要投骰，按现场条件直接判定。",
+              "cost": 0,
+              "title": "观察地面",
+              "sceneAction": "tunnel-ground",
+              "clues": [
+                {
+                  "title": "入口地面的压痕",
+                  "location": 1,
+                  "text": "地面有落石留下的压痕，奶酪连接着触发装置；直接取走会有危险。",
+                  "id": "tunnel-trap"
+                }
+              ],
+              "rolls": {},
+              "narrative": [
+                "你避开压痕，辨认出奶酪与上方落石的连接，并找到了通往主门的路线。"
+              ],
+              "outcome": "success",
+              "checks": {},
+              "stateChanges": [
+                {
+                  "key": "trapKnown",
+                  "after": 1,
+                  "before": 0,
+                  "label": "入口机关已识别"
+                }
+              ]
+            }
+          },
+          "preview": true
+        }
+      ]
+    },
+    "matrixCaseId": "scene-resolve-positive"
+  }
+]

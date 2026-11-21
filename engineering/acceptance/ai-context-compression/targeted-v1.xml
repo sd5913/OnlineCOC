@@ -1,0 +1,443 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="9" skipped="0" tests="42" time="83.535" timestamp="2026-11-21T15:37:54.534713+08:00" hostname="LAPTOP-BIFSL64A"><testcase classname="engineering.ai.tests.test_context_compression" name="test_compacts_semantically_keeps_current_request_exact_and_recall_archives" time="0.044" /><testcase classname="engineering.ai.tests.test_context_compression" name="test_invalid_summary_repairs_once_and_preserves_failed_feedback" time="0.038" /><testcase classname="engineering.ai.tests.test_context_compression" name="test_persistent_bad_summary_fails_closed_keeps_originals" time="0.034" /><testcase classname="engineering.ai.tests.test_context_compression" name="test_summary_cannot_forge_provenance_or_convert_ai_suggestion_to_confirmation[assistant-not approval]" time="0.001" /><testcase classname="engineering.ai.tests.test_context_compression" name="test_summary_cannot_forge_provenance_or_convert_ai_suggestion_to_confirmation[user-invented quote]" time="0.001" /><testcase classname="engineering.ai.tests.test_context_compression" name="test_guard_change_during_summary_rejects_before_output_and_recall" time="0.035" /><testcase classname="engineering.ai.tests.test_context_compression" name="test_tool_exchanges_stay_paired" time="0.042" /><testcase classname="engineering.ai.tests.test_context_compression" name="test_under_threshold_no_call_and_uncompressible_overflow_no_provider" time="0.006" /><testcase classname="engineering.ai.tests.test_context_compression" name="test_model_budget_reserves_output_protocol_and_declared_window" time="0.001" /><testcase classname="engineering.ai.tests.test_context_compression" name="test_coordinator_bills_summary_and_final_reply_with_visible_progress" time="1.955" /><testcase classname="engineering.ai.tests.test_rulings" name="test_chat_approval_is_bound_to_batch_and_not_another_model_request" time="1.396" /><testcase classname="engineering.ai.tests.test_rulings" name="test_config_is_one_checked_ruling_and_publishes_once" time="6.204"><failure message="AssertionError: {'requestId': 'bc1558eed6464d6c9b812ea519516a00', 'status': 'unknown', 'code': 'RESULT_UNKNOWN'}&#10;assert 'unknown' == 'committed'&#10;  &#10;  - committed&#10;  + unknown">application = &lt;onlinecoc_ai.api.Application object at 0x0000021F75884E90&gt;
+
+    def test_config_is_one_checked_ruling_and_publishes_once(application):
+        app=application;p=committed(command(app,'ai.draft.create',{'text':'配置修改','changeSet':delta()}))
+&gt;       result=committed(command(app,'ai.proposal.validate',{'proposalId':p['proposalId'],'revision':1}))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+engineering\ai\tests\test_rulings.py:17: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+receipt = {'requestId': 'bc1558eed6464d6c9b812ea519516a00', 'status': 'unknown', 'code': 'RESULT_UNKNOWN'}
+
+    def committed(receipt):
+&gt;       assert receipt['status'] == 'committed', receipt
+E       AssertionError: {'requestId': 'bc1558eed6464d6c9b812ea519516a00', 'status': 'unknown', 'code': 'RESULT_UNKNOWN'}
+E       assert 'unknown' == 'committed'
+E         
+E         - committed
+E         + unknown
+
+engineering\ai\tests\test_entrypoints.py:34: AssertionError</failure></testcase><testcase classname="engineering.ai.tests.test_rulings" name="test_high_risk_config_never_uses_auto_approval" time="6.150"><failure message="AssertionError: {'requestId': '86f0e750cef24ed388491a342640ec99', 'status': 'unknown', 'code': 'RESULT_UNKNOWN'}&#10;assert 'unknown' == 'committed'&#10;  &#10;  - committed&#10;  + unknown">application = &lt;onlinecoc_ai.api.Application object at 0x0000021F75A6C2B0&gt;
+
+    def test_high_risk_config_never_uses_auto_approval(application):
+        app=application
+        committed(command(app,'ai.access.update',{'revision':1,'allowPlayerChat':False,'autoApproveBatches':False,'autoApproveConfigurations':True}))
+        p=committed(command(app,'ai.draft.create',{'text':'自动配置','changeSet':delta()}))
+&gt;       committed(command(app,'ai.proposal.validate',{'proposalId':p['proposalId'],'revision':1}))
+
+engineering\ai\tests\test_rulings.py:31: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+receipt = {'requestId': '86f0e750cef24ed388491a342640ec99', 'status': 'unknown', 'code': 'RESULT_UNKNOWN'}
+
+    def committed(receipt):
+&gt;       assert receipt['status'] == 'committed', receipt
+E       AssertionError: {'requestId': '86f0e750cef24ed388491a342640ec99', 'status': 'unknown', 'code': 'RESULT_UNKNOWN'}
+E       assert 'unknown' == 'committed'
+E         
+E         - committed
+E         + unknown
+
+engineering\ai\tests\test_entrypoints.py:34: AssertionError</failure></testcase><testcase classname="engineering.ai.tests.test_rulings" name="test_player_cannot_decide_and_stale_digest_cannot_execute" time="1.326" /><testcase classname="engineering.ai.tests.test_rulings" name="test_consultation_evidence_requires_current_target_and_explicit_kp_acceptance" time="6.283"><failure message="AssertionError: {'requestId': 'f89cf1f9363644f1811c4ce5370fd58b', 'status': 'unknown', 'code': 'RESULT_UNKNOWN'}&#10;assert 'unknown' == 'committed'&#10;  &#10;  - committed&#10;  + unknown">application = &lt;onlinecoc_ai.api.Application object at 0x0000021F75A7D7B0&gt;
+
+    def test_consultation_evidence_requires_current_target_and_explicit_kp_acceptance(application):
+        app=application
+        committed(command(app,'ai.access.update',{'revision':1,'allowPlayerChat':False,'autoApproveBatches':False,'autoApproveConfigurations':True}))
+        snapshot=app.proposals.snapshot('kp');snapshot[0]['facts']['consultationOnly']=True
+        p=app.proposals.create('kp','只读包证据候选',delta(),snapshot=snapshot)
+        assert command(app,'ai.proposal.validate',{'proposalId':p['proposalId'],'revision':1})['code']=='HISTORY_REQUERY_REQUIRED'
+        snapshot[0]['facts']['managementReads']={'configurations':app.batches.read('kp','configurations')['snapshot']}
+        p=app.proposals.create('kp','已重读当前目标的来源候选',delta(),snapshot=snapshot)
+&gt;       committed(command(app,'ai.proposal.validate',{'proposalId':p['proposalId'],'revision':1}))
+
+engineering\ai\tests\test_rulings.py:50: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+receipt = {'requestId': 'f89cf1f9363644f1811c4ce5370fd58b', 'status': 'unknown', 'code': 'RESULT_UNKNOWN'}
+
+    def committed(receipt):
+&gt;       assert receipt['status'] == 'committed', receipt
+E       AssertionError: {'requestId': 'f89cf1f9363644f1811c4ce5370fd58b', 'status': 'unknown', 'code': 'RESULT_UNKNOWN'}
+E       assert 'unknown' == 'committed'
+E         
+E         - committed
+E         + unknown
+
+engineering\ai\tests\test_entrypoints.py:34: AssertionError</failure></testcase><testcase classname="engineering.ai.tests.test_rulings" name="test_invalid_model_output_has_specific_cause[[]-MODEL_OBJECT_REQUIRED]" time="0.001" /><testcase classname="engineering.ai.tests.test_rulings" name="test_invalid_model_output_has_specific_cause[null-MODEL_OBJECT_REQUIRED]" time="0.001" /><testcase classname="engineering.ai.tests.test_rulings" name="test_invalid_model_output_has_specific_cause[broken-MODEL_JSON_INVALID]" time="0.001" /><testcase classname="engineering.ai.tests.test_rulings" name="test_invalid_model_output_has_specific_cause[{&quot;kind&quot;:&quot;other&quot;,&quot;text&quot;:&quot;a&quot;}-MODEL_KIND_INVALID]" time="0.001" /><testcase classname="engineering.ai.tests.test_rulings" name="test_single_json_fence_is_accepted_without_extracting_arbitrary_text" time="0.000" /><testcase classname="engineering.ai.tests.test_rulings" name="test_two_repairs_cap_legacy_profile_without_consuming_tool_rounds[True]" time="1.285" /><testcase classname="engineering.ai.tests.test_rulings" name="test_two_repairs_cap_legacy_profile_without_consuming_tool_rounds[False]" time="1.276" /><testcase classname="engineering.ai.tests.test_rulings" name="test_user_decision_pauses_instead_of_retrying[clarification]" time="1.315" /><testcase classname="engineering.ai.tests.test_rulings" name="test_user_decision_pauses_instead_of_retrying[plan]" time="1.267" /><testcase classname="engineering.ai.tests.test_rulings" name="test_basic_lua_error_repairs_same_proposal_before_review" time="7.856"><failure message="AssertionError: {'taskId': 'f31e79c0b64d46c8bc65655cf668cca2', 'requestId': 'f31e79c0b64d46c8bc65655cf668cca2', 'account': 'kp', 'profile': {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...}, ...}&#10;assert 'failed' == 'review_ready'&#10;  &#10;  - review_ready&#10;  + failed">setup = (&lt;onlinecoc.host.Host object at 0x0000021F75A1A9C0&gt;, &lt;onlinecoc_ai.proposals.Proposals object at 0x0000021F75A55E50&gt;, {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...})
+
+    def test_basic_lua_error_repairs_same_proposal_before_review(setup):
+        import asyncio,copy
+        from test_coordinator import Coordinator,Fake,completion,wait_task
+        _,service,profile=setup
+        change=delta();broken=copy.deepcopy(change)
+        broken['sources'][next(iter(service.pack.sources))]='return rule('
+        async def callback(count,*args):return completion({'kind':'draft','text':'调整属性','changeSet':broken if count==1 else change})
+        provider=Fake(callback)
+        async def run():
+            c=Coordinator(service,{profile['profileId']:profile},provider_factory=lambda p:provider);await c.start()
+            try:
+                task=c.enqueue('kp','repair-lua','调整属性');result=await wait_task(c,task['taskId'],60)
+                assert result['status']=='review_ready',result
+                records=c.repository.state()['proposals'];assert provider.calls==2 and len(records)==1
+                assert next(iter(records.values()))['currentRevision']==2
+            finally:await c.close()
+&gt;       asyncio.run(run())
+
+engineering\ai\tests\test_rulings.py:130: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:204: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:127: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\base_events.py:719: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    async def run():
+        c=Coordinator(service,{profile['profileId']:profile},provider_factory=lambda p:provider);await c.start()
+        try:
+            task=c.enqueue('kp','repair-lua','调整属性');result=await wait_task(c,task['taskId'],60)
+&gt;           assert result['status']=='review_ready',result
+E           AssertionError: {'taskId': 'f31e79c0b64d46c8bc65655cf668cca2', 'requestId': 'f31e79c0b64d46c8bc65655cf668cca2', 'account': 'kp', 'profile': {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...}, ...}
+E           assert 'failed' == 'review_ready'
+E             
+E             - review_ready
+E             + failed
+
+engineering\ai\tests\test_rulings.py:126: AssertionError</failure></testcase><testcase classname="engineering.ai.tests.test_management_queries" name="test_bad_management_query_can_recover_into_checked_unpublished_draft[room_manage_catalog-args0]" time="6.465"><failure message="AssertionError: {'taskId': 'aac158fe37b54addac88e00caddbb139', 'requestId': 'aac158fe37b54addac88e00caddbb139', 'account': 'kp', 'profile': {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...}, ...}&#10;assert 'failed' == 'review_ready'&#10;  &#10;  - review_ready&#10;  + failed">application = &lt;onlinecoc_ai.api.Application object at 0x0000021F75C39370&gt;
+name = 'room_manage_catalog'
+args = {'operations': ['config.create', 'configuration.create']}
+
+    @pytest.mark.parametrize('name,args',[
+        ('room_manage_catalog',{'operations':['config.create','configuration.create']}),
+        ('room_manage_catalog',{'operations':['config.list','configuration.update']}),
+        ('room_read_management',{'section':'invented'}),
+        ('room_read_management',{'section':'configurations','limit':0}),
+        ('room_read_sessions',{'limit':100}),
+    ])
+    def test_bad_management_query_can_recover_into_checked_unpublished_draft(application,name,args):
+        app=application;enable(app.host,public=True,kp=True,private=True)
+        async def callback(count,messages,tools):
+            if count==1:return tool_call(name,args)
+            result=json.loads(messages[-1]['content'])
+            if count==2:
+                assert result['error']['code']=='INPUT_INVALID'
+                assert 'No data was returned' in result['notice']
+                return tool_call('room_read_management',{'section':'configurations'})
+            assert any(row['id']=='fixture.token' and row['value']['defaults']['bonus']==0 for row in result['items'])
+            return completion({'kind':'draft','text':'Checked configuration candidate','changeSet':delta()})
+        async def run():
+            app.coordinator.provider_factory=lambda _:Fake(callback);await app.coordinator.start()
+            try:
+                sid=committed(command(app,'ai.session.create',{'title':'Management recovery'}))['sessionId']
+                req=submit(app,sid,'Prepare a configuration draft')
+                dispatched=committed(command(app,'ai.request.dispatch',{'requestId':req['requestId']}))
+                task=await wait_task(app.coordinator,dispatched['taskId'])
+                assert task['status']=='review_ready',task
+                assert task['diagnostics']['toolCalls'][0]['status']=='rejected'
+                context=app.repository.state()['contexts'][task['contextRef']]
+                assert 'configurations' in context['facts']['managementReads']
+                assert not context['facts'].get('consultationOnly')
+                row=next(r for r in app.rulings.list('kp')['items'] if r['rulingId']=='proposal:'+task['proposalId'])
+                assert row['status']=='pending' and row['canDecide']
+                assert app.host.state()['configurations']['fixture.token']['defaults']['bonus']==0
+            finally:await app.coordinator.close()
+&gt;       asyncio.run(run())
+
+engineering\ai\tests\test_management_queries.py:49: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:204: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:127: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\base_events.py:719: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    async def run():
+        app.coordinator.provider_factory=lambda _:Fake(callback);await app.coordinator.start()
+        try:
+            sid=committed(command(app,'ai.session.create',{'title':'Management recovery'}))['sessionId']
+            req=submit(app,sid,'Prepare a configuration draft')
+            dispatched=committed(command(app,'ai.request.dispatch',{'requestId':req['requestId']}))
+            task=await wait_task(app.coordinator,dispatched['taskId'])
+&gt;           assert task['status']=='review_ready',task
+E           AssertionError: {'taskId': 'aac158fe37b54addac88e00caddbb139', 'requestId': 'aac158fe37b54addac88e00caddbb139', 'account': 'kp', 'profile': {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...}, ...}
+E           assert 'failed' == 'review_ready'
+E             
+E             - review_ready
+E             + failed
+
+engineering\ai\tests\test_management_queries.py:40: AssertionError</failure></testcase><testcase classname="engineering.ai.tests.test_management_queries" name="test_bad_management_query_can_recover_into_checked_unpublished_draft[room_manage_catalog-args1]" time="6.055"><failure message="AssertionError: {'taskId': '762188cafea84594a9509a147566119c', 'requestId': '762188cafea84594a9509a147566119c', 'account': 'kp', 'profile': {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...}, ...}&#10;assert 'failed' == 'review_ready'&#10;  &#10;  - review_ready&#10;  + failed">application = &lt;onlinecoc_ai.api.Application object at 0x0000021F75BDF450&gt;
+name = 'room_manage_catalog'
+args = {'operations': ['config.list', 'configuration.update']}
+
+    @pytest.mark.parametrize('name,args',[
+        ('room_manage_catalog',{'operations':['config.create','configuration.create']}),
+        ('room_manage_catalog',{'operations':['config.list','configuration.update']}),
+        ('room_read_management',{'section':'invented'}),
+        ('room_read_management',{'section':'configurations','limit':0}),
+        ('room_read_sessions',{'limit':100}),
+    ])
+    def test_bad_management_query_can_recover_into_checked_unpublished_draft(application,name,args):
+        app=application;enable(app.host,public=True,kp=True,private=True)
+        async def callback(count,messages,tools):
+            if count==1:return tool_call(name,args)
+            result=json.loads(messages[-1]['content'])
+            if count==2:
+                assert result['error']['code']=='INPUT_INVALID'
+                assert 'No data was returned' in result['notice']
+                return tool_call('room_read_management',{'section':'configurations'})
+            assert any(row['id']=='fixture.token' and row['value']['defaults']['bonus']==0 for row in result['items'])
+            return completion({'kind':'draft','text':'Checked configuration candidate','changeSet':delta()})
+        async def run():
+            app.coordinator.provider_factory=lambda _:Fake(callback);await app.coordinator.start()
+            try:
+                sid=committed(command(app,'ai.session.create',{'title':'Management recovery'}))['sessionId']
+                req=submit(app,sid,'Prepare a configuration draft')
+                dispatched=committed(command(app,'ai.request.dispatch',{'requestId':req['requestId']}))
+                task=await wait_task(app.coordinator,dispatched['taskId'])
+                assert task['status']=='review_ready',task
+                assert task['diagnostics']['toolCalls'][0]['status']=='rejected'
+                context=app.repository.state()['contexts'][task['contextRef']]
+                assert 'configurations' in context['facts']['managementReads']
+                assert not context['facts'].get('consultationOnly')
+                row=next(r for r in app.rulings.list('kp')['items'] if r['rulingId']=='proposal:'+task['proposalId'])
+                assert row['status']=='pending' and row['canDecide']
+                assert app.host.state()['configurations']['fixture.token']['defaults']['bonus']==0
+            finally:await app.coordinator.close()
+&gt;       asyncio.run(run())
+
+engineering\ai\tests\test_management_queries.py:49: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:204: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:127: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\base_events.py:719: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    async def run():
+        app.coordinator.provider_factory=lambda _:Fake(callback);await app.coordinator.start()
+        try:
+            sid=committed(command(app,'ai.session.create',{'title':'Management recovery'}))['sessionId']
+            req=submit(app,sid,'Prepare a configuration draft')
+            dispatched=committed(command(app,'ai.request.dispatch',{'requestId':req['requestId']}))
+            task=await wait_task(app.coordinator,dispatched['taskId'])
+&gt;           assert task['status']=='review_ready',task
+E           AssertionError: {'taskId': '762188cafea84594a9509a147566119c', 'requestId': '762188cafea84594a9509a147566119c', 'account': 'kp', 'profile': {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...}, ...}
+E           assert 'failed' == 'review_ready'
+E             
+E             - review_ready
+E             + failed
+
+engineering\ai\tests\test_management_queries.py:40: AssertionError</failure></testcase><testcase classname="engineering.ai.tests.test_management_queries" name="test_bad_management_query_can_recover_into_checked_unpublished_draft[room_read_management-args2]" time="6.274"><failure message="AssertionError: {'taskId': '7e39f38a5fb446469dfede6264d3d09b', 'requestId': '7e39f38a5fb446469dfede6264d3d09b', 'account': 'kp', 'profile': {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...}, ...}&#10;assert 'failed' == 'review_ready'&#10;  &#10;  - review_ready&#10;  + failed">application = &lt;onlinecoc_ai.api.Application object at 0x0000021F76089310&gt;
+name = 'room_read_management', args = {'section': 'invented'}
+
+    @pytest.mark.parametrize('name,args',[
+        ('room_manage_catalog',{'operations':['config.create','configuration.create']}),
+        ('room_manage_catalog',{'operations':['config.list','configuration.update']}),
+        ('room_read_management',{'section':'invented'}),
+        ('room_read_management',{'section':'configurations','limit':0}),
+        ('room_read_sessions',{'limit':100}),
+    ])
+    def test_bad_management_query_can_recover_into_checked_unpublished_draft(application,name,args):
+        app=application;enable(app.host,public=True,kp=True,private=True)
+        async def callback(count,messages,tools):
+            if count==1:return tool_call(name,args)
+            result=json.loads(messages[-1]['content'])
+            if count==2:
+                assert result['error']['code']=='INPUT_INVALID'
+                assert 'No data was returned' in result['notice']
+                return tool_call('room_read_management',{'section':'configurations'})
+            assert any(row['id']=='fixture.token' and row['value']['defaults']['bonus']==0 for row in result['items'])
+            return completion({'kind':'draft','text':'Checked configuration candidate','changeSet':delta()})
+        async def run():
+            app.coordinator.provider_factory=lambda _:Fake(callback);await app.coordinator.start()
+            try:
+                sid=committed(command(app,'ai.session.create',{'title':'Management recovery'}))['sessionId']
+                req=submit(app,sid,'Prepare a configuration draft')
+                dispatched=committed(command(app,'ai.request.dispatch',{'requestId':req['requestId']}))
+                task=await wait_task(app.coordinator,dispatched['taskId'])
+                assert task['status']=='review_ready',task
+                assert task['diagnostics']['toolCalls'][0]['status']=='rejected'
+                context=app.repository.state()['contexts'][task['contextRef']]
+                assert 'configurations' in context['facts']['managementReads']
+                assert not context['facts'].get('consultationOnly')
+                row=next(r for r in app.rulings.list('kp')['items'] if r['rulingId']=='proposal:'+task['proposalId'])
+                assert row['status']=='pending' and row['canDecide']
+                assert app.host.state()['configurations']['fixture.token']['defaults']['bonus']==0
+            finally:await app.coordinator.close()
+&gt;       asyncio.run(run())
+
+engineering\ai\tests\test_management_queries.py:49: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:204: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:127: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\base_events.py:719: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    async def run():
+        app.coordinator.provider_factory=lambda _:Fake(callback);await app.coordinator.start()
+        try:
+            sid=committed(command(app,'ai.session.create',{'title':'Management recovery'}))['sessionId']
+            req=submit(app,sid,'Prepare a configuration draft')
+            dispatched=committed(command(app,'ai.request.dispatch',{'requestId':req['requestId']}))
+            task=await wait_task(app.coordinator,dispatched['taskId'])
+&gt;           assert task['status']=='review_ready',task
+E           AssertionError: {'taskId': '7e39f38a5fb446469dfede6264d3d09b', 'requestId': '7e39f38a5fb446469dfede6264d3d09b', 'account': 'kp', 'profile': {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...}, ...}
+E           assert 'failed' == 'review_ready'
+E             
+E             - review_ready
+E             + failed
+
+engineering\ai\tests\test_management_queries.py:40: AssertionError</failure></testcase><testcase classname="engineering.ai.tests.test_management_queries" name="test_bad_management_query_can_recover_into_checked_unpublished_draft[room_read_management-args3]" time="6.212"><failure message="AssertionError: {'taskId': '257a4e0384bf4991bc23305274f4fecb', 'requestId': '257a4e0384bf4991bc23305274f4fecb', 'account': 'kp', 'profile': {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...}, ...}&#10;assert 'failed' == 'review_ready'&#10;  &#10;  - review_ready&#10;  + failed">application = &lt;onlinecoc_ai.api.Application object at 0x0000021F75D5B690&gt;
+name = 'room_read_management', args = {'section': 'configurations', 'limit': 0}
+
+    @pytest.mark.parametrize('name,args',[
+        ('room_manage_catalog',{'operations':['config.create','configuration.create']}),
+        ('room_manage_catalog',{'operations':['config.list','configuration.update']}),
+        ('room_read_management',{'section':'invented'}),
+        ('room_read_management',{'section':'configurations','limit':0}),
+        ('room_read_sessions',{'limit':100}),
+    ])
+    def test_bad_management_query_can_recover_into_checked_unpublished_draft(application,name,args):
+        app=application;enable(app.host,public=True,kp=True,private=True)
+        async def callback(count,messages,tools):
+            if count==1:return tool_call(name,args)
+            result=json.loads(messages[-1]['content'])
+            if count==2:
+                assert result['error']['code']=='INPUT_INVALID'
+                assert 'No data was returned' in result['notice']
+                return tool_call('room_read_management',{'section':'configurations'})
+            assert any(row['id']=='fixture.token' and row['value']['defaults']['bonus']==0 for row in result['items'])
+            return completion({'kind':'draft','text':'Checked configuration candidate','changeSet':delta()})
+        async def run():
+            app.coordinator.provider_factory=lambda _:Fake(callback);await app.coordinator.start()
+            try:
+                sid=committed(command(app,'ai.session.create',{'title':'Management recovery'}))['sessionId']
+                req=submit(app,sid,'Prepare a configuration draft')
+                dispatched=committed(command(app,'ai.request.dispatch',{'requestId':req['requestId']}))
+                task=await wait_task(app.coordinator,dispatched['taskId'])
+                assert task['status']=='review_ready',task
+                assert task['diagnostics']['toolCalls'][0]['status']=='rejected'
+                context=app.repository.state()['contexts'][task['contextRef']]
+                assert 'configurations' in context['facts']['managementReads']
+                assert not context['facts'].get('consultationOnly')
+                row=next(r for r in app.rulings.list('kp')['items'] if r['rulingId']=='proposal:'+task['proposalId'])
+                assert row['status']=='pending' and row['canDecide']
+                assert app.host.state()['configurations']['fixture.token']['defaults']['bonus']==0
+            finally:await app.coordinator.close()
+&gt;       asyncio.run(run())
+
+engineering\ai\tests\test_management_queries.py:49: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:204: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:127: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\base_events.py:719: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    async def run():
+        app.coordinator.provider_factory=lambda _:Fake(callback);await app.coordinator.start()
+        try:
+            sid=committed(command(app,'ai.session.create',{'title':'Management recovery'}))['sessionId']
+            req=submit(app,sid,'Prepare a configuration draft')
+            dispatched=committed(command(app,'ai.request.dispatch',{'requestId':req['requestId']}))
+            task=await wait_task(app.coordinator,dispatched['taskId'])
+&gt;           assert task['status']=='review_ready',task
+E           AssertionError: {'taskId': '257a4e0384bf4991bc23305274f4fecb', 'requestId': '257a4e0384bf4991bc23305274f4fecb', 'account': 'kp', 'profile': {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...}, ...}
+E           assert 'failed' == 'review_ready'
+E             
+E             - review_ready
+E             + failed
+
+engineering\ai\tests\test_management_queries.py:40: AssertionError</failure></testcase><testcase classname="engineering.ai.tests.test_management_queries" name="test_bad_management_query_can_recover_into_checked_unpublished_draft[room_read_sessions-args4]" time="6.188"><failure message="AssertionError: {'taskId': '3b2343365e594e40ac24a1b9663b1698', 'requestId': '3b2343365e594e40ac24a1b9663b1698', 'account': 'kp', 'profile': {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...}, ...}&#10;assert 'failed' == 'review_ready'&#10;  &#10;  - review_ready&#10;  + failed">application = &lt;onlinecoc_ai.api.Application object at 0x0000021F7605CE90&gt;
+name = 'room_read_sessions', args = {'limit': 100}
+
+    @pytest.mark.parametrize('name,args',[
+        ('room_manage_catalog',{'operations':['config.create','configuration.create']}),
+        ('room_manage_catalog',{'operations':['config.list','configuration.update']}),
+        ('room_read_management',{'section':'invented'}),
+        ('room_read_management',{'section':'configurations','limit':0}),
+        ('room_read_sessions',{'limit':100}),
+    ])
+    def test_bad_management_query_can_recover_into_checked_unpublished_draft(application,name,args):
+        app=application;enable(app.host,public=True,kp=True,private=True)
+        async def callback(count,messages,tools):
+            if count==1:return tool_call(name,args)
+            result=json.loads(messages[-1]['content'])
+            if count==2:
+                assert result['error']['code']=='INPUT_INVALID'
+                assert 'No data was returned' in result['notice']
+                return tool_call('room_read_management',{'section':'configurations'})
+            assert any(row['id']=='fixture.token' and row['value']['defaults']['bonus']==0 for row in result['items'])
+            return completion({'kind':'draft','text':'Checked configuration candidate','changeSet':delta()})
+        async def run():
+            app.coordinator.provider_factory=lambda _:Fake(callback);await app.coordinator.start()
+            try:
+                sid=committed(command(app,'ai.session.create',{'title':'Management recovery'}))['sessionId']
+                req=submit(app,sid,'Prepare a configuration draft')
+                dispatched=committed(command(app,'ai.request.dispatch',{'requestId':req['requestId']}))
+                task=await wait_task(app.coordinator,dispatched['taskId'])
+                assert task['status']=='review_ready',task
+                assert task['diagnostics']['toolCalls'][0]['status']=='rejected'
+                context=app.repository.state()['contexts'][task['contextRef']]
+                assert 'configurations' in context['facts']['managementReads']
+                assert not context['facts'].get('consultationOnly')
+                row=next(r for r in app.rulings.list('kp')['items'] if r['rulingId']=='proposal:'+task['proposalId'])
+                assert row['status']=='pending' and row['canDecide']
+                assert app.host.state()['configurations']['fixture.token']['defaults']['bonus']==0
+            finally:await app.coordinator.close()
+&gt;       asyncio.run(run())
+
+engineering\ai\tests\test_management_queries.py:49: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:204: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:127: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\base_events.py:719: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    async def run():
+        app.coordinator.provider_factory=lambda _:Fake(callback);await app.coordinator.start()
+        try:
+            sid=committed(command(app,'ai.session.create',{'title':'Management recovery'}))['sessionId']
+            req=submit(app,sid,'Prepare a configuration draft')
+            dispatched=committed(command(app,'ai.request.dispatch',{'requestId':req['requestId']}))
+            task=await wait_task(app.coordinator,dispatched['taskId'])
+&gt;           assert task['status']=='review_ready',task
+E           AssertionError: {'taskId': '3b2343365e594e40ac24a1b9663b1698', 'requestId': '3b2343365e594e40ac24a1b9663b1698', 'account': 'kp', 'profile': {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...}, ...}
+E           assert 'failed' == 'review_ready'
+E             
+E             - review_ready
+E             + failed
+
+engineering\ai\tests\test_management_queries.py:40: AssertionError</failure></testcase><testcase classname="engineering.ai.tests.test_management_queries" name="test_authoritative_templates_are_paginated_kp_only_and_changes_invalidate_proof" time="1.353" /><testcase classname="engineering.ai.tests.test_management_queries" name="test_configuration_read_cannot_recover_from_disabled_external_scope" time="1.434" /><testcase classname="engineering.ai.tests.test_management_queries" name="test_mixed_search_warns_model_without_relabeling_or_removing_evidence" time="0.001" /><testcase classname="engineering.ai.tests.test_context_usability" name="test_old_parameters_survive_four_turn_window_without_factual_authority" time="1.344" /><testcase classname="engineering.ai.tests.test_context_usability" name="test_retained_requirements_recheck_original_provenance[cancelled]" time="1.307" /><testcase classname="engineering.ai.tests.test_context_usability" name="test_retained_requirements_recheck_original_provenance[session_deleted]" time="1.334" /><testcase classname="engineering.ai.tests.test_context_usability" name="test_retention_is_bounded_reports_omissions_and_respects_history_off" time="2.514" /><testcase classname="engineering.ai.tests.test_context_usability" name="test_only_exact_previously_answered_choices_trigger_bounded_correction" time="1.446" /><testcase classname="engineering.ai.tests.test_context_usability" name="test_new_material_choice_is_not_suppressed" time="0.001" /><testcase classname="engineering.ai.tests.test_context_usability" name="test_recorded_false_numeric_capability_claim_is_rejected_without_suppressing_real_choice" time="0.001" /><testcase classname="engineering.ai.tests.test_context_usability" name="test_configuration_request_preloads_only_authorized_templates[True]" time="1.318" /><testcase classname="engineering.ai.tests.test_context_usability" name="test_configuration_request_preloads_only_authorized_templates[False]" time="1.328" /></testsuite></testsuites>

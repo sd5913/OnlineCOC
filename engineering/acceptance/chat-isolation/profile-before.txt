@@ -1,0 +1,28 @@
+         5057984 function calls (4574687 primitive calls) in 2.662 seconds
+
+   Ordered by: cumulative time
+   List reduced from 221 to 20 due to restriction <20>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.000    0.000    2.607    2.607 host.py:144(command)
+        1    0.000    0.000    2.550    2.550 host.py:44(commit)
+        1    0.000    0.000    2.481    2.481 model.py:52(validate)
+      132    0.000    0.000    2.460    0.019 contracts.py:79(validate_model)
+  149/141    0.000    0.000    2.444    0.017 validators.py:349(iter_errors)
+  224/141    0.002    0.000    2.441    0.017 _keywords.py:290(properties)
+159120/2061    0.340    0.000    2.440    0.001 validators.py:396(descend)
+32673/359    0.004    0.000    2.428    0.007 {built-in method builtins.next}
+ 4758/428    0.020    0.000    2.409    0.006 _keywords.py:36(additionalProperties)
+  16267/9    0.015    0.000    2.400    0.267 _keywords.py:274(ref)
+ 16223/43    0.092    0.000    2.384    0.055 _keywords.py:337(anyOf)
+ 6992/208    0.009    0.000    2.378    0.011 _keywords.py:59(items)
+   126152    0.259    0.000    0.626    0.000 _keywords.py:282(type)
+   105496    0.216    0.000    0.452    0.000 validators.py:339(evolve)
+    16267    0.012    0.000    0.403    0.000 validators.py:459(_validate_reference)
+    16267    0.031    0.000    0.390    0.000 _core.py:653(lookup)
+    16267    0.082    0.000    0.246    0.000 _core.py:254(pointer)
+ 220116/5    0.061    0.000    0.160    0.032 copy.py:110(deepcopy)
+  18834/5    0.052    0.000    0.160    0.032 copy.py:198(_deepcopy_dict)
+   105499    0.043    0.000    0.160    0.000 <attrs generated methods jsonschema.validators.create.<locals>.Validator>:26(__init__)
+
+

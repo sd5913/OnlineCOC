@@ -1,0 +1,78 @@
+{
+  "checkedAt": "2026-11-21T09:29:52.836087+08:00",
+  "checks": [
+    "高危详情保留原摘要和过期提示，三个裁决动作及单备注不变，附归档入口",
+    "归档和恢复提交精确整理封套、自动关闭详情并同步计数，保留业务状态",
+    "已替代裁决进入历史并保留后续入口，详情不再提供批准",
+    "异常DTO也不能把执行中、结果未知和部分完成隐藏出待处理队列；窄屏无溢出"
+  ],
+  "realSaveChanged": false,
+  "realProviderCalls": 0,
+  "scope": "package UI with deterministic DTOs",
+  "evidenceDirectory": "tests/output/review-queue-ui-973a9859",
+  "previousRuns": [
+    {
+      "passed": false,
+      "error": "",
+      "checks": [
+        "高危详情保留原摘要和过期提示，三个裁决动作及单备注不变，附归档入口",
+        "归档和恢复提交精确整理封套、自动关闭详情并同步计数，保留业务状态",
+        "已替代裁决进入历史并保留后续入口，详情不再提供批准"
+      ],
+      "evidenceDirectory": "tests/output/review-queue-ui-7f67acaf"
+    },
+    {
+      "passed": true,
+      "error": null,
+      "checks": [
+        "高危详情保留原摘要和过期提示，三个裁决动作及单备注不变，附归档入口",
+        "归档和恢复提交精确整理封套、自动关闭详情并同步计数，保留业务状态",
+        "已替代裁决进入历史并保留后续入口，详情不再提供批准",
+        "异常DTO也不能把执行中、结果未知和部分完成隐藏出待处理队列；窄屏无溢出"
+      ],
+      "evidenceDirectory": "tests/output/review-queue-ui-91d96401"
+    },
+    {
+      "passed": true,
+      "error": null,
+      "checks": [
+        "高危详情保留原摘要和过期提示，三个裁决动作及单备注不变，附归档入口",
+        "归档和恢复提交精确整理封套、自动关闭详情并同步计数，保留业务状态",
+        "已替代裁决进入历史并保留后续入口，详情不再提供批准",
+        "异常DTO也不能把执行中、结果未知和部分完成隐藏出待处理队列；窄屏无溢出"
+      ],
+      "evidenceDirectory": "tests/output/review-queue-ui-18e5f040"
+    },
+    {
+      "passed": true,
+      "error": null,
+      "checks": [
+        "高危详情保留原摘要和过期提示，三个裁决动作及单备注不变，附归档入口",
+        "归档和恢复提交精确整理封套、自动关闭详情并同步计数，保留业务状态",
+        "已替代裁决进入历史并保留后续入口，详情不再提供批准",
+        "异常DTO也不能把执行中、结果未知和部分完成隐藏出待处理队列；窄屏无溢出"
+      ],
+      "evidenceDirectory": "tests/output/review-queue-ui-9a5a46ff"
+    },
+    {
+      "passed": true,
+      "error": null,
+      "checks": [
+        "高危详情保留原摘要和过期提示，三个裁决动作及单备注不变，附归档入口",
+        "归档和恢复提交精确整理封套、自动关闭详情并同步计数，保留业务状态",
+        "已替代裁决进入历史并保留后续入口，详情不再提供批准",
+        "异常DTO也不能把执行中、结果未知和部分完成隐藏出待处理队列；窄屏无溢出"
+      ],
+      "evidenceDirectory": "tests/output/review-queue-ui-7db8454b"
+    },
+    {
+      "passed": false,
+      "error": "Page.evaluate: TypeError: Failed to fetch dynamically imported module: http://127.0.0.1:56400/ui/keeper-queue.js",
+      "checks": [],
+      "evidenceDirectory": "tests/output/review-queue-ui-611d7ff1"
+    }
+  ],
+  "passed": true,
+  "pageErrors": [],
+  "passedCount": 4
+}

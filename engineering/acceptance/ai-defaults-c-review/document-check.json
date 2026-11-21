@@ -1,0 +1,17 @@
+{
+  "frozenSourceMismatches": [],
+  "brokenRelativeFileLinks": [],
+  "documents": [
+    "ai-rulings.md",
+    "ai-session-access.md",
+    "ai-responses.md",
+    "ai-pack-embedding.md",
+    "ai-debug-review.md",
+    "ai-runtime.md",
+    "ai-manager.md",
+    "ai-data-query.md",
+    "ai-player-knowledge.md",
+    "developer-reference/stumpsville-interface.md",
+    "developer-reference/stumpsville-data-management.md"
+  ]
+}

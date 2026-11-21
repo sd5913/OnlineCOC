@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="6" time="10.809" timestamp="2026-11-20T18:40:27.876295+08:00" hostname="LAPTOP-BIFSL64A"><testcase classname="tests.test_history_continuity" name="test_stale_authorized_response_stays_visible_with_readonly_notice" time="1.695" /><testcase classname="tests.test_history_continuity" name="test_short_confirmation_retains_stale_intent_without_old_execution_proofs" time="1.395" /><testcase classname="tests.test_history_continuity" name="test_query_history_identity_witness_and_legacy_boundary[read-True-True]" time="1.402" /><testcase classname="tests.test_history_continuity" name="test_query_history_identity_witness_and_legacy_boundary[search-False-True]" time="1.601" /><testcase classname="tests.test_history_continuity" name="test_query_history_identity_witness_and_legacy_boundary[search-True-False]" time="1.524" /><testcase classname="tests.test_history_continuity" name="test_stale_history_never_restores_deleted_or_revoked_body[deleted]" time="1.301"><failure message="AssertionError: {'requestId': '0611974592b846b88e8f1d02b009c893', 'sessionId': 'a44b61efa3b04df7be66b23cf9a0be02', 'status': 'stale', 'createdAt': 1795171238.2698395, ...}&#10;assert (not '已确定：给 player1 的角色加1点护甲，保留其他状态；等待另行审批。')&#10; +  where '已确定：给 player1 的角色加1点护甲，保留其他状态；等待另行审批。' = &lt;built-in method get of dict object at 0x0000019337EC1900&gt;('response')&#10;[+1 more line; full report in element text]">application = &lt;onlinecoc_ai.api.Application object at 0x0000019337D17D40&gt;
+change = 'deleted'
+
+    @pytest.mark.parametrize('change',['deleted','hidden','authorization','policy','profile','session_deleted'])
+    def test_stale_history_never_restores_deleted_or_revoked_body(application,change):
+        app=application;sid,task=history_case(app)
+        room=app.host.state()
+        if change=='deleted':del room['entities']['actor-one']
+        elif change=='hidden':room['entities']['actor-one']['visibility']='kp'
+        elif change=='authorization':room['members']['kp']['authorizationEpoch']+=1
+        elif change=='policy':room['aiControl']['settings']['externalSources']['private']=False
+        elif change=='profile':room['aiControl']['settings']['profileId']='other-profile'
+        elif change=='session_deleted':
+            record=app.sessions.get('kp',sid)['session'];committed(command(app,'ai.session.delete',{'sessionId':sid,'revision':record['revision']}))
+            assert not app.tasks('kp')['items'];return
+        app.host.commit(room)
+        row=app.sessions.get('kp',sid)['items'][0]
+&gt;       assert not row.get('response') and not row.get('historicalReadOnly'),row
+E       AssertionError: {'requestId': '0611974592b846b88e8f1d02b009c893', 'sessionId': 'a44b61efa3b04df7be66b23cf9a0be02', 'status': 'stale', 'createdAt': 1795171238.2698395, ...}
+E       assert (not '已确定：给 player1 的角色加1点护甲，保留其他状态；等待另行审批。')
+E        +  where '已确定：给 player1 的角色加1点护甲，保留其他状态；等待另行审批。' = &lt;built-in method get of dict object at 0x0000019337EC1900&gt;('response')
+E        +    where &lt;built-in method get of dict object at 0x0000019337EC1900&gt; = {'requestId': '0611974592b846b88e8f1d02b009c893', 'sessionId': 'a44b61efa3b04df7be66b23cf9a0be02', 'status': 'stale', 'createdAt': 1795171238.2698395, ...}.get
+
+engineering\ai\tests\test_history_continuity.py:96: AssertionError</failure></testcase></testsuite></testsuites>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="real non-JSON HTTP 500 retains status and command identity without retry" time="2.240236" classname="test" file="D:\Studies\Art Programming\OnlineCOC\engineering\acceptance\http-errors\test_transport.mjs"/>
+	<testcase name="real default host exception remains an HTTP failure" time="0.004751" classname="test" file="D:\Studies\Art Programming\OnlineCOC\engineering\acceptance\http-errors\test_transport.mjs"/>
+	<testcase name="real storage refusal preserves its machine code" time="0.007909" classname="test" file="D:\Studies\Art Programming\OnlineCOC\engineering\acceptance\http-errors\test_transport.mjs"/>
+	<testcase name="real malformed success is a response failure, not network failure" time="0.004745" classname="test" file="D:\Studies\Art Programming\OnlineCOC\engineering\acceptance\http-errors\test_transport.mjs"/>
+	<testcase name="HTTP error payload cannot overwrite trace or leak detail" time="0.005275" classname="test" file="D:\Studies\Art Programming\OnlineCOC\engineering\acceptance\http-errors\test_transport.mjs"/>
+	<testcase name="non-machine error code is replaced without echoing response content" time="0.003981" classname="test" file="D:\Studies\Art Programming\OnlineCOC\engineering\acceptance\http-errors\test_transport.mjs"/>
+	<testcase name="real command admission rejection retains request metadata" time="0.009143" classname="test" file="D:\Studies\Art Programming\OnlineCOC\engineering\acceptance\http-errors\test_transport.mjs"/>
+	<testcase name="real business rejection stays a queryable receipt" time="0.027390" classname="test" file="D:\Studies\Art Programming\OnlineCOC\engineering\acceptance\http-errors\test_transport.mjs"/>
+	<testcase name="unknown receipt remains unknown and is not converted to a rejection" time="0.002566" classname="test" file="D:\Studies\Art Programming\OnlineCOC\engineering\acceptance\http-errors\test_transport.mjs"/>
+	<testcase name="real connection refusal has no HTTP response status" time="0.025089" classname="test" file="D:\Studies\Art Programming\OnlineCOC\engineering\acceptance\http-errors\test_transport.mjs"/>
+	<testcase name="invalid serialization is a local request error and never sends" time="0.000509" classname="test" file="D:\Studies\Art Programming\OnlineCOC\engineering\acceptance\http-errors\test_transport.mjs"/>
+	<testcase name="local disconnected host and AI commands have structured identity" time="0.000325" classname="test" file="D:\Studies\Art Programming\OnlineCOC\engineering\acceptance\http-errors\test_transport.mjs"/>
+	<testcase name="late failure after account reset cannot expose old request metadata" time="0.000308" classname="test" file="D:\Studies\Art Programming\OnlineCOC\engineering\acceptance\http-errors\test_transport.mjs"/>
+	<testcase name="read diagnostic operation omits query content" time="0.003196" classname="test" file="D:\Studies\Art Programming\OnlineCOC\engineering\acceptance\http-errors\test_transport.mjs"/>
+	<testcase name="client cannot reattach unsafe identifier text to a transport failure" time="0.005743" classname="test" file="D:\Studies\Art Programming\OnlineCOC\engineering\acceptance\http-errors\test_transport.mjs"/>
+	<!-- tests 15 -->
+	<!-- suites 0 -->
+	<!-- pass 15 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 2449.9448 -->
+</testsuites>

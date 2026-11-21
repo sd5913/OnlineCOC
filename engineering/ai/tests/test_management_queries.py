@@ -38,7 +38,7 @@ def test_bad_management_query_can_recover_into_checked_unpublished_draft(applica
             dispatched=committed(command(app,'ai.request.dispatch',{'requestId':req['requestId']}))
             task=await wait_task(app.coordinator,dispatched['taskId'])
             assert task['status']=='review_ready',task
-            assert task['diagnostics']['toolCalls'][0]['status']=='rejected'
+            assert next(row for row in task['diagnostics']['toolCalls'] if not row.get('automatic'))['status']=='rejected'
             context=app.repository.state()['contexts'][task['contextRef']]
             assert 'configurations' in context['facts']['managementReads']
             assert not context['facts'].get('consultationOnly')
@@ -85,6 +85,6 @@ def test_mixed_search_warns_model_without_relabeling_or_removing_evidence():
     rows=[{'ref':{'sourceId':'host','kind':'config'}},{'ref':{'sourceId':'stumpsville','kind':'config'}}]
     page={'items':rows,'page':{'nextCursor':None}}
     result=model_result(page,{'types':['config']})
-    assert result['sourcePolicy']['publication']=='consultation-only'
+    assert result['sourcePolicy']['publication']=='requires-kp-source-review'
     assert result['items']==rows and page['items']==rows
     assert model_result({'items':rows[:1],'page':{'nextCursor':None}},{})['sourcePolicy']['publication']=='host-evidence'

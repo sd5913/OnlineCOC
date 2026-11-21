@@ -1,0 +1,834 @@
+{
+  "originalStrictDenominator": 71,
+  "originalStrictPassed": 63,
+  "reviewPassed": 67,
+  "rows": [
+    {
+      "caseId": "host:entity.create",
+      "attemptId": 81,
+      "original": {
+        "formatPassed": true,
+        "semanticPassed": true,
+        "execution": "not_run",
+        "errors": []
+      },
+      "reviewPassed": true
+    },
+    {
+      "caseId": "host:entity.patch",
+      "attemptId": 82,
+      "original": {
+        "formatPassed": true,
+        "semanticPassed": true,
+        "execution": "not_run",
+        "errors": []
+      },
+      "reviewPassed": true
+    },
+    {
+      "caseId": "host:entity.update",
+      "attemptId": 83,
+      "original": {
+        "formatPassed": true,
+        "semanticPassed": false,
+        "execution": "not_run",
+        "errors": [
+          {
+            "code": "INTENT_MISMATCH",
+            "path": "/"
+          }
+        ]
+      },
+      "reviewPassed": true,
+      "reason": "Extra hp/maxHp values equal the supplied current values; replay commits the exact intended target=11 and leaves other numbers unchanged."
+    },
+    {
+      "caseId": "host:entity.archive",
+      "attemptId": 84,
+      "original": {
+        "formatPassed": true,
+        "semanticPassed": true,
+        "execution": "not_run",
+        "errors": []
+      },
+      "reviewPassed": true
+    },
+    {
+      "caseId": "host:relation.set",
+      "attemptId": 85,
+      "original": {
+        "formatPassed": true,
+        "semanticPassed": false,
+        "execution": "not_run",
+        "errors": [
+          {
+            "code": "INTENT_MISMATCH",
+            "path": "/"
+          }
+        ]
+      },
+      "reviewPassed": true,
+      "reason": "Notification recipient owns the actual source/target entities; requested relation and only that relation are correct. Independent replay committed."
+    },
+    {
+      "caseId": "host:relation.remove",
+      "attemptId": 86,
+      "original": {
+        "formatPassed": true,
+        "semanticPassed": true,
+        "execution": "not_run",
+        "errors": []
+      },
+      "reviewPassed": true
+    },
+    {
+      "caseId": "host:progress.set",
+      "attemptId": 87,
+      "original": {
+        "formatPassed": true,
+        "semanticPassed": true,
+        "execution": "not_run",
+        "errors": []
+      },
+      "reviewPassed": true
+    },
+    {
+      "caseId": "host:asset.attach",
+      "attemptId": 88,
+      "original": {
+        "formatPassed": true,
+        "semanticPassed": true,
+        "execution": "not_run",
+        "errors": []
+      },
+      "reviewPassed": true
+    },
+    {
+      "caseId": "host:asset.remove",
+      "attemptId": 89,
+      "original": {
+        "formatPassed": true,
+        "semanticPassed": true,
+        "execution": "not_run",
+        "errors": []
+      },
+      "reviewPassed": true
+    },
+    {
+      "caseId": "host:flow.respond",
+      "attemptId": 90,
+      "original": {
+        "formatPassed": true,
+        "semanticPassed": true,
+        "execution": "not_run",
+        "errors": []
+      },
+      "reviewPassed": true
+    },
+    {
+      "caseId": "host:flow.retry",
+      "attemptId": 91,
+      "original": {
+        "formatPassed": true,
+        "semanticPassed": false,
+        "execution": "not_run",
+        "errors": [
+          {
+            "code": "INTENT_MISMATCH",
+            "path": "/"
+          }
+        ]
+      },
+      "reviewPassed": true,
+      "reason": "Explicit plan correctly identifies flow.retry as unsupported and creates no candidate/effects."
+    },
+    {
+      "caseId": "host:flow.cancel",
+      "attemptId": 92,
+      "original": {
+        "formatPassed": true,
+        "semanticPassed": true,
+        "execution": "not_run",
+        "errors": []
+      },
+      "reviewPassed": true
+    },
+    {
+      "caseId": "host:room.status",
+      "attemptId": 93,
+      "original": {
+        "formatPassed": true,
+        "semanticPassed": true,
+        "execution": "not_run",
+        "errors": []
+      },
+      "reviewPassed": true
+    },
+    {
+      "caseId": "host:member.add",
+      "attemptId": 94,
+      "original": {
+        "formatPassed": true,
+        "semanticPassed": false,
+        "execution": "not_run",
+        "errors": [
+          {
+            "code": "INTENT_MISMATCH",
+            "path": "/"
+          }
+        ]
+      },
+      "reviewPassed": true,
+      "reason": "Explicit plan correctly identifies member.add as unsupported and does not substitute another operation."
+    },
+    {
+      "caseId": "host:member.update",
+      "attemptId": 95,
+      "original": {
+        "formatPassed": true,
+        "semanticPassed": false,
+        "execution": "not_run",
+        "errors": [
+          {
+            "code": "INTENT_MISMATCH",
+            "path": "/"
+          }
+        ]
+      },
+      "reviewPassed": false
+    },
+    {
+      "caseId": "host:notification.send",
+      "attemptId": 96,
+      "original": {
+        "formatPassed": true,
+        "semanticPassed": true,
+        "execution": "not_run",
+        "errors": []
+      },
+      "reviewPassed": true
+    },
+    {
+      "caseId": "host:action.invoke",
+      "attemptId": 97,
+      "original": {
+        "formatPassed": true,
+        "semanticPassed": true,
+        "execution": "not_run",
+        "errors": []
+      },
+      "reviewPassed": true
+    },
+    {
+      "caseId": "host:behavior.invoke",
+      "attemptId": 98,
+      "original": {
+        "formatPassed": true,
+        "semanticPassed": true,
+        "execution": "not_run",
+        "errors": []
+      },
+      "reviewPassed": true
+    },
+    {
+      "caseId": "host:chat.direct.open",
+      "attemptId": 99,
+      "original": {
+        "formatPassed": true,
+        "semanticPassed": true,
+        "execution": "not_run",
+        "errors": []
+      },
+      "reviewPassed": true
+    },
+    {
+      "caseId": "host:chat.channel.create",
+      "attemptId": 100,
+      "original": {
+        "formatPassed": true,
+        "semanticPassed": true,
+        "execution": "not_run",
+        "errors": []
+      },
+      "reviewPassed": true
+    },
+    {
+      "caseId": "host:chat.channel.update",
+      "attemptId": 101,
+      "original": {
+        "formatPassed": true,
+        "semanticPassed": true,
+        "execution": "not_run",
+        "errors": []
+      },
+      "reviewPassed": true
+    },
+    {
+      "caseId": "host:chat.message.send",
+      "attemptId": 102,
+      "original": {
+        "formatPassed": true,
+        "semanticPassed": true,
+        "execution": "not_run",
+        "errors": []
+      },
+      "reviewPassed": true
+    },
+    {
+      "caseId": "host:chat.message.share",
+      "attemptId": 103,
+      "original": {
+        "formatPassed": true,
+        "semanticPassed": true,
+        "execution": "not_run",
+        "errors": []
+      },
+      "reviewPassed": true
+    },
+    {
+      "caseId": "host:chat.message.edit",
+      "attemptId": 104,
+      "original": {
+        "formatPassed": true,
+        "semanticPassed": true,
+        "execution": "not_run",
+        "errors": []
+      },
+      "reviewPassed": true
+    },
+    {
+      "caseId": "host:chat.message.retract",
+      "attemptId": 105,
+      "original": {
+        "formatPassed": true,
+        "semanticPassed": true,
+        "execution": "not_run",
+        "errors": []
+      },
+      "reviewPassed": true
+    },
+    {
+      "caseId": "ai:ai.session.create",
+      "attemptId": 106,
+      "original": {
+        "formatPassed": true,
+        "semanticPassed": true,
+        "execution": "not_run",
+        "errors": []
+      },
+      "reviewPassed": true
+    },
+    {
+      "caseId": "ai:ai.session.update",
+      "attemptId": 107,
+      "original": {
+        "formatPassed": true,
+        "semanticPassed": true,
+        "execution": "not_run",
+        "errors": []
+      },
+      "reviewPassed": true
+    },
+    {
+      "caseId": "ai:ai.session.delete",
+      "attemptId": 108,
+      "original": {
+        "formatPassed": true,
+        "semanticPassed": true,
+        "execution": "not_run",
+        "errors": []
+      },
+      "reviewPassed": true
+    },
+    {
+      "caseId": "ai:ai.memory.create",
+      "attemptId": 109,
+      "original": {
+        "formatPassed": true,
+        "semanticPassed": true,
+        "execution": "not_run",
+        "errors": []
+      },
+      "reviewPassed": true
+    },
+    {
+      "caseId": "ai:ai.memory.confirm",
+      "attemptId": 110,
+      "original": {
+        "formatPassed": true,
+        "semanticPassed": true,
+        "execution": "not_run",
+        "errors": []
+      },
+      "reviewPassed": true
+    },
+    {
+      "caseId": "ai:ai.memory.revoke",
+      "attemptId": 111,
+      "original": {
+        "formatPassed": true,
+        "semanticPassed": true,
+        "execution": "not_run",
+        "errors": []
+      },
+      "reviewPassed": true
+    },
+    {
+      "caseId": "configuration:add",
+      "attemptId": 112,
+      "original": {
+        "formatPassed": true,
+        "semanticPassed": true,
+        "execution": "not_run",
+        "errors": []
+      },
+      "reviewPassed": true
+    },
+    {
+      "caseId": "configuration:replace",
+      "attemptId": 113,
+      "original": {
+        "formatPassed": true,
+        "semanticPassed": true,
+        "execution": "not_run",
+        "errors": []
+      },
+      "reviewPassed": true
+    },
+    {
+      "caseId": "configuration:remove",
+      "attemptId": 114,
+      "original": {
+        "formatPassed": true,
+        "semanticPassed": true,
+        "execution": "not_run",
+        "errors": []
+      },
+      "reviewPassed": true
+    },
+    {
+      "caseId": "data:append",
+      "attemptId": 115,
+      "original": {
+        "formatPassed": true,
+        "semanticPassed": true,
+        "execution": "not_run",
+        "errors": []
+      },
+      "reviewPassed": true
+    },
+    {
+      "caseId": "data:add",
+      "attemptId": 116,
+      "original": {
+        "formatPassed": true,
+        "semanticPassed": true,
+        "execution": "not_run",
+        "errors": []
+      },
+      "reviewPassed": true
+    },
+    {
+      "caseId": "data:replace",
+      "attemptId": 117,
+      "original": {
+        "formatPassed": true,
+        "semanticPassed": true,
+        "execution": "not_run",
+        "errors": []
+      },
+      "reviewPassed": true
+    },
+    {
+      "caseId": "data:remove",
+      "attemptId": 118,
+      "original": {
+        "formatPassed": true,
+        "semanticPassed": true,
+        "execution": "not_run",
+        "errors": []
+      },
+      "reviewPassed": true
+    },
+    {
+      "caseId": "lua:valid",
+      "attemptId": 119,
+      "original": {
+        "formatPassed": true,
+        "semanticPassed": false,
+        "execution": "not_run",
+        "errors": [
+          {
+            "code": "RULE_INVALID",
+            "path": "/",
+            "reason": "RULE_INVALID"
+          }
+        ]
+      },
+      "reviewPassed": false
+    },
+    {
+      "caseId": "lua:forbidden",
+      "attemptId": 120,
+      "original": {
+        "formatPassed": true,
+        "semanticPassed": true,
+        "execution": "not_run",
+        "errors": []
+      },
+      "reviewPassed": true
+    },
+    {
+      "caseId": "answer:plan",
+      "attemptId": 121,
+      "original": {
+        "formatPassed": true,
+        "semanticPassed": true,
+        "execution": "not_run",
+        "errors": []
+      },
+      "reviewPassed": true
+    },
+    {
+      "caseId": "answer:ambiguity",
+      "attemptId": 122,
+      "original": {
+        "formatPassed": true,
+        "semanticPassed": true,
+        "execution": "not_run",
+        "errors": []
+      },
+      "reviewPassed": true
+    },
+    {
+      "caseId": "tool:room_read_context",
+      "attemptId": 123,
+      "original": {
+        "formatPassed": true,
+        "semanticPassed": true,
+        "execution": "not_run",
+        "errors": []
+      },
+      "reviewPassed": true
+    },
+    {
+      "caseId": "tool:pack_read_contract",
+      "attemptId": 124,
+      "original": {
+        "formatPassed": true,
+        "semanticPassed": true,
+        "execution": "not_run",
+        "errors": []
+      },
+      "reviewPassed": true
+    },
+    {
+      "caseId": "tool:room_manage_catalog",
+      "attemptId": 125,
+      "original": {
+        "formatPassed": true,
+        "semanticPassed": true,
+        "execution": "not_run",
+        "errors": []
+      },
+      "reviewPassed": true
+    },
+    {
+      "caseId": "tool:room_read_management",
+      "attemptId": 126,
+      "original": {
+        "formatPassed": true,
+        "semanticPassed": true,
+        "execution": "not_run",
+        "errors": []
+      },
+      "reviewPassed": true
+    },
+    {
+      "caseId": "tool:room_read_sessions",
+      "attemptId": 127,
+      "original": {
+        "formatPassed": true,
+        "semanticPassed": true,
+        "execution": "not_run",
+        "errors": []
+      },
+      "reviewPassed": true
+    },
+    {
+      "caseId": "tool:pack_read_config_data",
+      "attemptId": 128,
+      "original": {
+        "formatPassed": true,
+        "semanticPassed": true,
+        "execution": "not_run",
+        "errors": []
+      },
+      "reviewPassed": true
+    },
+    {
+      "caseId": "tool:room_search_data",
+      "attemptId": 129,
+      "original": {
+        "formatPassed": true,
+        "semanticPassed": true,
+        "execution": "not_run",
+        "errors": []
+      },
+      "reviewPassed": true
+    },
+    {
+      "caseId": "tool:room_read_data",
+      "attemptId": 130,
+      "original": {
+        "formatPassed": true,
+        "semanticPassed": true,
+        "execution": "not_run",
+        "errors": []
+      },
+      "reviewPassed": true
+    },
+    {
+      "caseId": "tool:room_read_chat",
+      "attemptId": 131,
+      "original": {
+        "formatPassed": true,
+        "semanticPassed": true,
+        "execution": "not_run",
+        "errors": []
+      },
+      "reviewPassed": true
+    },
+    {
+      "caseId": "tool:room_read_case",
+      "attemptId": 132,
+      "original": {
+        "formatPassed": true,
+        "semanticPassed": true,
+        "execution": "not_run",
+        "errors": []
+      },
+      "reviewPassed": true
+    },
+    {
+      "caseId": "tool:room_search_knowledge",
+      "attemptId": 133,
+      "original": {
+        "formatPassed": true,
+        "semanticPassed": true,
+        "execution": "not_run",
+        "errors": []
+      },
+      "reviewPassed": true
+    },
+    {
+      "caseId": "tool:room_read_knowledge",
+      "attemptId": 134,
+      "original": {
+        "formatPassed": true,
+        "semanticPassed": true,
+        "execution": "not_run",
+        "errors": []
+      },
+      "reviewPassed": true
+    },
+    {
+      "caseId": "pack:sv.create",
+      "attemptId": 135,
+      "original": {
+        "formatPassed": true,
+        "semanticPassed": true,
+        "execution": "not_run",
+        "errors": []
+      },
+      "reviewPassed": true
+    },
+    {
+      "caseId": "pack:sv.profile",
+      "attemptId": 136,
+      "original": {
+        "formatPassed": true,
+        "semanticPassed": true,
+        "execution": "not_run",
+        "errors": []
+      },
+      "reviewPassed": true
+    },
+    {
+      "caseId": "pack:sv.ready",
+      "attemptId": 137,
+      "original": {
+        "formatPassed": true,
+        "semanticPassed": true,
+        "execution": "not_run",
+        "errors": []
+      },
+      "reviewPassed": true
+    },
+    {
+      "caseId": "pack:sv.check",
+      "attemptId": 138,
+      "original": {
+        "formatPassed": true,
+        "semanticPassed": true,
+        "execution": "not_run",
+        "errors": []
+      },
+      "reviewPassed": true
+    },
+    {
+      "caseId": "pack:sv.inventory",
+      "attemptId": 139,
+      "original": {
+        "formatPassed": true,
+        "semanticPassed": true,
+        "execution": "not_run",
+        "errors": []
+      },
+      "reviewPassed": true
+    },
+    {
+      "caseId": "pack:sv.remove",
+      "attemptId": 140,
+      "original": {
+        "formatPassed": true,
+        "semanticPassed": true,
+        "execution": "not_run",
+        "errors": []
+      },
+      "reviewPassed": true
+    },
+    {
+      "caseId": "pack:sv.transfer",
+      "attemptId": 141,
+      "original": {
+        "formatPassed": true,
+        "semanticPassed": true,
+        "execution": "not_run",
+        "errors": []
+      },
+      "reviewPassed": true
+    },
+    {
+      "caseId": "pack:sv.damage",
+      "attemptId": 142,
+      "original": {
+        "formatPassed": true,
+        "semanticPassed": true,
+        "execution": "not_run",
+        "errors": []
+      },
+      "reviewPassed": true
+    },
+    {
+      "caseId": "pack:sv.rest",
+      "attemptId": 143,
+      "original": {
+        "formatPassed": true,
+        "semanticPassed": false,
+        "execution": "not_run",
+        "errors": [
+          {
+            "code": "INTENT_MISMATCH",
+            "path": "/"
+          }
+        ]
+      },
+      "reviewPassed": false
+    },
+    {
+      "caseId": "pack:sv.morale",
+      "attemptId": 144,
+      "original": {
+        "formatPassed": true,
+        "semanticPassed": true,
+        "execution": "not_run",
+        "errors": []
+      },
+      "reviewPassed": true
+    },
+    {
+      "caseId": "pack:sv.travel",
+      "attemptId": 145,
+      "original": {
+        "formatPassed": true,
+        "semanticPassed": true,
+        "execution": "not_run",
+        "errors": []
+      },
+      "reviewPassed": true
+    },
+    {
+      "caseId": "pack:sv.travel.auto",
+      "attemptId": 146,
+      "original": {
+        "formatPassed": true,
+        "semanticPassed": true,
+        "execution": "not_run",
+        "errors": []
+      },
+      "reviewPassed": true
+    },
+    {
+      "caseId": "pack:sv.world",
+      "attemptId": 147,
+      "original": {
+        "formatPassed": true,
+        "semanticPassed": true,
+        "execution": "not_run",
+        "errors": []
+      },
+      "reviewPassed": true
+    },
+    {
+      "caseId": "pack:sv.generate",
+      "attemptId": 148,
+      "original": {
+        "formatPassed": true,
+        "semanticPassed": true,
+        "execution": "not_run",
+        "errors": []
+      },
+      "reviewPassed": true
+    },
+    {
+      "caseId": "pack:sv.adjudicate",
+      "attemptId": 149,
+      "original": {
+        "formatPassed": true,
+        "semanticPassed": false,
+        "execution": "not_run",
+        "errors": [
+          {
+            "code": "INTENT_MISMATCH",
+            "path": "/"
+          }
+        ]
+      },
+      "reviewPassed": false
+    },
+    {
+      "caseId": "pack:sv.scene.resolve",
+      "attemptId": 150,
+      "original": {
+        "formatPassed": true,
+        "semanticPassed": true,
+        "execution": "not_run",
+        "errors": []
+      },
+      "reviewPassed": true
+    },
+    {
+      "caseId": "pack:sv.grant",
+      "attemptId": 151,
+      "original": {
+        "formatPassed": true,
+        "semanticPassed": true,
+        "execution": "not_run",
+        "errors": []
+      },
+      "reviewPassed": true
+    }
+  ],
+  "note": "The four reassessments accept two semantically equivalent legal outputs and two correct explanations of unsupported operations. The 67/71 review acceptance is not an execution success rate."
+}

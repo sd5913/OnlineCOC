@@ -1,0 +1,6 @@
+{
+  "externalAttemptLimit": 20,
+  "totalTokenLimit": 250000,
+  "unknownUsage": "reserve full conservative byte-based token estimate",
+  "purpose": "ISSUE-022 context usability before/after synthetic-room trials"
+}

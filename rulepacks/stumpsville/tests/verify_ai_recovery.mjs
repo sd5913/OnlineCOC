@@ -28,6 +28,8 @@ async function context(){
     rulingCard:()=>'',mountPackageRulings:()=>({destroy(){},refresh(){},setHistory(){}}),t:key=>key,locale:()=> 'zh-CN',mountKeeperAIQueue:()=>({destroy(){},refresh(){},remember(){}})});
   // Imports are injected explicitly; execute the actual package modules unchanged otherwise.
   try{const helper=await fs.readFile(path.join(pack,'ui/ai-recovery.js'),'utf8');vm.runInContext(helper.replace(/\bexport /g,''),ctx);}catch(e){if(e.code!=='ENOENT')throw e;}
+  const rulings=await fs.readFile(path.join(pack,'ui/keeper-rulings.js'),'utf8');
+  vm.runInContext(rulings.replace(/^import .*?;\s*/gm,'').replace(/\bexport /g,'').replace('function mountPackageRulings(','function unusedRulingsFixture('),ctx);
   return {ctx,stored,all,body};
 }
 const pending='sv.desktop.aiQueue.room.kp';

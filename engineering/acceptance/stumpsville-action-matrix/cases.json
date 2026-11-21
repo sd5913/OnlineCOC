@@ -1,0 +1,1827 @@
+{
+  "schemaVersion": 1,
+  "fixtureSemantics": "Only listed game entities/relations; configuration defaults plus explicit numeric overrides. Fresh Host supplies ordinary empty room collections and synthetic identities.",
+  "configurations": [
+    {
+      "configurationId": "sv.character",
+      "revision": "1",
+      "typeRef": "actor",
+      "defaults": {
+        "str": 10,
+        "strMax": 10,
+        "dex": 10,
+        "dexMax": 10,
+        "wil": 10,
+        "wilMax": 10,
+        "hp": 4,
+        "maxHp": 4,
+        "armor": 0,
+        "pips": 0,
+        "level": 1,
+        "xp": 0,
+        "grit": 0,
+        "location": 1,
+        "approved": 0,
+        "ready": 0,
+        "checks": 0,
+        "lastRoll": 0,
+        "incapacitated": 0,
+        "litSlot": 0,
+        "item1": 0,
+        "uses1": 0,
+        "ticks1": 0,
+        "item2": 0,
+        "uses2": 0,
+        "ticks2": 0,
+        "item3": 0,
+        "uses3": 0,
+        "ticks3": 0,
+        "item4": 0,
+        "uses4": 0,
+        "ticks4": 0,
+        "item5": 0,
+        "uses5": 0,
+        "ticks5": 0,
+        "item6": 0,
+        "uses6": 0,
+        "ticks6": 0,
+        "item7": 0,
+        "uses7": 0,
+        "ticks7": 0,
+        "item8": 0,
+        "uses8": 0,
+        "ticks8": 0,
+        "item9": 0,
+        "uses9": 0,
+        "ticks9": 0,
+        "item10": 0,
+        "uses10": 0,
+        "ticks10": 0,
+        "item11": 0,
+        "uses11": 0,
+        "ticks11": 0,
+        "item12": 0,
+        "uses12": 0,
+        "ticks12": 0,
+        "item13": 0,
+        "uses13": 0,
+        "ticks13": 0,
+        "item14": 0,
+        "uses14": 0,
+        "ticks14": 0,
+        "item15": 0,
+        "uses15": 0,
+        "ticks15": 0,
+        "item16": 0,
+        "uses16": 0,
+        "ticks16": 0,
+        "item17": 0,
+        "uses17": 0,
+        "ticks17": 0,
+        "item18": 0,
+        "uses18": 0,
+        "ticks18": 0,
+        "item19": 0,
+        "uses19": 0,
+        "ticks19": 0,
+        "item20": 0,
+        "uses20": 0,
+        "ticks20": 0,
+        "conditionPending": 0
+      }
+    },
+    {
+      "configurationId": "sv.session",
+      "revision": "2",
+      "typeRef": "actor",
+      "defaults": {
+        "phase": 0,
+        "round": 0,
+        "autoResolve": 1,
+        "door1_2": 0,
+        "door2_3": 0,
+        "door3_4": 0,
+        "door3_5": 0,
+        "door3_6": 0,
+        "door3_7": 0,
+        "door3_8": 0,
+        "door7_8": 0,
+        "door8_9": 0,
+        "door9_10": 0
+      }
+    },
+    {
+      "configurationId": "sv.world",
+      "revision": "1",
+      "typeRef": "actor",
+      "defaults": {
+        "generated4": 0,
+        "generated7": 0,
+        "pots": 0,
+        "rats": 0
+      }
+    },
+    {
+      "configurationId": "sv.location",
+      "revision": "1",
+      "typeRef": "actor",
+      "defaults": {
+        "index": 1
+      }
+    },
+    {
+      "configurationId": "sv.npc",
+      "revision": "1",
+      "typeRef": "actor",
+      "defaults": {
+        "str": 10,
+        "strMax": 10,
+        "dex": 10,
+        "dexMax": 10,
+        "wil": 10,
+        "wilMax": 10,
+        "hp": 4,
+        "maxHp": 4,
+        "armor": 0,
+        "incapacitated": 0,
+        "location": 1,
+        "lastRoll": 0
+      }
+    },
+    {
+      "configurationId": "sv.draft",
+      "revision": "1",
+      "typeRef": "actor",
+      "defaults": {
+        "str": 0,
+        "dex": 0,
+        "wil": 0,
+        "hp": 0,
+        "pips": 0,
+        "generation": 0,
+        "maxHp": 6,
+        "strMax": 12,
+        "dexMax": 12,
+        "wilMax": 12
+      }
+    },
+    {
+      "configurationId": "sv.scene",
+      "revision": "1",
+      "typeRef": "actor",
+      "defaults": {
+        "trapKnown": 0,
+        "trapState": 0,
+        "cheese1": 1,
+        "gateKnown": 0,
+        "gateTrap": 0,
+        "gateOpen": 0,
+        "poolKnown": 0,
+        "moneyRemaining": 140,
+        "idolRemaining": 1,
+        "laddersKnown": 0,
+        "potsKnown": 0,
+        "potsRemaining": 0,
+        "paintingRead": 0,
+        "webKnown": 0,
+        "villagersContacted": 0,
+        "villagersFreed": 0,
+        "spidersAlert": 0,
+        "ratsObserved": 0,
+        "ratsTalked": 0,
+        "ratsDeal": 0,
+        "ratsAlert": 0,
+        "hallDoor": 0,
+        "fluteRemaining": 1,
+        "factoryKnown": 0,
+        "paddleRemaining": 1,
+        "clothRemaining": 1,
+        "roofKnown": 0,
+        "ironOpen": 0,
+        "snakeKnown": 0,
+        "snakeCalmed": 0,
+        "snakeAlert": 0,
+        "caveOpen": 0,
+        "agingKnown": 0,
+        "cheese10": 8,
+        "ernieKnown": 0,
+        "ernieAwake": 0,
+        "ernieSpoken": 0,
+        "northKnown": 0
+      }
+    }
+  ],
+  "cases": [
+    {
+      "caseId": "create-positive",
+      "category": "positive",
+      "actionId": "sv.create",
+      "principal": "player1",
+      "intent": "为我拥有的角色草稿生成初始属性；草稿尚不是已批准角色。",
+      "stateSpec": {
+        "entities": [
+          {
+            "id": "draft",
+            "configurationId": "sv.draft",
+            "owner": "player1",
+            "visibility": "public",
+            "numbers": {}
+          }
+        ],
+        "relations": []
+      },
+      "action": {
+        "target": "host",
+        "op": "action.invoke",
+        "args": {
+          "actionId": "sv.create",
+          "input": {
+            "actor": "draft"
+          }
+        }
+      },
+      "randomPolicy": {
+        "kind": "scripted-only-in-isolated-harness",
+        "draws": [
+          {
+            "sides": 6,
+            "value": 3
+          },
+          {
+            "sides": 6,
+            "value": 4
+          },
+          {
+            "sides": 6,
+            "value": 1
+          },
+          {
+            "sides": 6,
+            "value": 3
+          },
+          {
+            "sides": 6,
+            "value": 4
+          },
+          {
+            "sides": 6,
+            "value": 1
+          },
+          {
+            "sides": 6,
+            "value": 3
+          },
+          {
+            "sides": 6,
+            "value": 4
+          },
+          {
+            "sides": 6,
+            "value": 1
+          },
+          {
+            "sides": 6,
+            "value": 4
+          },
+          {
+            "sides": 6,
+            "value": 2
+          }
+        ]
+      },
+      "oracle": {
+        "receiptStatus": "committed",
+        "preflightStatus": "runtime_required",
+        "numberUpdates": {
+          "draft": {
+            "str": 7,
+            "dex": 7,
+            "wil": 7,
+            "hp": 4,
+            "pips": 2,
+            "generation": 1
+          }
+        },
+        "resultSubset": {
+          "str": 7,
+          "dex": 7,
+          "wil": 7,
+          "hp": 4,
+          "pips": 2
+        },
+        "unchangedOtherEntityFields": true,
+        "idempotentReplay": true
+      }
+    },
+    {
+      "caseId": "profile-positive",
+      "category": "positive",
+      "actionId": "sv.profile",
+      "principal": "kp",
+      "intent": "KP批准尚未批准的角色，使用明确给定的初始数值。",
+      "stateSpec": {
+        "entities": [
+          {
+            "id": "actor",
+            "configurationId": "sv.character",
+            "owner": "player1",
+            "visibility": "public",
+            "numbers": {}
+          }
+        ],
+        "relations": []
+      },
+      "action": {
+        "target": "host",
+        "op": "action.invoke",
+        "args": {
+          "actionId": "sv.profile",
+          "input": {
+            "actor": "actor",
+            "strength": 8,
+            "dexterity": 9,
+            "will": 10,
+            "hp": 5,
+            "pips": 3
+          }
+        }
+      },
+      "randomPolicy": {
+        "kind": "scripted-only-in-isolated-harness",
+        "draws": []
+      },
+      "oracle": {
+        "receiptStatus": "committed",
+        "preflightStatus": "passed",
+        "numberUpdates": {
+          "actor": {
+            "str": 8,
+            "strMax": 8,
+            "dex": 9,
+            "dexMax": 9,
+            "wil": 10,
+            "wilMax": 10,
+            "maxHp": 5,
+            "hp": 5,
+            "pips": 3,
+            "approved": 1
+          }
+        },
+        "resultSubset": {
+          "character": "actor",
+          "approved": true
+        },
+        "unchangedOtherEntityFields": true,
+        "idempotentReplay": true
+      }
+    },
+    {
+      "caseId": "ready-positive",
+      "category": "positive",
+      "actionId": "sv.ready",
+      "principal": "player1",
+      "intent": "将我已批准的角色设为准备完成。",
+      "stateSpec": {
+        "entities": [
+          {
+            "id": "actor",
+            "configurationId": "sv.character",
+            "owner": "player1",
+            "visibility": "public",
+            "numbers": {
+              "approved": 1
+            }
+          }
+        ],
+        "relations": []
+      },
+      "action": {
+        "target": "host",
+        "op": "action.invoke",
+        "args": {
+          "actionId": "sv.ready",
+          "input": {
+            "actor": "actor",
+            "ready": true
+          }
+        }
+      },
+      "randomPolicy": {
+        "kind": "scripted-only-in-isolated-harness",
+        "draws": []
+      },
+      "oracle": {
+        "receiptStatus": "committed",
+        "preflightStatus": "passed",
+        "numberUpdates": {
+          "actor": {
+            "ready": 1
+          }
+        },
+        "resultSubset": {
+          "ready": true
+        },
+        "unchangedOtherEntityFields": true,
+        "idempotentReplay": true
+      }
+    },
+    {
+      "caseId": "check-positive",
+      "category": "positive",
+      "actionId": "sv.check",
+      "principal": "player1",
+      "intent": "已开始的会话中，我已批准且准备好的角色进行普通STR检定。",
+      "stateSpec": {
+        "entities": [
+          {
+            "id": "actor",
+            "configurationId": "sv.character",
+            "owner": "player1",
+            "visibility": "public",
+            "numbers": {
+              "approved": 1,
+              "ready": 1
+            }
+          },
+          {
+            "id": "session",
+            "configurationId": "sv.session",
+            "owner": null,
+            "visibility": "public",
+            "numbers": {
+              "phase": 1
+            }
+          }
+        ],
+        "relations": [
+          {
+            "sourceId": "actor",
+            "targetId": "session",
+            "relationType": "source"
+          }
+        ]
+      },
+      "action": {
+        "target": "host",
+        "op": "action.invoke",
+        "args": {
+          "actionId": "sv.check",
+          "input": {
+            "actor": "actor",
+            "attribute": "str",
+            "mode": "normal"
+          }
+        }
+      },
+      "randomPolicy": {
+        "kind": "scripted-only-in-isolated-harness",
+        "draws": [
+          {
+            "sides": 20,
+            "value": 5
+          }
+        ]
+      },
+      "oracle": {
+        "receiptStatus": "committed",
+        "preflightStatus": "runtime_required",
+        "numberUpdates": {
+          "actor": {
+            "checks": 1,
+            "lastRoll": 5
+          }
+        },
+        "resultSubset": {
+          "attribute": "str",
+          "mode": "normal",
+          "rolled": 5,
+          "target": 10,
+          "passed": true
+        },
+        "unchangedOtherEntityFields": true,
+        "idempotentReplay": true
+      }
+    },
+    {
+      "caseId": "inventory-positive",
+      "category": "positive",
+      "actionId": "sv.inventory",
+      "principal": "player1",
+      "intent": "消耗第5槽的口粮一格用量；物品定义编号是3，参数slot应为5。",
+      "stateSpec": {
+        "entities": [
+          {
+            "id": "actor",
+            "configurationId": "sv.character",
+            "owner": "player1",
+            "visibility": "public",
+            "numbers": {
+              "item5": 3,
+              "uses5": 3
+            }
+          },
+          {
+            "id": "session",
+            "configurationId": "sv.session",
+            "owner": null,
+            "visibility": "public",
+            "numbers": {}
+          }
+        ],
+        "relations": [
+          {
+            "sourceId": "actor",
+            "targetId": "session",
+            "relationType": "source"
+          }
+        ]
+      },
+      "action": {
+        "target": "host",
+        "op": "action.invoke",
+        "args": {
+          "actionId": "sv.inventory",
+          "input": {
+            "actor": "actor",
+            "operation": "use",
+            "slot": 5,
+            "value": 1
+          }
+        }
+      },
+      "randomPolicy": {
+        "kind": "scripted-only-in-isolated-harness",
+        "draws": []
+      },
+      "oracle": {
+        "receiptStatus": "committed",
+        "preflightStatus": "passed",
+        "numberUpdates": {
+          "actor": {
+            "uses5": 2
+          }
+        },
+        "resultSubset": {
+          "operation": "use",
+          "slot": 5,
+          "uses": 2
+        },
+        "unchangedOtherEntityFields": true,
+        "idempotentReplay": true
+      }
+    },
+    {
+      "caseId": "grant-positive",
+      "category": "positive",
+      "actionId": "sv.grant",
+      "principal": "kp",
+      "intent": "KP将定义编号3的口粮放入空的第5槽，带3格用量。",
+      "stateSpec": {
+        "entities": [
+          {
+            "id": "actor",
+            "configurationId": "sv.character",
+            "owner": "player1",
+            "visibility": "public",
+            "numbers": {}
+          }
+        ],
+        "relations": []
+      },
+      "action": {
+        "target": "host",
+        "op": "action.invoke",
+        "args": {
+          "actionId": "sv.grant",
+          "input": {
+            "actor": "actor",
+            "item": 3,
+            "slot": 5,
+            "uses": 3
+          }
+        }
+      },
+      "randomPolicy": {
+        "kind": "scripted-only-in-isolated-harness",
+        "draws": []
+      },
+      "oracle": {
+        "receiptStatus": "committed",
+        "preflightStatus": "passed",
+        "numberUpdates": {
+          "actor": {
+            "item5": 3,
+            "uses5": 3,
+            "ticks5": 0
+          }
+        },
+        "resultSubset": {
+          "item": 3,
+          "slot": 5
+        },
+        "unchangedOtherEntityFields": true,
+        "idempotentReplay": true
+      }
+    },
+    {
+      "caseId": "remove-positive",
+      "category": "positive",
+      "actionId": "sv.remove",
+      "principal": "kp",
+      "intent": "KP移除第5槽正在点燃的火把，并清除该槽计时和点燃标记。",
+      "stateSpec": {
+        "entities": [
+          {
+            "id": "actor",
+            "configurationId": "sv.character",
+            "owner": "player1",
+            "visibility": "public",
+            "numbers": {
+              "item5": 2,
+              "uses5": 3,
+              "ticks5": 2,
+              "litSlot": 5
+            }
+          }
+        ],
+        "relations": []
+      },
+      "action": {
+        "target": "host",
+        "op": "action.invoke",
+        "args": {
+          "actionId": "sv.remove",
+          "input": {
+            "actor": "actor",
+            "slot": 5
+          }
+        }
+      },
+      "randomPolicy": {
+        "kind": "scripted-only-in-isolated-harness",
+        "draws": []
+      },
+      "oracle": {
+        "receiptStatus": "committed",
+        "preflightStatus": "passed",
+        "numberUpdates": {
+          "actor": {
+            "item5": 0,
+            "uses5": 0,
+            "ticks5": 0,
+            "litSlot": 0
+          }
+        },
+        "resultSubset": {
+          "removed": 2,
+          "slot": 5
+        },
+        "unchangedOtherEntityFields": true,
+        "idempotentReplay": true
+      }
+    },
+    {
+      "caseId": "transfer-positive",
+      "category": "positive",
+      "actionId": "sv.transfer",
+      "principal": "kp",
+      "intent": "KP把角色第5槽口粮转交另一角色的空第6槽，保留剩余用量。",
+      "stateSpec": {
+        "entities": [
+          {
+            "id": "actor",
+            "configurationId": "sv.character",
+            "owner": "player1",
+            "visibility": "public",
+            "numbers": {
+              "item5": 3,
+              "uses5": 2,
+              "ticks5": 1
+            }
+          },
+          {
+            "id": "target",
+            "configurationId": "sv.character",
+            "owner": "player2",
+            "visibility": "public",
+            "numbers": {}
+          }
+        ],
+        "relations": []
+      },
+      "action": {
+        "target": "host",
+        "op": "action.invoke",
+        "args": {
+          "actionId": "sv.transfer",
+          "input": {
+            "actor": "actor",
+            "target": "target",
+            "slot": 5,
+            "destination": 6
+          }
+        }
+      },
+      "randomPolicy": {
+        "kind": "scripted-only-in-isolated-harness",
+        "draws": []
+      },
+      "oracle": {
+        "receiptStatus": "committed",
+        "preflightStatus": "passed",
+        "numberUpdates": {
+          "actor": {
+            "item5": 0,
+            "uses5": 0,
+            "ticks5": 0
+          },
+          "target": {
+            "item6": 3,
+            "uses6": 2,
+            "ticks6": 1
+          }
+        },
+        "resultSubset": {
+          "item": 3,
+          "recipient": "target",
+          "slot": 6
+        },
+        "unchangedOtherEntityFields": true,
+        "idempotentReplay": true
+      }
+    },
+    {
+      "caseId": "damage-positive",
+      "category": "positive",
+      "actionId": "sv.damage",
+      "principal": "kp",
+      "intent": "KP结算2点伤害；目标无护甲、HP为4，不发生溢出。",
+      "stateSpec": {
+        "entities": [
+          {
+            "id": "actor",
+            "configurationId": "sv.character",
+            "owner": "player1",
+            "visibility": "public",
+            "numbers": {}
+          }
+        ],
+        "relations": []
+      },
+      "action": {
+        "target": "host",
+        "op": "action.invoke",
+        "args": {
+          "actionId": "sv.damage",
+          "input": {
+            "actor": "actor",
+            "amount": 2,
+            "attribute": "str"
+          }
+        }
+      },
+      "randomPolicy": {
+        "kind": "scripted-only-in-isolated-harness",
+        "draws": []
+      },
+      "oracle": {
+        "receiptStatus": "committed",
+        "preflightStatus": "passed",
+        "numberUpdates": {
+          "actor": {
+            "hp": 2
+          }
+        },
+        "resultSubset": {
+          "damage": 2,
+          "hp": 2,
+          "overflow": 0,
+          "critical": false
+        },
+        "unchangedOtherEntityFields": true,
+        "idempotentReplay": true
+      }
+    },
+    {
+      "caseId": "rest-positive",
+      "category": "positive",
+      "actionId": "sv.rest",
+      "principal": "kp",
+      "intent": "KP令仍存活角色短休，恢复由实际骰子和最大HP决定，清除失能。",
+      "stateSpec": {
+        "entities": [
+          {
+            "id": "actor",
+            "configurationId": "sv.character",
+            "owner": "player1",
+            "visibility": "public",
+            "numbers": {
+              "hp": 1,
+              "incapacitated": 1
+            }
+          }
+        ],
+        "relations": []
+      },
+      "action": {
+        "target": "host",
+        "op": "action.invoke",
+        "args": {
+          "actionId": "sv.rest",
+          "input": {
+            "actor": "actor",
+            "kind": "short",
+            "attribute": ""
+          }
+        }
+      },
+      "randomPolicy": {
+        "kind": "scripted-only-in-isolated-harness",
+        "draws": [
+          {
+            "sides": 6,
+            "value": 2
+          }
+        ]
+      },
+      "oracle": {
+        "receiptStatus": "committed",
+        "preflightStatus": "runtime_required",
+        "numberUpdates": {
+          "actor": {
+            "hp": 4,
+            "incapacitated": 0
+          }
+        },
+        "resultSubset": {
+          "kind": "short",
+          "hp": 4
+        },
+        "unchangedOtherEntityFields": true,
+        "idempotentReplay": true
+      }
+    },
+    {
+      "caseId": "morale-positive",
+      "category": "positive",
+      "actionId": "sv.morale",
+      "principal": "kp",
+      "intent": "KP为真实sv.npc对象进行士气检定。",
+      "stateSpec": {
+        "entities": [
+          {
+            "id": "npc",
+            "configurationId": "sv.npc",
+            "owner": null,
+            "visibility": "public",
+            "numbers": {}
+          }
+        ],
+        "relations": []
+      },
+      "action": {
+        "target": "host",
+        "op": "action.invoke",
+        "args": {
+          "actionId": "sv.morale",
+          "input": {
+            "actor": "npc"
+          }
+        }
+      },
+      "randomPolicy": {
+        "kind": "scripted-only-in-isolated-harness",
+        "draws": [
+          {
+            "sides": 20,
+            "value": 7
+          }
+        ]
+      },
+      "oracle": {
+        "receiptStatus": "committed",
+        "preflightStatus": "runtime_required",
+        "numberUpdates": {
+          "npc": {
+            "lastRoll": 7
+          }
+        },
+        "resultSubset": {
+          "attribute": "wil",
+          "rolled": 7,
+          "target": 10,
+          "passed": true
+        },
+        "unchangedOtherEntityFields": true,
+        "idempotentReplay": true
+      }
+    },
+    {
+      "caseId": "travel-positive",
+      "category": "positive",
+      "actionId": "sv.travel",
+      "principal": "kp",
+      "intent": "KP将已批准角色移动到配置中确实存在的地点编号2。",
+      "stateSpec": {
+        "entities": [
+          {
+            "id": "actor",
+            "configurationId": "sv.character",
+            "owner": "player1",
+            "visibility": "public",
+            "numbers": {
+              "approved": 1
+            }
+          }
+        ],
+        "relations": []
+      },
+      "action": {
+        "target": "host",
+        "op": "action.invoke",
+        "args": {
+          "actionId": "sv.travel",
+          "input": {
+            "actor": "actor",
+            "location": 2
+          }
+        }
+      },
+      "randomPolicy": {
+        "kind": "scripted-only-in-isolated-harness",
+        "draws": []
+      },
+      "oracle": {
+        "receiptStatus": "committed",
+        "preflightStatus": "passed",
+        "numberUpdates": {
+          "actor": {
+            "location": 2
+          }
+        },
+        "resultSubset": {
+          "location": 2
+        },
+        "unchangedOtherEntityFields": true,
+        "idempotentReplay": true
+      }
+    },
+    {
+      "caseId": "travel-auto-positive",
+      "category": "positive",
+      "actionId": "sv.travel.auto",
+      "principal": "player1",
+      "intent": "从地点1沿已开放通路前往相邻的公开地点对象destination（其index为2）。",
+      "stateSpec": {
+        "entities": [
+          {
+            "id": "actor",
+            "configurationId": "sv.character",
+            "owner": "player1",
+            "visibility": "public",
+            "numbers": {
+              "approved": 1,
+              "ready": 1
+            }
+          },
+          {
+            "id": "session",
+            "configurationId": "sv.session",
+            "owner": null,
+            "visibility": "public",
+            "numbers": {
+              "phase": 1,
+              "door1_2": 1
+            }
+          },
+          {
+            "id": "destination",
+            "configurationId": "sv.location",
+            "owner": null,
+            "visibility": "public",
+            "numbers": {
+              "index": 2
+            }
+          }
+        ],
+        "relations": [
+          {
+            "sourceId": "actor",
+            "targetId": "session",
+            "relationType": "source"
+          }
+        ]
+      },
+      "action": {
+        "target": "host",
+        "op": "action.invoke",
+        "args": {
+          "actionId": "sv.travel.auto",
+          "input": {
+            "actor": "actor",
+            "destination": "destination"
+          }
+        }
+      },
+      "randomPolicy": {
+        "kind": "scripted-only-in-isolated-harness",
+        "draws": []
+      },
+      "oracle": {
+        "receiptStatus": "committed",
+        "preflightStatus": "passed",
+        "numberUpdates": {
+          "actor": {
+            "location": 2
+          }
+        },
+        "resultSubset": {
+          "location": 2,
+          "automatic": true
+        },
+        "unchangedOtherEntityFields": true,
+        "idempotentReplay": true
+      }
+    },
+    {
+      "caseId": "world-positive",
+      "category": "positive",
+      "actionId": "sv.world",
+      "principal": "kp",
+      "intent": "KP启动sv.session会话；actor应指向会话对象。",
+      "stateSpec": {
+        "entities": [
+          {
+            "id": "session",
+            "configurationId": "sv.session",
+            "owner": null,
+            "visibility": "public",
+            "numbers": {}
+          }
+        ],
+        "relations": []
+      },
+      "action": {
+        "target": "host",
+        "op": "action.invoke",
+        "args": {
+          "actionId": "sv.world",
+          "input": {
+            "actor": "session",
+            "operation": "start",
+            "value": 0
+          }
+        }
+      },
+      "randomPolicy": {
+        "kind": "scripted-only-in-isolated-harness",
+        "draws": []
+      },
+      "oracle": {
+        "receiptStatus": "committed",
+        "preflightStatus": "passed",
+        "numberUpdates": {
+          "session": {
+            "phase": 1
+          }
+        },
+        "resultSubset": {
+          "phase": 1,
+          "round": 0
+        },
+        "unchangedOtherEntityFields": true,
+        "idempotentReplay": true
+      }
+    },
+    {
+      "caseId": "generate-positive",
+      "category": "positive",
+      "actionId": "sv.generate",
+      "principal": "kp",
+      "intent": "KP为尚未生成锅具库存的sv.world对象生成锅具数量。",
+      "stateSpec": {
+        "entities": [
+          {
+            "id": "world",
+            "configurationId": "sv.world",
+            "owner": null,
+            "visibility": "public",
+            "numbers": {}
+          }
+        ],
+        "relations": []
+      },
+      "action": {
+        "target": "host",
+        "op": "action.invoke",
+        "args": {
+          "actionId": "sv.generate",
+          "input": {
+            "actor": "world",
+            "kind": "pots"
+          }
+        }
+      },
+      "randomPolicy": {
+        "kind": "scripted-only-in-isolated-harness",
+        "draws": [
+          {
+            "sides": 6,
+            "value": 4
+          }
+        ]
+      },
+      "oracle": {
+        "receiptStatus": "committed",
+        "preflightStatus": "runtime_required",
+        "numberUpdates": {
+          "world": {
+            "pots": 4,
+            "generated4": 1
+          }
+        },
+        "resultSubset": {
+          "count": 4
+        },
+        "unchangedOtherEntityFields": true,
+        "idempotentReplay": true
+      }
+    },
+    {
+      "caseId": "adjudicate-positive",
+      "category": "positive",
+      "actionId": "sv.adjudicate",
+      "principal": "kp",
+      "intent": "自动结算关闭时，由KP裁定角色普通DEX检定，保留全部必填占位字段。",
+      "stateSpec": {
+        "entities": [
+          {
+            "id": "actor",
+            "configurationId": "sv.character",
+            "owner": "player1",
+            "visibility": "public",
+            "numbers": {
+              "approved": 1,
+              "ready": 1
+            }
+          },
+          {
+            "id": "session",
+            "configurationId": "sv.session",
+            "owner": null,
+            "visibility": "public",
+            "numbers": {
+              "phase": 1,
+              "autoResolve": 0
+            }
+          }
+        ],
+        "relations": [
+          {
+            "sourceId": "actor",
+            "targetId": "session",
+            "relationType": "source"
+          }
+        ]
+      },
+      "action": {
+        "target": "host",
+        "op": "action.invoke",
+        "args": {
+          "actionId": "sv.adjudicate",
+          "input": {
+            "actor": "actor",
+            "kind": "check",
+            "attribute": "dex",
+            "mode": "normal",
+            "operation": "",
+            "slot": 0,
+            "value": 0
+          }
+        }
+      },
+      "randomPolicy": {
+        "kind": "scripted-only-in-isolated-harness",
+        "draws": [
+          {
+            "sides": 20,
+            "value": 6
+          }
+        ]
+      },
+      "oracle": {
+        "receiptStatus": "committed",
+        "preflightStatus": "runtime_required",
+        "numberUpdates": {
+          "actor": {
+            "checks": 1,
+            "lastRoll": 6
+          }
+        },
+        "resultSubset": {
+          "attribute": "dex",
+          "mode": "normal",
+          "rolled": 6,
+          "passed": true
+        },
+        "unchangedOtherEntityFields": true,
+        "idempotentReplay": true
+      }
+    },
+    {
+      "caseId": "scene-resolve-positive",
+      "category": "positive",
+      "actionId": "sv.scene.resolve",
+      "principal": "kp",
+      "intent": "KP在入口地点观察地面，记录实际场景发现；无需投骰。",
+      "stateSpec": {
+        "entities": [
+          {
+            "id": "actor",
+            "configurationId": "sv.character",
+            "owner": "player1",
+            "visibility": "public",
+            "numbers": {
+              "approved": 1,
+              "ready": 1
+            }
+          },
+          {
+            "id": "session",
+            "configurationId": "sv.session",
+            "owner": null,
+            "visibility": "public",
+            "numbers": {
+              "phase": 1
+            }
+          },
+          {
+            "id": "scene",
+            "configurationId": "sv.scene",
+            "owner": null,
+            "visibility": "public",
+            "numbers": {}
+          },
+          {
+            "id": "world",
+            "configurationId": "sv.world",
+            "owner": null,
+            "visibility": "public",
+            "numbers": {}
+          }
+        ],
+        "relations": [
+          {
+            "sourceId": "actor",
+            "targetId": "session",
+            "relationType": "source"
+          }
+        ]
+      },
+      "action": {
+        "target": "host",
+        "op": "action.invoke",
+        "args": {
+          "actionId": "sv.scene.resolve",
+          "input": {
+            "actor": "actor",
+            "scene": "scene",
+            "world": "world",
+            "action": "tunnel-ground",
+            "choice": "inspect"
+          }
+        }
+      },
+      "randomPolicy": {
+        "kind": "scripted-only-in-isolated-harness",
+        "draws": []
+      },
+      "oracle": {
+        "receiptStatus": "committed",
+        "preflightStatus": "passed",
+        "numberUpdates": {
+          "scene": {
+            "trapKnown": 1
+          }
+        },
+        "resultSubset": {
+          "public": {
+            "sceneAction": "tunnel-ground",
+            "choice": "inspect",
+            "outcome": "success",
+            "cost": 0
+          },
+          "reveals": [
+            2
+          ]
+        },
+        "unchangedOtherEntityFields": true,
+        "idempotentReplay": true
+      }
+    },
+    {
+      "caseId": "check-gameplay-failure",
+      "category": "gameplay_failure",
+      "actionId": "sv.check",
+      "principal": "player1",
+      "intent": "正常检定未过仍应提交一次，重放原ID不得重掷。",
+      "stateSpec": {
+        "entities": [
+          {
+            "id": "actor",
+            "configurationId": "sv.character",
+            "owner": "player1",
+            "visibility": "public",
+            "numbers": {
+              "approved": 1,
+              "ready": 1
+            }
+          },
+          {
+            "id": "session",
+            "configurationId": "sv.session",
+            "owner": null,
+            "visibility": "public",
+            "numbers": {
+              "phase": 1
+            }
+          }
+        ],
+        "relations": [
+          {
+            "sourceId": "actor",
+            "targetId": "session",
+            "relationType": "source"
+          }
+        ]
+      },
+      "action": {
+        "target": "host",
+        "op": "action.invoke",
+        "args": {
+          "actionId": "sv.check",
+          "input": {
+            "actor": "actor",
+            "attribute": "str",
+            "mode": "normal"
+          }
+        }
+      },
+      "randomPolicy": {
+        "kind": "scripted-only-in-isolated-harness",
+        "draws": [
+          {
+            "sides": 20,
+            "value": 20
+          }
+        ]
+      },
+      "oracle": {
+        "receiptStatus": "committed",
+        "preflightStatus": "runtime_required",
+        "numberUpdates": {
+          "actor": {
+            "checks": 1,
+            "lastRoll": 20
+          }
+        },
+        "resultSubset": {
+          "rolled": 20,
+          "target": 10,
+          "passed": false
+        },
+        "unchangedOtherEntityFields": true,
+        "idempotentReplay": true
+      }
+    },
+    {
+      "caseId": "scene-business-blocked",
+      "category": "business_blocked",
+      "actionId": "sv.scene.resolve",
+      "principal": "kp",
+      "intent": "尚未发现机关连接时尝试谨慎取奶酪：规则返回blocked，未达目标，不是技术拒绝。",
+      "stateSpec": {
+        "entities": [
+          {
+            "id": "actor",
+            "configurationId": "sv.character",
+            "owner": "player1",
+            "visibility": "public",
+            "numbers": {
+              "approved": 1,
+              "ready": 1
+            }
+          },
+          {
+            "id": "session",
+            "configurationId": "sv.session",
+            "owner": null,
+            "visibility": "public",
+            "numbers": {
+              "phase": 1
+            }
+          },
+          {
+            "id": "scene",
+            "configurationId": "sv.scene",
+            "owner": null,
+            "visibility": "public",
+            "numbers": {}
+          },
+          {
+            "id": "world",
+            "configurationId": "sv.world",
+            "owner": null,
+            "visibility": "public",
+            "numbers": {}
+          }
+        ],
+        "relations": [
+          {
+            "sourceId": "actor",
+            "targetId": "session",
+            "relationType": "source"
+          }
+        ]
+      },
+      "action": {
+        "target": "host",
+        "op": "action.invoke",
+        "args": {
+          "actionId": "sv.scene.resolve",
+          "input": {
+            "actor": "actor",
+            "scene": "scene",
+            "world": "world",
+            "action": "tunnel-cheese",
+            "choice": "careful"
+          }
+        }
+      },
+      "randomPolicy": {
+        "kind": "scripted-only-in-isolated-harness",
+        "draws": []
+      },
+      "oracle": {
+        "receiptStatus": "committed",
+        "preflightStatus": "passed",
+        "numberUpdates": {},
+        "resultSubset": {
+          "public": {
+            "outcome": "blocked",
+            "cost": 0
+          }
+        },
+        "unchangedOtherEntityFields": true,
+        "idempotentReplay": true
+      }
+    },
+    {
+      "caseId": "scene-gameplay-failure",
+      "category": "gameplay_failure",
+      "actionId": "sv.scene.resolve",
+      "principal": "kp",
+      "intent": "机关已知但解除检定失败，伤害和轮次应保留；不能当执行错误回滚重掷。",
+      "stateSpec": {
+        "entities": [
+          {
+            "id": "actor",
+            "configurationId": "sv.character",
+            "owner": "player1",
+            "visibility": "public",
+            "numbers": {
+              "approved": 1,
+              "ready": 1
+            }
+          },
+          {
+            "id": "session",
+            "configurationId": "sv.session",
+            "owner": null,
+            "visibility": "public",
+            "numbers": {
+              "phase": 1
+            }
+          },
+          {
+            "id": "scene",
+            "configurationId": "sv.scene",
+            "owner": null,
+            "visibility": "public",
+            "numbers": {
+              "trapKnown": 1
+            }
+          },
+          {
+            "id": "world",
+            "configurationId": "sv.world",
+            "owner": null,
+            "visibility": "public",
+            "numbers": {}
+          }
+        ],
+        "relations": [
+          {
+            "sourceId": "actor",
+            "targetId": "session",
+            "relationType": "source"
+          }
+        ]
+      },
+      "action": {
+        "target": "host",
+        "op": "action.invoke",
+        "args": {
+          "actionId": "sv.scene.resolve",
+          "input": {
+            "actor": "actor",
+            "scene": "scene",
+            "world": "world",
+            "action": "tunnel-cheese",
+            "choice": "careful"
+          }
+        }
+      },
+      "randomPolicy": {
+        "kind": "scripted-only-in-isolated-harness",
+        "draws": [
+          {
+            "sides": 20,
+            "value": 20
+          },
+          {
+            "sides": 12,
+            "value": 1
+          }
+        ]
+      },
+      "oracle": {
+        "receiptStatus": "committed",
+        "preflightStatus": "runtime_required",
+        "numberUpdates": {
+          "actor": {
+            "checks": 1,
+            "lastRoll": 20,
+            "hp": 3
+          },
+          "scene": {
+            "trapState": 2
+          },
+          "session": {
+            "round": 1
+          }
+        },
+        "resultSubset": {
+          "public": {
+            "outcome": "failure",
+            "cost": 1,
+            "round": 1
+          }
+        },
+        "unchangedOtherEntityFields": true,
+        "idempotentReplay": true
+      }
+    },
+    {
+      "caseId": "inventory-wrong-slot",
+      "category": "technical_rejection",
+      "actionId": "sv.inventory",
+      "principal": "kp",
+      "intent": "误将物品定义编号3当槽位；槽3是奶酪，口粮在槽5，必须拒绝且不扣物品。",
+      "stateSpec": {
+        "entities": [
+          {
+            "id": "actor",
+            "configurationId": "sv.character",
+            "owner": "player1",
+            "visibility": "public",
+            "numbers": {
+              "item3": 6,
+              "uses3": 0,
+              "item5": 3,
+              "uses5": 3
+            }
+          },
+          {
+            "id": "session",
+            "configurationId": "sv.session",
+            "owner": null,
+            "visibility": "public",
+            "numbers": {}
+          }
+        ],
+        "relations": [
+          {
+            "sourceId": "actor",
+            "targetId": "session",
+            "relationType": "source"
+          }
+        ]
+      },
+      "action": {
+        "target": "host",
+        "op": "action.invoke",
+        "args": {
+          "actionId": "sv.inventory",
+          "input": {
+            "actor": "actor",
+            "operation": "use",
+            "slot": 3,
+            "value": 1
+          }
+        }
+      },
+      "randomPolicy": {
+        "kind": "scripted-only-in-isolated-harness",
+        "draws": []
+      },
+      "oracle": {
+        "receiptStatus": "rejected",
+        "preflightStatus": "blocked",
+        "numberUpdates": {},
+        "resultSubset": {},
+        "unchangedOtherEntityFields": true,
+        "idempotentReplay": true,
+        "itemCode": "RULE_FAILED",
+        "ruleCode": "SV_ITEM_NO_USES_OR_MANUAL_SPELL"
+      }
+    },
+    {
+      "caseId": "grant-permission-denied",
+      "category": "technical_rejection",
+      "actionId": "sv.grant",
+      "principal": "player1",
+      "intent": "玩家不得通过公开目录绕过sv.grant的KP权限。",
+      "stateSpec": {
+        "entities": [
+          {
+            "id": "actor",
+            "configurationId": "sv.character",
+            "owner": "player1",
+            "visibility": "public",
+            "numbers": {}
+          }
+        ],
+        "relations": []
+      },
+      "action": {
+        "target": "host",
+        "op": "action.invoke",
+        "args": {
+          "actionId": "sv.grant",
+          "input": {
+            "actor": "actor",
+            "item": 3,
+            "slot": 5,
+            "uses": 3
+          }
+        }
+      },
+      "randomPolicy": {
+        "kind": "scripted-only-in-isolated-harness",
+        "draws": []
+      },
+      "oracle": {
+        "receiptStatus": "rejected",
+        "preflightStatus": "blocked",
+        "numberUpdates": {},
+        "resultSubset": {},
+        "unchangedOtherEntityFields": true,
+        "idempotentReplay": true,
+        "itemCode": "PERMISSION_DENIED"
+      }
+    },
+    {
+      "caseId": "inventory-schema-invalid",
+      "category": "technical_rejection",
+      "actionId": "sv.inventory",
+      "principal": "kp",
+      "intent": "slot错误地提供为字符串，参数检查必须阻止执行。",
+      "stateSpec": {
+        "entities": [
+          {
+            "id": "actor",
+            "configurationId": "sv.character",
+            "owner": "player1",
+            "visibility": "public",
+            "numbers": {
+              "item5": 3,
+              "uses5": 3
+            }
+          },
+          {
+            "id": "session",
+            "configurationId": "sv.session",
+            "owner": null,
+            "visibility": "public",
+            "numbers": {}
+          }
+        ],
+        "relations": [
+          {
+            "sourceId": "actor",
+            "targetId": "session",
+            "relationType": "source"
+          }
+        ]
+      },
+      "action": {
+        "target": "host",
+        "op": "action.invoke",
+        "args": {
+          "actionId": "sv.inventory",
+          "input": {
+            "actor": "actor",
+            "operation": "use",
+            "slot": "5",
+            "value": 1
+          }
+        }
+      },
+      "randomPolicy": {
+        "kind": "scripted-only-in-isolated-harness",
+        "draws": []
+      },
+      "oracle": {
+        "receiptStatus": "rejected",
+        "preflightStatus": "blocked",
+        "numberUpdates": {},
+        "resultSubset": {},
+        "unchangedOtherEntityFields": true,
+        "idempotentReplay": true,
+        "itemCode": "INPUT_INVALID"
+      }
+    },
+    {
+      "caseId": "travel-door-closed",
+      "category": "technical_rejection",
+      "actionId": "sv.travel.auto",
+      "principal": "kp",
+      "intent": "地点相邻但门未开放，不应把Schema通过当成旅行可执行。",
+      "stateSpec": {
+        "entities": [
+          {
+            "id": "actor",
+            "configurationId": "sv.character",
+            "owner": "player1",
+            "visibility": "public",
+            "numbers": {
+              "approved": 1,
+              "ready": 1
+            }
+          },
+          {
+            "id": "session",
+            "configurationId": "sv.session",
+            "owner": null,
+            "visibility": "public",
+            "numbers": {
+              "phase": 1
+            }
+          },
+          {
+            "id": "destination",
+            "configurationId": "sv.location",
+            "owner": null,
+            "visibility": "public",
+            "numbers": {
+              "index": 2
+            }
+          }
+        ],
+        "relations": [
+          {
+            "sourceId": "actor",
+            "targetId": "session",
+            "relationType": "source"
+          }
+        ]
+      },
+      "action": {
+        "target": "host",
+        "op": "action.invoke",
+        "args": {
+          "actionId": "sv.travel.auto",
+          "input": {
+            "actor": "actor",
+            "destination": "destination"
+          }
+        }
+      },
+      "randomPolicy": {
+        "kind": "scripted-only-in-isolated-harness",
+        "draws": []
+      },
+      "oracle": {
+        "receiptStatus": "rejected",
+        "preflightStatus": "blocked",
+        "numberUpdates": {},
+        "resultSubset": {},
+        "unchangedOtherEntityFields": true,
+        "idempotentReplay": true,
+        "itemCode": "RULE_FAILED",
+        "ruleCode": "SV_DOOR_CLOSED"
+      }
+    }
+  ]
+}

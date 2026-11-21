@@ -1,0 +1,50 @@
+import {mountStyle} from './styles.js';
+import {guardedClient} from './guard.js';
+
+export function mountSessionManager(target,rawClient,{title='会话管理',onOpen=null,onChange=()=>{}}={}){
+ const element=document.createElement('div');target.append(element);const root=element.attachShadow({mode:'open'});
+ mountStyle(root,new URL('./session-manager.css',import.meta.url));
+ const panel=document.createElement('section');panel.className='session-manager';root.append(panel);
+ panel.innerHTML=`<header><div><h2></h2><span class="owner"></span></div><button class="refresh">刷新</button></header><p class="policy"></p>
+ <form class="create"><input aria-label="新会话名称" maxlength="120" placeholder="新会话名称"><select class="level" aria-label="会话权限"><option value="administrator">管理员会话</option><option value="player">玩家会话</option></select><button>新建会话</button></form>
+ <nav class="tabs" aria-label="会话状态"><button type="button" data-filter="active" aria-pressed="true">进行中</button><button type="button" data-filter="archived" aria-pressed="false">已归档</button><button type="button" data-filter="all" aria-pressed="false">全部</button></nav>
+ <div class="filters"><input class="search" placeholder="搜索名称或创建者" aria-label="搜索会话"><select class="filter" aria-label="会话状态"><option value="active">进行中</option><option value="archived">已归档</option><option value="all">全部</option></select><select class="scope" aria-label="归属"><option value="all">房间所有会话</option><option value="mine">仅我的会话</option></select><select class="sort" aria-label="排序"><option value="recent">最近更新</option><option value="title">名称</option></select></div>
+ <div class="workspace"><div class="list" aria-label="会话列表"></div><form class="settings" hidden><h3>会话设置</h3><p class="binding"></p><label>名称<input name="title" maxlength="120" required></label><label><input name="pinned" type="checkbox">置顶会话</label><label>携带历史<select name="historyTurns"><option value="0">不携带</option><option value="1">最近 1 轮</option><option value="2">最近 2 轮</option><option value="3">最近 3 轮</option><option value="4">最近 4 轮（默认）</option></select></label><small>仅影响后续生成；历史资料仍按当前权限复验。</small><label>回答显示<select name="renderMode"><option value="formatted">格式化文本</option><option value="plain">原始文本</option></select></label><label class="diagnostics"><input name="showDiagnostics" type="checkbox">显示查询诊断（KP）</label><div class="actions"><button class="save">保存设置</button><button class="open" type="button">打开对话</button><button class="archive" type="button">归档</button><button class="delete danger" type="button">删除会话</button></div><div class="delete-confirm" hidden><p>删除后无法恢复，会停止未完成需求；执行与用量审计保留。</p><button class="confirm-delete danger" type="button">确认删除此会话</button><button class="cancel-delete" type="button">取消</button></div><p class="details"></p></form></div><p class="status" role="status"></p><button class="receipt" hidden>查询操作结果</button>`;
+ const $=s=>panel.querySelector(s),form=$('.settings');$('h2').textContent=title;
+ let dead=false,paused=false,busy=false,uncertain=null,sequence=0,selectionSequence=0,current=null,items=[],identity='',allowed=false;
+ const client=guardedClient(rawClient,()=>dead);const checked=r=>{if(r.status!=='committed')throw Object.assign(new Error(r.code||r.status),{code:r.code,...(['pending','unknown'].includes(r.status)?{aiRequestId:r.requestId}:{})});return r.result;};
+ async function write(op,args){if(uncertain)throw new Error('请先查询原操作结果');return checked(await client.aiCommand(op,args));}
+ function state(text){if(!dead)$('.status').textContent=text;}
+ function locks(){for(const el of panel.querySelectorAll('button,input,select'))el.disabled=busy||!client.connected;for(const el of panel.querySelectorAll('.create button,.save,.archive,.delete,.confirm-delete'))el.disabled||=!!uncertain||!allowed;$('.receipt').hidden=!uncertain;}
+ async function run(fn){if(dead||busy||!client.connected)return;busy=true;locks();try{await fn();}catch(e){if(e.aiRequestId){uncertain=e.aiRequestId;state('操作结果尚未确认，请查询原操作回执：'+uncertain);}else state(e.code==='SESSION_VERSION_CONFLICT'?'会话已在其他页面修改，请重新选择后再保存。':e.code||e.message);}finally{busy=false;if(!dead)locks();}}
+ function setFilter(filter){$('.filter').value=filter;for(const b of panel.querySelectorAll('[data-filter]'))b.setAttribute('aria-pressed',String(b.dataset.filter===filter));}
+ function paint(){
+  const q=$('.search').value.trim().toLocaleLowerCase(),mine=$('.scope').value==='mine';const list=items.filter(s=>(!mine||s.owner===client.view?.accountId)&&(s.title+' '+s.owner).toLocaleLowerCase().includes(q));
+  list.sort((a,b)=>Number(b.pinned)-Number(a.pinned)||($('.sort').value==='title'?a.title.localeCompare(b.title):b.updatedAt-a.updatedAt));$('.list').replaceChildren();
+  for(const s of list){const b=document.createElement('button');b.type='button';b.className='session-link';b.setAttribute('aria-current',String(current?.sessionId===s.sessionId));b.textContent=(s.pinned?'★ ':'')+s.title;const small=document.createElement('small');small.textContent=(s.accessLevel==='administrator'?'管理员':'玩家')+' · '+s.owner+' · '+(s.archived?'已归档 · ':'')+s.requestCount+' 条';b.append(small);b.onclick=()=>run(()=>select(s.sessionId));$('.list').append(b);}
+  if(!list.length)$('.list').textContent=q?'没有匹配的会话':$('.filter').value==='archived'?'暂无已归档会话':'暂无会话';
+ }
+ function show(session){current=session;form.hidden=false;$('.delete-confirm').hidden=true;for(const key of ['title','historyTurns','renderMode'])form.elements[key].value=session[key]??({historyTurns:4,renderMode:'formatted'}[key]||'');for(const key of ['pinned','showDiagnostics'])form.elements[key].checked=session[key]??(key==='showDiagnostics');$('.diagnostics').hidden=client.view?.role!=='kp';$('.archive').textContent=session.archived?'恢复会话':'归档';$('.open').hidden=!onOpen;$('.binding').textContent=(session.accessLevel==='administrator'?'管理员权限':'玩家权限')+' · 创建者 '+session.owner+'（创建后固定绑定）';$('.details').textContent=session.archived?'已归档，恢复后可继续发送需求。':'只有创建者可以在此会话发送新需求。';paint();}
+ async function select(id){const seq=++selectionSequence;const result=await client.aiSession(id);if(dead||paused||seq!==selectionSequence)return;show(result.session);state('');}
+ async function refresh(){
+  if(dead||paused||!client.connected)return;const seq=++sequence,filter=$('.filter').value;
+  const access=await client.aiAccess();if(dead||paused||seq!==sequence)return;allowed=access.canChat;
+  $('.level').hidden=access.role!=='kp';$('.level').value=access.defaultLevel;$('.scope').hidden=access.role!=='kp';
+  $('.policy').textContent=allowed?(access.role==='kp'?'管理本房间全部会话；玩家会话始终限制在创建者的已知资料内。':'玩家会话绑定当前账号；需求直接交给 AI，KP 可查看。'):'KP 尚未允许玩家使用 AI 对话。';
+  if(!allowed){items=[];current=null;form.hidden=true;paint();locks();return;}
+  const pages=await Promise.all(filter==='all'?[client.aiSessions(false),client.aiSessions(true)]:[client.aiSessions(filter==='archived')]);
+  if(dead||paused||seq!==sequence)return;items=pages.flatMap(p=>p.items);paint();locks();
+ }
+ async function changedSession(session,message){selectionSequence++;if(session.deleted){current=null;form.hidden=true;}else{setFilter(session.archived?'archived':'active');show(session);}await refresh();state(message);await onChange(session);}
+ $('.create').onsubmit=e=>{e.preventDefault();run(async()=>{const input=$('.create input');const session=await write('ai.session.create',{title:input.value.trim()||'新会话',accessLevel:$('.level').value});input.value='';await changedSession(session,'会话已创建');});};
+ form.onsubmit=e=>{e.preventDefault();run(async()=>{if(!current)return;const args={sessionId:current.sessionId,revision:current.revision,title:form.elements.title.value,pinned:form.elements.pinned.checked,historyTurns:Number(form.elements.historyTurns.value),renderMode:form.elements.renderMode.value,showDiagnostics:form.elements.showDiagnostics.checked};await changedSession(await write('ai.session.update',args),'设置已保存');});};
+ $('.archive').onclick=()=>run(async()=>{if(!current)return;const archived=!current.archived;await changedSession(await write('ai.session.update',{sessionId:current.sessionId,revision:current.revision,archived}),archived?'会话已归档':'会话已恢复');});
+ $('.delete').onclick=()=>{$('.delete-confirm').hidden=false;};$('.cancel-delete').onclick=()=>{$('.delete-confirm').hidden=true;};
+ $('.confirm-delete').onclick=()=>run(async()=>{if(current)await changedSession(await write('ai.session.delete',{sessionId:current.sessionId,revision:current.revision}),'会话已删除');});
+ $('.open').onclick=()=>run(()=>onOpen?.(current.sessionId));$('.refresh').onclick=()=>run(refresh);$('.filter').onchange=()=>run(async()=>{setFilter($('.filter').value);await refresh();});$('.search').oninput=paint;$('.sort').onchange=paint;$('.scope').onchange=paint;
+ for(const b of panel.querySelectorAll('[data-filter]'))b.onclick=()=>run(async()=>{setFilter(b.dataset.filter);await refresh();});
+ function changed(){const next=JSON.stringify([client.generation,client.connected,client.view?.accountId,client.view?.role,client.view?.authorityEpoch]);if(next===identity||dead)return;identity=next;sequence++;selectionSequence++;current=null;items=[];uncertain=null;allowed=false;form.reset();form.hidden=true;$('.list').replaceChildren();$('.search').value='';$('.create input').value='';$('.owner').textContent=client.connected?client.view.accountId:'';locks();state(client.connected?'':'请先登录房间');if(client.connected)refresh().catch(e=>state(e.code||e.message));}
+ $('.receipt').onclick=()=>run(async()=>{const receipt=await client.aiReceipt(uncertain);if(!['committed','rejected'].includes(receipt.status)){state('结果仍未确认，请稍后查询原操作回执');return;}uncertain=null;if(receipt.status==='committed'){if(receipt.result?.sessionId)await changedSession(receipt.result,'操作已确认');else{await refresh();state('操作已确认');}}else state('操作未提交：'+(receipt.code||receipt.status));});
+ const unsubscribe=client.subscribe(changed);changed();
+ return {refresh,select,suspend(){paused=true;sequence++;selectionSequence++;},async resume(){paused=false;await refresh();},destroy(){dead=true;sequence++;selectionSequence++;unsubscribe();element.remove();}};
+}

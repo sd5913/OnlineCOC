@@ -53,7 +53,7 @@ def install(app, runtime, auth):
     def receipt(request_id: str, request: Request):return service.receipt(auth(request), request_id)
 
     @app.get('/api/v1/ai/tasks')
-    def tasks(request: Request, before: str | None = None, limit: int = 30):return service.tasks(auth(request), before, limit)
+    def tasks(request: Request, before: str | None = None, limit: int = 30):return service.tasks(auth(request), before, limit, delivered=True)
 
     @app.get('/api/v1/ai/usage')
     def usage(request: Request):
@@ -87,7 +87,11 @@ def install(app, runtime, auth):
     def access(request: Request):return service.sessions.access(auth(request))
 
     @app.get('/api/v1/ai/rulings')
-    def rulings(request: Request):return service.rulings.list(auth(request))
+    def rulings(request: Request):
+        import inspect
+        listing=service.rulings.list
+        # Older separately deployed AI modules do not yet accept delivery proofs.
+        return listing(auth(request),delivered=True) if 'delivered' in inspect.signature(listing).parameters else listing(auth(request))
 
     @app.get('/api/v1/ai/batches')
     def batches(request: Request):return service.batches.list(auth(request))
@@ -106,4 +110,4 @@ def install(app, runtime, auth):
     def sessions(request: Request, archived: bool = False):return service.sessions.list(auth(request), archived)
 
     @app.get('/api/v1/ai/sessions/{session_id}')
-    def session(session_id: str, request: Request):return service.sessions.get(auth(request), session_id)
+    def session(session_id: str, request: Request):return service.sessions.get(auth(request), session_id, delivered=True)

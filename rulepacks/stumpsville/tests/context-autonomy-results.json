@@ -1,0 +1,162 @@
+{
+  "at": "2026-11-21T16:17:12.039461+08:00",
+  "source": "D:\\Studies\\Art Programming\\OnlineCOC\\rulepacks\\stumpsville\\tests\\output\\context-final-v3-fffb9b94\\source",
+  "output": "D:\\Studies\\Art Programming\\OnlineCOC\\rulepacks\\stumpsville\\tests\\output\\context-autonomy-6baa851b",
+  "baseline": false,
+  "checks": [
+    "real package reference and current artifact read produce pending source-risk candidate with no mutation",
+    "missing/wrong source proof and player approval are rejected by actual server without changing the item table",
+    "actual package dialog submits exact source proof and high-risk/C acceptance; item published once and same request replay is idempotent",
+    "source-risk runtime batch stays pending even with auto-approval enabled, requires acceptance, then changes current money and delivers one actual notification"
+  ],
+  "externalApiCalls": 0,
+  "realSaveChanged": false,
+  "task": {
+    "status": "review_ready",
+    "error": null,
+    "proposalId": "eec00feef37c4aafad0537c7b1aaec94",
+    "response": null
+  },
+  "loopbackModelCalls": 9,
+  "ruling": {
+    "status": "pending",
+    "blockingReason": null,
+    "canDecide": true,
+    "consultationAssessment": {
+      "requiresAcceptance": true,
+      "sourceCount": 1,
+      "sourceDigest": "266a4f3972f29338851f288c3147d20906b00bdfe0d339b891495f082621e8fe",
+      "notice": "独立包资料用于方案依据，可能不具备跨存储原子保证。请核对当前目标、完整变更及检查结果后决定；摘要或资料本身不授权执行。"
+    }
+  },
+  "negativeCodes": [
+    "CONSULTATION_REVIEW_REQUIRED",
+    "CONSULTATION_REVIEW_REQUIRED",
+    "PERMISSION_DENIED"
+  ],
+  "passed": true,
+  "passedCount": 4,
+  "pageErrors": [],
+  "previousRuns": [
+    {
+      "at": "2026-11-21T15:47:50.255943+08:00",
+      "source": "D:\\Studies\\Art Programming\\OnlineCOC\\rulepacks\\stumpsville\\tests\\output\\chat-combined-db2a7f5e\\source",
+      "output": "D:\\Studies\\Art Programming\\OnlineCOC\\rulepacks\\stumpsville\\tests\\output\\context-autonomy-b0d4a4b9",
+      "baseline": false,
+      "checks": [
+        "real package reference and current artifact read produce pending source-risk candidate with no mutation",
+        "missing/wrong source proof and player approval are rejected by actual server without changing the item table",
+        "actual package dialog submits exact source proof and high-risk/C acceptance; item published once and same request replay is idempotent"
+      ],
+      "externalApiCalls": 0,
+      "realSaveChanged": false,
+      "task": {
+        "status": "review_ready",
+        "error": null,
+        "proposalId": "8fc7afd550c0425ea255d30c3ace67a4",
+        "response": null
+      },
+      "loopbackModelCalls": 4,
+      "ruling": {
+        "status": "pending",
+        "blockingReason": null,
+        "canDecide": true,
+        "consultationAssessment": {
+          "requiresAcceptance": true,
+          "sourceCount": 1,
+          "sourceDigest": "5ddd41228785715fe4c643a7fbae6a9c57143f038132abd1b703b495fa7d022f",
+          "notice": "独立包资料用于方案依据，可能不具备跨存储原子保证。请核对当前目标、完整变更及检查结果后决定；摘要或资料本身不授权执行。"
+        }
+      },
+      "negativeCodes": [
+        "CONSULTATION_REVIEW_REQUIRED",
+        "CONSULTATION_REVIEW_REQUIRED",
+        "PERMISSION_DENIED"
+      ],
+      "passed": false,
+      "error": "AssertionError((409, {'code': 'INPUT_INVALID', 'message': 'INPUT_INVALID（INPUT_INVALID；定位：166738b7f06244e1a42c10347164057a）', 'traceId': '166738b7f06244e1a42c10347164057a', 'method': 'POST', 'operation': 'ai.access.update', 'requestId': '677d6c78-e3e6-4c33-929b-36fa0395cd93', 'httpStatus': 409}))",
+      "passedCount": 3,
+      "pageErrors": []
+    },
+    {
+      "at": "2026-11-21T15:49:47.097655+08:00",
+      "source": "D:\\Studies\\Art Programming\\OnlineCOC\\rulepacks\\stumpsville\\tests\\output\\chat-combined-db2a7f5e\\source",
+      "output": "D:\\Studies\\Art Programming\\OnlineCOC\\rulepacks\\stumpsville\\tests\\output\\context-autonomy-b3855e60",
+      "baseline": false,
+      "checks": [
+        "real package reference and current artifact read produce pending source-risk candidate with no mutation",
+        "missing/wrong source proof and player approval are rejected by actual server without changing the item table",
+        "actual package dialog submits exact source proof and high-risk/C acceptance; item published once and same request replay is idempotent"
+      ],
+      "externalApiCalls": 0,
+      "realSaveChanged": false,
+      "task": {
+        "status": "review_ready",
+        "error": null,
+        "proposalId": "14a16089c4e34dfcb8fe83fbb5546744",
+        "response": null
+      },
+      "loopbackModelCalls": 4,
+      "ruling": {
+        "status": "pending",
+        "blockingReason": null,
+        "canDecide": true,
+        "consultationAssessment": {
+          "requiresAcceptance": true,
+          "sourceCount": 1,
+          "sourceDigest": "4826134b7f695f66998c7b0fbf74869b4519cbd27645396611ce3201598e0d1e",
+          "notice": "独立包资料用于方案依据，可能不具备跨存储原子保证。请核对当前目标、完整变更及检查结果后决定；摘要或资料本身不授权执行。"
+        }
+      },
+      "negativeCodes": [
+        "CONSULTATION_REVIEW_REQUIRED",
+        "CONSULTATION_REVIEW_REQUIRED",
+        "PERMISSION_DENIED"
+      ],
+      "passed": false,
+      "error": "AssertionError({'requestId': '0df494912ec34e238eaa2be526af8f9b', 'sessionId': 'f4d1d35014514e3bad5eca19254f10ed', 'status': 'failed', 'createdAt': 1795247429.58669, 'text': '参考当前主持地图说明，给player1现有角色增加1枚钱币并通知。先读取当前角色，只准备待审批次。', 'initiator': 'kp', 'events': [{'seq': 1, 'at': 1795247430.6986244, 'stage': 'queued', 'status': 'completed', 'summary': '已接收，等待生成', 'durationMs': 443.58}, {'seq': 2, 'at': 1795247431.142209, 'stage': 'profile_check', 'status': 'completed', 'summary': '检查服务配置', 'durationMs': 1190.54}, {'seq': 3, 'at': 1795247432.3327625, 'stage': 'context_capture', 'status': 'completed', 'summary': '使用发送时资料快照', 'durationMs': 950.1}, {'seq': 4, 'at': 1795247433.2828777, 'stage': 'provider_complete', 'status': 'completed', 'summary': '等待 AI 服务回复', 'durationMs': 471.48}, {'seq': 5, 'at': 1795247433.754367, 'stage': 'tool_execute', 'status': 'completed', 'summary': '读取已授权资料', 'tool': 'room_search_data', 'durationMs': 892.85}, {'seq': 6, 'at': 1795247435.1671875, 'stage': 'provider_complete', 'status': 'completed', 'summary': '等待 AI 服务回复', 'durationMs': 981.45}, {'seq': 7, 'at': 1795247436.1486514, 'stage': 'tool_execute', 'status': 'completed', 'summary': '读取已授权资料', 'tool': 'room_read_data', 'durationMs': 930.12}, {'seq': 8, 'at': 1795247437.626171, 'stage': 'provider_complete', 'status': 'completed', 'summary': '等待 AI 服务回复', 'durationMs': 575.81}, {'seq': 9, 'at': 1795247438.2019856, 'stage': 'tool_execute', 'status': 'completed', 'summary': '读取已授权资料', 'tool': 'room_search_data', 'durationMs': 950.16}, {'seq': 10, 'at': 1795247439.7941077, 'stage': 'provider_complete', 'status': 'completed', 'summary': '等待 AI 服务回复', 'durationMs': 653.93}, {'seq': 11, 'at': 1795247440.4480436, 'stage': 'tool_execute', 'status': 'completed', 'summary': '读取已授权资料', 'tool': 'room_read_data', 'durationMs': 971.95}, {'seq': 12, 'at': 1795247442.143845, 'stage': 'provider_complete', 'status': 'completed', 'summary': '等待 AI 服务回复', 'durationMs': 705.02}, {'seq': 13, 'at': 1795247442.84887, 'stage': 'output_validate', 'status': 'completed', 'summary': '检查回答格式', 'durationMs': 715.47}, {'seq': 14, 'at': 1795247443.5643594, 'stage': 'provider_complete', 'status': 'completed', 'summary': '等待 AI 服务回复', 'durationMs': 595.15}, {'seq': 15, 'at': 1795247444.15952, 'stage': 'output_validate', 'status': 'completed', 'summary': '检查回答格式', 'durationMs': 731.07}, {'seq': 16, 'at': 1795247444.890605, 'stage': 'provider_complete', 'status': 'completed', 'summary': '等待 AI 服务回复', 'durationMs': 705.1}, {'seq': 17, 'at': 1795247445.5957098, 'stage': 'output_validate', 'status': 'failed', 'summary': '检查回答格式', 'durationMs': 9.57, 'code': 'MODEL_OUTPUT_INVALID'}], 'sourceState': 'fresh', 'taskId': '0cf828991af14b798a87c0a474f7f729', 'proposalId': None, 'error': 'MODEL_OUTPUT_INVALID', 'response': None, 'modelCalls': [{'requestedModel': 'test-only', 'returnedModel': None, 'systemFingerprint': None, 'usage': {'prompt_tokens': 20, 'completion_tokens': 20, 'total_tokens': 40}, 'profileRevision': 1}, {'requestedModel': 'test-only', 'returnedModel': None, 'systemFingerprint': None, 'usage': {'prompt_tokens': 20, 'completion_tokens': 20, 'total_tokens': 40}, 'profileRevision': 1}, {'requestedModel': 'test-only', 'returnedModel': None, 'systemFingerprint': None, 'usage': {'prompt_tokens': 20, 'completion_tokens': 20, 'total_tokens': 40}, 'profileRevision': 1}, {'requestedModel': 'test-only', 'returnedModel': None, 'systemFingerprint': None, 'usage': {'prompt_tokens': 20, 'completion_tokens': 20, 'total_tokens': 40}, 'profileRevision': 1}, {'requestedModel': 'test-only', 'returnedModel': None, 'systemFingerprint': None, 'usage': {'prompt_tokens': 20, 'completion_tokens': 20, 'total_tokens': 40}, 'profileRevision': 1}, {'requestedModel': 'test-only', 'returnedModel': None, 'systemFingerprint': None, 'usage': {'prompt_tokens': 20, 'completion_tokens': 20, 'total_tokens': 40}, 'profileRevision': 1}, {'requestedModel': 'test-only', 'returnedModel': None, 'systemFingerprint': None, 'usage': {'prompt_tokens': 20, 'completion_tokens': 20, 'total_tokens': 40}, 'profileRevision': 1}], 'diagnostics': {'schemaVersion': 1, 'stage': 'output_validate', 'turn': 4, 'toolCalls': [{'name': 'room_search_data', 'status': 'completed', 'argumentsDigest': '4c2f2e1e18c6c377a7d7897d8430c9b1185b17751e2283154da399a919dc82ab', 'keys': ['limit', 'query', 'types'], 'unknownKeys': False, 'turn': 0, 'types': ['config'], 'hasQuery': True}, {'name': 'room_read_data', 'status': 'completed', 'argumentsDigest': '55bc3bf30ff4c006734c86e5901da3b89bcc252e2218eb3cdc2ed709da6daa48', 'keys': ['refs'], 'unknownKeys': False, 'turn': 1, 'referenceCount': 1}, {'name': 'room_search_data', 'status': 'completed', 'argumentsDigest': '227ee54e42ccbf7202f6c46bc086b5b55814d0526c3cee3114eabb0d9274a3be', 'keys': ['limit', 'query', 'types'], 'unknownKeys': False, 'turn': 2, 'types': ['room'], 'hasQuery': True}, {'name': 'room_read_data', 'status': 'completed', 'argumentsDigest': 'de0bd530b5acd5ad1e97fe75d33e23ad3c9fb78da12b5a67e3d18b74c6491ad0', 'keys': ['refs'], 'unknownKeys': False, 'turn': 3, 'referenceCount': 1}], 'errors': [{'stage': 'output_validate', 'code': 'MODEL_OUTPUT_INVALID', 'exceptionType': 'AiError', 'frames': [{'module': 'onlinecoc_ai.coordinator', 'function': '_generate', 'line': 703}, {'module': 'onlinecoc_ai.errors', 'function': 'require', 'line': 15}]}], 'outputFailures': [{'attempt': 1, 'code': 'HISTORY_REQUERY_REQUIRED', 'path': '/'}, {'attempt': 2, 'code': 'HISTORY_REQUERY_REQUIRED', 'path': '/'}, {'attempt': 3, 'code': 'HISTORY_REQUERY_REQUIRED', 'path': '/'}], 'preflightChecks': [], 'contextBudget': {'bytes': 76676, 'limitBytes': 784384, 'toolSchemaBytes': 5627, 'toolMessageBytes': 9731}}, 'queueTargetId': 'request:0df494912ec34e238eaa2be526af8f9b', 'queueDigest': '37a7d447a5092db4b741cfb087deec1fea5f36d0cd708af4553aa7643fdd7709', 'correlationId': 'cac046d2cd59aff826799fbd9e6a7981c30631f34e3d320f395190837efa70ff', 'queueStatus': 'active', 'archived': False, 'canArchive': True, 'canRestore': False, 'supersedes': [], 'sentAt': 1795247429.58669})",
+      "passedCount": 3,
+      "pageErrors": []
+    },
+    {
+      "at": "2026-11-21T16:04:44.729428+08:00",
+      "source": "D:\\Studies\\Art Programming\\OnlineCOC\\rulepacks\\stumpsville\\tests\\output\\chat-combined-8a55ec6e\\source",
+      "output": "D:\\Studies\\Art Programming\\OnlineCOC\\rulepacks\\stumpsville\\tests\\output\\context-autonomy-193a997d",
+      "baseline": false,
+      "checks": [
+        "real package reference and current artifact read produce pending source-risk candidate with no mutation",
+        "missing/wrong source proof and player approval are rejected by actual server without changing the item table",
+        "actual package dialog submits exact source proof and high-risk/C acceptance; item published once and same request replay is idempotent",
+        "source-risk runtime batch stays pending even with auto-approval enabled, requires acceptance, then changes current money and delivers one actual notification"
+      ],
+      "externalApiCalls": 0,
+      "realSaveChanged": false,
+      "task": {
+        "status": "review_ready",
+        "error": null,
+        "proposalId": "ff66b018c2e94275ba3d4c550738b7cc",
+        "response": null
+      },
+      "loopbackModelCalls": 9,
+      "ruling": {
+        "status": "pending",
+        "blockingReason": null,
+        "canDecide": true,
+        "consultationAssessment": {
+          "requiresAcceptance": true,
+          "sourceCount": 1,
+          "sourceDigest": "3934540f81361b305570587071d9804a00b9c29b296a129661363417bc684774",
+          "notice": "独立包资料用于方案依据，可能不具备跨存储原子保证。请核对当前目标、完整变更及检查结果后决定；摘要或资料本身不授权执行。"
+        }
+      },
+      "negativeCodes": [
+        "CONSULTATION_REVIEW_REQUIRED",
+        "CONSULTATION_REVIEW_REQUIRED",
+        "PERMISSION_DENIED"
+      ],
+      "passed": true,
+      "passedCount": 4,
+      "pageErrors": []
+    }
+  ]
+}

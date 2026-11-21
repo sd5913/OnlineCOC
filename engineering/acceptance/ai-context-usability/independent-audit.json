@@ -1,0 +1,62 @@
+{
+  "scope": "Independent review of seven synthetic real-provider trials; raw outputs preserved",
+  "pairedInitial": {
+    "before": {
+      "firstUsable": 2,
+      "total": 3,
+      "unnecessaryClarifications": 0
+    },
+    "after": {
+      "firstUsable": 2,
+      "total": 3,
+      "unnecessaryClarifications": 0
+    }
+  },
+  "configurationExecution": {
+    "before": {
+      "passed": 2,
+      "total": 2
+    },
+    "after": {
+      "passed": 2,
+      "total": 2
+    },
+    "afterDistinctParameter": {
+      "passed": 1,
+      "total": 1
+    }
+  },
+  "singleTemplateRequest": {
+    "beforeCalls": 2,
+    "afterCalls": 1,
+    "beforeTokens": 14084,
+    "afterTokens": 7082
+  },
+  "corrections": [
+    {
+      "mode": "before",
+      "caseId": "genuine-choice",
+      "rawOracle": "passed",
+      "independentOracle": "failed",
+      "reason": "Declared owner unread and did not identify player1 despite current entity evidence being queryable; excessive implementation prose and a misleading hp alternative."
+    },
+    {
+      "mode": "after",
+      "caseId": "genuine-choice",
+      "rawOracle": "passed",
+      "independentOracle": "failed",
+      "reason": "Queried entity.patch subset, then falsely declared no numeric mutation operation; full catalog includes entity.update."
+    }
+  ],
+  "confound": "Both primary older-parameters cases use bonus15, also printed in the fixture pack guide; their success is not proof of retention. after-13 uses independently specified bonus13, omitted from last four turns; exact candidate and actual publication passed in one call. No same-parameter before13 live run was performed.",
+  "limitations": [
+    "Three paired cases are not a general reliability estimate.",
+    "No measured improvement in unnecessary clarification count: both paired sides zero for determined cases.",
+    "Capability index/parameter-schema repair and narrow false-limitation feedback have deterministic checks; the failed ambiguous scenario was not re-called after these fixes."
+  ],
+  "budget": {
+    "externalAttempts": 18,
+    "confirmedTokens": 140825,
+    "unknownAttempts": 0
+  }
+}

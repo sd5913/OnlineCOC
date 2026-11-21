@@ -18,8 +18,11 @@ class Proposals:
     def __init__(self, host, pack, directory=None, *, repository=None):
         self.host, self.pack = host, pack
         self.repository = repository or Repository(directory or host.path / "ai", host.state()["aiControl"]["scopeId"])
+        from .c_review import basis, basis_binding
+        self.c_basis_resolver = lambda: basis_binding(basis(self.repository))
         try:
             host.register_ai(self.prepared, {"contract": pack.contract, "digest": pack.digest, "validatorSetDigest": validator_digest()})
+            host.ai_c_basis_resolver = self.c_basis_resolver
             self.reconcile()
         except BaseException:
             self.repository.close()
@@ -41,19 +44,30 @@ class Proposals:
                 "sourceRefs": [], "memoryRefs": [], "includedSources": [], "omittedSources": [], "facts": {}, "createdAt": self.host.clock()})
             return context, state, artifact
 
-    def create(self, account, text, delta, *, summary="人工配置草稿", snapshot=None, request=None, profile=None):
+    def create(self, account, text, delta, *, summary="人工配置草稿", snapshot=None, request=None, profile=None, generation=None):
+        with self.host.lock:
+            return self._create(account,text,delta,summary=summary,snapshot=snapshot,request=request,profile=profile,generation=generation)
+
+    def _create(self, account, text, delta, *, summary="人工配置草稿", snapshot=None, request=None, profile=None, generation=None):
         from .access import policy
         require(policy(self.repository)['allowConfigurationChanges'], 'CONFIGURATION_CHANGES_DISABLED')
         context, state, artifact = snapshot or self.snapshot(account)
         from .history import require_current_evidence
         require_current_evidence(context,{'kind':'draft'})
         with self.host.lock:
-            check_context(self.host, self.host.state(), account, context)
+            if generation:generation.guard()
+            else:check_context(self.host, self.host.state(), account, context)
         changes = merge_changes(artifact, delta)
         request_id, proposal_id = (request["requestId"] if request else uuid.uuid4().hex), uuid.uuid4().hex
         request = request or validate("Request", {"schemaVersion": 1, "requestId": request_id, "scopeId": context["scopeId"],
             "sourceKind": "manual", "sourceId": request_id, "sourceRevision": "1", "initiator": account,
             "text": text, "intent": "configure", "dedupKey": digest({"scopeId": context["scopeId"], "sourceKind": "manual", "sourceId": request_id, "revision": "1"}), "status": "received", "createdAt": self.host.clock()})
+        from .review_queue import canonical_request
+        current=self.repository.state()
+        existing=next((p['revisions'][str(p['currentRevision'])] for p in current['proposals'].values() if canonical_request(current,p['revisions'][str(p['currentRevision'])]['requestId'])==canonical_request(current,request_id)),None)
+        if existing:
+            require(existing['changeSet']==changes and existing['summary']==summary,'REQUEST_CANDIDATE_CONFLICT')
+            return existing
         proposal = self._proposal(proposal_id, 1, request_id, context, changes, summary)
         if profile:
             proposal.update(profileRevision=str(profile["revision"]), model=profile["model"])
@@ -75,7 +89,7 @@ class Proposals:
         store["contexts"][proposal["contextRef"]] = context
         store["snapshots"][proposal["contextRef"]] = {"state": state, "artifact": artifact}
 
-    def get(self, account, proposal_id, revision=None):
+    def get(self, account, proposal_id, revision=None, *, generation=None):
         with self.host.lock:
             self.host.kp(account)
         state = self.repository.state()
@@ -88,20 +102,23 @@ class Proposals:
         with self.host.lock:
             current = self.host.state()
             require(current["aiControl"]["scopeId"] == proposal["scopeId"], "SCOPE_MISMATCH")
-            self.host.validate_ai_sources(current, account, context)
+            if generation:generation.guard()
+            else:self.host.validate_ai_sources(current, account, context)
         return proposal
 
-    def revise(self, account, proposal_id, expected_revision, delta, *, summary="修订配置草稿", snapshot=None):
+    def revise(self, account, proposal_id, expected_revision, delta, *, summary="修订配置草稿", snapshot=None, generation=None):
         from .access import policy
         require(policy(self.repository)['allowConfigurationChanges'], 'CONFIGURATION_CHANGES_DISABLED')
-        old = self.get(account, proposal_id)
+        old = self.get(account, proposal_id,generation=generation)
         require(old["revision"] == expected_revision, "PROPOSAL_STALE")
         context, state, artifact = snapshot or self.snapshot(account)
         original_context = self.repository.state()['contexts'][old['contextRef']]
         if snapshot is None:
             for key in ('sourceRefs', 'memoryRefs', 'includedSources', 'omittedSources', 'facts'):
                 context[key] = copy.deepcopy(original_context[key])
-        with self.host.lock:check_context(self.host,self.host.state(),account,context)
+        with self.host.lock:
+            if generation:generation.guard()
+            else:check_context(self.host,self.host.state(),account,context)
         proposal = self._proposal(proposal_id, expected_revision + 1, old["requestId"], context, merge_changes(artifact, delta), summary)
         # Revoke before accepting an edit. A repository failure may leave a
         # conservative revoked approval, but never a publishable superseded one.
@@ -116,23 +133,33 @@ class Proposals:
             return proposal
         return self.repository.update(save)
 
-    def validate(self, account, proposal_id, revision):
-        proposal = self.get(account, proposal_id, revision)
+    def validate(self, account, proposal_id, revision, *, generation=None, progress=None):
+        proposal = self.get(account, proposal_id, revision,generation=generation)
         store = self.repository.state()
         require(store["proposals"][proposal_id]["currentRevision"] == revision, "PROPOSAL_STALE")
         context = store["contexts"][proposal["contextRef"]]
+        from .consultation import require_current,assessment as source_assessment
+        require_current(context,{'kind':'draft'})
         snapshot = store["snapshots"][proposal["contextRef"]]
         args = (self.pack, snapshot["state"], snapshot["artifact"], context, proposal["changeSet"])
         # All potentially long-running operations happen without the Host lock.
+        if progress:progress('validation_a')
         a, artifact = check_base(*args)
-        reports = [a, check_rules(*args), assess(*args)]
-        passed = all(r["status"] == "pass" for r in reports)
+        if progress:progress('validation_b')
+        b=check_rules(*args)
+        if progress:progress('validation_c')
+        from .c_review import basis, assessment
+        review_basis = basis(self.repository)
+        reports = [a, b, assess(*args, basis=review_basis)]
+        c_assessment = assessment(reports, review_basis)
+        passed = c_assessment['adoptable']
         bundle = None
         if passed:
             bundle = validate("PreparedBundle", {"schemaVersion": 1, "proposalId": proposal_id, "proposalRevision": revision,
                 "scopeId": context["scopeId"], "context": context, "changeSet": proposal["changeSet"], "artifact": artifact,
-                "reports": reports, "candidateDigest": proposal["candidateDigest"], "baselineDigest": baseline_digest(context), "createdAt": self.host.clock()})
+                "reports": reports, "cAssessment": c_assessment, 'consultationAssessment':source_assessment(context), "candidateDigest": proposal["candidateDigest"], "baselineDigest": baseline_digest(context), "createdAt": self.host.clock()})
         def save(current):
+            require(basis(self.repository) == review_basis, 'C_BASIS_STALE')
             record = current["proposals"][proposal_id]
             require(current["requests"][proposal["requestId"]]["status"] not in ("cancelled", "interrupted"), "CANCELLED")
             require(record["currentRevision"] == revision, "PROPOSAL_STALE")
@@ -147,17 +174,23 @@ class Proposals:
             else:
                 current["prepared"].pop(f"{proposal_id}:{revision}", None)
             return {"proposal": value, "reports": reports}
-        return self.repository.update(save)
+        result=self.repository.update(save)
+        if passed and getattr(self,'queue',None):self.queue.ready('proposal:'+proposal_id)
+        return result
 
     def prepared(self, account, proposal_id, revision):
         from .access import policy
         require(policy(self.repository)['allowConfigurationChanges'], 'CONFIGURATION_CHANGES_DISABLED')
+        if getattr(self,'queue',None):self.queue.require_active('proposal:'+proposal_id)
         proposal = self.get(account, proposal_id, revision)
         state = self.repository.state()
         require(state['requests'][proposal['requestId']]['status'] not in ('cancelled', 'interrupted'), 'REQUEST_CANCELLED')
         require(state["proposals"][proposal_id]["currentRevision"] == revision and proposal["status"] == "review_ready", "PROPOSAL_STALE")
         bundle = state["prepared"].get(f"{proposal_id}:{revision}")
         require(bundle is not None, "CHECKS_INCOMPLETE")
+        if bundle.get('cAssessment'):
+            from .c_review import basis, basis_binding
+            require(all(bundle['cAssessment'][k] == v for k, v in basis_binding(basis(self.repository)).items()), 'C_BASIS_STALE')
         return validate("PreparedBundle", bundle)
 
     def reconcile(self):
@@ -179,6 +212,10 @@ class Proposals:
             self.repository.commit(after)
 
     def close(self):
-        if self.host.ai_prepared_resolver == self.prepared:
-            self.host.ai_prepared_resolver = None
-        self.repository.close()
+        with self.host.lock:
+            if self.host.ai_prepared_resolver == self.prepared:
+                self.host.ai_prepared_resolver = None
+            if getattr(self.host,'ai_c_basis_resolver',None) == self.c_basis_resolver:
+                from .c_review import detached_resolver
+                self.host.ai_c_basis_resolver = detached_resolver(self.repository,self.host.state()['aiControl']['scopeId'])
+            self.repository.close()

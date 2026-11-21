@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="6" skipped="0" tests="16" time="11.925" timestamp="2026-11-21T00:40:19.706452+08:00" hostname="LAPTOP-BIFSL64A"><testcase classname="engineering.acceptance.local-accounts.test_c_gate" name="test_real_passed_bundle_approval_and_publication" time="6.357"><failure message="onlinecoc.errors.DomainError: HIGH_RISK_REVIEW_REQUIRED">prepared = (&lt;onlinecoc.host.Host object at 0x00000259D1B10D70&gt;, {'schemaVersion': 1, 'proposalId': '56297834784c4f64add47ce5ebc44af6', 'proposalRevision': 1, 'scopeId': '567cad924aad4a91a0a34cd6be14d9d7', ...})
+
+    def test_real_passed_bundle_approval_and_publication(prepared):
+        h,bundle=prepared
+        # Discover actual required author review IDs rather than inventing permission.
+        args=arguments(bundle)
+        args['riskDecisions']={item['id']:'Reviewed required item' for item in h.state()['aiControl']['packBinding']['contract']['reviewPolicy']['items'] if item['required']}
+        args['riskDecisions']['gameplay-risk']='Accepted bounded gameplay risk'
+&gt;       state=h.state();result=approve(h,state,'kp',args,bundle)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+engineering\acceptance\local-accounts\test_c_gate.py:55: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+engineering\acceptance\local-accounts\work\engine\engineering\backend\src\onlinecoc\publication.py:149: in approve
+    require(args.get('explicitHighRiskDigest') == prepared['candidateDigest'], 'HIGH_RISK_REVIEW_REQUIRED')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+condition = False, code = 'HIGH_RISK_REVIEW_REQUIRED'
+
+    def require(condition, code="INPUT_INVALID"):
+&gt;       if not condition: raise DomainError(code)
+                          ^^^^^^^^^^^^^^^^^^^^^^^
+E       onlinecoc.errors.DomainError: HIGH_RISK_REVIEW_REQUIRED
+
+engineering\acceptance\local-accounts\work\engine\engineering\backend\src\onlinecoc\errors.py:7: DomainError</failure></testcase><testcase classname="engineering.acceptance.local-accounts.test_c_gate" name="test_only_allowlisted_unknown_can_be_explicitly_adopted[EXTENSION_FORBIDDEN]" time="0.490"><failure message="onlinecoc.errors.DomainError: HIGH_RISK_REVIEW_REQUIRED">prepared = (&lt;onlinecoc.host.Host object at 0x00000259D1B10D70&gt;, {'schemaVersion': 1, 'proposalId': '56297834784c4f64add47ce5ebc44af6', 'proposalRevision': 1, 'scopeId': '567cad924aad4a91a0a34cd6be14d9d7', ...})
+code = 'EXTENSION_FORBIDDEN'
+
+    @pytest.mark.parametrize('code',['EXTENSION_FORBIDDEN','LIVE_SCENARIO_COVERAGE_MISSING','EXISTING_INSTANCE_COVERAGE_MISSING'])
+    def test_only_allowlisted_unknown_can_be_explicitly_adopted(prepared,code):
+        h,base=prepared;bundle=changed(base,code)
+        args=arguments(bundle)
+        args['riskDecisions']={item['id']:'Reviewed required item' for item in h.state()['aiControl']['packBinding']['contract']['reviewPolicy']['items'] if item['required']}
+        args['riskDecisions']['gameplay-risk']='Accepted explicitly observed limitation'
+        validate_bundle(bundle)
+&gt;       state=h.state();approved=approve(h,state,'kp',args,bundle)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+engineering\acceptance\local-accounts\test_c_gate.py:66: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+engineering\acceptance\local-accounts\work\engine\engineering\backend\src\onlinecoc\publication.py:149: in approve
+    require(args.get('explicitHighRiskDigest') == prepared['candidateDigest'], 'HIGH_RISK_REVIEW_REQUIRED')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+condition = False, code = 'HIGH_RISK_REVIEW_REQUIRED'
+
+    def require(condition, code="INPUT_INVALID"):
+&gt;       if not condition: raise DomainError(code)
+                          ^^^^^^^^^^^^^^^^^^^^^^^
+E       onlinecoc.errors.DomainError: HIGH_RISK_REVIEW_REQUIRED
+
+engineering\acceptance\local-accounts\work\engine\engineering\backend\src\onlinecoc\errors.py:7: DomainError</failure></testcase><testcase classname="engineering.acceptance.local-accounts.test_c_gate" name="test_only_allowlisted_unknown_can_be_explicitly_adopted[LIVE_SCENARIO_COVERAGE_MISSING]" time="0.502"><failure message="onlinecoc.errors.DomainError: HIGH_RISK_REVIEW_REQUIRED">prepared = (&lt;onlinecoc.host.Host object at 0x00000259D1B10D70&gt;, {'schemaVersion': 1, 'proposalId': '56297834784c4f64add47ce5ebc44af6', 'proposalRevision': 1, 'scopeId': '567cad924aad4a91a0a34cd6be14d9d7', ...})
+code = 'LIVE_SCENARIO_COVERAGE_MISSING'
+
+    @pytest.mark.parametrize('code',['EXTENSION_FORBIDDEN','LIVE_SCENARIO_COVERAGE_MISSING','EXISTING_INSTANCE_COVERAGE_MISSING'])
+    def test_only_allowlisted_unknown_can_be_explicitly_adopted(prepared,code):
+        h,base=prepared;bundle=changed(base,code)
+        args=arguments(bundle)
+        args['riskDecisions']={item['id']:'Reviewed required item' for item in h.state()['aiControl']['packBinding']['contract']['reviewPolicy']['items'] if item['required']}
+        args['riskDecisions']['gameplay-risk']='Accepted explicitly observed limitation'
+        validate_bundle(bundle)
+&gt;       state=h.state();approved=approve(h,state,'kp',args,bundle)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+engineering\acceptance\local-accounts\test_c_gate.py:66: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+engineering\acceptance\local-accounts\work\engine\engineering\backend\src\onlinecoc\publication.py:149: in approve
+    require(args.get('explicitHighRiskDigest') == prepared['candidateDigest'], 'HIGH_RISK_REVIEW_REQUIRED')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+condition = False, code = 'HIGH_RISK_REVIEW_REQUIRED'
+
+    def require(condition, code="INPUT_INVALID"):
+&gt;       if not condition: raise DomainError(code)
+                          ^^^^^^^^^^^^^^^^^^^^^^^
+E       onlinecoc.errors.DomainError: HIGH_RISK_REVIEW_REQUIRED
+
+engineering\acceptance\local-accounts\work\engine\engineering\backend\src\onlinecoc\errors.py:7: DomainError</failure></testcase><testcase classname="engineering.acceptance.local-accounts.test_c_gate" name="test_only_allowlisted_unknown_can_be_explicitly_adopted[EXISTING_INSTANCE_COVERAGE_MISSING]" time="0.499"><failure message="onlinecoc.errors.DomainError: HIGH_RISK_REVIEW_REQUIRED">prepared = (&lt;onlinecoc.host.Host object at 0x00000259D1B10D70&gt;, {'schemaVersion': 1, 'proposalId': '56297834784c4f64add47ce5ebc44af6', 'proposalRevision': 1, 'scopeId': '567cad924aad4a91a0a34cd6be14d9d7', ...})
+code = 'EXISTING_INSTANCE_COVERAGE_MISSING'
+
+    @pytest.mark.parametrize('code',['EXTENSION_FORBIDDEN','LIVE_SCENARIO_COVERAGE_MISSING','EXISTING_INSTANCE_COVERAGE_MISSING'])
+    def test_only_allowlisted_unknown_can_be_explicitly_adopted(prepared,code):
+        h,base=prepared;bundle=changed(base,code)
+        args=arguments(bundle)
+        args['riskDecisions']={item['id']:'Reviewed required item' for item in h.state()['aiControl']['packBinding']['contract']['reviewPolicy']['items'] if item['required']}
+        args['riskDecisions']['gameplay-risk']='Accepted explicitly observed limitation'
+        validate_bundle(bundle)
+&gt;       state=h.state();approved=approve(h,state,'kp',args,bundle)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+engineering\acceptance\local-accounts\test_c_gate.py:66: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+engineering\acceptance\local-accounts\work\engine\engineering\backend\src\onlinecoc\publication.py:149: in approve
+    require(args.get('explicitHighRiskDigest') == prepared['candidateDigest'], 'HIGH_RISK_REVIEW_REQUIRED')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+condition = False, code = 'HIGH_RISK_REVIEW_REQUIRED'
+
+    def require(condition, code="INPUT_INVALID"):
+&gt;       if not condition: raise DomainError(code)
+                          ^^^^^^^^^^^^^^^^^^^^^^^
+E       onlinecoc.errors.DomainError: HIGH_RISK_REVIEW_REQUIRED
+
+engineering\acceptance\local-accounts\work\engine\engineering\backend\src\onlinecoc\errors.py:7: DomainError</failure></testcase><testcase classname="engineering.acceptance.local-accounts.test_c_gate" name="test_technical_failure_never_bypassed[RULE_TIMEOUT-unknown]" time="0.246" /><testcase classname="engineering.acceptance.local-accounts.test_c_gate" name="test_technical_failure_never_bypassed[SCENARIO_EXECUTION_FAILED-unknown]" time="0.246" /><testcase classname="engineering.acceptance.local-accounts.test_c_gate" name="test_technical_failure_never_bypassed[EXTENSION_EFFECT_FORBIDDEN-unknown]" time="0.247" /><testcase classname="engineering.acceptance.local-accounts.test_c_gate" name="test_technical_failure_never_bypassed[EXTENSION_FORBIDDEN-fail]" time="0.245" /><testcase classname="engineering.acceptance.local-accounts.test_c_gate" name="test_technical_failure_never_bypassed[EXTENSION_FORBIDDEN-error]" time="0.248" /><testcase classname="engineering.acceptance.local-accounts.test_c_gate" name="test_technical_failure_never_bypassed[EXTENSION_FORBIDDEN-pass]" time="0.245" /><testcase classname="engineering.acceptance.local-accounts.test_c_gate" name="test_forged_proof_rejected[basisDigest]" time="0.250" /><testcase classname="engineering.acceptance.local-accounts.test_c_gate" name="test_forged_proof_rejected[reportDigest]" time="0.241" /><testcase classname="engineering.acceptance.local-accounts.test_c_gate" name="test_forged_proof_rejected[basisRevision]" time="0.244" /><testcase classname="engineering.acceptance.local-accounts.test_c_gate" name="test_missing_or_stale_acceptance_rejected" time="0.495" /><testcase classname="engineering.acceptance.local-accounts.test_c_gate" name="test_basis_update_invalidates_approval_and_apply" time="0.252"><failure message="onlinecoc.errors.DomainError: HIGH_RISK_REVIEW_REQUIRED">prepared = (&lt;onlinecoc.host.Host object at 0x00000259D1B10D70&gt;, {'schemaVersion': 1, 'proposalId': '56297834784c4f64add47ce5ebc44af6', 'proposalRevision': 1, 'scopeId': '567cad924aad4a91a0a34cd6be14d9d7', ...})
+
+    def test_basis_update_invalidates_approval_and_apply(prepared):
+        h,bundle=prepared;args=arguments(bundle)
+        args['riskDecisions']={item['id']:'Reviewed required item' for item in h.state()['aiControl']['packBinding']['contract']['reviewPolicy']['items'] if item['required']}
+        args['riskDecisions']['gameplay-risk']='Accepted bounded gameplay risk'
+&gt;       state=h.state();approved=approve(h,state,'kp',args,bundle)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+engineering\acceptance\local-accounts\test_c_gate.py:91: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+engineering\acceptance\local-accounts\work\engine\engineering\backend\src\onlinecoc\publication.py:149: in approve
+    require(args.get('explicitHighRiskDigest') == prepared['candidateDigest'], 'HIGH_RISK_REVIEW_REQUIRED')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+condition = False, code = 'HIGH_RISK_REVIEW_REQUIRED'
+
+    def require(condition, code="INPUT_INVALID"):
+&gt;       if not condition: raise DomainError(code)
+                          ^^^^^^^^^^^^^^^^^^^^^^^
+E       onlinecoc.errors.DomainError: HIGH_RISK_REVIEW_REQUIRED
+
+engineering\acceptance\local-accounts\work\engine\engineering\backend\src\onlinecoc\errors.py:7: DomainError</failure></testcase><testcase classname="engineering.acceptance.local-accounts.test_c_gate" name="test_approval_proof_is_in_digest" time="0.251"><failure message="onlinecoc.errors.DomainError: HIGH_RISK_REVIEW_REQUIRED">prepared = (&lt;onlinecoc.host.Host object at 0x00000259D1B10D70&gt;, {'schemaVersion': 1, 'proposalId': '56297834784c4f64add47ce5ebc44af6', 'proposalRevision': 1, 'scopeId': '567cad924aad4a91a0a34cd6be14d9d7', ...})
+
+    def test_approval_proof_is_in_digest(prepared):
+        h,bundle=prepared;args=arguments(bundle)
+        args['riskDecisions']={item['id']:'Reviewed required item' for item in h.state()['aiControl']['packBinding']['contract']['reviewPolicy']['items'] if item['required']}
+        args['riskDecisions']['gameplay-risk']='Accepted bounded gameplay risk'
+&gt;       state=h.state();result=approve(h,state,'kp',args,bundle)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+engineering\acceptance\local-accounts\test_c_gate.py:103: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+engineering\acceptance\local-accounts\work\engine\engineering\backend\src\onlinecoc\publication.py:149: in approve
+    require(args.get('explicitHighRiskDigest') == prepared['candidateDigest'], 'HIGH_RISK_REVIEW_REQUIRED')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+condition = False, code = 'HIGH_RISK_REVIEW_REQUIRED'
+
+    def require(condition, code="INPUT_INVALID"):
+&gt;       if not condition: raise DomainError(code)
+                          ^^^^^^^^^^^^^^^^^^^^^^^
+E       onlinecoc.errors.DomainError: HIGH_RISK_REVIEW_REQUIRED
+
+engineering\acceptance\local-accounts\work\engine\engineering\backend\src\onlinecoc\errors.py:7: DomainError</failure></testcase></testsuite></testsuites>

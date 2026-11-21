@@ -11,7 +11,10 @@ def configuration_checks(pack, state, baseline, artifact, changes):
     validator=local_schema(pack.json(spec['defaultsSchema']))
     for value in state['configurations'].values():
         if value['configurationId']==spec['baseConfiguration'] or value['configurationId'].startswith(spec['namespace']):
-            require(value['typeRef']=='actor' and validator.is_valid(value['defaults']) and (value['configurationId']==spec['baseConfiguration'] or value['defaults'].get('isNpc')==1),'EXTENSION_DEFAULTS_INVALID')
+            path='/configurations/'+value['configurationId']+'/defaults'
+            require(value['typeRef']=='actor' and validator.is_valid(value['defaults']),'EXTENSION_DEFAULTS_INVALID',path=path)
+            require(value['configurationId']==spec['baseConfiguration'] or value['defaults'].get('isNpc')==1,
+                'EXTENSION_MARKER_REQUIRED','New NPC-family configurations require the fixed discriminator isNpc=1; preserve all other confirmed defaults.',path+'/isNpc')
     for name,text in changes['sources'].items():
         if baseline['sources'].get(name)==text:continue
         if name in pack.contract.get('highRisk', {}).get('ruleFiles', []):continue
@@ -25,6 +28,15 @@ def configuration_checks(pack, state, baseline, artifact, changes):
 def assess_extensions(pack, state, baseline, artifact, changes, account):
     spec=getattr(pack,'extension_validation',None)
     if not spec:return None
+    # B already verifies author permission and the complete resulting graph.
+    # This specialized C probe covers NPC templates only; unrelated templates
+    # must not inherit a successful NPC assessment merely because they passed B.
+    uncovered=[c['id'] for c in changes['configurations'] if c['kind']!='remove' and
+        c['id']!=spec['baseConfiguration'] and not c['id'].startswith(spec['namespace'])]
+    require(not uncovered,'EXTENSION_FORBIDDEN',
+        'The NPC-family C assessment does not cover these author-permitted configuration changes: '+','.join(uncovered)+
+        '. A/B validity is separate; KP must assess their gameplay impact before adoption.',
+        '/configurations/'+uncovered[0] if uncovered else '')
     # The specialized NPC probe cannot certify maps or core mechanics. These
     # changes use normal declared scenarios, including existing-room coverage.
     high = pack.contract.get('highRisk', {})
@@ -35,7 +47,9 @@ def assess_extensions(pack, state, baseline, artifact, changes, account):
     changed=[]
     for name,text in changes['sources'].items():
         if baseline['sources'].get(name)!=text:changed.extend(execute({name:text},{'kind':'inspect'})['metadata'])
-    require(all(k.startswith(spec['rulePrefix']) for k in changed),'EXTENSION_FORBIDDEN')
+    require(all(k.startswith(spec['rulePrefix']) for k in changed),'EXTENSION_FORBIDDEN',
+        'NPC-family assessment covers prefix '+spec['rulePrefix']+'; unassessed rules: '+','.join(k for k in changed if not k.startswith(spec['rulePrefix'])),
+        '/extensionValidation/rulePrefix')
     configurations=copy.deepcopy(state['configurations'])
     for delta in changes['configurations']:configurations[delta['id']]=delta['value']
     configuration_checks(pack,{'configurations':configurations},baseline,artifact,changes)

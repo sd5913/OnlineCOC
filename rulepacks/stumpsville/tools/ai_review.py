@@ -55,6 +55,21 @@ def source(state, view, args):
                    'contentOmitted': True, 'reason': 'SOURCE_TOO_LARGE'}
     result = {'kind': 'package', 'sourceId': 'stumpsville', 'category': kind, 'id': key,
               'revision': revision, 'title': title, 'summary': summary, 'context': context}
+    # Group only explicit business relationships, never similar text or accounts.
+    # Drafts can be resubmitted under the same account, so keep their revisions separate.
+    correlation = None
+    if kind == 'request':
+        correlation = ['request', key]
+    elif kind == 'event' and related.get('id') == record.get('requestId') and isinstance(related.get('id'), str):
+        correlation = ['request', related['id']]
+    elif kind == 'flow':
+        correlation = ['flow', key]
+    elif kind == 'wait' and isinstance(record.get('flowId'), str) and record['flowId']:
+        correlation = ['flow', record['flowId']]
+    elif kind == 'wait':
+        correlation = ['wait', key]
+    if correlation:
+        result['correlationKey'] = hashlib.sha256(json.dumps(correlation, ensure_ascii=False, separators=(',', ':')).encode()).hexdigest()
     if requested_by:
         result['requestedBy'] = requested_by
     # The module bounds the whole source, including the duplicated summary.

@@ -1,0 +1,215 @@
+{
+  "label": "optimized",
+  "fixture": {
+    "sessions": [
+      "558f4d10f0614a01b9eb921debf41487",
+      "9b86cf61739e499a8be0e19a5c51cec5"
+    ],
+    "tasks": 200,
+    "requests": 400,
+    "batches": 20,
+    "chatMessages": 1000,
+    "aiBytes": 1305431,
+    "hostBytes": 687337
+  },
+  "measurements": [
+    {
+      "name": "tasks-cold",
+      "samples": 1,
+      "workers": 1,
+      "p50ms": 245.97,
+      "p95ms": 245.97,
+      "errors": [],
+      "returnedCounts": [
+        30
+      ]
+    },
+    {
+      "name": "tasks",
+      "samples": 12,
+      "workers": 1,
+      "p50ms": 56.52,
+      "p95ms": 138.54,
+      "errors": [],
+      "returnedCounts": [
+        30,
+        30,
+        30,
+        30,
+        30,
+        30,
+        30,
+        30,
+        30,
+        30,
+        30,
+        30
+      ]
+    },
+    {
+      "name": "session-cold",
+      "samples": 1,
+      "workers": 1,
+      "p50ms": 266.04,
+      "p95ms": 266.04,
+      "errors": [],
+      "returnedCounts": [
+        100
+      ]
+    },
+    {
+      "name": "session",
+      "samples": 12,
+      "workers": 1,
+      "p50ms": 106.09,
+      "p95ms": 133.23,
+      "errors": [],
+      "returnedCounts": [
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        100
+      ]
+    },
+    {
+      "name": "rulings-cold",
+      "samples": 1,
+      "workers": 1,
+      "p50ms": 327.94,
+      "p95ms": 327.94,
+      "errors": [],
+      "returnedCounts": [
+        20
+      ]
+    },
+    {
+      "name": "rulings",
+      "samples": 12,
+      "workers": 1,
+      "p50ms": 205.46,
+      "p95ms": 316.8,
+      "errors": [],
+      "returnedCounts": [
+        20,
+        20,
+        20,
+        20,
+        20,
+        20,
+        20,
+        20,
+        20,
+        20,
+        20,
+        20
+      ]
+    },
+    {
+      "name": "view-cold",
+      "samples": 1,
+      "workers": 1,
+      "p50ms": 14.32,
+      "p95ms": 14.32,
+      "errors": [],
+      "returnedCounts": [
+        0
+      ]
+    },
+    {
+      "name": "view",
+      "samples": 12,
+      "workers": 1,
+      "p50ms": 12.49,
+      "p95ms": 14.05,
+      "errors": [],
+      "returnedCounts": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "name": "tasks-four-clients",
+      "samples": 12,
+      "workers": 4,
+      "p50ms": 353.7,
+      "p95ms": 394.85,
+      "errors": [],
+      "returnedCounts": [
+        30,
+        30,
+        30,
+        30,
+        30,
+        30,
+        30,
+        30,
+        30,
+        30,
+        30,
+        30
+      ]
+    },
+    {
+      "name": "repository-snapshot",
+      "samples": 12,
+      "workers": 1,
+      "p50ms": 12.97,
+      "p95ms": 23.0,
+      "errors": [],
+      "returnedCounts": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "name": "task-status-write",
+      "samples": 12,
+      "workers": 1,
+      "p50ms": 169.14,
+      "p95ms": 262.3,
+      "errors": [],
+      "returnedCounts": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ]
+}

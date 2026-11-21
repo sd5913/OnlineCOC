@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="6" skipped="0" tests="7" time="10.622" timestamp="2026-11-21T08:56:03.419466+08:00" hostname="LAPTOP-BIFSL64A"><testcase classname="engineering.ai.tests.test_chat_isolation" name="test_context_never_auto_collects_ordinary_chat" time="1.397"><failure message="AssertionError: assert not [{'messageId': 'ebe5649dea48474b88e4f1d4f46ac11e', 'senderAccountId': 'player1', 'text': '普通聊天室内容不得进入AI默认上下文', 'revision': 1, ...}]">application = &lt;onlinecoc_ai.api.Application object at 0x000001BA9D5A3E00&gt;
+
+    def test_context_never_auto_collects_ordinary_chat(application):
+        app=application;enable(app.host,public=True,private=True,kp=True)
+        add_message(app.host,'player1','普通聊天室内容不得进入AI默认上下文')
+        for demand in (False,True):
+            snapshot,payload=Context(app.proposals,demand=demand).capture('kp',request())
+&gt;           assert not payload['roomFacts']['messages']
+E           AssertionError: assert not [{'messageId': 'ebe5649dea48474b88e4f1d4f46ac11e', 'senderAccountId': 'player1', 'text': '普通聊天室内容不得进入AI默认上下文', 'revision': 1, ...}]
+
+engineering\ai\tests\test_chat_isolation.py:38: AssertionError</failure></testcase><testcase classname="engineering.ai.tests.test_chat_isolation" name="test_broad_room_query_batch_survives_ordinary_chat" time="1.265"><failure message="AssertionError: {'sessionId': '43a80b34fe434396befecb72a3e41a90', 'requestId': '3c8659a4e7174f6cbcfdfa3b8b2d2023', 'summary': '原始裁决正文：将角色改名为测试名称。', 'status': 'pending', ...}&#10;assert ('\u539f\u59cb...d\u79f0\u3002' == '\u539f\u59cb...d\u79f0\u3002'&#10;  &#10;    原始裁决正文：将角色改名为测试名称。 and False)">application = &lt;onlinecoc_ai.api.Application object at 0x000001BA9D85F390&gt;
+
+    def test_broad_room_query_batch_survives_ordinary_chat(application):
+        app=application;s,t=generated(app)
+        before=ruling(app,t);assert before['canDecide']
+        for account in ('kp','player1'):add_message(app.host,account,'并发普通聊天')
+        after=ruling(app,t)
+&gt;       assert after['summary']==before['summary'] and after['canDecide'],after
+E       AssertionError: {'sessionId': '43a80b34fe434396befecb72a3e41a90', 'requestId': '3c8659a4e7174f6cbcfdfa3b8b2d2023', 'summary': '原始裁决正文：将角色改名为测试名称。', 'status': 'pending', ...}
+E       assert ('\u539f\u59cb...d\u79f0\u3002' == '\u539f\u59cb...d\u79f0\u3002'
+E         
+E           原始裁决正文：将角色改名为测试名称。 and False)
+
+engineering\ai\tests\test_chat_isolation.py:47: AssertionError</failure></testcase><testcase classname="engineering.ai.tests.test_chat_isolation" name="test_ruling_keeps_only_proven_delivered_summary[value]" time="1.274"><failure message="AssertionError: {'sessionId': '611829a24764465aa28049b720273a0c', 'requestId': 'b2c2a5018c25433384d3ba0b822c5f33', 'summary': '来源权限或资料已变化，当前内容不能执行；请重新读取并生成方案。', 'status': 'pending', ...}&#10;assert ('来源权限或资料已变化，当...行；请重新读取并生成方案。' == '原始裁决正文：将角色改名为测试名称。'&#10;  &#10;  - 原始裁决正文：将角色改名为测试名称。&#10;  + 来源权限或资料已变化，当前内容不能执行；请重新读取并生成方案。)">application = &lt;onlinecoc_ai.api.Application object at 0x000001BA9D96DF30&gt;
+change = 'value'
+
+    @pytest.mark.parametrize('change',['value','removed','revoked','unproven'])
+    def test_ruling_keeps_only_proven_delivered_summary(application,change):
+        app=application;s,t=generated(app,'/entities/actor-one')
+        assert ruling(app,t)['summary']==t['text']
+        state=app.host.state()
+        if change=='removed':del state['entities']['actor-one']
+        elif change=='revoked':state['members']['kp']['authorizationEpoch']+=1
+        else:state['entities']['actor-one']['name']='Updated';state['entities']['actor-one']['revision']+=1
+        app.host.commit(state)
+        if change=='unproven':
+            def strip(store):
+                value=store['tasks'][t['taskId']];value.pop('messagePublication',None);value['status']='failed'
+            app.repository.update(strip)
+        result=ruling(app,t)
+        if change in ('value','removed'):
+&gt;           assert result['summary']==t['text'] and result['sourceState']=='stale' and result['historicalReadOnly'],result
+E           AssertionError: {'sessionId': '611829a24764465aa28049b720273a0c', 'requestId': 'b2c2a5018c25433384d3ba0b822c5f33', 'summary': '来源权限或资料已变化，当前内容不能执行；请重新读取并生成方案。', 'status': 'pending', ...}
+E           assert ('来源权限或资料已变化，当...行；请重新读取并生成方案。' == '原始裁决正文：将角色改名为测试名称。'
+E             
+E             - 原始裁决正文：将角色改名为测试名称。
+E             + 来源权限或资料已变化，当前内容不能执行；请重新读取并生成方案。)
+
+engineering\ai\tests\test_chat_isolation.py:67: AssertionError</failure></testcase><testcase classname="engineering.ai.tests.test_chat_isolation" name="test_ruling_keeps_only_proven_delivered_summary[removed]" time="1.291"><failure message="AssertionError: {'sessionId': '20da7e2ece7a4f50986b6e7ae7b12d7a', 'requestId': '409b2f9604a9465eb9103fdbe1781c53', 'summary': '来源权限或资料已变化，当前内容不能执行；请重新读取并生成方案。', 'status': 'pending', ...}&#10;assert ('来源权限或资料已变化，当...行；请重新读取并生成方案。' == '原始裁决正文：将角色改名为测试名称。'&#10;  &#10;  - 原始裁决正文：将角色改名为测试名称。&#10;  + 来源权限或资料已变化，当前内容不能执行；请重新读取并生成方案。)">application = &lt;onlinecoc_ai.api.Application object at 0x000001BA9D97C710&gt;
+change = 'removed'
+
+    @pytest.mark.parametrize('change',['value','removed','revoked','unproven'])
+    def test_ruling_keeps_only_proven_delivered_summary(application,change):
+        app=application;s,t=generated(app,'/entities/actor-one')
+        assert ruling(app,t)['summary']==t['text']
+        state=app.host.state()
+        if change=='removed':del state['entities']['actor-one']
+        elif change=='revoked':state['members']['kp']['authorizationEpoch']+=1
+        else:state['entities']['actor-one']['name']='Updated';state['entities']['actor-one']['revision']+=1
+        app.host.commit(state)
+        if change=='unproven':
+            def strip(store):
+                value=store['tasks'][t['taskId']];value.pop('messagePublication',None);value['status']='failed'
+            app.repository.update(strip)
+        result=ruling(app,t)
+        if change in ('value','removed'):
+&gt;           assert result['summary']==t['text'] and result['sourceState']=='stale' and result['historicalReadOnly'],result
+E           AssertionError: {'sessionId': '20da7e2ece7a4f50986b6e7ae7b12d7a', 'requestId': '409b2f9604a9465eb9103fdbe1781c53', 'summary': '来源权限或资料已变化，当前内容不能执行；请重新读取并生成方案。', 'status': 'pending', ...}
+E           assert ('来源权限或资料已变化，当...行；请重新读取并生成方案。' == '原始裁决正文：将角色改名为测试名称。'
+E             
+E             - 原始裁决正文：将角色改名为测试名称。
+E             + 来源权限或资料已变化，当前内容不能执行；请重新读取并生成方案。)
+
+engineering\ai\tests\test_chat_isolation.py:67: AssertionError</failure></testcase><testcase classname="engineering.ai.tests.test_chat_isolation" name="test_ruling_keeps_only_proven_delivered_summary[revoked]" time="1.311"><failure message="KeyError: 'sourceState'">application = &lt;onlinecoc_ai.api.Application object at 0x000001BA9D935040&gt;
+change = 'revoked'
+
+    @pytest.mark.parametrize('change',['value','removed','revoked','unproven'])
+    def test_ruling_keeps_only_proven_delivered_summary(application,change):
+        app=application;s,t=generated(app,'/entities/actor-one')
+        assert ruling(app,t)['summary']==t['text']
+        state=app.host.state()
+        if change=='removed':del state['entities']['actor-one']
+        elif change=='revoked':state['members']['kp']['authorizationEpoch']+=1
+        else:state['entities']['actor-one']['name']='Updated';state['entities']['actor-one']['revision']+=1
+        app.host.commit(state)
+        if change=='unproven':
+            def strip(store):
+                value=store['tasks'][t['taskId']];value.pop('messagePublication',None);value['status']='failed'
+            app.repository.update(strip)
+        result=ruling(app,t)
+        if change in ('value','removed'):
+            assert result['summary']==t['text'] and result['sourceState']=='stale' and result['historicalReadOnly'],result
+            assert not result['canDecide']
+&gt;       else:assert result['summary']!=t['text'] and result['sourceState']=='denied'
+                                                     ^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'sourceState'
+
+engineering\ai\tests\test_chat_isolation.py:69: KeyError</failure></testcase><testcase classname="engineering.ai.tests.test_chat_isolation" name="test_ruling_keeps_only_proven_delivered_summary[unproven]" time="1.301"><failure message="KeyError: 'sourceState'">application = &lt;onlinecoc_ai.api.Application object at 0x000001BA9D8A2450&gt;
+change = 'unproven'
+
+    @pytest.mark.parametrize('change',['value','removed','revoked','unproven'])
+    def test_ruling_keeps_only_proven_delivered_summary(application,change):
+        app=application;s,t=generated(app,'/entities/actor-one')
+        assert ruling(app,t)['summary']==t['text']
+        state=app.host.state()
+        if change=='removed':del state['entities']['actor-one']
+        elif change=='revoked':state['members']['kp']['authorizationEpoch']+=1
+        else:state['entities']['actor-one']['name']='Updated';state['entities']['actor-one']['revision']+=1
+        app.host.commit(state)
+        if change=='unproven':
+            def strip(store):
+                value=store['tasks'][t['taskId']];value.pop('messagePublication',None);value['status']='failed'
+            app.repository.update(strip)
+        result=ruling(app,t)
+        if change in ('value','removed'):
+            assert result['summary']==t['text'] and result['sourceState']=='stale' and result['historicalReadOnly'],result
+            assert not result['canDecide']
+&gt;       else:assert result['summary']!=t['text'] and result['sourceState']=='denied'
+                                                     ^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'sourceState'
+
+engineering\ai\tests\test_chat_isolation.py:69: KeyError</failure></testcase><testcase classname="engineering.ai.tests.test_chat_isolation" name="test_selected_message_depends_only_on_that_message" time="1.165" /></testsuite></testsuites>

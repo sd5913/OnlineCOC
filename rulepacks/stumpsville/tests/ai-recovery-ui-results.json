@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-11-20T12:44:17.011481+08:00",
+  "checkedAt": "2026-11-21T16:03:38.021333+08:00",
   "realSaveChanged": false,
   "realProviderCalls": 0,
   "checks": [
@@ -10,7 +10,7 @@
     "网页导出的真实组件图可加载并打开调试弹窗（不代替公网WebRTC全链路）",
     "浏览器无未捕获脚本错误"
   ],
-  "evidenceDirectory": "tests/output/ai-recovery-ui-ec488a63",
+  "evidenceDirectory": "tests/output/ai-recovery-ui-4e0d801d",
   "previousRuns": [
     {
       "checkedAt": "2026-11-20T01:01:38.792384+08:00",
@@ -44,6 +44,90 @@
       ],
       "error": null,
       "evidenceDirectory": "tests/output/ai-recovery-ui-e088f678"
+    },
+    {
+      "checkedAt": "2026-11-20T12:44:17.011481+08:00",
+      "passed": true,
+      "checks": [
+        "真实包页面收到无status字段的HTTP403后，可继续创建会话，无遗留恢复标记",
+        "1440px顶部调试弹窗：请求选择、默认无正文、显式正文导出、关闭及边界通过",
+        "390px顶部调试弹窗：请求选择、默认无正文、显式正文导出、关闭及边界通过",
+        "重新加载包页面后可重新选择原会话并读取请求",
+        "网页导出的真实组件图可加载并打开调试弹窗（不代替公网WebRTC全链路）",
+        "浏览器无未捕获脚本错误"
+      ],
+      "error": null,
+      "evidenceDirectory": "tests/output/ai-recovery-ui-ec488a63"
+    },
+    {
+      "checkedAt": "2026-11-20T21:30:05.425262+08:00",
+      "passed": true,
+      "checks": [
+        "真实包页面收到无status字段的HTTP403后，可继续创建会话，无遗留恢复标记",
+        "1440px顶部调试弹窗：请求选择、默认无正文、显式正文导出、关闭及边界通过",
+        "390px顶部调试弹窗：请求选择、默认无正文、显式正文导出、关闭及边界通过",
+        "重新加载包页面后可重新选择原会话并读取请求",
+        "网页导出的真实组件图可加载并打开调试弹窗（不代替公网WebRTC全链路）",
+        "浏览器无未捕获脚本错误"
+      ],
+      "error": null,
+      "evidenceDirectory": "tests/output/ai-recovery-ui-549a86ce"
+    },
+    {
+      "checkedAt": "2026-11-21T01:07:03.478942+08:00",
+      "passed": true,
+      "checks": [
+        "真实包页面收到无status字段的HTTP403后，可继续创建会话，无遗留恢复标记",
+        "1440px顶部调试弹窗：请求选择、默认无正文、显式正文导出、关闭及边界通过",
+        "390px顶部调试弹窗：请求选择、默认无正文、显式正文导出、关闭及边界通过",
+        "重新加载包页面后可重新选择原会话并读取请求",
+        "网页导出的真实组件图可加载并打开调试弹窗（不代替公网WebRTC全链路）",
+        "浏览器无未捕获脚本错误"
+      ],
+      "error": null,
+      "evidenceDirectory": "tests/output/ai-recovery-ui-2b05ff29"
+    },
+    {
+      "checkedAt": "2026-11-21T09:21:43.221881+08:00",
+      "passed": true,
+      "checks": [
+        "真实包页面收到无status字段的HTTP403后，可继续创建会话，无遗留恢复标记",
+        "1440px顶部调试弹窗：请求选择、默认无正文、显式正文导出、关闭及边界通过",
+        "390px顶部调试弹窗：请求选择、默认无正文、显式正文导出、关闭及边界通过",
+        "重新加载包页面后可重新选择原会话并读取请求",
+        "网页导出的真实组件图可加载并打开调试弹窗（不代替公网WebRTC全链路）",
+        "浏览器无未捕获脚本错误"
+      ],
+      "error": null,
+      "evidenceDirectory": "tests/output/ai-recovery-ui-7cd8838f"
+    },
+    {
+      "checkedAt": "2026-11-21T09:44:17.261168+08:00",
+      "passed": true,
+      "checks": [
+        "真实包页面收到无status字段的HTTP403后，可继续创建会话，无遗留恢复标记",
+        "1440px顶部调试弹窗：请求选择、默认无正文、显式正文导出、关闭及边界通过",
+        "390px顶部调试弹窗：请求选择、默认无正文、显式正文导出、关闭及边界通过",
+        "重新加载包页面后可重新选择原会话并读取请求",
+        "网页导出的真实组件图可加载并打开调试弹窗（不代替公网WebRTC全链路）",
+        "浏览器无未捕获脚本错误"
+      ],
+      "error": null,
+      "evidenceDirectory": "tests/output/ai-recovery-ui-bffe781b"
+    },
+    {
+      "checkedAt": "2026-11-21T15:46:34.940313+08:00",
+      "passed": true,
+      "checks": [
+        "真实包页面收到无status字段的HTTP403后，可继续创建会话，无遗留恢复标记",
+        "1440px顶部调试弹窗：请求选择、默认无正文、显式正文导出、关闭及边界通过",
+        "390px顶部调试弹窗：请求选择、默认无正文、显式正文导出、关闭及边界通过",
+        "重新加载包页面后可重新选择原会话并读取请求",
+        "网页导出的真实组件图可加载并打开调试弹窗（不代替公网WebRTC全链路）",
+        "浏览器无未捕获脚本错误"
+      ],
+      "error": null,
+      "evidenceDirectory": "tests/output/ai-recovery-ui-13a882e0"
     }
   ],
   "passed": true,

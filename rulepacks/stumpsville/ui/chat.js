@@ -2,6 +2,7 @@ import {t} from './i18n.js';
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let services, state, identity='', root, shown=false, selected='general', minimized=false, serial=0, pinned=false, channelGroup='room';
 const windows=new Map(), drafts=new Map(), pages=new Map();
+const pendingHistory=new Map();
 const label=c=>c.kind==='direct'?(c.participants||[]).filter(id=>id!==state.accountId).map(id=>{const member=state.team?.find(p=>p.account===id);return member?member.name+' · '+id:id;}).join(' / ')||c.name:c.channelId==='general'?t('chat.global'):c.kind==='party'?t('chat.party'):c.kind==='scene'?t('chat.scene')+' · '+c.name.replace('场景 ',''):c.name;
 const btn=(text,action,channel='')=>`<button type="button" data-chat="${action}" data-channel="${esc(channel)}">${esc(text)}</button>`;
 function box(channel, popout=false){
@@ -16,6 +17,7 @@ function render(){
   root.classList.toggle('chat-pinned',pinned);
   root.innerHTML=`${shown?`<section class="messenger ${minimized?'minimized':''}" aria-label="${esc(t('chat.title'))}"><header class="messenger-title"><strong>${esc(t('chat.title'))}</strong><span>${btn(t('chat.direct'),'direct')}${pinned?'':btn(minimized?t('chat.expand'):t('chat.minimize'),'minimize')+btn(t('chat.close'),'close')}</span></header>${pinned?`<nav class="chat-scope-tabs">${groups.filter(([kind])=>kind!=='group'||Object.values(state.channels).some(c=>c.kind==='group')).map(([kind,name])=>`<button type="button" class="${channelGroup===kind?'selected':''}" data-chat="group" data-channel="${kind}">${esc(name)}<b data-unread-group="${kind}">${Object.values(state.channels).filter(c=>c.kind===kind).reduce((n,c)=>n+(c.unreadCount||0),0)||''}</b></button>`).join('')}</nav>`:''}<div class="messenger-body" ${minimized?'hidden':''}><aside class="conversation-list" ${pinned&&Object.values(state.channels).filter(c=>c.kind===channelGroup).length<=1?'hidden':''}>${conversationList}</aside>${box(selected)||`<p class="empty">${esc(t('chat.nochannels'))}</p>`}</div></section>`:''}${[...windows].map(([channel,w],i)=>`<section class="dm-window ${w.minimized?'minimized':''}" style="--window-index:${i%4};z-index:${w.z}" aria-label="${esc(t('chat.private'))}: ${esc(label(state.channels[channel]))}"><header class="messenger-title" data-drag="${esc(channel)}"><strong>${esc(label(state.channels[channel]))}</strong><span>${btn(w.minimized?t('chat.expand'):t('chat.minimize'),'dm-minimize',channel)}${btn(t('chat.close'),'dm-close',channel)}</span></header><div ${w.minimized?'hidden':''}>${box(channel,true)}</div></section>`).join('')}`;
   for(const channel of pages.keys())paint(channel);
+  pendingChanged();
   for(const [channel,w] of windows){const node=[...root.querySelectorAll('.dm-window')].find(n=>n.querySelector('[data-drag]').dataset.drag===channel);if(w.x!==undefined){node.style.left=w.x+'px';node.style.top=w.y+'px';node.style.right='auto';node.style.bottom='auto';}}
   poll().catch(error=>services.toast(error.message));
 }
@@ -33,21 +35,46 @@ function paint(channel){
 async function history(channel,older=false){
   if(!state?.channels[channel])return;
   const who=identity, generation=serial, prior=pages.get(channel), revision=state.channels[channel].revision;
-  const result=await services.api('package/chat/history',{channelId:channel,limit:50,...(older&&prior?.nextBefore?{before:prior.nextBefore}:{})});
-  if(who!==identity||generation!==serial||!state?.channels[channel]||state.channels[channel].revision!==revision)return;
-  pages.set(channel,{...result,revision,items:older&&prior?.revision===revision?[...result.items,...prior.items]:result.items});paint(channel);
+  const before=older&&prior?.nextBefore?prior.nextBefore:null,key=JSON.stringify([who,generation,channel,revision,before]);
+  if(pendingHistory.has(key))return pendingHistory.get(key);
+  const request=(async()=>{
+    const result=await services.api('package/chat/history',{channelId:channel,limit:50,...(before?{before}:{})});
+    if(who!==identity||generation!==serial||!state?.channels[channel]||state.channels[channel].revision!==revision)return;
+    pages.set(channel,{...result,revision,items:older&&prior?.revision===revision?[...result.items,...prior.items]:result.items});paint(channel);
+  })();
+  pendingHistory.set(key,request);
+  try{return await request;}finally{if(pendingHistory.get(key)===request)pendingHistory.delete(key);}
 }
 async function poll(){
   if(!state)return;
   const visible=new Set([...windows].filter(([,w])=>!w.minimized).map(([id])=>id));
   if(shown&&!minimized)visible.add(selected);
-  for(const c of visible)if(state.channels[c]&&pages.get(c)?.revision!==state.channels[c].revision)await history(c);
+  await Promise.all([...visible].filter(c=>state.channels[c]&&pages.get(c)?.revision!==state.channels[c].revision).map(c=>history(c)));
+}
+function pendingChanged(){
+  if(!root)return;
+  for(const header of root.querySelectorAll('.messenger-title')){
+    let button=header.querySelector('[data-chat="recover"]');
+    if(!button){button=document.createElement('button');button.type='button';button.dataset.chat='recover';button.textContent=t('chat.recover',{},'核对原消息');header.append(button);}
+    button.hidden=!services.pending?.();
+  }
+}
+function confirmed(args){
+  if(!['chat.message.send','chat.message.edit'].includes(args.operation))return;
+  const {channelId,text,messageId}=args.input;
+  if(drafts.get(channelId)===text)drafts.delete(channelId);
+  for(const form of root.querySelectorAll('[data-chat-form]')){
+    if(form.dataset.chatForm!==channelId||form.dataset.edit!==(messageId||undefined))continue;
+    const input=form.querySelector('textarea');
+    if(input.value===text){input.value='';delete form.dataset.edit;delete form.dataset.revision;}
+  }
 }
 async function send(operation,input){const r=await services.send(operation,input);if(!r)throw Error(t('chat.busy'));return r.result;}
 async function click(event){
   const b=event.target.closest('[data-chat]');if(!b)return;
   event.stopPropagation();const action=b.dataset.chat, channel=b.dataset.channel;
   try{
+    if(action==='recover'){await services.recover?.();await poll();return;}
     if(action==='close'&&!pinned)shown=false;
     else if(action==='group'){channelGroup=channel;selected=Object.values(state.channels).find(c=>c.kind===channelGroup)?.channelId||'';}
     else if(action==='minimize'&&!pinned)minimized=!minimized;
@@ -83,8 +110,9 @@ function configure(options){
   root.addEventListener('keydown',e=>{if(e.ctrlKey&&e.key==='Enter'&&e.target.matches('textarea')){e.preventDefault();e.target.closest('form').requestSubmit();}});
   root.addEventListener('submit',async e=>{
     const form=e.target.closest('[data-chat-form]');if(!form)return;e.preventDefault();e.stopPropagation();
-    const channel=form.dataset.chatForm, input=form.querySelector('textarea'), text=input.value, button=form.querySelector('[type=submit]');button.disabled=true;
-    try{await send(form.dataset.edit?'chat.message.edit':'chat.message.send',{channelId:channel,text,...(form.dataset.edit?{messageId:form.dataset.edit,revision:Number(form.dataset.revision)}:{})});drafts.delete(channel);delete form.dataset.edit;input.value='';await history(channel);}
+    const channel=form.dataset.chatForm, input=form.querySelector('textarea'), text=input.value, button=form.querySelector('[type=submit]'),who=identity;button.disabled=true;
+    const operation=form.dataset.edit?'chat.message.edit':'chat.message.send',args={channelId:channel,text,...(form.dataset.edit?{messageId:form.dataset.edit,revision:Number(form.dataset.revision)}:{})};
+    try{await send(operation,args);if(who===identity){confirmed({operation,input:args});await history(channel);}}
     catch(error){services.toast(error.message);}finally{button.disabled=false;}
   });
   root.addEventListener('pointerdown',e=>{
@@ -96,7 +124,7 @@ function configure(options){
   });
 }
 function update(next){
-  const who=next?location.pathname+':'+next.accountId:'';
+  const who=next?location.pathname+':'+next.storageScope+':'+next.accountId:'';
   if(who!==identity){identity=who;serial++;windows.clear();drafts.clear();pages.clear();shown=pinned;minimized=false;channelGroup='room';if(root)root.innerHTML='';}
   const previous=state;state=next;if(!state)return;
   let changed=false;
@@ -105,6 +133,7 @@ function update(next){
   if(changed||(pinned&&!root.querySelector('.messenger')))render();
   if(root)for(const node of root.querySelectorAll('[data-unread-group]'))node.textContent=Object.values(state.channels).filter(c=>c.kind===node.dataset.unreadGroup).reduce((n,c)=>n+(c.unreadCount||0),0)||'';
   if(root)for(const node of root.querySelectorAll('[data-chat="select"]'))node.querySelector('b').textContent=state.channels[node.dataset.channel]?.unreadCount||'';
+  pendingChanged();
 }
 function mount(host){
   if(!root)return;const next=Boolean(host),changed=next!==pinned;pinned=next;
@@ -113,4 +142,4 @@ function mount(host){
   if(changed||!root.querySelector('.messenger')&&shown)render();
   requestAnimationFrame(()=>{for(const node of root.querySelectorAll('.chat-history[data-at-bottom=true]'))node.scrollTop=node.scrollHeight;});
 }
-export const chatUI={configure,update,poll,mount,redraw:render,select(channel){if(!state?.channels[channel])return;selected=channel;channelGroup=state.channels[channel].kind;shown=true;minimized=false;render();},open(){shown=true;minimized=false;render();}};
+export const chatUI={configure,update,poll,mount,confirmed,pendingChanged,redraw:render,select(channel){if(!state?.channels[channel])return;selected=channel;channelGroup=state.channels[channel].kind;shown=true;minimized=false;render();},open(){shown=true;minimized=false;render();}};

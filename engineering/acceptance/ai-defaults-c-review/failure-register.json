@@ -1,0 +1,64 @@
+{
+  "failures": [
+    {
+      "id": "fixture-knowledge",
+      "first": "Synthetic personal descriptor used fixture.* prefix; sv.character invisible.",
+      "resolution": "Explicit synthetic identity-only descriptor; not production knowledge-provider verification.",
+      "status": "fixed"
+    },
+    {
+      "id": "fixture-dice",
+      "first": "d100 probe used default d20, RANDOM_COVERAGE_UNKNOWN.",
+      "resolution": "randomSides plus retained underlying execution error; actual supplemental coverage regression passed.",
+      "status": "fixed"
+    },
+    {
+      "id": "engine-approval-schema",
+      "first": "Six configuration approvals rejected INPUT_INVALID; models.json duplicate Approval lacked new proof fields.",
+      "resolution": "Engine v3; six saved outputs published and effects verified. Original failures retained.",
+      "status": "fixed"
+    },
+    {
+      "id": "short-rest-oracle",
+      "first": "Oracle rejected attribute=hp although the short branch ignores it.",
+      "resolution": "Original output unchanged; exact business effect verified in zero-API replay.",
+      "status": "oracle-corrected"
+    },
+    {
+      "id": "unqueried-negative-answer",
+      "first": "KP room query returned a false absence without tools (attempt14).",
+      "resolution": "MODEL_EVIDENCE_REQUIRED, bounded repair, actual read probe. Full production prompt not re-run; extra source prose remains.",
+      "status": "partially-verified"
+    },
+    {
+      "id": "closed-repository-callback",
+      "first": "Closing AI left a callback to closed storage; first lifecycle run also found the existing access callback still closed.",
+      "resolution": "C resolver and access callbacks reopen current persisted evidence; changed basis and locked store remain failures; 38 tests passed.",
+      "status": "fixed"
+    },
+    {
+      "id": "negative-guard-overmatch",
+      "first": "Initial regex matched an explicit query-incomplete statement across punctuation.",
+      "resolution": "Clause-bounded expression plus regression. This is not a general hallucination detector.",
+      "status": "fixed"
+    },
+    {
+      "id": "focused-driver-path",
+      "first": "Local test driver guessed a nonexistent .local.json profile filename; no HTTP.",
+      "resolution": "Uses existing ai-providers.json read-only.",
+      "status": "fixed"
+    },
+    {
+      "id": "clarification-budget",
+      "first": "Case16 obtained one tool response then conservative reservation blocked next HTTP.",
+      "resolution": "Retained incomplete evidence; no hidden retry or budget increase.",
+      "status": "uncovered"
+    },
+    {
+      "id": "strict-answer-format",
+      "first": "Focused repaired answer correctly retrieved secret but appended source prose.",
+      "resolution": "Recorded as factual retrieval pass and exact brevity instruction failure; no extra API retry.",
+      "status": "known-limitation"
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+[
+ {"stage":"first-field-error","tests":15,"passed":1,"failed":14,"cause":"初稿使用context.sources，实际字段为sourceRefs；随后正式协议统一使用完整context摘要","evidence":"first-field-error.xml","resolved":true},
+ {"stage":"parameter-expectation","tests":40,"passed":39,"failed":1,"cause":"短风险理由在Host.command预校验抛INPUT_INVALID，测试错误期待事务拒绝回执；生产参数校验正确拒绝","evidence":"parameter-expectation.xml","resolved":true}
+]

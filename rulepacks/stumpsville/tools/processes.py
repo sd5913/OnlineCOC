@@ -56,7 +56,7 @@ class WindowsJob:
 
 class OwnedProcess:
     """A gated base interpreter joins its Job before spawning any venv launcher."""
-    def __init__(self, args, **options):
+    def __init__(self, args, *, input_data=None, **options):
         self.job = None
         self.args = [str(arg) for arg in args]
         interpreter = Path(getattr(sys, '_base_executable', sys.executable))
@@ -67,7 +67,9 @@ class OwnedProcess:
         try:
             if os.name == 'nt':
                 self.job = WindowsJob(self.process)
-            payload = json.dumps(self.args, ensure_ascii=True) + '\n'
+            if input_data is not None and not isinstance(input_data, str):
+                raise TypeError('Owned process input must be text')
+            payload = json.dumps({'command': self.args, 'input': input_data}, ensure_ascii=True) + '\n'
             self.process.stdin.write(payload if self.process.text_mode else payload.encode('ascii'))
             self.process.stdin.close()
             self.process.stdin = None
@@ -100,10 +102,10 @@ def stop_process(process):
         process.wait(timeout=10)
 
 
-def run_owned(args, *, check=False, timeout=None, capture_output=False, **options):
+def run_owned(args, *, check=False, timeout=None, capture_output=False, input=None, **options):
     if capture_output:
         options.update(stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    process = OwnedProcess(args, **options)
+    process = OwnedProcess(args, input_data=input, **options)
     try:
         stdout, stderr = process.communicate(timeout=timeout)
         if check and process.returncode:
@@ -114,7 +116,9 @@ def run_owned(args, *, check=False, timeout=None, capture_output=False, **option
 
 
 if __name__ == '__main__':
-    command = json.loads(sys.stdin.buffer.readline())
-    child = subprocess.Popen(command, stdin=subprocess.DEVNULL,
+    payload = json.loads(sys.stdin.buffer.readline())
+    command, content = payload['command'], payload['input']
+    child = subprocess.Popen(command, stdin=subprocess.PIPE if content is not None else subprocess.DEVNULL,
                              creationflags=getattr(subprocess, 'CREATE_NO_WINDOW', 0))
-    raise SystemExit(child.wait())
+    child.communicate(content.encode('utf-8') if content is not None else None)
+    raise SystemExit(child.returncode)

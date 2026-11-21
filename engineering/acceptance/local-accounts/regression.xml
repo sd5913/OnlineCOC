@@ -1,0 +1,594 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="2" failures="29" skipped="0" tests="106" time="234.275" timestamp="2026-11-21T00:43:50.503458+08:00" hostname="LAPTOP-BIFSL64A"><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_host" name="test_transfer_dedupe_restart" time="2.044" /><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_host" name="test_readonly_and_permissions" time="1.478" /><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_host" name="test_old_flow_lock_and_restart" time="3.354" /><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_host" name="test_failure_rolls_back" time="1.396" /><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_host" name="test_personal_progress_and_revocation" time="0.669" /><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_network" name="test_http_boundary" time="2.216"><error message="failed on setup with &quot;Failed: D:\Studies\Art Programming\OnlineCOC\engineering\.venv\Scripts\python.exe: can't open file 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\local-accounts\\work\\engine\\engineering\\acceptance\\offline_server.py': [Errno 2] No such file or directory&quot;">tmp_path_factory = TempPathFactory(_given_basetemp=WindowsPath('D:/Studies/Art Programming/OnlineCOC/engineering/acceptance/local-account.../OnlineCOC/engineering/acceptance/local-accounts/work/pytest-regression'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope='module')
+    def live_server(tmp_path_factory):
+        folder=tmp_path_factory.mktemp('network');data=folder/'data'
+        h=Host(data,bootstrap='test-password');h.close()
+        with socket.socket() as sock:sock.bind(('127.0.0.1',0));port=sock.getsockname()[1]
+        log=open(folder/'server.log','w',encoding='utf-8')
+        process=subprocess.Popen([sys.executable,str(ROOT/'acceptance/offline_server.py'),'--data-dir',str(data),'serve','--port',str(port)],stdout=log,stderr=log)
+        url=f'http://127.0.0.1:{port}'
+        try:
+            for _ in range(25):
+&gt;               if process.poll() is not None:pytest.fail((folder/'server.log').read_text())
+                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E               Failed: D:\Studies\Art Programming\OnlineCOC\engineering\.venv\Scripts\python.exe: can't open file 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\local-accounts\\work\\engine\\engineering\\acceptance\\offline_server.py': [Errno 2] No such file or directory
+
+engineering\acceptance\local-accounts\work\engine\engineering\backend\tests\test_network.py:26: Failed</error></testcase><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_network" name="test_three_browsers_and_eight_connections" time="0.001"><error message="failed on setup with &quot;Failed: D:\Studies\Art Programming\OnlineCOC\engineering\.venv\Scripts\python.exe: can't open file 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\local-accounts\\work\\engine\\engineering\\acceptance\\offline_server.py': [Errno 2] No such file or directory&quot;">tmp_path_factory = TempPathFactory(_given_basetemp=WindowsPath('D:/Studies/Art Programming/OnlineCOC/engineering/acceptance/local-account.../OnlineCOC/engineering/acceptance/local-accounts/work/pytest-regression'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope='module')
+    def live_server(tmp_path_factory):
+        folder=tmp_path_factory.mktemp('network');data=folder/'data'
+        h=Host(data,bootstrap='test-password');h.close()
+        with socket.socket() as sock:sock.bind(('127.0.0.1',0));port=sock.getsockname()[1]
+        log=open(folder/'server.log','w',encoding='utf-8')
+        process=subprocess.Popen([sys.executable,str(ROOT/'acceptance/offline_server.py'),'--data-dir',str(data),'serve','--port',str(port)],stdout=log,stderr=log)
+        url=f'http://127.0.0.1:{port}'
+        try:
+            for _ in range(25):
+&gt;               if process.poll() is not None:pytest.fail((folder/'server.log').read_text())
+                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E               Failed: D:\Studies\Art Programming\OnlineCOC\engineering\.venv\Scripts\python.exe: can't open file 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\local-accounts\\work\\engine\\engineering\\acceptance\\offline_server.py': [Errno 2] No such file or directory
+
+engineering\acceptance\local-accounts\work\engine\engineering\backend\tests\test_network.py:26: Failed</error></testcase><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_faults" name="test_real_host_crash[before_t1]" time="1.047"><failure message="AssertionError: D:\Studies\Art Programming\OnlineCOC\engineering\.venv\Scripts\python.exe: can't open file 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\local-accounts\\work\\engine\\engineering\\acceptance\\crash_worker.py': [Errno 2] No such file or directory&#10;  &#10;assert 2 == 70&#10;[+1 more line; full report in element text]">tmp_path = WindowsPath('D:/Studies/Art Programming/OnlineCOC/engineering/acceptance/local-accounts/work/pytest-regression/test_real_host_crash_before_t10')
+point = 'before_t1'
+
+    @pytest.mark.parametrize('point',['before_t1','after_t1','after_random','before_t2','after_t2'])
+    def test_real_host_crash(tmp_path,point):
+        path=tmp_path/'data';h=Host(path,bootstrap='test-password')
+        sources=copy.deepcopy(h.state()['artifacts'][h.state()['activeRuleset']]['sources'])
+        sources['crash.lua']="return rule('crash', {'actor'}, function(r,a) local n=r.roll(100); r.damage(a,7); return n end)"
+        rev=h.command('kp',message(h,'kp','rule.stage',{'sources':sources},'stage'))['result']
+        h.command('kp',message(h,'kp','rule.activate',{'revision':rev},'activate'))
+        m=message(h,'player1','action.invoke',{'actionId':'crash','input':{'actor':'actor-player1'}},'crash')
+        # Authority epochs are per host: write the new process epoch just before submitting.
+        command=tmp_path/'command.json';command.write_text(json.dumps(m));h.close()
+        result=subprocess.run([sys.executable,str(ROOT/'acceptance/crash_worker.py'),'host',str(path),point,str(command)],capture_output=True,timeout=40)
+&gt;       assert result.returncode==70,result.stderr.decode(errors='replace')
+E       AssertionError: D:\Studies\Art Programming\OnlineCOC\engineering\.venv\Scripts\python.exe: can't open file 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\local-accounts\\work\\engine\\engineering\\acceptance\\crash_worker.py': [Errno 2] No such file or directory
+E         
+E       assert 2 == 70
+E        +  where 2 = CompletedProcess(args=['D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\.venv\\Scripts\\python.exe', 'D:\\Studie...-accounts\\\\work\\\\engine\\\\engineering\\\\acceptance\\\\crash_worker.py': [Errno 2] No such file or directory\r\n").returncode
+
+engineering\acceptance\local-accounts\work\engine\engineering\backend\tests\test_faults.py:24: AssertionError</failure></testcase><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_faults" name="test_real_host_crash[after_t1]" time="1.051"><failure message="AssertionError: D:\Studies\Art Programming\OnlineCOC\engineering\.venv\Scripts\python.exe: can't open file 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\local-accounts\\work\\engine\\engineering\\acceptance\\crash_worker.py': [Errno 2] No such file or directory&#10;  &#10;assert 2 == 70&#10;[+1 more line; full report in element text]">tmp_path = WindowsPath('D:/Studies/Art Programming/OnlineCOC/engineering/acceptance/local-accounts/work/pytest-regression/test_real_host_crash_after_t1_0')
+point = 'after_t1'
+
+    @pytest.mark.parametrize('point',['before_t1','after_t1','after_random','before_t2','after_t2'])
+    def test_real_host_crash(tmp_path,point):
+        path=tmp_path/'data';h=Host(path,bootstrap='test-password')
+        sources=copy.deepcopy(h.state()['artifacts'][h.state()['activeRuleset']]['sources'])
+        sources['crash.lua']="return rule('crash', {'actor'}, function(r,a) local n=r.roll(100); r.damage(a,7); return n end)"
+        rev=h.command('kp',message(h,'kp','rule.stage',{'sources':sources},'stage'))['result']
+        h.command('kp',message(h,'kp','rule.activate',{'revision':rev},'activate'))
+        m=message(h,'player1','action.invoke',{'actionId':'crash','input':{'actor':'actor-player1'}},'crash')
+        # Authority epochs are per host: write the new process epoch just before submitting.
+        command=tmp_path/'command.json';command.write_text(json.dumps(m));h.close()
+        result=subprocess.run([sys.executable,str(ROOT/'acceptance/crash_worker.py'),'host',str(path),point,str(command)],capture_output=True,timeout=40)
+&gt;       assert result.returncode==70,result.stderr.decode(errors='replace')
+E       AssertionError: D:\Studies\Art Programming\OnlineCOC\engineering\.venv\Scripts\python.exe: can't open file 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\local-accounts\\work\\engine\\engineering\\acceptance\\crash_worker.py': [Errno 2] No such file or directory
+E         
+E       assert 2 == 70
+E        +  where 2 = CompletedProcess(args=['D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\.venv\\Scripts\\python.exe', 'D:\\Studie...-accounts\\\\work\\\\engine\\\\engineering\\\\acceptance\\\\crash_worker.py': [Errno 2] No such file or directory\r\n").returncode
+
+engineering\acceptance\local-accounts\work\engine\engineering\backend\tests\test_faults.py:24: AssertionError</failure></testcase><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_faults" name="test_real_host_crash[after_random]" time="1.090"><failure message="AssertionError: D:\Studies\Art Programming\OnlineCOC\engineering\.venv\Scripts\python.exe: can't open file 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\local-accounts\\work\\engine\\engineering\\acceptance\\crash_worker.py': [Errno 2] No such file or directory&#10;  &#10;assert 2 == 70&#10;[+1 more line; full report in element text]">tmp_path = WindowsPath('D:/Studies/Art Programming/OnlineCOC/engineering/acceptance/local-accounts/work/pytest-regression/test_real_host_crash_after_ran0')
+point = 'after_random'
+
+    @pytest.mark.parametrize('point',['before_t1','after_t1','after_random','before_t2','after_t2'])
+    def test_real_host_crash(tmp_path,point):
+        path=tmp_path/'data';h=Host(path,bootstrap='test-password')
+        sources=copy.deepcopy(h.state()['artifacts'][h.state()['activeRuleset']]['sources'])
+        sources['crash.lua']="return rule('crash', {'actor'}, function(r,a) local n=r.roll(100); r.damage(a,7); return n end)"
+        rev=h.command('kp',message(h,'kp','rule.stage',{'sources':sources},'stage'))['result']
+        h.command('kp',message(h,'kp','rule.activate',{'revision':rev},'activate'))
+        m=message(h,'player1','action.invoke',{'actionId':'crash','input':{'actor':'actor-player1'}},'crash')
+        # Authority epochs are per host: write the new process epoch just before submitting.
+        command=tmp_path/'command.json';command.write_text(json.dumps(m));h.close()
+        result=subprocess.run([sys.executable,str(ROOT/'acceptance/crash_worker.py'),'host',str(path),point,str(command)],capture_output=True,timeout=40)
+&gt;       assert result.returncode==70,result.stderr.decode(errors='replace')
+E       AssertionError: D:\Studies\Art Programming\OnlineCOC\engineering\.venv\Scripts\python.exe: can't open file 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\local-accounts\\work\\engine\\engineering\\acceptance\\crash_worker.py': [Errno 2] No such file or directory
+E         
+E       assert 2 == 70
+E        +  where 2 = CompletedProcess(args=['D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\.venv\\Scripts\\python.exe', 'D:\\Studie...-accounts\\\\work\\\\engine\\\\engineering\\\\acceptance\\\\crash_worker.py': [Errno 2] No such file or directory\r\n").returncode
+
+engineering\acceptance\local-accounts\work\engine\engineering\backend\tests\test_faults.py:24: AssertionError</failure></testcase><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_faults" name="test_real_host_crash[before_t2]" time="1.003"><failure message="AssertionError: D:\Studies\Art Programming\OnlineCOC\engineering\.venv\Scripts\python.exe: can't open file 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\local-accounts\\work\\engine\\engineering\\acceptance\\crash_worker.py': [Errno 2] No such file or directory&#10;  &#10;assert 2 == 70&#10;[+1 more line; full report in element text]">tmp_path = WindowsPath('D:/Studies/Art Programming/OnlineCOC/engineering/acceptance/local-accounts/work/pytest-regression/test_real_host_crash_before_t20')
+point = 'before_t2'
+
+    @pytest.mark.parametrize('point',['before_t1','after_t1','after_random','before_t2','after_t2'])
+    def test_real_host_crash(tmp_path,point):
+        path=tmp_path/'data';h=Host(path,bootstrap='test-password')
+        sources=copy.deepcopy(h.state()['artifacts'][h.state()['activeRuleset']]['sources'])
+        sources['crash.lua']="return rule('crash', {'actor'}, function(r,a) local n=r.roll(100); r.damage(a,7); return n end)"
+        rev=h.command('kp',message(h,'kp','rule.stage',{'sources':sources},'stage'))['result']
+        h.command('kp',message(h,'kp','rule.activate',{'revision':rev},'activate'))
+        m=message(h,'player1','action.invoke',{'actionId':'crash','input':{'actor':'actor-player1'}},'crash')
+        # Authority epochs are per host: write the new process epoch just before submitting.
+        command=tmp_path/'command.json';command.write_text(json.dumps(m));h.close()
+        result=subprocess.run([sys.executable,str(ROOT/'acceptance/crash_worker.py'),'host',str(path),point,str(command)],capture_output=True,timeout=40)
+&gt;       assert result.returncode==70,result.stderr.decode(errors='replace')
+E       AssertionError: D:\Studies\Art Programming\OnlineCOC\engineering\.venv\Scripts\python.exe: can't open file 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\local-accounts\\work\\engine\\engineering\\acceptance\\crash_worker.py': [Errno 2] No such file or directory
+E         
+E       assert 2 == 70
+E        +  where 2 = CompletedProcess(args=['D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\.venv\\Scripts\\python.exe', 'D:\\Studie...-accounts\\\\work\\\\engine\\\\engineering\\\\acceptance\\\\crash_worker.py': [Errno 2] No such file or directory\r\n").returncode
+
+engineering\acceptance\local-accounts\work\engine\engineering\backend\tests\test_faults.py:24: AssertionError</failure></testcase><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_faults" name="test_real_host_crash[after_t2]" time="1.002"><failure message="AssertionError: D:\Studies\Art Programming\OnlineCOC\engineering\.venv\Scripts\python.exe: can't open file 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\local-accounts\\work\\engine\\engineering\\acceptance\\crash_worker.py': [Errno 2] No such file or directory&#10;  &#10;assert 2 == 70&#10;[+1 more line; full report in element text]">tmp_path = WindowsPath('D:/Studies/Art Programming/OnlineCOC/engineering/acceptance/local-accounts/work/pytest-regression/test_real_host_crash_after_t2_0')
+point = 'after_t2'
+
+    @pytest.mark.parametrize('point',['before_t1','after_t1','after_random','before_t2','after_t2'])
+    def test_real_host_crash(tmp_path,point):
+        path=tmp_path/'data';h=Host(path,bootstrap='test-password')
+        sources=copy.deepcopy(h.state()['artifacts'][h.state()['activeRuleset']]['sources'])
+        sources['crash.lua']="return rule('crash', {'actor'}, function(r,a) local n=r.roll(100); r.damage(a,7); return n end)"
+        rev=h.command('kp',message(h,'kp','rule.stage',{'sources':sources},'stage'))['result']
+        h.command('kp',message(h,'kp','rule.activate',{'revision':rev},'activate'))
+        m=message(h,'player1','action.invoke',{'actionId':'crash','input':{'actor':'actor-player1'}},'crash')
+        # Authority epochs are per host: write the new process epoch just before submitting.
+        command=tmp_path/'command.json';command.write_text(json.dumps(m));h.close()
+        result=subprocess.run([sys.executable,str(ROOT/'acceptance/crash_worker.py'),'host',str(path),point,str(command)],capture_output=True,timeout=40)
+&gt;       assert result.returncode==70,result.stderr.decode(errors='replace')
+E       AssertionError: D:\Studies\Art Programming\OnlineCOC\engineering\.venv\Scripts\python.exe: can't open file 'D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\local-accounts\\work\\engine\\engineering\\acceptance\\crash_worker.py': [Errno 2] No such file or directory
+E         
+E       assert 2 == 70
+E        +  where 2 = CompletedProcess(args=['D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\.venv\\Scripts\\python.exe', 'D:\\Studie...-accounts\\\\work\\\\engine\\\\engineering\\\\acceptance\\\\crash_worker.py': [Errno 2] No such file or directory\r\n").returncode
+
+engineering\acceptance\local-accounts\work\engine\engineering\backend\tests\test_faults.py:24: AssertionError</failure></testcase><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_faults" name="test_real_file_crash[half_write]" time="0.062"><failure message="assert 2 == 70&#10; +  where 2 = CompletedProcess(args=['D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\.venv\\Scripts\\python.exe', 'D:\\Studie...-accounts\\\\work\\\\engine\\\\engineering\\\\acceptance\\\\crash_worker.py': [Errno 2] No such file or directory\r\n&quot;).returncode">tmp_path = WindowsPath('D:/Studies/Art Programming/OnlineCOC/engineering/acceptance/local-accounts/work/pytest-regression/test_real_file_crash_half_writ0')
+point = 'half_write'
+
+    @pytest.mark.parametrize('point',['half_write','before_sync','before_publish','after_publish'])
+    def test_real_file_crash(tmp_path,point):
+        path=tmp_path/'store'
+        with FileDataStore(path) as s:s.commit(0,{'n':1})
+        result=subprocess.run([sys.executable,str(ROOT/'acceptance/crash_worker.py'),'store',str(path),point],capture_output=True,timeout=20)
+&gt;       assert result.returncode==70
+E       assert 2 == 70
+E        +  where 2 = CompletedProcess(args=['D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\.venv\\Scripts\\python.exe', 'D:\\Studie...-accounts\\\\work\\\\engine\\\\engineering\\\\acceptance\\\\crash_worker.py': [Errno 2] No such file or directory\r\n").returncode
+
+engineering\acceptance\local-accounts\work\engine\engineering\backend\tests\test_faults.py:44: AssertionError</failure></testcase><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_faults" name="test_real_file_crash[before_sync]" time="0.061"><failure message="assert 2 == 70&#10; +  where 2 = CompletedProcess(args=['D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\.venv\\Scripts\\python.exe', 'D:\\Studie...-accounts\\\\work\\\\engine\\\\engineering\\\\acceptance\\\\crash_worker.py': [Errno 2] No such file or directory\r\n&quot;).returncode">tmp_path = WindowsPath('D:/Studies/Art Programming/OnlineCOC/engineering/acceptance/local-accounts/work/pytest-regression/test_real_file_crash_before_sy0')
+point = 'before_sync'
+
+    @pytest.mark.parametrize('point',['half_write','before_sync','before_publish','after_publish'])
+    def test_real_file_crash(tmp_path,point):
+        path=tmp_path/'store'
+        with FileDataStore(path) as s:s.commit(0,{'n':1})
+        result=subprocess.run([sys.executable,str(ROOT/'acceptance/crash_worker.py'),'store',str(path),point],capture_output=True,timeout=20)
+&gt;       assert result.returncode==70
+E       assert 2 == 70
+E        +  where 2 = CompletedProcess(args=['D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\.venv\\Scripts\\python.exe', 'D:\\Studie...-accounts\\\\work\\\\engine\\\\engineering\\\\acceptance\\\\crash_worker.py': [Errno 2] No such file or directory\r\n").returncode
+
+engineering\acceptance\local-accounts\work\engine\engineering\backend\tests\test_faults.py:44: AssertionError</failure></testcase><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_faults" name="test_real_file_crash[before_publish]" time="0.064"><failure message="assert 2 == 70&#10; +  where 2 = CompletedProcess(args=['D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\.venv\\Scripts\\python.exe', 'D:\\Studie...-accounts\\\\work\\\\engine\\\\engineering\\\\acceptance\\\\crash_worker.py': [Errno 2] No such file or directory\r\n&quot;).returncode">tmp_path = WindowsPath('D:/Studies/Art Programming/OnlineCOC/engineering/acceptance/local-accounts/work/pytest-regression/test_real_file_crash_before_pu0')
+point = 'before_publish'
+
+    @pytest.mark.parametrize('point',['half_write','before_sync','before_publish','after_publish'])
+    def test_real_file_crash(tmp_path,point):
+        path=tmp_path/'store'
+        with FileDataStore(path) as s:s.commit(0,{'n':1})
+        result=subprocess.run([sys.executable,str(ROOT/'acceptance/crash_worker.py'),'store',str(path),point],capture_output=True,timeout=20)
+&gt;       assert result.returncode==70
+E       assert 2 == 70
+E        +  where 2 = CompletedProcess(args=['D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\.venv\\Scripts\\python.exe', 'D:\\Studie...-accounts\\\\work\\\\engine\\\\engineering\\\\acceptance\\\\crash_worker.py': [Errno 2] No such file or directory\r\n").returncode
+
+engineering\acceptance\local-accounts\work\engine\engineering\backend\tests\test_faults.py:44: AssertionError</failure></testcase><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_faults" name="test_real_file_crash[after_publish]" time="0.064"><failure message="assert 2 == 70&#10; +  where 2 = CompletedProcess(args=['D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\.venv\\Scripts\\python.exe', 'D:\\Studie...-accounts\\\\work\\\\engine\\\\engineering\\\\acceptance\\\\crash_worker.py': [Errno 2] No such file or directory\r\n&quot;).returncode">tmp_path = WindowsPath('D:/Studies/Art Programming/OnlineCOC/engineering/acceptance/local-accounts/work/pytest-regression/test_real_file_crash_after_pub0')
+point = 'after_publish'
+
+    @pytest.mark.parametrize('point',['half_write','before_sync','before_publish','after_publish'])
+    def test_real_file_crash(tmp_path,point):
+        path=tmp_path/'store'
+        with FileDataStore(path) as s:s.commit(0,{'n':1})
+        result=subprocess.run([sys.executable,str(ROOT/'acceptance/crash_worker.py'),'store',str(path),point],capture_output=True,timeout=20)
+&gt;       assert result.returncode==70
+E       assert 2 == 70
+E        +  where 2 = CompletedProcess(args=['D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\.venv\\Scripts\\python.exe', 'D:\\Studie...-accounts\\\\work\\\\engine\\\\engineering\\\\acceptance\\\\crash_worker.py': [Errno 2] No such file or directory\r\n").returncode
+
+engineering\acceptance\local-accounts\work\engine\engineering\backend\tests\test_faults.py:44: AssertionError</failure></testcase><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_faults" name="test_backup_restore_assets_identity" time="0.894" /><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_faults" name="test_wait_timeout_and_permission_recheck" time="0.988" /><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_faults" name="test_lua_invalid_boundaries[return rule('x',{},function(r) r.roll(100) end,{mode='calculation'})]" time="0.966" /><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_faults" name="test_lua_invalid_boundaries[return rule('x',{},function(r) local a={};a.x=a;return a end)]" time="0.956" /><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_faults" name="test_lua_invalid_boundaries[return rule('x',{},function(r) return 0/0 end)]" time="0.981" /><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_faults" name="test_lua_invalid_boundaries[return rule('x',{},function(r) return r.read.__globals__ end)]" time="0.954" /><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_faults" name="test_lua_invalid_boundaries[return rule('x',{},function(r) local x={}; while true do x[#x+1]=string.format('%01000d',1) end end)]" time="1.002" /><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_faults" name="test_poison_cannot_be_caught" time="0.993"><failure message="AssertionError: Regex pattern did not match.&#10;  Expected regex: 'EXECUTION_REJECTED'&#10;  Actual message: 'INPUT_INVALID'">host = &lt;onlinecoc.host.Host object at 0x00000261178ED250&gt;
+
+    def test_poison_cannot_be_caught(host):
+        source="return rule('x',{'actor'},function(r,a) pcall(function() r.set(a,'quantity',1) end); r.set(a,'hp',1) end)"
+&gt;       with pytest.raises(DomainError,match='EXECUTION_REJECTED'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'EXECUTION_REJECTED'
+E         Actual message: 'INPUT_INVALID'
+
+engineering\acceptance\local-accounts\work\engine\engineering\backend\tests\test_faults.py:94: AssertionError</failure></testcase><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_faults" name="test_invalid_dependency_and_wait" time="0.890" /><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_faults" name="test_quota_and_sync_failure" time="0.009" /><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_faults" name="test_flow_stage_crash_preserves_wait_and_random[before_t2]" time="0.671"><failure message="assert 2 == 70&#10; +  where 2 = CompletedProcess(args=['D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\.venv\\Scripts\\python.exe', 'D:\\Studie...-accounts\\\\work\\\\engine\\\\engineering\\\\acceptance\\\\crash_worker.py': [Errno 2] No such file or directory\r\n&quot;).returncode">tmp_path = WindowsPath('D:/Studies/Art Programming/OnlineCOC/engineering/acceptance/local-accounts/work/pytest-regression/test_flow_stage_crash_preserve0')
+point = 'before_t2'
+
+    @pytest.mark.parametrize('point',['before_t2','after_t2'])
+    def test_flow_stage_crash_preserves_wait_and_random(tmp_path,point):
+        path=tmp_path/'flow';h=Host(path,bootstrap='test-password');s=h.state();s['entities']['skill-player1']['numbers']['value']=0;h.commit(s)
+        m=message(h,'player1','action.invoke',{'actionId':'demo.ruling','input':{'actor':'actor-player1','skill':'skill-player1','amount':7}},'flow-crash')
+        command=tmp_path/'command.json';command.write_text(json.dumps(m));h.close()
+&gt;       r=subprocess.run([sys.executable,str(ROOT/'acceptance/crash_worker.py'),'host',str(path),point,str(command)],capture_output=True,timeout=40);assert r.returncode==70
+                                                                                                                                                     ^^^^^^^^^^^^^^^^^^^^^^^
+E       assert 2 == 70
+E        +  where 2 = CompletedProcess(args=['D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\.venv\\Scripts\\python.exe', 'D:\\Studie...-accounts\\\\work\\\\engine\\\\engineering\\\\acceptance\\\\crash_worker.py': [Errno 2] No such file or directory\r\n").returncode
+
+engineering\acceptance\local-accounts\work\engine\engineering\backend\tests\test_faults.py:116: AssertionError</failure></testcase><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_faults" name="test_flow_stage_crash_preserves_wait_and_random[after_t2]" time="0.656"><failure message="assert 2 == 70&#10; +  where 2 = CompletedProcess(args=['D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\.venv\\Scripts\\python.exe', 'D:\\Studie...-accounts\\\\work\\\\engine\\\\engineering\\\\acceptance\\\\crash_worker.py': [Errno 2] No such file or directory\r\n&quot;).returncode">tmp_path = WindowsPath('D:/Studies/Art Programming/OnlineCOC/engineering/acceptance/local-accounts/work/pytest-regression/test_flow_stage_crash_preserve1')
+point = 'after_t2'
+
+    @pytest.mark.parametrize('point',['before_t2','after_t2'])
+    def test_flow_stage_crash_preserves_wait_and_random(tmp_path,point):
+        path=tmp_path/'flow';h=Host(path,bootstrap='test-password');s=h.state();s['entities']['skill-player1']['numbers']['value']=0;h.commit(s)
+        m=message(h,'player1','action.invoke',{'actionId':'demo.ruling','input':{'actor':'actor-player1','skill':'skill-player1','amount':7}},'flow-crash')
+        command=tmp_path/'command.json';command.write_text(json.dumps(m));h.close()
+&gt;       r=subprocess.run([sys.executable,str(ROOT/'acceptance/crash_worker.py'),'host',str(path),point,str(command)],capture_output=True,timeout=40);assert r.returncode==70
+                                                                                                                                                     ^^^^^^^^^^^^^^^^^^^^^^^
+E       assert 2 == 70
+E        +  where 2 = CompletedProcess(args=['D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\.venv\\Scripts\\python.exe', 'D:\\Studie...-accounts\\\\work\\\\engine\\\\engineering\\\\acceptance\\\\crash_worker.py': [Errno 2] No such file or directory\r\n").returncode
+
+engineering\acceptance\local-accounts\work\engine\engineering\backend\tests\test_faults.py:116: AssertionError</failure></testcase><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_faults" name="test_old_data_snapshot_survives_hot_reload" time="2.962" /><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_faults" name="test_second_host_process_is_rejected" time="1.002" /><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_ai_approval" name="test_approval_stages_evidence_without_loading" time="6.935"><failure message="AssertionError: {'status': 'rejected', 'commandId': 'approve', 'code': 'INPUT_INVALID'}">ai_case = (&lt;onlinecoc.host.Host object at 0x0000026117A54D10&gt;, &lt;onlinecoc_ai.proposals.Proposals object at 0x0000026117625940&gt;, ...'item', 'defaults': {'quantity': 1, 'unitMass': 0, 'charges': 2, 'bonus': 15}, ...}}], 'sources': {}, 'data': {}, ...})
+
+    def test_approval_stages_evidence_without_loading(ai_case):
+        host,service,proposal,_=ai_case
+&gt;       before=host.state();identifier=approve_case(ai_case);after=host.state()
+                                       ^^^^^^^^^^^^^^^^^^^^^
+
+engineering\acceptance\local-accounts\work\engine\engineering\backend\tests\test_ai_approval.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+case = (&lt;onlinecoc.host.Host object at 0x0000026117A54D10&gt;, &lt;onlinecoc_ai.proposals.Proposals object at 0x0000026117625940&gt;, ...'item', 'defaults': {'quantity': 1, 'unitMass': 0, 'charges': 2, 'bonus': 15}, ...}}], 'sources': {}, 'data': {}, ...})
+identifier = 'approve'
+
+    def approve_case(case,identifier='approve'):
+        host,service,proposal,delta=case
+        args=approval_args(host,service,proposal)
+        result=host.command('kp',ai_message(host,'ai.proposal.approve',args,identifier))
+&gt;       assert result['status']=='committed',result
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: {'status': 'rejected', 'commandId': 'approve', 'code': 'INPUT_INVALID'}
+
+engineering\acceptance\local-accounts\work\engine\engineering\backend\tests\ai_helpers.py:25: AssertionError</failure></testcase><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_ai_approval" name="test_player_and_forged_pass_are_rejected" time="5.269" /><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_ai_approval" name="test_required_risk_reasons_are_enforced" time="6.080" /><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_ai_approval" name="test_edit_revokes_old_approval_and_requires_fresh_reports" time="6.883"><failure message="AssertionError: {'status': 'rejected', 'commandId': 'approve', 'code': 'INPUT_INVALID'}">ai_case = (&lt;onlinecoc.host.Host object at 0x0000026117A57290&gt;, &lt;onlinecoc_ai.proposals.Proposals object at 0x0000026117A8CB00&gt;, ...'item', 'defaults': {'quantity': 1, 'unitMass': 0, 'charges': 2, 'bonus': 15}, ...}}], 'sources': {}, 'data': {}, ...})
+
+    def test_edit_revokes_old_approval_and_requires_fresh_reports(ai_case):
+        host,service,proposal,delta=ai_case
+&gt;       identifier=approve_case(ai_case)
+                   ^^^^^^^^^^^^^^^^^^^^^
+
+engineering\acceptance\local-accounts\work\engine\engineering\backend\tests\test_ai_approval.py:37: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+case = (&lt;onlinecoc.host.Host object at 0x0000026117A57290&gt;, &lt;onlinecoc_ai.proposals.Proposals object at 0x0000026117A8CB00&gt;, ...'item', 'defaults': {'quantity': 1, 'unitMass': 0, 'charges': 2, 'bonus': 15}, ...}}], 'sources': {}, 'data': {}, ...})
+identifier = 'approve'
+
+    def approve_case(case,identifier='approve'):
+        host,service,proposal,delta=case
+        args=approval_args(host,service,proposal)
+        result=host.command('kp',ai_message(host,'ai.proposal.approve',args,identifier))
+&gt;       assert result['status']=='committed',result
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: {'status': 'rejected', 'commandId': 'approve', 'code': 'INPUT_INVALID'}
+
+engineering\acceptance\local-accounts\work\engine\engineering\backend\tests\ai_helpers.py:25: AssertionError</failure></testcase><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_ai_approval" name="test_approved_context_and_evidence_cannot_drift[&lt;lambda&gt;-BASELINE_STALE]" time="7.645"><failure message="AssertionError: {'status': 'rejected', 'commandId': 'approve', 'code': 'INPUT_INVALID'}">ai_case = (&lt;onlinecoc.host.Host object at 0x0000026117A57B90&gt;, &lt;onlinecoc_ai.proposals.Proposals object at 0x00000261178D5E00&gt;, ...'item', 'defaults': {'quantity': 1, 'unitMass': 0, 'charges': 2, 'bonus': 15}, ...}}], 'sources': {}, 'data': {}, ...})
+mutation = &lt;function &lt;lambda&gt; at 0x0000026116439C70&gt;, code = 'BASELINE_STALE'
+
+    @pytest.mark.parametrize('mutation,code',[
+        (lambda state,approval: state['entities']['actor-one']['numbers'].update(target=42),'BASELINE_STALE'),
+        (lambda state,approval: approval['reports'][0]['findings'].append({'code':'fake','severity':'info','path':'','sourceRef':'','message':'tampered','evidence':None,'suggestion':''}),'DIGEST_MISMATCH'),
+        (lambda state,approval: state['aiControl']['packBinding'].update(digest='f'*64),'VALIDATOR_STALE'),
+        (lambda state,approval: state['members']['kp'].update(authorizationEpoch=2),'PERMISSION_DENIED'),
+    ])
+    def test_approved_context_and_evidence_cannot_drift(ai_case,mutation,code):
+&gt;       host,_,_,_=ai_case;identifier=approve_case(ai_case)
+                                      ^^^^^^^^^^^^^^^^^^^^^
+
+engineering\acceptance\local-accounts\work\engine\engineering\backend\tests\test_ai_approval.py:55: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+case = (&lt;onlinecoc.host.Host object at 0x0000026117A57B90&gt;, &lt;onlinecoc_ai.proposals.Proposals object at 0x00000261178D5E00&gt;, ...'item', 'defaults': {'quantity': 1, 'unitMass': 0, 'charges': 2, 'bonus': 15}, ...}}], 'sources': {}, 'data': {}, ...})
+identifier = 'approve'
+
+    def approve_case(case,identifier='approve'):
+        host,service,proposal,delta=case
+        args=approval_args(host,service,proposal)
+        result=host.command('kp',ai_message(host,'ai.proposal.approve',args,identifier))
+&gt;       assert result['status']=='committed',result
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: {'status': 'rejected', 'commandId': 'approve', 'code': 'INPUT_INVALID'}
+
+engineering\acceptance\local-accounts\work\engine\engineering\backend\tests\ai_helpers.py:25: AssertionError</failure></testcase><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_ai_approval" name="test_approved_context_and_evidence_cannot_drift[&lt;lambda&gt;-DIGEST_MISMATCH]" time="7.195"><failure message="AssertionError: {'status': 'rejected', 'commandId': 'approve', 'code': 'INPUT_INVALID'}">ai_case = (&lt;onlinecoc.host.Host object at 0x0000026117A56BD0&gt;, &lt;onlinecoc_ai.proposals.Proposals object at 0x000002611764B2F0&gt;, ...'item', 'defaults': {'quantity': 1, 'unitMass': 0, 'charges': 2, 'bonus': 15}, ...}}], 'sources': {}, 'data': {}, ...})
+mutation = &lt;function &lt;lambda&gt; at 0x0000026116439D20&gt;, code = 'DIGEST_MISMATCH'
+
+    @pytest.mark.parametrize('mutation,code',[
+        (lambda state,approval: state['entities']['actor-one']['numbers'].update(target=42),'BASELINE_STALE'),
+        (lambda state,approval: approval['reports'][0]['findings'].append({'code':'fake','severity':'info','path':'','sourceRef':'','message':'tampered','evidence':None,'suggestion':''}),'DIGEST_MISMATCH'),
+        (lambda state,approval: state['aiControl']['packBinding'].update(digest='f'*64),'VALIDATOR_STALE'),
+        (lambda state,approval: state['members']['kp'].update(authorizationEpoch=2),'PERMISSION_DENIED'),
+    ])
+    def test_approved_context_and_evidence_cannot_drift(ai_case,mutation,code):
+&gt;       host,_,_,_=ai_case;identifier=approve_case(ai_case)
+                                      ^^^^^^^^^^^^^^^^^^^^^
+
+engineering\acceptance\local-accounts\work\engine\engineering\backend\tests\test_ai_approval.py:55: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+case = (&lt;onlinecoc.host.Host object at 0x0000026117A56BD0&gt;, &lt;onlinecoc_ai.proposals.Proposals object at 0x000002611764B2F0&gt;, ...'item', 'defaults': {'quantity': 1, 'unitMass': 0, 'charges': 2, 'bonus': 15}, ...}}], 'sources': {}, 'data': {}, ...})
+identifier = 'approve'
+
+    def approve_case(case,identifier='approve'):
+        host,service,proposal,delta=case
+        args=approval_args(host,service,proposal)
+        result=host.command('kp',ai_message(host,'ai.proposal.approve',args,identifier))
+&gt;       assert result['status']=='committed',result
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: {'status': 'rejected', 'commandId': 'approve', 'code': 'INPUT_INVALID'}
+
+engineering\acceptance\local-accounts\work\engine\engineering\backend\tests\ai_helpers.py:25: AssertionError</failure></testcase><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_ai_approval" name="test_approved_context_and_evidence_cannot_drift[&lt;lambda&gt;-VALIDATOR_STALE]" time="6.774"><failure message="AssertionError: {'status': 'rejected', 'commandId': 'approve', 'code': 'INPUT_INVALID'}">ai_case = (&lt;onlinecoc.host.Host object at 0x0000026116093110&gt;, &lt;onlinecoc_ai.proposals.Proposals object at 0x00000261165056A0&gt;, ...'item', 'defaults': {'quantity': 1, 'unitMass': 0, 'charges': 2, 'bonus': 15}, ...}}], 'sources': {}, 'data': {}, ...})
+mutation = &lt;function &lt;lambda&gt; at 0x0000026116439DD0&gt;, code = 'VALIDATOR_STALE'
+
+    @pytest.mark.parametrize('mutation,code',[
+        (lambda state,approval: state['entities']['actor-one']['numbers'].update(target=42),'BASELINE_STALE'),
+        (lambda state,approval: approval['reports'][0]['findings'].append({'code':'fake','severity':'info','path':'','sourceRef':'','message':'tampered','evidence':None,'suggestion':''}),'DIGEST_MISMATCH'),
+        (lambda state,approval: state['aiControl']['packBinding'].update(digest='f'*64),'VALIDATOR_STALE'),
+        (lambda state,approval: state['members']['kp'].update(authorizationEpoch=2),'PERMISSION_DENIED'),
+    ])
+    def test_approved_context_and_evidence_cannot_drift(ai_case,mutation,code):
+&gt;       host,_,_,_=ai_case;identifier=approve_case(ai_case)
+                                      ^^^^^^^^^^^^^^^^^^^^^
+
+engineering\acceptance\local-accounts\work\engine\engineering\backend\tests\test_ai_approval.py:55: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+case = (&lt;onlinecoc.host.Host object at 0x0000026116093110&gt;, &lt;onlinecoc_ai.proposals.Proposals object at 0x00000261165056A0&gt;, ...'item', 'defaults': {'quantity': 1, 'unitMass': 0, 'charges': 2, 'bonus': 15}, ...}}], 'sources': {}, 'data': {}, ...})
+identifier = 'approve'
+
+    def approve_case(case,identifier='approve'):
+        host,service,proposal,delta=case
+        args=approval_args(host,service,proposal)
+        result=host.command('kp',ai_message(host,'ai.proposal.approve',args,identifier))
+&gt;       assert result['status']=='committed',result
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: {'status': 'rejected', 'commandId': 'approve', 'code': 'INPUT_INVALID'}
+
+engineering\acceptance\local-accounts\work\engine\engineering\backend\tests\ai_helpers.py:25: AssertionError</failure></testcase><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_ai_approval" name="test_approved_context_and_evidence_cannot_drift[&lt;lambda&gt;-PERMISSION_DENIED]" time="7.324"><failure message="AssertionError: {'status': 'rejected', 'commandId': 'approve', 'code': 'INPUT_INVALID'}">ai_case = (&lt;onlinecoc.host.Host object at 0x0000026117773110&gt;, &lt;onlinecoc_ai.proposals.Proposals object at 0x00000261165067A0&gt;, ...'item', 'defaults': {'quantity': 1, 'unitMass': 0, 'charges': 2, 'bonus': 15}, ...}}], 'sources': {}, 'data': {}, ...})
+mutation = &lt;function &lt;lambda&gt; at 0x0000026116439E80&gt;, code = 'PERMISSION_DENIED'
+
+    @pytest.mark.parametrize('mutation,code',[
+        (lambda state,approval: state['entities']['actor-one']['numbers'].update(target=42),'BASELINE_STALE'),
+        (lambda state,approval: approval['reports'][0]['findings'].append({'code':'fake','severity':'info','path':'','sourceRef':'','message':'tampered','evidence':None,'suggestion':''}),'DIGEST_MISMATCH'),
+        (lambda state,approval: state['aiControl']['packBinding'].update(digest='f'*64),'VALIDATOR_STALE'),
+        (lambda state,approval: state['members']['kp'].update(authorizationEpoch=2),'PERMISSION_DENIED'),
+    ])
+    def test_approved_context_and_evidence_cannot_drift(ai_case,mutation,code):
+&gt;       host,_,_,_=ai_case;identifier=approve_case(ai_case)
+                                      ^^^^^^^^^^^^^^^^^^^^^
+
+engineering\acceptance\local-accounts\work\engine\engineering\backend\tests\test_ai_approval.py:55: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+case = (&lt;onlinecoc.host.Host object at 0x0000026117773110&gt;, &lt;onlinecoc_ai.proposals.Proposals object at 0x00000261165067A0&gt;, ...'item', 'defaults': {'quantity': 1, 'unitMass': 0, 'charges': 2, 'bonus': 15}, ...}}], 'sources': {}, 'data': {}, ...})
+identifier = 'approve'
+
+    def approve_case(case,identifier='approve'):
+        host,service,proposal,delta=case
+        args=approval_args(host,service,proposal)
+        result=host.command('kp',ai_message(host,'ai.proposal.approve',args,identifier))
+&gt;       assert result['status']=='committed',result
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: {'status': 'rejected', 'commandId': 'approve', 'code': 'INPUT_INVALID'}
+
+engineering\acceptance\local-accounts\work\engine\engineering\backend\tests\ai_helpers.py:25: AssertionError</failure></testcase><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_ai_approval" name="test_expiry_blocks_loading" time="7.300"><failure message="AssertionError: {'status': 'rejected', 'commandId': 'approve', 'code': 'INPUT_INVALID'}">ai_case = (&lt;onlinecoc.host.Host object at 0x0000026117770F50&gt;, &lt;onlinecoc_ai.proposals.Proposals object at 0x0000026117596050&gt;, ...'item', 'defaults': {'quantity': 1, 'unitMass': 0, 'charges': 2, 'bonus': 15}, ...}}], 'sources': {}, 'data': {}, ...})
+
+    def test_expiry_blocks_loading(ai_case):
+&gt;       host,_,_,_=ai_case;identifier=approve_case(ai_case)
+                                      ^^^^^^^^^^^^^^^^^^^^^
+
+engineering\acceptance\local-accounts\work\engine\engineering\backend\tests\test_ai_approval.py:63: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+case = (&lt;onlinecoc.host.Host object at 0x0000026117770F50&gt;, &lt;onlinecoc_ai.proposals.Proposals object at 0x0000026117596050&gt;, ...'item', 'defaults': {'quantity': 1, 'unitMass': 0, 'charges': 2, 'bonus': 15}, ...}}], 'sources': {}, 'data': {}, ...})
+identifier = 'approve'
+
+    def approve_case(case,identifier='approve'):
+        host,service,proposal,delta=case
+        args=approval_args(host,service,proposal)
+        result=host.command('kp',ai_message(host,'ai.proposal.approve',args,identifier))
+&gt;       assert result['status']=='committed',result
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: {'status': 'rejected', 'commandId': 'approve', 'code': 'INPUT_INVALID'}
+
+engineering\acceptance\local-accounts\work\engine\engineering\backend\tests\ai_helpers.py:25: AssertionError</failure></testcase><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_ai_approval" name="test_failed_validation_cannot_be_prepared" time="10.914" /><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_ai_publication" name="test_load_once_after_ai_store_is_closed_and_restart" time="7.135"><failure message="AssertionError: {'status': 'rejected', 'commandId': 'approve', 'code': 'INPUT_INVALID'}">ai_case = (&lt;onlinecoc.host.Host object at 0x00000261178EE150&gt;, &lt;onlinecoc_ai.proposals.Proposals object at 0x000002611762C8C0&gt;, ...'item', 'defaults': {'quantity': 1, 'unitMass': 0, 'charges': 2, 'bonus': 15}, ...}}], 'sources': {}, 'data': {}, ...})
+
+    def test_load_once_after_ai_store_is_closed_and_restart(ai_case):
+&gt;       host,service,proposal,_=ai_case;identifier=approve_case(ai_case)
+                                                   ^^^^^^^^^^^^^^^^^^^^^
+
+engineering\acceptance\local-accounts\work\engine\engineering\backend\tests\test_ai_publication.py:10: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+case = (&lt;onlinecoc.host.Host object at 0x00000261178EE150&gt;, &lt;onlinecoc_ai.proposals.Proposals object at 0x000002611762C8C0&gt;, ...'item', 'defaults': {'quantity': 1, 'unitMass': 0, 'charges': 2, 'bonus': 15}, ...}}], 'sources': {}, 'data': {}, ...})
+identifier = 'approve'
+
+    def approve_case(case,identifier='approve'):
+        host,service,proposal,delta=case
+        args=approval_args(host,service,proposal)
+        result=host.command('kp',ai_message(host,'ai.proposal.approve',args,identifier))
+&gt;       assert result['status']=='committed',result
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: {'status': 'rejected', 'commandId': 'approve', 'code': 'INPUT_INVALID'}
+
+engineering\acceptance\local-accounts\work\engine\engineering\backend\tests\ai_helpers.py:25: AssertionError</failure></testcase><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_ai_publication" name="test_same_command_id_different_payload_conflicts" time="7.072"><failure message="AssertionError: {'status': 'rejected', 'commandId': 'approve', 'code': 'INPUT_INVALID'}">ai_case = (&lt;onlinecoc.host.Host object at 0x00000261178EEBD0&gt;, &lt;onlinecoc_ai.proposals.Proposals object at 0x000002611762CD70&gt;, ...'item', 'defaults': {'quantity': 1, 'unitMass': 0, 'charges': 2, 'bonus': 15}, ...}}], 'sources': {}, 'data': {}, ...})
+
+    def test_same_command_id_different_payload_conflicts(ai_case):
+&gt;       host,_,_,_=ai_case;identifier=approve_case(ai_case)
+                                      ^^^^^^^^^^^^^^^^^^^^^
+
+engineering\acceptance\local-accounts\work\engine\engineering\backend\tests\test_ai_publication.py:27: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+case = (&lt;onlinecoc.host.Host object at 0x00000261178EEBD0&gt;, &lt;onlinecoc_ai.proposals.Proposals object at 0x000002611762CD70&gt;, ...'item', 'defaults': {'quantity': 1, 'unitMass': 0, 'charges': 2, 'bonus': 15}, ...}}], 'sources': {}, 'data': {}, ...})
+identifier = 'approve'
+
+    def approve_case(case,identifier='approve'):
+        host,service,proposal,delta=case
+        args=approval_args(host,service,proposal)
+        result=host.command('kp',ai_message(host,'ai.proposal.approve',args,identifier))
+&gt;       assert result['status']=='committed',result
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: {'status': 'rejected', 'commandId': 'approve', 'code': 'INPUT_INVALID'}
+
+engineering\acceptance\local-accounts\work\engine\engineering\backend\tests\ai_helpers.py:25: AssertionError</failure></testcase><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_ai_publication" name="test_concurrent_duplicate_publications_have_one_effect" time="6.829"><failure message="AssertionError: {'status': 'rejected', 'commandId': 'approve', 'code': 'INPUT_INVALID'}">ai_case = (&lt;onlinecoc.host.Host object at 0x0000026117A550D0&gt;, &lt;onlinecoc_ai.proposals.Proposals object at 0x0000026115A85470&gt;, ...'item', 'defaults': {'quantity': 1, 'unitMass': 0, 'charges': 2, 'bonus': 15}, ...}}], 'sources': {}, 'data': {}, ...})
+
+    def test_concurrent_duplicate_publications_have_one_effect(ai_case):
+&gt;       host,_,_,_=ai_case;identifier=approve_case(ai_case)
+                                      ^^^^^^^^^^^^^^^^^^^^^
+
+engineering\acceptance\local-accounts\work\engine\engineering\backend\tests\test_ai_publication.py:34: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+case = (&lt;onlinecoc.host.Host object at 0x0000026117A550D0&gt;, &lt;onlinecoc_ai.proposals.Proposals object at 0x0000026115A85470&gt;, ...'item', 'defaults': {'quantity': 1, 'unitMass': 0, 'charges': 2, 'bonus': 15}, ...}}], 'sources': {}, 'data': {}, ...})
+identifier = 'approve'
+
+    def approve_case(case,identifier='approve'):
+        host,service,proposal,delta=case
+        args=approval_args(host,service,proposal)
+        result=host.command('kp',ai_message(host,'ai.proposal.approve',args,identifier))
+&gt;       assert result['status']=='committed',result
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: {'status': 'rejected', 'commandId': 'approve', 'code': 'INPUT_INVALID'}
+
+engineering\acceptance\local-accounts\work\engine\engineering\backend\tests\ai_helpers.py:25: AssertionError</failure></testcase><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_ai_publication" name="test_publication_reconciliation_never_reapplies_effects" time="6.846"><failure message="AssertionError: {'status': 'rejected', 'commandId': 'approve', 'code': 'INPUT_INVALID'}">ai_case = (&lt;onlinecoc.host.Host object at 0x0000026117A57D10&gt;, &lt;onlinecoc_ai.proposals.Proposals object at 0x0000026115A860B0&gt;, ...'item', 'defaults': {'quantity': 1, 'unitMass': 0, 'charges': 2, 'bonus': 15}, ...}}], 'sources': {}, 'data': {}, ...})
+
+    def test_publication_reconciliation_never_reapplies_effects(ai_case):
+&gt;       host,service,proposal,_=ai_case;identifier=approve_case(ai_case)
+                                                   ^^^^^^^^^^^^^^^^^^^^^
+
+engineering\acceptance\local-accounts\work\engine\engineering\backend\tests\test_ai_publication.py:44: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+case = (&lt;onlinecoc.host.Host object at 0x0000026117A57D10&gt;, &lt;onlinecoc_ai.proposals.Proposals object at 0x0000026115A860B0&gt;, ...'item', 'defaults': {'quantity': 1, 'unitMass': 0, 'charges': 2, 'bonus': 15}, ...}}], 'sources': {}, 'data': {}, ...})
+identifier = 'approve'
+
+    def approve_case(case,identifier='approve'):
+        host,service,proposal,delta=case
+        args=approval_args(host,service,proposal)
+        result=host.command('kp',ai_message(host,'ai.proposal.approve',args,identifier))
+&gt;       assert result['status']=='committed',result
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: {'status': 'rejected', 'commandId': 'approve', 'code': 'INPUT_INVALID'}
+
+engineering\acceptance\local-accounts\work\engine\engineering\backend\tests\ai_helpers.py:25: AssertionError</failure></testcase><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_ai_publication" name="test_two_kps_cannot_publish_against_the_same_old_baseline" time="12.385"><failure message="AssertionError: {'status': 'rejected', 'commandId': 'approve-kp', 'code': 'INPUT_INVALID'}&#10;assert 'rejected' == 'committed'&#10;  &#10;  - committed&#10;  + rejected">ai_case = (&lt;onlinecoc.host.Host object at 0x00000261178EC7D0&gt;, &lt;onlinecoc_ai.proposals.Proposals object at 0x0000026117BAB110&gt;, ...'item', 'defaults': {'quantity': 1, 'unitMass': 0, 'charges': 2, 'bonus': 15}, ...}}], 'sources': {}, 'data': {}, ...})
+
+    def test_two_kps_cannot_publish_against_the_same_old_baseline(ai_case):
+        host,service,_,delta=ai_case
+        state=host.state();state['members']['kp2']={'memberId':'member-kp2','accountId':'kp2','role':'kp','active':True,'authorizationEpoch':1,'metadata':{}}
+        host.commit(state)
+        messages=[]
+        for account in ('kp','kp2'):
+            proposal=service.create(account,'有限次数道具',delta)
+            service.validate(account,proposal['proposalId'],1)
+            args=approval_args(host,service,proposal,account)
+            approval=host.command(account,ai_message(host,'ai.proposal.approve',args,'approve-'+account,account))
+&gt;           assert approval['status']=='committed',approval
+E           AssertionError: {'status': 'rejected', 'commandId': 'approve-kp', 'code': 'INPUT_INVALID'}
+E           assert 'rejected' == 'committed'
+E             
+E             - committed
+E             + rejected
+
+engineering\acceptance\local-accounts\work\engine\engineering\backend\tests\test_ai_publication.py:62: AssertionError</failure></testcase><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_ai_publication" name="test_resolving_prepared_bundle_does_not_hold_room_lock" time="6.400" /><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_ai_recovery" name="test_post_commit_error_keeps_committed_publication[exception0]" time="6.618"><failure message="AssertionError: {'status': 'rejected', 'commandId': 'approve', 'code': 'INPUT_INVALID'}">ai_case = (&lt;onlinecoc.host.Host object at 0x000002611789C050&gt;, &lt;onlinecoc_ai.proposals.Proposals object at 0x000002611789FC50&gt;, ...'item', 'defaults': {'quantity': 1, 'unitMass': 0, 'charges': 2, 'bonus': 15}, ...}}], 'sources': {}, 'data': {}, ...})
+exception = DomainError('INJECTED_AFTER_COMMIT')
+
+    @pytest.mark.parametrize('exception',[DomainError('INJECTED_AFTER_COMMIT'),OSError('lost reply')])
+    def test_post_commit_error_keeps_committed_publication(ai_case,exception):
+&gt;       host,_,_,_=ai_case;identifier=approve_case(ai_case)
+                                      ^^^^^^^^^^^^^^^^^^^^^
+
+engineering\acceptance\local-accounts\work\engine\engineering\backend\tests\test_ai_recovery.py:9: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+case = (&lt;onlinecoc.host.Host object at 0x000002611789C050&gt;, &lt;onlinecoc_ai.proposals.Proposals object at 0x000002611789FC50&gt;, ...'item', 'defaults': {'quantity': 1, 'unitMass': 0, 'charges': 2, 'bonus': 15}, ...}}], 'sources': {}, 'data': {}, ...})
+identifier = 'approve'
+
+    def approve_case(case,identifier='approve'):
+        host,service,proposal,delta=case
+        args=approval_args(host,service,proposal)
+        result=host.command('kp',ai_message(host,'ai.proposal.approve',args,identifier))
+&gt;       assert result['status']=='committed',result
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: {'status': 'rejected', 'commandId': 'approve', 'code': 'INPUT_INVALID'}
+
+engineering\acceptance\local-accounts\work\engine\engineering\backend\tests\ai_helpers.py:25: AssertionError</failure></testcase><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_ai_recovery" name="test_post_commit_error_keeps_committed_publication[exception1]" time="6.613"><failure message="AssertionError: {'status': 'rejected', 'commandId': 'approve', 'code': 'INPUT_INVALID'}">ai_case = (&lt;onlinecoc.host.Host object at 0x0000026117773350&gt;, &lt;onlinecoc_ai.proposals.Proposals object at 0x00000261178AE410&gt;, ...'item', 'defaults': {'quantity': 1, 'unitMass': 0, 'charges': 2, 'bonus': 15}, ...}}], 'sources': {}, 'data': {}, ...})
+exception = OSError('lost reply')
+
+    @pytest.mark.parametrize('exception',[DomainError('INJECTED_AFTER_COMMIT'),OSError('lost reply')])
+    def test_post_commit_error_keeps_committed_publication(ai_case,exception):
+&gt;       host,_,_,_=ai_case;identifier=approve_case(ai_case)
+                                      ^^^^^^^^^^^^^^^^^^^^^
+
+engineering\acceptance\local-accounts\work\engine\engineering\backend\tests\test_ai_recovery.py:9: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+case = (&lt;onlinecoc.host.Host object at 0x0000026117773350&gt;, &lt;onlinecoc_ai.proposals.Proposals object at 0x00000261178AE410&gt;, ...'item', 'defaults': {'quantity': 1, 'unitMass': 0, 'charges': 2, 'bonus': 15}, ...}}], 'sources': {}, 'data': {}, ...})
+identifier = 'approve'
+
+    def approve_case(case,identifier='approve'):
+        host,service,proposal,delta=case
+        args=approval_args(host,service,proposal)
+        result=host.command('kp',ai_message(host,'ai.proposal.approve',args,identifier))
+&gt;       assert result['status']=='committed',result
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: {'status': 'rejected', 'commandId': 'approve', 'code': 'INPUT_INVALID'}
+
+engineering\acceptance\local-accounts\work\engine\engineering\backend\tests\ai_helpers.py:25: AssertionError</failure></testcase><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_ai_recovery" name="test_pre_commit_failure_has_no_partial_configuration" time="7.122"><failure message="AssertionError: {'status': 'rejected', 'commandId': 'approve', 'code': 'INPUT_INVALID'}">ai_case = (&lt;onlinecoc.host.Host object at 0x0000026117773F50&gt;, &lt;onlinecoc_ai.proposals.Proposals object at 0x00000261178AD9C0&gt;, ...'item', 'defaults': {'quantity': 1, 'unitMass': 0, 'charges': 2, 'bonus': 15}, ...}}], 'sources': {}, 'data': {}, ...})
+
+    def test_pre_commit_failure_has_no_partial_configuration(ai_case):
+&gt;       host,_,_,_=ai_case;identifier=approve_case(ai_case);before=host.state()
+                                      ^^^^^^^^^^^^^^^^^^^^^
+
+engineering\acceptance\local-accounts\work\engine\engineering\backend\tests\test_ai_recovery.py:22: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+case = (&lt;onlinecoc.host.Host object at 0x0000026117773F50&gt;, &lt;onlinecoc_ai.proposals.Proposals object at 0x00000261178AD9C0&gt;, ...'item', 'defaults': {'quantity': 1, 'unitMass': 0, 'charges': 2, 'bonus': 15}, ...}}], 'sources': {}, 'data': {}, ...})
+identifier = 'approve'
+
+    def approve_case(case,identifier='approve'):
+        host,service,proposal,delta=case
+        args=approval_args(host,service,proposal)
+        result=host.command('kp',ai_message(host,'ai.proposal.approve',args,identifier))
+&gt;       assert result['status']=='committed',result
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: {'status': 'rejected', 'commandId': 'approve', 'code': 'INPUT_INVALID'}
+
+engineering\acceptance\local-accounts\work\engine\engineering\backend\tests\ai_helpers.py:25: AssertionError</failure></testcase><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_ai_recovery" name="test_approval_reply_loss_can_be_queried_without_ai_repository" time="7.355"><failure message="AssertionError: {'status': 'rejected', 'commandId': 'approval-lost', 'code': 'INPUT_INVALID'}">ai_case = (&lt;onlinecoc.host.Host object at 0x0000026115A90050&gt;, &lt;onlinecoc_ai.proposals.Proposals object at 0x0000026115A5BCF0&gt;, ...'item', 'defaults': {'quantity': 1, 'unitMass': 0, 'charges': 2, 'bonus': 15}, ...}}], 'sources': {}, 'data': {}, ...})
+
+    def test_approval_reply_loss_can_be_queried_without_ai_repository(ai_case):
+        host,service,proposal,_=ai_case
+        def fault(point):
+            if point=='after_ai.proposal.approve_commit':raise DomainError('LOST_REPLY')
+        host.fault=fault
+&gt;       identifier=approve_case(ai_case,'approval-lost')
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+engineering\acceptance\local-accounts\work\engine\engineering\backend\tests\test_ai_recovery.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+case = (&lt;onlinecoc.host.Host object at 0x0000026115A90050&gt;, &lt;onlinecoc_ai.proposals.Proposals object at 0x0000026115A5BCF0&gt;, ...'item', 'defaults': {'quantity': 1, 'unitMass': 0, 'charges': 2, 'bonus': 15}, ...}}], 'sources': {}, 'data': {}, ...})
+identifier = 'approval-lost'
+
+    def approve_case(case,identifier='approve'):
+        host,service,proposal,delta=case
+        args=approval_args(host,service,proposal)
+        result=host.command('kp',ai_message(host,'ai.proposal.approve',args,identifier))
+&gt;       assert result['status']=='committed',result
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: {'status': 'rejected', 'commandId': 'approval-lost', 'code': 'INPUT_INVALID'}
+
+engineering\acceptance\local-accounts\work\engine\engineering\backend\tests\ai_helpers.py:25: AssertionError</failure></testcase><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_ai_recovery" name="test_failure_after_local_configuration_edit_rolls_back_everything" time="6.886"><failure message="AssertionError: {'status': 'rejected', 'commandId': 'approve', 'code': 'INPUT_INVALID'}">ai_case = (&lt;onlinecoc.host.Host object at 0x0000026117A57890&gt;, &lt;onlinecoc_ai.proposals.Proposals object at 0x00000261165972F0&gt;, ...'item', 'defaults': {'quantity': 1, 'unitMass': 0, 'charges': 2, 'bonus': 15}, ...}}], 'sources': {}, 'data': {}, ...})
+
+    def test_failure_after_local_configuration_edit_rolls_back_everything(ai_case):
+&gt;       host,_,_,_=ai_case;identifier=approve_case(ai_case);before=host.state()
+                                      ^^^^^^^^^^^^^^^^^^^^^
+
+engineering\acceptance\local-accounts\work\engine\engineering\backend\tests\test_ai_recovery.py:44: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+case = (&lt;onlinecoc.host.Host object at 0x0000026117A57890&gt;, &lt;onlinecoc_ai.proposals.Proposals object at 0x00000261165972F0&gt;, ...'item', 'defaults': {'quantity': 1, 'unitMass': 0, 'charges': 2, 'bonus': 15}, ...}}], 'sources': {}, 'data': {}, ...})
+identifier = 'approve'
+
+    def approve_case(case,identifier='approve'):
+        host,service,proposal,delta=case
+        args=approval_args(host,service,proposal)
+        result=host.command('kp',ai_message(host,'ai.proposal.approve',args,identifier))
+&gt;       assert result['status']=='committed',result
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: {'status': 'rejected', 'commandId': 'approve', 'code': 'INPUT_INVALID'}
+
+engineering\acceptance\local-accounts\work\engine\engineering\backend\tests\ai_helpers.py:25: AssertionError</failure></testcase><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_high_risk_host" name="test_add_replace_remove_projection_is_atomic_and_does_not_mutate_input" time="0.001" /><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_high_risk_host" name="test_delete_referenced_configuration_never_cascades[active]" time="0.001" /><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_high_risk_host" name="test_delete_referenced_configuration_never_cascades[archived]" time="0.001" /><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_high_risk_host" name="test_new_ruleset_must_preserve_all_existing_behavior_bindings[configuration]" time="0.001" /><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_high_risk_host" name="test_new_ruleset_must_preserve_all_existing_behavior_bindings[entity]" time="0.001" /><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_high_risk_host" name="test_rule_dependencies_and_stale_configuration_changes_fail" time="0.001" /><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_high_risk_host" name="test_inflight_flow_keeps_old_artifact_and_does_not_require_old_rule_in_new_catalog" time="0.000" /><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_high_risk_host" name="test_item_family_configuration_changes_are_high_risk[item]" time="0.000" /><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_high_risk_host" name="test_item_family_configuration_changes_are_high_risk[weapon]" time="0.000" /><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_high_risk_host" name="test_item_family_configuration_changes_are_high_risk[bag]" time="0.000" /><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_high_risk_host" name="test_core_source_data_remove_and_declared_maps_are_high_risk" time="0.000" /><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_high_risk_host" name="test_full_room_requires_actual_kp_explicit_scope_and_authorizer" time="0.001" /><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_high_risk_host" name="test_kp_room_private_chat_is_explicit_and_external_policy_still_applies" time="0.001" /><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_high_risk_host" name="test_room_read_proof_rechecks_grant_and_original_content" time="0.003" /><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_high_risk_host" name="test_large_room_source_splits_without_omission_or_local_identity_access" time="0.002" /><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_high_risk_host" name="test_package_scoped_reader_only_receives_host_authorized_scope[None]" time="0.001" /><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_high_risk_host" name="test_package_scoped_reader_only_receives_host_authorized_scope[kp-room]" time="0.001" /><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_high_risk_host" name="test_legacy_package_reader_remains_compatible" time="0.000" /><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_high_risk_commands" name="test_high_risk_requires_explicit_candidate_digest_and_reason" time="0.754" /><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_high_risk_commands" name="test_remove_apply_returns_null_and_is_exactly_once" time="0.724" /><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_high_risk_commands" name="test_referenced_remove_rejected_before_approval[active]" time="0.669" /><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_high_risk_commands" name="test_referenced_remove_rejected_before_approval[archived]" time="0.716" /><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_high_risk_commands" name="test_core_rule_and_data_replacement_waits_for_explicit_publish" time="1.023" /><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_high_risk_commands" name="test_old_approval_without_manual_fingerprint_cannot_be_loaded" time="0.818" /><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_high_risk_commands" name="test_partial_configuration_failure_leaves_no_commit_and_can_reconcile_receipt" time="0.813" /><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_high_risk_commands" name="test_player_cannot_approve_or_publish_high_risk" time="0.779" /><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_history_context" name="test_same_directory_restart_reads_original_context_without_writes" time="1.603" /><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_history_context" name="test_history_does_not_renew_old_approval_or_new_execution" time="1.914" /><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_history_context" name="test_reading_history_does_not_depend_on_execution_validator_code" time="0.713" /><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_history_context" name="test_history_preserves_authorization_scope_baseline_and_egress_checks[inactive-PERMISSION_DENIED]" time="1.467" /><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_history_context" name="test_history_preserves_authorization_scope_baseline_and_egress_checks[role-PERMISSION_DENIED]" time="1.716" /><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_history_context" name="test_history_preserves_authorization_scope_baseline_and_egress_checks[authorization-PERMISSION_DENIED]" time="1.572" /><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_history_context" name="test_history_preserves_authorization_scope_baseline_and_egress_checks[scope-SCOPE_MISMATCH]" time="1.595" /><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_history_context" name="test_history_preserves_authorization_scope_baseline_and_egress_checks[contract-VALIDATOR_STALE]" time="1.470" /><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_history_context" name="test_history_preserves_authorization_scope_baseline_and_egress_checks[ruleset-BASELINE_STALE]" time="1.504" /><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_history_context" name="test_history_preserves_authorization_scope_baseline_and_egress_checks[configuration-BASELINE_STALE]" time="1.390" /><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_history_context" name="test_history_preserves_authorization_scope_baseline_and_egress_checks[world-BASELINE_STALE]" time="1.472" /><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_history_context" name="test_history_preserves_authorization_scope_baseline_and_egress_checks[external-EXTERNAL_SCOPE_CHANGED]" time="1.522" /><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_history_context" name="test_history_preserves_authorization_scope_baseline_and_egress_checks[profile-PROFILE_CHANGED]" time="1.435" /><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_history_context" name="test_history_rechecks_session_access_callback" time="1.432" /><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_history_context" name="test_history_rechecks_chat_sources_after_restart[revised]" time="1.478" /><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_history_context" name="test_history_rechecks_chat_sources_after_restart[deleted]" time="1.528" /><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_history_context" name="test_history_rechecks_chat_sources_after_restart[permission]" time="1.561" /><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_history_context" name="test_history_replays_query_proofs_against_current_sources" time="1.700" /><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_history_context" name="test_player_history_uses_current_knowledge_authorization[none]" time="1.587" /><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_history_context" name="test_player_history_uses_current_knowledge_authorization[revoke]" time="1.536" /><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_history_context" name="test_player_history_uses_current_knowledge_authorization[missing-provider]" time="1.515" /><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_history_context" name="test_player_history_uses_current_knowledge_authorization[hard-guard]" time="1.470" /><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_history_context" name="test_player_history_uses_current_knowledge_authorization[other-account]" time="1.504" /><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_history_context" name="test_player_history_uses_current_knowledge_authorization[scope]" time="1.408" /><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_history_context" name="test_player_history_uses_current_knowledge_authorization[policy]" time="1.493" /><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_history_context" name="test_player_history_uses_current_knowledge_authorization[authorization]" time="1.376" /><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_history_context" name="test_player_history_uses_current_knowledge_authorization[inactive]" time="1.458" /><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_history_context" name="test_history_requires_complete_context_and_does_not_allow_player_to_read_kp" time="0.549" /><testcase classname="engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_history_context" name="test_history_does_not_restore_revoked_kp_room_read_access" time="1.182" /></testsuite></testsuites>

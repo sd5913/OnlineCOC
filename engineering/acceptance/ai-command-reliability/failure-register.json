@@ -1,0 +1,180 @@
+{
+  "schemaVersion": 1,
+  "rows": [
+    {
+      "id": "exploratory-inputs",
+      "category": "fixture",
+      "evidence": [
+        "live-ledger.json",
+        "setup-attempts.json",
+        "baseline-reassessment.json"
+      ],
+      "first": "Initial 71 probes omitted real object/flow/evidence prerequisites and did not inject the guide. Nine later calls ran before scope metadata was finalized.",
+      "handling": "Preserved separate stages and cumulative cost; built 71 real isolated fixtures. No paired A/B or production-rate claim."
+    },
+    {
+      "id": "v3-exact-match",
+      "category": "oracle",
+      "cases": [
+        "host:entity.update",
+        "host:relation.set",
+        "host:flow.retry",
+        "host:member.add"
+      ],
+      "first": "Strict oracle rejected equivalent unchanged fields/authorized notification or correct unsupported-operation explanation.",
+      "handling": "Original 63/71 retained; separate four-case review with actual execution/no-mutation evidence yields67/71 acceptable outcomes, not execution rate.",
+      "evidence": [
+        "independent-reassessment.json",
+        "replay-1795183317010503400.json"
+      ]
+    },
+    {
+      "id": "unsupported-notification-source",
+      "category": "model",
+      "cases": [
+        "host:member.update"
+      ],
+      "first": "Added notification with member.update as a source, which is not an allowed notification source operation.",
+      "handling": "Actual validator rejects NOTIFICATION_SOURCE_ACTION_INVALID before effects.",
+      "remaining": "No additional realAPI repair test for this category; normal bounded correction/review applies.",
+      "evidence": [
+        "live-ledger.json",
+        "replay-1795183317010503400.json"
+      ]
+    },
+    {
+      "id": "unnecessary-rest-question",
+      "category": "model",
+      "cases": [
+        "pack:sv.rest"
+      ],
+      "first": "Asked to choose a target despite a uniquely supplied living actor and explicit short-rest request.",
+      "handling": "No candidate or effects. Preserve as failed intent; do not count clarification as successful execution.",
+      "remaining": "No natural realAPI retest of this category in this bounded run.",
+      "evidence": [
+        "live-ledger.json"
+      ]
+    },
+    {
+      "id": "slot-definition-confusion",
+      "category": "model",
+      "first": "Natural slot5 confused definition index3 with inventory slot3; exhausted correction led to unnecessary choices.",
+      "handling": "Author-declared runtimeReferences projected only already-read authorized entity slots from the frozen definitions; core code has no package-specific IDs. Final natural slot5 and moved-slot7 both committed and were idempotent.",
+      "evidence": [
+        "coordinator-1795183044989840600.json",
+        "coordinator-1795183647247512600.json",
+        "coordinator-1795184194107020600.json",
+        "reference-feedback.xml",
+        "reference-input-boundaries.xml"
+      ]
+    },
+    {
+      "id": "contradictory-repair-prose",
+      "category": "model",
+      "first": "Injected slot3 corrected to slot7/value1, but prose still claimed slot7 was not ration.",
+      "handling": "Original overall failure remains. Harness missing-value assertion corrected separately. Final two natural trials had coherent prose, but no general prose-correctness guarantee.",
+      "evidence": [
+        "coordinator-1795183044989840600.json",
+        "followup-verification.json"
+      ]
+    },
+    {
+      "id": "npc-discriminator",
+      "category": "product-feedback",
+      "first": "Valid copied sv.npc defaults lacked additional isNpc=1 required for new NPC extensions; original B/C error omitted the exact constraint.",
+      "handling": "Precise EXTENSION_MARKER_REQUIRED path/reason and max2 technical correction; guide names fixed marker. Historical failed response through real production checks and one new realAPI call corrected and published.",
+      "evidence": [
+        "saved-repair-1795183760607024700.json",
+        "../../ai/tests/test_runtime_references.py"
+      ]
+    },
+    {
+      "id": "lua-constructor",
+      "category": "model-and-product-feedback",
+      "first": "Missing return, then guessed a hand-built Lua table; second correction switched to plan while blocked proposal remained.",
+      "handling": "Added exact engine DSL syntax feedback; draft correction cannot switch to plan and misreport ready. RealAPI correction generated return rule(...). A/B pass; C remained unknown for unrelated uncovered fixture bag. Correct minimal isolated initial state reused unchanged output, passed A/B/C, published and invoked. No string rewrite shortcut.",
+      "evidence": [
+        "saved-repair-1795183760607024700.json",
+        "saved-repair-1795184015563359400.json",
+        "lua-author-check.json",
+        "followup-verification.json",
+        "feedback-followup.xml"
+      ]
+    },
+    {
+      "id": "adjudicate-mode",
+      "category": "model-and-product-feedback",
+      "first": "mode=default and operation=check deviated from ordinary DEX intent; real preflight returned SV_CHECK_MODE. First repair asked user to choose technical enum.",
+      "handling": "Added exact current rule/dependency source excerpts under KP egress, max16KiB; one realAPI correction then actual atomic commit/idempotence.",
+      "evidence": [
+        "saved-repair-1795183760607024700.json",
+        "saved-repair-1795184146769813400.json"
+      ]
+    },
+    {
+      "id": "coordinator-oracles",
+      "category": "harness",
+      "first": "Marked genuine needs_input as failed; slot assertion omitted required value1; data description had extra terminal full stop.",
+      "handling": "Original failures retained, separate independent reassessment. Slot narrative still failed; correct business clarification and punctuation-only append separately accepted.",
+      "evidence": [
+        "coordinator-1795183044989840600.json",
+        "followup-verification.json"
+      ]
+    },
+    {
+      "id": "budget-stop",
+      "category": "experiment-control",
+      "first": "Moved-slot task stopped before final request because remaining cumulative tokens were smaller than conservative full-request reservation.",
+      "handling": "Preserved failed task; coordinator-authorized revision4 budget, same cumulative ledger, later separate natural task passed.",
+      "evidence": [
+        "budget.json",
+        "coordinator-1795183647247512600.json",
+        "coordinator-1795184194107020600.json"
+      ]
+    },
+    {
+      "id": "ledger-windows-sharing",
+      "category": "harness-accounting",
+      "first": "Windows PermissionError during ledger write; attempt194 has started status and no usage.",
+      "handling": "Added bounded file-sharing retries; unknown attempt remains counted with full44218token reserve. Later valid attempt195 corrected adjudicate. Do not infer zero cost or claim194success.",
+      "evidence": [
+        "live-ledger.json",
+        "saved-repair-1795184015563359400.json"
+      ]
+    },
+    {
+      "id": "core-initial-failures",
+      "category": "regression",
+      "first": "Technical repair compatibility, old sequential receipts/repair-count assertions, test monkeypatch leaking from preview, missing snapshot CLI script, old history/revocation assertions.",
+      "handling": "Preserved all XML. Updated fixtures/assertions to verified atomic and018/019 history behavior; corrected snapshots.626current unique core cases have latest passing evidence; repeated runs are not added to denominator.",
+      "evidence": [
+        "technical-repair.xml",
+        "atomic-first.xml",
+        "atomic-second.xml",
+        "core-first.xml",
+        "regression-coverage.json"
+      ]
+    },
+    {
+      "id": "strict-item-consumption-fixture",
+      "category": "fixture",
+      "first": "Published and granted new item; use was rejected because newly created actor lacked required source relation to session.",
+      "handling": "Preserved first isolated attempt; independently rebuilt author-defined actor→session source relation and repeated zeroAPI consumption verification.",
+      "evidence": [
+        "followup-1795184808338206200.json",
+        "followup-verification.json"
+      ]
+    },
+    {
+      "id": "projection-input-boundary",
+      "category": "product",
+      "first": "Final review found integral floats skipped and nonobject optional term/definition values could throw.",
+      "handling": "Finite integral float support, bool/fraction/nonfinite rejection and explicit object/type guards;15deterministic tests passed, no extraAPI.",
+      "evidence": [
+        "reference-input-boundaries.xml",
+        "production-source.json"
+      ]
+    }
+  ],
+  "policy": "Preserve first failures; technical repairs<=2, transport retries<=2, no oracle sent to model, no permission expansion, no normal-game reroll. Unknown execution checks original receipt."
+}

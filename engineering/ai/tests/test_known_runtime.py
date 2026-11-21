@@ -92,7 +92,7 @@ def test_model_secret_prose_is_repaired_and_never_stored_or_replayed(application
             assert app.sessions.get('player1',s['sessionId'])['items'][0]['response']==item['response']
             host_call(app,'knowledge.revoke',{'grantId':grant['grantId'],'expectedRevision':1,'reason':'撤回本次披露'})
             stale=app.sessions.get('player1',s['sessionId'])['items'][0]
-            assert stale['status']=='stale' and not stale.get('response')
+            assert stale['status']=='stale' and stale.get('response')==item['response'] and stale['historicalReadOnly']
         finally:await app.coordinator.close()
     asyncio.run(run())
 

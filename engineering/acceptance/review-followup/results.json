@@ -1,0 +1,1347 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-11-20",
+  "scope": "ISSUE-017 AI history, queue organization, compact known references",
+  "externalModelCalls": 0,
+  "billedTokens": 0,
+  "runs": [
+    {
+      "file": "initial.xml",
+      "tests": 57,
+      "failures": 1,
+      "errors": 33,
+      "skipped": 0,
+      "passed": 23,
+      "successRate": 0.403509,
+      "causeAndDisposition": "33 setup errors: missing parent of pytest basetemp; 1 old assertion expected expanded legacy data, intentionally replaced by compact references."
+    },
+    {
+      "file": "first.xml",
+      "tests": 57,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 57,
+      "successRate": 1.0
+    },
+    {
+      "file": "queue-first.xml",
+      "tests": 80,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 80,
+      "successRate": 1.0
+    },
+    {
+      "file": "ui-first.xml",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 4,
+      "successRate": 1.0
+    },
+    {
+      "file": "freeze.xml",
+      "tests": 29,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 29,
+      "successRate": 1.0
+    },
+    {
+      "file": "regression.xml",
+      "tests": 82,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 82,
+      "successRate": 1.0
+    },
+    {
+      "file": "nodes.xml",
+      "tests": 1,
+      "failures": 0,
+      "errors": 1,
+      "skipped": 0,
+      "passed": 0,
+      "successRate": 0.0,
+      "causeAndDisposition": "Collection error: standalone fixture used the wrong import root."
+    },
+    {
+      "file": "nodes-final.xml",
+      "tests": 8,
+      "failures": 2,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 6,
+      "successRate": 0.75,
+      "causeAndDisposition": "2 fixture failures: mutable alias changed the old artifact. A fresh room snapshot and a separate candidate data copy corrected the fixture."
+    },
+    {
+      "file": "nodes-verified.xml",
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 8,
+      "successRate": 1.0
+    },
+    {
+      "file": "boundaries-initial.xml",
+      "tests": 6,
+      "failures": 6,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 0,
+      "successRate": 0.0,
+      "causeAndDisposition": "5 product failures: active generation candidates were archivable (3 states), cancelled requests remained in active queue (2 kinds). One fixture failure used a nonexistent repository.directory attribute."
+    },
+    {
+      "file": "boundaries-final.xml",
+      "tests": 42,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 42,
+      "successRate": 1.0
+    },
+    {
+      "file": "dispatch-final.xml",
+      "tests": 33,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 33,
+      "successRate": 1.0
+    },
+    {
+      "file": "player-retry-initial.xml",
+      "tests": 1,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 0,
+      "successRate": 0.0,
+      "causeAndDisposition": "Product gap: direct player creation button omitted submissionKey after a lost response; retry could create another request. Added stable per-content key and browser regression."
+    },
+    {
+      "file": "pl-dispatch-initial.xml",
+      "tests": 1,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 0,
+      "successRate": 0.0,
+      "causeAndDisposition": "Product regression introduced by dispatch serialization: public player submit already had a repository transaction. Fixed by joining the existing transaction under the same lock, preserving the archive/dispatch barrier."
+    },
+    {
+      "file": "pl-final.xml",
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 9,
+      "successRate": 1.0
+    },
+    {
+      "file": "public-paths.xml",
+      "tests": 61,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 61,
+      "successRate": 1.0
+    }
+  ],
+  "uniqueLatest": {
+    "passed": 230,
+    "total": 230,
+    "successRate": 1.0
+  },
+  "cases": [
+    {
+      "id": "acceptance/review-followup/test_history_nodes.py::test_text_node_history_has_current_authority_but_not_old_value_equality[delete-field-False-description]",
+      "status": "passed",
+      "evidence": "test_history_nodes.py"
+    },
+    {
+      "id": "acceptance/review-followup/test_history_nodes.py::test_text_node_history_has_current_authority_but_not_old_value_equality[delete-field-False-truth]",
+      "status": "passed",
+      "evidence": "test_history_nodes.py"
+    },
+    {
+      "id": "acceptance/review-followup/test_history_nodes.py::test_text_node_history_has_current_authority_but_not_old_value_equality[delete-object-False-description]",
+      "status": "passed",
+      "evidence": "test_history_nodes.py"
+    },
+    {
+      "id": "acceptance/review-followup/test_history_nodes.py::test_text_node_history_has_current_authority_but_not_old_value_equality[delete-object-False-truth]",
+      "status": "passed",
+      "evidence": "test_history_nodes.py"
+    },
+    {
+      "id": "acceptance/review-followup/test_history_nodes.py::test_text_node_history_has_current_authority_but_not_old_value_equality[replace-object-False-description]",
+      "status": "passed",
+      "evidence": "test_history_nodes.py"
+    },
+    {
+      "id": "acceptance/review-followup/test_history_nodes.py::test_text_node_history_has_current_authority_but_not_old_value_equality[replace-object-False-truth]",
+      "status": "passed",
+      "evidence": "test_history_nodes.py"
+    },
+    {
+      "id": "acceptance/review-followup/test_history_nodes.py::test_text_node_history_has_current_authority_but_not_old_value_equality[revoke-False-description]",
+      "status": "passed",
+      "evidence": "test_history_nodes.py"
+    },
+    {
+      "id": "acceptance/review-followup/test_history_nodes.py::test_text_node_history_has_current_authority_but_not_old_value_equality[revoke-False-truth]",
+      "status": "passed",
+      "evidence": "test_history_nodes.py"
+    },
+    {
+      "id": "acceptance/review-followup/test_history_nodes.py::test_text_node_history_has_current_authority_but_not_old_value_equality[text-True-description]",
+      "status": "passed",
+      "evidence": "test_history_nodes.py"
+    },
+    {
+      "id": "acceptance/review-followup/test_history_nodes.py::test_text_node_history_has_current_authority_but_not_old_value_equality[text-True-truth]",
+      "status": "passed",
+      "evidence": "test_history_nodes.py"
+    },
+    {
+      "id": "acceptance/review-followup/test_player_retry.py::test_player_creation_retry_reuses_key_and_new_intent_gets_new_key",
+      "status": "passed",
+      "evidence": "test_player_retry.py"
+    },
+    {
+      "id": "acceptance/review-followup/test_queue_boundaries.py::test_archive_metadata_and_business_status_survive_repository_reopen",
+      "status": "passed",
+      "evidence": "test_queue_boundaries.py"
+    },
+    {
+      "id": "acceptance/review-followup/test_queue_boundaries.py::test_cancelled_request_is_not_still_an_active_queue_candidate[batch]",
+      "status": "passed",
+      "evidence": "test_queue_boundaries.py"
+    },
+    {
+      "id": "acceptance/review-followup/test_queue_boundaries.py::test_cancelled_request_is_not_still_an_active_queue_candidate[proposal]",
+      "status": "passed",
+      "evidence": "test_queue_boundaries.py"
+    },
+    {
+      "id": "acceptance/review-followup/test_queue_boundaries.py::test_candidate_with_running_generation_cannot_be_archived[generating]",
+      "status": "passed",
+      "evidence": "test_queue_boundaries.py"
+    },
+    {
+      "id": "acceptance/review-followup/test_queue_boundaries.py::test_candidate_with_running_generation_cannot_be_archived[queued]",
+      "status": "passed",
+      "evidence": "test_queue_boundaries.py"
+    },
+    {
+      "id": "acceptance/review-followup/test_queue_boundaries.py::test_candidate_with_running_generation_cannot_be_archived[validating]",
+      "status": "passed",
+      "evidence": "test_queue_boundaries.py"
+    },
+    {
+      "id": "acceptance/review-followup/test_queue_boundaries.py::test_dispatch_and_archive_are_serialized_without_archived_running_task",
+      "status": "passed",
+      "evidence": "test_queue_boundaries.py"
+    },
+    {
+      "id": "ai/tests/test_access_batches.py::test_administrator_tools_respect_external_scope",
+      "status": "passed",
+      "evidence": "test_access_batches.py"
+    },
+    {
+      "id": "ai/tests/test_access_batches.py::test_batch_human_approval_idempotence_and_player_denial",
+      "status": "passed",
+      "evidence": "test_access_batches.py"
+    },
+    {
+      "id": "ai/tests/test_access_batches.py::test_batch_stale_reject_auto_and_bypass_forbidden",
+      "status": "passed",
+      "evidence": "test_access_batches.py"
+    },
+    {
+      "id": "ai/tests/test_access_batches.py::test_batch_stops_after_partial_failure_and_restart_never_replays",
+      "status": "passed",
+      "evidence": "test_access_batches.py"
+    },
+    {
+      "id": "ai/tests/test_access_batches.py::test_batch_unknown_reconciles_without_reexecuting",
+      "status": "passed",
+      "evidence": "test_access_batches.py"
+    },
+    {
+      "id": "ai/tests/test_access_batches.py::test_defaults_binding_and_no_permission_escalation",
+      "status": "passed",
+      "evidence": "test_access_batches.py"
+    },
+    {
+      "id": "ai/tests/test_access_batches.py::test_delete_cancels_queue_hides_session_and_keeps_usage_audit",
+      "status": "passed",
+      "evidence": "test_access_batches.py"
+    },
+    {
+      "id": "ai/tests/test_access_batches.py::test_delete_interrupts_active_generation",
+      "status": "passed",
+      "evidence": "test_access_batches.py"
+    },
+    {
+      "id": "ai/tests/test_access_batches.py::test_kp_player_session_has_player_ceiling_and_data_proof",
+      "status": "passed",
+      "evidence": "test_access_batches.py"
+    },
+    {
+      "id": "ai/tests/test_access_batches.py::test_management_catalog_is_bounded_and_schema_complete",
+      "status": "passed",
+      "evidence": "test_access_batches.py"
+    },
+    {
+      "id": "ai/tests/test_access_batches.py::test_other_administrator_can_inspect_draft_without_taking_review_identity",
+      "status": "passed",
+      "evidence": "test_access_batches.py"
+    },
+    {
+      "id": "ai/tests/test_access_batches.py::test_player_auto_dispatch_context_output_and_revoke",
+      "status": "passed",
+      "evidence": "test_access_batches.py"
+    },
+    {
+      "id": "ai/tests/test_access_batches.py::test_player_contract_tool_and_batch_output_cannot_escalate",
+      "status": "passed",
+      "evidence": "test_access_batches.py"
+    },
+    {
+      "id": "ai/tests/test_access_batches.py::test_player_history_rechecks_package_evidence_during_generation",
+      "status": "passed",
+      "evidence": "test_access_batches.py"
+    },
+    {
+      "id": "ai/tests/test_data_edits.py::test_add_replace_remove_are_explicit_and_preserve_siblings",
+      "status": "passed",
+      "evidence": "test_data_edits.py"
+    },
+    {
+      "id": "ai/tests/test_data_edits.py::test_append_from_partial_array_preserves_all_unread_data_and_is_repeatable",
+      "status": "passed",
+      "evidence": "test_data_edits.py"
+    },
+    {
+      "id": "ai/tests/test_data_edits.py::test_append_uniqueness_checks_items_outside_returned_page",
+      "status": "passed",
+      "evidence": "test_data_edits.py"
+    },
+    {
+      "id": "ai/tests/test_data_edits.py::test_data_edits_are_only_valid_on_draft",
+      "status": "passed",
+      "evidence": "test_data_edits.py"
+    },
+    {
+      "id": "ai/tests/test_data_edits.py::test_model_increment_compiles_to_checked_manual_candidate[False]",
+      "status": "passed",
+      "evidence": "test_data_edits.py"
+    },
+    {
+      "id": "ai/tests/test_data_edits.py::test_model_increment_compiles_to_checked_manual_candidate[True]",
+      "status": "passed",
+      "evidence": "test_data_edits.py"
+    },
+    {
+      "id": "ai/tests/test_data_edits.py::test_multiple_appends_and_large_object_index_do_not_require_reconstruction",
+      "status": "passed",
+      "evidence": "test_data_edits.py"
+    },
+    {
+      "id": "ai/tests/test_data_edits.py::test_read_does_not_issue_ref_on_invalid_path_or_page[args0]",
+      "status": "passed",
+      "evidence": "test_data_edits.py"
+    },
+    {
+      "id": "ai/tests/test_data_edits.py::test_read_does_not_issue_ref_on_invalid_path_or_page[args1]",
+      "status": "passed",
+      "evidence": "test_data_edits.py"
+    },
+    {
+      "id": "ai/tests/test_data_edits.py::test_read_does_not_issue_ref_on_invalid_path_or_page[args2]",
+      "status": "passed",
+      "evidence": "test_data_edits.py"
+    },
+    {
+      "id": "ai/tests/test_data_edits.py::test_read_does_not_issue_ref_on_invalid_path_or_page[args3]",
+      "status": "passed",
+      "evidence": "test_data_edits.py"
+    },
+    {
+      "id": "ai/tests/test_data_edits.py::test_real_application_egress_and_session_ceiling[kp-EXTERNAL_SCOPE_DISABLED]",
+      "status": "passed",
+      "evidence": "test_data_edits.py"
+    },
+    {
+      "id": "ai/tests/test_data_edits.py::test_real_application_egress_and_session_ceiling[player-TOOL_FORBIDDEN]",
+      "status": "passed",
+      "evidence": "test_data_edits.py"
+    },
+    {
+      "id": "ai/tests/test_data_edits.py::test_real_application_egress_and_session_ceiling[queries-DATA_QUERIES_DISABLED]",
+      "status": "passed",
+      "evidence": "test_data_edits.py"
+    },
+    {
+      "id": "ai/tests/test_data_edits.py::test_rejects_unsafe_edits_atomically[add-existing-DATA_EDIT_TARGET_INVALID]",
+      "status": "passed",
+      "evidence": "test_data_edits.py"
+    },
+    {
+      "id": "ai/tests/test_data_edits.py::test_rejects_unsafe_edits_atomically[array-remove-DATA_EDIT_TARGET_INVALID]",
+      "status": "passed",
+      "evidence": "test_data_edits.py"
+    },
+    {
+      "id": "ai/tests/test_data_edits.py::test_rejects_unsafe_edits_atomically[forged-DATA_EDIT_REFERENCE_UNVERIFIED]",
+      "status": "passed",
+      "evidence": "test_data_edits.py"
+    },
+    {
+      "id": "ai/tests/test_data_edits.py::test_rejects_unsafe_edits_atomically[incomplete-DATA_EDIT_INCOMPLETE_READ]",
+      "status": "passed",
+      "evidence": "test_data_edits.py"
+    },
+    {
+      "id": "ai/tests/test_data_edits.py::test_rejects_unsafe_edits_atomically[mixed-DATA_EDIT_MIXED_REPLACEMENT]",
+      "status": "passed",
+      "evidence": "test_data_edits.py"
+    },
+    {
+      "id": "ai/tests/test_data_edits.py::test_rejects_unsafe_edits_atomically[overlap-DATA_EDIT_OVERLAP]",
+      "status": "passed",
+      "evidence": "test_data_edits.py"
+    },
+    {
+      "id": "ai/tests/test_data_edits.py::test_rejects_unsafe_edits_atomically[root-DATA_EDIT_INCOMPLETE_READ]",
+      "status": "passed",
+      "evidence": "test_data_edits.py"
+    },
+    {
+      "id": "ai/tests/test_data_edits.py::test_rejects_unsafe_edits_atomically[stale-DATA_EDIT_BASELINE_STALE]",
+      "status": "passed",
+      "evidence": "test_data_edits.py"
+    },
+    {
+      "id": "ai/tests/test_entrypoints.py::test_auto_off_prefix_dedup_edits_withdrawal_and_role",
+      "status": "passed",
+      "evidence": "test_entrypoints.py"
+    },
+    {
+      "id": "ai/tests/test_entrypoints.py::test_chat_forwarding_binds_original_and_policy",
+      "status": "passed",
+      "evidence": "test_entrypoints.py"
+    },
+    {
+      "id": "ai/tests/test_entrypoints.py::test_cli_uses_same_three_engines",
+      "status": "passed",
+      "evidence": "test_entrypoints.py"
+    },
+    {
+      "id": "ai/tests/test_entrypoints.py::test_http_auth_limits_schema_capability_and_disabled_module",
+      "status": "passed",
+      "evidence": "test_entrypoints.py"
+    },
+    {
+      "id": "ai/tests/test_entrypoints.py::test_manual_revision_invalidates_approval_and_cancel_revokes",
+      "status": "passed",
+      "evidence": "test_entrypoints.py"
+    },
+    {
+      "id": "ai/tests/test_entrypoints.py::test_plan_without_proposal_rechecks_context_on_read",
+      "status": "passed",
+      "evidence": "test_entrypoints.py"
+    },
+    {
+      "id": "ai/tests/test_entrypoints.py::test_player_can_cancel_after_dispatching_kp_loses_role",
+      "status": "passed",
+      "evidence": "test_entrypoints.py"
+    },
+    {
+      "id": "ai/tests/test_entrypoints.py::test_receipt_rechecks_private_sources_and_restart_pending",
+      "status": "passed",
+      "evidence": "test_entrypoints.py"
+    },
+    {
+      "id": "ai/tests/test_entrypoints.py::test_requests_are_explicit_idempotent_redacted_and_paged",
+      "status": "passed",
+      "evidence": "test_entrypoints.py"
+    },
+    {
+      "id": "ai/tests/test_history_continuity.py::test_historical_intent_is_rechecked_after_capture_and_has_no_execution_authority",
+      "status": "passed",
+      "evidence": "test_history_continuity.py"
+    },
+    {
+      "id": "ai/tests/test_history_continuity.py::test_history_scope_mismatch_never_falls_back",
+      "status": "passed",
+      "evidence": "test_history_continuity.py"
+    },
+    {
+      "id": "ai/tests/test_history_continuity.py::test_model_repairs_stale_intent_by_reading_target_without_reasking",
+      "status": "passed",
+      "evidence": "test_history_continuity.py"
+    },
+    {
+      "id": "ai/tests/test_history_continuity.py::test_new_generation_public_status_is_not_expired_historical_intent[False]",
+      "status": "passed",
+      "evidence": "test_history_continuity.py"
+    },
+    {
+      "id": "ai/tests/test_history_continuity.py::test_new_generation_public_status_is_not_expired_historical_intent[True]",
+      "status": "passed",
+      "evidence": "test_history_continuity.py"
+    },
+    {
+      "id": "ai/tests/test_history_continuity.py::test_new_query_witness_does_not_restore_deleted_object",
+      "status": "passed",
+      "evidence": "test_history_continuity.py"
+    },
+    {
+      "id": "ai/tests/test_history_continuity.py::test_query_history_identity_witness_and_legacy_boundary[read-True-True]",
+      "status": "passed",
+      "evidence": "test_history_continuity.py"
+    },
+    {
+      "id": "ai/tests/test_history_continuity.py::test_query_history_identity_witness_and_legacy_boundary[search-False-True]",
+      "status": "passed",
+      "evidence": "test_history_continuity.py"
+    },
+    {
+      "id": "ai/tests/test_history_continuity.py::test_query_history_identity_witness_and_legacy_boundary[search-True-False]",
+      "status": "passed",
+      "evidence": "test_history_continuity.py"
+    },
+    {
+      "id": "ai/tests/test_history_continuity.py::test_short_confirmation_requires_current_target_read_before_batch",
+      "status": "passed",
+      "evidence": "test_history_continuity.py"
+    },
+    {
+      "id": "ai/tests/test_history_continuity.py::test_short_confirmation_retains_stale_intent_without_old_execution_proofs",
+      "status": "passed",
+      "evidence": "test_history_continuity.py"
+    },
+    {
+      "id": "ai/tests/test_history_continuity.py::test_stale_authorized_response_stays_visible_with_readonly_notice",
+      "status": "passed",
+      "evidence": "test_history_continuity.py"
+    },
+    {
+      "id": "ai/tests/test_history_continuity.py::test_stale_history_never_restores_deleted_or_revoked_body[authorization]",
+      "status": "passed",
+      "evidence": "test_history_continuity.py"
+    },
+    {
+      "id": "ai/tests/test_history_continuity.py::test_stale_history_never_restores_deleted_or_revoked_body[deleted]",
+      "status": "passed",
+      "evidence": "test_history_continuity.py"
+    },
+    {
+      "id": "ai/tests/test_history_continuity.py::test_stale_history_never_restores_deleted_or_revoked_body[hidden]",
+      "status": "passed",
+      "evidence": "test_history_continuity.py"
+    },
+    {
+      "id": "ai/tests/test_history_continuity.py::test_stale_history_never_restores_deleted_or_revoked_body[policy]",
+      "status": "passed",
+      "evidence": "test_history_continuity.py"
+    },
+    {
+      "id": "ai/tests/test_history_continuity.py::test_stale_history_never_restores_deleted_or_revoked_body[profile]",
+      "status": "passed",
+      "evidence": "test_history_continuity.py"
+    },
+    {
+      "id": "ai/tests/test_history_continuity.py::test_stale_history_never_restores_deleted_or_revoked_body[session_deleted]",
+      "status": "passed",
+      "evidence": "test_history_continuity.py"
+    },
+    {
+      "id": "ai/tests/test_known_answers.py::test_empty_result_does_not_assert_nonexistence_and_data_is_not_markup",
+      "status": "passed",
+      "evidence": "test_known_answers.py"
+    },
+    {
+      "id": "ai/tests/test_known_answers.py::test_fixed_order_and_labels_use_only_captured_data",
+      "status": "passed",
+      "evidence": "test_known_answers.py"
+    },
+    {
+      "id": "ai/tests/test_known_answers.py::test_legacy_known_json_is_reformatted_without_touching_other_messages",
+      "status": "passed",
+      "evidence": "test_known_answers.py"
+    },
+    {
+      "id": "ai/tests/test_known_answers.py::test_malformed_answers_fail_closed[not json]",
+      "status": "passed",
+      "evidence": "test_known_answers.py"
+    },
+    {
+      "id": "ai/tests/test_known_answers.py::test_malformed_answers_fail_closed[{\"kind\":\"known\",\"evidence\":NaN,\"next\":\"none\"}]",
+      "status": "passed",
+      "evidence": "test_known_answers.py"
+    },
+    {
+      "id": "ai/tests/test_known_answers.py::test_malformed_answers_fail_closed[{\"kind\":\"known\",\"kind\":\"known\"}]",
+      "status": "passed",
+      "evidence": "test_known_answers.py"
+    },
+    {
+      "id": "ai/tests/test_known_answers.py::test_model_can_only_select_issued_evidence[<lambda>0]",
+      "status": "passed",
+      "evidence": "test_known_answers.py"
+    },
+    {
+      "id": "ai/tests/test_known_answers.py::test_model_can_only_select_issued_evidence[<lambda>1]",
+      "status": "passed",
+      "evidence": "test_known_answers.py"
+    },
+    {
+      "id": "ai/tests/test_known_answers.py::test_model_can_only_select_issued_evidence[<lambda>2]",
+      "status": "passed",
+      "evidence": "test_known_answers.py"
+    },
+    {
+      "id": "ai/tests/test_known_answers.py::test_model_can_only_select_issued_evidence[<lambda>3]",
+      "status": "passed",
+      "evidence": "test_known_answers.py"
+    },
+    {
+      "id": "ai/tests/test_known_answers.py::test_model_can_only_select_issued_evidence[<lambda>4]",
+      "status": "passed",
+      "evidence": "test_known_answers.py"
+    },
+    {
+      "id": "ai/tests/test_known_answers.py::test_model_can_only_select_issued_evidence[<lambda>5]",
+      "status": "passed",
+      "evidence": "test_known_answers.py"
+    },
+    {
+      "id": "ai/tests/test_known_answers.py::test_model_can_only_select_issued_evidence[<lambda>6]",
+      "status": "passed",
+      "evidence": "test_known_answers.py"
+    },
+    {
+      "id": "ai/tests/test_known_answers.py::test_presentation_is_bounded_and_literal_with_deep_or_large_values",
+      "status": "passed",
+      "evidence": "test_known_answers.py"
+    },
+    {
+      "id": "ai/tests/test_known_answers.py::test_reference_encodes_exact_snapshot_and_scope_without_current_entity_lookup",
+      "status": "passed",
+      "evidence": "test_known_answers.py"
+    },
+    {
+      "id": "ai/tests/test_known_answers.py::test_search_summary_cannot_be_rendered_as_read_evidence",
+      "status": "passed",
+      "evidence": "test_known_answers.py"
+    },
+    {
+      "id": "ai/tests/test_known_answers.py::test_structured_evidence_has_readable_labels_and_no_technical_ids",
+      "status": "passed",
+      "evidence": "test_known_answers.py"
+    },
+    {
+      "id": "ai/tests/test_known_runtime.py::test_ask_kp_option_is_queued_for_human_without_model_redispatch",
+      "status": "passed",
+      "evidence": "test_known_runtime.py"
+    },
+    {
+      "id": "ai/tests/test_known_runtime.py::test_inflight_revoke_suppresses_entire_response",
+      "status": "passed",
+      "evidence": "test_known_runtime.py"
+    },
+    {
+      "id": "ai/tests/test_known_runtime.py::test_initial_context_contains_no_pack_guide_world_or_old_model_history",
+      "status": "passed",
+      "evidence": "test_known_runtime.py"
+    },
+    {
+      "id": "ai/tests/test_known_runtime.py::test_legacy_response_projection_still_requires_live_authorization",
+      "status": "passed",
+      "evidence": "test_known_runtime.py"
+    },
+    {
+      "id": "ai/tests/test_known_runtime.py::test_model_secret_prose_is_repaired_and_never_stored_or_replayed",
+      "status": "passed",
+      "evidence": "test_known_runtime.py"
+    },
+    {
+      "id": "ai/tests/test_known_runtime.py::test_player_real_adapter_json_mode_and_http_error_projection[200]",
+      "status": "passed",
+      "evidence": "test_known_runtime.py"
+    },
+    {
+      "id": "ai/tests/test_known_runtime.py::test_player_real_adapter_json_mode_and_http_error_projection[400]",
+      "status": "passed",
+      "evidence": "test_known_runtime.py"
+    },
+    {
+      "id": "ai/tests/test_known_runtime.py::test_private_export_block_and_kp_player_session_ceiling",
+      "status": "passed",
+      "evidence": "test_known_runtime.py"
+    },
+    {
+      "id": "ai/tests/test_known_runtime.py::test_second_package_witness_testimony_stays_personal_and_fixed",
+      "status": "passed",
+      "evidence": "test_known_runtime.py"
+    },
+    {
+      "id": "ai/tests/test_known_runtime.py::test_snapshot_reference_cannot_cross_account_or_follow_world_update",
+      "status": "passed",
+      "evidence": "test_known_runtime.py"
+    },
+    {
+      "id": "ai/tests/test_known_runtime.py::test_unconfigured_player_never_falls_back_or_calls_model",
+      "status": "passed",
+      "evidence": "test_known_runtime.py"
+    },
+    {
+      "id": "ai/tests/test_player_requests.py::test_accepted_request_batch_remains_manual_with_auto_approval_enabled",
+      "status": "passed",
+      "evidence": "test_player_requests.py"
+    },
+    {
+      "id": "ai/tests/test_player_requests.py::test_cancelled_and_deleted_intents_cannot_be_accepted",
+      "status": "passed",
+      "evidence": "test_player_requests.py"
+    },
+    {
+      "id": "ai/tests/test_player_requests.py::test_cancelled_query_failure_keeps_cancelled_status",
+      "status": "passed",
+      "evidence": "test_player_requests.py"
+    },
+    {
+      "id": "ai/tests/test_player_requests.py::test_direct_intent_requires_no_provider_knowledge_or_egress_and_is_deduplicated",
+      "status": "passed",
+      "evidence": "test_player_requests.py"
+    },
+    {
+      "id": "ai/tests/test_player_requests.py::test_intent_owner_level_policy_and_input_cannot_be_forged",
+      "status": "passed",
+      "evidence": "test_player_requests.py"
+    },
+    {
+      "id": "ai/tests/test_player_requests.py::test_keyword_miss_returns_explicit_personal_index_and_never_other_players",
+      "status": "passed",
+      "evidence": "test_player_requests.py"
+    },
+    {
+      "id": "ai/tests/test_player_requests.py::test_kp_accept_creates_private_review_once_without_state_changes",
+      "status": "passed",
+      "evidence": "test_player_requests.py"
+    },
+    {
+      "id": "ai/tests/test_player_requests.py::test_kp_reject_and_archive_do_not_create_review",
+      "status": "passed",
+      "evidence": "test_player_requests.py"
+    },
+    {
+      "id": "ai/tests/test_player_requests.py::test_ordinary_configuration_from_player_review_cannot_auto_publish",
+      "status": "passed",
+      "evidence": "test_player_requests.py"
+    },
+    {
+      "id": "ai/tests/test_player_requests.py::test_player_request_reference_is_label_only_in_kp_review",
+      "status": "passed",
+      "evidence": "test_player_requests.py"
+    },
+    {
+      "id": "ai/tests/test_player_requests.py::test_preloaded_known_index_can_be_read_and_creative_choice_is_not_auto_submitted",
+      "status": "passed",
+      "evidence": "test_player_requests.py"
+    },
+    {
+      "id": "ai/tests/test_player_requests.py::test_query_blockers_have_distinct_safe_errors_without_model_calls[egress-KNOWLEDGE_EGRESS_DISABLED]",
+      "status": "passed",
+      "evidence": "test_player_requests.py"
+    },
+    {
+      "id": "ai/tests/test_player_requests.py::test_query_blockers_have_distinct_safe_errors_without_model_calls[private-EXTERNAL_SCOPE_DISABLED]",
+      "status": "passed",
+      "evidence": "test_player_requests.py"
+    },
+    {
+      "id": "ai/tests/test_player_requests.py::test_query_blockers_have_distinct_safe_errors_without_model_calls[queries-DATA_QUERIES_DISABLED]",
+      "status": "passed",
+      "evidence": "test_player_requests.py"
+    },
+    {
+      "id": "ai/tests/test_player_requests.py::test_query_blockers_have_distinct_safe_errors_without_model_calls[unconfigured-KNOWLEDGE_UNAVAILABLE]",
+      "status": "passed",
+      "evidence": "test_player_requests.py"
+    },
+    {
+      "id": "ai/tests/test_player_requests.py::test_recoverable_invalid_knowledge_query_can_retry_then_read_index",
+      "status": "passed",
+      "evidence": "test_player_requests.py"
+    },
+    {
+      "id": "ai/tests/test_player_requests.py::test_reference_label_cannot_bypass_disabled_private_egress_during_kp_accept",
+      "status": "passed",
+      "evidence": "test_player_requests.py"
+    },
+    {
+      "id": "ai/tests/test_player_requests.py::test_restart_preserves_accepted_review_without_duplicate_dispatch",
+      "status": "passed",
+      "evidence": "test_player_requests.py"
+    },
+    {
+      "id": "ai/tests/test_player_requests.py::test_review_context_identifies_original_player_for_my_character_intent",
+      "status": "passed",
+      "evidence": "test_player_requests.py"
+    },
+    {
+      "id": "ai/tests/test_review_debug.py::test_all_forwarded_reviews_stay_manual_with_auto_on",
+      "status": "passed",
+      "evidence": "test_review_debug.py"
+    },
+    {
+      "id": "ai/tests/test_review_debug.py::test_debug_is_readonly_metadata_default_with_authorized_content_opt_in",
+      "status": "passed",
+      "evidence": "test_review_debug.py"
+    },
+    {
+      "id": "ai/tests/test_review_debug.py::test_debug_rechecks_deleted_session_and_player_switch",
+      "status": "passed",
+      "evidence": "test_review_debug.py"
+    },
+    {
+      "id": "ai/tests/test_review_debug.py::test_debug_rejects_ambiguous_or_invalid_options[options0]",
+      "status": "passed",
+      "evidence": "test_review_debug.py"
+    },
+    {
+      "id": "ai/tests/test_review_debug.py::test_debug_rejects_ambiguous_or_invalid_options[options1]",
+      "status": "passed",
+      "evidence": "test_review_debug.py"
+    },
+    {
+      "id": "ai/tests/test_review_debug.py::test_debug_rejects_ambiguous_or_invalid_options[options2]",
+      "status": "passed",
+      "evidence": "test_review_debug.py"
+    },
+    {
+      "id": "ai/tests/test_review_debug.py::test_debug_rejects_ambiguous_or_invalid_options[options3]",
+      "status": "passed",
+      "evidence": "test_review_debug.py"
+    },
+    {
+      "id": "ai/tests/test_review_debug.py::test_debug_rejects_ambiguous_or_invalid_options[options4]",
+      "status": "passed",
+      "evidence": "test_review_debug.py"
+    },
+    {
+      "id": "ai/tests/test_review_debug.py::test_forwarded_request_resolves_real_source_and_does_not_change_original",
+      "status": "passed",
+      "evidence": "test_review_debug.py"
+    },
+    {
+      "id": "ai/tests/test_review_debug.py::test_legacy_accepted_review_retains_original_player_source",
+      "status": "passed",
+      "evidence": "test_review_debug.py"
+    },
+    {
+      "id": "ai/tests/test_review_debug.py::test_provider_records_actual_model_without_equating_alias_and_version",
+      "status": "passed",
+      "evidence": "test_review_debug.py"
+    },
+    {
+      "id": "ai/tests/test_review_debug.py::test_pure_schema_catalog_available_without_kp_egress",
+      "status": "passed",
+      "evidence": "test_review_debug.py"
+    },
+    {
+      "id": "ai/tests/test_review_debug.py::test_real_http_debug_authorization_no_store_and_no_receipt",
+      "status": "passed",
+      "evidence": "test_review_debug.py"
+    },
+    {
+      "id": "ai/tests/test_review_debug.py::test_review_source_is_separate_from_kp_message_and_deduplicated",
+      "status": "passed",
+      "evidence": "test_review_debug.py"
+    },
+    {
+      "id": "ai/tests/test_review_debug.py::test_review_source_obeys_external_scope",
+      "status": "passed",
+      "evidence": "test_review_debug.py"
+    },
+    {
+      "id": "ai/tests/test_review_debug.py::test_ruling_digest_and_snapshot_size_checked",
+      "status": "passed",
+      "evidence": "test_review_debug.py"
+    },
+    {
+      "id": "ai/tests/test_review_debug.py::test_task_and_debug_preserve_requested_and_actual_model_ids",
+      "status": "passed",
+      "evidence": "test_review_debug.py"
+    },
+    {
+      "id": "ai/tests/test_review_debug_ui.py::test_source_card_and_export_opt_in_guard",
+      "status": "passed",
+      "evidence": "test_review_debug_ui.py"
+    },
+    {
+      "id": "ai/tests/test_review_followup.py::test_archive_restore_is_versioned_and_keeps_supersession",
+      "status": "passed",
+      "evidence": "test_review_followup.py"
+    },
+    {
+      "id": "ai/tests/test_review_followup.py::test_archived_stale_reply_keeps_its_authorized_body",
+      "status": "passed",
+      "evidence": "test_review_followup.py"
+    },
+    {
+      "id": "ai/tests/test_review_followup.py::test_changed_source_after_failure_creates_one_successor_and_retry_reuses_it",
+      "status": "passed",
+      "evidence": "test_review_followup.py"
+    },
+    {
+      "id": "ai/tests/test_review_followup.py::test_config_history_reads_preserve_authorized_nodes[append-True]",
+      "status": "passed",
+      "evidence": "test_review_followup.py"
+    },
+    {
+      "id": "ai/tests/test_review_followup.py::test_config_history_reads_preserve_authorized_nodes[delete-False]",
+      "status": "passed",
+      "evidence": "test_review_followup.py"
+    },
+    {
+      "id": "ai/tests/test_review_followup.py::test_config_history_reads_preserve_authorized_nodes[hidden-False]",
+      "status": "passed",
+      "evidence": "test_review_followup.py"
+    },
+    {
+      "id": "ai/tests/test_review_followup.py::test_config_history_reads_preserve_authorized_nodes[value-True]",
+      "status": "passed",
+      "evidence": "test_review_followup.py"
+    },
+    {
+      "id": "ai/tests/test_review_followup.py::test_cross_session_reply_is_rejected",
+      "status": "passed",
+      "evidence": "test_review_followup.py"
+    },
+    {
+      "id": "ai/tests/test_review_followup.py::test_execution_records_cannot_be_archived_or_auto_replaced[completed]",
+      "status": "passed",
+      "evidence": "test_review_followup.py"
+    },
+    {
+      "id": "ai/tests/test_review_followup.py::test_execution_records_cannot_be_archived_or_auto_replaced[executing]",
+      "status": "passed",
+      "evidence": "test_review_followup.py"
+    },
+    {
+      "id": "ai/tests/test_review_followup.py::test_execution_records_cannot_be_archived_or_auto_replaced[partial]",
+      "status": "passed",
+      "evidence": "test_review_followup.py"
+    },
+    {
+      "id": "ai/tests/test_review_followup.py::test_execution_records_cannot_be_archived_or_auto_replaced[unknown]",
+      "status": "passed",
+      "evidence": "test_review_followup.py"
+    },
+    {
+      "id": "ai/tests/test_review_followup.py::test_explicit_followup_replaces_pending_without_losing_original",
+      "status": "passed",
+      "evidence": "test_review_followup.py"
+    },
+    {
+      "id": "ai/tests/test_review_followup.py::test_explicit_package_business_key_reuses_review_across_revision_and_category",
+      "status": "passed",
+      "evidence": "test_review_followup.py"
+    },
+    {
+      "id": "ai/tests/test_review_followup.py::test_invalid_new_generation_retains_real_failure_without_inventing_body",
+      "status": "passed",
+      "evidence": "test_review_followup.py"
+    },
+    {
+      "id": "ai/tests/test_review_followup.py::test_outstanding_approval_is_protected_from_archive_and_supersession",
+      "status": "passed",
+      "evidence": "test_review_followup.py"
+    },
+    {
+      "id": "ai/tests/test_review_followup.py::test_package_without_business_key_does_not_merge_changed_draft",
+      "status": "passed",
+      "evidence": "test_review_followup.py"
+    },
+    {
+      "id": "ai/tests/test_review_followup.py::test_pending_request_does_not_replace_candidate_before_checks",
+      "status": "passed",
+      "evidence": "test_review_followup.py"
+    },
+    {
+      "id": "ai/tests/test_review_followup.py::test_player_reference_does_not_dump_actions_into_chat[False]",
+      "status": "passed",
+      "evidence": "test_review_followup.py"
+    },
+    {
+      "id": "ai/tests/test_review_followup.py::test_player_reference_does_not_dump_actions_into_chat[True]",
+      "status": "passed",
+      "evidence": "test_review_followup.py"
+    },
+    {
+      "id": "ai/tests/test_review_followup.py::test_player_text_submission_key_deduplicates_business_request",
+      "status": "passed",
+      "evidence": "test_review_followup.py"
+    },
+    {
+      "id": "ai/tests/test_review_followup.py::test_ruling_keeps_authorized_old_body_after_success",
+      "status": "passed",
+      "evidence": "test_review_followup.py"
+    },
+    {
+      "id": "ai/tests/test_review_followup.py::test_same_request_cannot_create_two_batches",
+      "status": "passed",
+      "evidence": "test_review_followup.py"
+    },
+    {
+      "id": "ai/tests/test_review_followup.py::test_same_session_and_same_text_without_relationship_remain_separate",
+      "status": "passed",
+      "evidence": "test_review_followup.py"
+    },
+    {
+      "id": "ai/tests/test_review_followup.py::test_single_same_request_configuration_candidate_and_inactive_host_approval",
+      "status": "passed",
+      "evidence": "test_review_followup.py"
+    },
+    {
+      "id": "ai/tests/test_review_followup.py::test_submission_key_replays_once_and_rejects_changed_payload",
+      "status": "passed",
+      "evidence": "test_review_followup.py"
+    },
+    {
+      "id": "ai/tests/test_review_followup_ui.py::test_continue_request_and_retry_keep_identity_without_linking_new_topic",
+      "status": "passed",
+      "evidence": "test_review_followup_ui.py"
+    },
+    {
+      "id": "ai/tests/test_review_followup_ui.py::test_history_notice_does_not_replace_response",
+      "status": "passed",
+      "evidence": "test_review_followup_ui.py"
+    },
+    {
+      "id": "ai/tests/test_review_followup_ui.py::test_queue_archive_needs_reason_and_preserves_receipt_content",
+      "status": "passed",
+      "evidence": "test_review_followup_ui.py"
+    },
+    {
+      "id": "ai/tests/test_ruling_revisions.py::test_decision_binding_requires_unambiguous_exact_revision[1-receipt_ids0-False]",
+      "status": "passed",
+      "evidence": "test_ruling_revisions.py"
+    },
+    {
+      "id": "ai/tests/test_ruling_revisions.py::test_decision_binding_requires_unambiguous_exact_revision[1-receipt_ids13-True]",
+      "status": "passed",
+      "evidence": "test_ruling_revisions.py"
+    },
+    {
+      "id": "ai/tests/test_ruling_revisions.py::test_decision_binding_requires_unambiguous_exact_revision[2-receipt_ids1-True]",
+      "status": "passed",
+      "evidence": "test_ruling_revisions.py"
+    },
+    {
+      "id": "ai/tests/test_ruling_revisions.py::test_decision_binding_requires_unambiguous_exact_revision[2-receipt_ids11-True]",
+      "status": "passed",
+      "evidence": "test_ruling_revisions.py"
+    },
+    {
+      "id": "ai/tests/test_ruling_revisions.py::test_decision_binding_requires_unambiguous_exact_revision[None-receipt_ids10-True]",
+      "status": "passed",
+      "evidence": "test_ruling_revisions.py"
+    },
+    {
+      "id": "ai/tests/test_ruling_revisions.py::test_decision_binding_requires_unambiguous_exact_revision[None-receipt_ids2-False]",
+      "status": "passed",
+      "evidence": "test_ruling_revisions.py"
+    },
+    {
+      "id": "ai/tests/test_ruling_revisions.py::test_decision_binding_requires_unambiguous_exact_revision[None-receipt_ids3-False]",
+      "status": "passed",
+      "evidence": "test_ruling_revisions.py"
+    },
+    {
+      "id": "ai/tests/test_ruling_revisions.py::test_decision_binding_requires_unambiguous_exact_revision[None-receipt_ids4-True]",
+      "status": "passed",
+      "evidence": "test_ruling_revisions.py"
+    },
+    {
+      "id": "ai/tests/test_ruling_revisions.py::test_decision_binding_requires_unambiguous_exact_revision[None-receipt_ids5-True]",
+      "status": "passed",
+      "evidence": "test_ruling_revisions.py"
+    },
+    {
+      "id": "ai/tests/test_ruling_revisions.py::test_decision_binding_requires_unambiguous_exact_revision[None-receipt_ids6-True]",
+      "status": "passed",
+      "evidence": "test_ruling_revisions.py"
+    },
+    {
+      "id": "ai/tests/test_ruling_revisions.py::test_decision_binding_requires_unambiguous_exact_revision[None-receipt_ids7-True]",
+      "status": "passed",
+      "evidence": "test_ruling_revisions.py"
+    },
+    {
+      "id": "ai/tests/test_ruling_revisions.py::test_decision_binding_requires_unambiguous_exact_revision[None-receipt_ids8-True]",
+      "status": "passed",
+      "evidence": "test_ruling_revisions.py"
+    },
+    {
+      "id": "ai/tests/test_ruling_revisions.py::test_decision_binding_requires_unambiguous_exact_revision[None-receipt_ids9-True]",
+      "status": "passed",
+      "evidence": "test_ruling_revisions.py"
+    },
+    {
+      "id": "ai/tests/test_ruling_revisions.py::test_decision_binding_requires_unambiguous_exact_revision[True-receipt_ids12-True]",
+      "status": "passed",
+      "evidence": "test_ruling_revisions.py"
+    },
+    {
+      "id": "ai/tests/test_ruling_revisions.py::test_legacy_unbound_intent_still_blocks_after_revision_and_reopen[executing]",
+      "status": "passed",
+      "evidence": "test_ruling_revisions.py"
+    },
+    {
+      "id": "ai/tests/test_ruling_revisions.py::test_legacy_unbound_intent_still_blocks_after_revision_and_reopen[unknown]",
+      "status": "passed",
+      "evidence": "test_ruling_revisions.py"
+    },
+    {
+      "id": "ai/tests/test_ruling_revisions.py::test_restart_revise_same_digest_requires_fresh_manual_approval[False]",
+      "status": "passed",
+      "evidence": "test_ruling_revisions.py"
+    },
+    {
+      "id": "ai/tests/test_ruling_revisions.py::test_restart_revise_same_digest_requires_fresh_manual_approval[True]",
+      "status": "passed",
+      "evidence": "test_ruling_revisions.py"
+    },
+    {
+      "id": "ai/tests/test_ruling_revisions.py::test_same_revision_different_candidate_never_inherits_decision_receipts",
+      "status": "passed",
+      "evidence": "test_ruling_revisions.py"
+    },
+    {
+      "id": "ai/tests/test_ruling_revisions.py::test_unbound_unknown_intent_cannot_be_erased_by_a_different_digest[blocked-False]",
+      "status": "passed",
+      "evidence": "test_ruling_revisions.py"
+    },
+    {
+      "id": "ai/tests/test_ruling_revisions.py::test_unbound_unknown_intent_cannot_be_erased_by_a_different_digest[completed-False]",
+      "status": "passed",
+      "evidence": "test_ruling_revisions.py"
+    },
+    {
+      "id": "ai/tests/test_ruling_revisions.py::test_unbound_unknown_intent_cannot_be_erased_by_a_different_digest[executing-True]",
+      "status": "passed",
+      "evidence": "test_ruling_revisions.py"
+    },
+    {
+      "id": "ai/tests/test_ruling_revisions.py::test_unbound_unknown_intent_cannot_be_erased_by_a_different_digest[unknown-True]",
+      "status": "passed",
+      "evidence": "test_ruling_revisions.py"
+    },
+    {
+      "id": "ai/tests/test_rulings.py::test_basic_lua_error_repairs_same_proposal_before_review",
+      "status": "passed",
+      "evidence": "test_rulings.py"
+    },
+    {
+      "id": "ai/tests/test_rulings.py::test_chat_approval_is_bound_to_batch_and_not_another_model_request",
+      "status": "passed",
+      "evidence": "test_rulings.py"
+    },
+    {
+      "id": "ai/tests/test_rulings.py::test_config_is_one_checked_ruling_and_publishes_once",
+      "status": "passed",
+      "evidence": "test_rulings.py"
+    },
+    {
+      "id": "ai/tests/test_rulings.py::test_consultation_only_evidence_cannot_enter_publish_queue_or_auto_approve",
+      "status": "passed",
+      "evidence": "test_rulings.py"
+    },
+    {
+      "id": "ai/tests/test_rulings.py::test_five_repairs_do_not_consume_tool_rounds[False]",
+      "status": "passed",
+      "evidence": "test_rulings.py"
+    },
+    {
+      "id": "ai/tests/test_rulings.py::test_five_repairs_do_not_consume_tool_rounds[True]",
+      "status": "passed",
+      "evidence": "test_rulings.py"
+    },
+    {
+      "id": "ai/tests/test_rulings.py::test_high_risk_config_never_uses_auto_approval",
+      "status": "passed",
+      "evidence": "test_rulings.py"
+    },
+    {
+      "id": "ai/tests/test_rulings.py::test_invalid_model_output_has_specific_cause[[]-MODEL_OBJECT_REQUIRED]",
+      "status": "passed",
+      "evidence": "test_rulings.py"
+    },
+    {
+      "id": "ai/tests/test_rulings.py::test_invalid_model_output_has_specific_cause[broken-MODEL_JSON_INVALID]",
+      "status": "passed",
+      "evidence": "test_rulings.py"
+    },
+    {
+      "id": "ai/tests/test_rulings.py::test_invalid_model_output_has_specific_cause[null-MODEL_OBJECT_REQUIRED]",
+      "status": "passed",
+      "evidence": "test_rulings.py"
+    },
+    {
+      "id": "ai/tests/test_rulings.py::test_invalid_model_output_has_specific_cause[{\"kind\":\"other\",\"text\":\"a\"}-MODEL_KIND_INVALID]",
+      "status": "passed",
+      "evidence": "test_rulings.py"
+    },
+    {
+      "id": "ai/tests/test_rulings.py::test_player_cannot_decide_and_stale_digest_cannot_execute",
+      "status": "passed",
+      "evidence": "test_rulings.py"
+    },
+    {
+      "id": "ai/tests/test_rulings.py::test_single_json_fence_is_accepted_without_extracting_arbitrary_text",
+      "status": "passed",
+      "evidence": "test_rulings.py"
+    },
+    {
+      "id": "ai/tests/test_rulings.py::test_user_decision_pauses_instead_of_retrying[clarification]",
+      "status": "passed",
+      "evidence": "test_rulings.py"
+    },
+    {
+      "id": "ai/tests/test_rulings.py::test_user_decision_pauses_instead_of_retrying[plan]",
+      "status": "passed",
+      "evidence": "test_rulings.py"
+    },
+    {
+      "id": "ai/tests/test_sessions.py::test_configured_history_bound_preserves_records[0]",
+      "status": "passed",
+      "evidence": "test_sessions.py"
+    },
+    {
+      "id": "ai/tests/test_sessions.py::test_configured_history_bound_preserves_records[2]",
+      "status": "passed",
+      "evidence": "test_sessions.py"
+    },
+    {
+      "id": "ai/tests/test_sessions.py::test_configured_history_bound_preserves_records[4]",
+      "status": "passed",
+      "evidence": "test_sessions.py"
+    },
+    {
+      "id": "ai/tests/test_sessions.py::test_history_is_bounded_and_never_reads_other_sessions",
+      "status": "passed",
+      "evidence": "test_sessions.py"
+    },
+    {
+      "id": "ai/tests/test_sessions.py::test_history_reuses_valid_response_and_separates_stale_intent",
+      "status": "passed",
+      "evidence": "test_sessions.py"
+    },
+    {
+      "id": "ai/tests/test_sessions.py::test_repository_rejects_broken_conversation_links[duplicate]",
+      "status": "passed",
+      "evidence": "test_sessions.py"
+    },
+    {
+      "id": "ai/tests/test_sessions.py::test_repository_rejects_broken_conversation_links[foreign]",
+      "status": "passed",
+      "evidence": "test_sessions.py"
+    },
+    {
+      "id": "ai/tests/test_sessions.py::test_repository_rejects_broken_conversation_links[missing]",
+      "status": "passed",
+      "evidence": "test_sessions.py"
+    },
+    {
+      "id": "ai/tests/test_sessions.py::test_repository_rejects_broken_conversation_links[title]",
+      "status": "passed",
+      "evidence": "test_sessions.py"
+    },
+    {
+      "id": "ai/tests/test_sessions.py::test_session_preferences_owner_conflict_and_persistence",
+      "status": "passed",
+      "evidence": "test_sessions.py"
+    },
+    {
+      "id": "ai/tests/test_sessions.py::test_session_preferences_validate_command_and_stored_data[historyTurns--1]",
+      "status": "passed",
+      "evidence": "test_sessions.py"
+    },
+    {
+      "id": "ai/tests/test_sessions.py::test_session_preferences_validate_command_and_stored_data[historyTurns-1.5]",
+      "status": "passed",
+      "evidence": "test_sessions.py"
+    },
+    {
+      "id": "ai/tests/test_sessions.py::test_session_preferences_validate_command_and_stored_data[historyTurns-5]",
+      "status": "passed",
+      "evidence": "test_sessions.py"
+    },
+    {
+      "id": "ai/tests/test_sessions.py::test_session_preferences_validate_command_and_stored_data[historyTurns-True]",
+      "status": "passed",
+      "evidence": "test_sessions.py"
+    },
+    {
+      "id": "ai/tests/test_sessions.py::test_session_preferences_validate_command_and_stored_data[pinned-1]",
+      "status": "passed",
+      "evidence": "test_sessions.py"
+    },
+    {
+      "id": "ai/tests/test_sessions.py::test_session_preferences_validate_command_and_stored_data[renderMode-html]",
+      "status": "passed",
+      "evidence": "test_sessions.py"
+    },
+    {
+      "id": "ai/tests/test_sessions.py::test_session_preferences_validate_command_and_stored_data[showDiagnostics-false]",
+      "status": "passed",
+      "evidence": "test_sessions.py"
+    }
+  ],
+  "sources": {
+    "engineering/ai/src/onlinecoc_ai/api.py": "9d0f732c2482bca00ee2badc0ca7a07f7bc24968e738243d56a3bb8890c7cc82",
+    "engineering/ai/src/onlinecoc_ai/batches.py": "db637aacfdf7d58ad2360cd5b3ccf93fa3d289a39d51448a5c36e6df8e11b51e",
+    "engineering/ai/src/onlinecoc_ai/history.py": "4a14ef1320d4726fb324d860330fa700ab2aeda5ff40f9003fd50fd355edae4f",
+    "engineering/ai/src/onlinecoc_ai/known_answers.py": "a30cdc1d652128a4703e6c6dd7d3d043080ae300a13ba96991590b822d51cf5b",
+    "engineering/ai/src/onlinecoc_ai/player_requests.py": "f4b05e64a2a674a3c410302f174524520870e57a78661603555e1f5fd4ac4257",
+    "engineering/ai/src/onlinecoc_ai/proposals.py": "6b3d77e9ad0121481854ab2239bac5bfac2981a5d3a313e63f5bdb9ffa92e97d",
+    "engineering/ai/src/onlinecoc_ai/repository.py": "14711d5f97b7c881ecde3b09120c4e3e5a02a6b33180cb62b4f31f27dc26bd13",
+    "engineering/ai/src/onlinecoc_ai/reviews.py": "4f70b09b92564f613cdeed99deea1495729158fdff907651748ba80b626664bf",
+    "engineering/ai/src/onlinecoc_ai/review_queue.py": "c266d3429e562c60a8e3ca4452d029e5d5b64d37cdf51d5ef57527544dd6d4a2",
+    "engineering/ai/src/onlinecoc_ai/rulings.py": "04cd106a65baaa6c43691b14a329094fbd8e79b4d0bd674ea8ef11387f2ab45f",
+    "engineering/ai/src/onlinecoc_ai/sessions.py": "eaebbd10f042bc1d19660cde786e3baeb58f0229e10c304318d977ca32277843",
+    "engineering/ai/web/components/chat.js": "7b8840645a341f1916f4002b5fd65f46f8027d2c7627d628ac5eaf61b3936587",
+    "engineering/ai/web/components/rulings.js": "a78393f8ccf97479a32289d2ec4ef16ba668f3eedc7d217e4c16cf7ba6b2746b",
+    "engineering/ai/web/components/tools.js": "09d6934715bf25fb4e9bf2fab5411cd7ccd5aded723ee5946d655943b41affac",
+    "engineering/ai/web/components/index.d.ts": "6cf0637925eb67295547087b2587037cd8f5ad1c38a4b7f2e1eb59f03f39a1f1",
+    "engineering/ai/tests/test_review_followup.py": "525decb097822c1fe787344da6295bb0853e14d64cc578589107e68d0a95d418",
+    "engineering/ai/tests/test_review_followup_ui.py": "889f50ecc4f6115bc748787541841d8476daef78385fb5cf9bcf2269da5b2aca",
+    "engineering/ai/tests/test_known_answers.py": "38717b8b4aec4dc248bfbfb84c939a00cba823deef4208a3ac4bb7dcafb5ebcd"
+  },
+  "acceptanceSources": {
+    "record_results.py": "69b9bbc8f4f02ec0eb676c52d326a3885efed7e7d928a13ee2414f2a228be8f5",
+    "test_history_nodes.py": "d99a2ddfa9d862d2052e3a10bb7b43a70885ccfff16aadd8617095c27d44c592",
+    "test_player_retry.py": "2d62276a887ea83373d93bdf80f188842fef0b4c3f9b3557784d030048c2fa2c",
+    "test_queue_boundaries.py": "7573080697aa6fe7b99f195af5c1f238b53cd1cac335cb10df317a045d4a7ffa"
+  },
+  "limits": [
+    "Deterministic provider fixtures and real local hosts/browsers; this is not a paid model success rate.",
+    "Package integration and engine schema runs are recorded separately and not added to the unique AI count.",
+    "Historical permission revocation, deleted objects and unprovable legacy searches remain hidden. No formal room was migrated or modified."
+  ]
+}

@@ -1,0 +1,2040 @@
+{
+  "finalEvidence": [
+    "history-cache.xml",
+    "cache-regression.xml"
+  ],
+  "finalUniqueTests": 200,
+  "passed": 200,
+  "failed": 0,
+  "skipped": 0,
+  "cases": {
+    "tests.test_generation_snapshot::test_frozen_tools_and_retained_batch[chat-queued]": "passed",
+    "tests.test_generation_snapshot::test_frozen_tools_and_retained_batch[chat-provider]": "passed",
+    "tests.test_generation_snapshot::test_frozen_tools_and_retained_batch[entity-queued]": "passed",
+    "tests.test_generation_snapshot::test_frozen_tools_and_retained_batch[entity-provider]": "passed",
+    "tests.test_generation_snapshot::test_draft_kept_and_checked_on_original_snapshot": "passed",
+    "tests.test_generation_snapshot::test_live_authority_still_discards_unpublished_output[revoke]": "passed",
+    "tests.test_generation_snapshot::test_live_authority_still_discards_unpublished_output[delete-session]": "passed",
+    "tests.test_generation_snapshot::test_live_authority_still_discards_unpublished_output[disable-egress]": "passed",
+    "tests.test_generation_snapshot::test_live_authority_still_discards_unpublished_output[cancel]": "passed",
+    "tests.test_generation_snapshot::test_progress_visible_while_provider_waits_and_no_extra_stage_writes": "passed",
+    "tests.test_generation_snapshot::test_read_scope_snapshot_reuse_invalidation_and_rollback": "passed",
+    "tests.test_generation_snapshot::test_independent_adapter_is_frozen_and_change_is_reported": "passed",
+    "tests.test_generation_snapshot::test_progress_does_not_persist_full_room_per_tool": "passed",
+    "tests.test_generation_snapshot::test_prior_world_changes_and_inflight_chat_do_not_break_first_tool": "passed",
+    "tests.test_generation_snapshot::test_history_shared_cache_keeps_each_roots_bound_and_checks_each_node_once": "passed",
+    "tests.test_generation_snapshot::test_history_shared_cache_rejects_cycles_and_revocation_on_next_read": "passed",
+    "tests.test_generation_snapshot::test_room_read_authorization_uses_current_supplied_state": "passed",
+    "tests.test_history_continuity::test_stale_authorized_response_stays_visible_with_readonly_notice": "passed",
+    "tests.test_history_continuity::test_short_confirmation_retains_stale_intent_without_old_execution_proofs": "passed",
+    "tests.test_history_continuity::test_query_history_identity_witness_and_legacy_boundary[read-True-True]": "passed",
+    "tests.test_history_continuity::test_query_history_identity_witness_and_legacy_boundary[search-False-True]": "passed",
+    "tests.test_history_continuity::test_query_history_identity_witness_and_legacy_boundary[search-True-False]": "passed",
+    "tests.test_history_continuity::test_delivered_body_survives_but_changed_sources_do_not_enter_new_context[deleted]": "passed",
+    "tests.test_history_continuity::test_delivered_body_survives_but_changed_sources_do_not_enter_new_context[hidden]": "passed",
+    "tests.test_history_continuity::test_delivered_body_survives_but_changed_sources_do_not_enter_new_context[authorization]": "passed",
+    "tests.test_history_continuity::test_delivered_body_survives_but_changed_sources_do_not_enter_new_context[policy]": "passed",
+    "tests.test_history_continuity::test_delivered_body_survives_but_changed_sources_do_not_enter_new_context[profile]": "passed",
+    "tests.test_history_continuity::test_delivered_body_survives_but_changed_sources_do_not_enter_new_context[session_deleted]": "passed",
+    "tests.test_history_continuity::test_new_query_witness_does_not_restore_deleted_object": "passed",
+    "tests.test_history_continuity::test_historical_intent_is_rechecked_after_capture_and_has_no_execution_authority": "passed",
+    "tests.test_history_continuity::test_history_scope_mismatch_never_falls_back": "passed",
+    "tests.test_history_continuity::test_short_confirmation_requires_current_target_read_before_batch": "passed",
+    "tests.test_history_continuity::test_model_repairs_stale_intent_by_reading_target_without_reasking": "passed",
+    "tests.test_history_continuity::test_new_generation_public_status_is_not_expired_historical_intent[False]": "passed",
+    "tests.test_history_continuity::test_new_generation_public_status_is_not_expired_historical_intent[True]": "passed",
+    "tests.test_access_batches::test_defaults_binding_and_no_permission_escalation": "passed",
+    "tests.test_access_batches::test_player_auto_dispatch_context_output_and_revoke": "passed",
+    "tests.test_access_batches::test_kp_player_session_has_player_ceiling_and_data_proof": "passed",
+    "tests.test_access_batches::test_batch_human_approval_idempotence_and_player_denial": "passed",
+    "tests.test_access_batches::test_batch_stale_reject_auto_and_bypass_forbidden": "passed",
+    "tests.test_access_batches::test_batch_unknown_reconciles_without_reexecuting": "passed",
+    "tests.test_access_batches::test_batch_stops_after_partial_failure_and_restart_never_replays": "passed",
+    "tests.test_access_batches::test_delete_cancels_queue_hides_session_and_keeps_usage_audit": "passed",
+    "tests.test_access_batches::test_administrator_tools_respect_external_scope": "passed",
+    "tests.test_access_batches::test_player_contract_tool_and_batch_output_cannot_escalate": "passed",
+    "tests.test_access_batches::test_delete_interrupts_active_generation": "passed",
+    "tests.test_access_batches::test_management_catalog_is_bounded_and_schema_complete": "passed",
+    "tests.test_access_batches::test_other_administrator_can_inspect_draft_without_taking_review_identity": "passed",
+    "tests.test_access_batches::test_player_history_rechecks_package_evidence_during_generation": "passed",
+    "tests.test_coordinator::test_draft_is_checked_but_never_published": "passed",
+    "tests.test_coordinator::test_blocked_model_does_not_hold_host_lock_and_can_cancel": "passed",
+    "tests.test_coordinator::test_request_dedup_queue_and_budget": "passed",
+    "tests.test_coordinator::test_untrusted_model_and_retry_limits[forged-TOOL_FORBIDDEN]": "passed",
+    "tests.test_coordinator::test_untrusted_model_and_retry_limits[loop-TOOL_ROUND_LIMIT]": "passed",
+    "tests.test_coordinator::test_untrusted_model_and_retry_limits[retry-PROVIDER_UNAVAILABLE]": "passed",
+    "tests.test_coordinator::test_untrusted_model_and_retry_limits[repair-MODEL_OUTPUT_INVALID]": "passed",
+    "tests.test_coordinator::test_expired_task_and_authority_change_fail_closed": "passed",
+    "tests.test_coordinator::test_disabled_service_makes_no_provider_calls": "passed",
+    "tests.test_coordinator::test_retry_budget_records_each_attempt_once": "passed",
+    "tests.test_coordinator::test_restart_interrupts_queued_tasks_and_preserves_budget": "passed",
+    "tests.test_coordinator::test_permissions_changed_during_generation_discard_output": "passed",
+    "tests.test_coordinator::test_profile_changed_during_generation_discards_output_and_runner_survives": "passed",
+    "tests.test_coordinator::test_real_contract_is_exposed_and_repair_names_invalid_field": "passed",
+    "tests.test_known_runtime::test_unconfigured_player_never_falls_back_or_calls_model": "passed",
+    "tests.test_known_runtime::test_initial_context_contains_no_pack_guide_world_or_old_model_history": "passed",
+    "tests.test_known_runtime::test_snapshot_reference_cannot_cross_account_or_follow_world_update": "passed",
+    "tests.test_known_runtime::test_model_secret_prose_is_repaired_and_never_stored_or_replayed": "passed",
+    "tests.test_known_runtime::test_inflight_revoke_suppresses_entire_response": "passed",
+    "tests.test_known_runtime::test_private_export_block_and_kp_player_session_ceiling": "passed",
+    "tests.test_known_runtime::test_second_package_witness_testimony_stays_personal_and_fixed": "passed",
+    "tests.test_known_runtime::test_ask_kp_option_is_queued_for_human_without_model_redispatch": "passed",
+    "tests.test_known_runtime::test_player_real_adapter_json_mode_and_http_error_projection[200]": "passed",
+    "tests.test_known_runtime::test_player_real_adapter_json_mode_and_http_error_projection[400]": "passed",
+    "tests.test_known_runtime::test_legacy_response_projection_still_requires_live_authorization": "passed",
+    "tests.test_management_queries::test_bad_management_query_can_recover_into_checked_unpublished_draft[room_manage_catalog-args0]": "passed",
+    "tests.test_management_queries::test_bad_management_query_can_recover_into_checked_unpublished_draft[room_manage_catalog-args1]": "passed",
+    "tests.test_management_queries::test_bad_management_query_can_recover_into_checked_unpublished_draft[room_read_management-args2]": "passed",
+    "tests.test_management_queries::test_bad_management_query_can_recover_into_checked_unpublished_draft[room_read_management-args3]": "passed",
+    "tests.test_management_queries::test_bad_management_query_can_recover_into_checked_unpublished_draft[room_read_sessions-args4]": "passed",
+    "tests.test_management_queries::test_authoritative_templates_are_paginated_kp_only_and_changes_invalidate_proof": "passed",
+    "tests.test_management_queries::test_configuration_read_cannot_recover_from_disabled_external_scope": "passed",
+    "tests.test_management_queries::test_mixed_search_warns_model_without_relabeling_or_removing_evidence": "passed",
+    "tests.test_progress_ui::test_progress_warning_and_regenerate": "passed",
+    "tests.test_task_diagnostics::test_failure_diagnostics_redact_messages_and_preserve_primary": "passed",
+    "tests.test_task_diagnostics::test_cleanup_error_does_not_replace_result_or_cancellation[False]": "passed",
+    "tests.test_task_diagnostics::test_cleanup_error_does_not_replace_result_or_cancellation[True]": "passed",
+    "tests.test_task_diagnostics::test_tool_metadata_is_bounded_and_contains_no_argument_values": "passed",
+    "tests.test_task_diagnostics::test_deepseek_wire_query_replay_and_parameter_repair[None]": "passed",
+    "tests.test_task_diagnostics::test_deepseek_wire_query_replay_and_parameter_repair[bad1]": "passed",
+    "tests.test_task_diagnostics::test_deepseek_wire_query_replay_and_parameter_repair[bad2]": "passed",
+    "tests.test_task_diagnostics::test_deepseek_wire_query_replay_and_parameter_repair[bad3]": "passed",
+    "tests.test_task_diagnostics::test_provider_error_and_cleanup_keep_stable_code": "passed",
+    "tests.test_task_diagnostics::test_model_page_counts_do_not_change_proofs_or_reveal_hidden_totals": "passed",
+    "tests.test_task_diagnostics::test_channel_reference_resolves_actual_id_before_chat": "passed",
+    "tests.test_task_diagnostics::test_last_round_closes_tools_and_returns_bounded_partial_answer": "passed",
+    "tests.test_task_diagnostics::test_http_diagnostics_keep_only_valid_status_without_remote_text[400]": "passed",
+    "tests.test_task_diagnostics::test_http_diagnostics_keep_only_valid_status_without_remote_text[422]": "passed",
+    "tests.test_task_diagnostics::test_http_diagnostics_keep_only_valid_status_without_remote_text[None]": "passed",
+    "tests.test_task_diagnostics::test_http_diagnostics_keep_only_valid_status_without_remote_text[private error]": "passed",
+    "tests.test_task_diagnostics::test_http_diagnostics_keep_only_valid_status_without_remote_text[True]": "passed",
+    "tests.test_task_diagnostics::test_http_diagnostics_keep_only_valid_status_without_remote_text[99]": "passed",
+    "tests.test_task_diagnostics::test_http_diagnostics_keep_only_valid_status_without_remote_text[600]": "passed",
+    "tests.test_batch_notifications::test_review_catalog_exposes_only_server_bound_source_index": "passed",
+    "tests.test_batch_notifications::test_notification_rejects_nonprior_source[-1]": "passed",
+    "tests.test_batch_notifications::test_notification_rejects_nonprior_source[1]": "passed",
+    "tests.test_batch_notifications::test_notification_rejects_nonprior_source[2]": "passed",
+    "tests.test_batch_notifications::test_notification_rejects_nonprior_source[True]": "passed",
+    "tests.test_batch_notifications::test_notification_rejects_unsupported_source[source0]": "passed",
+    "tests.test_batch_notifications::test_notification_rejects_unsupported_source[source1]": "passed",
+    "tests.test_batch_notifications::test_reviewed_notification_waits_for_approval_and_is_targeted_once": "passed",
+    "tests.test_batch_notifications::test_failed_source_cannot_claim_success": "passed",
+    "tests.test_batch_notifications::test_rejected_batch_sends_nothing": "passed",
+    "tests.test_batch_notifications::test_lost_reply_never_blindly_replays_or_sends_early[0]": "passed",
+    "tests.test_batch_notifications::test_lost_reply_never_blindly_replays_or_sends_early[1]": "passed",
+    "tests.test_data_edits::test_append_from_partial_array_preserves_all_unread_data_and_is_repeatable": "passed",
+    "tests.test_data_edits::test_append_uniqueness_checks_items_outside_returned_page": "passed",
+    "tests.test_data_edits::test_add_replace_remove_are_explicit_and_preserve_siblings": "passed",
+    "tests.test_data_edits::test_rejects_unsafe_edits_atomically[mixed-DATA_EDIT_MIXED_REPLACEMENT]": "passed",
+    "tests.test_data_edits::test_rejects_unsafe_edits_atomically[stale-DATA_EDIT_BASELINE_STALE]": "passed",
+    "tests.test_data_edits::test_rejects_unsafe_edits_atomically[forged-DATA_EDIT_REFERENCE_UNVERIFIED]": "passed",
+    "tests.test_data_edits::test_rejects_unsafe_edits_atomically[incomplete-DATA_EDIT_INCOMPLETE_READ]": "passed",
+    "tests.test_data_edits::test_rejects_unsafe_edits_atomically[overlap-DATA_EDIT_OVERLAP]": "passed",
+    "tests.test_data_edits::test_rejects_unsafe_edits_atomically[array-remove-DATA_EDIT_TARGET_INVALID]": "passed",
+    "tests.test_data_edits::test_rejects_unsafe_edits_atomically[root-DATA_EDIT_INCOMPLETE_READ]": "passed",
+    "tests.test_data_edits::test_rejects_unsafe_edits_atomically[add-existing-DATA_EDIT_TARGET_INVALID]": "passed",
+    "tests.test_data_edits::test_multiple_appends_and_large_object_index_do_not_require_reconstruction": "passed",
+    "tests.test_data_edits::test_read_does_not_issue_ref_on_invalid_path_or_page[args0]": "passed",
+    "tests.test_data_edits::test_read_does_not_issue_ref_on_invalid_path_or_page[args1]": "passed",
+    "tests.test_data_edits::test_read_does_not_issue_ref_on_invalid_path_or_page[args2]": "passed",
+    "tests.test_data_edits::test_read_does_not_issue_ref_on_invalid_path_or_page[args3]": "passed",
+    "tests.test_data_edits::test_real_application_egress_and_session_ceiling[kp-EXTERNAL_SCOPE_DISABLED]": "passed",
+    "tests.test_data_edits::test_real_application_egress_and_session_ceiling[queries-DATA_QUERIES_DISABLED]": "passed",
+    "tests.test_data_edits::test_real_application_egress_and_session_ceiling[player-TOOL_FORBIDDEN]": "passed",
+    "tests.test_data_edits::test_model_increment_compiles_to_checked_manual_candidate[False]": "passed",
+    "tests.test_data_edits::test_model_increment_compiles_to_checked_manual_candidate[True]": "passed",
+    "tests.test_data_edits::test_data_edits_are_only_valid_on_draft": "passed",
+    "tests.test_entrypoints::test_requests_are_explicit_idempotent_redacted_and_paged": "passed",
+    "tests.test_entrypoints::test_chat_forwarding_binds_original_and_policy": "passed",
+    "tests.test_entrypoints::test_player_can_cancel_after_dispatching_kp_loses_role": "passed",
+    "tests.test_entrypoints::test_plan_without_proposal_rechecks_context_on_read": "passed",
+    "tests.test_entrypoints::test_auto_off_prefix_dedup_edits_withdrawal_and_role": "passed",
+    "tests.test_entrypoints::test_manual_revision_invalidates_approval_and_cancel_revokes": "passed",
+    "tests.test_entrypoints::test_receipt_rechecks_private_sources_and_restart_pending": "passed",
+    "tests.test_entrypoints::test_http_auth_limits_schema_capability_and_disabled_module": "passed",
+    "tests.test_entrypoints::test_cli_uses_same_three_engines": "passed",
+    "tests.test_message_history::test_published_player_text_survives_revoke_without_restoring_source[False]": "passed",
+    "tests.test_message_history::test_published_player_text_survives_revoke_without_restoring_source[True]": "passed",
+    "tests.test_message_history::test_unpublished_or_unproven_legacy_body_is_not_recovered": "passed",
+    "tests.test_message_history::test_public_delivery_remembers_legacy_text_but_never_invents_time": "passed",
+    "tests.test_message_history::test_deleted_session_is_not_revived_by_delivery_receipt": "passed",
+    "tests.test_message_history::test_explicit_completed_followup_archives_predecessors_with_proof": "passed",
+    "tests.test_message_history::test_uncertain_predecessor_is_never_closed[partial]": "passed",
+    "tests.test_message_history::test_uncertain_predecessor_is_never_closed[unknown]": "passed",
+    "tests.test_message_history::test_uncertain_predecessor_is_never_closed[executing]": "passed",
+    "tests.test_message_history::test_completion_without_matching_host_receipts_cannot_close_group": "passed",
+    "tests.test_message_history::test_legacy_final_reply_migrates_after_revoke_and_survives_restart": "passed",
+    "tests.test_message_history::test_nested_review_recipient_remains_original_player": "passed",
+    "tests.test_message_history::test_public_http_routes_record_only_authorized_deliveries[tasks]": "passed",
+    "tests.test_message_history::test_public_http_routes_record_only_authorized_deliveries[session]": "passed",
+    "tests.test_review_followup::test_ruling_keeps_authorized_old_body_after_success": "passed",
+    "tests.test_review_followup::test_config_history_reads_preserve_authorized_nodes[append-True]": "passed",
+    "tests.test_review_followup::test_config_history_reads_preserve_authorized_nodes[value-True]": "passed",
+    "tests.test_review_followup::test_config_history_reads_preserve_authorized_nodes[delete-False]": "passed",
+    "tests.test_review_followup::test_config_history_reads_preserve_authorized_nodes[hidden-False]": "passed",
+    "tests.test_review_followup::test_player_reference_does_not_dump_actions_into_chat[False]": "passed",
+    "tests.test_review_followup::test_player_reference_does_not_dump_actions_into_chat[True]": "passed",
+    "tests.test_review_followup::test_explicit_followup_replaces_pending_without_losing_original": "passed",
+    "tests.test_review_followup::test_same_session_and_same_text_without_relationship_remain_separate": "passed",
+    "tests.test_review_followup::test_pending_request_does_not_replace_candidate_before_checks": "passed",
+    "tests.test_review_followup::test_submission_key_replays_once_and_rejects_changed_payload": "passed",
+    "tests.test_review_followup::test_cross_session_reply_is_rejected": "passed",
+    "tests.test_review_followup::test_same_request_cannot_create_two_batches": "passed",
+    "tests.test_review_followup::test_archive_restore_is_versioned_and_keeps_supersession": "passed",
+    "tests.test_review_followup::test_execution_records_cannot_be_archived_or_auto_replaced[executing]": "passed",
+    "tests.test_review_followup::test_execution_records_cannot_be_archived_or_auto_replaced[unknown]": "passed",
+    "tests.test_review_followup::test_execution_records_cannot_be_archived_or_auto_replaced[partial]": "passed",
+    "tests.test_review_followup::test_execution_records_cannot_be_archived_or_auto_replaced[completed]": "passed",
+    "tests.test_review_followup::test_explicit_package_business_key_reuses_review_across_revision_and_category": "passed",
+    "tests.test_review_followup::test_package_without_business_key_does_not_merge_changed_draft": "passed",
+    "tests.test_review_followup::test_invalid_new_generation_retains_real_failure_without_inventing_body": "passed",
+    "tests.test_review_followup::test_changed_source_after_failure_creates_one_successor_and_retry_reuses_it": "passed",
+    "tests.test_review_followup::test_archived_stale_reply_keeps_its_authorized_body": "passed",
+    "tests.test_review_followup::test_single_same_request_configuration_candidate_and_inactive_host_approval": "passed",
+    "tests.test_review_followup::test_outstanding_approval_is_protected_from_archive_and_supersession": "passed",
+    "tests.test_review_followup::test_player_text_submission_key_deduplicates_business_request": "passed",
+    "tests.test_rulings::test_chat_approval_is_bound_to_batch_and_not_another_model_request": "passed",
+    "tests.test_rulings::test_config_is_one_checked_ruling_and_publishes_once": "passed",
+    "tests.test_rulings::test_high_risk_config_never_uses_auto_approval": "passed",
+    "tests.test_rulings::test_player_cannot_decide_and_stale_digest_cannot_execute": "passed",
+    "tests.test_rulings::test_consultation_only_evidence_cannot_enter_publish_queue_or_auto_approve": "passed",
+    "tests.test_rulings::test_invalid_model_output_has_specific_cause[[]-MODEL_OBJECT_REQUIRED]": "passed",
+    "tests.test_rulings::test_invalid_model_output_has_specific_cause[null-MODEL_OBJECT_REQUIRED]": "passed",
+    "tests.test_rulings::test_invalid_model_output_has_specific_cause[broken-MODEL_JSON_INVALID]": "passed",
+    "tests.test_rulings::test_invalid_model_output_has_specific_cause[{\"kind\":\"other\",\"text\":\"a\"}-MODEL_KIND_INVALID]": "passed",
+    "tests.test_rulings::test_single_json_fence_is_accepted_without_extracting_arbitrary_text": "passed",
+    "tests.test_rulings::test_five_repairs_do_not_consume_tool_rounds[True]": "passed",
+    "tests.test_rulings::test_five_repairs_do_not_consume_tool_rounds[False]": "passed",
+    "tests.test_rulings::test_user_decision_pauses_instead_of_retrying[clarification]": "passed",
+    "tests.test_rulings::test_user_decision_pauses_instead_of_retrying[plan]": "passed",
+    "tests.test_rulings::test_basic_lua_error_repairs_same_proposal_before_review": "passed"
+  },
+  "attempts": [
+    {
+      "file": "browser.xml",
+      "tests": 1,
+      "failures": [],
+      "passed": 1
+    },
+    {
+      "file": "cache-regression.xml",
+      "tests": 165,
+      "failures": [],
+      "passed": 165
+    },
+    {
+      "file": "final-core-all.xml",
+      "tests": 80,
+      "failures": [],
+      "passed": 80
+    },
+    {
+      "file": "final-core.xml",
+      "tests": 27,
+      "failures": [],
+      "passed": 27
+    },
+    {
+      "file": "final-regression.xml",
+      "tests": 116,
+      "failures": [],
+      "passed": 116
+    },
+    {
+      "file": "freeze-core.xml",
+      "tests": 46,
+      "failures": [],
+      "passed": 46
+    },
+    {
+      "file": "history-cache.xml",
+      "tests": 35,
+      "failures": [],
+      "passed": 35
+    },
+    {
+      "file": "history-diagnosis.xml",
+      "tests": 6,
+      "failures": [
+        {
+          "test": "tests.test_history_continuity::test_stale_history_never_restores_deleted_or_revoked_body[deleted]",
+          "reason": "AssertionError: {'requestId': '0611974592b846b88e8f1d02b009c893', 'sessionId': 'a44b61efa3b04df7be66b23cf9a0be02', 'status': 'stale', 'createdAt': 1795171238.2698395, ...}\nassert (not '已确定：给 player1 的角色加1点护甲，保留其他状态；等待另行审批。')\n +  where '已确定：给 player1 的角色加1点护甲，保留其他状态；等待另行审批。' = <built-in method get of dict object at 0x0000019337EC1900>('response')\n[+1 more line; full report in element text]"
+        }
+      ],
+      "passed": 5
+    },
+    {
+      "file": "history-final.xml",
+      "tests": 73,
+      "failures": [],
+      "passed": 73
+    },
+    {
+      "file": "history-tool-first.xml",
+      "tests": 1,
+      "failures": [
+        {
+          "test": "tests.test_generation_snapshot::test_prior_world_changes_and_inflight_chat_do_not_break_first_tool",
+          "reason": "AssertionError: {'taskId': 'b4816cfb54ba4032a226607cae7ec2b6', 'requestId': 'b4816cfb54ba4032a226607cae7ec2b6', 'account': 'kp', 'profile': {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...}, ...}\nassert 'failed' == 'review_ready'\n  \n  - review_ready\n  + failed"
+        }
+      ],
+      "passed": 0
+    },
+    {
+      "file": "history-tool-fixed.xml",
+      "tests": 6,
+      "failures": [],
+      "passed": 6
+    },
+    {
+      "file": "smoke.xml",
+      "tests": 31,
+      "failures": [
+        {
+          "test": "tests.test_coordinator::test_permissions_changed_during_generation_discard_output",
+          "reason": "AssertionError: assert ('failed' == 'failed'\n  \n    failed and 'SESSION_ACCESS_CHANGED' == 'PERMISSION_DENIED'\n  \n  - PERMISSION_DENIED\n  + SESSION_ACCESS_CHANGED)"
+        }
+      ],
+      "passed": 30
+    },
+    {
+      "file": "snapshot-first.xml",
+      "tests": 50,
+      "failures": [
+        {
+          "test": "tests.test_access_batches::test_player_history_rechecks_package_evidence_during_generation",
+          "reason": "AssertionError: {'taskId': '11f94cb5d5c04441a55bee1614ecf638', 'requestId': '11f94cb5d5c04441a55bee1614ecf638', 'account': 'kp', 'profile': {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...}, ...}\nassert ('failed' == 'failed'\n  \n    failed and 'PERMISSION_DENIED' == 'NOT_VISIBLE'\n  \n  - NOT_VISIBLE\n  + PERMISSION_DENIED)"
+        }
+      ],
+      "passed": 49
+    },
+    {
+      "file": "tools-diagnosis.xml",
+      "tests": 9,
+      "failures": [
+        {
+          "test": "tests.test_data_edits::test_append_from_partial_array_preserves_all_unread_data_and_is_repeatable",
+          "reason": "AttributeError: 'types.SimpleNamespace' object has no attribute 'read_state'"
+        }
+      ],
+      "passed": 8
+    },
+    {
+      "file": "tools-fixed.xml",
+      "tests": 41,
+      "failures": [
+        {
+          "test": "tests.test_task_diagnostics::test_deepseek_wire_query_replay_and_parameter_repair[None]",
+          "reason": "AssertionError: {'taskId': '29b588724d0f48ccbfeb9500de60f0a2', 'requestId': '29b588724d0f48ccbfeb9500de60f0a2', 'account': 'kp', 'profile': {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...}, ...}\nassert 'failed' == 'review_ready'\n  \n  - review_ready\n  + failed"
+        },
+        {
+          "test": "tests.test_task_diagnostics::test_deepseek_wire_query_replay_and_parameter_repair[bad1]",
+          "reason": "AssertionError: {'taskId': '33159809c97c44c8abaf5571b6b4c489', 'requestId': '33159809c97c44c8abaf5571b6b4c489', 'account': 'kp', 'profile': {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...}, ...}\nassert 'failed' == 'review_ready'\n  \n  - review_ready\n  + failed"
+        },
+        {
+          "test": "tests.test_task_diagnostics::test_deepseek_wire_query_replay_and_parameter_repair[bad2]",
+          "reason": "AssertionError: {'taskId': '5d9b7cd35a7e4d199662f4bbef331ed8', 'requestId': '5d9b7cd35a7e4d199662f4bbef331ed8', 'account': 'kp', 'profile': {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...}, ...}\nassert 'failed' == 'review_ready'\n  \n  - review_ready\n  + failed"
+        },
+        {
+          "test": "tests.test_task_diagnostics::test_deepseek_wire_query_replay_and_parameter_repair[bad3]",
+          "reason": "AssertionError: {'taskId': '243d578850314f2da2a1ff63b510dbe4', 'requestId': '243d578850314f2da2a1ff63b510dbe4', 'account': 'kp', 'profile': {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...}, ...}\nassert 'failed' == 'review_ready'\n  \n  - review_ready\n  + failed"
+        },
+        {
+          "test": "tests.test_task_diagnostics::test_channel_reference_resolves_actual_id_before_chat",
+          "reason": "AssertionError: {'taskId': '00ff7a8bcb4e44d1883c95212fab52ab', 'requestId': '00ff7a8bcb4e44d1883c95212fab52ab', 'account': 'kp', 'profile': {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...}, ...}\nassert 'failed' == 'review_ready'\n  \n  - review_ready\n  + failed"
+        },
+        {
+          "test": "tests.test_task_diagnostics::test_last_round_closes_tools_and_returns_bounded_partial_answer",
+          "reason": "AssertionError: {'taskId': '77c08e6a0e73441691b941599c36b99a', 'requestId': '77c08e6a0e73441691b941599c36b99a', 'account': 'kp', 'profile': {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...}, ...}\nassert ('failed' == 'review_ready'\n  \n  - review_ready\n  + failed)"
+        }
+      ],
+      "passed": 35
+    }
+  ],
+  "performance": {
+    "baseline": {
+      "label": "baseline",
+      "fixture": {
+        "sessions": [
+          "5d5f4ca485c84c5ea0accb31c6d94318",
+          "9aea16785e54435c80e9d9989259360d"
+        ],
+        "tasks": 200,
+        "requests": 400,
+        "batches": 20,
+        "chatMessages": 1000,
+        "aiBytes": 1305966,
+        "hostBytes": 689337
+      },
+      "measurements": [
+        {
+          "name": "tasks-cold",
+          "samples": 1,
+          "workers": 1,
+          "p50ms": 14105.79,
+          "p95ms": 14105.79,
+          "errors": [],
+          "returnedCounts": [
+            30
+          ]
+        },
+        {
+          "name": "tasks",
+          "samples": 12,
+          "workers": 1,
+          "p50ms": 12953.25,
+          "p95ms": 14971.58,
+          "errors": [],
+          "returnedCounts": [
+            30,
+            30,
+            30,
+            30,
+            30,
+            30,
+            30,
+            30,
+            30,
+            30,
+            30,
+            30
+          ]
+        },
+        {
+          "name": "session-cold",
+          "samples": 1,
+          "workers": 1,
+          "p50ms": 9050.9,
+          "p95ms": 9050.9,
+          "errors": [],
+          "returnedCounts": [
+            100
+          ]
+        },
+        {
+          "name": "session",
+          "samples": 12,
+          "workers": 1,
+          "p50ms": 8041.55,
+          "p95ms": 9282.33,
+          "errors": [],
+          "returnedCounts": [
+            100,
+            100,
+            100,
+            100,
+            100,
+            100,
+            100,
+            100,
+            100,
+            100,
+            100,
+            100
+          ]
+        },
+        {
+          "name": "rulings-cold",
+          "samples": 1,
+          "workers": 1,
+          "p50ms": 927.97,
+          "p95ms": 927.97,
+          "errors": [],
+          "returnedCounts": [
+            20
+          ]
+        },
+        {
+          "name": "rulings",
+          "samples": 12,
+          "workers": 1,
+          "p50ms": 1084.89,
+          "p95ms": 1379.23,
+          "errors": [],
+          "returnedCounts": [
+            20,
+            20,
+            20,
+            20,
+            20,
+            20,
+            20,
+            20,
+            20,
+            20,
+            20,
+            20
+          ]
+        },
+        {
+          "name": "view-cold",
+          "samples": 1,
+          "workers": 1,
+          "p50ms": 12.48,
+          "p95ms": 12.48,
+          "errors": [],
+          "returnedCounts": [
+            0
+          ]
+        },
+        {
+          "name": "view",
+          "samples": 12,
+          "workers": 1,
+          "p50ms": 11.16,
+          "p95ms": 14.23,
+          "errors": [],
+          "returnedCounts": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "name": "tasks-four-clients",
+          "samples": 12,
+          "workers": 4,
+          "p50ms": 55869.43,
+          "p95ms": 83751.69,
+          "errors": [],
+          "returnedCounts": [
+            30,
+            30,
+            30,
+            30,
+            30,
+            30,
+            30,
+            30,
+            30,
+            30,
+            30,
+            30
+          ]
+        },
+        {
+          "name": "repository-snapshot",
+          "samples": 12,
+          "workers": 1,
+          "p50ms": 5.94,
+          "p95ms": 7.01,
+          "errors": [],
+          "returnedCounts": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "name": "task-status-write",
+          "samples": 12,
+          "workers": 1,
+          "p50ms": 144.82,
+          "p95ms": 170.84,
+          "errors": [],
+          "returnedCounts": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        }
+      ]
+    },
+    "optimized": {
+      "label": "optimized",
+      "fixture": {
+        "sessions": [
+          "558f4d10f0614a01b9eb921debf41487",
+          "9b86cf61739e499a8be0e19a5c51cec5"
+        ],
+        "tasks": 200,
+        "requests": 400,
+        "batches": 20,
+        "chatMessages": 1000,
+        "aiBytes": 1305431,
+        "hostBytes": 687337
+      },
+      "measurements": [
+        {
+          "name": "tasks-cold",
+          "samples": 1,
+          "workers": 1,
+          "p50ms": 245.97,
+          "p95ms": 245.97,
+          "errors": [],
+          "returnedCounts": [
+            30
+          ]
+        },
+        {
+          "name": "tasks",
+          "samples": 12,
+          "workers": 1,
+          "p50ms": 56.52,
+          "p95ms": 138.54,
+          "errors": [],
+          "returnedCounts": [
+            30,
+            30,
+            30,
+            30,
+            30,
+            30,
+            30,
+            30,
+            30,
+            30,
+            30,
+            30
+          ]
+        },
+        {
+          "name": "session-cold",
+          "samples": 1,
+          "workers": 1,
+          "p50ms": 266.04,
+          "p95ms": 266.04,
+          "errors": [],
+          "returnedCounts": [
+            100
+          ]
+        },
+        {
+          "name": "session",
+          "samples": 12,
+          "workers": 1,
+          "p50ms": 106.09,
+          "p95ms": 133.23,
+          "errors": [],
+          "returnedCounts": [
+            100,
+            100,
+            100,
+            100,
+            100,
+            100,
+            100,
+            100,
+            100,
+            100,
+            100,
+            100
+          ]
+        },
+        {
+          "name": "rulings-cold",
+          "samples": 1,
+          "workers": 1,
+          "p50ms": 327.94,
+          "p95ms": 327.94,
+          "errors": [],
+          "returnedCounts": [
+            20
+          ]
+        },
+        {
+          "name": "rulings",
+          "samples": 12,
+          "workers": 1,
+          "p50ms": 205.46,
+          "p95ms": 316.8,
+          "errors": [],
+          "returnedCounts": [
+            20,
+            20,
+            20,
+            20,
+            20,
+            20,
+            20,
+            20,
+            20,
+            20,
+            20,
+            20
+          ]
+        },
+        {
+          "name": "view-cold",
+          "samples": 1,
+          "workers": 1,
+          "p50ms": 14.32,
+          "p95ms": 14.32,
+          "errors": [],
+          "returnedCounts": [
+            0
+          ]
+        },
+        {
+          "name": "view",
+          "samples": 12,
+          "workers": 1,
+          "p50ms": 12.49,
+          "p95ms": 14.05,
+          "errors": [],
+          "returnedCounts": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "name": "tasks-four-clients",
+          "samples": 12,
+          "workers": 4,
+          "p50ms": 353.7,
+          "p95ms": 394.85,
+          "errors": [],
+          "returnedCounts": [
+            30,
+            30,
+            30,
+            30,
+            30,
+            30,
+            30,
+            30,
+            30,
+            30,
+            30,
+            30
+          ]
+        },
+        {
+          "name": "repository-snapshot",
+          "samples": 12,
+          "workers": 1,
+          "p50ms": 12.97,
+          "p95ms": 23.0,
+          "errors": [],
+          "returnedCounts": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "name": "task-status-write",
+          "samples": 12,
+          "workers": 1,
+          "p50ms": 169.14,
+          "p95ms": 262.3,
+          "errors": [],
+          "returnedCounts": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        }
+      ]
+    },
+    "optimized-final": {
+      "label": "optimized-final",
+      "fixture": {
+        "sessions": [
+          "940a7ea03b134c29ba726f46b25fc93c",
+          "f6f7e19ef5144d9ca430c92c7393092d"
+        ],
+        "tasks": 200,
+        "requests": 400,
+        "batches": 20,
+        "chatMessages": 1000,
+        "aiBytes": 1329538,
+        "hostBytes": 689337
+      },
+      "measurements": [
+        {
+          "name": "tasks-cold",
+          "samples": 1,
+          "workers": 1,
+          "p50ms": 205.46,
+          "p95ms": 205.46,
+          "errors": [],
+          "returnedCounts": [
+            30
+          ]
+        },
+        {
+          "name": "tasks",
+          "samples": 12,
+          "workers": 1,
+          "p50ms": 57.64,
+          "p95ms": 62.78,
+          "errors": [],
+          "returnedCounts": [
+            30,
+            30,
+            30,
+            30,
+            30,
+            30,
+            30,
+            30,
+            30,
+            30,
+            30,
+            30
+          ]
+        },
+        {
+          "name": "session-cold",
+          "samples": 1,
+          "workers": 1,
+          "p50ms": 249.68,
+          "p95ms": 249.68,
+          "errors": [],
+          "returnedCounts": [
+            100
+          ]
+        },
+        {
+          "name": "session",
+          "samples": 12,
+          "workers": 1,
+          "p50ms": 138.18,
+          "p95ms": 268.39,
+          "errors": [],
+          "returnedCounts": [
+            100,
+            100,
+            100,
+            100,
+            100,
+            100,
+            100,
+            100,
+            100,
+            100,
+            100,
+            100
+          ]
+        },
+        {
+          "name": "rulings-cold",
+          "samples": 1,
+          "workers": 1,
+          "p50ms": 182.94,
+          "p95ms": 182.94,
+          "errors": [],
+          "returnedCounts": [
+            20
+          ]
+        },
+        {
+          "name": "rulings",
+          "samples": 12,
+          "workers": 1,
+          "p50ms": 184.19,
+          "p95ms": 318.51,
+          "errors": [],
+          "returnedCounts": [
+            20,
+            20,
+            20,
+            20,
+            20,
+            20,
+            20,
+            20,
+            20,
+            20,
+            20,
+            20
+          ]
+        },
+        {
+          "name": "view-cold",
+          "samples": 1,
+          "workers": 1,
+          "p50ms": 11.3,
+          "p95ms": 11.3,
+          "errors": [],
+          "returnedCounts": [
+            0
+          ]
+        },
+        {
+          "name": "view",
+          "samples": 12,
+          "workers": 1,
+          "p50ms": 8.63,
+          "p95ms": 9.18,
+          "errors": [],
+          "returnedCounts": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "name": "tasks-four-clients",
+          "samples": 12,
+          "workers": 4,
+          "p50ms": 249.05,
+          "p95ms": 345.68,
+          "errors": [],
+          "returnedCounts": [
+            30,
+            30,
+            30,
+            30,
+            30,
+            30,
+            30,
+            30,
+            30,
+            30,
+            30,
+            30
+          ]
+        },
+        {
+          "name": "repository-snapshot",
+          "samples": 12,
+          "workers": 1,
+          "p50ms": 14.29,
+          "p95ms": 25.28,
+          "errors": [],
+          "returnedCounts": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "name": "task-status-write",
+          "samples": 12,
+          "workers": 1,
+          "p50ms": 155.74,
+          "p95ms": 239.7,
+          "errors": [],
+          "returnedCounts": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        }
+      ]
+    },
+    "history-performance-before": {
+      "metrics": [
+        {
+          "phase": "generate",
+          "index": 0,
+          "seconds": 0.396,
+          "status": "review_ready",
+          "code": null
+        },
+        {
+          "phase": "generate",
+          "index": 1,
+          "seconds": 0.413,
+          "status": "review_ready",
+          "code": null
+        },
+        {
+          "phase": "generate",
+          "index": 2,
+          "seconds": 0.417,
+          "status": "review_ready",
+          "code": null
+        },
+        {
+          "phase": "generate",
+          "index": 3,
+          "seconds": 0.489,
+          "status": "review_ready",
+          "code": null
+        },
+        {
+          "phase": "generate",
+          "index": 4,
+          "seconds": 0.704,
+          "status": "review_ready",
+          "code": null
+        },
+        {
+          "phase": "generate",
+          "index": 5,
+          "seconds": 0.908,
+          "status": "review_ready",
+          "code": null
+        },
+        {
+          "phase": "generate",
+          "index": 6,
+          "seconds": 0.745,
+          "status": "review_ready",
+          "code": null
+        },
+        {
+          "phase": "generate",
+          "index": 7,
+          "seconds": 0.779,
+          "status": "review_ready",
+          "code": null
+        },
+        {
+          "phase": "generate",
+          "index": 8,
+          "seconds": 1.166,
+          "status": "review_ready",
+          "code": null
+        },
+        {
+          "phase": "generate",
+          "index": 9,
+          "seconds": 1.403,
+          "status": "review_ready",
+          "code": null
+        },
+        {
+          "phase": "generate",
+          "index": 10,
+          "seconds": 1.16,
+          "status": "review_ready",
+          "code": null
+        },
+        {
+          "phase": "generate",
+          "index": 11,
+          "seconds": 1.547,
+          "status": "review_ready",
+          "code": null
+        },
+        {
+          "phase": "generate",
+          "index": 12,
+          "seconds": 3.709,
+          "status": "review_ready",
+          "code": null
+        },
+        {
+          "phase": "generate",
+          "index": 13,
+          "seconds": 5.672,
+          "status": "review_ready",
+          "code": null
+        },
+        {
+          "phase": "session-get",
+          "seconds": 3.142,
+          "rows": 14
+        }
+      ],
+      "profile": [
+        {
+          "file": "sessions.py",
+          "line": 61,
+          "function": "get",
+          "calls": 1,
+          "totalSeconds": 3.142
+        },
+        {
+          "file": "api.py",
+          "line": 259,
+          "function": "tasks",
+          "calls": 1,
+          "totalSeconds": 3.099
+        },
+        {
+          "file": "api.py",
+          "line": 265,
+          "function": "_tasks",
+          "calls": 1,
+          "totalSeconds": 3.091
+        },
+        {
+          "file": "api.py",
+          "line": 294,
+          "function": "history_state",
+          "calls": 14,
+          "totalSeconds": 3.032
+        },
+        {
+          "file": "history.py",
+          "line": 92,
+          "function": "assess",
+          "calls": 304,
+          "totalSeconds": 3.028
+        },
+        {
+          "file": "copy.py",
+          "line": 110,
+          "function": "deepcopy",
+          "calls": 4466091,
+          "totalSeconds": 2.605
+        },
+        {
+          "file": "copy.py",
+          "line": 198,
+          "function": "_deepcopy_dict",
+          "calls": 178884,
+          "totalSeconds": 2.601
+        },
+        {
+          "file": "publication.py",
+          "line": 74,
+          "function": "check_history_context",
+          "calls": 105,
+          "totalSeconds": 2.582
+        },
+        {
+          "file": "store.py",
+          "line": 168,
+          "function": "snapshot",
+          "calls": 136,
+          "totalSeconds": 2.572
+        },
+        {
+          "file": "host.py",
+          "line": 39,
+          "function": "state",
+          "calls": 132,
+          "totalSeconds": 2.545
+        },
+        {
+          "file": "room_read.py",
+          "line": 11,
+          "function": "authorize",
+          "calls": 129,
+          "totalSeconds": 2.499
+        },
+        {
+          "file": "api.py",
+          "line": 48,
+          "function": "<lambda>",
+          "calls": 129,
+          "totalSeconds": 2.498
+        },
+        {
+          "file": "copy.py",
+          "line": 172,
+          "function": "_deepcopy_list",
+          "calls": 144777,
+          "totalSeconds": 2.328
+        },
+        {
+          "file": "publication.py",
+          "line": 86,
+          "function": "_check_context",
+          "calls": 105,
+          "totalSeconds": 2.226
+        },
+        {
+          "file": "host.py",
+          "line": 445,
+          "function": "validate_ai_sources",
+          "calls": 105,
+          "totalSeconds": 2.202
+        },
+        {
+          "file": "ai_sources.py",
+          "line": 8,
+          "function": "check_sources",
+          "calls": 105,
+          "totalSeconds": 2.041
+        },
+        {
+          "file": "data_queries.py",
+          "line": 137,
+          "function": "query",
+          "calls": 9,
+          "totalSeconds": 0.387
+        },
+        {
+          "file": "history.py",
+          "line": 54,
+          "function": "_queries",
+          "calls": 3,
+          "totalSeconds": 0.365
+        },
+        {
+          "file": "ai_contracts.py",
+          "line": 15,
+          "function": "validate_ai",
+          "calls": 105,
+          "totalSeconds": 0.356
+        },
+        {
+          "file": "validators.py",
+          "line": 448,
+          "function": "validate",
+          "calls": 105,
+          "totalSeconds": 0.353
+        },
+        {
+          "file": "validators.py",
+          "line": 349,
+          "function": "iter_errors",
+          "calls": 105,
+          "totalSeconds": 0.352
+        },
+        {
+          "file": "_keywords.py",
+          "line": 274,
+          "function": "ref",
+          "calls": 2136,
+          "totalSeconds": 0.352
+        },
+        {
+          "file": "validators.py",
+          "line": 396,
+          "function": "descend",
+          "calls": 18918,
+          "totalSeconds": 0.344
+        },
+        {
+          "file": "_keywords.py",
+          "line": 290,
+          "function": "properties",
+          "calls": 105,
+          "totalSeconds": 0.339
+        },
+        {
+          "file": "data_queries.py",
+          "line": 43,
+          "function": "rows",
+          "calls": 15,
+          "totalSeconds": 0.319
+        },
+        {
+          "file": "_keywords.py",
+          "line": 36,
+          "function": "additionalProperties",
+          "calls": 504,
+          "totalSeconds": 0.294
+        },
+        {
+          "file": "_keywords.py",
+          "line": 337,
+          "function": "anyOf",
+          "calls": 2031,
+          "totalSeconds": 0.26
+        },
+        {
+          "file": "copy.py",
+          "line": 212,
+          "function": "_keep_alive",
+          "calls": 323661,
+          "totalSeconds": 0.212
+        },
+        {
+          "file": "data_queries.py",
+          "line": 245,
+          "function": "recheck",
+          "calls": 105,
+          "totalSeconds": 0.15
+        },
+        {
+          "file": "_keywords.py",
+          "line": 59,
+          "function": "items",
+          "calls": 729,
+          "totalSeconds": 0.131
+        }
+      ],
+      "aiBytes": 159468,
+      "contexts": [
+        {
+          "history": 0,
+          "intents": 0,
+          "queries": 0
+        },
+        {
+          "history": 1,
+          "intents": 0,
+          "queries": 0
+        },
+        {
+          "history": 2,
+          "intents": 0,
+          "queries": 0
+        },
+        {
+          "history": 3,
+          "intents": 0,
+          "queries": 0
+        },
+        {
+          "history": 4,
+          "intents": 0,
+          "queries": 0
+        },
+        {
+          "history": 4,
+          "intents": 0,
+          "queries": 0
+        },
+        {
+          "history": 4,
+          "intents": 0,
+          "queries": 0
+        },
+        {
+          "history": 4,
+          "intents": 0,
+          "queries": 0
+        },
+        {
+          "history": 4,
+          "intents": 0,
+          "queries": 0
+        },
+        {
+          "history": 4,
+          "intents": 0,
+          "queries": 0
+        },
+        {
+          "history": 4,
+          "intents": 0,
+          "queries": 0
+        },
+        {
+          "history": 4,
+          "intents": 0,
+          "queries": 0
+        },
+        {
+          "history": 4,
+          "intents": 0,
+          "queries": 2
+        },
+        {
+          "history": 3,
+          "intents": 1,
+          "queries": 2
+        }
+      ]
+    },
+    "history-performance": {
+      "metrics": [
+        {
+          "phase": "generate",
+          "index": 0,
+          "seconds": 0.32,
+          "status": "review_ready",
+          "code": null
+        },
+        {
+          "phase": "generate",
+          "index": 1,
+          "seconds": 0.354,
+          "status": "review_ready",
+          "code": null
+        },
+        {
+          "phase": "generate",
+          "index": 2,
+          "seconds": 0.374,
+          "status": "review_ready",
+          "code": null
+        },
+        {
+          "phase": "generate",
+          "index": 3,
+          "seconds": 0.406,
+          "status": "review_ready",
+          "code": null
+        },
+        {
+          "phase": "generate",
+          "index": 4,
+          "seconds": 0.432,
+          "status": "review_ready",
+          "code": null
+        },
+        {
+          "phase": "generate",
+          "index": 5,
+          "seconds": 0.492,
+          "status": "review_ready",
+          "code": null
+        },
+        {
+          "phase": "generate",
+          "index": 6,
+          "seconds": 0.555,
+          "status": "review_ready",
+          "code": null
+        },
+        {
+          "phase": "generate",
+          "index": 7,
+          "seconds": 0.725,
+          "status": "review_ready",
+          "code": null
+        },
+        {
+          "phase": "generate",
+          "index": 8,
+          "seconds": 0.787,
+          "status": "review_ready",
+          "code": null
+        },
+        {
+          "phase": "generate",
+          "index": 9,
+          "seconds": 0.701,
+          "status": "review_ready",
+          "code": null
+        },
+        {
+          "phase": "generate",
+          "index": 10,
+          "seconds": 0.585,
+          "status": "review_ready",
+          "code": null
+        },
+        {
+          "phase": "generate",
+          "index": 11,
+          "seconds": 0.819,
+          "status": "review_ready",
+          "code": null
+        },
+        {
+          "phase": "generate",
+          "index": 12,
+          "seconds": 1.896,
+          "status": "review_ready",
+          "code": null
+        },
+        {
+          "phase": "generate",
+          "index": 13,
+          "seconds": 3.402,
+          "status": "review_ready",
+          "code": null
+        },
+        {
+          "phase": "session-get",
+          "seconds": 0.263,
+          "rows": 14
+        }
+      ],
+      "profile": [
+        {
+          "file": "sessions.py",
+          "line": 61,
+          "function": "get",
+          "calls": 1,
+          "totalSeconds": 0.263
+        },
+        {
+          "file": "api.py",
+          "line": 262,
+          "function": "tasks",
+          "calls": 1,
+          "totalSeconds": 0.233
+        },
+        {
+          "file": "api.py",
+          "line": 268,
+          "function": "_tasks",
+          "calls": 1,
+          "totalSeconds": 0.226
+        },
+        {
+          "file": "api.py",
+          "line": 297,
+          "function": "history_state",
+          "calls": 14,
+          "totalSeconds": 0.17
+        },
+        {
+          "file": "history.py",
+          "line": 92,
+          "function": "assess",
+          "calls": 60,
+          "totalSeconds": 0.166
+        },
+        {
+          "file": "publication.py",
+          "line": 74,
+          "function": "check_history_context",
+          "calls": 14,
+          "totalSeconds": 0.122
+        },
+        {
+          "file": "ai_contracts.py",
+          "line": 15,
+          "function": "validate_ai",
+          "calls": 14,
+          "totalSeconds": 0.11
+        },
+        {
+          "file": "validators.py",
+          "line": 448,
+          "function": "validate",
+          "calls": 14,
+          "totalSeconds": 0.11
+        },
+        {
+          "file": "validators.py",
+          "line": 349,
+          "function": "iter_errors",
+          "calls": 14,
+          "totalSeconds": 0.11
+        },
+        {
+          "file": "_keywords.py",
+          "line": 274,
+          "function": "ref",
+          "calls": 752,
+          "totalSeconds": 0.11
+        },
+        {
+          "file": "validators.py",
+          "line": 396,
+          "function": "descend",
+          "calls": 6443,
+          "totalSeconds": 0.109
+        },
+        {
+          "file": "_keywords.py",
+          "line": 290,
+          "function": "properties",
+          "calls": 14,
+          "totalSeconds": 0.108
+        },
+        {
+          "file": "copy.py",
+          "line": 110,
+          "function": "deepcopy",
+          "calls": 174052,
+          "totalSeconds": 0.104
+        },
+        {
+          "file": "history.py",
+          "line": 117,
+          "function": "dependency",
+          "calls": 46,
+          "totalSeconds": 0.103
+        },
+        {
+          "file": "_keywords.py",
+          "line": 36,
+          "function": "additionalProperties",
+          "calls": 168,
+          "totalSeconds": 0.103
+        },
+        {
+          "file": "copy.py",
+          "line": 198,
+          "function": "_deepcopy_dict",
+          "calls": 11441,
+          "totalSeconds": 0.102
+        },
+        {
+          "file": "_keywords.py",
+          "line": 337,
+          "function": "anyOf",
+          "calls": 738,
+          "totalSeconds": 0.099
+        },
+        {
+          "file": "_keywords.py",
+          "line": 59,
+          "function": "items",
+          "calls": 206,
+          "totalSeconds": 0.083
+        },
+        {
+          "file": "store.py",
+          "line": 168,
+          "function": "snapshot",
+          "calls": 7,
+          "totalSeconds": 0.08
+        },
+        {
+          "file": "copy.py",
+          "line": 172,
+          "function": "_deepcopy_list",
+          "calls": 4921,
+          "totalSeconds": 0.07
+        },
+        {
+          "file": "host.py",
+          "line": 39,
+          "function": "state",
+          "calls": 3,
+          "totalSeconds": 0.054
+        },
+        {
+          "file": "access.py",
+          "line": 17,
+          "function": "can_use",
+          "calls": 2,
+          "totalSeconds": 0.034
+        },
+        {
+          "file": "contracts.py",
+          "line": 55,
+          "function": "digest",
+          "calls": 207,
+          "totalSeconds": 0.029
+        },
+        {
+          "file": "contracts.py",
+          "line": 44,
+          "function": "canonical",
+          "calls": 207,
+          "totalSeconds": 0.028
+        },
+        {
+          "file": "repository.py",
+          "line": 57,
+          "function": "state",
+          "calls": 4,
+          "totalSeconds": 0.026
+        },
+        {
+          "file": "_keywords.py",
+          "line": 282,
+          "function": "type",
+          "calls": 4953,
+          "totalSeconds": 0.025
+        },
+        {
+          "file": "sessions.py",
+          "line": 21,
+          "function": "_record",
+          "calls": 1,
+          "totalSeconds": 0.024
+        },
+        {
+          "file": "contracts.py",
+          "line": 20,
+          "function": "_json_value",
+          "calls": 17349,
+          "totalSeconds": 0.024
+        },
+        {
+          "file": "history.py",
+          "line": 54,
+          "function": "_queries",
+          "calls": 2,
+          "totalSeconds": 0.024
+        },
+        {
+          "file": "data_queries.py",
+          "line": 43,
+          "function": "rows",
+          "calls": 10,
+          "totalSeconds": 0.023
+        }
+      ],
+      "aiBytes": 159479,
+      "contexts": [
+        {
+          "history": 0,
+          "intents": 0,
+          "queries": 0
+        },
+        {
+          "history": 1,
+          "intents": 0,
+          "queries": 0
+        },
+        {
+          "history": 2,
+          "intents": 0,
+          "queries": 0
+        },
+        {
+          "history": 3,
+          "intents": 0,
+          "queries": 0
+        },
+        {
+          "history": 4,
+          "intents": 0,
+          "queries": 0
+        },
+        {
+          "history": 4,
+          "intents": 0,
+          "queries": 0
+        },
+        {
+          "history": 4,
+          "intents": 0,
+          "queries": 0
+        },
+        {
+          "history": 4,
+          "intents": 0,
+          "queries": 0
+        },
+        {
+          "history": 4,
+          "intents": 0,
+          "queries": 0
+        },
+        {
+          "history": 4,
+          "intents": 0,
+          "queries": 0
+        },
+        {
+          "history": 4,
+          "intents": 0,
+          "queries": 0
+        },
+        {
+          "history": 4,
+          "intents": 0,
+          "queries": 0
+        },
+        {
+          "history": 4,
+          "intents": 0,
+          "queries": 2
+        },
+        {
+          "history": 3,
+          "intents": 1,
+          "queries": 2
+        }
+      ]
+    }
+  },
+  "sourceChanges": {
+    "engineering/ai/src/onlinecoc_ai/access.py": {
+      "before": "fa22b8217d38d2502b2a94677ab254f04cff3de2458ce603c8330af960b40764",
+      "after": "c1e651a5eb07bd06eab9c6d915cd8ac6f1bfb336bd7a468aabc30d916c301d2e"
+    },
+    "engineering/ai/src/onlinecoc_ai/api.py": {
+      "before": "ff938792bbd1d19d66e5647494a9a53b6a51c8fb86db9686392d25aa71001caa",
+      "after": "5a16a234f98f2a7235006067f11b1446a48258261ce0320bdbe8a714c801f72c"
+    },
+    "engineering/ai/src/onlinecoc_ai/batches.py": {
+      "before": "6e3dc6fbd82afb692175acf2fbaf7d18dd7a22a6a0dd33db0dec900c6ab478cc",
+      "after": "df893bc89cf77c9c20b25509ccf3b6e0240c58989e553336ca8f95b4a849cf9c"
+    },
+    "engineering/ai/src/onlinecoc_ai/coordinator.py": {
+      "before": "b6c1a374098fb0b6bdf01c1488474f665a0e9a0249ed0dd020ce947559f345b6",
+      "after": "c72a658c3e05587b74d439bfca33ec9aeeffef68f286715ef3f8e504519e2956"
+    },
+    "engineering/ai/src/onlinecoc_ai/diagnostics.py": {
+      "before": "af1576c3b2e05a50fadc097eeab73b222d951739a0e5380fbaa45efc9384aa29",
+      "after": "f0351ede870c54e22206b21d1189f073183d8c2c4f5ee0f7e115086b021cb6d6"
+    },
+    "engineering/ai/src/onlinecoc_ai/history.py": {
+      "before": "4a14ef1320d4726fb324d860330fa700ab2aeda5ff40f9003fd50fd355edae4f",
+      "after": "843900a13a2dc3d80a84df17b2dd557581e1e645b9eb810b6458ac76e34eacdf"
+    },
+    "engineering/ai/src/onlinecoc_ai/proposals.py": {
+      "before": "6b3d77e9ad0121481854ab2239bac5bfac2981a5d3a313e63f5bdb9ffa92e97d",
+      "after": "278778e5bc8548080292ab73af204f5d45950fff53a86336cbd398b28badc1d4"
+    },
+    "engineering/ai/src/onlinecoc_ai/repository.py": {
+      "before": "14711d5f97b7c881ecde3b09120c4e3e5a02a6b33180cb62b4f31f27dc26bd13",
+      "after": "9a77bbfed5c6e75de8065ae853a9ef799cb07cfb3bd5c1b4e6d230a27c07036a"
+    },
+    "engineering/ai/src/onlinecoc_ai/reviews.py": {
+      "before": "3df8c1ff6da41f21412720c39a04d4b0cfb25d484dc316e5fd426115c939c491",
+      "after": "8ee6e6bdb5ef2b85266ffbfe725d97a1e0d0d7a49efeadc1d9184fa710c162d1"
+    },
+    "engineering/ai/src/onlinecoc_ai/rulings.py": {
+      "before": "04cd106a65baaa6c43691b14a329094fbd8e79b4d0bd674ea8ef11387f2ab45f",
+      "after": "2b54abb33775ab22aaf4cac9908921c83ce1ac0d61a73360ad418281db9a9af4"
+    },
+    "engineering/ai/src/onlinecoc_ai/sessions.py": {
+      "before": "e92f8d1572ae1c99490516cb4f7facd39b3752a56d44ca2c76c740e79881fa53",
+      "after": "aaccb324af83da1b133e75f89c9ae24f5c0ddc37d743e3fb7bc893388f38181e"
+    },
+    "engineering/backend/src/onlinecoc/contracts.py": {
+      "before": "a6aa1d6b61c4d90f58759754a1042385daa7d349a40033d7a71271846ecb8cf8",
+      "after": "6fcc131e9be16be057646fdf4bd725a9b6992884bfa91ab3535c2c9d3db0c199"
+    },
+    "engineering/backend/src/onlinecoc/host.py": {
+      "before": "4f495c117bc164d0606bdefe56b197a282de3a12f4239a4ccb88310592dd1c17",
+      "after": "c9f6df9dbf064c9417aec90254466d061aba05a5b75bbb499f2fc1d10e923bc8"
+    },
+    "engineering/backend/src/onlinecoc/server.py": {
+      "before": "bf370872d26279c3be220c101f4c5bd38b863c87f0cc0178b26a7883b4dc4949",
+      "after": "bc5a65b861a0216803cff227954aa74e6612b2f8f1773bd08d6cc598a5450a23"
+    },
+    "engineering/data-management/onlinecoc_data/store.py": {
+      "before": "61c96689ea9f81e000af6a5180104b6721f3a8e692c7d04e03bb8436183841b3",
+      "after": "19b7caaf48d4e1e1852f59bb49eb1a2d3dd63a37cf4f02093c37e5c55cb509a1"
+    }
+  },
+  "sourceHashes": {
+    "engineering/ai/src/onlinecoc_ai/__init__.py": "45a5eef692b3ff17f5451ed03348f091061741b46e352d2f560a77735f28b1c8",
+    "engineering/ai/src/onlinecoc_ai/access.py": "c1e651a5eb07bd06eab9c6d915cd8ac6f1bfb336bd7a468aabc30d916c301d2e",
+    "engineering/ai/src/onlinecoc_ai/answers.py": "cabf3db2d04ca16b5c694f7adca74cf50183c0dc671a3c6ac5358900fc676402",
+    "engineering/ai/src/onlinecoc_ai/api.py": "5a16a234f98f2a7235006067f11b1446a48258261ce0320bdbe8a714c801f72c",
+    "engineering/ai/src/onlinecoc_ai/batches.py": "df893bc89cf77c9c20b25509ccf3b6e0240c58989e553336ca8f95b4a849cf9c",
+    "engineering/ai/src/onlinecoc_ai/change_policy.py": "a6da5036ee262283289336b071fd94c77faadf073948b98234c54dcb7d9a82ba",
+    "engineering/ai/src/onlinecoc_ai/cli.py": "9fd275ce87a8edff8c0e724a5b04fc1ce79bc0784b0d60bcfa750d09b23c1e9d",
+    "engineering/ai/src/onlinecoc_ai/context.py": "b1c385e68a563cfe2b374dad615ef2276e52e90dd79ee6a80b22a90797884cfb",
+    "engineering/ai/src/onlinecoc_ai/contracts.py": "1a1d77e43f0dbeeda22cfe7e7416210bf3b204f17768e8ad355acfbfd28c9a86",
+    "engineering/ai/src/onlinecoc_ai/coordinator.py": "c72a658c3e05587b74d439bfca33ec9aeeffef68f286715ef3f8e504519e2956",
+    "engineering/ai/src/onlinecoc_ai/data_edits.py": "0532ef479ec441dd2133383410cb77592a2bd8c3e4fe7d1f663c001b35cad565",
+    "engineering/ai/src/onlinecoc_ai/data_queries.py": "af55c1f6d53efe8c873c5b2c836ad3b9ec2ac8b4d8e8397dc204981d6b41ca65",
+    "engineering/ai/src/onlinecoc_ai/debug.py": "17e3bb1ad71e02582e3649823c2818d6defcfca34e3f3d0171c6fec2c019ee38",
+    "engineering/ai/src/onlinecoc_ai/diagnostics.py": "f0351ede870c54e22206b21d1189f073183d8c2c4f5ee0f7e115086b021cb6d6",
+    "engineering/ai/src/onlinecoc_ai/errors.py": "d082dda537453626acb6f3b8424aa4d73f85c00da42d762762fb23d2e7a384ce",
+    "engineering/ai/src/onlinecoc_ai/generation.py": "a07e90238c8bf8a797a55352cb8f9c102a1290adcab397bec2144a1c7997eab5",
+    "engineering/ai/src/onlinecoc_ai/history.py": "843900a13a2dc3d80a84df17b2dd557581e1e645b9eb810b6458ac76e34eacdf",
+    "engineering/ai/src/onlinecoc_ai/knowledge.py": "e21eac9de627e4afc2430b7532fe2223341406049e3b1cb9ea6e6c3341a0c96b",
+    "engineering/ai/src/onlinecoc_ai/knowledge_requests.py": "b53403b1b8da40715a5152b4ac257586278963ea46eb90688f5b7fc14f10a6f6",
+    "engineering/ai/src/onlinecoc_ai/known_answers.py": "a30cdc1d652128a4703e6c6dd7d3d043080ae300a13ba96991590b822d51cf5b",
+    "engineering/ai/src/onlinecoc_ai/local_lock.py": "163704bbe210e32da99510237931b116bc67ded4f16939625357aec8936fc1af",
+    "engineering/ai/src/onlinecoc_ai/manager.py": "ab390bfc4897cab3cdf8c813db4e8cf833047f7e74151a6f93b21a9e1718d19d",
+    "engineering/ai/src/onlinecoc_ai/memory.py": "63c54933810330288c43e047d8f29e5eaf8befed1435d5e23bc63b500c97c235",
+    "engineering/ai/src/onlinecoc_ai/messages.py": "7cd741a921b079b0e6fc81077b230a313d0ed094b093b78c9d2f38f19eebcce3",
+    "engineering/ai/src/onlinecoc_ai/pack.py": "46271072cd2c5e607fd6ce74d196888887dada7f56eeabdd3bed7ef8666e3442",
+    "engineering/ai/src/onlinecoc_ai/player_requests.py": "f4b05e64a2a674a3c410302f174524520870e57a78661603555e1f5fd4ac4257",
+    "engineering/ai/src/onlinecoc_ai/policy.py": "75e0dbd30cbe7f5ecd5e4743b49d56a60f3eef0206c6621de200c531cb0e2b71",
+    "engineering/ai/src/onlinecoc_ai/profiles.py": "c2c13d549be93456d9ef7168b9fa19c1924aadb0524911729681887457ab7c6c",
+    "engineering/ai/src/onlinecoc_ai/proposals.py": "278778e5bc8548080292ab73af204f5d45950fff53a86336cbd398b28badc1d4",
+    "engineering/ai/src/onlinecoc_ai/providers/__init__.py": "853b4a7ef469f37005ca2b6cd3cfda46a02a4d2cc709b4317e976ce41d0d038d",
+    "engineering/ai/src/onlinecoc_ai/providers/base.py": "db70f903e9b6ec4720ec176b90d8a250017699a61653a1aa1b3ae8d8dd64475a",
+    "engineering/ai/src/onlinecoc_ai/providers/compatible.py": "e783ef478de56e85bb83562f68fffa97da8b07db89c5454a2420e2575dc9d7a5",
+    "engineering/ai/src/onlinecoc_ai/providers/deepseek.py": "5fd1a82a519ce8835cc407755182884598cabbbe845988d3f5354aa4b2dd1f57",
+    "engineering/ai/src/onlinecoc_ai/providers/transport.py": "e962909ad7eee0ae05655926ff42ab6e581166725a7e54afac08a4a14bb236e0",
+    "engineering/ai/src/onlinecoc_ai/references.py": "9beb0d84c0aa25f03df8d49cff836f038ca2d79c42b6eb13edf0e85fd916926a",
+    "engineering/ai/src/onlinecoc_ai/repository.py": "9a77bbfed5c6e75de8065ae853a9ef799cb07cfb3bd5c1b4e6d230a27c07036a",
+    "engineering/ai/src/onlinecoc_ai/review_queue.py": "931a6abd90fa1f8f2477a4b7d0b540e44f69f2feefcdafd4cb93babebe247e05",
+    "engineering/ai/src/onlinecoc_ai/reviews.py": "8ee6e6bdb5ef2b85266ffbfe725d97a1e0d0d7a49efeadc1d9184fa710c162d1",
+    "engineering/ai/src/onlinecoc_ai/rulings.py": "2b54abb33775ab22aaf4cac9908921c83ce1ac0d61a73360ad418281db9a9af4",
+    "engineering/ai/src/onlinecoc_ai/runtime.py": "5f4f13401189ee3e3a07e07b700417d2243a7ccaa7d0530b3d14eb1317f4103c",
+    "engineering/ai/src/onlinecoc_ai/sandbox.py": "30766603068ef36110b15a9add78c65282658cf9e0fe4fef1f24ae1785ceb407",
+    "engineering/ai/src/onlinecoc_ai/sessions.py": "aaccb324af83da1b133e75f89c9ae24f5c0ddc37d743e3fb7bc893388f38181e",
+    "engineering/ai/src/onlinecoc_ai/usage.py": "e1b38804a341bf1f825daf2367938e5c8350ed46755d858089819c8cb4c644a6",
+    "engineering/ai/src/onlinecoc_ai/validation/__init__.py": "c6f6e326c479f9eb78c920e80b8abf304731ac3305687a127cdcda2ac894f932",
+    "engineering/ai/src/onlinecoc_ai/validation/base.py": "5c247432ca6362244ec78b28c98dc7e61195dc518e8f11cdedcca0b11e27e38d",
+    "engineering/ai/src/onlinecoc_ai/validation/common.py": "524e6a28b52e880483310fd3f04e540582502276eb53f232bf97160ea38f692c",
+    "engineering/ai/src/onlinecoc_ai/validation/extensions.py": "94298df880066f8a66faaed227b6f2f519f382680b8227fd8a00088dbf8c5461",
+    "engineering/ai/src/onlinecoc_ai/validation/gameplay.py": "a2daef832d54b6e46cf50c1481e8707676bb7839ba97755276c9214b057f2be2",
+    "engineering/ai/src/onlinecoc_ai/validation/live.py": "058054b2a9a558fa404aabac855b8c448e5bc87dcb37ad797711a98b9bdc9bc3",
+    "engineering/ai/src/onlinecoc_ai/validation/rules.py": "073024fbc8593b367cf1b97e69bba101a469f69145680913d61e89f19d477c8e",
+    "engineering/ai/src/onlinecoc_ai/vault.py": "4bfa15671a968f2e8a917c7ccea0256970a3fd20ce08167b72d604ecac810bca",
+    "engineering/ai/web/components/chat.js": "e4492efed23ded3bb78262c2c5a70a44d2eda5698494024ddf56ffc907f97ad7",
+    "engineering/ai/web/components/choices.js": "dff5b42432dd828ba296ee300d01eb9b653fc86d39613be72e4ad49ff319ed95",
+    "engineering/ai/web/components/client.js": "4d592c9c1fad4e9764aa711fbb4ab910598b44609976620e0a3835f502d2d5c3",
+    "engineering/ai/web/components/debug.js": "fb8fd9c160e9112472690b53c6ec5b21d78bbd8ffd1b9ceeb18ba2bc7594b68f",
+    "engineering/ai/web/components/guard.js": "ef5169f85a86143449b4d2899a7aa3f9ba5117cb6ca5b92d98ebf40060cb74f0",
+    "engineering/ai/web/components/index.js": "4464519cf98905085c80e588167df212ad0a1994a401757c5990fd4d31a4ccc0",
+    "engineering/ai/web/components/markdown.js": "458f67e96ad39d1c9b525741576659c18d248ec90fb5d72a6af1695b243c3b9f",
+    "engineering/ai/web/components/pack.js": "9fa395cb363e17e5756e459fa7c699833d276a6a350fe46e7784141b43d920de",
+    "engineering/ai/web/components/page-entry.js": "6fe175d9bcd64db41a517aa7329db9512ef0de68c4bcbefd7b2504b76cb4f964",
+    "engineering/ai/web/components/providers.js": "1e5f5cc8063c81add949125126b93c680cdd99c93909817fcc2b5cf6c44671c8",
+    "engineering/ai/web/components/reference-commands.js": "1dde523702635a6afe17804265c68bab2a8860677d313603fe607cd49710e910",
+    "engineering/ai/web/components/reference-details.js": "ddb721e4325d6ab3fbce2c2628d2005ae347161ce6e626d5e58b111ac0243d9b",
+    "engineering/ai/web/components/reference-editor.js": "93bb44e9188710c77863e442c3b68c7c7a1f120ab16ec79fabd5a0f9ca2b0915",
+    "engineering/ai/web/components/reference-input.js": "2ee610229a8ab5758d28ff8db702289a5c62467c527b883e544d9348a5fe3215",
+    "engineering/ai/web/components/room-panel.js": "64fd0e05ed88eb9b822a0708e606eafd7951308e98ec1bc4ad76cf2f7514a470",
+    "engineering/ai/web/components/rulings.js": "a78393f8ccf97479a32289d2ec4ef16ba668f3eedc7d217e4c16cf7ba6b2746b",
+    "engineering/ai/web/components/session-manager.js": "9c88f72dc2bae019f8931ea822c11c29a3f21467863eea0416d02ef488bab86c",
+    "engineering/ai/web/components/sessions.js": "9dd5b59228e769003275695d256f4febeef831b60f63a6ada584287608b945a9",
+    "engineering/ai/web/components/settings.js": "00d2800aec6e5c414dd91ce9c447b4ec4c2c0dc4709294f4132610a5a739aa77",
+    "engineering/ai/web/components/styles.js": "2da73e4f1c3cd43f0a723275c8a2671cccfc85775a64d21d2500250f8843a48b",
+    "engineering/ai/web/components/tools.js": "09d6934715bf25fb4e9bf2fab5411cd7ccd5aded723ee5946d655943b41affac",
+    "engineering/ai/web/components/usage.js": "f2682739b4ddb8703954768135d914fdc35602778b43c462e726c758be40339e",
+    "engineering/ai/web/components/views.js": "bfb17b66bdf7e80c62a67f23be65f67a4be089e386aba9e3b089d72d69fdac01",
+    "engineering/ai/web/manager/manager.js": "d2b17bc0cea94370484ce2d4800ed5813243b0f601c5ee39af2af9ee6dd49e56",
+    "engineering/ai/web/manager/prototype.js": "7e9b368b14b8af1cc72f76c8821daaf0c0fbfaa276fe4a7aeb48df90b96d819b",
+    "engineering/ai/web/manager/session-prototype.js": "fde13cd1e3345ecdc0d0196d37197362faf9eb1b87ff5dde262c4d0f425fd4d2",
+    "engineering/ai/web/components/chat.css": "c7de6781ee1a0c03da95d37500e291cd4f496d384433f7a32bd5ddf659e8dab0",
+    "engineering/ai/web/components/index.d.ts": "041fa28673c5447cb59993605a00ce4656cf512586e76b62c5e2656ef8344460",
+    "engineering/ai/tests/test_generation_snapshot.py": "74c7cd258a9f68d9b11551520844bbb2321ab22c7243eedf25e39d60ab5abe70",
+    "engineering/ai/tests/test_progress_ui.py": "545ddc1c0cf4a0ab5bc9c9a623f736fbea2f8952ca118d3e164ce9b5e22554ea",
+    "engineering/ai/tests/test_history_continuity.py": "efdb2db18ea822e8e1043026577bac8478553c48cf8a144c37805694cff9c067"
+  },
+  "live": {
+    "limits": {
+      "providerCalls": 4,
+      "repairAttempts": 1,
+      "reservedOrUsedBudget": 50000
+    },
+    "realCalls": [
+      {
+        "number": 1,
+        "status": "completed",
+        "reserved": 27911,
+        "usage": {
+          "prompt_tokens": 6298,
+          "completion_tokens": 85,
+          "total_tokens": 6383
+        },
+        "returnedModel": "deepseek-flash",
+        "seconds": 1.391
+      },
+      {
+        "number": 2,
+        "status": "completed",
+        "reserved": 30128,
+        "usage": {
+          "prompt_tokens": 6819,
+          "completion_tokens": 283,
+          "total_tokens": 7102
+        },
+        "returnedModel": "deepseek-flash",
+        "seconds": 1.505
+      }
+    ],
+    "formalDataChanged": false,
+    "sourceConfigDigest": "c8f5dd3721527fd1cefa6d2682eb5120d429c5613d34b1fd81c0eab528c1a546",
+    "requestedModel": "deepseek-flash",
+    "status": "passed",
+    "preflightReserved": 27911,
+    "unrelatedChatInserted": true,
+    "liveProgressVisible": true,
+    "taskStatus": "review_ready",
+    "error": null,
+    "usageTokens": 13485,
+    "responseDigest": "6640497f0f80a1fc397cdfdaaedd1a2fb2079fde0f4015e72a2142676698f45d",
+    "dependencyCheck": {
+      "snapshotAt": 1795171962.0612776,
+      "checkedAt": 1795171972.3005104,
+      "status": "unchanged",
+      "changes": [],
+      "totalChanges": 0,
+      "canRegenerate": false
+    },
+    "stages": [
+      "queued",
+      "profile_check",
+      "context_capture",
+      "provider_complete",
+      "tool_execute",
+      "tool_execute",
+      "provider_complete",
+      "output_validate",
+      "dependency_check",
+      "proposal_create",
+      "validation_a",
+      "validation_b",
+      "validation_c",
+      "completed"
+    ],
+    "reports": [
+      {
+        "level": "A",
+        "status": "pass"
+      },
+      {
+        "level": "B",
+        "status": "pass"
+      },
+      {
+        "level": "C",
+        "status": "pass"
+      }
+    ],
+    "publishedInIsolatedRoom": true,
+    "publications": 1,
+    "sourceConfigUnchanged": true
+  },
+  "preflight": {
+    "limits": {
+      "providerCalls": 4,
+      "repairAttempts": 1,
+      "reservedOrUsedBudget": 20000
+    },
+    "realCalls": [],
+    "formalDataChanged": false,
+    "sourceConfigDigest": "c8f5dd3721527fd1cefa6d2682eb5120d429c5613d34b1fd81c0eab528c1a546",
+    "requestedModel": "deepseek-flash",
+    "status": "budget-blocked",
+    "preflightReserved": 27911,
+    "sourceConfigUnchanged": true
+  },
+  "storage": {
+    "roomBytes": 941542,
+    "beforeAiBytes": 224,
+    "afterAiBytes": 11935,
+    "incrementBytes": 11711,
+    "contextCount": 1,
+    "toolCalls": 4,
+    "events": 16,
+    "realModelCalls": 0
+  }
+}

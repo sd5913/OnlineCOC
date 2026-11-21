@@ -1,0 +1,31 @@
+{
+  "profileId": "deepseek-main",
+  "enabled": true,
+  "adapter": "deepseek-chat",
+  "model": "deepseek-flash",
+  "request": {
+    "connectTimeoutMs": 10000,
+    "maxOutputTokens": 4096,
+    "thinking": "disabled",
+    "totalTimeoutMs": 120000
+  },
+  "limits": {
+    "dailyTokenBudget": null,
+    "maxConcurrentPerRoom": 1,
+    "maxQueuedPerRoom": 5,
+    "maxRepairAttempts": 5,
+    "maxToolRounds": 6,
+    "maxTransportRetries": 2,
+    "taskTimeoutMs": 300000
+  },
+  "checkedDate": "2026-11-21",
+  "runtimeRepairLimit": 2,
+  "initialContextByteLimit": 98304,
+  "totalRequestByteLimit": 262144,
+  "historyRequestCountDefault": 4,
+  "historyRequestCountMaximum": 4,
+  "existingCompression": "none; fixed request-count window",
+  "providerPublishedContextTokens": 1048576,
+  "providerMetadataSource": "https://api-docs.deepseek.com/api/list-models/",
+  "providerWindowNote": "Published provider capacity, not the application request budget; no live model metadata HTTP call performed."
+}

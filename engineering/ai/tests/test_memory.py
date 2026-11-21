@@ -58,7 +58,7 @@ def test_secret_summary_cannot_be_downgraded_to_public(setup):
 
 def test_player_cannot_confirm_and_private_memory_is_not_shared(setup):
     host,service,_=setup;memory=Memory(service);entry=create(memory,host,visibility='private')
-    with pytest.raises(AiError):memory.confirm('player1',entry['memoryId'],1)
+    with pytest.raises(DomainError,match='PERMISSION_DENIED'):memory.confirm('player1',entry['memoryId'],1)
     memory.confirm('kp',entry['memoryId'],1)
     assert memory.search('player1')==[]
 

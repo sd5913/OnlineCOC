@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="5" time="9.903" timestamp="2026-11-20T14:45:14.623260+08:00" hostname="LAPTOP-BIFSL64A"><testcase classname="tests.test_message_history" name="test_published_player_text_survives_revoke_without_restoring_source[False]" time="1.934" /><testcase classname="tests.test_message_history" name="test_published_player_text_survives_revoke_without_restoring_source[True]" time="1.388" /><testcase classname="tests.test_message_history" name="test_unpublished_or_unproven_legacy_body_is_not_recovered" time="1.380" /><testcase classname="tests.test_message_history" name="test_public_delivery_remembers_legacy_text_but_never_invents_time" time="1.647" /><testcase classname="tests.test_message_history" name="test_deleted_session_is_not_revived_by_delivery_receipt" time="1.495"><failure message="AssertionError: {'requestId': '2144bd9d6c6746538b8e5482329e1c7c', 'status': 'rejected', 'code': 'SESSION_VERSION_CONFLICT'}&#10;assert 'rejected' == 'committed'&#10;  &#10;  - committed&#10;  + rejected">application = &lt;onlinecoc_ai.api.Application object at 0x0000023E461A3100&gt;
+
+    def test_deleted_session_is_not_revived_by_delivery_receipt(application):
+        app=application;install(app);observe(app);s,r,task=asyncio.run(publish(app))
+        app.sessions.get('player1',s['sessionId'],delivered=True)
+&gt;       committed(command(app,'ai.session.delete',{'sessionId':s['sessionId'],'revision':s['revision']},'player1'))
+
+engineering\ai\tests\test_message_history.py:81: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+receipt = {'requestId': '2144bd9d6c6746538b8e5482329e1c7c', 'status': 'rejected', 'code': 'SESSION_VERSION_CONFLICT'}
+
+    def committed(receipt):
+&gt;       assert receipt['status'] == 'committed', receipt
+E       AssertionError: {'requestId': '2144bd9d6c6746538b8e5482329e1c7c', 'status': 'rejected', 'code': 'SESSION_VERSION_CONFLICT'}
+E       assert 'rejected' == 'committed'
+E         
+E         - committed
+E         + rejected
+
+engineering\ai\tests\test_entrypoints.py:34: AssertionError</failure></testcase></testsuite></testsuites>

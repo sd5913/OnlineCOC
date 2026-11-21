@@ -1,0 +1,44 @@
+[
+  {
+    "checkId": "bonus-range",
+    "sourceRef": "rules#bonus",
+    "selector": {
+      "collection": "configurations",
+      "ids": [
+        "fixture.token"
+      ]
+    },
+    "checkerId": "core.numeric-range@1",
+    "parameters": {
+      "pointer": "/defaults/bonus",
+      "minimum": 0,
+      "maximum": 15
+    },
+    "required": true,
+    "caseRefs": [
+      "ai/fixtures/valid-bonus.json",
+      "ai/fixtures/invalid-bonus.json"
+    ]
+  },
+  {
+    "checkId": "charges-range",
+    "sourceRef": "rules#cost",
+    "selector": {
+      "collection": "configurations",
+      "ids": [
+        "fixture.token"
+      ]
+    },
+    "checkerId": "core.numeric-range@1",
+    "parameters": {
+      "pointer": "/defaults/charges",
+      "minimum": 1,
+      "maximum": 2
+    },
+    "required": true,
+    "caseRefs": [
+      "ai/fixtures/valid-charges.json",
+      "ai/fixtures/invalid-charges.json"
+    ]
+  }
+]

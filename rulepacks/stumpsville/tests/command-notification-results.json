@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-11-20T12:43:19.685673+08:00",
+  "checkedAt": "2026-11-20T18:35:30.316258+08:00",
   "checks": [
     "KP发放物品同时持久提交通知；原行动和通知绑定，重放原包不重复，其他PL不可见",
     "另一PL不能确认他人的通知，不暴露原动作私密参数",
@@ -10,7 +10,7 @@
   ],
   "realSaveChanged": false,
   "realProviderCalls": 0,
-  "evidenceDirectory": "tests/output/command-notices-83e58f6b",
+  "evidenceDirectory": "tests/output/command-notices-6c85df97",
   "previousRuns": [
     {
       "passed": false,
@@ -33,6 +33,19 @@
         "宿主真实重启保留未确认通知和来源定位；确认后不再投递"
       ],
       "evidenceDirectory": "tests/output/command-notices-16b98f08"
+    },
+    {
+      "passed": true,
+      "error": null,
+      "checks": [
+        "KP发放物品同时持久提交通知；原行动和通知绑定，重放原包不重复，其他PL不可见",
+        "另一PL不能确认他人的通知，不暴露原动作私密参数",
+        "离线发放在首次登录展示一次；确认断线后刷新不重弹并自动重试确认",
+        "在线属性调整与旧事件合并为一条通知；快照差异不再额外重复弹出",
+        "被拒绝的重复占槽不改变装备，也不生成成功通知",
+        "宿主真实重启保留未确认通知和来源定位；确认后不再投递"
+      ],
+      "evidenceDirectory": "tests/output/command-notices-83e58f6b"
     }
   ],
   "passed": true,

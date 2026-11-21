@@ -1,0 +1,263 @@
+{
+  "group": "compression",
+  "work": "D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\ai-context-compression\\work\\live-compression-1795247144510978100",
+  "tree": "engineering/acceptance/ai-context-compression/work/final-core-1795247457465764500",
+  "rows": [
+    {
+      "phase": "oracle-review",
+      "status": "passed",
+      "originalReport": "engineering/acceptance/ai-context-compression/compression-1795247144510978100.json",
+      "reason": "Original oracle omitted mandatory isNpc=1; persisted published template matches corrected exact oracle.",
+      "configurationDigest": "5d280fb407709ae08ed6c580d2ff3e2d71014ff8bfe987119bd611a51fd11539",
+      "expectedHp": 4
+    },
+    {
+      "group": "compression",
+      "phase": "spawn",
+      "request": "使用刚才已发布的 sv.ext.npc.compressed 模板，给kp创建一个名为验收小兵、visibility=public的NPC实例；保持模板默认数值，不重新创建或修改模板。准备待批准的运行指令。",
+      "status": "failed",
+      "task": {
+        "taskId": "b41bec1ed9594b61901b0a842424a1a7",
+        "requestId": "b41bec1ed9594b61901b0a842424a1a7",
+        "account": "kp",
+        "profile": {
+          "adapter": "deepseek-chat",
+          "allowPrivateEndpoint": false,
+          "baseUrl": "https://api.deepseek.com",
+          "credentialRef": "env:ONLINECOC_DEEPSEEK_API_KEY",
+          "enabled": true,
+          "limits": {
+            "dailyTokenBudget": null,
+            "maxConcurrentPerRoom": 1,
+            "maxQueuedPerRoom": 5,
+            "maxRepairAttempts": 5,
+            "maxToolRounds": 12,
+            "maxTransportRetries": 2,
+            "taskTimeoutMs": 600000
+          },
+          "model": "deepseek-flash",
+          "profileId": "deepseek-main",
+          "request": {
+            "connectTimeoutMs": 10000,
+            "maxOutputTokens": 8192,
+            "thinking": "disabled",
+            "totalTimeoutMs": 120000,
+            "contextWindowTokens": 1048576
+          },
+          "revision": 7,
+          "schemaVersion": 1,
+          "versionInfo": {
+            "label": "DeepSeek-V4.1-Flash-1017",
+            "sourceUrl": "https://api-docs.deepseek.com/quick_start/pricing/",
+            "verifiedAt": "2026-11-19"
+          }
+        },
+        "status": "failed",
+        "createdAt": 1795247504.900493,
+        "lease": null,
+        "error": "COMPRESSION_PROVENANCE_INVALID",
+        "proposalId": null,
+        "text": null,
+        "calls": [
+          {
+            "callId": "5448c5dc4a8149bcbe839531abfbc33f",
+            "requestDigest": "57d3bacb5aab97dc1d6dd1c709b623b1336ef959b242dc89c0c415c96a0e4dd5",
+            "profileRevision": 7,
+            "requestedModel": "deepseek-flash",
+            "responseDigest": "920a61b9799952ddabc47c1dcfa1297b3dc3370ba97ad6d6ac94533e8ab7458a",
+            "usage": {
+              "prompt_tokens": 26157,
+              "completion_tokens": 1526,
+              "total_tokens": 27683
+            },
+            "returnedModel": "deepseek-flash",
+            "systemFingerprint": "bc19ba97cbe016479903222bb1578db6"
+          },
+          {
+            "callId": "3daf14a4c3bd4c7cb0cd11b6539b101f",
+            "requestDigest": "66fc26b63dfe036440d82c3ced970b5973ddf0735dc87009edae2e9fd94d43e7",
+            "profileRevision": 7,
+            "requestedModel": "deepseek-flash",
+            "responseDigest": "2c70c89e4200c763e9f453d24e91d37d07be95ffeaa24937d929a8e0f5f403a1",
+            "usage": {
+              "prompt_tokens": 21933,
+              "completion_tokens": 2387,
+              "total_tokens": 24320
+            },
+            "returnedModel": "deepseek-flash",
+            "systemFingerprint": "bc19ba97cbe016479903222bb1578db6"
+          },
+          {
+            "callId": "d34cbfcd159341468e080e3603a2594e",
+            "requestDigest": "93c80a4224ce6d6cc7867408ea9257b8dc849b0bad99b6dddb6a2484dfea220d",
+            "profileRevision": 7,
+            "requestedModel": "deepseek-flash",
+            "responseDigest": "d116f3d74755ddf47c8a1e8d5e1a6405bc2b5ba68a0ee1ca9387f4010dc99dfa",
+            "usage": {
+              "prompt_tokens": 21980,
+              "completion_tokens": 1889,
+              "total_tokens": 23869
+            },
+            "returnedModel": "deepseek-flash",
+            "systemFingerprint": "bc19ba97cbe016479903222bb1578db6"
+          }
+        ],
+        "usage": 75872,
+        "events": [
+          {
+            "seq": 1,
+            "at": 1795247504.9004939,
+            "stage": "queued",
+            "status": "completed",
+            "summary": "已接收，等待生成",
+            "durationMs": 949.42
+          },
+          {
+            "seq": 2,
+            "at": 1795247505.8499339,
+            "stage": "profile_check",
+            "status": "completed",
+            "summary": "检查服务配置",
+            "durationMs": 813.43
+          },
+          {
+            "seq": 3,
+            "at": 1795247506.6633728,
+            "stage": "context_capture",
+            "status": "completed",
+            "summary": "使用发送时资料快照",
+            "durationMs": 39.49
+          },
+          {
+            "seq": 4,
+            "at": 1795247506.7028685,
+            "stage": "tool_execute",
+            "status": "completed",
+            "summary": "读取已授权资料",
+            "tool": "room_read_management",
+            "durationMs": 584.95
+          },
+          {
+            "seq": 5,
+            "at": 1795247507.2878315,
+            "stage": "context_compress",
+            "status": "completed",
+            "summary": "压缩上下文并保留可追溯原文",
+            "durationMs": 7746.0
+          },
+          {
+            "seq": 6,
+            "at": 1795247515.0338354,
+            "stage": "context_compress",
+            "status": "completed",
+            "summary": "压缩上下文并保留可追溯原文",
+            "durationMs": 11132.49
+          },
+          {
+            "seq": 7,
+            "at": 1795247526.1663377,
+            "stage": "context_compress",
+            "status": "failed",
+            "summary": "压缩上下文并保留可追溯原文",
+            "durationMs": 9222.42,
+            "code": "COMPRESSION_PROVENANCE_INVALID"
+          }
+        ],
+        "contextRef": "67c29c0654ebbe4e2f5a174da570f7d17d2f15710bdd8f78f95c3b8f698a87b6",
+        "diagnostics": {
+          "schemaVersion": 1,
+          "stage": "context_compress",
+          "turn": 0,
+          "toolCalls": [
+            {
+              "name": "room_read_management",
+              "status": "completed",
+              "argumentsDigest": "130e4c29592000d07db33d74aa747ae63cfac27a51a733198c012168742f630a",
+              "keys": [
+                "limit",
+                "section"
+              ],
+              "unknownKeys": false,
+              "turn": 0,
+              "automatic": true
+            }
+          ],
+          "errors": [
+            {
+              "stage": "context_compress",
+              "code": "COMPRESSION_PROVENANCE_INVALID",
+              "exceptionType": "AiError",
+              "frames": [
+                {
+                  "module": "onlinecoc_ai.coordinator",
+                  "function": "_generate",
+                  "line": 528
+                },
+                {
+                  "module": "onlinecoc_ai.compression",
+                  "function": "fit",
+                  "line": 118
+                },
+                {
+                  "module": "onlinecoc_ai.compression",
+                  "function": "_summarize",
+                  "line": 75
+                },
+                {
+                  "module": "onlinecoc_ai.compression",
+                  "function": "one",
+                  "line": 61
+                },
+                {
+                  "module": "onlinecoc_ai.compression",
+                  "function": "validate_summary",
+                  "line": 151
+                },
+                {
+                  "module": "onlinecoc_ai.errors",
+                  "function": "require",
+                  "line": 15
+                }
+              ]
+            }
+          ],
+          "outputFailures": [],
+          "preflightChecks": [],
+          "contextBudget": {
+            "bytes": 447880,
+            "limitBytes": 784384,
+            "toolSchemaBytes": 5627,
+            "toolMessageBytes": 0
+          },
+          "compression": [
+            {
+              "round": 1,
+              "beforeBytes": 447880,
+              "recordCount": 38,
+              "status": "failed",
+              "code": "COMPRESSION_PROVENANCE_INVALID",
+              "repairs": [
+                {
+                  "attempt": 1,
+                  "code": "COMPRESSION_PROVENANCE_INVALID"
+                },
+                {
+                  "attempt": 2,
+                  "code": "COMPRESSION_PROVENANCE_INVALID"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "attemptIds": [
+        10,
+        11,
+        12
+      ],
+      "code": "AssertionError",
+      "reason": "COMPRESSION_PROVENANCE_INVALID",
+      "traceback": "Traceback (most recent call last):\n  File \"D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\ai-context-compression\\live_scenarios.py\", line 175, in main\n    assert task['status']=='review_ready',task.get('error') or task['status']\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: COMPRESSION_PROVENANCE_INVALID\n"
+    }
+  ]
+}

@@ -2,6 +2,7 @@
 import copy
 import threading
 import uuid
+from contextlib import nullcontext
 
 from jsonschema import Draft202012Validator
 from onlinecoc import chat
@@ -24,7 +25,9 @@ class Application:
         self.sessions = Sessions(self)
         self.lock = threading.RLock()
         from .access import validate_context
-        self.host.ai_access_validator = lambda room, context: validate_context(self.host, self.repository, room, context)
+        from types import SimpleNamespace
+        validation_repository=SimpleNamespace(state=self.repository.validation_state,read_state=self.repository.validation_state)
+        self.host.ai_access_validator = lambda room, context: validate_context(self.host, validation_repository, room, context)
         self.coordinator.application = self
         def migrate(state):
             for session in state['settings'].get('sessions', {}).values():
@@ -40,13 +43,22 @@ class Application:
         self.player_requests = PlayerRequests(self)
         from .reviews import Reviews
         self.reviews = Reviews(self)
+        from .review_queue import ReviewQueue
+        self.queue = ReviewQueue(self)
+        self.proposals.queue = self.queue
         from .access import policy
-        self.host.ai_room_read_authorizer = lambda account: member(self.host.state(),account)['role']=='kp' and policy(self.repository)['allowAdminRoomRead']
+        # room_read.authorize checks both principals against its current room.
+        # This callback supplies only the AI policy; copying Host again for each
+        # ancestor in a history graph makes every page hold the room lock longer.
+        self.host.ai_room_read_authorizer = lambda account: policy(validation_repository)['allowAdminRoomRead']
+        self.queue.reconcile_completed()
+        from .room_defaults import recover
+        recover(self)
 
     def command(self, account, envelope):
         if type(envelope) is dict and envelope.get('op')=='ai.session.submit' and self.rulings.is_confirmation(str(envelope.get('args',{}).get('text',''))):
             return self._command(account,envelope)
-        if type(envelope) is dict and envelope.get('op') in ('ai.session.create', 'ai.session.update', 'ai.session.submit', 'ai.session.delete', 'ai.request.create', 'ai.access.update', 'ai.knowledge.request', 'ai.player.request'):
+        if type(envelope) is dict and envelope.get('op') in ('ai.session.create', 'ai.session.update', 'ai.session.submit', 'ai.session.delete', 'ai.request.create', 'ai.access.update', 'ai.c_basis.update', 'ai.knowledge.request', 'ai.player.request'):
             # One durable commit for mutation + idempotency receipt. Lock order
             # stays host -> application -> repository, shared with context reads.
             with self.host.lock, self.lock, self.repository.transaction():
@@ -69,10 +81,14 @@ class Application:
             prior = self.repository.state()['commands'].get(key)
             if prior:
                 require(prior['signature'] == signature, 'COMMAND_ID_CONFLICT')
-                return self.receipt(account, identifier)
-            require(envelope['authorityEpoch'] == self.host.epoch, 'STALE_AUTHORITY')
-            self.repository.update(lambda s: s['commands'].update({key: {'signature': signature,
-                'op': op, 'receipt': {'requestId': identifier, 'status': 'pending'}}}))
+                # Only mirror an already committed authoritative memory fact.
+                # Reusing an uncertain request never issues another host change.
+                recover_memory=op in ('ai.memory.confirm','ai.memory.revoke') and prior['receipt']['status'] in ('pending','unknown') and self.host.receipt(account,'ai-memory:'+digest([account,identifier]))['status']=='committed'
+                if not recover_memory:return self.receipt(account, identifier)
+            else:
+                require(envelope['authorityEpoch'] == self.host.epoch, 'STALE_AUTHORITY')
+                self.repository.update(lambda s: s['commands'].update({key: {'signature': signature,
+                    'op': op, 'receipt': {'requestId': identifier, 'status': 'pending'}}}))
         try:
             result = self._execute(account, identifier, op, args)
             receipt = {'requestId': identifier, 'status': 'committed', 'result': result}
@@ -92,7 +108,9 @@ class Application:
         result = receipt.get('result')
         if isinstance(result, dict):
             try:
-                if result.get('sessionId') and not result.get('deleted'):self.sessions._record(account, result['sessionId'])
+                if result.get('batchId') and result.get('context'):
+                    receipt['result']=result=self.batches.public(account,result)
+                if result.get('sessionId') and not result.get('deleted') and not result.get('batchId'):self.sessions._record(account, result['sessionId'])
                 proposal = result.get('proposal', result)
                 if 'proposalId' in proposal and 'changeSet' in proposal:
                     self.proposals.get(account, proposal['proposalId'], proposal['revision'])
@@ -105,6 +123,13 @@ class Application:
         return receipt
 
     def _execute(self, account, identifier, op, args, *, session_id=None, dispatch=True):
+        if op == 'ai.room.initialize':
+            from .room_defaults import initialize
+            return initialize(self, account, args)
+        if op == 'ai.c_basis.update':
+            from .c_review import update
+            return update(self, account, args)
+        if op=='ai.queue.archive':return self.queue.archive(account,args)
         if op=='ai.review.create':return self.reviews.create(account,identifier,args)
         if op=='ai.player.request':return self.player_requests.create(account,identifier,args)
         if op=='ai.knowledge.request':return self.knowledge_requests.create(account,args)
@@ -208,17 +233,22 @@ class Application:
             return {'requestId': request['requestId'], 'status': 'cancelled'}
         with self.host.lock:self.host.kp(account)
         if op == 'ai.request.dispatch':
-            state = self.repository.state();request = state['requests'].get(args['requestId'])
-            require(request and request['status'] in ('received', 'queued'), 'REQUEST_NOT_READY')
-            self.coordinator.context.capture(account, request)
-            task = self.coordinator.enqueue(account, 'dispatch:' + request['requestId'], request['text'],
-                source_kind=request['sourceKind'], source_id=request['sourceId'], source_revision=request['sourceRevision'], initiator=request['initiator'])
-            def save(data):
-                data['requests'][request['requestId']]['status'] = 'queued'
-                data['settings'].setdefault('dispatch', {})[request['requestId']] = task['taskId']
-                data['settings'].get('requestErrors',{}).pop(request['requestId'],None)
-            self.repository.update(save)
-            return {'requestId': request['requestId'], 'taskId': task['taskId']}
+            with self.host.lock,self.lock,self.repository.lock:
+                # Player submission already owns the outer atomic transaction.
+                transaction=nullcontext() if self.repository.pending is not None else self.repository.transaction()
+                with transaction:
+                    from .review_queue import canonical_request
+                    self.queue.require_active('request:'+canonical_request(self.repository.state(),args['requestId']))
+                    state = self.repository.state();request = state['requests'].get(args['requestId'])
+                    require(request and request['status'] in ('received', 'queued'), 'REQUEST_NOT_READY')
+                    task = self.coordinator.enqueue(account, 'dispatch:' + request['requestId'], request['text'],
+                        source_kind=request['sourceKind'], source_id=request['sourceId'], source_revision=request['sourceRevision'], initiator=request['initiator'],generation_request=request)
+                    def save(data):
+                        data['requests'][request['requestId']]['status'] = 'queued'
+                        data['settings'].setdefault('dispatch', {})[request['requestId']] = task['taskId']
+                        data['settings'].get('requestErrors',{}).pop(request['requestId'],None)
+                    self.repository.update(save)
+                    return {'requestId': request['requestId'], 'taskId': task['taskId']}
         if op == 'ai.draft.create':return self.proposals.create(account, args['text'], args['changeSet'])
         if op == 'ai.proposal.revise':return self.proposals.revise(account, args['proposalId'], args['revision'], args['changeSet'], summary=args.get('summary', 'KP 修订草稿'))
         if op == 'ai.proposal.validate':
@@ -226,9 +256,11 @@ class Application:
             self.rulings.auto_configuration(account,args['proposalId'])
             return result
         if op == 'ai.memory.create':return self.memory.create(account, args['content'], args['sourceRefs'], kind=args.get('kind', 'summary'), visibility=args.get('visibility', 'kp'))
-        if op == 'ai.memory.confirm':return self.memory.confirm(account, args['memoryId'], args['revision'])
-        if op == 'ai.memory.revoke':return self.memory.revoke(account, args['memoryId'], args['revision'])
+        if op == 'ai.memory.confirm':return self.memory.confirm(account, args['memoryId'], args['revision'],command_id='ai-memory:'+digest([account,identifier]))
+        if op == 'ai.memory.revoke':return self.memory.revoke(account, args['memoryId'], args['revision'],command_id='ai-memory:'+digest([account,identifier]))
         if op == 'ai.settings.update':
+            from .room_defaults import recover
+            recover(self)
             if hasattr(self.runtime, 'refresh_profiles'):self.runtime.refresh_profiles()
             require(args['profileId'] is None or args['profileId'] in self.coordinator.profiles, 'PROFILE_NOT_FOUND')
             if args['enabled']:require(args['profileId'] and self.coordinator.profiles[args['profileId']]['enabled'], 'PROFILE_DISABLED')
@@ -245,11 +277,17 @@ class Application:
             return state['aiControl']['settings']
         raise ValueError('Unknown AI operation')
 
-    def tasks(self, account, before=None, limit=30, *, request_ids=None):
+    def tasks(self, account, before=None, limit=30, *, request_ids=None, delivered=False):
+        from .messages import project
+        with self.host.lock, self.lock, self.repository.read_scope():
+            page = self._tasks(account, before, limit, request_ids=request_ids)
+            return project(self, account, page, delivered=delivered)
+
+    def _tasks(self, account, before=None, limit=30, *, request_ids=None):
         require(type(limit) is int and 1 <= limit <= 100, 'INPUT_INVALID')
         with self.host.lock:
             room = self.host.state();kp = member(room, account)['role'] == 'kp'
-        state = self.repository.state();results = []
+        state = self.repository.read_state();results = []
         from .access import can_use
         can_use(self.host, self.repository, account)
         sessions = {rid:s for s in state['settings'].get('sessions', {}).values() for rid in s['requestIds']}
@@ -257,6 +295,32 @@ class Application:
         proposals = {r['revisions'][str(r['currentRevision'])]['requestId']:r['revisions'][str(r['currentRevision'])]
                      for r in state['proposals'].values()}
         requests = (state['requests'][rid] for rid in request_ids if rid in state['requests']) if request_ids is not None else state['requests'].values()
+        messages={m['messageId']:(cid,m) for cid,values in room['chat']['messages'].items() for m in values}
+        def visible_request(request):
+            session=sessions.get(request['requestId'])
+            if session and (session.get('deleted') or not kp and session.get('accessLevel')!='player'):return False
+            if request['requestId'] in dispatched or not kp and request['initiator']!=account:return False
+            if request['sourceKind']=='chat':
+                found=messages.get(request['sourceId'])
+                if not found:return False
+                cid,message=found
+                if not chat.can_read(room,account,room['chat']['channels'][cid]) or message['deleted'] or str(message['revision'])!=str(request['sourceRevision']):return False
+            return True
+        requests=sorted((r for r in requests if visible_request(r)),key=lambda r:(r['createdAt'],r['requestId']),reverse=True)
+        if before:
+            index=next((i for i,r in enumerate(requests) if r['requestId']==before),None)
+            require(index is not None,'CURSOR_INVALID');requests=requests[index+1:]
+        next_before=requests[limit-1]['requestId'] if len(requests)>limit else None
+        requests=requests[:limit];recipients={};history_memo={};history_shared={}
+        def history_state(context):
+            from .history import assess
+            key=digest(context)
+            if key not in history_memo:
+                try:history_memo[key]=(assess(self.host,self.repository,room,context,shared=history_shared),None)
+                except Exception as exc:history_memo[key]=(None,exc)
+            value,error=history_memo[key]
+            if error:raise error
+            return value
         for request in requests:
             session = sessions.get(request['requestId'])
             if session and (session.get('deleted') or not kp and session.get('accessLevel') != 'player'):continue
@@ -267,6 +331,13 @@ class Application:
             proposal = proposals.get(task['requestId'] if task else request['requestId'])
             item = {'requestId': request['requestId'], 'sessionId':session['sessionId'] if session else None,
                     'status': state['requests'][task['requestId']]['status'] if task else request['status'], 'createdAt': request['createdAt']}
+            if kp and session:
+                sid=session['sessionId']
+                if sid not in recipients:recipients[sid]=self.reviews.recipient(sid,state,room)
+                recipient=recipients[sid]
+                if recipient:item['recipientAccountId']=recipient
+            if request['sourceKind']=='manual':
+                item.update(text=request_text(self.repository,request,state),initiator=request['initiator'])
             dispatch_error=state['settings'].get('requestErrors',{}).get(request['requestId']) if request['status']!='cancelled' else None
             if dispatch_error:item.update(error=dispatch_error,status='blocked')
             disclosure=next((r for r in state['settings'].get('knowledgeRequests',{}).values() if r['requestId']==request['requestId']),None)
@@ -282,6 +353,25 @@ class Application:
             if proposal and any(a['proposalId'] == proposal['proposalId'] and a['status'] == 'consumed' for a in room['aiControl']['approvals'].values()):item['status'] = 'published'
             player_reply = not kp and session and session['owner'] == account and session.get('accessLevel') == 'player'
             if kp or player_reply:
+                if task:
+                    trace=self.coordinator.traces.get(task['taskId'])
+                    item['events']=trace.events() if trace else copy.deepcopy(task.get('events',[]))
+                    if task.get('dependencyCheck'):item['dependencyCheck']=copy.deepcopy(task['dependencyCheck'])
+                    if batch and kp and batch.get('execution'):
+                        for row in batch['execution'].get('items',[]):
+                            item['events'].append({'seq':len(item['events'])+1,'at':batch.get('decidedAt',batch['createdAt']),
+                                'stage':'command_execute','status':'completed' if row['status']=='committed' else 'running' if row['status']=='unknown' else 'failed',
+                                'summary':{'committed':'指令已提交','failed':'指令失败','rolled_back':'暂存修改已撤销','not_executed':'未执行','unknown':'结果待核对'}.get(row['status'],row['status']),
+                                'operation':row['op'],'receiptStatus':row['status'],**({'code':row['code']} if row.get('code') else {})})
+                    elif batch and kp:
+                        for index,entry in enumerate(batch['receipts']):
+                            receipt=entry['receipt']
+                            event={'seq':len(item['events'])+1,'at':entry.get('startedAt',batch['createdAt']),'stage':'command_execute',
+                                'status':'completed' if receipt['status']=='committed' else 'running' if receipt['status']=='pending' else 'failed',
+                                'summary':'执行已批准动作','operation':batch['actions'][index]['op'],'receiptStatus':receipt['status']}
+                            if entry.get('finishedAt') is not None:event['durationMs']=round(max(0,entry['finishedAt']-event['at'])*1000,2)
+                            if receipt.get('code'):event['code']=receipt['code']
+                            item['events'].append(event)
                 if player_reply and task and not task.get('contextRef'):
                     if task.get('error'):item['error']=task['error']
                     results.append(item);continue
@@ -294,7 +384,8 @@ class Application:
                             (strict or member(room, principal)['role'] == 'kp') and context['authorizationEpoch'] == room['members'][principal]['authorizationEpoch'], 'PERMISSION_DENIED')
                         if player_reply:require(strict and context['facts'].get('sessionAccess', {}).get('owner') == account and context['facts']['sessionAccess']['level'] == 'player', 'PERMISSION_DENIED')
                         from .history import assess,NOTICE
-                        stale=assess(self.host,self.repository,room,context)
+                        stale=history_state(context)
+                        item['sourceState']='stale' if stale else 'fresh'
                         if stale:
                             item.update(sourceState='stale',sourceError=stale)
                             if task and task.get('text') or not task and proposal and proposal.get('summary'):
@@ -302,7 +393,7 @@ class Application:
                                 if item['status'] in ('review_ready','needs_input','approved'):item['status']='stale'
                     except Exception as exc:
                         from .diagnostics import error_code
-                        results.append({**{k:v for k,v in item.items() if k not in ('sourceState','sourceError','sourceNotice','historicalReadOnly')},'error':error_code(exc), 'status': 'stale' if item['status'] in ('review_ready','needs_input','approved') else item['status']})
+                        results.append({**{k:v for k,v in item.items() if k not in ('sourceState','sourceError','sourceNotice','historicalReadOnly')},'sourceState':'denied','error':error_code(exc), 'status': 'stale' if item['status'] in ('review_ready','needs_input','approved') else item['status']})
                         continue
                 if request['sourceKind'] == 'chat':
                     matches = [(cid, m) for cid, messages in room['chat']['messages'].items() for m in messages if m['messageId'] == request['sourceId']]
@@ -312,7 +403,8 @@ class Application:
                 if proposal and kp:
                     try:
                         from .history import assess,NOTICE
-                        stale=assess(self.host,self.repository,room,state['contexts'].get(proposal['contextRef']))
+                        stale=history_state(state['contexts'].get(proposal['contextRef']))
+                        item['sourceState']='stale' if stale else item.get('sourceState','fresh')
                         if stale:
                             item.update(sourceState='stale',sourceError=stale)
                             if task and task.get('text') or not task and proposal and proposal.get('summary'):
@@ -321,16 +413,16 @@ class Application:
                         else:self.proposals.get(task['account'] if task else account, proposal['proposalId'])
                     except Exception as exc:
                         from .diagnostics import error_code
-                        results.append({**{k:v for k,v in item.items() if k not in ('sourceState','sourceError','sourceNotice','historicalReadOnly')},'error':error_code(exc), 'status': 'stale' if item['status'] in ('review_ready','needs_input','approved') else item['status']})
+                        results.append({**{k:v for k,v in item.items() if k not in ('sourceState','sourceError','sourceNotice','historicalReadOnly')},'sourceState':'denied','error':error_code(exc), 'status': 'stale' if item['status'] in ('review_ready','needs_input','approved') else item['status']})
                         continue
-                item.update(text=request_text(self.repository,request), initiator=request['initiator'], taskId=task['taskId'] if task else None,
+                item.update(text=request_text(self.repository,request,state), initiator=request['initiator'], taskId=task['taskId'] if task else None,
                     proposalId=proposal['proposalId'] if proposal and kp else None, error=task['error'] if task else dispatch_error,
                     response=task.get('text') if task else proposal['summary'] if proposal and kp else None)
                 if task and task.get('contextRef') and context and context['facts'].get('strictPlayer'):
                     from .known_answers import format_legacy
                     item['response'] = format_legacy(item.get('response'))
                 if kp and session:
-                    source=self.reviews.source(session['sessionId'])
+                    source=self.reviews.source(session['sessionId'],state)
                     if source:item['reviewSource']=source
                 if task and task.get('calls'):item['modelCalls']=[{k:c[k] for k in ('requestedModel','returnedModel','systemFingerprint','usage','profileRevision') if k in c} for c in task['calls']]
                 if kp and task and task.get('diagnostics'):item['diagnostics'] = copy.deepcopy(task['diagnostics'])
@@ -338,11 +430,10 @@ class Application:
                 if task and task.get('choices') and item['status'] in ('review_ready','needs_input'):
                     item['choices']=copy.deepcopy(task['choices'])
             results.append(item)
+        if kp:
+            for item in results:self.queue.decorate(item,target='request:'+item['requestId'],state=state,room=room)
         results.sort(key=lambda r: (r['createdAt'], r['requestId']), reverse=True)
-        if before:
-            index = next((i for i, r in enumerate(results) if r['requestId'] == before), None)
-            require(index is not None, 'CURSOR_INVALID');results = results[index + 1:]
-        return {'items': results[:limit], 'nextBefore': results[limit - 1]['requestId'] if len(results) > limit else None}
+        return {'items': results, 'nextBefore': next_before}
 
     def proposal(self, account, key):
         data = self.repository.state()
@@ -357,10 +448,11 @@ class Application:
         return {'proposal': proposal, 'reports': [data['reports'][r] for r in proposal['reportRefs']]}
 
     def settings(self, account):
+        from .c_review import settings as c_settings
         if hasattr(self.runtime, 'refresh_profiles'):self.runtime.refresh_profiles()
         with self.host.lock:
             self.host.kp(account);value = copy.deepcopy(self.host.state()['aiControl']['settings'])
-        return {'settings': value, 'access': self.sessions.access(account), 'profiles': [{k: p[k] for k in ('profileId', 'revision', 'model', 'enabled')} for p in self.coordinator.profiles.values()],
+        return {'settings': value, 'scopeId': self.host.state()['aiControl']['scopeId'], 'cReviewBasis': c_settings(self), 'access': self.sessions.access(account), 'profiles': [{k: p[k] for k in ('profileId', 'revision', 'model', 'enabled')} for p in self.coordinator.profiles.values()],
             'budgets': self.repository.state()['budgets'], 'maxContextBytes': 96 * 1024,
             'memory': self.memory.search(account), 'autoError': getattr(self.runtime, 'auto_error', None)}
 

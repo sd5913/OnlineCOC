@@ -9,7 +9,9 @@ DEFAULT_POLICY = {'revision': 1, 'allowPlayerChat': False, 'autoApproveBatches':
 
 
 def policy(repository):
-    return {**DEFAULT_POLICY, **repository.state()['settings'].get('accessPolicy', {})}
+    # Embedding ports may implement only the existing state() protocol.
+    read=getattr(repository,'read_state',repository.state)
+    return {**DEFAULT_POLICY, **read()['settings'].get('accessPolicy', {})}
 
 
 def can_use(host, repository, account):
@@ -19,7 +21,7 @@ def can_use(host, repository, account):
 
 
 def request_session(repository, request):
-    state = repository.state()
+    state = repository.read_state()
     original = next((r for r in state['requests'].values() if r['sourceId'] == request['sourceId'] and
         r['sourceRevision'] == request['sourceRevision'] and r['initiator'] == request.get('initiator')), request)
     return next((s for s in state['settings'].get('sessions', {}).values() if original.get('requestId') in s['requestIds']), None)
@@ -49,22 +51,30 @@ def validate_context(host, repository, room, context):
     # Revalidate its complete provenance, with bounded traversal and no recursion.
     from onlinecoc.publication import check_history_context
     pending=list(context.get('facts',{}).get('historyContexts',[]));seen=set()
-    contexts=repository.state()['contexts'] if pending else {}
+    contexts=repository.read_state()['contexts'] if pending else {}
     while pending:
         key=pending.pop()
         if key in seen:continue
         require(len(seen)<100 and key in contexts,'SOURCE_STALE');seen.add(key)
         previous=copy.deepcopy(contexts[key])
         pending.extend(previous['facts'].pop('historyContexts',[]))
+        if previous['facts'].get('generationSnapshot')==1:
+            # A prior answer is read evidence, not a prior execution approval.
+            # Preserve every source/policy check; the enclosing candidate keeps
+            # its own unchanged execution worldDigest and current Host checks.
+            from .validation.common import world_digest
+            previous['worldDigest']=world_digest(room)
         check_history_context(host,room,previous['reviewPrincipal'],previous)
     from .history import validate_intents
     validate_intents(host,repository,room,facts.get('historyIntents',[]))
+    from .intent_context import validate as validate_requirements
+    validate_requirements(repository,context)
     access = context.get('facts', {}).get('sessionAccess')
     if context.get('facts',{}).get('strictPlayer'):
         from .knowledge import recheck
         recheck(host,room,context)
     if not access:return
-    session = repository.state()['settings'].get('sessions', {}).get(access['sessionId'])
+    session = repository.read_state()['settings'].get('sessions', {}).get(access['sessionId'])
     require(session and not session.get('deleted') and session['owner'] == access['owner'] and
         session.get('accessLevel', 'player') == access['level'], 'SESSION_ACCESS_CHANGED')
     owner = member(room, access['owner'])
@@ -74,7 +84,7 @@ def validate_context(host, repository, room, context):
         require(owner['role'] == 'kp' or policy(repository)['allowPlayerChat'], 'PLAYER_AI_DISABLED')
         require(policy(repository)['revision'] == access['policyRevision'], 'SESSION_ACCESS_CHANGED')
     for sid, revision in context['facts'].get('sessionReads', {}).items():
-        record = repository.state()['settings'].get('sessions', {}).get(sid)
+        record = repository.read_state()['settings'].get('sessions', {}).get(sid)
         require(record and not record.get('deleted') and record['revision']==revision,'SOURCE_STALE')
     from .contracts import digest
     for section, expected in context['facts'].get('managementReads', {}).items():

@@ -10,13 +10,14 @@ import webbrowser
 sys.dont_write_bytecode = True
 from lan import PACK, Adapter, LanService, LanWindow
 from slots import RoomSlots
+from accounts import AccountsTab
 
 ROOT = PACK.parents[1]
 MODES = {'local': '本机游玩', 'lan': '局域网联机', 'web': '网页联机', 'p2p': '旧 P2P（基础功能）'}
 
 
 class PanelWindow(LanWindow):
-    def __init__(self, root, data=PACK/'runtime', open_browser=True, *, mode='local', ai=False,
+    def __init__(self, root, data=PACK/'runtime', open_browser=True, *, mode='local', ai=True,
                  port=None, bind=None, ai_config=None, web_config=None, p2p_config=None):
         self.mode = tk.StringVar(root, MODES[mode])
         self.ai = tk.BooleanVar(root, ai)
@@ -27,8 +28,10 @@ class PanelWindow(LanWindow):
         self.slots = RoomSlots(data)
         self.current_slot = self.slots.selected()
         self.slot_rows = []
-        viewport = ttk.Frame(root)
-        viewport.pack(fill='both', expand=True)
+        self.notebook = ttk.Notebook(root)
+        self.notebook.pack(fill='both', expand=True)
+        viewport = ttk.Frame(self.notebook)
+        self.notebook.add(viewport, text='房间启动')
         self.canvas = tk.Canvas(viewport, highlightthickness=0)
         scrollbar = ttk.Scrollbar(viewport, orient='vertical', command=self.canvas.yview)
         scrollbar.pack(side='right', fill='y')
@@ -94,6 +97,8 @@ class PanelWindow(LanWindow):
         self.slot_info = tk.StringVar(root)
         ttk.Label(self.slot_frame, textvariable=self.slot_info, wraplength=740).grid(row=2, column=0, columnspan=2, sticky='w', pady=(8, 0))
         self.refresh_slots()
+        self.accounts_tab = AccountsTab(self.notebook, self)
+        self.notebook.add(self.accounts_tab, text='账号管理')
         if port is not None:
             self.port.set(str(port))
         if bind:
@@ -104,9 +109,11 @@ class PanelWindow(LanWindow):
             self.setup_frame.grid_remove()
         else:
             super().setup_visibility()
+            if not (self.data/'host').exists() and not self.password.get() and not self.confirm.get():
+                self.password.set('12345678'); self.confirm.set('12345678')
 
     def slots_locked(self):
-        return self.busy or self.service.active or self.closing
+        return self.busy or self.service.active or self.closing or bool(getattr(self, 'accounts_tab', None) and self.accounts_tab.busy)
 
     def refresh_slots(self):
         if self.slots_locked():
@@ -140,7 +147,7 @@ class PanelWindow(LanWindow):
             self.current_slot = self.slots.create(self.slot_name.get())
             self.slot_name.set('')
             self.refresh_slots()
-            self.status.set('槽位已创建。设置初始密码后点击“启动房间”。')
+            self.status.set('槽位已创建。可直接使用默认账号密码启动，也可修改初始密码。')
         except (OSError, ValueError) as error:
             self.status.set(str(error))
 
@@ -149,14 +156,15 @@ class PanelWindow(LanWindow):
         self.data = self.slots.path(row['id']) if row else self.slots.directory/'_unselected'
         self.service = LanService(self.data, self.events, allow_local=True)
         self.slot_choice.set(row['name'] if row else '')
-        self.password.set(''); self.confirm.set('')
+        initial_password = '' if row and (self.data/'host').exists() else '12345678'
+        self.password.set(initial_password); self.confirm.set(initial_password)
         self.failed = False
         self.invalidate_url()
         self.last_url = self.share_url = ''
         self.setup_visibility()
         self.data_label.configure(text='当前存档：'+str(self.data) if row else '数据根目录：'+str(self.slots.root))
         ready = row and (self.data/'host').exists()
-        self.slot_info.set(('已选择：'+row['name']+' · '+('已有房间数据' if ready else '新槽位，首次启动需设置密码')+'。停止房间后可切换。') if row else '尚无槽位。先在上方输入名称，再点击“创建新槽位”。')
+        self.slot_info.set(('已选择：'+row['name']+' · '+('已有房间数据' if ready else '新槽位：默认账号 kp、player1、player2，密码 12345678')+'。停止房间后可切换。') if row else '尚无槽位。先在上方输入名称，再点击“创建新槽位”。')
         self.status.set(('已选择槽位“'+row['name']+'”。') if row else '请创建房间槽位。')
         self.start_button.configure(state='normal' if row and self.adapters and not self.scanning else 'disabled')
 
@@ -229,7 +237,7 @@ class PanelWindow(LanWindow):
 
     def logs(self):
         sections = []
-        for name in ('host.log', 'web.log', 'p2p.log', 'panel.log'):
+        for name in ('host.log', 'request-errors.log', 'web.log', 'p2p.log', 'panel.log'):
             path = self.data/name
             if path.is_file():
                 # Bounded local display; no automatic upload or credential/config display.
@@ -245,7 +253,7 @@ class PanelWindow(LanWindow):
             return
         locked = self.slots_locked()
         if self.current_slot:
-            slot_status = '运行中' if self.url else '已有房间数据' if (self.data/'host').exists() else '新槽位，首次启动需设置密码'
+            slot_status = '运行中' if self.url else '已有房间数据' if (self.data/'host').exists() else '新槽位：默认账号 kp、player1、player2，密码 12345678'
             self.slot_info.set('已选择：'+self.current_slot['name']+' · '+slot_status+'。停止房间后可切换。')
         self.slot_input.configure(state='disabled' if locked else 'readonly')
         for widget in (self.slot_create, self.slot_entry, self.slot_refresh):
@@ -259,6 +267,12 @@ class PanelWindow(LanWindow):
         self.copy_button.configure(text='复制玩家地址' if self.selected_mode() == 'lan' else '复制本机地址')
         if self.url and self.url != self.last_url:
             self.status.set('房间已运行。可最小化面板；关闭面板会停止房间。')
+            initialized = getattr(self.service.runtime, 'bootstrap_ai', None)
+            if initialized:
+                extra = {'profile_unavailable': 'AI 权限已初始化；请在 AI 服务设置中配置可用模型。',
+                         'profile_selection_required': 'AI 权限已初始化；请在 AI 服务设置中选择模型。',
+                         'initialization_failed': '房间已创建，AI 初始化未完成：'+str(initialized.get('code', ''))+'。请在 AI 服务设置中检查。'}.get(initialized.get('serviceStatus'))
+                if extra:self.status.set('房间已运行。'+extra)
         self.last_url = self.url
         self.share_url = ''
         if self.url and self.service.runtime:
@@ -281,8 +295,9 @@ class PanelWindow(LanWindow):
             else:
                 self.share.set('本机房间运行中。其他设备加入前，请停止房间并切换到局域网或网页联机。')
         elif not self.busy:
-            self.share.set('请先创建并选择槽位。' if not self.current_slot else '房间已停止；再次启动使用所选槽位。' if (self.data/'host').exists() else '全新房间：设置初始密码后启动。')
+            self.share.set('请先创建并选择槽位。' if not self.current_slot else '房间已停止；再次启动使用所选槽位。' if (self.data/'host').exists() else '全新房间：默认账号和密码已准备，点击启动即可。')
         self.share_button.configure(state='normal' if self.share_url else 'disabled')
+        self.accounts_tab.tick()
 
 
 def arguments(argv=None):
@@ -292,7 +307,10 @@ def arguments(argv=None):
     parser.add_argument('--port', '-Port', type=int)
     parser.add_argument('--bind', '-Bind')
     parser.add_argument('--no-browser', '-NoBrowser', action='store_true')
-    parser.add_argument('--ai', '-AI', action='store_true')
+    ai_group = parser.add_mutually_exclusive_group()
+    ai_group.add_argument('--ai', '-AI', dest='ai', action='store_true')
+    ai_group.add_argument('--no-ai', '-NoAI', dest='ai', action='store_false')
+    parser.set_defaults(ai=True)
     group = parser.add_mutually_exclusive_group()
     group.add_argument('-Web', action='store_true')
     group.add_argument('-P2P', action='store_true')

@@ -1,5 +1,5 @@
 """Lua 5.4 execution with a narrow JSON boundary and shared process limits."""
-import math
+import math, re
 from lupa.lua54 import LuaRuntime, lua_type
 from .errors import DomainError, require
 from .execution import Execution
@@ -41,6 +41,7 @@ def convert(value, seen=None):
     return value
 
 def worker(pipe, sources, job):
+    ctx=None
     try:
         def denied(*args): raise AttributeError("access denied")
         lua=LuaRuntime(register_eval=False,register_builtins=False,attribute_filter=denied,max_memory=32*1024*1024)
@@ -96,7 +97,18 @@ def worker(pipe, sources, job):
         else:result=call(job["rule"],*args)
         output=ctx.finish(); output["result"]=convert(result);pipe.send({"ok":True,**output})
     except BaseException as e:
-        pipe.send({"ok":False,"code":getattr(e,"code","RULE_FAILED"),"diagnostic":str(e)[:2000]})
+        # A Lua pcall/wrapper must not replace the first host-domain failure.
+        error=ctx.failure if ctx is not None and ctx.failure is not None else e
+        detail={}
+        code=getattr(error,"code","RULE_FAILED")
+        if code=='RULE_FAILED':
+            # Export only a symbolic, literal rule error. Never return Lua stack
+            # traces, interpolated values, private entity text, or source code.
+            token=str(error).splitlines()[0].rsplit(': ',1)[-1].strip()
+            if re.fullmatch(r'[A-Z][A-Z0-9_]{2,79}',token) and any(
+                "'"+token+"'" in source or '"'+token+'"' in source for source in sources.values()):
+                detail['ruleCode']=token
+        pipe.send({"ok":False,"code":code,"diagnostic":detail})
     finally:pipe.close()
 
 def execute(sources,job,random=None,timeout=10):

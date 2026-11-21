@@ -1,0 +1,19 @@
+{
+  "at": "2026-11-21T09:16:24.505387+08:00",
+  "externalApiCalls": 0,
+  "output": "D:\\Studies\\Art Programming\\OnlineCOC\\rulepacks\\stumpsville\\tests\\output\\chat-sources-82d5927f",
+  "baseline": true,
+  "checks": [
+    "explicit chat revision changes on edit and disappears on retract; default config stability measured separately",
+    "actual location fact changes still alter config evidence",
+    "player scope cannot read KP config rows; unrelated room binding exposes nothing"
+  ],
+  "configStableAcrossSendEditRetractReadAndRecovery": [
+    false,
+    false,
+    false,
+    false
+  ],
+  "passed": true,
+  "passedCount": 3
+}

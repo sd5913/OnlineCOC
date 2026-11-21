@@ -1,0 +1,52 @@
+{
+  "compression": {
+    "status": "passed",
+    "definitionPublications": 1,
+    "instances": 1,
+    "assistantSuggestedHp": 3,
+    "userCorrection": "+1",
+    "actualHp": 4,
+    "definitionExact": true,
+    "instanceIdempotent": true,
+    "diagnostics": [
+      {
+        "afterBytes": 56534,
+        "beforeBytes": 448206,
+        "cacheHits": 0,
+        "recordCount": 39,
+        "recordLocators": 2,
+        "repairCount": 0,
+        "repairs": [],
+        "round": 1,
+        "status": "compressed",
+        "summaryDigest": "9407ed6173d9f20084494288d4fb8d5de429b293d053a50e97d3684a31e28c34"
+      }
+    ],
+    "proofs": [
+      {
+        "file": "engineering\\acceptance\\ai-context-compression\\work\\live-compression-1795247144510978100\\host\\rooms\\demo\\generations\\000000000009.json",
+        "sha256": "9f2bfc455ba97004e5107b1eecacbb8fbf8f30abd8c07227d1a75b5ccfff5ecf"
+      },
+      {
+        "file": "engineering\\acceptance\\ai-context-compression\\work\\live-compression-1795247144510978100\\host\\ai\\generations\\000000000142.json",
+        "sha256": "7552b55d767611a1fa4c3cadd93054b3b83a9e792677c29d2db8e4c796734329"
+      }
+    ],
+    "harnessCorrections": [
+      "definition oracle omitted mandatory isNpc=1",
+      "task terminal status was visible before diagnostics finally persisted"
+    ]
+  },
+  "playerBoundary": {
+    "status": "passed",
+    "strictKnown": true,
+    "secretAbsentFromInputAndOutput": true,
+    "noCandidate": true,
+    "nameUnchanged": true,
+    "proof": {
+      "file": "engineering\\acceptance\\ai-context-compression\\work\\live-pl-1795248201266683700\\host\\rooms\\demo\\generations\\000000000006.json",
+      "sha256": "c9682d6b554d32f0bcbebed4daabc615e393f596fbb3089b08d644df2427daab"
+    },
+    "harnessCorrection": "needs_input is a valid player clarification, not a generation failure"
+  }
+}

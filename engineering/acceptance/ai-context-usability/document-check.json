@@ -1,0 +1,11 @@
+{
+  "documents": [
+    "docs/current/engineering/ai-session-access.md",
+    "docs/current/engineering/ai-rulings.md",
+    "docs/current/engineering/ai-data-query.md",
+    "docs/current/engineering/ai-responses.md",
+    "docs/current/engineering/ai-manager.md"
+  ],
+  "missingFileLinks": [],
+  "scope": "File targets only; anchors and cross-owner current facts reviewed by owning chats."
+}

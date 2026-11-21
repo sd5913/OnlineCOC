@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="6" skipped="0" tests="6" time="8.710" timestamp="2026-11-20T13:37:05.902280+08:00" hostname="LAPTOP-BIFSL64A"><testcase classname="engineering.acceptance.review-followup.test_queue_boundaries" name="test_candidate_with_running_generation_cannot_be_archived[queued]" time="1.280"><failure message="assert not True">application = &lt;onlinecoc_ai.api.Application object at 0x000001A065587B60&gt;
+status = 'queued'
+
+    @pytest.mark.parametrize('status',['queued','generating','validating'])
+    def test_candidate_with_running_generation_cannot_be_archived(application,status):
+        app=application;s=session(app);r=submit(app,s,'配置生成中')
+        dispatched=committed(command(app,'ai.request.dispatch',{'requestId':r['requestId']}));tid=dispatched['taskId']
+        app.repository.update(lambda state:state['tasks'][tid].update(status=status))
+        request=app.repository.state()['requests'][tid]
+        p=app.proposals.create('kp','配置生成中',delta(),request=request)
+        candidate=row(app,'proposal:'+p['proposalId'])
+&gt;       assert not candidate['canArchive']
+E       assert not True
+
+engineering\acceptance\review-followup\test_queue_boundaries.py:21: AssertionError</failure></testcase><testcase classname="engineering.acceptance.review-followup.test_queue_boundaries" name="test_candidate_with_running_generation_cannot_be_archived[generating]" time="1.128"><failure message="assert not True">application = &lt;onlinecoc_ai.api.Application object at 0x000001A06582BB10&gt;
+status = 'generating'
+
+    @pytest.mark.parametrize('status',['queued','generating','validating'])
+    def test_candidate_with_running_generation_cannot_be_archived(application,status):
+        app=application;s=session(app);r=submit(app,s,'配置生成中')
+        dispatched=committed(command(app,'ai.request.dispatch',{'requestId':r['requestId']}));tid=dispatched['taskId']
+        app.repository.update(lambda state:state['tasks'][tid].update(status=status))
+        request=app.repository.state()['requests'][tid]
+        p=app.proposals.create('kp','配置生成中',delta(),request=request)
+        candidate=row(app,'proposal:'+p['proposalId'])
+&gt;       assert not candidate['canArchive']
+E       assert not True
+
+engineering\acceptance\review-followup\test_queue_boundaries.py:21: AssertionError</failure></testcase><testcase classname="engineering.acceptance.review-followup.test_queue_boundaries" name="test_candidate_with_running_generation_cannot_be_archived[validating]" time="1.329"><failure message="assert not True">application = &lt;onlinecoc_ai.api.Application object at 0x000001A065901D10&gt;
+status = 'validating'
+
+    @pytest.mark.parametrize('status',['queued','generating','validating'])
+    def test_candidate_with_running_generation_cannot_be_archived(application,status):
+        app=application;s=session(app);r=submit(app,s,'配置生成中')
+        dispatched=committed(command(app,'ai.request.dispatch',{'requestId':r['requestId']}));tid=dispatched['taskId']
+        app.repository.update(lambda state:state['tasks'][tid].update(status=status))
+        request=app.repository.state()['requests'][tid]
+        p=app.proposals.create('kp','配置生成中',delta(),request=request)
+        candidate=row(app,'proposal:'+p['proposalId'])
+&gt;       assert not candidate['canArchive']
+E       assert not True
+
+engineering\acceptance\review-followup\test_queue_boundaries.py:21: AssertionError</failure></testcase><testcase classname="engineering.acceptance.review-followup.test_queue_boundaries" name="test_cancelled_request_is_not_still_an_active_queue_candidate[batch]" time="1.097"><failure message="AssertionError: assert ('cancelled' in ('cancelled', 'rejected') and 'active' == 'history'&#10;  &#10;  - history&#10;  + active)">application = &lt;onlinecoc_ai.api.Application object at 0x000001A065919810&gt;
+kind = 'batch'
+
+    @pytest.mark.parametrize('kind',['batch','proposal'])
+    def test_cancelled_request_is_not_still_an_active_queue_candidate(application,kind):
+        app=application
+        if kind=='batch':
+            b=batch(app);target='batch:'+b['batchId'];rid=b['requestId']
+        else:
+            p=app.proposals.create('kp','取消配置',delta());target='proposal:'+p['proposalId'];rid=p['requestId']
+        committed(command(app,'ai.request.cancel',{'requestId':rid}))
+        candidate=row(app,target)
+&gt;       assert candidate['status'] in ('cancelled','rejected') and candidate['queueStatus']=='history'
+E       AssertionError: assert ('cancelled' in ('cancelled', 'rejected') and 'active' == 'history'
+E         
+E         - history
+E         + active)
+
+engineering\acceptance\review-followup\test_queue_boundaries.py:34: AssertionError</failure></testcase><testcase classname="engineering.acceptance.review-followup.test_queue_boundaries" name="test_cancelled_request_is_not_still_an_active_queue_candidate[proposal]" time="1.280"><failure message="AssertionError: assert ('rejected' in ('cancelled', 'rejected') and 'active' == 'history'&#10;  &#10;  - history&#10;  + active)">application = &lt;onlinecoc_ai.api.Application object at 0x000001A065918640&gt;
+kind = 'proposal'
+
+    @pytest.mark.parametrize('kind',['batch','proposal'])
+    def test_cancelled_request_is_not_still_an_active_queue_candidate(application,kind):
+        app=application
+        if kind=='batch':
+            b=batch(app);target='batch:'+b['batchId'];rid=b['requestId']
+        else:
+            p=app.proposals.create('kp','取消配置',delta());target='proposal:'+p['proposalId'];rid=p['requestId']
+        committed(command(app,'ai.request.cancel',{'requestId':rid}))
+        candidate=row(app,target)
+&gt;       assert candidate['status'] in ('cancelled','rejected') and candidate['queueStatus']=='history'
+E       AssertionError: assert ('rejected' in ('cancelled', 'rejected') and 'active' == 'history'
+E         
+E         - history
+E         + active)
+
+engineering\acceptance\review-followup\test_queue_boundaries.py:34: AssertionError</failure></testcase><testcase classname="engineering.acceptance.review-followup.test_queue_boundaries" name="test_archive_metadata_and_business_status_survive_repository_reopen" time="1.180"><failure message="AttributeError: 'Repository' object has no attribute 'directory'">application = &lt;onlinecoc_ai.api.Application object at 0x000001A065965370&gt;
+
+    def test_archive_metadata_and_business_status_survive_repository_reopen(application):
+        from onlinecoc_ai.repository import Repository
+        app=application;b=batch(app);target='batch:'+b['batchId'];before=app.repository.state()['settings']['batches'][b['batchId']]
+        committed(archive(app,row(app,target)))
+&gt;       state=app.repository.state();directory=app.repository.directory
+                                               ^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'Repository' object has no attribute 'directory'
+
+engineering\acceptance\review-followup\test_queue_boundaries.py:41: AttributeError</failure></testcase></testsuite></testsuites>

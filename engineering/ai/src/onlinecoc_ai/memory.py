@@ -30,7 +30,16 @@ class Memory:
         self.repository.update(lambda data: data['memory'].update({entry['memoryId']: entry}))
         return entry
 
-    def confirm(self, account, key, revision):
+    def transition_fact(self, account, key, revision, status):
+        """Prepare one authorized next fact without writing either store."""
+        require(status in ('confirmed','revoked'),'INPUT_INVALID')
+        with self.host.lock:
+            self.host.kp(account);state=self.host.state()
+            if status=='revoked':
+                entry=copy.deepcopy(state['aiControl'].get('memoryFacts',{}).get(key))
+                require(entry and entry['owner']==account and entry['revision']==revision,'MEMORY_STALE')
+                entry.update(status='revoked',revision=revision+1)
+                return entry,revision
         entry = self.repository.state()['memory'].get(key)
         require(entry and entry['owner'] == account and entry['revision'] == revision and entry['status'] == 'draft', 'MEMORY_STALE')
         with self.host.lock:
@@ -43,21 +52,34 @@ class Memory:
             check_sources(self.host, state, account, entry['sourceRefs'])
             require(entry['validUntil'] is None or entry['validUntil'] > self.host.clock(), 'MEMORY_EXPIRED')
             entry.update(status='confirmed', revision=revision + 1)
-            state['aiControl'].setdefault('memoryFacts', {})[key] = copy.deepcopy(entry)
-            self.host.commit(state)
-        self.repository.update(lambda data: data['memory'].update({key: entry}))
-        return entry
+            return entry,0
 
-    def revoke(self, account, key, revision):
+    def transition(self, account, key, revision, status, *, command_id=None):
+        command_id=command_id or 'ai-memory:'+uuid.uuid4().hex
         with self.host.lock:
             self.host.kp(account)
-            state = self.host.state()
-            entry = state['aiControl'].get('memoryFacts', {}).get(key)
-            require(entry and entry['owner'] == account and entry['revision'] == revision, 'MEMORY_STALE')
-            entry.update(status='revoked', revision=revision + 1)
-            self.host.commit(state)
-        self.repository.update(lambda data: data['memory'].update({key: copy.deepcopy(entry)}))
-        return entry
+            receipt=self.host.receipt(account,command_id)
+            if receipt['status']!='committed':
+                require(receipt['status']=='unknown','MEMORY_RESULT_UNKNOWN')
+                fact,expected=self.transition_fact(account,key,revision,status)
+                receipt=self.host.commit_memory_fact(account,fact,command_id=command_id,expected_revision=expected)
+            require(receipt['status']=='committed',receipt.get('code','MEMORY_RESULT_UNKNOWN'))
+            fact=receipt.get('result',{}).get('memory')
+            require(fact and fact['memoryId']==key and fact['owner']==account and fact['status']==status,'MEMORY_RESULT_UNKNOWN')
+            self.mirror_fact(fact)
+            return fact
+
+    def mirror_fact(self,fact):
+        """An older successful receipt cannot overwrite a later revocation."""
+        current=self.host.state()['aiControl'].get('memoryFacts',{}).get(fact['memoryId'])
+        require(current and current['owner']==fact['owner'] and current['revision']>=fact['revision'],'MEMORY_RESULT_UNKNOWN')
+        self.repository.update(lambda data:data['memory'].update({fact['memoryId']:copy.deepcopy(current)}))
+
+    def confirm(self,account,key,revision,*,command_id=None):
+        return self.transition(account,key,revision,'confirmed',command_id=command_id)
+
+    def revoke(self,account,key,revision,*,command_id=None):
+        return self.transition(account,key,revision,'revoked',command_id=command_id)
 
     def search(self, account, query='', limit=20):
         require(isinstance(query, str) and len(query) <= 1000 and type(limit) is int and 1 <= limit <= 100, 'INPUT_INVALID')

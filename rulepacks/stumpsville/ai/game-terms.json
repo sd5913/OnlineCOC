@@ -8,6 +8,36 @@
     "高危修改提交概要、完整指令和影响；用户选择方案不等于KP批准执行。",
     "以宿主回执报告结果，不因自然语言使用完成时就声称已生效。"
   ],
+  "runtimeReferences": [{
+    "configurationIds": ["sv.character"],
+    "dataFile": "game.json",
+    "arrayPath": ["items"],
+    "indexBase": 1,
+    "idField": "id",
+    "labelField": "name",
+    "slots": [
+      {"slot": 1, "definitionField": "item1", "quantityField": "uses1"},
+      {"slot": 2, "definitionField": "item2", "quantityField": "uses2"},
+      {"slot": 3, "definitionField": "item3", "quantityField": "uses3"},
+      {"slot": 4, "definitionField": "item4", "quantityField": "uses4"},
+      {"slot": 5, "definitionField": "item5", "quantityField": "uses5"},
+      {"slot": 6, "definitionField": "item6", "quantityField": "uses6"},
+      {"slot": 7, "definitionField": "item7", "quantityField": "uses7"},
+      {"slot": 8, "definitionField": "item8", "quantityField": "uses8"},
+      {"slot": 9, "definitionField": "item9", "quantityField": "uses9"},
+      {"slot": 10, "definitionField": "item10", "quantityField": "uses10"},
+      {"slot": 11, "definitionField": "item11", "quantityField": "uses11"},
+      {"slot": 12, "definitionField": "item12", "quantityField": "uses12"},
+      {"slot": 13, "definitionField": "item13", "quantityField": "uses13"},
+      {"slot": 14, "definitionField": "item14", "quantityField": "uses14"},
+      {"slot": 15, "definitionField": "item15", "quantityField": "uses15"},
+      {"slot": 16, "definitionField": "item16", "quantityField": "uses16"},
+      {"slot": 17, "definitionField": "item17", "quantityField": "uses17"},
+      {"slot": 18, "definitionField": "item18", "quantityField": "uses18"},
+      {"slot": 19, "definitionField": "item19", "quantityField": "uses19"},
+      {"slot": 20, "definitionField": "item20", "quantityField": "uses20"}
+    ]
+  }],
   "terms": [
     {
       "term": "钱币",

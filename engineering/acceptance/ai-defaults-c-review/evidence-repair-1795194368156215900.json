@@ -1,0 +1,38 @@
+{
+  "tree": "D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\ai-defaults-c-review\\work\\core-v3-final-1795194217923217500",
+  "originalAttemptId": 14,
+  "fullProductionPrompt": false,
+  "scope": "Same synthetic room and actual authorized DataQueryService; reduced prompt and two read tools, no mutation tools.",
+  "status": "passed",
+  "feedback": {
+    "error": {
+      "code": "MODEL_EVIDENCE_REQUIRED",
+      "path": "/text",
+      "constraint": "The room data is not loaded. No successful room query supports this negative search claim. Use the authorized room search/read tools, read matching records, and answer only from their results. If tools are unavailable or a query fails, explicitly state that the search could not be completed; do not claim the target is absent."
+    },
+    "instruction": "The room data is not loaded. No successful room query supports this negative search claim. Use the authorized room search/read tools, read matching records, and answer only from their results. If tools are unavailable or a query fails, explicitly state that the search could not be completed; do not claim the target is absent.",
+    "expectedKind": "plan",
+    "requiredFields": [
+      "kind",
+      "text"
+    ],
+    "allowedFields": [
+      "choices",
+      "kind",
+      "text"
+    ],
+    "missingFields": [],
+    "unexpectedFields": []
+  },
+  "output": {
+    "kind": "plan",
+    "text": "暗号：松鼠桥。\n\n来源：巡林员实体（entity，revision 1，sourceId host，scopeId e881bed0b4734fd087d9ba0ed6a0c577）的 metadata.secret 字段。该实体 visibility 为 kp、owner 为 kp，按你的请求仅输出暗号内容，未做任何修改。"
+  },
+  "businessUnchanged": true,
+  "attemptIds": [
+    41,
+    42,
+    43
+  ],
+  "sourceConfigUnchanged": true
+}

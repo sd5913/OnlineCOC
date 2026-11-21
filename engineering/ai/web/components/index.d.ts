@@ -29,13 +29,21 @@ export interface ResponseOption {id: string; label: string; text: string}
 export interface ResponseChoices {prompt: string; options: ResponseOption[]}
 export function mountChoices(target: HTMLElement, choices: ResponseChoices | null, options?: {onSelect?: ((option: ResponseOption) => void) | null; disabled?: boolean; hintText?: string | null}): {update(choices: ResponseChoices | null, options?: {onSelect?: ((option: ResponseOption) => void) | null; disabled?: boolean; hintText?: string | null}): void; destroy(): void};
 export interface KnowledgeRequest {rulingId: string; sessionId: string; requestId: string; status: string; createdAt: number; digest: string}
-export interface ReviewSource {kind: "ruling" | "package" | "request"; sourceId?: string; category?: string; id?: string; revision?: string; rulingId?: string; digest?: string; sessionId?: string; requestId?: string; title?: string; requestedBy?: string; summary?: string; context?: Record<string,Json>}
+export interface QueueItem {queueTargetId: string; queueDigest: string; queueStatus: 'active' | 'history' | 'superseded' | 'archived'; correlationId: string; canArchive: boolean; canRestore: boolean; archived: boolean; archiveReason?: string; supersededBy?: string; supersedes: string[]; resolution?: {targetId: string; correlationId: string; goalDigest: string; receiptRefs: {target: 'host' | 'ai'; account: string; commandId: string}[]; completedAt: number | null}}
+export interface ReviewSource {correlationKey?: string; kind: "ruling" | "package" | "request"; sourceId?: string; category?: string; id?: string; revision?: string; rulingId?: string; digest?: string; sessionId?: string; requestId?: string; title?: string; requestedBy?: string; summary?: string; context?: Record<string,Json>}
 export interface DebugQuery {sessionId?: string; requestId?: string; rulingId?: string; includeContent?: boolean}
-export interface Task {
-  sourceState?: 'stale';
+export interface Task extends Partial<QueueItem> {
+  events?: {seq:number; at:number; stage:string; status:'running'|'completed'|'failed'; summary:string; durationMs?:number; tool?:string; operation?:string; receiptStatus?:string; code?:string}[];
+  dependencyCheck?: {snapshotAt:number; checkedAt:number; status:'changed'|'unchanged'; totalChanges:number; canRegenerate:boolean; changes:{kind:string; id:string; code:string; summary:string}[]};
+  sourceState?: 'fresh' | 'stale' | 'denied';
   sourceError?: string;
   sourceNotice?: string;
   historicalReadOnly?: boolean;
+  sentAt?: number;
+  responseAt?: number | null;
+  referenceLabels?: Record<string,string>;
+  /** KP review: original player from explicit stored provenance, if known. */
+  recipientAccountId?: string;
  reviewSource?: ReviewSource; modelCalls?: {requestedModel?: string; returnedModel?: string | null; systemFingerprint?: string | null; usage?: Record<string,number>; profileRevision?: number}[];
   knowledgeRequest?: KnowledgeRequest;
   playerRequest?: KnowledgeRequest;
@@ -46,6 +54,8 @@ export interface Task {
   /** KP only. No raw arguments, exception text, credentials or local file paths. */
   diagnostics?: {
     schemaVersion: 1; stage: string; turn: number;
+    compression?: {round:number;beforeBytes:number;afterBytes?:number;recordCount:number;summaryDigest?:string;status:string;code?:string;repairCount?:number;cacheHits?:number;recordLocators?:number;repairs?:{attempt:number;code:string}[]}[];
+    contextBudget?: {bytes:number;limitBytes:number;toolSchemaBytes:number;toolMessageBytes:number};
     toolCalls: {name: string; status: string; turn: number; argumentsDigest: string;
       keys: string[]; unknownKeys: boolean; types?: string[]; referenceCount?: number; hasQuery?: boolean; code?: string}[];
     errors: {stage: string; code: string; exceptionType: string; httpStatus?: number;
@@ -163,7 +173,7 @@ export interface AITools {
     create(title: string, commandId?: string, accessLevel?: 'administrator' | 'player'): Promise<AiReceipt<Session>>;
     update(sessionId: string, revision: number, changes: Partial<Pick<Session, 'title' | 'archived' | 'pinned' | 'historyTurns' | 'renderMode' | 'showDiagnostics'>>, commandId?: string): Promise<AiReceipt<Session>>;
     delete(sessionId: string, revision: number, commandId?: string): Promise<AiReceipt<Session>>;
-    submit(sessionId: string, text: string, commandId?: string): Promise<AiReceipt<{requestId: string; sessionId: string; taskId?: string; dispatchError?: string; awaitingKnowledge?: boolean}>>;
+    submit(sessionId: string, text: string, commandId?: string, options?: {submissionKey?: string; replyToRequestId?: string}): Promise<AiReceipt<{requestId: string; sessionId: string; taskId?: string; dispatchError?: string; awaitingKnowledge?: boolean}>>;
   };
   requests: {
     list(options?: {before?: string; limit?: number}): ReturnType<AiClient['aiTasks']>;
@@ -180,8 +190,9 @@ export interface AITools {
   settings: {get(): Promise<any>; update(settings: Json, commandId?: string): Promise<AiReceipt>};
   receipts: {ai(id: string): Promise<AiReceipt>; host(id: string): Promise<any>};
   access: {get(): Promise<SessionAccess>; update(value: Pick<SessionAccess, 'revision' | 'allowPlayerChat' | 'autoApproveBatches'> & Partial<Pick<SessionAccess,'autoApproveConfigurations' | 'allowAdminRoomRead' | 'allowDataQueries' | 'allowRuntimeChanges' | 'allowConfigurationChanges' | 'allowKnowledgeRequests' | 'allowPlayerRequests'>>, commandId?: string): Promise<AiReceipt>};
-  playerRequests: {submit(value: {sessionId: string} & ({text: string; requestId?: never} | {requestId: string; text?: never}), commandId?: string): Promise<AiReceipt<KnowledgeRequest>>};
+  playerRequests: {submit(value: {sessionId: string} & ({text: string; submissionKey?: string; requestId?: never} | {requestId: string; text?: never}), commandId?: string): Promise<AiReceipt<KnowledgeRequest>>};
   knowledgeRequests: {submit(sessionId: string, requestId: string, commandId?: string): Promise<AiReceipt<KnowledgeRequest>>; reconcile(value: {rulingId: string; digest: string}, commandId?: string): Promise<AiReceipt<KnowledgeRequest>>};
+  queue: {archive(value: {targetId: string; digest: string; archived: boolean; reason?: string}, commandId?: string): Promise<AiReceipt<QueueItem>>};
   rulings: {list(): ReturnType<AiClient["aiRulings"]>; decide(value: RulingDecision, commandId?: string): Promise<AiReceipt<AIRuling>>};
   batches: {list(): Promise<{items: ExecutionBatch[]}>; approve(batchId: string, digest: string, commandId?: string): Promise<AiReceipt>; reject(batchId: string, digest: string, commandId?: string): Promise<AiReceipt>; reconcile(batchId: string, digest: string, commandId?: string): Promise<AiReceipt>};
   usage(options?: UsageQuery): Promise<UsageReport>;
@@ -209,8 +220,8 @@ export interface ExecutionBatch {batchId: string; sessionId: string; requestId: 
 /** Resolve on every open; close/destroy when the caller changes identity. */
 export function bindReferenceDetails(target: HTMLElement, resolveReferences: NonNullable<MarkdownOptions["resolveReferences"]>, options?: {container?: HTMLElement | ShadowRoot; valid?: () => boolean; renderReference?: ReferenceRenderer | null; audience?: "player" | "administrator" | (() => "player" | "administrator")}): {open(token: string, anchor?: HTMLElement | null): Promise<void> | undefined; refresh(): Promise<void>; close(): void; destroy(): void};
 
-export interface AIRuling {reviewSessionId?: string; generationError?: string;createdAt: number; initiator?: string; rulingId: string; blockingReason?: string; kind: "runtime" | "configuration" | "knowledge_request" | "player_request"; highRisk?: boolean; riskTags?: string[]; diff?: Json[]; sessionId: string | null; requestId: string; summary: string; status: string; digest: string; canDecide: boolean; risks: {id: string; question: string; required: boolean}[]; receipts: Json[]; actions?: Json[]; changeSet?: Json; reports?: Json[]; publications?: Json[]}
-export interface RulingDecision {rulingId: string; digest: string; decision: "approve" | "reject"; riskDecisions?: Record<string,string>; explicitHighRiskDigest?: string; disclosures?: {op: 'knowledge.observe'; args: Record<string,Json>}[]}
+export interface AIRuling extends Partial<QueueItem> {consultationAssessment?: {requiresAcceptance:boolean;sourceCount:number;sourceDigest:string;notice:string};sourceState?: 'fresh' | 'stale' | 'denied'; sourceError?: string; sourceNotice?: string; sourceUnavailable?: boolean; sourceDetailsUnavailable?: boolean; historicalReadOnly?: boolean;reviewSessionId?: string; generationError?: string;createdAt: number; initiator?: string; rulingId: string; blockingReason?: string; kind: "runtime" | "configuration" | "knowledge_request" | "player_request"; highRisk?: boolean; riskTags?: string[]; diff?: Json[]; sessionId: string | null; requestId: string; summary: string; status: string; digest: string; canDecide: boolean; risks: {id: string; question: string; required: boolean}[]; receipts: Json[]; actions?: Json[]; changeSet?: Json; reports?: Json[]; publications?: Json[]}
+export interface RulingDecision {consultationReview?: {sourceDigest:string};cReview?: {basisRevision:number;basisDigest:string;reportDigest:string};rulingId: string; digest: string; decision: "approve" | "reject"; riskDecisions?: Record<string,string>; explicitHighRiskDigest?: string; disclosures?: {op: 'knowledge.observe'; args: Record<string,Json>}[]}
 export function mountRulings(target: HTMLElement, client: AiClient, options?: {compact?: boolean; onOpenSource?: ((source: ReviewSource) => void | Promise<void>) | null; onKnowledgeRequest?: (item: AIRuling) => void | Promise<void>; onOpenSession?: (sessionId: string) => void | Promise<void>; onChange?: (ruling: AIRuling) => void}): Panel;
 export function mountAISettings(target: HTMLElement, client: AiClient, options?: {onChange?: (result: Json) => void; onReceipt?: (aiRequestId: string) => void}): Panel;
 

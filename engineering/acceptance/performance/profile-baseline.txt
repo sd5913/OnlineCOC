@@ -1,0 +1,43 @@
+         2532634 function calls (2025133 primitive calls) in 1.076 seconds
+
+   Ordered by: cumulative time
+   List reduced from 274 to 35 due to restriction <35>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.001    0.001    1.076    1.076 host.py:114(command)
+        2    0.000    0.000    0.791    0.395 model.py:52(validate)
+       60    0.000    0.000    0.783    0.013 contracts.py:20(validate_model)
+    69/65    0.000    0.000    0.783    0.012 validators.py:349(iter_errors)
+    64/62    0.000    0.000    0.782    0.013 {built-in method builtins.next}
+  4079/65    0.023    0.000    0.782    0.012 _keywords.py:290(properties)
+50766/574    0.139    0.000    0.781    0.001 validators.py:396(descend)
+        2    0.005    0.003    0.777    0.388 chat.py:200(validate)
+ 4161/155    0.003    0.000    0.772    0.005 _keywords.py:36(additionalProperties)
+  2044/42    0.004    0.000    0.769    0.018 _keywords.py:59(items)
+        1    0.000    0.000    0.471    0.471 host.py:42(commit)
+     6006    0.015    0.000    0.249    0.000 _keywords.py:337(anyOf)
+ 410118/8    0.098    0.000    0.248    0.031 copy.py:110(deepcopy)
+  31149/8    0.096    0.000    0.248    0.031 copy.py:198(_deepcopy_dict)
+        5    0.000    0.000    0.209    0.042 host.py:39(state)
+        5    0.001    0.000    0.209    0.042 store.py:153(snapshot)
+    44762    0.084    0.000    0.182    0.000 validators.py:339(evolve)
+    42695    0.051    0.000    0.158    0.000 _keywords.py:282(type)
+    95944    0.026    0.000    0.131    0.000 validators.py:452(is_type)
+    95944    0.058    0.000    0.105    0.000 _types.py:94(is_type)
+12326/6322    0.007    0.000    0.094    0.000 copy.py:172(_deepcopy_list)
+        1    0.000    0.000    0.085    0.085 host.py:260(tick)
+        1    0.001    0.001    0.073    0.073 store.py:158(commit)
+    75382    0.020    0.000    0.072    0.000 _keywords.py:285(<genexpr>)
+    44825    0.016    0.000    0.069    0.000 <attrs generated methods jsonschema.validators.create.<locals>.Validator>:26(__init__)
+    44760    0.013    0.000    0.055    0.000 _core.py:700(in_subresource)
+    44823    0.028    0.000    0.053    0.000 _core.py:165(create_resource)
+    44825    0.047    0.000    0.053    0.000 validators.py:282(__attrs_post_init__)
+    44823    0.013    0.000    0.043    0.000 _core.py:227(id)
+        1    0.000    0.000    0.041    0.041 host.py:82(receipt)
+   237819    0.034    0.000    0.034    0.000 {method 'get' of 'dict' objects}
+   192137    0.026    0.000    0.033    0.000 {built-in method builtins.isinstance}
+    44823    0.017    0.000    0.029    0.000 jsonschema.py:47(_dollar_id)
+    44823    0.025    0.000    0.025    0.000 <attrs generated methods referencing._core.Resource>:29(__init__)
+    43475    0.015    0.000    0.024    0.000 copy.py:212(_keep_alive)
+
+

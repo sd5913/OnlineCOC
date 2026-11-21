@@ -1,0 +1,1472 @@
+{
+  "createdAt": "2026-11-20T18:32:05+0800",
+  "platform": "Windows-10-10.0.19045-SP0",
+  "python": "3.14.2 (tags/v3.14.2:df79316, Dec  5 2025, 17:18:21) [MSC v.1944 64 bit (AMD64)]",
+  "fixture": "synthetic real Host/Uvicorn/Edge pages; no AI; inclusive timings overlap",
+  "productionRoomTouched": false,
+  "results": [
+    {
+      "pages": 1,
+      "historyMessages": 100,
+      "historyReceipts": 100,
+      "seedGenerations": 100,
+      "syntheticAuditPaddingBytes": 300000,
+      "roundsPerPage": 8,
+      "elapsedSeconds": 7.871,
+      "requestThroughputPerSecond": 5.082,
+      "initial": {
+        "stateBytes": 415768,
+        "generation": 101,
+        "storeBytes": 41610960
+      },
+      "final": {
+        "stateBytes": 432803,
+        "generation": 141,
+        "storeBytes": 58698844
+      },
+      "operations": {
+        "chat.read": {
+          "n": 8,
+          "p50Ms": 90.2,
+          "p95Ms": 104.6,
+          "totalMs": 733.5
+        },
+        "chat.send": {
+          "n": 8,
+          "p50Ms": 85.5,
+          "p95Ms": 103.5,
+          "totalMs": 735.4
+        },
+        "history": {
+          "n": 8,
+          "p50Ms": 6.3,
+          "p95Ms": 9.3,
+          "totalMs": 55.6
+        },
+        "rule.action": {
+          "n": 8,
+          "p50Ms": 616.7,
+          "p95Ms": 673.1,
+          "totalMs": 5030.8
+        },
+        "snapshot.after.response": {
+          "n": 8,
+          "p50Ms": 157.8,
+          "p95Ms": 175.1,
+          "totalMs": 1245.4
+        },
+        "view": {
+          "n": 8,
+          "p50Ms": 7.4,
+          "p95Ms": 10.9,
+          "totalMs": 64.2
+        }
+      },
+      "instrumentationInclusive": {
+        "store.snapshot": {
+          "n": 347,
+          "p50Ms": 1.661,
+          "p95Ms": 2.224,
+          "totalMs": 494.865
+        },
+        "store.canonical": {
+          "n": 81,
+          "p50Ms": 2.527,
+          "p95Ms": 3.722,
+          "totalMs": 219.667
+        },
+        "store._disk_bytes": {
+          "n": 41,
+          "p50Ms": 30.752,
+          "p95Ms": 37.026,
+          "totalMs": 1267.314
+        },
+        "host.project": {
+          "n": 48,
+          "p50Ms": 3.696,
+          "p95Ms": 4.838,
+          "totalMs": 183.24
+        },
+        "host.tick": {
+          "n": 33,
+          "p50Ms": 3.691,
+          "p95Ms": 598.342,
+          "totalMs": 4494.677
+        },
+        "room.validate": {
+          "n": 56,
+          "p50Ms": 18.162,
+          "p95Ms": 20.829,
+          "totalMs": 1034.331
+        },
+        "fsync": {
+          "n": 40,
+          "p50Ms": 1.257,
+          "p95Ms": 4.251,
+          "totalMs": 77.672
+        },
+        "store.commit": {
+          "n": 40,
+          "p50Ms": 42.513,
+          "p95Ms": 52.736,
+          "totalMs": 1725.379
+        },
+        "host.dispatch": {
+          "n": 24,
+          "p50Ms": 96.063,
+          "p95Ms": 646.123,
+          "totalMs": 6321.367
+        },
+        "rule.execute": {
+          "n": 8,
+          "p50Ms": 461.663,
+          "p95Ms": 505.288,
+          "totalMs": 3782.343
+        }
+      },
+      "commandLockQueue": {
+        "n": 24,
+        "p50Ms": 0.001,
+        "p95Ms": 0.001,
+        "totalMs": 0.012
+      },
+      "failedOperations": [],
+      "reconnectWaits": 0,
+      "protocol": [
+        {
+          "resets": 0,
+          "closes": 0
+        }
+      ],
+      "unavailableViewWaits": 0,
+      "waitDefinition": "reconnectWaits is a legacy name: counts waiting for client.connected after snapshot reset OR socket close; protocol separates actual causes",
+      "checks": {
+        "sameIdReceipt": true,
+        "playerPrivateEntityHidden": true
+      },
+      "samples": [
+        {
+          "operation": "view",
+          "ms": 7.9000000059604645,
+          "reconnect": false
+        },
+        {
+          "operation": "history",
+          "ms": 9.299999997019768,
+          "reconnect": false
+        },
+        {
+          "operation": "chat.send",
+          "ms": 81.29999999701977,
+          "reconnect": false
+        },
+        {
+          "operation": "snapshot.after.response",
+          "ms": 103.40000000596046
+        },
+        {
+          "operation": "chat.read",
+          "ms": 86.3999999910593,
+          "reconnect": false
+        },
+        {
+          "operation": "rule.action",
+          "ms": 593.1000000089407,
+          "reconnect": false
+        },
+        {
+          "operation": "view",
+          "ms": 6.399999991059303,
+          "reconnect": false
+        },
+        {
+          "operation": "history",
+          "ms": 5.600000008940697,
+          "reconnect": false
+        },
+        {
+          "operation": "chat.send",
+          "ms": 83.59999999403954,
+          "reconnect": false
+        },
+        {
+          "operation": "snapshot.after.response",
+          "ms": 175.09999999403954
+        },
+        {
+          "operation": "chat.read",
+          "ms": 83.90000000596046,
+          "reconnect": false
+        },
+        {
+          "operation": "rule.action",
+          "ms": 595,
+          "reconnect": false
+        },
+        {
+          "operation": "view",
+          "ms": 7.4000000059604645,
+          "reconnect": false
+        },
+        {
+          "operation": "history",
+          "ms": 6.399999991059303,
+          "reconnect": false
+        },
+        {
+          "operation": "chat.send",
+          "ms": 85,
+          "reconnect": false
+        },
+        {
+          "operation": "snapshot.after.response",
+          "ms": 170.79999999701977
+        },
+        {
+          "operation": "chat.read",
+          "ms": 85.6000000089407,
+          "reconnect": false
+        },
+        {
+          "operation": "rule.action",
+          "ms": 606.7000000029802,
+          "reconnect": false
+        },
+        {
+          "operation": "view",
+          "ms": 7.0999999940395355,
+          "reconnect": false
+        },
+        {
+          "operation": "history",
+          "ms": 6,
+          "reconnect": false
+        },
+        {
+          "operation": "chat.send",
+          "ms": 85.5,
+          "reconnect": false
+        },
+        {
+          "operation": "snapshot.after.response",
+          "ms": 174.5
+        },
+        {
+          "operation": "chat.read",
+          "ms": 90.20000000298023,
+          "reconnect": false
+        },
+        {
+          "operation": "rule.action",
+          "ms": 633.5,
+          "reconnect": false
+        },
+        {
+          "operation": "view",
+          "ms": 7.399999991059303,
+          "reconnect": false
+        },
+        {
+          "operation": "history",
+          "ms": 6.300000011920929,
+          "reconnect": false
+        },
+        {
+          "operation": "chat.send",
+          "ms": 103.09999999403954,
+          "reconnect": false
+        },
+        {
+          "operation": "snapshot.after.response",
+          "ms": 147.70000000298023
+        },
+        {
+          "operation": "chat.read",
+          "ms": 91,
+          "reconnect": false
+        },
+        {
+          "operation": "rule.action",
+          "ms": 616.7000000029802,
+          "reconnect": false
+        },
+        {
+          "operation": "view",
+          "ms": 7.5999999940395355,
+          "reconnect": false
+        },
+        {
+          "operation": "history",
+          "ms": 6.200000002980232,
+          "reconnect": false
+        },
+        {
+          "operation": "chat.send",
+          "ms": 90.8999999910593,
+          "reconnect": false
+        },
+        {
+          "operation": "snapshot.after.response",
+          "ms": 164.09999999403954
+        },
+        {
+          "operation": "chat.read",
+          "ms": 92.70000000298023,
+          "reconnect": false
+        },
+        {
+          "operation": "rule.action",
+          "ms": 663.2999999970198,
+          "reconnect": false
+        },
+        {
+          "operation": "view",
+          "ms": 9.5,
+          "reconnect": false
+        },
+        {
+          "operation": "history",
+          "ms": 8.199999988079071,
+          "reconnect": false
+        },
+        {
+          "operation": "chat.send",
+          "ms": 103.5,
+          "reconnect": false
+        },
+        {
+          "operation": "snapshot.after.response",
+          "ms": 152
+        },
+        {
+          "operation": "chat.read",
+          "ms": 104.59999999403954,
+          "reconnect": false
+        },
+        {
+          "operation": "rule.action",
+          "ms": 673.1000000089407,
+          "reconnect": false
+        },
+        {
+          "operation": "view",
+          "ms": 10.899999991059303,
+          "reconnect": false
+        },
+        {
+          "operation": "history",
+          "ms": 7.600000008940697,
+          "reconnect": false
+        },
+        {
+          "operation": "chat.send",
+          "ms": 102.5,
+          "reconnect": false
+        },
+        {
+          "operation": "snapshot.after.response",
+          "ms": 157.79999999701977
+        },
+        {
+          "operation": "chat.read",
+          "ms": 99.09999999403954,
+          "reconnect": false
+        },
+        {
+          "operation": "rule.action",
+          "ms": 649.4000000059605,
+          "reconnect": false
+        }
+      ]
+    },
+    {
+      "pages": 4,
+      "historyMessages": 100,
+      "historyReceipts": 100,
+      "seedGenerations": 100,
+      "syntheticAuditPaddingBytes": 300000,
+      "roundsPerPage": 8,
+      "elapsedSeconds": 32.816,
+      "requestThroughputPerSecond": 4.876,
+      "initial": {
+        "stateBytes": 415768,
+        "generation": 101,
+        "storeBytes": 41610960
+      },
+      "final": {
+        "stateBytes": 484672,
+        "generation": 261,
+        "storeBytes": 114231567
+      },
+      "operations": {
+        "chat.read": {
+          "n": 32,
+          "p50Ms": 367.7,
+          "p95Ms": 2320.9,
+          "totalMs": 27942.2
+        },
+        "chat.send": {
+          "n": 32,
+          "p50Ms": 282.1,
+          "p95Ms": 575,
+          "totalMs": 9948.6
+        },
+        "history": {
+          "n": 32,
+          "p50Ms": 188.4,
+          "p95Ms": 898.5,
+          "totalMs": 12701.9
+        },
+        "rule.action": {
+          "n": 32,
+          "p50Ms": 1654.5,
+          "p95Ms": 2843.2,
+          "totalMs": 54390.5
+        },
+        "snapshot.after.response": {
+          "n": 32,
+          "p50Ms": 84.9,
+          "p95Ms": 398.1,
+          "totalMs": 5487.0
+        },
+        "view": {
+          "n": 32,
+          "p50Ms": 694.3,
+          "p95Ms": 984.7,
+          "totalMs": 17166.3
+        }
+      },
+      "instrumentationInclusive": {
+        "store.snapshot": {
+          "n": 1769,
+          "p50Ms": 2.199,
+          "p95Ms": 3.527,
+          "totalMs": 3394.003
+        },
+        "store.canonical": {
+          "n": 321,
+          "p50Ms": 3.485,
+          "p95Ms": 4.626,
+          "totalMs": 1107.459
+        },
+        "store._disk_bytes": {
+          "n": 161,
+          "p50Ms": 45.304,
+          "p95Ms": 56.533,
+          "totalMs": 7279.45
+        },
+        "host.project": {
+          "n": 334,
+          "p50Ms": 5.102,
+          "p95Ms": 32.22,
+          "totalMs": 2488.124
+        },
+        "room.validate": {
+          "n": 224,
+          "p50Ms": 20.947,
+          "p95Ms": 29.838,
+          "totalMs": 4849.628
+        },
+        "fsync": {
+          "n": 160,
+          "p50Ms": 1.298,
+          "p95Ms": 4.391,
+          "totalMs": 314.306
+        },
+        "store.commit": {
+          "n": 160,
+          "p50Ms": 59.655,
+          "p95Ms": 72.228,
+          "totalMs": 9578.11
+        },
+        "host.tick": {
+          "n": 111,
+          "p50Ms": 5.315,
+          "p95Ms": 544.303,
+          "totalMs": 11284.693
+        },
+        "host.dispatch": {
+          "n": 96,
+          "p50Ms": 278.488,
+          "p95Ms": 1753.986,
+          "totalMs": 54507.365
+        },
+        "rule.execute": {
+          "n": 32,
+          "p50Ms": 488.896,
+          "p95Ms": 723.752,
+          "totalMs": 17207.314
+        }
+      },
+      "commandLockQueue": {
+        "n": 96,
+        "p50Ms": 62.22,
+        "p95Ms": 645.039,
+        "totalMs": 11209.406
+      },
+      "failedOperations": [],
+      "reconnectWaits": 33,
+      "protocol": [
+        {
+          "resets": 12,
+          "closes": 0
+        },
+        {
+          "resets": 7,
+          "closes": 0
+        },
+        {
+          "resets": 7,
+          "closes": 0
+        },
+        {
+          "resets": 12,
+          "closes": 0
+        }
+      ],
+      "unavailableViewWaits": 33,
+      "waitDefinition": "reconnectWaits is a legacy name: counts waiting for client.connected after snapshot reset OR socket close; protocol separates actual causes",
+      "checks": {
+        "sameIdReceipt": true,
+        "playerPrivateEntityHidden": true
+      },
+      "samples": [
+        {
+          "operation": "view",
+          "ms": 11,
+          "reconnect": false
+        },
+        {
+          "operation": "history",
+          "ms": 30.599999994039536,
+          "reconnect": false
+        },
+        {
+          "operation": "chat.send",
+          "ms": 164.40000000596046,
+          "reconnect": false
+        },
+        {
+          "operation": "snapshot.after.response",
+          "ms": 264.5
+        },
+        {
+          "operation": "chat.read",
+          "ms": 402,
+          "reconnect": false
+        },
+        {
+          "operation": "rule.action",
+          "ms": 2856.2999999970198,
+          "reconnect": false
+        },
+        {
+          "operation": "view",
+          "ms": 939,
+          "reconnect": false
+        },
+        {
+          "operation": "history",
+          "ms": 177.29999999701977,
+          "reconnect": false
+        },
+        {
+          "operation": "chat.send",
+          "ms": 289.09999999403954,
+          "reconnect": false
+        },
+        {
+          "operation": "snapshot.after.response",
+          "ms": 6.800000011920929
+        },
+        {
+          "operation": "chat.read",
+          "ms": 205.3999999910593,
+          "reconnect": true
+        },
+        {
+          "operation": "rule.action",
+          "ms": 2121.1000000089407,
+          "reconnect": false
+        },
+        {
+          "operation": "view",
+          "ms": 984.7999999970198,
+          "reconnect": false
+        },
+        {
+          "operation": "history",
+          "ms": 888.5999999940395,
+          "reconnect": false
+        },
+        {
+          "operation": "chat.send",
+          "ms": 299.5,
+          "reconnect": false
+        },
+        {
+          "operation": "snapshot.after.response",
+          "ms": 192
+        },
+        {
+          "operation": "chat.read",
+          "ms": 1248.6000000089407,
+          "reconnect": true
+        },
+        {
+          "operation": "rule.action",
+          "ms": 1459.699999988079,
+          "reconnect": false
+        },
+        {
+          "operation": "view",
+          "ms": 680.4000000059605,
+          "reconnect": false
+        },
+        {
+          "operation": "history",
+          "ms": 67.79999999701977,
+          "reconnect": false
+        },
+        {
+          "operation": "chat.send",
+          "ms": 381.40000000596046,
+          "reconnect": false
+        },
+        {
+          "operation": "snapshot.after.response",
+          "ms": 0
+        },
+        {
+          "operation": "chat.read",
+          "ms": 1821.5999999940395,
+          "reconnect": true
+        },
+        {
+          "operation": "rule.action",
+          "ms": 1397,
+          "reconnect": true
+        },
+        {
+          "operation": "view",
+          "ms": 168,
+          "reconnect": false
+        },
+        {
+          "operation": "history",
+          "ms": 114.6000000089407,
+          "reconnect": false
+        },
+        {
+          "operation": "chat.send",
+          "ms": 234,
+          "reconnect": false
+        },
+        {
+          "operation": "snapshot.after.response",
+          "ms": 0
+        },
+        {
+          "operation": "chat.read",
+          "ms": 184.8999999910593,
+          "reconnect": true
+        },
+        {
+          "operation": "rule.action",
+          "ms": 1688.2999999970198,
+          "reconnect": false
+        },
+        {
+          "operation": "view",
+          "ms": 779.8000000119209,
+          "reconnect": false
+        },
+        {
+          "operation": "history",
+          "ms": 695,
+          "reconnect": false
+        },
+        {
+          "operation": "chat.send",
+          "ms": 265.8999999910593,
+          "reconnect": false
+        },
+        {
+          "operation": "snapshot.after.response",
+          "ms": 303.29999999701977
+        },
+        {
+          "operation": "chat.read",
+          "ms": 1926.300000011921,
+          "reconnect": true
+        },
+        {
+          "operation": "rule.action",
+          "ms": 1409.3999999910593,
+          "reconnect": false
+        },
+        {
+          "operation": "view",
+          "ms": 85.79999999701977,
+          "reconnect": false
+        },
+        {
+          "operation": "history",
+          "ms": 146,
+          "reconnect": false
+        },
+        {
+          "operation": "chat.send",
+          "ms": 395.70000000298023,
+          "reconnect": false
+        },
+        {
+          "operation": "snapshot.after.response",
+          "ms": 0
+        },
+        {
+          "operation": "chat.read",
+          "ms": 1954.9000000059605,
+          "reconnect": true
+        },
+        {
+          "operation": "rule.action",
+          "ms": 1461.0999999940395,
+          "reconnect": true
+        },
+        {
+          "operation": "view",
+          "ms": 63.1000000089407,
+          "reconnect": false
+        },
+        {
+          "operation": "history",
+          "ms": 143.3999999910593,
+          "reconnect": false
+        },
+        {
+          "operation": "chat.send",
+          "ms": 420.29999999701977,
+          "reconnect": false
+        },
+        {
+          "operation": "snapshot.after.response",
+          "ms": 0
+        },
+        {
+          "operation": "chat.read",
+          "ms": 2008.6000000089407,
+          "reconnect": true
+        },
+        {
+          "operation": "rule.action",
+          "ms": 1473.3999999910593,
+          "reconnect": true
+        },
+        {
+          "operation": "view",
+          "ms": 32,
+          "reconnect": false
+        },
+        {
+          "operation": "history",
+          "ms": 19.200000002980232,
+          "reconnect": false
+        },
+        {
+          "operation": "chat.send",
+          "ms": 238.8999999910593,
+          "reconnect": false
+        },
+        {
+          "operation": "snapshot.after.response",
+          "ms": 174
+        },
+        {
+          "operation": "chat.read",
+          "ms": 136.6000000089407,
+          "reconnect": false
+        },
+        {
+          "operation": "rule.action",
+          "ms": 2196.2000000029802,
+          "reconnect": false
+        },
+        {
+          "operation": "view",
+          "ms": 965.3999999910593,
+          "reconnect": false
+        },
+        {
+          "operation": "history",
+          "ms": 898.5,
+          "reconnect": false
+        },
+        {
+          "operation": "chat.send",
+          "ms": 180.3999999910593,
+          "reconnect": false
+        },
+        {
+          "operation": "snapshot.after.response",
+          "ms": 294.20000000298023
+        },
+        {
+          "operation": "chat.read",
+          "ms": 297.40000000596046,
+          "reconnect": true
+        },
+        {
+          "operation": "rule.action",
+          "ms": 2031.2000000029802,
+          "reconnect": false
+        },
+        {
+          "operation": "view",
+          "ms": 984.6999999880791,
+          "reconnect": false
+        },
+        {
+          "operation": "history",
+          "ms": 888.8000000119209,
+          "reconnect": false
+        },
+        {
+          "operation": "chat.send",
+          "ms": 206.59999999403954,
+          "reconnect": false
+        },
+        {
+          "operation": "snapshot.after.response",
+          "ms": 284.70000000298023
+        },
+        {
+          "operation": "chat.read",
+          "ms": 367.70000000298023,
+          "reconnect": true
+        },
+        {
+          "operation": "rule.action",
+          "ms": 916.1999999880791,
+          "reconnect": false
+        },
+        {
+          "operation": "view",
+          "ms": 142.40000000596046,
+          "reconnect": false
+        },
+        {
+          "operation": "history",
+          "ms": 1277,
+          "reconnect": false
+        },
+        {
+          "operation": "chat.send",
+          "ms": 753.2000000029802,
+          "reconnect": false
+        },
+        {
+          "operation": "snapshot.after.response",
+          "ms": 370.09999999403954
+        },
+        {
+          "operation": "chat.read",
+          "ms": 316.29999999701977,
+          "reconnect": true
+        },
+        {
+          "operation": "rule.action",
+          "ms": 1516.5,
+          "reconnect": false
+        },
+        {
+          "operation": "view",
+          "ms": 745,
+          "reconnect": false
+        },
+        {
+          "operation": "history",
+          "ms": 652.3000000119209,
+          "reconnect": false
+        },
+        {
+          "operation": "chat.send",
+          "ms": 167.5,
+          "reconnect": false
+        },
+        {
+          "operation": "snapshot.after.response",
+          "ms": 334
+        },
+        {
+          "operation": "chat.read",
+          "ms": 388.59999999403954,
+          "reconnect": true
+        },
+        {
+          "operation": "rule.action",
+          "ms": 2235.9000000059605,
+          "reconnect": false
+        },
+        {
+          "operation": "view",
+          "ms": 741.6999999880791,
+          "reconnect": false
+        },
+        {
+          "operation": "history",
+          "ms": 185.70000000298023,
+          "reconnect": false
+        },
+        {
+          "operation": "chat.send",
+          "ms": 400,
+          "reconnect": false
+        },
+        {
+          "operation": "snapshot.after.response",
+          "ms": 0
+        },
+        {
+          "operation": "chat.read",
+          "ms": 1893.2999999970198,
+          "reconnect": true
+        },
+        {
+          "operation": "rule.action",
+          "ms": 771.5,
+          "reconnect": false
+        },
+        {
+          "operation": "view",
+          "ms": 694.3000000119209,
+          "reconnect": false
+        },
+        {
+          "operation": "history",
+          "ms": 188.3999999910593,
+          "reconnect": false
+        },
+        {
+          "operation": "chat.send",
+          "ms": 395.70000000298023,
+          "reconnect": false
+        },
+        {
+          "operation": "snapshot.after.response",
+          "ms": 0
+        },
+        {
+          "operation": "chat.read",
+          "ms": 437.70000000298023,
+          "reconnect": true
+        },
+        {
+          "operation": "rule.action",
+          "ms": 2217.2000000029802,
+          "reconnect": false
+        },
+        {
+          "operation": "view",
+          "ms": 763.9000000059605,
+          "reconnect": false
+        },
+        {
+          "operation": "history",
+          "ms": 203.59999999403954,
+          "reconnect": false
+        },
+        {
+          "operation": "chat.send",
+          "ms": 420.59999999403954,
+          "reconnect": false
+        },
+        {
+          "operation": "snapshot.after.response",
+          "ms": 0.10000000894069672
+        },
+        {
+          "operation": "chat.read",
+          "ms": 166.3999999910593,
+          "reconnect": true
+        },
+        {
+          "operation": "rule.action",
+          "ms": 1855.7000000029802,
+          "reconnect": false
+        },
+        {
+          "operation": "view",
+          "ms": 32,
+          "reconnect": false
+        },
+        {
+          "operation": "history",
+          "ms": 19.099999994039536,
+          "reconnect": false
+        },
+        {
+          "operation": "chat.send",
+          "ms": 387.90000000596046,
+          "reconnect": false
+        },
+        {
+          "operation": "snapshot.after.response",
+          "ms": 29.099999994039536
+        },
+        {
+          "operation": "chat.read",
+          "ms": 215.20000000298023,
+          "reconnect": false
+        },
+        {
+          "operation": "rule.action",
+          "ms": 2113.7000000029802,
+          "reconnect": false
+        },
+        {
+          "operation": "view",
+          "ms": 965.5,
+          "reconnect": false
+        },
+        {
+          "operation": "history",
+          "ms": 898.3999999910593,
+          "reconnect": false
+        },
+        {
+          "operation": "chat.send",
+          "ms": 282.1000000089407,
+          "reconnect": false
+        },
+        {
+          "operation": "snapshot.after.response",
+          "ms": 194.70000000298023
+        },
+        {
+          "operation": "chat.read",
+          "ms": 2320.8999999910593,
+          "reconnect": true
+        },
+        {
+          "operation": "rule.action",
+          "ms": 1847.9000000059605,
+          "reconnect": false
+        },
+        {
+          "operation": "view",
+          "ms": 238.29999999701977,
+          "reconnect": false
+        },
+        {
+          "operation": "history",
+          "ms": 261.59999999403954,
+          "reconnect": false
+        },
+        {
+          "operation": "chat.send",
+          "ms": 252.70000000298023,
+          "reconnect": false
+        },
+        {
+          "operation": "snapshot.after.response",
+          "ms": 1044.4000000059605
+        },
+        {
+          "operation": "chat.read",
+          "ms": 151.6000000089407,
+          "reconnect": false
+        },
+        {
+          "operation": "rule.action",
+          "ms": 1959.199999988079,
+          "reconnect": false
+        },
+        {
+          "operation": "view",
+          "ms": 71.20000000298023,
+          "reconnect": false
+        },
+        {
+          "operation": "history",
+          "ms": 162.29999999701977,
+          "reconnect": false
+        },
+        {
+          "operation": "chat.send",
+          "ms": 238.5,
+          "reconnect": false
+        },
+        {
+          "operation": "snapshot.after.response",
+          "ms": 0
+        },
+        {
+          "operation": "chat.read",
+          "ms": 147.5,
+          "reconnect": true
+        },
+        {
+          "operation": "rule.action",
+          "ms": 1654.5,
+          "reconnect": false
+        },
+        {
+          "operation": "view",
+          "ms": 745.2000000029802,
+          "reconnect": false
+        },
+        {
+          "operation": "history",
+          "ms": 653.4000000059605,
+          "reconnect": false
+        },
+        {
+          "operation": "chat.send",
+          "ms": 280.8999999910593,
+          "reconnect": false
+        },
+        {
+          "operation": "snapshot.after.response",
+          "ms": 207.30000001192093
+        },
+        {
+          "operation": "chat.read",
+          "ms": 309.3999999910593,
+          "reconnect": true
+        },
+        {
+          "operation": "rule.action",
+          "ms": 1591.1000000089407,
+          "reconnect": false
+        },
+        {
+          "operation": "view",
+          "ms": 779.5,
+          "reconnect": false
+        },
+        {
+          "operation": "history",
+          "ms": 696.3999999910593,
+          "reconnect": false
+        },
+        {
+          "operation": "chat.send",
+          "ms": 158.70000000298023,
+          "reconnect": false
+        },
+        {
+          "operation": "snapshot.after.response",
+          "ms": 398.09999999403954
+        },
+        {
+          "operation": "chat.read",
+          "ms": 335.20000000298023,
+          "reconnect": true
+        },
+        {
+          "operation": "rule.action",
+          "ms": 1602.7000000029802,
+          "reconnect": false
+        },
+        {
+          "operation": "view",
+          "ms": 764.7000000029802,
+          "reconnect": false
+        },
+        {
+          "operation": "history",
+          "ms": 680.8999999910593,
+          "reconnect": false
+        },
+        {
+          "operation": "chat.send",
+          "ms": 280.40000000596046,
+          "reconnect": false
+        },
+        {
+          "operation": "snapshot.after.response",
+          "ms": 270.5
+        },
+        {
+          "operation": "chat.read",
+          "ms": 351.79999999701977,
+          "reconnect": true
+        },
+        {
+          "operation": "rule.action",
+          "ms": 1642.6000000089407,
+          "reconnect": false
+        },
+        {
+          "operation": "view",
+          "ms": 780.2999999970198,
+          "reconnect": false
+        },
+        {
+          "operation": "history",
+          "ms": 681.3999999910593,
+          "reconnect": false
+        },
+        {
+          "operation": "chat.send",
+          "ms": 205.70000000298023,
+          "reconnect": false
+        },
+        {
+          "operation": "snapshot.after.response",
+          "ms": 392
+        },
+        {
+          "operation": "chat.read",
+          "ms": 365.6000000089407,
+          "reconnect": true
+        },
+        {
+          "operation": "rule.action",
+          "ms": 1685.3999999910593,
+          "reconnect": false
+        },
+        {
+          "operation": "view",
+          "ms": 32.099999994039536,
+          "reconnect": false
+        },
+        {
+          "operation": "history",
+          "ms": 19.100000008940697,
+          "reconnect": false
+        },
+        {
+          "operation": "chat.send",
+          "ms": 328,
+          "reconnect": false
+        },
+        {
+          "operation": "snapshot.after.response",
+          "ms": 84.8999999910593
+        },
+        {
+          "operation": "chat.read",
+          "ms": 2323.1000000089407,
+          "reconnect": false
+        },
+        {
+          "operation": "rule.action",
+          "ms": 1864.5999999940395,
+          "reconnect": true
+        },
+        {
+          "operation": "view",
+          "ms": 53.5,
+          "reconnect": false
+        },
+        {
+          "operation": "history",
+          "ms": 136.40000000596046,
+          "reconnect": false
+        },
+        {
+          "operation": "chat.send",
+          "ms": 321.59999999403954,
+          "reconnect": false
+        },
+        {
+          "operation": "snapshot.after.response",
+          "ms": 0
+        },
+        {
+          "operation": "chat.read",
+          "ms": 371.20000000298023,
+          "reconnect": true
+        },
+        {
+          "operation": "rule.action",
+          "ms": 2843.2000000029802,
+          "reconnect": false
+        },
+        {
+          "operation": "view",
+          "ms": 964.8999999910593,
+          "reconnect": false
+        },
+        {
+          "operation": "history",
+          "ms": 201.70000000298023,
+          "reconnect": false
+        },
+        {
+          "operation": "chat.send",
+          "ms": 340.40000000596046,
+          "reconnect": false
+        },
+        {
+          "operation": "snapshot.after.response",
+          "ms": 0
+        },
+        {
+          "operation": "chat.read",
+          "ms": 1222.5999999940395,
+          "reconnect": true
+        },
+        {
+          "operation": "rule.action",
+          "ms": 1424.9000000059605,
+          "reconnect": true
+        },
+        {
+          "operation": "view",
+          "ms": 685.1999999880791,
+          "reconnect": false
+        },
+        {
+          "operation": "history",
+          "ms": 68.1000000089407,
+          "reconnect": false
+        },
+        {
+          "operation": "chat.send",
+          "ms": 162.29999999701977,
+          "reconnect": false
+        },
+        {
+          "operation": "snapshot.after.response",
+          "ms": 227.40000000596046
+        },
+        {
+          "operation": "chat.read",
+          "ms": 1788.699999988079,
+          "reconnect": true
+        },
+        {
+          "operation": "rule.action",
+          "ms": 763.1000000089407,
+          "reconnect": false
+        },
+        {
+          "operation": "view",
+          "ms": 661.3999999910593,
+          "reconnect": false
+        },
+        {
+          "operation": "history",
+          "ms": 164.90000000596046,
+          "reconnect": false
+        },
+        {
+          "operation": "chat.send",
+          "ms": 323.40000000596046,
+          "reconnect": false
+        },
+        {
+          "operation": "snapshot.after.response",
+          "ms": 6.5
+        },
+        {
+          "operation": "chat.read",
+          "ms": 1892.199999988079,
+          "reconnect": true
+        },
+        {
+          "operation": "rule.action",
+          "ms": 1474.7000000029802,
+          "reconnect": false
+        },
+        {
+          "operation": "view",
+          "ms": 66.20000000298023,
+          "reconnect": false
+        },
+        {
+          "operation": "history",
+          "ms": 127.5,
+          "reconnect": false
+        },
+        {
+          "operation": "chat.send",
+          "ms": 395.20000000298023,
+          "reconnect": false
+        },
+        {
+          "operation": "snapshot.after.response",
+          "ms": 0
+        },
+        {
+          "operation": "chat.read",
+          "ms": 189,
+          "reconnect": true
+        },
+        {
+          "operation": "rule.action",
+          "ms": 1718.2999999970198,
+          "reconnect": false
+        },
+        {
+          "operation": "view",
+          "ms": 764.5999999940395,
+          "reconnect": false
+        },
+        {
+          "operation": "history",
+          "ms": 673.1000000089407,
+          "reconnect": false
+        },
+        {
+          "operation": "chat.send",
+          "ms": 202.59999999403954,
+          "reconnect": false
+        },
+        {
+          "operation": "snapshot.after.response",
+          "ms": 374.70000000298023
+        },
+        {
+          "operation": "chat.read",
+          "ms": 208.20000000298023,
+          "reconnect": true
+        },
+        {
+          "operation": "rule.action",
+          "ms": 1767.8999999910593,
+          "reconnect": false
+        },
+        {
+          "operation": "view",
+          "ms": 780.4000000059605,
+          "reconnect": true
+        },
+        {
+          "operation": "history",
+          "ms": 680.7999999970198,
+          "reconnect": false
+        },
+        {
+          "operation": "chat.send",
+          "ms": 575,
+          "reconnect": false
+        },
+        {
+          "operation": "snapshot.after.response",
+          "ms": 33.70000000298023
+        },
+        {
+          "operation": "chat.read",
+          "ms": 1993.7000000029802,
+          "reconnect": true
+        },
+        {
+          "operation": "rule.action",
+          "ms": 830,
+          "reconnect": false
+        }
+      ]
+    }
+  ],
+  "sha256": {
+    "engineering/backend/src/onlinecoc/host.py": "4f495c117bc164d0606bdefe56b197a282de3a12f4239a4ccb88310592dd1c17",
+    "engineering/backend/src/onlinecoc/server.py": "bf370872d26279c3be220c101f4c5bd38b863c87f0cc0178b26a7883b4dc4949",
+    "engineering/backend/src/onlinecoc/contracts.py": "a6aa1d6b61c4d90f58759754a1042385daa7d349a40033d7a71271846ecb8cf8",
+    "engineering/data-management/onlinecoc_data/store.py": "61c96689ea9f81e000af6a5180104b6721f3a8e692c7d04e03bb8436183841b3",
+    "engineering/client-sdk/client.js": "627526d925a77344315c323c4ebd3700f4f5d6efea145a0177287f4daee87b14"
+  }
+}

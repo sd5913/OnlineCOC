@@ -4,12 +4,12 @@
 - 文档子类：工程
 - 状态：有效
 - 创建日期：2026-11-16
-- 最后更新：2026-11-20
+- 最后更新：2026-11-21
 - 关联文档：[嵌入接口](ai-pack-embedding.md)、[数据查询](ai-data-query.md)、[权限与批次](ai-session-access.md)、[包侧写入责任](../../plans/Issues/issue-010-ai-package-mutations.md)
 
 ## 基础错误修正与用户决策
 
-新服务配置、示例和当前本机配置的 `limits.maxRepairAttempts` 默认 5（可设 0—10），指首次输出之外最多 5 次自动修正，全部错误时最多 6 份输出。管理面板提供独立设置；已有其他自定义 profile 保留其显式值。修正次数与 `maxToolRounds` 独立，仍受任务超时、取消、可选用量上限和权限复验约束。
+技术修复共用最多两次额度，实际值为 `min(limits.maxRepairAttempts, 2)`；旧 Profile 中大于 2 的值不会增加本次修复上限。修复轮次与 `maxToolRounds` 独立，仍受任务超时、用量和权限复验约束。格式、工具参数、批次预检、基础配置错误及未取证的否定查询回答共用该额度。
 
 JSON 解析、非对象输出、缺失／错误字段、非法引用和选项会反馈错误代码与结构路径，要求模型返回完整正确对象。只接受完整 JSON 或唯一完整 JSON 围栏，不从任意解释文字中猜测提取。已生成配置的 A 检查若发现基础 Schema／Lua／引用错误，修订同一提案重检；不生成多份待批配置，不自动忽略 B/C 或风险决定。
 
@@ -17,11 +17,17 @@ JSON 解析、非对象输出、缺失／错误字段、非法引用和选项会
 
 需要决定意图、风格、冲突目标或重大取舍时，模型返回 `clarification` 和简短问题，可附结构化选项；任务进入 `needs_input` 等待用户。兼容旧模型的 plan+choices 也进入 needs_input。未知偏好不能作为格式错误反复重试，已确认方向不能再次追问。
 
-`MODEL_OUTPUT_INVALID` 表示基础输出修正次数耗尽；诊断展开可查看 `MODEL_JSON_INVALID`、`MODEL_FIELDS_INVALID`、`MODEL_CHOICES_INVALID`、`MODEL_REPAIR_KIND_CHANGED`、`REFERENCE_UNVERIFIED` 或 A 检查代码等具体原因及修正次数。只记录结构路径，不记录原异常文本。空响应、协议错误或输出截断也使用这项修正额度，但耗尽后保留对应 `PROVIDER_*` 原因；认证、连接、权限、基线或任务超时不包装成格式错误。本次没有读取用户截图对应旧任务的原始诊断，因此不能据截图断定那次错误的唯一原因。
+`MODEL_OUTPUT_INVALID` 表示基础输出修正次数耗尽；诊断展开可查看 `MODEL_JSON_INVALID`、`MODEL_FIELDS_INVALID`、`MODEL_CHOICES_INVALID`、`MODEL_REPAIR_KIND_CHANGED`、`REFERENCE_UNVERIFIED` 或 A 检查代码等具体原因及修正次数。只记录结构路径，不记录原异常文本。空响应、协议错误或输出截断也使用这项修正额度，但耗尽后保留对应 `PROVIDER_*` 原因；认证、连接、权限、基线或任务超时不包装成格式错误。
+
+工具调用的坏 JSON 或参数 Schema 错误会返回具体字段与真实 Schema，再由模型修正；已计费用的响应保留实际 usage。批次参数与公开规则 input 也校验精确路径，随后运行无写入预检。模型须区分物品定义 ID 与库存槽位，根据授权记录修正唯一引用，不能让用户修 JSON 或猜测目标。`MODEL_TOOL_REPAIR_LIMIT` 表示工具修复耗尽；`BATCH_PREFLIGHT_BLOCKED` 和 `BATCH_UNSUPPORTED` 保留不可批准候选及逐项原因。
+
+按需读取场景中，明确查询请求若未取得任何成功的房间查询证据，却回答“未找到／不存在／没有记录”，触发 `MODEL_EVIDENCE_REQUIRED`，在同一修复额度内要求实际查询。真实空查询可回答未找到；查询未完成须明确说明。此检查针对已识别的否定表达，不是任意自然语言事实的完整证明器。完整生产提示的首次失败、短反馈 API 复测和边界回归分别保留在[本轮验收](../../../engineering/acceptance/ai-defaults-c-review/README.md)。
+
+实际出现的“只读 entity.patch 子集便断言不存在数值修改命令”会与完整操作名称索引核对；匹配该错误时返回 MODEL_CAPABILITY_UNPROVEN，在既有修复额度内纠正。此检查针对已复现模式，不宣称能自动判断任意自然语言的正确性。
 
 ## JSON 请求与服务商错误
 
-2026-11-18 修复严格玩家提示词遗漏 `JSON` 关键词导致 DeepSeek 拒绝请求的问题。玩家提示明确要求 JSON 对象；兼容发送层在 system/user 消息都没有 `json`（忽略大小写）时，增加一条格式指令，不修改调用方历史或玩家知识权限。依据 [DeepSeek JSON 模式说明](https://api-docs.deepseek.com/guides/json_mode)，仅提供对象示例不足以满足服务商的提示词检查。
+玩家提示明确要求 JSON 对象；兼容发送层在 system/user 消息都没有 `json`（忽略大小写）时，增加一条格式指令，不修改调用方历史或玩家知识权限。依据 [DeepSeek JSON 模式说明](https://api-docs.deepseek.com/guides/json_mode)，仅提供对象示例不足以满足服务商的提示词检查。
 
 HTTP 拒绝与模型回答格式错误分开处理：
 
@@ -35,7 +41,7 @@ HTTP 拒绝与模型回答格式错误分开处理：
 | 408、429、5xx | `PROVIDER_TIMEOUT`、`PROVIDER_RATE_LIMITED`、`PROVIDER_UNAVAILABLE` | 按 `maxTransportRetries` 有界重试 |
 | 3xx／其他非 200 | `PROVIDER_REDIRECT_REJECTED`／`PROVIDER_HTTP_ERROR` | 拒绝重定向或报告其他 HTTP 异常 |
 
-`UNSUPPORTED_CAPABILITY` 保留给返回了不支持的思考内容、JSON／工具能力探测未通过等能力检查，不再笼统代表 HTTP 参数错误。已获得 HTTP 200 的正文仍可能格式无效，继续沿用前述默认 5 次修复流程。历史失败记录不自动重跑或改写。
+`UNSUPPORTED_CAPABILITY` 保留给返回了不支持的思考内容、JSON／工具能力探测未通过等能力检查，不再笼统代表 HTTP 参数错误。已获得 HTTP 200 的正文仍可能格式无效，继续使用前述最多两次技术修复额度。历史失败记录不自动重跑或改写。
 
 聊天区提供对应中文说明；KP 的诊断保留错误代码和可选 `httpStatus`，不保存服务商错误正文、响应头、密钥或请求内容。PL 仍不接收诊断详情。更新代码后需重启承载 AI 的房间宿主；刷新管理器和嵌入页面，已打包网页需重新构建资源。
 
@@ -58,7 +64,7 @@ HTTP 拒绝与模型回答格式错误分开处理：
 | 玩家（默认） | 已授权正文、名称、资料类型／观察时间；不展示技术标识、导航映射和原始 JSON 入口；未知字段用保守标签 |
 | 管理员 | 同样的可读排版，加修订／可见性、管理字段和原字段名；“技术详情（原始数据）”默认折叠 |
 
-对话自动按“真实 KP 且管理员会话”选择管理员展示；KP 查看玩家级会话仍使用玩家展示。输入区“查看引用”也按同样规则显示结构化数据。层级仅控制表现，不扩大服务端授权；不能靠字段隐藏补救源数据过度披露。严格 PL 正文由服务端固定排版，旧结构回复经来源复验后只读转换，详见[玩家已知资料](ai-player-knowledge.md#数据排版与角色差异)。
+对话自动按“真实 KP 且管理员会话”选择管理员展示；KP 查看玩家级会话仍使用玩家展示。输入区“查看引用”也按同样规则显示结构化数据。层级仅控制表现，不扩大服务端授权；不能靠字段隐藏补救源数据过度披露。严格 PL 正文只显示名称、短用途和引用入口，完整树形资料点击后查看；旧结构回复经来源复验后只读转换，详见[玩家已知资料](ai-player-knowledge.md#数据排版与角色差异)。
 
 包可通过同步 `renderReference(item,{audience,readOnly:true})` 返回 Node 或 null 复用本包只读语义视图；完整 DTO、回退与生命周期见[嵌入接口](ai-pack-embedding.md#配置包引用详情渲染)。
 
@@ -81,6 +87,8 @@ details.destroy();
 `container` 默认为 body 的父节点，可传 HTMLElement／ShadowRoot；返回 open(token, anchor?)、close、refresh、destroy。`audience` 可为 `player`（默认）、`administrator` 或返回这两个值的函数；`mountMarkdown` 对应选项只接受字符串。管理员展示需接入方根据真实身份及会话权限决定，不能使用用户传入的 URL 参数。解析回调须返回与 token 相同 kind/id/revision 的授权对象及 value。刷新时展示层级变化会重建详情；自定义接入仍负责及时清理换身份后的内容，不使用不复验权限的全局数据缓存。资源清单和树桩镇构建图包含 `reference-details.js/css`。
 
 ## 结构化选择项
+
+当前用户明确提交了某个选项的完整文本后，生成输入保留 resolvedChoices。若模型再次返回同一组选项，服务端以 REPEATED_RESOLVED_CHOICE 要求纠正，计入已有最多两次修复额度；新取舍仍可提问。该检查只识别当前明确匹配，用户重新选择或改变主意不会被旧选项锁住；不把模糊回复推断成授权，也不代替执行审批。较早需求保留与模板预读见[上下文机制](ai-session-access.md#上下文连续性与预算)。
 
 `plan`、`clarification` 输出可额外携带以下字段；`draft`、`batch` 不接受它：
 
@@ -134,10 +142,30 @@ panel.destroy();
 
 PL strict-known 增加固定 `next:ask_kp_change` 选项，不接受模型自由正文。查询空结果使用“暂未获得与问题匹配的本人已知资料”，不推断无权限；本人装备按已授权字段格式化，不输出 raw JSON。错误与 UI 提示见[已知查询](ai-player-knowledge.md#查询未命中与服务阻断)，申请流程见[会话权限](ai-session-access.md#玩家创作与配置申请)。
 
-## 2026-11-19 来源审核与调试
+## 来源审核与调试
 
 KP 审核会话明确区分当前 KP 指令与被引用玩家材料；前者显示为用户发言，后者为可展开来源卡。定位、调试正文和模型标识见[来源审核与调试](ai-debug-review.md)。
 
 ## 配置数据增量输出
 
 模型 draft 现在可在 changeSet 之外附加 dataEdits，使用 pack_read_config_data 发出的 editRef 精确追加或修改节点。服务端展开完整候选并继续原三检；changeSet.data 仍是整文件替换，不能当作隐式合并。输入格式、前置条件和限制见[精确增量](ai-data-query.md#活动配置数据的精确增量)。
+
+## 消息时间与连接错误
+
+每条用户发言显示真实发送时间，每条已生成回复显示保存时间；旧回复未记录时明确标示，不推算。失效引用保留已交付标签并灰显禁用，原文与资料详情权限分离，见[消息留存](ai-session-access.md#消息留存与时间)。
+
+通用 HttpTransport 将网络、HTTP、JSON 解析和本地断线错误分别归类。错误仅含安全 code、status（HTTP 数值或 null）、operation、可用的 requestId/commandId 及 errorKind，不展示原始响应体。非 JSON 502 等仍保留 HTTP 状态；HTTP 200 的 rejected/unknown 业务回执保持原义，不自动重放。
+
+## 生成中的变化
+
+本轮回答与工具使用发送时快照，后续无关聊天不触发 SOURCE_STALE。真正依赖变化保留正文和候选并展示检查项，由 KP 选择继续讨论或按最新资料重新生成；成员撤权、会话删除及外发关闭仍阻止新输出。冻结、重启和审批边界统一见[发送快照与执行校验](ai-session-access.md#发送快照与执行校验)。
+
+技术反馈保留真实错误原因。Lua 基础错误附 DSL 构造器语法；草稿修复不能降级为 plan 后误报可审核。NPC 扩展缺少固定判别字段时返回 `EXTENSION_MARKER_REQUIRED` 和精确 `/configurations/<id>/defaults/isNpc`，可在同一两次额度内修正；数值范围、权限和作者场景覆盖失败不因此放宽。
+
+批次纠错目录只附本次行动 Schema；KP 外发允许时另附发送快照中相关规则及声明依赖源码（最多16KiB）。技术反馈不含测试预期答案，不能保证模型语义或正文始终正确。真实失败及复核边界见[指令可靠性验收](../../../engineering/acceptance/ai-command-reliability/README.md)。
+
+## 压缩与来源评估反馈
+
+过程卡新增“压缩上下文并保留可追溯原文”。每个摘要分组的 COMPRESSION_INVALID、COMPRESSION_PROVENANCE_INVALID、COMPRESSION_RESULT_LIMIT 会尝试一次纠正；持续失败、COMPRESSION_NOT_REDUCED、COMPRESSION_LIMIT 或 CONTEXT_LIMIT_EXCEEDED 明确结束本次生成，保留原始会话与压缩档案，用户可缩小当前请求后重试。KP 诊断记录压缩前后字节、原文数量、缓存复用和修复次数；正常 PL 输出不包含这些内部记录。
+
+独立包资料产生可审核候选时显示来源评估，并由 KP 明确接受后执行。`CONSULTATION_REVIEW_REQUIRED` 提示回到裁决卡核对本次来源风险；不要重新询问用户已经确认的创作参数，也不要把缺少批准描述为模型无法创建配置。协议和技术拒绝边界见[裁决说明](ai-rulings.md#独立来源风险评估)。

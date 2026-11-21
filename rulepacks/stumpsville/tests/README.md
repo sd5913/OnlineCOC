@@ -6,12 +6,30 @@
 
 | 入口 | 状态与范围 |
 | --- | --- |
+| [参考资料风险界面](verify_consultation_review.py) · [结果](consultation-review-results.json) | 4组合成DTO Edge检查通过：来源与C评估同次接受、高危整包指纹、拒绝不夹带确认、缺失证明禁用批准、运行时失败原因与390px转义；0外部API。实际服务权限／落地另见下面的联合测试 |
+| [参考资料与KP采纳联测](verify_context_autonomy.py) · [旧基线](context-autonomy-baseline-results.json) · [结果](context-autonomy-results.json) | 最终4/4组通过，使用宿主KP策略v1＋AI压缩v3和真实树桩镇隔离宿主。旧基线复现CONSULTATION_ONLY；改后配置生成、缺失/错误证明与PL拒绝、包界面接受后只追加一次、运行时自动审批开启仍须接受来源评估，接受后钱币+1与单次定向通知。完整房间实体路径误拒绝已修复且沿用原查询复验；保留夹具及产品首次失败。0外部API |
+| [聊天对照与恢复](verify_chat_delivery.py) · [基线](chat-delivery-baseline-results.json) · [改后](chat-delivery-optimized-results.json) · [引擎v2＋AI v1](chat-delivery-combined-results.json) | 四个真实本机页面、每组六条消息、0外部API；旧引擎固定对照接收p50从2582.56ms降至1300.74ms，p95从4410.37ms降至2223.79ms；新组合1239.04/2756.93ms。5组包括裁决处理中发送、在途新草稿、丢响应原ID恢复且只发一次、宿主历史不等待包锁、私聊/场景隔离与编辑/撤回/队伍同步。端到端含浏览器断言等待，发送输入框尾延迟仍约2秒；保留两次夹具首失败，不混同引擎纯HTTP数据 |
+| [聊天与包配置依据](verify_chat_sources.py) · [基线](chat-sources-baseline-results.json) · [结果](chat-sources-results.json) | 4组通过：普通发送/编辑/撤回/已读及恢复账本使宽配置摘要变化由4/4降至0/4；真正游戏资料变化仍改变摘要；明确聊天编辑/撤回、事件裁决和权限边界保留。0外部API |
+| [冻结接口组合](verify_chat_combined.py) · [结果](chat-combined-results.json) | 最新宿主KP策略v1与AI压缩v2逐文件哈希核对，4组通过：实际资料链4项、AI嵌入/调试/导出6项、原子批次5项，以及来源/导出白名单检查。使用--batch-workflow复验自动槽位修复、消耗/短休/通知和幂等恢复；本轮未重跑四页延迟，保留此前独立证据。旧PL直接资料API夹具曾被403正确拒绝，首次结果保留 |
+| [默认启动与账号管理](verify_panel_defaults.py) · [结果](panel-defaults-results.json) | 10组通过：原生Tk标签与恢复状态、真实隔离宿主三个默认账号/全部AI能力和外发权限、账号创建/改密/删除/历史保留/最后KP保护、重启保持密码和关闭的权限。最新使用引擎冻结v3；0外部API。保留截图依赖、删除列表预期、输入Schema及Origin夹具首失败 |
+| [C类评估裁决界面](verify_c_review_ui.py) · [结果](c-review-ui-results.json) | 5组合成DTO Edge检查通过：风险/依据/版本、三动作与可选备注、采纳提交精确证明且关窗、拒绝不附采纳证明、过期重检及390px转义。0外部API；真实发布与动态依据另外由工程联测验证 |
+| [批次完整联测](verify_batch_workflow.py) · [结果](batch-workflow-results.json) | 5组通过：真实Host/AI/Edge，合成模型首次错槽位后自动修正；批准前零副作用，批准后三项及定向通知原子提交；原请求重放无额外扣物/骰子/通知，通知逐项可读。每轮2次回环调用、0外部API；保留夹具漏必填参数及CSP等待方式首次失败 |
+| [逐项批次展示](verify_batch_details.py) · [结果](batch-details-results.json) | 9组合成DTO浏览器通过：业务结果与提交区分、顺序与预检、立即关窗、逐项通知与定位、阻塞禁止批准、旧首拒绝0成功、未知回执、转义与390px、终态归档。0外部调用，不代替宿主原子性验收；保留夹具JS MIME和导航竞争首次失败 |
+| [本机连接性能](verify_local_performance.py) · [对照](local-performance-results.json) | 常量真实回环TCP、各12样本：代理单并发p50 324.954→6.841ms、四并发1401.274→28.385ms；四请求组合109.593→4.167ms／418.360→17.182ms。包含并发身份／Cookie槽位隔离；不等同完整引擎或模型耗时 |
+| [浏览器请求合并](verify_request_coalescing.py) · [结果](request-coalescing-results.json) | 3组通过：同频道十次刷新仅一次请求、账号切换拒绝迟到旧正文、裁决十次刷新合并为当前与一次后续查询 |
+| [引用标签读取](verify_ai_binding_labels.py) · [结果](ai-binding-labels-results.json) | 4组通过：200次并发标签读取仅一次文件解析、同大小／mtime原子替换仍更新、删除／旧格式清除、损坏／超限拒绝；仅保存显示绑定标签，不缓存资料或权限。首次Windows stat/fstat的ctime语义不同导致未命中，已修复且保留证据 |
+| [四页面性能与生成连续性](verify_performance_workflow.py) · [结果](performance-workflow-results.json) | 引擎v2＋AI v1，6组通过：32聊天/8AI暖历史、宽room读取后生成期间私聊与实际批准、工具／校验／执行时间线、真实值变化保留回答、503恢复、390px。聊天/裁决/普通检定HTTP p50为109.28/54.57/683.13ms，各8样本；0外部API。新增长对话网格溢出首失败及修复几何数据，左队列标签不再随AI滚动出视口；旧失败继续保留 |
+| [本机消息与引用连续性](verify_message_continuity.py) · [结果](message-continuity-results.json) | 5组通过：真实发送／回复时间、撤权后正文及灰引用、审核来源原玩家的一次信息揭示、写入成功后刷新失败仍显示完成、同档重启保持。首轮夹具plan未附choices而进入历史，补齐待办条件后通过；原失败保留 |
+| [裁决时间顺序与固定状态](verify_queue_chronology.py) · [结果](queue-chronology-results.json) | 4组通过：混合来源实际DOM从旧到新、刷新／追加／归档、390px固定12px单行与回执恢复、灰底原文无绿色块、查询恢复清除旧提示；保留按钮最小高度导致裁切的首失败，无外部模型 |
+| [本机代理错误链](verify_local_errors.py) · [结果](local-errors-results.json) | 11组通过：原9组超时、拒连、协议、资源和HTTP分类，新增共享同步池错误形状与Cookie/CSRF隔离；请求定位和安全日志、非JSON状态保留、真实回环关闭端口。未宣称复现用户旧现场异常 |
+| [历史／队列／紧凑引用整链](verify_review_followup.py) · [结果](review-followup-results.json) | 6组通过：同来源复用、提交键及明确后继、持久归档恢复、执行后历史原文、PL授权语义详情、同档重启；本轮增加真实成功回执触发前驱归档及不可恢复断言。10次本地替身调用、0外部调用；保留前轮两次夹具失败及PL事务嵌套产品回归。见[ISSUE-017](../../../docs/history/2026-11-20-issue-017-review-history-queue-references.md)和[ISSUE-018](../../../docs/history/2026-11-20-issue-018-message-history-resolution.md) |
+| [队列整理UI](verify_review_queue_ui.py) · [结果](review-queue-ui-results.json) | 4组通过：三动作与单备注、精确归档封套和计数、替代项禁止批准、异常DTO也不能隐藏执行中／未知／部分完成，390px无横向溢出。首轮失败来自夹具宽度叠加外边距，原结果保留 |
 | [过期高危审批恢复](verify_stale_approval.py) · [结果](stale-approval-results.json) | 5组通过：同档重启复现、同摘要新修订重检、再次人工接受且只发布一次、相关配置冲突保护、失败原因及原命令定位。保留首次旧引擎将拒绝沿用到新修订的失败；隔离房间、0次外部模型调用。引擎另有[23项专项及76项回归](../../../engineering/acceptance/ruling-revisions/README.md) |
 | [裁决工作区](verify_ruling_workspace.py) · [结果](ruling-workspace-results.json) | 14组通过：共用卡片／三标签、1440及390px单备注三按钮、真实引用语义预览、过期正文与提示、转交关闭、403原因与定位、高危真实发布、自动归档、简短结算标签、历史弹窗、503待核对与未加载AI入口。保留早期提交状态、夹具等待及引用前置范围未启用的失败；隔离房间、0次外部模型调用 |
 | [引用语义视图](verify_reference_view.py) · [结果](reference-view-results.json) | 包侧6组通过：共用角色／物品卡、390px、旧观察原内容、安全文本、未知类型回退、不改写DTO或另查当前数据 |
 | [指令包通知](verify_command_notifications.py) · [结果](command-notification-results.json) | 6组通过：KP发放及改值、收件人隔离、原命令重放、离线补取、确认断线与刷新去重、失败不通知、真实重启保留。首次2组后因新增JS未加入本机静态清单而无法登录，修复后全过；未抹除首次失败 |
 | [包内恢复替身](verify_ai_recovery.mjs) · [首次／修复后结果](ai-recovery-results.json) | 首次5/11；修复及补充错误形状后15/15。明确HTTP拒绝不残留unknown，网络／超时／5xx仍保留回执恢复 |
-| [真实浏览器恢复／调试](verify_ai_recovery_ui.py) · [结果](ai-recovery-ui-results.json) | 6组通过：HTTP403后继续、1440/390px顶部弹窗、正文导出、重载与导出组件。保留两次夹具前置失败；不代替公网WebRTC全链路 |
+| [真实浏览器恢复／调试](verify_ai_recovery_ui.py) · [结果](ai-recovery-ui-results.json) | 2026-11-21以引擎v3＋AI v2冻结组合再次6/6：HTTP403后继续、1440/390px顶部弹窗、正文导出、重载与网页导出组件图，无未捕获脚本错误。0外部API；保留旧夹具首失败，不代替公网WebRTC全链路 |
 | [配置矩阵](verify_ai_config_matrix.py) · [原单房间结果](ai-config-matrix-results.json) | 首轮支持6/13、预期拒绝5/6，因30秒超时及累计STORE_FULL未到达重启；分批结果不得抹除容量问题 |
 | 分批复测 | [物品](ai-config-matrix-items-results.json)：业务7/7，原重启比较因目录排序失败；[地图](ai-config-matrix-map-results.json)：5/6，场景文案缺C覆盖，重启按ID比较通过；[规则](ai-config-matrix-rules-results.json)：6/6 |
 | [同档多轮重启](ai-config-matrix-restart-results.json) | 2/2：新增物品发布并发放；配置完成后两轮固定回答，同档重启后可读并继续第三轮。3次回环替身调用、0次外部调用 |
@@ -50,6 +68,12 @@
 
 | 主题 | 记录与边界 |
 | --- | --- |
+| 上下文与减少往返 | [工程报告](../../../engineering/acceptance/ai-context-usability/README.md)：18次／140825已确认tokens、0未知用量。3例配对严格可用率2/3→2/3；明确模板修改调用2→1、tokens14084→7082。另加跨4轮bonus13案例1/1且实际审批成功，非配对提升率。错误能力说明保留为失败，最终技术纠正尚未重跑该真实歧义例 |
+| 语义压缩与KP参考方案 | [报告](../../../engineering/acceptance/ai-context-compression/README.md) · [统计](../../../engineering/acceptance/ai-context-compression/results-summary.json)：49次／912755tokens，未知0。8个支持修改目标最终8/8、全部有效请求8/9、首次任务内7/8（含技术修复）；负例零业务4/4但准确拒绝仅1/4；所有18次请求完整质量9/18。跨30轮修改HP3→4并发布/重启/创建，最终2/2业务步骤完成，保留两次压缩失败；最终输入448206→56534字节。原字段数量和不支持删除的误导措辞均保留为质量失败。单次AI完整回归692/692，不与实模分母混算 |
+| 新房间默认与C类KP裁决 | [工程报告](../../../engineering/acceptance/ai-defaults-c-review/README.md) · [16个自然案例](../../../engineering/acceptance/ai-defaults-c-review/natural-1795193315656682400.json)：首轮完整7/16，终结输出格式15/15，语义复核14/15；修改首轮2/9，v3原输出重放9/9实际生效，正确拒绝2/2。43次／597278 tokens。1例预算未完成；短反馈事实查询成功但有多余来源文字，非完整提示复测。核心648/648＋Edge4/4，不与38项重复相加 |
+| 全类型指令可靠性 | [工程报告](../../../engineering/acceptance/ai-command-reliability/README.md) · [71类有效参数样例](../../../engineering/acceptance/ai-command-reliability/valid-cases.json)：JSON71/71，首次严格意图63/71、独立复核67/71（含正确拒绝，非执行率）；自然槽5/7完整流程2/2，发布后消费零API5/5。199登记／198响应，已知1,556,280 tokens，未知预留44,218；首次失败、错误夹具与修复重放分开保留 |
+| ISSUE-019生成快照与进度 | [DeepSeek Flash](../../../engineering/acceptance/ai-snapshot-performance/live-results.json)：1/1隔离任务，2次调用／13485 tokens，生成中闲聊、三检和隔离人工发布成功；初始预留额度阻断0调用也保留。样本先于长历史图修复，后者由200项确定性回归与包侧四页6组覆盖，未额外调用模型 |
+| 本轮会话发布与需求完成 | [DeepSeek Flash](../../../engineering/acceptance/message-history/live-results.json)：2/2，10次／51510 tokens；原配置未改。生成期间30次公共HTTP查询均成功，最长0.0894秒。隔离样本未复现用户旧现场异常，不能作为所有本机连接故障已排除的证明 |
 | 复活、新物品、未知资料申请 | [场景记录](ai-scenarios-live-results.json)；保留 previousRuns 与失败历史，不等于53类场景均已通过 |
 | [审核身份与过期短确认](verify_review_identity_live.py) | [Flash](review-identity-live-deepseek-flash-results.json)：最终2/2，11次／169882 tokens，0次输出格式修正；[V4 Pro](review-identity-live-deepseek-v4-pro-results.json)：最新1/2，20次／324478 tokens，2次输出格式修正，未使用最终术语指南重跑。两者过期短确认均通过；首轮接口过早stale、后续钱币语义失败都保留，不能据不同指南阶段宣称模型固有优劣。全部轮次64次／1030828 tokens；正式服务配置未变 |
 | 玩家原句 | [原句复测](ai-player-requests-live-results.json)：当前行动、已知线索、火把＋针剑申请，3例通过 |
@@ -66,11 +90,14 @@
 node rulepacks/stumpsville/tests/verify_ai_recovery.mjs
 engineering/.venv/Scripts/python.exe -B rulepacks/stumpsville/tests/verify_stale_approval.py
 engineering/.venv/Scripts/python.exe -B rulepacks/stumpsville/tests/verify_ruling_workspace.py
+engineering/.venv/Scripts/python.exe -B rulepacks/stumpsville/tests/verify_context_autonomy.py --source .
 engineering/.venv/Scripts/python.exe -B rulepacks/stumpsville/tests/verify_ai_config_matrix.py --batch items
 engineering/.venv/Scripts/python.exe -B rulepacks/stumpsville/tests/verify_web.py
 ```
 
 先登记输入与输出范围，并确认工程依赖没有冲突占用。浏览器专项需要Edge／Playwright；Tk专项需要Windows桌面。每次只关闭自建测试进程。故障注入的预期503须在报告中说明并验证同回执恢复，不能只忽略日志。
+
+`verify_context_autonomy.py --source .`使用当前检出工程，在独立目录创建测试房间与本地模拟模型，不需要真实API密钥。阶段联合测试使用`--source`指向按双方摘要核对的临时组合目录；宿主临时镜像与运行存档不入库，AI只读源码快照、版本摘要及首次失败保留。`verify_chat_combined.py`用于已有本机冻结镜像的协作核对；普通克隆可直接运行当前树的各专项入口。
 
 离线还可选 `--batch npc|map|rules|restart`。`restart` 在一次真实物品发布／消费后生成两轮回环固定回答，再关闭、从同一存档重启并继续第三轮；不调用外部模型。`all` 保留单房间累计压力复现场景，可能触及默认存储限额。
 

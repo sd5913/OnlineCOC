@@ -21,6 +21,8 @@ def load_profiles(path=DEFAULT_PATH):
     profiles = {}
     for profile in value["profiles"]:
         validate("Profile", profile)
+        from .context_budget import budget
+        budget(profile)
         require(profile["profileId"] not in profiles, "PROFILE_ID_CONFLICT")
         profiles[profile["profileId"]] = profile
     return profiles
@@ -45,6 +47,8 @@ def save_profile(profile, path=DEFAULT_PATH, *, expected_revision=None):
 def _save_profile(profile, path=DEFAULT_PATH, *, expected_revision=None):
     """The caller supplies a complete Profile; revision is server-assigned."""
     validate("Profile", profile)
+    from .context_budget import budget
+    budget(profile)
     path = Path(path)
     profiles = load_profiles(path)
     if expected_revision is not None:

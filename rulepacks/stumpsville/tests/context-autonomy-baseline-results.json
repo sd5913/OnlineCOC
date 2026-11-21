@@ -1,0 +1,49 @@
+{
+  "at": "2026-11-21T15:26:19.165446+08:00",
+  "source": "D:\\Studies\\Art Programming\\OnlineCOC\\rulepacks\\stumpsville\\tests\\output\\chat-combined-9036af36\\source",
+  "output": "D:\\Studies\\Art Programming\\OnlineCOC\\rulepacks\\stumpsville\\tests\\output\\context-autonomy-c6582aa3",
+  "baseline": true,
+  "checks": [
+    "old frozen runtime reproduces CONSULTATION_ONLY after authorized package reference + current host item read; no publication"
+  ],
+  "externalApiCalls": 0,
+  "realSaveChanged": false,
+  "task": {
+    "status": "review_ready",
+    "error": null,
+    "proposalId": "8a2c6dcb20c14a6db8bec820ad818653",
+    "response": null
+  },
+  "loopbackModelCalls": 4,
+  "ruling": {
+    "status": "blocked",
+    "blockingReason": "CONSULTATION_ONLY",
+    "canDecide": false,
+    "consultationAssessment": null
+  },
+  "passed": true,
+  "passedCount": 1,
+  "pageErrors": [],
+  "previousRuns": [
+    {
+      "at": "2026-11-21T15:25:20.589242+08:00",
+      "source": "D:\\Studies\\Art Programming\\OnlineCOC\\rulepacks\\stumpsville\\tests\\output\\chat-combined-9036af36\\source",
+      "output": "D:\\Studies\\Art Programming\\OnlineCOC\\rulepacks\\stumpsville\\tests\\output\\context-autonomy-159e2137",
+      "baseline": true,
+      "checks": [],
+      "externalApiCalls": 0,
+      "realSaveChanged": false,
+      "task": {
+        "status": "failed",
+        "error": "PROVIDER_UNAVAILABLE",
+        "proposalId": null,
+        "response": null
+      },
+      "loopbackModelCalls": 6,
+      "passed": false,
+      "error": "AssertionError({'requestId': '64f68c26f1aa4373a138e4eda4df8e4f', 'sessionId': 'e95f9d0927074676a530d8500970227a', 'status': 'failed', 'createdAt': 1795245939.1827495, 'text': '参考当前主持地图说明，在实际物品表追加参考资料验收盾。先读取独立资料，再读取活动items；只准备配置方案，等我裁决。', 'initiator': 'kp', 'events': [{'seq': 1, 'at': 1795245939.3486233, 'stage': 'queued', 'status': 'completed', 'summary': '已接收，等待生成', 'durationMs': 4.38}, {'seq': 2, 'at': 1795245939.3530152, 'stage': 'profile_check', 'status': 'completed', 'summary': '检查服务配置', 'durationMs': 337.19}, {'seq': 3, 'at': 1795245939.6902153, 'stage': 'context_capture', 'status': 'completed', 'summary': '使用发送时资料快照', 'durationMs': 46.5}, {'seq': 4, 'at': 1795245939.7367244, 'stage': 'tool_execute', 'status': 'completed', 'summary': '读取已授权资料', 'tool': 'room_read_management', 'durationMs': 29.92}, {'seq': 5, 'at': 1795245939.7666485, 'stage': 'provider_complete', 'status': 'completed', 'summary': '等待 AI 服务回复', 'durationMs': 39.79}, {'seq': 6, 'at': 1795245939.8064468, 'stage': 'tool_execute', 'status': 'completed', 'summary': '读取已授权资料', 'tool': 'room_search_data', 'durationMs': 71.73}, {'seq': 7, 'at': 1795245939.929604, 'stage': 'provider_complete', 'status': 'completed', 'summary': '等待 AI 服务回复', 'durationMs': 46.17}, {'seq': 8, 'at': 1795245939.9757853, 'stage': 'tool_execute', 'status': 'completed', 'summary': '读取已授权资料', 'tool': 'room_read_data', 'durationMs': 47.79}, {'seq': 9, 'at': 1795245940.0994823, 'stage': 'provider_complete', 'status': 'completed', 'summary': '等待 AI 服务回复', 'durationMs': 97.69}, {'seq': 10, 'at': 1795245940.1971753, 'stage': 'tool_execute', 'status': 'failed', 'summary': '读取已授权资料', 'tool': 'pack_read_config_data', 'durationMs': 0.21, 'code': 'INPUT_INVALID'}, {'seq': 11, 'at': 1795245940.272185, 'stage': 'provider_complete', 'status': 'completed', 'summary': '等待 AI 服务回复', 'durationMs': 354.4}, {'seq': 12, 'at': 1795245940.6265943, 'stage': 'provider_complete', 'status': 'completed', 'summary': '等待 AI 服务回复', 'durationMs': 608.79}, {'seq': 13, 'at': 1795245941.2353878, 'stage': 'provider_complete', 'status': 'failed', 'summary': '等待 AI 服务回复', 'durationMs': 21.65, 'code': 'PROVIDER_UNAVAILABLE'}], 'sourceState': 'fresh', 'taskId': '0b9a6bb5bd254d5cad6bdca4055d3707', 'proposalId': None, 'error': 'PROVIDER_UNAVAILABLE', 'response': None, 'modelCalls': [{'requestedModel': 'test-only', 'returnedModel': None, 'systemFingerprint': None, 'usage': {'prompt_tokens': 20, 'completion_tokens': 20, 'total_tokens': 40}, 'profileRevision': 1}, {'requestedModel': 'test-only', 'returnedModel': None, 'systemFingerprint': None, 'usage': {'prompt_tokens': 20, 'completion_tokens': 20, 'total_tokens': 40}, 'profileRevision': 1}, {'requestedModel': 'test-only', 'returnedModel': None, 'systemFingerprint': None, 'usage': {'prompt_tokens': 20, 'completion_tokens': 20, 'total_tokens': 40}, 'profileRevision': 1}, {'requestedModel': 'test-only', 'profileRevision': 1}, {'requestedModel': 'test-only', 'profileRevision': 1}, {'requestedModel': 'test-only', 'profileRevision': 1}], 'diagnostics': {'schemaVersion': 1, 'stage': 'provider_complete', 'turn': 3, 'toolCalls': [{'name': 'room_read_management', 'status': 'completed', 'argumentsDigest': '130e4c29592000d07db33d74aa747ae63cfac27a51a733198c012168742f630a', 'keys': ['limit', 'section'], 'unknownKeys': False, 'turn': 0, 'automatic': True}, {'name': 'room_search_data', 'status': 'completed', 'argumentsDigest': '4c2f2e1e18c6c377a7d7897d8430c9b1185b17751e2283154da399a919dc82ab', 'keys': ['limit', 'query', 'types'], 'unknownKeys': False, 'turn': 0, 'types': ['config'], 'hasQuery': True}, {'name': 'room_read_data', 'status': 'completed', 'argumentsDigest': 'd64382d40a7f49d435a9fd07d2b5b9295a5666a37d99370386e66fc0a4a1e91f', 'keys': ['refs'], 'unknownKeys': False, 'turn': 1, 'referenceCount': 1}, {'name': 'pack_read_config_data', 'status': 'rejected', 'argumentsDigest': '44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a', 'keys': [], 'unknownKeys': False, 'turn': 2, 'code': 'INPUT_INVALID'}], 'errors': [{'stage': 'provider_complete', 'code': 'PROVIDER_UNAVAILABLE', 'exceptionType': 'ProviderError', 'frames': [{'module': 'onlinecoc_ai.coordinator', 'function': '_generate', 'line': 520}, {'module': 'onlinecoc_ai.providers.compatible', 'function': 'complete', 'line': 93}]}], 'outputFailures': [{'attempt': 1, 'code': 'INPUT_INVALID', 'path': '/*/*'}], 'preflightChecks': [], 'contextBudget': {'bytes': 71365, 'limitBytes': 262144, 'toolSchemaBytes': 5627, 'toolMessageBytes': 7317}}, 'queueTargetId': 'request:64f68c26f1aa4373a138e4eda4df8e4f', 'queueDigest': '9821d9de96440f1c21cf394bf59032b333a5569be96e2012da1d111ccd656bb1', 'correlationId': '499d89e56d395db45d6ce04fc8629d6e9f60cc0d58afd9ff70732058072dd7f7', 'queueStatus': 'active', 'archived': False, 'canArchive': True, 'canRestore': False, 'supersedes': [], 'sentAt': 1795245939.1827495})",
+      "passedCount": 0,
+      "pageErrors": []
+    }
+  ]
+}

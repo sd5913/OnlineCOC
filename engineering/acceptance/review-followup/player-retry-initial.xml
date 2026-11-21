@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="5.972" timestamp="2026-11-20T13:48:53.776303+08:00" hostname="LAPTOP-BIFSL64A"><testcase classname="engineering.acceptance.review-followup.test_player_retry" name="test_player_creation_retry_reuses_key_and_new_intent_gets_new_key" time="5.388"><failure message="AssertionError: assert None&#10; +  where None = &lt;built-in method get of dict object at 0x0000026E8178DD80&gt;('submissionKey')&#10; +    where &lt;built-in method get of dict object at 0x0000026E8178DD80&gt; = {'sessionId': 's1', 'text': '请制作带光的道具'}.get">browser_page = &lt;Page url='http://127.0.0.1:57701/ai-ui/conversation.html'&gt;
+
+    def test_player_creation_retry_reuses_key_and_new_intent_gets_new_key(browser_page):
+        page=browser_page;page.evaluate(BOOT,{'rows':1})
+        page.evaluate("""async()=&gt;{
+          records.s1.session.accessLevel='player';records.s1.session.owner='player1';client.view.accountId='player1';client.view.role='player';
+          window.failPlayer=true;const original=client.aiCommand;
+          client.aiCommand=async(op,args)=&gt;{if(op!=='ai.player.request')return original(op,args);calls.push({op,args});
+            if(failPlayer)throw Error('NETWORK_LOST');return {status:'committed',result:{requestId:'accepted'}};};
+          await ui.select('s1');
+        }""")
+        page.locator('#text').fill('请制作带光的道具')
+        page.locator('#player-request').click()
+        expect(page.locator('#status')).to_contain_text('NETWORK_LOST')
+        expect(page.locator('#text')).to_have_text('请制作带光的道具')
+        first=page.evaluate("calls.filter(c=&gt;c.op==='ai.player.request').at(-1).args")
+&gt;       assert first.get('submissionKey')
+E       AssertionError: assert None
+E        +  where None = &lt;built-in method get of dict object at 0x0000026E8178DD80&gt;('submissionKey')
+E        +    where &lt;built-in method get of dict object at 0x0000026E8178DD80&gt; = {'sessionId': 's1', 'text': '请制作带光的道具'}.get
+
+engineering\acceptance\review-followup\test_player_retry.py:25: AssertionError</failure></testcase></testsuite></testsuites>

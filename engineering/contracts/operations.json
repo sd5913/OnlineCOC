@@ -785,6 +785,42 @@
       "explicitHighRiskDigest": {
         "type": "string",
         "pattern": "^[0-9a-f]{64}$"
+      },
+      "cReview": {
+        "type": "object",
+        "properties": {
+          "basisRevision": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "basisDigest": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "reportDigest": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          }
+        },
+        "required": [
+          "basisRevision",
+          "basisDigest",
+          "reportDigest"
+        ],
+        "additionalProperties": false
+      },
+      "consultationReview": {
+        "type": "object",
+        "properties": {
+          "sourceDigest": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          }
+        },
+        "required": [
+          "sourceDigest"
+        ],
+        "additionalProperties": false
       }
     },
     "required": [

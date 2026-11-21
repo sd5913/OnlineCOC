@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="3" skipped="0" tests="8" time="30.270" timestamp="2026-11-21T09:21:21.671904+08:00" hostname="LAPTOP-BIFSL64A"><testcase classname="engineering.ai.tests.test_context_usability" name="test_old_parameters_survive_four_turn_window_without_factual_authority" time="1.330" /><testcase classname="engineering.ai.tests.test_context_usability" name="test_retained_requirements_recheck_original_provenance[cancelled]" time="1.111" /><testcase classname="engineering.ai.tests.test_context_usability" name="test_retained_requirements_recheck_original_provenance[session_deleted]" time="1.175"><failure message="AssertionError: {'requestId': '4a46673f6ab84c7db6d6ff57e87b9dc6', 'status': 'rejected', 'code': 'SESSION_VERSION_CONFLICT'}&#10;assert 'rejected' == 'committed'&#10;  &#10;  - committed&#10;  + rejected">application = &lt;onlinecoc_ai.api.Application object at 0x0000021E8CF44910&gt;
+change = 'session_deleted'
+
+    @pytest.mark.parametrize('change',['cancelled','session_deleted'])
+    def test_retained_requirements_recheck_original_provenance(application,change):
+        app=application;sid=session(app);first=submit(app,sid,'目标生命5')
+        for n in range(5):submit(app,sid,'细节'+str(n))
+        snap,_=capture(app,sid,'继续')
+        from onlinecoc_ai.intent_context import validate
+        validate(app.repository,snap[0])
+        if change=='cancelled':committed(command(app,'ai.request.cancel',{'requestId':first['requestId']}))
+&gt;       else:committed(command(app,'ai.session.delete',{'sessionId':sid,'revision':1}))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+engineering\ai\tests\test_context_usability.py:44: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+receipt = {'requestId': '4a46673f6ab84c7db6d6ff57e87b9dc6', 'status': 'rejected', 'code': 'SESSION_VERSION_CONFLICT'}
+
+    def committed(receipt):
+&gt;       assert receipt['status'] == 'committed', receipt
+E       AssertionError: {'requestId': '4a46673f6ab84c7db6d6ff57e87b9dc6', 'status': 'rejected', 'code': 'SESSION_VERSION_CONFLICT'}
+E       assert 'rejected' == 'committed'
+E         
+E         - committed
+E         + rejected
+
+engineering\ai\tests\test_entrypoints.py:34: AssertionError</failure></testcase><testcase classname="engineering.ai.tests.test_context_usability" name="test_retention_is_bounded_reports_omissions_and_respects_history_off" time="1.366"><failure message="AssertionError: {'requestId': '0ad5e368b0ea4b43a85f4547beabab30', 'status': 'rejected', 'code': 'SESSION_VERSION_CONFLICT'}&#10;assert 'rejected' == 'committed'&#10;  &#10;  - committed&#10;  + rejected">application = &lt;onlinecoc_ai.api.Application object at 0x0000021E8CF49220&gt;
+
+    def test_retention_is_bounded_reports_omissions_and_respects_history_off(application):
+        app=application;sid=session(app);other=session(app);submit(app,other,'禁止串会话的私密目标')
+        for n in range(18):submit(app,sid,str(n)+'界'*600)
+        _,payload=capture(app,sid,'继续')
+        earlier=payload['earlierRequirements'];assert earlier['omittedRequests']&gt;0 and len(canonical(earlier['items']))&lt;=12*1024
+        assert earlier['items'][0]['text'].startswith('0界') and '禁止串会话' not in str(payload)
+&gt;       committed(command(app,'ai.session.update',{'sessionId':sid,'revision':1,'historyTurns':0}))
+
+engineering\ai\tests\test_context_usability.py:54: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+receipt = {'requestId': '0ad5e368b0ea4b43a85f4547beabab30', 'status': 'rejected', 'code': 'SESSION_VERSION_CONFLICT'}
+
+    def committed(receipt):
+&gt;       assert receipt['status'] == 'committed', receipt
+E       AssertionError: {'requestId': '0ad5e368b0ea4b43a85f4547beabab30', 'status': 'rejected', 'code': 'SESSION_VERSION_CONFLICT'}
+E       assert 'rejected' == 'committed'
+E         
+E         - committed
+E         + rejected
+
+engineering\ai\tests\test_entrypoints.py:34: AssertionError</failure></testcase><testcase classname="engineering.ai.tests.test_context_usability" name="test_only_exact_previously_answered_choices_trigger_bounded_correction" time="21.281"><failure message="TimeoutError">coordinator = &lt;onlinecoc_ai.coordinator.Coordinator object at 0x0000021E8CF4A2C0&gt;
+identifier = '9ab3292b7ef142569836066631af7fdf', timeout = 20
+
+    async def wait_task(coordinator,identifier,timeout=20):
+        async with asyncio.timeout(timeout):
+            while True:
+                task=coordinator.repository.state()['tasks'][identifier]
+                if task['status'] not in ('queued','generating','validating'):return task
+&gt;               await asyncio.sleep(.02)
+
+engineering\ai\tests\test_coordinator.py:51: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+delay = 0.02, result = None
+
+    async def sleep(delay, result=None):
+        """Coroutine that completes after a given time (in seconds)."""
+        if delay &lt;= 0:
+            await __sleep0()
+            return result
+    
+        if math.isnan(delay):
+            raise ValueError("Invalid delay: NaN (not a number)")
+    
+        loop = events.get_running_loop()
+        future = loop.create_future()
+        h = loop.call_later(delay,
+                            futures._set_result_unless_cancelled,
+                            future, result)
+        try:
+&gt;           return await future
+                   ^^^^^^^^^^^^
+E           asyncio.exceptions.CancelledError
+
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\tasks.py:702: CancelledError
+
+The above exception was the direct cause of the following exception:
+
+application = &lt;onlinecoc_ai.api.Application object at 0x0000021E8CF4A3F0&gt;
+
+    def test_only_exact_previously_answered_choices_trigger_bounded_correction(application):
+        app=application;enable(app.host,public=True,kp=True,private=True);sid=session(app)
+        app.coordinator.context=Context(app.proposals,demand=True)
+        async def run():
+            async def ask(*_):return completion({'kind':'clarification','text':'请选恢复项。','choices':CHOICES})
+            app.coordinator.provider_factory=lambda _:Fake(ask);await app.coordinator.start()
+            try:
+                first=submit(app,sid,'给角色加1点');task=committed(command(app,'ai.request.dispatch',{'requestId':first['requestId']}))
+                assert (await wait_task(app.coordinator,task['taskId']))['status']=='needs_input'
+            finally:await app.coordinator.close()
+            calls=[]
+            async def follow(n,messages,tools):
+                calls.append(n)
+                if n==1:
+                    payload=json.loads(messages[1]['content']);assert payload['resolvedChoices'][0]['selectedText']==CHOICES['options'][0]['text']
+                    return completion({'kind':'clarification','text':'请再次选择。','choices':CHOICES})
+                assert json.loads(messages[-1]['content'])['error']['code']=='REPEATED_RESOLVED_CHOICE'
+                return completion({'kind':'plan','text':'已保留生命选项；当前仅整理方案，不执行。'})
+            app.coordinator.provider_factory=lambda _:Fake(follow);await app.coordinator.start()
+            try:
+                req=submit(app,sid,CHOICES['options'][0]['text']);task=committed(command(app,'ai.request.dispatch',{'requestId':req['requestId']}));result=await wait_task(app.coordinator,task['taskId'])
+                assert result['status']=='review_ready' and len(calls)==2,result
+                assert any(x['code']=='REPEATED_RESOLVED_CHOICE' for x in result['diagnostics']['outputFailures'])
+            finally:await app.coordinator.close()
+&gt;       asyncio.run(run())
+
+engineering\ai\tests\test_context_usability.py:86: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:204: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:127: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\base_events.py:719: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+engineering\ai\tests\test_context_usability.py:82: in run
+    req=submit(app,sid,CHOICES['options'][0]['text']);task=committed(command(app,'ai.request.dispatch',{'requestId':req['requestId']}));result=await wait_task(app.coordinator,task['taskId'])
+                                                                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+engineering\ai\tests\test_coordinator.py:47: in wait_task
+    async with asyncio.timeout(timeout):
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;Timeout [expired]&gt;
+exc_type = &lt;class 'asyncio.exceptions.CancelledError'&gt;
+exc_val = CancelledError(), exc_tb = &lt;traceback object at 0x0000021E8ABFD440&gt;
+
+    async def __aexit__(
+        self,
+        exc_type: type[BaseException] | None,
+        exc_val: BaseException | None,
+        exc_tb: TracebackType | None,
+    ) -&gt; bool | None:
+        assert self._state in (_State.ENTERED, _State.EXPIRING)
+    
+        if self._timeout_handler is not None:
+            self._timeout_handler.cancel()
+            self._timeout_handler = None
+    
+        if self._state is _State.EXPIRING:
+            self._state = _State.EXPIRED
+    
+            if self._task.uncancel() &lt;= self._cancelling and exc_type is not None:
+                # Since there are no new cancel requests, we're
+                # handling this.
+                if issubclass(exc_type, exceptions.CancelledError):
+&gt;                   raise TimeoutError from exc_val
+E                   TimeoutError
+
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\timeouts.py:114: TimeoutError</failure></testcase><testcase classname="engineering.ai.tests.test_context_usability" name="test_new_material_choice_is_not_suppressed" time="0.001" /><testcase classname="engineering.ai.tests.test_context_usability" name="test_configuration_request_preloads_only_authorized_templates[True]" time="1.215" /><testcase classname="engineering.ai.tests.test_context_usability" name="test_configuration_request_preloads_only_authorized_templates[False]" time="1.215" /></testsuite></testsuites>

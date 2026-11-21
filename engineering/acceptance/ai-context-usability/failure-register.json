@@ -1,0 +1,76 @@
+[
+  {
+    "id": "CTX-01",
+    "stage": "diagnosis",
+    "symptom": "Earlier user parameters disappear after four requests",
+    "cause": "Fixed request-count history with no extraction",
+    "handling": "Bounded original user request extraction; provenance recheck; no authority reuse",
+    "evidence": "test_context_usability.py and after-13 actual publication",
+    "status": "verified"
+  },
+  {
+    "id": "CTX-02",
+    "stage": "harness",
+    "symptom": "Initial 7/52 regressions failed",
+    "cause": "Test passed sessionId to request commands, used outdated session revision and restarted a stopped Coordinator object; one old test relied on implicit chat",
+    "handling": "Use exact request schema/current session revision/fresh Coordinator; explicit chat reference in old test",
+    "evidence": "../ai-chat-isolation/context-first.xml; context-second.xml; context-corrected.xml",
+    "status": "verified"
+  },
+  {
+    "id": "CTX-03",
+    "stage": "live-before",
+    "symptom": "genuine-choice treated search rows as sufficient ownership facts and gave misleading hp option",
+    "handling": "Independent audit rejects raw success; current implementation presents exact operation index; current owner must still be read",
+    "status": "residual-model-quality",
+    "evidence": "live-ledger.json attempts 5-9; independent-audit.json"
+  },
+  {
+    "id": "CTX-04",
+    "stage": "live-after",
+    "symptom": "genuine-choice falsely claimed no numeric mutation because only entity.patch schema was read",
+    "handling": "Preload complete operation names and add bounded feedback for observed false limitation; keep genuine choice",
+    "status": "deterministic-fix-verified-live-not-repeated",
+    "evidence": "technical-feedback-verified.xml; live-ledger.json attempts 13-17"
+  },
+  {
+    "id": "CTX-05",
+    "stage": "live-before",
+    "symptom": "Model sent roomMode to non-room searches twice",
+    "handling": "Hide server-controlled roomMode from default model tools; attach state mode for room queries locally",
+    "status": "verified",
+    "evidence": "test_chat_isolation.py; technical-feedback-verified.xml"
+  },
+  {
+    "id": "CTX-06",
+    "stage": "independent-audit",
+    "symptom": "Long-history primary trial also matched a guide example; raw oracle accepted false capability prose",
+    "handling": "Keep raw records and separate corrected metrics; run distinct bonus13 case without claiming paired uplift",
+    "status": "recorded",
+    "evidence": "independent-audit.json; live-after-13-1795224663994047400.json"
+  },
+  {
+    "id": "CTX-07",
+    "stage": "core",
+    "symptom": "Old batches list raised KeyError rulingId after policy change",
+    "handling": "Normalize batchId to batch:ID for receipt key; preserve exact source and audience checks",
+    "status": "verified",
+    "evidence": "early-failure.xml; ruling-key-fixed.xml"
+  },
+  {
+    "id": "CTX-08",
+    "stage": "harness",
+    "symptom": "technical-feedback-fixed selected nonexistent test_reliability.py",
+    "handling": "Correct file selection to test_command_reliability.py; no tests or model calls occurred in failed invocation",
+    "status": "verified",
+    "evidence": "technical-feedback-verified.xml"
+  },
+  {
+    "id": "CTX-09",
+    "stage": "core",
+    "symptom": "Three old assumptions failed: host-room sourceId; default channel discovery; history-dependent batch built after search-only",
+    "handling": "Assert host-room-state; explicitly forward selected chat message; read current target before candidate. Production guards unchanged.",
+    "status": "verified",
+    "evidence": "core-v2.xml; core-failures-fixed.xml"
+  }
+]

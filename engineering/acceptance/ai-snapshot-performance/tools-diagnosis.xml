@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="9" time="56.775" timestamp="2026-11-20T18:41:24.642022+08:00" hostname="LAPTOP-BIFSL64A"><testcase classname="tests.test_management_queries" name="test_bad_management_query_can_recover_into_checked_unpublished_draft[room_manage_catalog-args0]" time="9.901" /><testcase classname="tests.test_management_queries" name="test_bad_management_query_can_recover_into_checked_unpublished_draft[room_manage_catalog-args1]" time="11.544" /><testcase classname="tests.test_management_queries" name="test_bad_management_query_can_recover_into_checked_unpublished_draft[room_read_management-args2]" time="10.449" /><testcase classname="tests.test_management_queries" name="test_bad_management_query_can_recover_into_checked_unpublished_draft[room_read_management-args3]" time="10.646" /><testcase classname="tests.test_management_queries" name="test_bad_management_query_can_recover_into_checked_unpublished_draft[room_read_sessions-args4]" time="9.826" /><testcase classname="tests.test_management_queries" name="test_authoritative_templates_are_paginated_kp_only_and_changes_invalidate_proof" time="1.413" /><testcase classname="tests.test_management_queries" name="test_configuration_read_cannot_recover_from_disabled_external_scope" time="1.354" /><testcase classname="tests.test_management_queries" name="test_mixed_search_warns_model_without_relabeling_or_removing_evidence" time="0.000" /><testcase classname="tests.test_data_edits" name="test_append_from_partial_array_preserves_all_unread_data_and_is_repeatable" time="0.001"><failure message="AttributeError: 'types.SimpleNamespace' object has no attribute 'read_state'">def test_append_from_partial_array_preserves_all_unread_data_and_is_repeatable():
+&gt;       app,snapshot,pool=unit();before=copy.deepcopy(snapshot);r=ref(app,snapshot,pool,['items'])
+                                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+engineering\ai\tests\test_data_edits.py:33: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+engineering\ai\tests\test_data_edits.py:30: in ref
+    def ref(app,snapshot,pool,path):return data_edits.read(app,'kp',snapshot,{'file':'game.json','path':path,'limit':1},pool)['editRef']
+                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+engineering\ai\src\onlinecoc_ai\data_edits.py:40: in read
+    require(policy(app.repository)['allowDataQueries'],'DATA_QUERIES_DISABLED')
+            ^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+repository = namespace(state=&lt;function unit.&lt;locals&gt;.&lt;lambda&gt; at 0x00000207707BC250&gt;)
+
+    def policy(repository):
+&gt;       return {**DEFAULT_POLICY, **repository.read_state()['settings'].get('accessPolicy', {})}
+                                    ^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'types.SimpleNamespace' object has no attribute 'read_state'
+
+engineering\ai\src\onlinecoc_ai\access.py:12: AttributeError</failure></testcase></testsuite></testsuites>

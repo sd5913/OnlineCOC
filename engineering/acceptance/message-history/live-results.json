@@ -1,0 +1,383 @@
+{
+  "limits": {
+    "providerCalls": 16,
+    "tokens": 200000,
+    "callsPerTask": 4
+  },
+  "calls": [
+    {
+      "number": 1,
+      "requestedModel": "deepseek-flash",
+      "reserved": 8736,
+      "status": "completed",
+      "usage": {
+        "prompt_tokens": 1356,
+        "completion_tokens": 166,
+        "total_tokens": 1522
+      },
+      "returnedModel": "deepseek-flash",
+      "seconds": 1.502
+    },
+    {
+      "number": 2,
+      "requestedModel": "deepseek-flash",
+      "reserved": 10015,
+      "status": "completed",
+      "usage": {
+        "prompt_tokens": 1811,
+        "completion_tokens": 51,
+        "total_tokens": 1862
+      },
+      "returnedModel": "deepseek-flash",
+      "seconds": 0.593
+    },
+    {
+      "number": 3,
+      "requestedModel": "deepseek-flash",
+      "reserved": 8292,
+      "status": "completed",
+      "usage": {
+        "prompt_tokens": 1202,
+        "completion_tokens": 54,
+        "total_tokens": 1256
+      },
+      "returnedModel": "deepseek-flash",
+      "seconds": 0.675
+    },
+    {
+      "number": 4,
+      "requestedModel": "deepseek-flash",
+      "reserved": 8745,
+      "status": "completed",
+      "usage": {
+        "prompt_tokens": 1336,
+        "completion_tokens": 13,
+        "total_tokens": 1349
+      },
+      "returnedModel": "deepseek-flash",
+      "seconds": 0.618
+    },
+    {
+      "number": 5,
+      "requestedModel": "deepseek-flash",
+      "reserved": 31789,
+      "status": "completed",
+      "usage": {
+        "prompt_tokens": 6670,
+        "completion_tokens": 96,
+        "total_tokens": 6766
+      },
+      "returnedModel": "deepseek-flash",
+      "seconds": 1.227
+    },
+    {
+      "number": 6,
+      "requestedModel": "deepseek-flash",
+      "reserved": 34467,
+      "status": "completed",
+      "usage": {
+        "prompt_tokens": 7339,
+        "completion_tokens": 40,
+        "total_tokens": 7379
+      },
+      "returnedModel": "deepseek-flash",
+      "seconds": 1.063
+    },
+    {
+      "number": 7,
+      "requestedModel": "deepseek-flash",
+      "reserved": 36003,
+      "status": "completed",
+      "usage": {
+        "prompt_tokens": 7830,
+        "completion_tokens": 175,
+        "total_tokens": 8005
+      },
+      "returnedModel": "deepseek-flash",
+      "seconds": 0.97
+    },
+    {
+      "number": 8,
+      "requestedModel": "deepseek-flash",
+      "reserved": 37761,
+      "status": "completed",
+      "usage": {
+        "prompt_tokens": 8392,
+        "completion_tokens": 222,
+        "total_tokens": 8614
+      },
+      "returnedModel": "deepseek-flash",
+      "seconds": 2.156
+    },
+    {
+      "number": 9,
+      "requestedModel": "deepseek-flash",
+      "reserved": 32763,
+      "status": "completed",
+      "usage": {
+        "prompt_tokens": 6901,
+        "completion_tokens": 114,
+        "total_tokens": 7015
+      },
+      "returnedModel": "deepseek-flash",
+      "seconds": 1.506
+    },
+    {
+      "number": 10,
+      "requestedModel": "deepseek-flash",
+      "reserved": 35485,
+      "status": "completed",
+      "usage": {
+        "prompt_tokens": 7571,
+        "completion_tokens": 171,
+        "total_tokens": 7742
+      },
+      "returnedModel": "deepseek-flash",
+      "seconds": 2.462
+    }
+  ],
+  "cases": [
+    {
+      "name": "published-player-history",
+      "status": "passed",
+      "tasks": [
+        {
+          "taskId": "919722323cec4b89b9d6e3fc04a93e00",
+          "status": "review_ready",
+          "error": null,
+          "usage": 3384,
+          "calls": 2,
+          "responseDigest": "f23798a68284d0aa5ad1ace54872a785bada383d51c44689fa560567c5cc362f"
+        },
+        {
+          "taskId": "25f403b89a3444c2b69c68175e885a78",
+          "status": "review_ready",
+          "error": null,
+          "usage": 2605,
+          "calls": 2,
+          "responseDigest": "0bb7bec740608bd1333d5b8cb1fa5b91bffce72059a292329a0d174f93b41433"
+        }
+      ],
+      "legacyRetained": true,
+      "revokedSourceNotReused": true,
+      "missingTimeNotInvented": true
+    },
+    {
+      "name": "explicit-goal-completion",
+      "status": "passed",
+      "tasks": [
+        {
+          "taskId": "c212e25198ef40879e8f9a7c9e8a3910",
+          "status": "review_ready",
+          "error": null,
+          "usage": 30764,
+          "calls": 4,
+          "responseDigest": "49e0cfa8540040e707c239662c9ad6ef34dfa980b01d9a00d9315d8de26f1831"
+        },
+        {
+          "taskId": "8e7a535d0f444532b8c1eba60af0eb3a",
+          "status": "review_ready",
+          "error": null,
+          "usage": 14757,
+          "calls": 2,
+          "responseDigest": "45deb3849a9985c32520977af30f964c83d6b8464089376fbbf4e35d415235c8"
+        }
+      ],
+      "explicitPredecessorArchived": true,
+      "independentGoalNotMerged": true,
+      "committedActions": 2
+    }
+  ],
+  "latency": [
+    {
+      "providerCall": 1,
+      "route": "/api/v1/ai/tasks",
+      "seconds": 0.0261,
+      "status": 200
+    },
+    {
+      "providerCall": 1,
+      "route": "/api/v1/ai/rulings",
+      "seconds": 0.0058,
+      "status": 200
+    },
+    {
+      "providerCall": 1,
+      "route": "/api/v1/view",
+      "seconds": 0.0048,
+      "status": 200
+    },
+    {
+      "providerCall": 2,
+      "route": "/api/v1/ai/tasks",
+      "seconds": 0.0101,
+      "status": 200
+    },
+    {
+      "providerCall": 2,
+      "route": "/api/v1/ai/rulings",
+      "seconds": 0.0045,
+      "status": 200
+    },
+    {
+      "providerCall": 2,
+      "route": "/api/v1/view",
+      "seconds": 0.0034,
+      "status": 200
+    },
+    {
+      "providerCall": 3,
+      "route": "/api/v1/ai/tasks",
+      "seconds": 0.0295,
+      "status": 200
+    },
+    {
+      "providerCall": 3,
+      "route": "/api/v1/ai/rulings",
+      "seconds": 0.0043,
+      "status": 200
+    },
+    {
+      "providerCall": 3,
+      "route": "/api/v1/view",
+      "seconds": 0.0035,
+      "status": 200
+    },
+    {
+      "providerCall": 4,
+      "route": "/api/v1/ai/tasks",
+      "seconds": 0.0149,
+      "status": 200
+    },
+    {
+      "providerCall": 4,
+      "route": "/api/v1/ai/rulings",
+      "seconds": 0.0044,
+      "status": 200
+    },
+    {
+      "providerCall": 4,
+      "route": "/api/v1/view",
+      "seconds": 0.0034,
+      "status": 200
+    },
+    {
+      "providerCall": 5,
+      "route": "/api/v1/ai/tasks",
+      "seconds": 0.0162,
+      "status": 200
+    },
+    {
+      "providerCall": 5,
+      "route": "/api/v1/ai/rulings",
+      "seconds": 0.0051,
+      "status": 200
+    },
+    {
+      "providerCall": 5,
+      "route": "/api/v1/view",
+      "seconds": 0.0042,
+      "status": 200
+    },
+    {
+      "providerCall": 6,
+      "route": "/api/v1/ai/tasks",
+      "seconds": 0.0123,
+      "status": 200
+    },
+    {
+      "providerCall": 6,
+      "route": "/api/v1/ai/rulings",
+      "seconds": 0.0049,
+      "status": 200
+    },
+    {
+      "providerCall": 6,
+      "route": "/api/v1/view",
+      "seconds": 0.0045,
+      "status": 200
+    },
+    {
+      "providerCall": 7,
+      "route": "/api/v1/ai/tasks",
+      "seconds": 0.023,
+      "status": 200
+    },
+    {
+      "providerCall": 7,
+      "route": "/api/v1/ai/rulings",
+      "seconds": 0.0086,
+      "status": 200
+    },
+    {
+      "providerCall": 7,
+      "route": "/api/v1/view",
+      "seconds": 0.0192,
+      "status": 200
+    },
+    {
+      "providerCall": 8,
+      "route": "/api/v1/ai/tasks",
+      "seconds": 0.0174,
+      "status": 200
+    },
+    {
+      "providerCall": 8,
+      "route": "/api/v1/ai/rulings",
+      "seconds": 0.0039,
+      "status": 200
+    },
+    {
+      "providerCall": 8,
+      "route": "/api/v1/view",
+      "seconds": 0.0031,
+      "status": 200
+    },
+    {
+      "providerCall": 9,
+      "route": "/api/v1/ai/tasks",
+      "seconds": 0.0894,
+      "status": 200
+    },
+    {
+      "providerCall": 9,
+      "route": "/api/v1/ai/rulings",
+      "seconds": 0.0222,
+      "status": 200
+    },
+    {
+      "providerCall": 9,
+      "route": "/api/v1/view",
+      "seconds": 0.0041,
+      "status": 200
+    },
+    {
+      "providerCall": 10,
+      "route": "/api/v1/ai/tasks",
+      "seconds": 0.0407,
+      "status": 200
+    },
+    {
+      "providerCall": 10,
+      "route": "/api/v1/ai/rulings",
+      "seconds": 0.0212,
+      "status": 200
+    },
+    {
+      "providerCall": 10,
+      "route": "/api/v1/view",
+      "seconds": 0.004,
+      "status": 200
+    }
+  ],
+  "usageTokens": 51510,
+  "reservedOrUsedTokens": 51510,
+  "formalDataChanged": false,
+  "model": "deepseek-flash",
+  "sourceConfigDigest": "c8f5dd3721527fd1cefa6d2682eb5120d429c5613d34b1fd81c0eab528c1a546",
+  "providerCalls": 10,
+  "sourceConfigUnchanged": true,
+  "successes": 2,
+  "total": 2,
+  "latencyPassed": true
+}

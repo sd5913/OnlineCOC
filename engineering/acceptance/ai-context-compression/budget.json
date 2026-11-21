@@ -1,0 +1,7 @@
+{
+  "externalAttemptLimit": 60,
+  "totalTokenLimit": 1000000,
+  "scope": "ISSUE-023 semantic compression and actual Stumpsville CRUD; no prior-round calls counted",
+  "unknownUsage": "charge full conservative reserve",
+  "amendment": "Package coordinator confirmed higher self-imposed cap under original user API-test authorization, 2026-11-21"
+}

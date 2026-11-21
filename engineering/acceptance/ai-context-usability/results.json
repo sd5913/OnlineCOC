@@ -1,0 +1,58 @@
+{
+  "coreInitial": {
+    "tests": 669,
+    "failures": 5,
+    "errors": 0,
+    "skipped": 0
+  },
+  "coreFailureRecheck": {
+    "tests": 5,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "coreFailures": [
+    {
+      "file": "engineering.ai.tests.test_access_batches",
+      "name": "test_batch_stale_reject_auto_and_bypass_forbidden",
+      "message": "KeyError: 'rulingId'"
+    },
+    {
+      "file": "engineering.ai.tests.test_atomic_recovery",
+      "name": "test_revoked_sources_hide_batch_diagnostics_and_receipt_payload",
+      "message": "KeyError: 'rulingId'"
+    },
+    {
+      "file": "engineering.ai.tests.test_generation_snapshot",
+      "name": "test_prior_world_changes_and_inflight_chat_do_not_break_first_tool",
+      "message": "AssertionError: {'taskId': 'd8b737e4ca304d08913753b02e96f868', 'requestId': 'd8b737e4ca304d08913753b02e96f868', 'account': 'kp', 'profile': {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'de"
+    },
+    {
+      "file": "engineering.ai.tests.test_policies",
+      "name": "test_admin_room_scope_is_default_and_revocable_without_player_escalation",
+      "message": "AssertionError: assert ([{'ref': {'sourceId': 'host-room-state', 'kind': 'room', 'id': 'b97d39e7892a4279e8d7130de9bd6806d97848060778560fdef7ca...7c24eb9751975023d3d855d16e55a41763a2dda0a317', ...}, 'label': '/roomId', 'v"
+    },
+    {
+      "file": "engineering.ai.tests.test_task_diagnostics",
+      "name": "test_channel_reference_resolves_actual_id_before_chat",
+      "message": "AssertionError: {'taskId': 'd6933473fb5b4e8ca8a5302aaed9a921', 'requestId': 'd6933473fb5b4e8ca8a5302aaed9a921', 'account': 'kp', 'profile': {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'de"
+    }
+  ],
+  "finalRelevantCombination": {
+    "tests": 53,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "finalInheritanceAndChoice": {
+    "tests": 23,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "note": "Full initial run used its source manifest. All five initial failures passed exact final recheck. Later additions and changed behavior passed the final relevant combinations; this is not a single full-suite rerun on final v2 and duplicate counts are not summed.",
+  "finalSnapshot": "engineering/acceptance/ai-chat-interface-snapshot/v2/source.json",
+  "realModelAudit": "independent-audit.json",
+  "apiLedger": "live-ledger.json",
+  "residual": "The ambiguous numerical request still has two independently identified poor model responses. Technical fixes passed deterministic validation but that real-provider scenario was not rerun."
+}

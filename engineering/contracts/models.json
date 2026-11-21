@@ -1577,6 +1577,52 @@
           "explicitHighRiskDigest": {
             "type": "string",
             "pattern": "^[a-f0-9]{64}$"
+          },
+          "cReview": {
+            "$ref": "#/$defs/CReview"
+          },
+          "cAssessment": {
+            "$ref": "#/$defs/CAssessment"
+          },
+          "consultationReview": {
+            "type": "object",
+            "properties": {
+              "sourceDigest": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              }
+            },
+            "required": [
+              "sourceDigest"
+            ],
+            "additionalProperties": false
+          },
+          "consultationAssessment": {
+            "type": "object",
+            "properties": {
+              "requiresAcceptance": {
+                "type": "boolean"
+              },
+              "sourceCount": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "sourceDigest": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "notice": {
+                "type": "string",
+                "maxLength": 1000
+              }
+            },
+            "required": [
+              "requiresAcceptance",
+              "sourceCount",
+              "sourceDigest",
+              "notice"
+            ],
+            "additionalProperties": false
           }
         },
         "required": [
@@ -2680,6 +2726,60 @@
           "createdAt"
         ],
         "additionalProperties": false
+      },
+      "CReview": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "basisRevision": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "basisDigest": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "reportDigest": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          }
+        },
+        "required": [
+          "basisRevision",
+          "basisDigest",
+          "reportDigest"
+        ]
+      },
+      "CAssessment": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "basisRevision": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "basisDigest": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "reportDigest": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "requiresAcceptance": {
+            "type": "boolean"
+          },
+          "adoptable": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "basisRevision",
+          "basisDigest",
+          "reportDigest",
+          "requiresAcceptance",
+          "adoptable"
+        ]
       }
     }
   },

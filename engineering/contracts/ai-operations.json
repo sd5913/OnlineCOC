@@ -349,6 +349,17 @@
         "type": "string",
         "minLength": 1,
         "maxLength": 8000
+      },
+      "submissionKey": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 200
+      },
+      "replyToRequestId": {
+        "type": "string",
+        "minLength": 32,
+        "maxLength": 32,
+        "pattern": "^[a-f0-9]{32}$"
       }
     },
     "required": [
@@ -429,6 +440,19 @@
         "type": "string",
         "minLength": 64,
         "maxLength": 64
+      },
+      "consultationReview": {
+        "type": "object",
+        "properties": {
+          "sourceDigest": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          }
+        },
+        "required": [
+          "sourceDigest"
+        ],
+        "additionalProperties": false
       }
     },
     "required": [
@@ -529,6 +553,22 @@
             }
           }
         }
+      },
+      "cReview": {
+        "$ref": "#/$defs/CReview"
+      },
+      "consultationReview": {
+        "type": "object",
+        "properties": {
+          "sourceDigest": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          }
+        },
+        "required": [
+          "sourceDigest"
+        ],
+        "additionalProperties": false
       }
     }
   },
@@ -587,6 +627,11 @@
         "type": "string",
         "minLength": 1,
         "maxLength": 8000
+      },
+      "submissionKey": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 200
       }
     },
     "oneOf": [
@@ -595,8 +640,17 @@
           "requestId"
         ],
         "not": {
-          "required": [
-            "text"
+          "anyOf": [
+            {
+              "required": [
+                "text"
+              ]
+            },
+            {
+              "required": [
+                "submissionKey"
+              ]
+            }
           ]
         }
       },
@@ -697,6 +751,11 @@
               },
               "context": {
                 "type": "object"
+              },
+              "correlationKey": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
               }
             }
           },
@@ -726,5 +785,82 @@
         "maxLength": 4000
       }
     }
+  },
+  "ai.queue.archive": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "targetId",
+      "digest",
+      "archived"
+    ],
+    "properties": {
+      "targetId": {
+        "type": "string",
+        "pattern": "^(request|batch|proposal|player|knowledge):[a-f0-9]{32}$",
+        "not": {
+          "pattern": "[\\r\\n]"
+        }
+      },
+      "digest": {
+        "type": "string",
+        "minLength": 64,
+        "maxLength": 64,
+        "pattern": "^[a-f0-9]{64}$"
+      },
+      "archived": {
+        "type": "boolean"
+      },
+      "reason": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 500
+      }
+    },
+    "allOf": [
+      {
+        "if": {
+          "properties": {
+            "archived": {
+              "const": true
+            }
+          },
+          "required": [
+            "archived"
+          ]
+        },
+        "then": {
+          "required": [
+            "reason"
+          ]
+        }
+      }
+    ]
+  },
+  "ai.c_basis.update": {
+    "$ref": "#/$defs/CReviewBasis"
+  },
+  "ai.room.initialize": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "scopeId": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 200
+      },
+      "profileId": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "maxLength": 200
+      }
+    },
+    "required": [
+      "scopeId",
+      "profileId"
+    ]
   }
 }

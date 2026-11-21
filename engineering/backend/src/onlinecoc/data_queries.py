@@ -40,7 +40,7 @@ def row(state, source, kind, key, revision, label, data, visibility, authority):
             'label': str(label)[:160], 'visibility': visibility, 'authority': authority, 'data': value}
 
 
-def rows(host, state, account, initiator=None, external=False, kinds=KINDS, *, read_scope=None):
+def rows(host, state, account, initiator=None, external=False, kinds=KINDS, *, read_scope=None, room_mode='records'):
     principals = list(dict.fromkeys([account, initiator or account]))
     members = [member(state, p) for p in principals]
     policy = state['aiControl']['settings']['externalSources']
@@ -112,11 +112,15 @@ def rows(host, state, account, initiator=None, external=False, kinds=KINDS, *, r
                 add('event', message['messageId'], digest(bundle), '行动：'+card['ruleId'], bundle, visibility, 'published-action-card')
     if full_room and 'room' in kinds and (not external or all(policy.get(k) for k in ('public','kp','private'))):
         from .room_read import fragments
-        for data in fragments(state):
+        room=state
+        if room_mode=='state':
+            room={k:v for k,v in state.items() if k not in ('chat','commands','audit','outbox')}
+            room['aiControl']={k:v for k,v in state['aiControl'].items() if k in ('schemaVersion','scopeId','packBinding','settings','memoryFacts')}
+        for data in fragments(room):
             key = digest([data['path'],data.get('textOffset')])
             label = '/' + '/'.join(str(p).replace('~','~0').replace('/','~1') for p in data['path'])
             if 'textOffset' in data:label += ' ['+str(data['textOffset'])+']'
-            add('room',key,digest(data),label,data,'kp','host-room','host-room')
+            add('room',key,digest(data),label,data,'kp','host-room','host-room-state' if room_mode=='state' else 'host-room')
     adapter = getattr(host, 'ai_data_adapter', None)
     if adapter and set(getattr(adapter,'kinds',KINDS))&set(kinds):
         # Administrator-installed local adapter. Model input never selects executable code or paths.
@@ -149,7 +153,7 @@ def query(host, state, account, operation, args, *, initiator=None, external=Fal
         initiator = player
     require(type(args) is dict and operation in ('search','read','chat','case'), 'INPUT_INVALID')
     common = {'limit','cursor'}
-    allowed = {'search':common|{'types','query'}, 'read':{'refs','fields'},
+    allowed = {'search':common|{'types','query','roomMode'}, 'read':{'refs','fields'},
                'chat':common|{'channelId','after','before','query'}, 'case':{'refs'}}[operation]
     require(not set(args)-allowed, 'INPUT_INVALID')
     limit = args.get('limit',20)
@@ -160,7 +164,14 @@ def query(host, state, account, operation, args, *, initiator=None, external=Fal
     requested=args.get('types',defaults) if operation=='search' else ['channel','chat'] if operation=='chat' else [r.get('kind') for r in args.get('refs',[]) if type(r) is dict]
     require(type(requested) is list and all(type(k) is str and k in KINDS for k in requested),'INPUT_INVALID')
     require('room' not in requested or read_scope=='kp-room','PERMISSION_DENIED')
-    values = rows(host,state,account,initiator,external,requested,read_scope=read_scope)
+    room_mode=args.get('roomMode','records')
+    if operation in ('read','case'):
+        sources={r.get('sourceId') for r in args.get('refs',[]) if isinstance(r,dict) and r.get('kind')=='room'}
+        require(not {'host-room','host-room-state'}<=sources,'INPUT_INVALID')
+        if 'host-room-state' in sources:room_mode='state'
+    require(room_mode in ('records','state'),'INPUT_INVALID')
+    require('roomMode' not in args or ('room' in requested and read_scope=='kp-room'),'INPUT_INVALID')
+    values = rows(host,state,account,initiator,external,requested,read_scope=read_scope,room_mode=room_mode)
     if operation == 'search':
         kinds=args.get('types',list(KINDS))
         require(type(kinds) is list and 1<=len(kinds)<=len(KINDS) and all(k in KINDS for k in kinds), 'INPUT_INVALID')

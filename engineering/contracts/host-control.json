@@ -31,7 +31,7 @@
         "instanceId",
         "pid",
         "dataDirectory",
-        "items: accountId/loginName/nickname/disabled/roomRole"
+        "items: accountId/loginName/nickname/disabled/roomRole/roomActive/pending (deleted tombstones omitted)"
       ]
     },
     "POST /api/v1/host-control/accounts": {
@@ -45,7 +45,8 @@
           "operation": {
             "enum": [
               "create",
-              "password"
+              "password",
+              "delete"
             ]
           },
           "accountId": {
@@ -57,13 +58,20 @@
             "type": "string",
             "minLength": 8,
             "maxLength": 1024
+          },
+          "role": {
+            "enum": ["kp", "player"],
+            "default": "player"
           }
         },
         "required": [
           "requestId",
           "operation",
-          "accountId",
-          "password"
+          "accountId"
+        ],
+        "allOf": [
+          {"if": {"properties": {"operation": {"enum": ["create", "password"]}}}, "then": {"required": ["password"]}, "else": {"not": {"required": ["password"]}}},
+          {"if": {"properties": {"operation": {"enum": ["password", "delete"]}}}, "then": {"not": {"required": ["role"]}}}
         ],
         "additionalProperties": false
       },
@@ -73,20 +81,32 @@
         "accountId",
         "status",
         "actor",
-        "time"
+        "time",
+        "roomRole/roomActive/disabled/deleted/revokedSessions on success",
+        "requestedRole on create",
+        "code on rejected"
       ]
     },
     "GET /api/v1/host-control/receipts/{requestId}": {
-      "returns": "sanitized committed receipt or unknown; current local authority required"
+      "returns": "sanitized committed/rejected/pending receipt or unknown; current local authority required; pending HTTP 503, rejected HTTP 404 or 409"
     }
   },
   "semantics": {
-    "sameRequestId": "returns first committed result; changed password is not applied; changed operation or account conflicts",
+    "sameRequestId": "returns first terminal result; changed password is not applied; changed operation, account or create role conflicts; pending intent recovers before replay",
     "maxReceipts": 10000,
     "receiptEviction": false,
     "passwordReset": "atomic password hash replacement and target session revocation, including target KP sessions",
-    "creation": "identity only; bind room membership separately",
+    "creation": "identity and active room member; role defaults to player; committed only after both stores are ready",
+    "deletion": "disable identity, revoke all sessions, deactivate member and increment authorizationEpoch; preserve memberId and historical references; reserve deleted accountId",
+    "lastKpProtection": "LAST_KP_REQUIRED when deletion leaves no active, login-capable KP",
+    "recovery": "durable identity intent blocks target login until room change and final identity receipt complete; startup and request retry finish pending work",
     "passwordPlaintextPersisted": false,
     "loginIdRename": false
+  },
+  "client": {
+    "command": "run.py --data-dir <host-data> host-account-request [--host-control-dir <discovery>]",
+    "input": "stdin UTF-8 JSON, at most 16384 bytes: operation list, receipt with requestId, or exact account mutation DTO",
+    "output": "one safe JSON object on stdout; exit 0 success or unknown, exit 2 error/rejected/pending",
+    "discovery": "match canonical dataDirectory then verify live instanceId/pid/dataDirectory; no proxies or redirects; HOST_NOT_RUNNING if no live match, HOST_CONTROL_INSTANCE_AMBIGUOUS if multiple"
   }
 }

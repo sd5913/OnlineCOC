@@ -29,6 +29,17 @@ def pure(checks):
         assert found.get('requestedBy') == ('p1' if kind in {'draft', 'request', 'event'} else None)
     assert state == before
     checks.append('五类来源按真实记录解析，原申请人与当前KP分离，原裁决不变')
+    request_source = ai_review.source(state, view, {'kind': 'request', 'id': 'r1'})
+    event_source = ai_review.source(state, view, {'kind': 'event', 'id': 'e1', 'account': 'p1'})
+    assert request_source['correlationKey'] == event_source['correlationKey']
+    assert 'correlationKey' not in ai_review.source(state, view, {'kind': 'draft', 'id': 'p1'})
+    view['waits']['w1']['flowId'] = 'f1'
+    assert ai_review.source(state, view, {'kind': 'wait', 'id': 'w1'})['correlationKey'] == ai_review.source(state, view, {'kind': 'flow', 'id': 'f1'})['correlationKey']
+    state['requests']['r2'] = {**state['requests']['r1'], 'id': 'r2'}
+    assert ai_review.source(state, view, {'kind': 'request', 'id': 'r2'})['correlationKey'] != request_source['correlationKey']
+    state['events']['p1'].append({'id': 'orphan', 'requestId': 'missing', 'account': 'p1'})
+    assert 'correlationKey' not in ai_review.source(state, view, {'kind': 'event', 'id': 'orphan', 'account': 'p1'})
+    checks.append('仅真实request/event和flow/wait关联共用事件键；同文不同请求、重复建角及悬空事件不误合并')
     invalid = [{'kind': {}, 'id': 'x'}, {'kind': 'request', 'id': 'missing'},
                {'kind': 'request', 'id': 'r1', 'account': 'kp'}, {'kind': 'event', 'id': 'e1', 'account': 'unknown'}]
     for args in invalid:
@@ -144,9 +155,10 @@ def integration(output, checks):
             print(json.dumps({'source': source['kind'], 'status': 'review_ready'}, ensure_ascii=False), flush=True)
             item = data['items'][-1]
             assert item['text'] != text and item.get('reviewSource'), item
-            assert item['reviewSource']['category'] == source['kind']
+            assert item['reviewSource']['category'] == ('request' if source['kind'] == 'event' else source['kind'])
             assert p1.request('/api/v1/ai/sessions/'+submitted['sessionId'], allow_error=True).get('code')
-        checks.append('五类真实裁决均进入KP私有引用会话，同动作恢复和连续点击复用会话')
+        assert reviews['event']['sessionId'] == reviews['request']['sessionId']
+        checks.append('五类真实裁决进入KP私有审核；同request事件及连续转交复用会话，不重复提交')
         view = kp.request('/api/v1/view'); state = kp.state()
         assert p1.state()['character']['numbers'] == baseline
         assert next(r for r in state['requests'] if r['id'] == rid)['status'] == 'pending'

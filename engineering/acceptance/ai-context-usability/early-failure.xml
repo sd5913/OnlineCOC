@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="3.375" timestamp="2026-11-21T09:31:58.968678+08:00" hostname="LAPTOP-BIFSL64A"><testcase classname="engineering.ai.tests.test_access_batches" name="test_batch_stale_reject_auto_and_bypass_forbidden" time="1.586"><failure message="KeyError: 'rulingId'">self = &lt;onlinecoc_ai.rulings.Rulings object at 0x0000021A5908C2F0&gt;
+account = 'kp'
+room = {'schemaVersion': 4, 'knowledge': {'schemaVersion': 1, 'scopeId': 'a6f0e745-7b0e-4e87-a01b-438f50c6e90c', 'revision': ... '0d1a6cd234b9b69dbbb1b15d8d89bfb94ceda2823895ce447ad49b7cdbdb8ebc'}, 'proposalHeads': {}, ...}, 'roomId': 'demo', ...}
+item = {'batchId': '632a4a7ec9c0498384480a6f3bcbdeed', 'sessionId': '35d49f84e5f045fbaa379d4ece6ffac9', 'requestId': 'c49a3f7d9108414486b4e886f32a1187', 'creator': 'kp', ...}
+context = {'schemaVersion': 1, 'scopeId': '52c556fe035f4595a63ac2615c71bbe4', 'initiator': 'kp', 'reviewPrincipal': 'kp', ...}
+shared = None
+
+    def redact_stale(self, account, room, item, context, shared=None):
+        original=item['summary']
+        try:
+            from .history import assess,NOTICE
+&gt;           stale=assess(self.host,self.repository,room,context,shared=shared)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+engineering\ai\src\onlinecoc_ai\rulings.py:23: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+engineering\ai\src\onlinecoc_ai\history.py:157: in assess
+    validate_context(host,repository,room,permissions)
+engineering\ai\src\onlinecoc_ai\access.py:46: in validate_context
+    require(facts['aiPolicyRevision'] == current['revision'], 'SESSION_ACCESS_CHANGED')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+condition = False, code = 'SESSION_ACCESS_CHANGED', message = '', path = ''
+
+    def require(condition, code="INPUT_INVALID", message="", path=""):
+        if not condition:
+&gt;           raise AiError(code, message, path)
+E           onlinecoc_ai.errors.AiError: SESSION_ACCESS_CHANGED
+
+engineering\ai\src\onlinecoc_ai\errors.py:15: AiError
+
+During handling of the above exception, another exception occurred:
+
+application = &lt;onlinecoc_ai.api.Application object at 0x0000021A58C0BCB0&gt;
+
+    def test_batch_stale_reject_auto_and_bypass_forbidden(application):
+        app=application;b=batch(app)
+        room=app.host.state();room['entities']['actor-one']['name']='外部修改';app.host.commit(room)
+        assert decide(app,b)['code']=='BATCH_STALE'
+        assert committed(decide(app,b,'reject'))['status']=='rejected'
+&gt;       access(app,auto=True);b=batch(app);assert b['status']=='completed'
+                                ^^^^^^^^^^
+
+engineering\ai\tests\test_access_batches.py:127: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+engineering\ai\tests\test_access_batches.py:104: in batch
+    return next(b for b in app.batches.list('kp')['items'] if b['batchId']==bid)
+                           ^^^^^^^^^^^^^^^^^^^^^^
+engineering\ai\src\onlinecoc_ai\batches.py:160: in list
+    return {'items':sorted([self.public(account,b) for b in self.repository.state()['settings'].get('batches',{}).values()],key=lambda b:b['createdAt'],reverse=True)}
+                            ^^^^^^^^^^^^^^^^^^^^^^
+engineering\ai\src\onlinecoc_ai\batches.py:164: in public
+    return self.app.rulings.redact_stale(account,self.host.state(),item,record['context'])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+engineering\ai\src\onlinecoc_ai\rulings.py:56: in redact_stale
+    if restore(self.repository,room,account,item,context,original):
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+engineering\ai\src\onlinecoc_ai\ruling_history.py:18: in restore
+    proof=state['settings'].get('rulingDeliveries',{}).get(key(state,account,item))
+                                                           ^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+state = {'schemaVersion': 1, 'scopeId': '52c556fe035f4595a63ac2615c71bbe4', 'requests': {'c49a3f7d9108414486b4e886f32a1187': {...4aa388458a4d74ed0', 'scopeId': '52c556fe035f4595a63ac2615c71bbe4', 'sourceKind': 'manual', ...}}, 'proposals': {}, ...}
+account = 'kp'
+item = {'batchId': '632a4a7ec9c0498384480a6f3bcbdeed', 'sessionId': '35d49f84e5f045fbaa379d4ece6ffac9', 'requestId': 'c49a3f7d9108414486b4e886f32a1187', 'creator': 'kp', ...}
+
+    def key(state,account,item):
+&gt;       return digest([state['scopeId'],account,item['rulingId'],item['digest'],item.get('revision'),item.get('sessionId')])
+                                                ^^^^^^^^^^^^^^^^
+E       KeyError: 'rulingId'
+
+engineering\ai\src\onlinecoc_ai\ruling_history.py:7: KeyError</failure></testcase></testsuite></testsuites>

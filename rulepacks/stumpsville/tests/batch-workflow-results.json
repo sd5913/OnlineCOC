@@ -1,0 +1,67 @@
+{
+  "checkedAt": "2026-11-21T16:03:52.062535+08:00",
+  "checks": [
+    "wrong-slot-repaired-without-human-input-or-game-mutation",
+    "real-ruling-displays-three-actions-and-preflight",
+    "approved-batch-commits-consumption-rest-and-notification",
+    "same-command-replay-has-no-extra-consumption-roll-or-notice",
+    "local-notice-displays-persisted-outcomes-without-browser-errors"
+  ],
+  "realProviderCalls": 0,
+  "realSaveChanged": false,
+  "scope": "real isolated host and UI, synthetic model outputs",
+  "evidenceDirectory": "tests/output/batch-workflow-10a27eb5",
+  "packageSourceSha256": {
+    "ui/batch-details.js": "518e28cb7084e92ac7089e2226e59ccc4dd0927b9aa1b68f24eb6f652b00e772",
+    "ui/keeper-rulings.js": "6be4aa9e0c127c7140257082fe764830ab824d9388a2c2b1f46e81ceb3888289",
+    "ui/app.js": "f2b9be781fa46e1f091fb24e14fcae7bb983ecfb352c9e594795bdecd422d6a0",
+    "ui/styles.css": "a7f9b169b0ac900cd908cb601833d4035da6565df558adfefdcaa638fa0370ea",
+    "tools/build_web.py": "97a29e8eabaadce6d9720e333c77b91889a83dc0eacde4c2dd8dfbcc1398d4b2",
+    "tools/launch.py": "602006ca59ea4140a5e55723c733662486dbe9d3a866a20d264e9e2cf53bca3b"
+  },
+  "passed": true,
+  "passedCount": 5,
+  "syntheticProviderCalls": 2,
+  "pageErrors": [],
+  "previousRuns": [
+    {
+      "passed": false,
+      "checks": [],
+      "error": "(409, {'code': 'INPUT_INVALID', 'message': 'INPUT_INVALID（INPUT_INVALID；定位：68d30e814a294e98914b93e97274f91a）', 'traceId': '68d30e814a294e98914b93e97274f91a', 'method': 'POST', 'operation': 'ai.access.update', 'requestId': '16ccb701-85b0-4739-8f16-c9a6a2223bc7', 'httpStatus': 409})",
+      "evidenceDirectory": "tests/output/batch-workflow-5d9f4c4d"
+    },
+    {
+      "passed": false,
+      "checks": [
+        "wrong-slot-repaired-without-human-input-or-game-mutation",
+        "real-ruling-displays-three-actions-and-preflight"
+      ],
+      "error": "Page.wait_for_function: EvalError: Evaluating a string as JavaScript violates the following Content Security Policy directive because 'unsafe-eval' is not an allowed source of script: script-src 'self'\".\n\n    at eval (<anonymous>)\n    at predicate (eval at evaluate (:370:30), <anonymous>:4:60)\n    at next (eval at evaluate (:370:30), <anonymous>:29:33)",
+      "evidenceDirectory": "tests/output/batch-workflow-eb106463"
+    },
+    {
+      "passed": true,
+      "checks": [
+        "wrong-slot-repaired-without-human-input-or-game-mutation",
+        "real-ruling-displays-three-actions-and-preflight",
+        "approved-batch-commits-consumption-rest-and-notification",
+        "same-command-replay-has-no-extra-consumption-roll-or-notice",
+        "local-notice-displays-persisted-outcomes-without-browser-errors"
+      ],
+      "error": null,
+      "evidenceDirectory": "tests/output/batch-workflow-f5584547"
+    },
+    {
+      "passed": true,
+      "checks": [
+        "wrong-slot-repaired-without-human-input-or-game-mutation",
+        "real-ruling-displays-three-actions-and-preflight",
+        "approved-batch-commits-consumption-rest-and-notification",
+        "same-command-replay-has-no-extra-consumption-roll-or-notice",
+        "local-notice-displays-persisted-outcomes-without-browser-errors"
+      ],
+      "error": null,
+      "evidenceDirectory": "tests/output/batch-workflow-876c1930"
+    }
+  ]
+}

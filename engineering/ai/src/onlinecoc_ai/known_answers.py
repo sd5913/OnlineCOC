@@ -156,6 +156,16 @@ def format_data(data, limit=4000):
     return '\n'.join(selected) or '暂无可展示的已知内容。'
 
 
+def compact_data(data, label='已知资料'):
+    """One captured name and purpose; the immutable reference opens full detail."""
+    if isinstance(data,dict):
+        label=next((data[k] for k in ('name','label','title') if type(data.get(k)) is str and data[k].strip()),label)
+        detail=next((data[k] for k in ('text','description','hint','note') if type(data.get(k)) is str and data[k].strip()),'')
+    else:detail=data if type(data) is str else ''
+    title=_literal(' '.join(label.split())[:80]);detail=_literal(' '.join(detail.split())[:180])
+    return '**'+title+'**'+('：'+detail if detail else '')+'\n\n点击引用查看完整资料。'
+
+
 def format_legacy(text):
     """Reformat only our old escaped-JSON evidence blocks, after source recheck.
 
@@ -163,25 +173,29 @@ def format_legacy(text):
     """
     if not isinstance(text,str):return text
     pattern=r'((?:观察记录|持续告知资料) · \[\[knowledge:[A-Za-z0-9_.-]+@1\]\])\n\n(.*?)(?=\n\n(?:观察记录|持续告知资料) · |\Z)'
-    matches=list(re.finditer(pattern,text,flags=re.S))
-    budget=max(120,(7800-sum(len(m[1])+4 for m in matches))//max(1,len(matches)))
     def replace(match):
         raw=re.sub(r'\\([\\`*_{}\[\]()<>#!|])',r'\1',match[2])
         try:value=json.loads(raw)
-        except (ValueError,RecursionError):return match[0]
+        except (ValueError,RecursionError):
+            # This is only called for authorized strict-known responses. Recognize
+            # the old server formatter, never rewrite arbitrary conversation prose.
+            if not match[2].startswith('- '):return match[0]
+            value={}
+            for field,label in (('name','名称'),('text','内容'),('description','说明')):
+                found=re.search(r'^- \*\*'+label+r'\*\*：([^\n]+)',match[2],re.M)
+                if found:value[field]=re.sub(r'\\([\\`*_{}\[\]()<>#!|])',r'\1',found[1])
         if not isinstance(value,(dict,list)):return match[0]
-        return match[1]+'\n\n'+format_data(value,limit=budget)
+        return match[1]+'\n\n'+compact_data(value)
     return re.sub(pattern,replace,text,flags=re.S)
 
 def render(output, pool):
     # Fixed order avoids a model-provided priority/suspicion ranking.
     selected = sorted((pool[key] for key in output['evidence']), key=lambda v: (v.get('observedAt') or 0, v['ref']['id'], v['facetId']))
     parts = []
-    budget=max(120,(7800-sum(len(reference_token(i['ref']))+30 for i in selected))//max(1,len(selected)))
     for item in selected:
         heading = '观察记录' if item['mode'] == 'observed_snapshot' else '持续告知资料'
         data = item['data']
-        text = format_data(data,limit=budget)
+        text = compact_data(data,item['label'])
         parts.append(heading + ' · ' + reference_token(item['ref']) + '\n\n' + text)
     text = '\n\n'.join(parts) or '暂未获得与问题匹配的本人已知资料。可换个关键词查询，或向 KP 申请资料。'
     require(len(text) <= 8000, 'MODEL_KNOWN_ANSWER_LIMIT')

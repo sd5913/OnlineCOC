@@ -5,7 +5,7 @@ import uuid
 from jsonschema import Draft202012Validator
 from onlinecoc.contracts import OPERATIONS as HOST_OPERATIONS
 from .contracts import canonical, digest
-from .errors import require
+from .errors import require, AiError
 from .access import policy, binding
 
 # Configuration/rule publication must use the existing A/B/C proposal path.
@@ -18,10 +18,12 @@ ACTION = {'type':'object','additionalProperties':False,'required':['target','op'
 ACTIONS = {'type':'array','minItems':1,'items':ACTION}
 
 
-def world(host, repository):
+def world(host, repository, version=2):
     state = host.state()
-    return digest({k:state[k] for k in ('roomId','runId','status','activeRuleset','entities','configurations','relations',
-        'members','progress','flows','waits','chat','assets')} | {'sessions':repository.state()['settings'].get('sessions',{})})
+    value={k:state[k] for k in ('roomId','runId','status','activeRuleset','entities','configurations','relations',
+        'members','progress','flows','waits','assets')}
+    if version==1:value.update(chat=state['chat'],sessions=repository.state()['settings'].get('sessions',{}))
+    return digest(value)
 
 
 class Batches:
@@ -64,9 +66,18 @@ class Batches:
             for field in ('sourceCommandId','sourceOp'):schema['properties'].pop(field,None)
             schema['required']=[field for field in schema['required'] if field not in ('sourceCommandId','sourceOp')]+['sourceActionIndex']
             schema['properties']['sourceActionIndex']={'type':'integer','minimum':0,'description':'Zero-based index of an earlier non-notification host action in this same reviewed batch. The server supplies its command ID and operation only after a committed receipt.'}
+        from onlinecoc.atomic_batches import SUPPORTED
+        from .batch_execution import LOCAL,MEMORY
+        execution_scopes={'host.room.atomic.v1':{'target':'host','operations':sorted(set(HOST_OPS)&SUPPORTED),
+                'constraints':'Public action-mode rules only; cannot update the executor member. No flows or external waits.'},
+            'ai.store.atomic.v1':{'target':'ai','operations':sorted(LOCAL)},
+            'host.memory.single.v1':{'target':'ai','operations':sorted(MEMORY),'singleActionOnly':True},
+            'unsupportedHostOperations':sorted(set(HOST_OPS)-SUPPORTED),
+            'combinationPolicy':'All actions must fit one scope. Do not split a requested batch or omit unsupported actions. Unsupported candidates are blocked before business effects.'}
         return {'host':host_operations,
             'ai':{op:local_schema(OPERATIONS[op]) for op in AI_OPS},
             'actions':self.host.catalog(account),
+            'executionScopes':execution_scopes,
             'notice':'Propose immutable actions as kind=batch; every change awaits administrator approval. Configuration/rule edits use kind=draft and A/B/C review. No filesystem, credentials or permission-setting commands.'}
 
     def validate_actions(self, account, actions):
@@ -76,7 +87,18 @@ class Batches:
         catalog = self.catalog(account)
         for index,action in enumerate(actions):
             schema = catalog[action['target']].get(action['op'])
-            require(schema is not None and Draft202012Validator(schema).is_valid(action['args']), 'BATCH_OPERATION_FORBIDDEN')
+            require(schema is not None, 'BATCH_OPERATION_FORBIDDEN',path=f'/actions/{index}/op')
+            error=next(Draft202012Validator(schema).iter_errors(action['args']),None)
+            if error:
+                path='/'.join(str(part).replace('~','~0').replace('/','~1') for part in error.absolute_path)
+                raise AiError('BATCH_ARGUMENTS_INVALID',error.message[:400],path=f'/actions/{index}/args'+('/'+path if path else ''))
+            if action['target']=='host' and action['op']=='action.invoke':
+                rule=next((row for row in catalog['actions']['actions'] if row['id']==action['args']['actionId']),None)
+                require(rule is not None,'ACTION_NOT_FOUND',path=f'/actions/{index}/args/actionId')
+                error=next(Draft202012Validator(rule['schema']).iter_errors(action['args']['input']),None)
+                if error:
+                    path='/'.join(map(str,error.absolute_path))
+                    raise AiError('RULE_INPUT_INVALID',error.message[:400],path=f'/actions/{index}/args/input'+('/'+path if path else ''))
             if action['op']=='notification.send':
                 source=action['args']['sourceActionIndex']
                 require(action['target']=='host' and type(source) is int and 0<=source<index and actions[source]['target']=='host' and actions[source]['op'] in HOST_OPERATIONS['notification.send']['properties']['sourceOp']['enum'],'NOTIFICATION_SOURCE_ACTION_INVALID')
@@ -87,41 +109,68 @@ class Batches:
         if operations is None:
             return {'mode':'index','host':list(catalog['host']),'ai':list(catalog['ai']),
                 'actions':catalog['actions'],
+                'executionScopes':catalog['executionScopes'],
                 'notice':'Call room_manage_catalog with operations:[exact operation names] for the required parameter schemas before proposing actions. No command has been executed.'}
         require(set(operations)<=set(catalog['host'])|set(catalog['ai']), 'INPUT_INVALID')
         return {'mode':'schemas',**{target:{op:schema for op,schema in catalog[target].items() if op in operations} for target in ('host','ai')},
-            'actions':catalog['actions'],'notice':catalog['notice']}
+            'actions':catalog['actions'],'executionScopes':catalog['executionScopes'],'notice':catalog['notice']}
 
-    def create(self, account, request, actions, summary, context):
+    def create(self, account, request, actions, summary, context, *, generation=None):
         with self.host.lock, self.lock:
+            context=copy.deepcopy(context)
+            context['facts']['batchBaselineVersion']=2
+            context['facts']['batchExecutionVersion']=2
             access = binding(self.host, self.repository, request)
             require(access and access['level'] == 'administrator', 'PERMISSION_DENIED')
+            state=self.repository.state()
+            from .review_queue import canonical_request
+            existing=next((b for b in state['settings'].get('batches',{}).values() if canonical_request(state,b['requestId'])==canonical_request(state,request['requestId'])),None)
+            if existing:
+                require(existing['actions']==actions and existing['summary']==summary,'REQUEST_CANDIDATE_CONFLICT')
+                return existing['batchId']
             self.validate_actions(account, actions)
             from .history import require_current_evidence
             require_current_evidence(context,{'kind':'batch','actions':actions})
-            self.host.validate_ai_sources(self.host.state(), account, context)
+            from .consultation import require_current,assessment
+            require_current(context,{'kind':'batch','actions':actions})
+            if generation:generation.guard()
+            else:self.host.validate_ai_sources(self.host.state(), account, context)
+            preflight=(generation.app.batches if generation else self).preflight(account,actions)
             identifier = uuid.uuid4().hex
             record = {'batchId':identifier, 'sessionId':access['sessionId'], 'requestId':request['requestId'],
                 'creator':account, 'summary':summary, 'actions':copy.deepcopy(actions), 'context':copy.deepcopy(context),
-                'baseline':world(self.host,self.repository), 'authorityEpoch':self.host.epoch,
-                'status':'pending', 'revision':1, 'createdAt':self.host.clock(), 'receipts':[]}
+                'baseline':world(generation.host,generation.repository) if generation else world(self.host,self.repository), 'authorityEpoch':self.host.epoch,
+                'status':'blocked' if preflight['status'] in ('blocked','unsupported') else 'pending',
+                'preflight':preflight,'revision':1, 'createdAt':self.host.clock(), 'receipts':[]}
             record['digest'] = digest({k:record[k] for k in ('batchId','sessionId','requestId','creator','actions','context','baseline','authorityEpoch')})
             def save(state):
                 batches=state['settings'].setdefault('batches',{})
                 batches[identifier]=record
             self.repository.update(save)
-            if policy(self.repository)['autoApproveBatches'] and not self.app.player_requests.review_required(access['sessionId']):
+            if record['status']=='pending':self.app.queue.ready('batch:'+identifier)
+            if record['status']=='pending' and not assessment(context)['requiresAcceptance'] and policy(self.repository)['autoApproveBatches'] and not self.app.player_requests.review_required(access['sessionId']) and (not generation or generation.check()['status']=='unchanged'):
                 principal = policy(self.repository)['principal']
                 self.execute(principal,'auto:'+identifier,'ai.batch.approve',{'batchId':identifier,'digest':record['digest']})
             return identifier
 
+    def preflight(self,account,actions):
+        from .batch_execution import AtomicExecution
+        return AtomicExecution(self).preflight(account,actions)
+
     def list(self, account):
         with self.host.lock:self.host.kp(account)
-        return {'items':sorted([{k:copy.deepcopy(v) for k,v in b.items() if k not in ('context','baseline')}
-            for b in self.repository.state()['settings'].get('batches',{}).values()],key=lambda b:b['createdAt'],reverse=True)}
+        return {'items':sorted([self.public(account,b) for b in self.repository.state()['settings'].get('batches',{}).values()],key=lambda b:b['createdAt'],reverse=True)}
+
+    def public(self,account,record):
+        item={k:copy.deepcopy(v) for k,v in record.items() if k not in ('context','baseline','batchReceipt')}
+        from .consultation import assessment
+        item['consultationAssessment']=assessment(record['context'])
+        return self.app.rulings.redact_stale(account,self.host.state(),item,record['context'])
 
     def _save(self, record):
+        if record['status']=='completed':record.setdefault('completedAt',self.host.clock())
         self.repository.update(lambda s:s['settings']['batches'].update({record['batchId']:copy.deepcopy(record)}))
+        if record['status']=='completed':self.app.queue.reconcile_completed()
 
     def execute(self, account, identifier, op, args):
         with self.host.lock, self.lock:
@@ -131,48 +180,34 @@ class Batches:
             require(record['digest'] == args['digest'],'BATCH_VERSION_CONFLICT')
             if op == 'ai.batch.reconcile':
                 require(record['status'] in ('executing','unknown'),'BATCH_NOT_UNCERTAIN')
+                if record['context']['facts'].get('batchExecutionVersion')==2:
+                    from .batch_execution import AtomicExecution
+                    return AtomicExecution(self).reconcile(account,record)
                 # Recover committed results, never replay an ambiguous side effect.
                 for entry in record['receipts']:
                     if entry['receipt']['status'] in ('pending','unknown'):
                         entry['receipt'] = self.app.receipt(entry['account'],entry['id']) if entry['target']=='ai' else self.host.receipt(entry['account'],entry['id'])
                 statuses=[r['receipt']['status'] for r in record['receipts']]
-                record['status']='unknown' if any(s in ('pending','unknown') for s in statuses) else 'completed' if len(statuses)==len(record['actions']) and all(s=='committed' for s in statuses) else 'partial'
+                record['status']='unknown' if any(s in ('pending','unknown') for s in statuses) else 'completed' if len(statuses)==len(record['actions']) and all(s=='committed' for s in statuses) else 'partial' if any(s=='committed' for s in statuses) else 'failed'
                 self._save(record);return record
+            self.app.queue.require_active('batch:'+record['batchId'])
             require(record['status']=='pending','BATCH_NOT_PENDING')
             require(op in ('ai.batch.approve','ai.batch.reject'),'INPUT_INVALID')
             record.update(decidedBy=account,decidedAt=self.host.clock(),revision=record['revision']+1)
             if op == 'ai.batch.reject':
                 record['status']='rejected';self._save(record);return record
+            from .consultation import require_acceptance
+            require_acceptance(record['context'],args.get('consultationReview'))
+            if args.get('consultationReview'):record['consultationReview']=copy.deepcopy(args['consultationReview'])
+            require(record['context']['facts'].get('batchExecutionVersion')==2,'BATCH_REGENERATE_REQUIRED','Legacy pending candidates have no atomic guarantee; generate a new candidate before execution')
             require(self.repository.state()['requests'][record['requestId']]['status']!='cancelled','REQUEST_CANCELLED')
             require(record['authorityEpoch']==self.host.epoch,'STALE_AUTHORITY')
             self.host.validate_ai_sources(self.host.state(),record['creator'],record['context'])
-            require(record['baseline']==world(self.host,self.repository),'BATCH_STALE')
+            require(record['baseline']==world(self.host,self.repository,record['context']['facts'].get('batchBaselineVersion',1)),'BATCH_STALE')
             self.validate_actions(account,record['actions'])
-            record['status']='executing';self._save(record)
-            for index, action in enumerate(record['actions']):
-                cid='ai-batch:'+record['batchId']+':'+str(index)
-                entry={'id':cid,'account':account,'target':action['target'],'receipt':{'status':'pending'}}
-                record['receipts'].append(entry);self._save(record)
-                try:
-                    if action['target']=='ai':
-                        receipt=self.app.command(account,{'requestId':cid,'authorityEpoch':self.host.epoch,'op':action['op'],'args':action['args']})
-                    else:
-                        state=self.host.state();cat=self.host.catalog(account)
-                        host_args=copy.deepcopy(action['args'])
-                        if action['op']=='notification.send':
-                            source_index=host_args.pop('sourceActionIndex')
-                            source_id='ai-batch:'+record['batchId']+':'+str(source_index)
-                            source_entry=record['receipts'][source_index]
-                            require(source_entry['id']==source_id and source_entry['target']=='host' and source_entry['receipt']['status']=='committed','NOTIFICATION_SOURCE_NOT_COMMITTED')
-                            host_args.update(sourceCommandId=source_id,sourceOp=record['actions'][source_index]['op'])
-                        receipt=self.host.command(account,{'protocolVersion':1,'type':'command','requestId':cid,'roomId':state['roomId'],
-                            'payload':{'commandId':cid,'authorityEpoch':self.host.epoch,'runId':state['runId'],'catalogRevision':cat['revision'],
-                                'rulesetRevision':cat['rulesetRevision'],'op':action['op'],'args':host_args}})
-                    entry['receipt']=receipt
-                except Exception as exc:
-                    entry['receipt']={'status':'unknown','code':getattr(exc,'code','RESULT_UNKNOWN')}
-                if entry['receipt']['status']!='committed':
-                    record['status']='unknown' if entry['receipt']['status'] in ('pending','unknown') else 'partial'
-                    self._save(record);return record
-                self._save(record)
-            record['status']='completed';self._save(record);return record
+            record['preflight']=self.preflight(account,record['actions'])
+            if record['preflight']['status'] in ('blocked','unsupported'):
+                record['status']='blocked';self._save(record);return record
+            from .batch_execution import AtomicExecution
+            return AtomicExecution(self).run(account,record)
+

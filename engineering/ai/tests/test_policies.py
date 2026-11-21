@@ -88,7 +88,8 @@ def test_admin_room_scope_is_default_and_revocable_without_player_escalation(app
     snapshot,_=Context(app.proposals,demand=True).capture('kp',request)
     assert snapshot[0]['facts']['aiReadScope']=='kp-room'
     page=DataQueryService(app.host).attach('kp','search',{'types':['room'],'limit':2},snapshot,'kp')
-    assert page['items'] and all(i['ref']['sourceId']=='host-room' for i in page['items'])
+    assert page['items'] and all(i['ref']['sourceId']=='host-room-state' for i in page['items'])
+    assert snapshot[0]['facts']['dataQueries'][-1]['args']['roomMode']=='state'
     assert not snapshot[0]['facts'].get('consultationOnly')
     pl=submit(app,session(app,'player1'),who='player1')
     player_snapshot,_=Context(app.proposals).capture('kp',app.repository.state()['requests'][pl['requestId']])
@@ -192,10 +193,13 @@ from onlinecoc_ai.contracts import canonical
 from test_coordinator import Fake, completion, wait_task
 from test_access_batches import tool_call
 
-@pytest.mark.parametrize('size,expected', [(110*1024,'review_ready'),(270*1024,'failed')])
+@pytest.mark.parametrize('size,expected', [(110*1024,'review_ready'),(270*1024,'review_ready'),(790*1024,'failed')])
 def test_cumulative_tool_budget_uses_transport_limit_and_reports_sizes(application,monkeypatch,size,expected):
     app=application;enable(app.host,public=True,private=True,kp=True)
-    monkeypatch.setattr(app.batches,'catalog_query',lambda *args,**kwargs: {'notice':'x'*size})
+    original=app.batches.catalog_query
+    monkeypatch.setattr(app.batches,'catalog_query',lambda *args,**kwargs: {**original(*args,**kwargs),'notice':'x'*size})
+    import onlinecoc_ai.preparation
+    monkeypatch.setattr(onlinecoc_ai.preparation,'prepare',lambda *args:0)
     async def callback(count,messages,tools):
         return tool_call('room_manage_catalog') if count==1 else completion({'kind':'plan','text':'已读取目录，等待具体需求。'})
     provider=Fake(callback)
@@ -207,7 +211,7 @@ def test_cumulative_tool_budget_uses_transport_limit_and_reports_sizes(applicati
             result=await wait_task(app.coordinator,dispatched['taskId'])
             assert result['status']==expected,result
             budget=result['diagnostics']['contextBudget']
-            assert budget['limitBytes']==256*1024 and budget['toolMessageBytes']>=size
+            assert budget['limitBytes']==768*1024-2048 and budget['toolMessageBytes']>=size
             assert 'x'*100 not in str(result['diagnostics'])
             if expected=='failed':assert result['error']=='CONTEXT_LIMIT_EXCEEDED' and provider.calls==1
             else:assert provider.calls==2 and 96*1024<budget['bytes']<budget['limitBytes']
@@ -273,7 +277,7 @@ def test_malformed_batch_gets_exact_schema_and_cannot_escape_to_plan(application
                 saved=app.batches.list('kp')['items'];assert len(saved)==1 and saved[0]['actions']==[action] and saved[0]['status']=='pending'
                 assert [v['code'] for v in result['diagnostics']['outputFailures']]==['MODEL_FIELDS_INVALID','MODEL_REPAIR_KIND_CHANGED']
             elif repair=='clarification':assert result['status']=='needs_input' and provider.calls==3 and not app.batches.list('kp')['items']
-            else:assert result['error']=='MODEL_OUTPUT_INVALID' and provider.calls==7 and not app.batches.list('kp')['items']
+            else:assert result['error']=='MODEL_OUTPUT_INVALID' and provider.calls==4 and not app.batches.list('kp')['items']
             assert app.host.state()['entities']['actor-one']['name']==original
         finally:await app.coordinator.close()
     asyncio.run(run())
@@ -290,7 +294,6 @@ def test_batch_self_mutation_preserves_safe_execution_status_after_source_change
     ref=next(i['ref'] for i in page['items'] if i['label']==name)
     queries.attach('kp','read',{'refs':[ref]},snapshot,'kp')
     actions=[{'target':'host','op':'entity.patch','args':{'id':'actor-one','name':'批次已修改'}}]
-    if outcome=='partial':actions.append({'target':'host','op':'entity.patch','args':{'id':'missing-actor','name':'不应成功'}})
     bid=app.batches.create('kp',request,actions,'SECRET_ORIGINAL_SUMMARY',snapshot[0])
     item=next(i for i in app.rulings.list('kp')['items'] if i['rulingId']=='batch:'+bid)
     assert item['status']=='pending' and item['canDecide']
@@ -300,18 +303,35 @@ def test_batch_self_mutation_preserves_safe_execution_status_after_source_change
         assert receipt['status']=='committed'
     else:
         result=committed(command(app,'ai.ruling.decide',args))
-        assert result['status']==outcome,result
+        assert result['status']=='completed',result
+        if outcome=='partial':
+            # Seed a legacy sequential audit: one real committed mutation and a
+            # historical rejection. New atomic batches cannot produce partial.
+            def legacy(state):
+                record=state['settings']['batches'][bid]
+                record['context']['facts'].pop('batchExecutionVersion')
+                record['actions'].append({'target':'host','op':'entity.patch','args':{'id':'missing-actor','name':'不应成功'}})
+                record['receipts'].append({'id':'legacy-failed','account':'kp','target':'host','receipt':{'status':'rejected','code':'NOT_VISIBLE'}})
+                record['status']='partial'
+                for key in ('execution','preflight','executionCommandId','batchReceipt'):record.pop(key,None)
+                record['digest']=digest({k:record[k] for k in ('batchId','sessionId','requestId','creator','actions','context','baseline','authorityEpoch')})
+            app.repository.update(legacy)
     expected={'completed':[{'receipt':{'status':'committed'}}],
         'partial':[{'receipt':{'status':'committed'}},{'receipt':{'status':'rejected'}}],'pending':[]}[outcome]
     for revoked in (False,True):
         if revoked:enable(app.host,public=False,private=False,kp=False)
         view=next(i for i in app.rulings.list('kp')['items'] if i['rulingId']=='batch:'+bid)
         assert view['status']==outcome and view['canDecide'] is False
-        assert view['actions']==[] and view['receipts']==expected
-        assert 'SECRET_ORIGINAL_SUMMARY' not in str(view) and 'actor-one' not in str(view) and '批次已修改' not in str(view)
-        if outcome=='completed':assert '已执行完成' in view['summary'] and '重新' not in view['summary']
-        if outcome=='partial':assert '部分操作已执行' in view['summary'] and '重新' not in view['summary']
-        if outcome=='pending':assert '不能执行' in view['summary'] and command(app,'ai.ruling.decide',args)['status']=='rejected'
+        if revoked:
+            assert view['actions']==[] and view['receipts']==expected
+            assert 'SECRET_ORIGINAL_SUMMARY' not in str(view) and 'actor-one' not in str(view) and '批次已修改' not in str(view)
+            if outcome=='completed':assert '已执行完成' in view['summary'] and '重新' not in view['summary']
+            if outcome=='partial':assert '部分操作已执行' in view['summary'] and '重新' not in view['summary']
+            if outcome=='pending':assert '不能执行' in view['summary']
+        else:
+            assert view['actions'][0]==actions[0] and view.get('sourceNotice')
+            assert view['summary']=='SECRET_ORIGINAL_SUMMARY'
+        if outcome=='pending':assert command(app,'ai.ruling.decide',args)['status']=='rejected'
     revision=app.host.state()['entities']['actor-one']['revision']
     if outcome=='completed':assert committed(command(app,'ai.ruling.decide',args))['status']=='completed'
     assert app.host.state()['entities']['actor-one']['revision']==revision

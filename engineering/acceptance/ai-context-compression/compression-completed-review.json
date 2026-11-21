@@ -1,0 +1,88 @@
+{
+  "originalReport": "D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\ai-context-compression\\compression-1795247911156773000.json",
+  "status": "passed",
+  "classification": "harness-diagnostics-read-race",
+  "actualExecution": true,
+  "idempotent": true,
+  "publications": 1,
+  "spawnedInstances": 1,
+  "hp": 4,
+  "diagnostics": {
+    "compression": [
+      {
+        "afterBytes": 56534,
+        "beforeBytes": 448206,
+        "cacheHits": 0,
+        "recordCount": 39,
+        "recordLocators": 2,
+        "repairCount": 0,
+        "repairs": [],
+        "round": 1,
+        "status": "compressed",
+        "summaryDigest": "9407ed6173d9f20084494288d4fb8d5de429b293d053a50e97d3684a31e28c34"
+      }
+    ],
+    "contextBudget": {
+      "bytes": 70030,
+      "limitBytes": 784384,
+      "toolMessageBytes": 12660,
+      "toolSchemaBytes": 6072
+    },
+    "errors": [],
+    "outputFailures": [],
+    "preflightChecks": [
+      {
+        "attempt": 1,
+        "items": [
+          {
+            "index": 0,
+            "op": "entity.create",
+            "status": "passed",
+            "target": "host"
+          }
+        ],
+        "scope": "host.room.atomic.v1",
+        "status": "passed"
+      }
+    ],
+    "schemaVersion": 1,
+    "stage": "completed",
+    "toolCalls": [
+      {
+        "argumentsDigest": "130e4c29592000d07db33d74aa747ae63cfac27a51a733198c012168742f630a",
+        "automatic": true,
+        "keys": [
+          "limit",
+          "section"
+        ],
+        "name": "room_read_management",
+        "status": "completed",
+        "turn": 0,
+        "unknownKeys": false
+      },
+      {
+        "argumentsDigest": "ccac1e8cdb09d1be37c8cf286f4d1122fd21af0b0c78331bb29cd92bf6baf46d",
+        "keys": [
+          "operations"
+        ],
+        "name": "room_manage_catalog",
+        "status": "completed",
+        "turn": 0,
+        "unknownKeys": false
+      },
+      {
+        "argumentsDigest": "45a36ab28d4cf8f1cf3cdc0b0c80f08811a2215fc045be41d213861d86c9ecc8",
+        "keys": [
+          "offset",
+          "section"
+        ],
+        "name": "room_read_management",
+        "status": "completed",
+        "turn": 0,
+        "unknownKeys": false
+      }
+    ],
+    "turn": 1
+  },
+  "explanation": "Task became review_ready before finally persisted diagnostics; later durable read proves semantic compression and real single execution. No new model call or repeated business mutation."
+}

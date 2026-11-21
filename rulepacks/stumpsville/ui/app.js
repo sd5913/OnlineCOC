@@ -1,5 +1,6 @@
-import {rulingCard} from './ruling-card.js';
+import {rulingCard,mountRulingTimeline} from './ruling-card.js';
 import {explainAIError} from './ai-recovery.js';
+import {batchDetailsHTML} from './batch-details.js';
 import {characterStatsHTML,itemDetailsHTML,renderPackageReference} from './reference-view.js';
 import {chatUI} from './chat.js';
 import {diceUI} from './dice.js';
@@ -40,6 +41,8 @@ let connection = t('ui.m066');
 let desktop = null, desktopAccount = '', consoleTab = 'control', selectedRequest = '', localAction = null, renderDeferred = false;
 let executorBusy = false, aiQueuePending=0, rulingPane='queue', queueTab='rulings';
 let statePollRunning=false,lastStatePoll=0,stateGeneration=0;
+let chatPollRunning=null,chatPollAgain=false,lastChatPoll=0,chatGeneration=0;
+const chatSending=new Set();
 const replyOpen=new Set();
 let libraryCache=null,libraryLoading=false,libraryError='',libraryTab='configurations',libraryQuery='',libraryType='';
 const libraryKey=()=>JSON.stringify([state?.accountId,state?.storageScope,state?.catalog?.revision,state?.catalog?.rulesetRevision]);
@@ -64,6 +67,9 @@ const panel = (title,body,kind='') => `<section class="panel ${kind}"><h2>${titl
 const empty = text => `<div class="empty">${escape(text)}</div>`;
 const actorOptions = () => (state.characters || [state.character].filter(Boolean)).map(x=>[x.instanceId,x.name]);
 const pendingKey = () => 'stumpsville.pending.' + base.pathname + '.' + state.accountId + '.' + state.storageScope;
+const chatIdentity = () => JSON.stringify([state?.accountId,state?.storageScope]);
+const chatPendingKey = () => state?'stumpsville.pending.chat.'+base.pathname+'.'+state.accountId+'.'+state.storageScope:null;
+const chatPending = () => {const key=chatPendingKey();return key&&localStorage.getItem(key);};
 const independentLogin = () => webMode?'':`<a class="account-link" href="/" target="_blank" rel="noopener">${t('account.new')}</a>`;
 const rulingMode = () => select(t('ui.m077'),'ruling',[['auto',state.automation?.enabled?t('ui.m078'):t('ui.m080')],['manual',t('ui.m079')]],'auto');
 function submitAction(kind,input,data){return data?.get('ruling')==='manual'?perform('request',{kind,input,manual:true,text:t('request.text',{kind:kind==='check'?t('ui.m051'):t('request.item')})}):perform(kind,input);}
@@ -79,12 +85,12 @@ async function api(path, body) {
   if (body !== undefined) headers['Content-Type'] = 'application/json';
   if (csrf) headers['X-CSRF-Token'] = csrf;
   const response = await fetch(new URL(path==='package/action'?path+'?locale='+encodeURIComponent(locale()):path,base), {method:body===undefined?'GET':'POST',headers,body:body===undefined?undefined:JSON.stringify(body),credentials:'same-origin'});
-  const data = await response.json();
+  let data;try{data=await response.json();}catch{throw Object.assign(Error('主机响应格式异常（HTTP '+response.status+'）'),{code:'HOST_RESPONSE_INVALID',status:response.ok?502:response.status,operation:path});}
   if(data.failure)throw actionError(data);
   if (!response.ok || (data.status === 'rejected' && data.commandId)) {
     const messages={RULE_FAILED:t('error.rule_failed'),VERSION_CONFLICT:t('error.version_conflict'),NOT_VISIBLE:t('error.not_visible'),STALE_CATALOG:t('error.stale_catalog'),RATE_LIMITED:t('error.rate_limited'),ROOM_PAUSED:t('error.room_paused'),CSRF_REQUIRED:t('error.csrf_required')};
-    const error = new Error(messages[data.code] || data.code || '请求失败');
-    error.status = response.status;
+    const error = new Error(data.message || messages[data.code] || data.code || '请求失败');
+    Object.assign(error,data,{status:response.status});
     throw error;
   }
   return data;
@@ -122,9 +128,10 @@ function resultText(result){
 }
 
 async function refresh(render = true) {
-  const generation=++stateGeneration;
+  const generation=++stateGeneration,chats=chatGeneration;
   const next=await api(statePath());
   if(generation!==stateGeneration)return;
+  if(chats!==chatGeneration&&next.accountId===state?.accountId&&next.storageScope===state?.storageScope)next.channels=state.channels;
   state = next;
   connection = t('ui.m065');
   chatUI.update(state);diceUI.observe(state);effectsUI.observe(state);
@@ -154,10 +161,11 @@ async function perform(operation,args,existing) {
     dirtyForm = null;
     if(!ruling)closeDialog();
     localAction = null;
-    await refresh();
+    let refreshFailure;try{await refresh();}catch(error){refreshFailure=error;}
     const notified=state.role==='player'&&state.events?.some(e=>e.id===state.accountId+':'+body.id&&!['pending','processing'].includes(e.status));
     if(!notified)toast(result.status==='processing'?t('action.queued'):resultText(result));
     if(ruling)recordRulingNotice({title:'裁决行动',status:operation==='reject'||operation==='resolve'&&!args.approve?'rejected':result.status==='processing'?'processing':'completed',reason:args.reason||((operation==='reject'||operation==='resolve'&&!args.approve)?'KP 拒绝本次申请（未填写备注）':resultText(result)),locator,identity:rulingIdentity});
+    if(refreshFailure){const reason='行动已完成，但刷新资料失败：'+refreshFailure.message;toast(reason);if(ruling)recordRulingNotice({title:'裁决行动',status:'completed',reason,locator:{...locator,traceId:refreshFailure.traceId},identity:rulingIdentity});}
     return result;
   } catch(error) {
     if(ruling)recordRulingNotice({title:'裁决行动',status:error.status>=400&&error.status<500?'failed':'unknown',reason:error.failure?.reason||error.message,locator,identity:rulingIdentity});
@@ -265,13 +273,13 @@ function recordRulingNotice(value){
   if(!state||state.role!=='kp'||value.identity&&value.identity!==noticeIdentity())return;
   const reasons={INPUT_INVALID:'提交参数无效，请刷新原裁决后重试',RULING_STALE:'裁决依据已更新，请重新打开原裁决',PERMISSION_DENIED:'当前账号无权执行该裁决',HIGH_RISK_REVIEW_REQUIRED:'高危确认已失效，请重新核对原方案',STORAGE_UNAVAILABLE:'房间存储暂不可用，请保留定位并联系房主排查',SOURCE_STALE:'来源已变化，请重新生成方案',SESSION_ACCESS_CHANGED:'会话权限已变化，请重新登录核对'};
   const entry={id:newId(),time:Date.now(),...value,reason:reasons[value.reason]?reasons[value.reason]+'（'+value.reason+'）':explainAIError(value.reason)};const records=rulingNotices();records.unshift(entry);localStorage.setItem(noticeKey(),JSON.stringify(records.slice(0,100)));
-  const label={pending:'等待确认',processing:'处理中',completed:'已完成',published:'已发布',accepted:'已接收',rejected:'已拒绝',cancelled:'已取消',failed:'失败',blocked:'已阻止',partial:'部分完成',unknown:'结果待核对'}[entry.status]||entry.status;
+  const label={pending:'等待确认',processing:'处理中',completed:'已完成',published:'已发布',accepted:'已接收',rejected:'已拒绝',cancelled:'已取消',failed:'失败',blocked:'已阻止',partial:'部分完成',rolled_back:'整批已撤销',unknown:'结果待核对'}[entry.status]||entry.status;
   toast(entry.title+' · '+label+'\n'+entry.reason);
   const target=document.querySelector('#message-queue-list');if(target)target.innerHTML=messageQueue();
 }
 function messageQueue(){
   const channels=Object.values(state.channels).filter(c=>c.unreadCount>0);
-  return channels.map(c=>`<button type="button" class="message-queue-item" data-action="chat-channel" data-args="${escape(JSON.stringify({channel:c.channelId}))}"><strong>${escape(c.name)}</strong><span class="tag">${c.unreadCount}</span></button>`).join('')+rulingNotices().map(n=>rulingCard({time:new Date(n.time).toLocaleTimeString(locale(),{hour:'2-digit',minute:'2-digit'}),type:'执行结果',source:'KP',summary:escape(n.title+' · '+n.reason),state:({pending:'等待确认',failed:'失败',rejected:'已拒绝',processing:'处理中',unknown:'结果待核对',blocked:'已阻止',completed:'已完成'}[n.status]||n.status),actions:button('详情与定位','ruling-notice',{id:n.id})})).join('')||empty(t('ruling.noMessages'));
+  return channels.map(c=>`<button type="button" class="message-queue-item" data-action="chat-channel" data-args="${escape(JSON.stringify({channel:c.channelId}))}"><strong>${escape(c.name)}</strong><span class="tag">${c.unreadCount}</span></button>`).join('')+rulingNotices().map(n=>rulingCard({time:new Date(n.time).toLocaleTimeString(locale(),{hour:'2-digit',minute:'2-digit'}),type:'执行结果',source:'KP',summary:escape(n.title+' · '+n.reason),state:({pending:'等待确认',failed:'失败',rejected:'已拒绝',processing:'处理中',unknown:'结果待核对',blocked:'已阻止',completed:'已完成',rolled_back:'整批已撤销'}[n.status]||n.status),actions:button('详情与定位','ruling-notice',{id:n.id})})).join('')||empty(t('ruling.noMessages'));
 }
 function keeperLocalPending(){return (state?.requests||[]).filter(r=>r.status==='pending').length+Object.values(state?.drafts||{}).filter(d=>d.status==='submitted').length+(state?.keeperWaits||[]).length+(state?.keeperFlows||[]).length;}
 function updateQueueCount(value=aiQueuePending){aiQueuePending=value;const count=document.querySelector('#keeper-pending-count');if(count)count.textContent=keeperLocalPending()+aiQueuePending;}
@@ -279,8 +287,10 @@ function updateKeeperQueue(){
   if(state?.role!=='kp'||!document.querySelector('.ruling-work'))return;
   for(const [selector,render] of [['#keeper-character-approvals',characterApprovalQueue],['#keeper-host-flows',hostFlowQueue],['#keeper-game-requests',rulingQueue],['#keeper-archived-rulings',archivedRulings]]){
     const node=document.querySelector(selector);if(!node)continue;
-    const markup=render();if(node._queueMarkup!==markup){node.innerHTML=markup;node._queueMarkup=markup;}
+    const markup=render();if(node._queueMarkup!==markup){const template=document.createElement('template');template.innerHTML=markup;node._queueCards=[...template.content.children];node.replaceChildren();node._queueMarkup=markup;}
   }
+  const target=document.querySelector('#keeper-ruling-timeline');
+  if(target){target._timeline??=mountRulingTimeline(target);const selectors=queueTab==='archived'?['#keeper-archived-rulings']:['#keeper-character-approvals','#keeper-host-flows','#keeper-game-requests'];target._timeline.set('manual',selectors.flatMap(q=>document.querySelector(q)?._queueCards||[]));}
   updateQueueCount();
 }
 function queueTime(value){
@@ -289,7 +299,7 @@ function queueTime(value){
 }
 function compactQueue(time,source,summary,action,args,actions='',attrs=''){
   const type=attrs.includes('data-draft')?'角色申请':attrs.includes('data-wait')?'流程裁决':attrs.includes('data-flow')?'流程异常':'玩家行动';
-  return rulingCard({time:queueTime(time),type,source,summary:`<button type="button" class="queue-summary quiet" data-action="${action}" data-args="${escape(JSON.stringify(args))}">${escape(summary)}</button>`,actions,attrs});
+  return rulingCard({time:queueTime(time),timestamp:time,type,source,summary:`<button type="button" class="queue-summary quiet" data-action="${action}" data-args="${escape(JSON.stringify(args))}">${escape(summary)}</button>`,actions,attrs});
 }
 function rulingAIButton(kind,id,account){return button('转 AI 处理','ruling-ai',{kind,id,...(account?{account}:{})},'small');}
 function rulingDebugTools(kind,id,account){
@@ -335,7 +345,7 @@ function queueDetail({kind,id,account}){
   openDialog(title,body+`<pre class="data-detail">${escape(JSON.stringify(item,null,2))}</pre><div class="actions">${rulingAIButton(kind,id,account)}</div>`+rulingDebugTools(kind,id,account),null);
 }
 function rulingsPage(){
-  return `<nav class="ruling-switch" aria-label="裁决工作区">${[['queue','裁决队列'],['ai','AI 对话'],['chat','聊天']].map(([pane,label])=>button(label,'ruling-pane',{pane},pane===rulingPane?'primary small':'small')).join('')}</nav><div class="rulings-grid" data-pane="${rulingPane}"><section class="panel ruling-work ruling-queues"><header class="queue-heading"><div role="tablist" aria-label="消息与裁决"><button type="button" role="tab" aria-selected="${queueTab==='messages'}" data-action="queue-tab" data-args='{"tab":"messages"}'>消息队列</button><button type="button" role="tab" aria-selected="${queueTab==='rulings'}" data-action="queue-tab" data-args='{"tab":"rulings"}'>裁决队列 <span id="keeper-pending-count">${keeperLocalPending()+aiQueuePending}</span></button><button type="button" role="tab" aria-selected="${queueTab==='archived'}" data-action="queue-tab" data-args='{"tab":"archived"}'>已归档</button></div><div class="queue-header-actions">${button('记录','ruling-history',{},'small')}${button('刷新','queue-refresh',{},'small')}${button('设置','navigate',{path:'gm/ai-settings'},'small')}</div></header><div id="message-queue-list" class="ruling-scroll" role="tabpanel" ${queueTab!=='messages'?'hidden':''}>${messageQueue()}</div><div id="ruling-queue-list" class="ruling-scroll" role="tabpanel" ${queueTab==='messages'?'hidden':''}><div data-pending-rulings ${queueTab==='archived'?'hidden':''}><div id="keeper-character-approvals">${characterApprovalQueue()}</div><div id="keeper-host-flows">${hostFlowQueue()}</div><div id="keeper-game-requests">${rulingQueue()}</div></div><div id="keeper-archived-rulings" ${queueTab!=='archived'?'hidden':''}>${archivedRulings()}</div><div id="kp-ai-rulings"></div></div></section><section class="panel ruling-ai" aria-label="${t('ai.title')}"><div id="kp-ai-embedded"></div></section><aside id="chat-column" class="ruling-chat" aria-label="${t('chat.title')}"></aside></div>`;
+  return `<nav class="ruling-switch" aria-label="裁决工作区">${[['queue','裁决队列'],['ai','AI 对话'],['chat','聊天']].map(([pane,label])=>button(label,'ruling-pane',{pane},pane===rulingPane?'primary small':'small')).join('')}</nav><div class="rulings-grid" data-pane="${rulingPane}"><section class="panel ruling-work ruling-queues"><header class="queue-heading"><div role="tablist" aria-label="消息与裁决"><button type="button" role="tab" aria-selected="${queueTab==='messages'}" data-action="queue-tab" data-args='{"tab":"messages"}'>消息队列</button><button type="button" role="tab" aria-selected="${queueTab==='rulings'}" data-action="queue-tab" data-args='{"tab":"rulings"}'>裁决队列 <span id="keeper-pending-count">${keeperLocalPending()+aiQueuePending}</span></button><button type="button" role="tab" aria-selected="${queueTab==='archived'}" data-action="queue-tab" data-args='{"tab":"archived"}'>已归档</button></div><div class="queue-header-actions">${button('记录','ruling-history',{},'small')}${button('刷新','queue-refresh',{},'small')}${button('设置','navigate',{path:'gm/ai-settings'},'small')}</div></header><div id="keeper-queue-status" class="queue-status-host" aria-label="裁决处理状态"></div><div id="message-queue-list" class="ruling-scroll" role="tabpanel" ${queueTab!=='messages'?'hidden':''}>${messageQueue()}</div><div id="ruling-queue-list" class="ruling-scroll" role="tabpanel" ${queueTab==='messages'?'hidden':''}><div data-pending-rulings ${queueTab==='archived'?'hidden':''}><div id="keeper-character-approvals">${characterApprovalQueue()}</div><div id="keeper-host-flows">${hostFlowQueue()}</div><div id="keeper-game-requests">${rulingQueue()}</div></div><div id="keeper-archived-rulings" ${queueTab!=='archived'?'hidden':''}>${archivedRulings()}</div><div id="kp-ai-rulings"></div><div id="keeper-ruling-timeline"></div></div></section><section class="panel ruling-ai" aria-label="${t('ai.title')}"><div id="kp-ai-embedded"></div></section><aside id="chat-column" class="ruling-chat" aria-label="${t('chat.title')}"></aside></div>`;
 }
 
 function mapView(locations,current,rosters=false) {
@@ -406,8 +416,9 @@ function renderPage() {
   if(gm&&state.publicationSync&&state.publicationSync.status!=='completed')main.insertAdjacentHTML('afterbegin','<div class="notice error" role="status">规则发布已提交；包侧'+(state.publicationSync.status==='conflict'?'同步冲突':'等待同步')+'：'+escape(state.publicationSync.message)+'</div>');
   chatUI.update(state);
   chatUI.mount(workspace||path==='gm/rulings'?document.querySelector('#chat-column'):null);
+  updateKeeperQueue();
   const renderedIdentity=noticeIdentity();
-  embeddedAI.mount(path==='gm/ai-settings'?document.querySelector('#kp-ai-settings'):path==='gm/rulings'?document.querySelector('#kp-ai-embedded'):workspace?document.querySelector('#player-ai-embedded'):null,{base,manager:gm,account:state.accountId,scope:state.storageScope,settings:path==='gm/ai-settings',rulingsTarget:document.querySelector('#kp-ai-rulings'),archived:queueTab==='archived',readBundle:()=>api('package/bundle'),renderReference:renderPackageReference,onQueueCount:updateQueueCount,onNotice:value=>recordRulingNotice({...value,identity:renderedIdentity}),onSettings:()=>{location.hash='/gm/ai-settings';},onReveal:account=>actions['knowledge-ruling']({account}),onKnowledgeRequest:chooseAIKnowledge,onOpenSource:openRulingSource,onReview:()=>{location.hash='/gm/rulings';}});
+  embeddedAI.mount(path==='gm/ai-settings'?document.querySelector('#kp-ai-settings'):path==='gm/rulings'?document.querySelector('#kp-ai-embedded'):workspace?document.querySelector('#player-ai-embedded'):null,{base,manager:gm,account:state.accountId,scope:state.storageScope,settings:path==='gm/ai-settings',rulingsTarget:document.querySelector('#kp-ai-rulings'),statusTarget:document.querySelector('#keeper-queue-status'),timeline:document.querySelector('#keeper-ruling-timeline')?._timeline,archived:queueTab==='archived',readBundle:()=>api('package/bundle'),renderReference:renderPackageReference,onQueueCount:updateQueueCount,onNotice:value=>recordRulingNotice({...value,identity:renderedIdentity}),onSettings:()=>{location.hash='/gm/ai-settings';},onReveal:account=>actions['knowledge-ruling']({account}),onKnowledgeRequest:chooseAIKnowledge,onOpenSource:openRulingSource,onReview:()=>{location.hash='/gm/rulings';}});
   updateActivity();
   if(workspace){const log=document.querySelector('#action-feedback');if(log)log.scrollTop=logScroll;document.querySelector('.scene-column').scrollTop=sceneScroll;document.querySelector('.character-column').scrollTop=characterScroll;positionNotebook();}
 }
@@ -539,8 +550,54 @@ function recapPage() {
   return heading('P14',t('ui.m034'))+panel(t('ui.m145'),`<p style="white-space:pre-wrap">${escape(state.recap||t('recap.empty'))}</p>${mapView(state.locations,state.character?.numbers.location)}<div class="actions">${state.roomStatus==='active'&&state.session.numbers.phase===1?button(t('ui.m096'),'navigate',{path:state.role==='kp'?'gm/console':'play/scene'},'primary'):`<span class="tag">${t('recap.wait')}</span>`}${button(t('ui.m071'),'navigate',{path:'lobby'})}</div>`);
 }
 
-async function rawCommand(op,args) {
-  return {result:await perform('chat',{operation:op,input:args})};
+async function rawCommand(op,args,existing) {
+  const who=chatIdentity(),key=chatPendingKey();
+  if(!key)throw Error('请先登录');
+  if(chatSending.has(key))throw Error('消息正在发送，请稍候');
+  if(!existing&&chatPending())throw Error('上条消息结果未确认，请先核对原消息');
+  chatSending.add(key);
+  const body=existing?{id:existing.id,operation:existing.operation,args:existing.args}:{id:newId(),operation:'chat',args:{operation:op,input:args}};
+  try{
+    if(body.operation!=='chat')throw Error('聊天恢复记录无效');
+    localStorage.setItem(key,JSON.stringify(body));chatUI.pendingChanged();
+    if(webMode)await webMode.flush();
+    const result=await api('package/action',body);localStorage.removeItem(key);
+    if(who===chatIdentity()){
+      actionWake?.postMessage({scope:state.storageScope,chat:true});
+      if(['chat.direct.open','chat.channel.create','chat.channel.update'].includes(body.args.operation)){await pollChat();if(result.channelId&&!state?.channels[result.channelId])await pollChat();}
+      else pollChat();
+    }
+    return {result};
+  }catch(error){
+    if([400,401,403,404,409,422,429].includes(error.status))localStorage.removeItem(key);
+    throw error;
+  }finally{chatSending.delete(key);if(who===chatIdentity())chatUI.pendingChanged();}
+}
+async function recoverChat(){
+  const saved=chatPending();if(!saved)return;
+  const body=JSON.parse(saved),who=chatIdentity();
+  await rawCommand(null,null,body);
+  if(who===chatIdentity()){chatUI.confirmed(body.args);toast('原消息结果已核对');}
+}
+function pollChat(){
+  if(!state||state.preview)return Promise.resolve();
+  if(chatPollRunning){chatPollAgain=true;return chatPollRunning;}
+  const who=chatIdentity();
+  chatPollRunning=(async()=>{
+    try{
+      const next=await api('package/chat/state'+(playerWindow?'?player=1':''));
+      if(who!==chatIdentity()||next.accountId!==state?.accountId)return;
+      chatGeneration++;state={...state,channels:next.channels};chatUI.update(state);await chatUI.poll();
+    }catch(error){
+      if(who===chatIdentity()&&[401,403].includes(error.status)){
+        // Remove previously authorized channel content immediately on revocation.
+        chatGeneration++;state={...state,channels:{}};chatUI.update(state);
+      }
+    }finally{
+      chatPollRunning=null;lastChatPoll=performance.now();
+      if(chatPollAgain){chatPollAgain=false;queueMicrotask(pollChat);}
+    }
+  })();return chatPollRunning;
 }
 
 const paneNames = () => ({clues:t('ui.m008'),records:t('ui.m009')});
@@ -700,7 +757,7 @@ function rulingQueue(){
 function archivedRulings(){
   const requests=state.requests.filter(r=>r.status!=='pending').map(r=>({time:r.time,type:'玩家行动',source:r.account,summary:requestDescription(r)+(r.text?' · '+r.text:''),status:r.status,args:{kind:'request',id:r.id},attrs:'data-archived-request="'+escape(r.id)+'"'}));
   const drafts=Object.values(state.drafts||{}).filter(d=>['approved','rejected'].includes(d.status)).map(d=>({time:d.time,type:'角色申请',source:d.account,summary:d.name,status:d.status,args:{kind:'draft',id:d.account},attrs:'data-archived-draft="'+escape(d.account)+'"'}));
-  return [...requests,...drafts].sort((a,b)=>(b.time||0)-(a.time||0)).map(r=>rulingCard({time:queueTime(r.time),type:r.type,source:r.source,summary:escape(r.summary),state:({approved:'已接受',rejected:'已拒绝',automatic:'已自动执行',cancelled:'已取消'}[r.status]||r.status),attrs:r.attrs,actions:button('查看详情','queue-detail',r.args)+rulingAIButton(r.args.kind,r.args.id,r.source)})).join('');
+  return [...requests,...drafts].sort((a,b)=>(b.time||0)-(a.time||0)).map(r=>rulingCard({time:queueTime(r.time),timestamp:r.time,type:r.type,source:r.source,summary:escape(r.summary),state:({approved:'已接受',rejected:'已拒绝',automatic:'已自动执行',cancelled:'已取消'}[r.status]||r.status),attrs:r.attrs,actions:button('查看详情','queue-detail',r.args)+rulingAIButton(r.args.kind,r.args.id,r.source)})).join('');
 }
 function rulingResolutionFields(kind){
   if(kind==='check')return select('属性','resolution-attribute',[['str',fieldName('str')],['dex',fieldName('dex')],['wil',fieldName('wil')]],'dex')+select('模式','resolution-mode',[['normal','普通'],['advantage','优势'],['disadvantage','劣势']],'normal');
@@ -753,11 +810,11 @@ function updateRoomNetwork(){
 const actions = {
   'knowledge-ruling':({account})=>{
     const character=state.characters.find(c=>c.owner===account);
-    if(!character)return toast('该玩家尚无已审核角色');
-    const places=Object.values(state.published),index=places.find(p=>p.index===character.numbers.location)?.index||places[0]?.index;
+    if(!state.characters.length)return toast('当前没有可接收揭示的已审核角色');
+    const places=Object.values(state.published),index=places.find(p=>p.index===character?.numbers.location)?.index||places[0]?.index;
     if(!index)return toast('请先发布可揭示的地点');
     const choices=index=>(state.sceneKnowledge||[]).filter(c=>c.location===Number(index)).map(c=>`<label><input type="checkbox" name="knowledge" value="${escape(c.id)}">${escape(c.title)}</label>`).join('');
-    openDialog('执行信息揭示',`<p>接收玩家：${escape(character.name)}</p>${select('地点','knowledge-ruling-location',places.map(p=>[p.index,p.name]),index)}<p>将向该玩家揭示所选地点当前的公开描述。</p><details><summary>附加线索</summary><div data-disclosure-choices>${choices(index)}</div></details>`,data=>perform('location.reveal',{index:number(data.get('knowledge-ruling-location')),accounts:[account],knowledge:data.getAll('knowledge')}),'执行揭示');
+    openDialog('执行信息揭示',`${select('接收玩家','knowledge-ruling-account',[['','请选择玩家'],...state.characters.map(c=>[c.owner,c.name+' · '+c.owner])],character?.owner||'')}${select('地点','knowledge-ruling-location',places.map(p=>[p.index,p.name]),index)}<p>将向所选玩家揭示该地点当前的公开描述。</p><details><summary>附加线索</summary><div data-disclosure-choices>${choices(index)}</div></details>`,data=>{const recipient=data.get('knowledge-ruling-account');if(!state.characters.some(c=>c.owner===recipient))throw Error('请选择接收玩家');return perform('location.reveal',{index:number(data.get('knowledge-ruling-location')),accounts:[recipient],knowledge:data.getAll('knowledge')});},'执行揭示');
     dialog.querySelector('[name=knowledge-ruling-location]').onchange=e=>{dialog.querySelector('[data-disclosure-choices]').innerHTML=choices(e.target.value);};
   },
   'topbar-toggle':()=>{requestAnimationFrame(positionNotebook);const folded=document.body.classList.toggle('topbar-collapsed');localStorage.setItem('sv.desktop.topbar.'+base.pathname+'.'+state.accountId,folded?'1':'0');const b=document.querySelector('.topbar-toggle');b.setAttribute('aria-expanded',String(!folded));b.setAttribute('aria-label',t(folded?'nav.expandTop':'nav.collapseTop'));b.title=t(folded?'nav.expandTop':'nav.collapseTop');b.textContent=folded?t('nav.expandTop')+' ▾':'▴';},
@@ -790,10 +847,10 @@ const actions = {
   'events-read':()=>{markEventsRead();renderPage();},
   'console-tab':({tab})=>{if(dirtyForm)return toast('请先保存当前表单。');location.hash=tab==='control'?'/gm/console':'/gm/rulings';renderPage();},
   'ruling-ai':async args=>{if(dirtyForm&&dirtyForm!=='ruling-form')throw Error(t('status.savefirst'));const result=await perform('ai.review',args);rulingPane='ai';location.hash='/gm/rulings';renderPage();embeddedAI.openSession(result.sessionId);},
-  'queue-tab':({tab})=>{if(!['messages','rulings','archived'].includes(tab))return;queueTab=tab;document.querySelector('#message-queue-list').hidden=tab!=='messages';document.querySelector('#ruling-queue-list').hidden=tab==='messages';document.querySelector('[data-pending-rulings]').hidden=tab==='archived';document.querySelector('#keeper-archived-rulings').hidden=tab!=='archived';embeddedAI.setArchived(tab==='archived');document.querySelectorAll('[data-action=queue-tab]').forEach(b=>b.setAttribute('aria-selected',String(JSON.parse(b.dataset.args).tab===tab)));},
+  'queue-tab':({tab})=>{if(!['messages','rulings','archived'].includes(tab))return;queueTab=tab;document.querySelector('#message-queue-list').hidden=tab!=='messages';document.querySelector('#ruling-queue-list').hidden=tab==='messages';document.querySelector('[data-pending-rulings]').hidden=tab==='archived';document.querySelector('#keeper-archived-rulings').hidden=tab!=='archived';embeddedAI.setArchived(tab==='archived');updateKeeperQueue();document.querySelectorAll('[data-action=queue-tab]').forEach(b=>b.setAttribute('aria-selected',String(JSON.parse(b.dataset.args).tab===tab)));},
   'queue-refresh':async()=>{await refresh(false);updateKeeperQueue();await embeddedAI.refreshQueue();},
   'ruling-history':()=>{const content=activityFeed();if(!embeddedAI.queueHistory(content))openDialog('裁决与行动记录',content,null);},
-  'ruling-notice':({id})=>{const n=rulingNotices().find(x=>x.id===id);if(!n)return;openDialog('执行结果与定位',`<p>${escape(n.title)}</p><p class="notice ${['failed','rejected','blocked','unknown','partial'].includes(n.status)?'error':''}">${escape(n.reason)}</p><pre class="data-detail">${escape(JSON.stringify({room:state.storageScope,account:state.accountId,time:new Date(n.time).toISOString(),status:n.status,...n.locator},null,2))}</pre><p>按以上原裁决／请求定位核对记录；结果未知时请查询原回执。</p>${button('复制定位','notice-copy',{id})}${n.locator?.rulingId?button('打开原裁决','notice-source',{id}):''}`,null);},
+  'ruling-notice':({id})=>{const n=rulingNotices().find(x=>x.id===id);if(!n)return;openDialog('执行结果与定位',`<p>${escape(n.title)}</p><p class="notice ${['failed','rejected','blocked','unknown','partial','rolled_back'].includes(n.status)?'error':''}">${escape(n.reason)}</p>${batchDetailsHTML(n.batch||{})}<pre class="data-detail">${escape(JSON.stringify({room:state.storageScope,account:state.accountId,time:new Date(n.time).toISOString(),status:n.status,...n.locator},null,2))}</pre><p>按以上原裁决／请求定位核对记录；结果未知时请查询原回执。</p>${button('复制定位','notice-copy',{id})}${n.locator?.rulingId?button('打开原裁决','notice-source',{id}):''}`,null);},
   'notice-copy':async({id})=>{const n=rulingNotices().find(x=>x.id===id);if(!n)return;const text=JSON.stringify({room:state.storageScope,account:state.accountId,...n.locator});try{await navigator.clipboard.writeText(text);toast('定位已复制');}catch{const input=document.createElement('textarea');input.readOnly=true;input.value=text;input.setAttribute('aria-label','可复制的结果定位');dialog.append(input);input.select();}},
   'notice-source':async({id})=>{const n=rulingNotices().find(x=>x.id===id);closeDialog();await embeddedAI.openRulingSource(n.locator);},
   'ruling-reference':copyRulingReference,
@@ -857,7 +914,7 @@ const actions = {
   'move-item':({slot})=>openDialog(t('inventory.move'),field(t('inventory.destination'),'value',5,'number')+rulingMode(),data=>submitAction('inventory',{operation:'move',slot,value:number(data.get('value'))},data),'移动','S04'),
   transfer:({slot})=>openDialog(t('inventory.transfer'),select(t('inventory.receiver'),'targetAccount',state.team.filter(x=>x.account!==state.accountId).map(x=>[x.account,x.name]))+field(t('inventory.receiverslot'),'destination',5,'number'),data=>perform('request',{kind:'transfer',slot,targetAccount:data.get('targetAccount'),destination:number(data.get('destination')),text:t('transfer.text',{count:slot})}),t('inventory.submit'),'S05'),
   share:({id})=>{const receipt=state.receipts.find(x=>x.id===id);openDialog(t('share.title'),`<p>${escape(resultText(receipt.result))}</p>`+select(t('share.channel'),'channelId',Object.values(state.channels).filter(x=>x.canPost).map(x=>[x.channelId,x.name]),currentChannel)+``,data=>perform('share.receipt',{receiptId:id,channelId:data.get('channelId')}),t('share.submit'),'S06');},
-  'channel-create':()=>openDialog(t('ui.m024'),field('频道名称','name')+select('范围','kind',[['room','公共'],['group','分组']],'room')+state.members.filter(x=>x.accountId!==state.accountId).map(x=>`<label><input type="checkbox" name="member" value="${escape(x.accountId)}"> ${escape(x.nickname)}</label>`).join(''),data=>rawCommand('chat.channel.create',{name:data.get('name'),kind:data.get('kind'),...(data.get('kind')==='group'?{participants:[state.accountId,...data.getAll('member')]}:{})}),'创建','S06'),
+  'channel-create':()=>openDialog(t('ui.m024'),field('频道名称','name')+select('范围','kind',[['room','公共'],['group','分组']],'room')+state.members.filter(x=>x.accountId!==state.accountId).map(x=>`<label><input type="checkbox" name="member" value="${escape(x.accountId)}"> ${escape(x.nickname)}</label>`).join(''),async data=>{const form=dialog.querySelector('form'),who=chatIdentity();await rawCommand('chat.channel.create',{name:data.get('name'),kind:data.get('kind'),...(data.get('kind')==='group'?{participants:[state.accountId,...data.getAll('member')]}:{})});if(form?.isConnected&&who===chatIdentity()){closeDialog();renderPage();toast(t('result.chat'));}},'创建','S06'),
   'door':args=>openDialog('通路状态',select('门或通路','status',[['open','开启'],['closed',t('ui.m058')],['locked','锁住']],state.doors[args.edge]),data=>perform('door',{edge:args.edge,status:data.get('status')}),t('ui.m063'),'S14'),
   'take-stock':args=>openDialog('从地点领取',select('接收角色','actor',state.characters.filter(x=>x.numbers.location===args.index).map(x=>[x.instanceId,x.name]))+field('放入槽位','slot',7,'number'),data=>perform('stock.take',{...args,actor:data.get('actor'),slot:number(data.get('slot'))}),'确认领取','S01'),
   morale:args=>perform('morale',args),
@@ -969,9 +1026,9 @@ effectsUI.configure(t,changeList,()=>diceUI.presenting,(pane='records')=>{
 });
 let actionWake=null;
 if(!webMode&&typeof BroadcastChannel!=='undefined'){
-  try{actionWake=new BroadcastChannel('stumpsville-action-wake');actionWake.onmessage=event=>{if(event.data?.scope===state?.storageScope){if(event.data.completed)pollState();else runAutoScenes();}};}catch{}
+  try{actionWake=new BroadcastChannel('stumpsville-action-wake');actionWake.onmessage=event=>{if(event.data?.scope===state?.storageScope){if(event.data.chat)pollChat();else if(event.data.completed)pollState();else runAutoScenes();}};}catch{}
 }
-chatUI.configure({api,send:rawCommand,toast,t});
+chatUI.configure({api,send:rawCommand,pending:chatPending,recover:recoverChat,toast,t});
 if(!webMode&&base.pathname==='/'){
   const bytes=crypto.getRandomValues(new Uint8Array(12));
   const slot='tab-'+Array.from(bytes,x=>x.toString(16).padStart(2,'0')).join('');
@@ -981,11 +1038,12 @@ async function pollState(){
   if(!state||busy||statePollRunning)return;
   statePollRunning=true;
   try{
-    const generation=stateGeneration;
+    const generation=stateGeneration,chats=chatGeneration;
     const next=await api(statePath());
     if(busy||!state||generation!==stateGeneration)return;
     const visual=value=>{const {network,channels,...rest}=value;return JSON.stringify(rest);};
     const changed=visual(next)!==visual(state);
+    if(chats!==chatGeneration&&next.accountId===state.accountId&&next.storageScope===state.storageScope)next.channels=state.channels;
     state=next;chatUI.update(state);diceUI.observe(state);effectsUI.observe(state);connection=t('ui.m065');
     const editing=['INPUT','TEXTAREA','SELECT'].includes(document.activeElement?.tagName)&&!document.activeElement?.readOnly;
     if(changed)renderDeferred=true;
@@ -998,16 +1056,19 @@ async function pollState(){
 
     const label=document.querySelector('#connection');if(label)label.textContent=t('ui.m065');
   }catch(error){
-    chatUI.update(null);aiUI.update(null);embeddedAI.close();
     connection=t('ui.m067');
     const label=document.querySelector('#connection');if(label)label.textContent=connection;
-    if(error.status===401){embeddedAI.close();libraryCache=null;state=null;chatUI.update(null);csrf='';history=[];closeDialog();renderEntry();}
+    // A failed refresh does not revoke a conversation or erase an in-flight
+    // response. Actual authorization failures still clear the previous view.
+    if(error.status===401||error.status===403){embeddedAI.close();aiUI.update(null);libraryCache=null;state=null;chatUI.update(null);csrf='';history=[];closeDialog();renderEntry();}
   }
   finally{statePollRunning=false;lastStatePoll=performance.now();}
 }
 // Keep executor work independent of full projections and chat history requests.
+document.addEventListener('visibilitychange',()=>{if(!document.hidden){pollState();pollChat();runAutoScenes();}});
 setInterval(runAutoScenes,500);
 setInterval(()=>{
   const settling=state?.autoSceneTasks?.some(task=>['queued','running','finishing'].includes(task.status));
-  if(performance.now()-lastStatePoll>=(settling?400:2500))pollState();
+  if(performance.now()-lastStatePoll>=(settling?400:document.hidden?10000:2500))pollState();
+  if(performance.now()-lastChatPoll>=(document.hidden?5000:1000)&&!chatPollRunning)pollChat();
 },200);

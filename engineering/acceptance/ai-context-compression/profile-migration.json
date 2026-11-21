@@ -1,0 +1,88 @@
+{
+  "changes": [
+    {
+      "path": "engineering/ai/config/ai-providers.json",
+      "profileId": "deepseek-main",
+      "before": {
+        "revision": 6,
+        "request": {
+          "connectTimeoutMs": 10000,
+          "maxOutputTokens": 4096,
+          "thinking": "disabled",
+          "totalTimeoutMs": 120000
+        },
+        "limits": {
+          "dailyTokenBudget": null,
+          "maxConcurrentPerRoom": 1,
+          "maxQueuedPerRoom": 5,
+          "maxRepairAttempts": 5,
+          "maxToolRounds": 6,
+          "maxTransportRetries": 2,
+          "taskTimeoutMs": 300000
+        }
+      },
+      "after": {
+        "revision": 7,
+        "request": {
+          "connectTimeoutMs": 10000,
+          "maxOutputTokens": 8192,
+          "thinking": "disabled",
+          "totalTimeoutMs": 120000,
+          "contextWindowTokens": 1048576
+        },
+        "limits": {
+          "dailyTokenBudget": null,
+          "maxConcurrentPerRoom": 1,
+          "maxQueuedPerRoom": 5,
+          "maxRepairAttempts": 5,
+          "maxToolRounds": 12,
+          "maxTransportRetries": 2,
+          "taskTimeoutMs": 600000
+        }
+      }
+    },
+    {
+      "path": "engineering/ai/examples/ai-providers.json",
+      "profileId": "deepseek-main",
+      "before": {
+        "revision": 1,
+        "request": {
+          "connectTimeoutMs": 10000,
+          "totalTimeoutMs": 120000,
+          "maxOutputTokens": 4096,
+          "thinking": "disabled"
+        },
+        "limits": {
+          "maxConcurrentPerRoom": 1,
+          "maxQueuedPerRoom": 5,
+          "maxToolRounds": 6,
+          "maxRepairAttempts": 5,
+          "maxTransportRetries": 2,
+          "taskTimeoutMs": 300000,
+          "dailyTokenBudget": null
+        }
+      },
+      "after": {
+        "revision": 1,
+        "request": {
+          "connectTimeoutMs": 10000,
+          "totalTimeoutMs": 120000,
+          "maxOutputTokens": 8192,
+          "thinking": "disabled",
+          "contextWindowTokens": 1048576
+        },
+        "limits": {
+          "maxConcurrentPerRoom": 1,
+          "maxQueuedPerRoom": 5,
+          "maxToolRounds": 12,
+          "maxRepairAttempts": 5,
+          "maxTransportRetries": 2,
+          "taskTimeoutMs": 600000,
+          "dailyTokenBudget": null
+        }
+      }
+    }
+  ],
+  "modelMetadataSource": "https://api-docs.deepseek.com/api/list-models/",
+  "checkedDate": "2026-11-21"
+}

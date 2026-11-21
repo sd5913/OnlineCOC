@@ -116,7 +116,7 @@ def test_batch_human_approval_idempotence_and_player_denial(application):
     assert result['receipts'][0]['receipt']['status']=='committed'
     assert app.host.state()['entities']['actor-one']['name']=='审核后的名称'
     assert decide(app,b)['code']=='BATCH_NOT_PENDING'
-    assert len([r for r in app.host.state()['commands'].values() if r['id'].startswith('ai-batch:')])==1
+    assert len([r for r in app.host.state()['commands'].values() if r['id'].startswith('batch-')])==1
 
 
 def test_batch_stale_reject_auto_and_bypass_forbidden(application):
@@ -133,31 +133,32 @@ def test_batch_stale_reject_auto_and_bypass_forbidden(application):
 
 
 def test_batch_unknown_reconciles_without_reexecuting(application):
-    app=application;b=batch(app);original=app.host.command;count=[]
+    app=application;b=batch(app);original=app.host.execute_batch;count=[]
     def lost(*args,**kwargs):
         result=original(*args,**kwargs);count.append(result);raise OSError('simulated response loss')
-    app.host.command=lost
-    try:assert committed(decide(app,b))['status']=='unknown'
-    finally:app.host.command=original
-    assert committed(decide(app,b,'reconcile'))['status']=='completed'
+    app.host.execute_batch=lost
+    try:assert committed(decide(app,b))['status']=='completed'
+    finally:app.host.execute_batch=original
+    assert decide(app,b,'reconcile')['code']=='BATCH_NOT_UNCERTAIN'
     assert len(count)==1
 
 
-def test_batch_stops_after_partial_failure_and_restart_never_replays(application,tmp_path):
+def test_preflight_blocks_bad_middle_step_without_any_business_writes(application,tmp_path):
     from onlinecoc_ai.repository import Repository
-    app=application;b=batch(app,[
+    app=application;before=app.host.state();b=batch(app,[
         {'target':'host','op':'entity.patch','args':{'id':'actor-one','name':'第一步已完成'}},
         {'target':'host','op':'entity.patch','args':{'id':'missing-entity','name':'失败项'}},
         {'target':'host','op':'entity.patch','args':{'id':'actor-one','name':'不可执行的第三步'}}])
-    result=committed(decide(app,b));assert result['status']=='partial' and len(result['receipts'])==2
-    assert app.host.state()['entities']['actor-one']['name']=='第一步已完成'
+    assert b['status']=='blocked' and b['preflight']['items'][1]['status']=='blocked'
+    assert decide(app,b)['code']=='BATCH_NOT_PENDING'
+    assert app.host.state()==before and not b['receipts']
     assert decide(app,b,'reconcile')['code']=='BATCH_NOT_UNCERTAIN'
-    state=app.repository.state();state['settings']['batches'][b['batchId']]['status']='executing'
+    state=app.repository.state()
     path=tmp_path/'batch-restart';repo=Repository(path,state['scopeId']);repo.commit(state);repo.close()
     reopened=Repository(path,state['scopeId'])
     try:
         recovered=reopened.state()['settings']['batches'][b['batchId']]
-        assert recovered['status']=='unknown' and recovered['receipts']==result['receipts'] and recovered['digest']==b['digest']
+        assert recovered['status']=='blocked' and recovered['receipts']==[] and recovered['digest']==b['digest']
     finally:reopened.close()
 
 

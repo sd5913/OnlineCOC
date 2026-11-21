@@ -1,0 +1,262 @@
+{
+  "tree": "D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\ai-defaults-c-review\\work\\lifecycle-evidence-1795194023034593900",
+  "realProvider": false,
+  "sourceReport": "natural-1795193315656682400.json",
+  "cases": [
+    {
+      "caseId": "unique-short-rest",
+      "sourceAttemptIds": [
+        1,
+        2,
+        3
+      ],
+      "sourceOutputDigest": "54d415aaa8060ce2d6ee91e05995a3ff13ebce067638f31c908a4ec889df3d65",
+      "status": "passed",
+      "oracleCorrection": "Ignored short-rest attribute accepted only after rule-source and actual effect verification; original failed result retained.",
+      "reports": [],
+      "actualExecution": true,
+      "idempotent": true,
+      "fullEffectOracle": true,
+      "beforeDigest": "46a52b80f292047c012d4af9595facd96f228c6b8be617efa64c10a10e205595",
+      "afterDigest": "10dbf0c729b599cd58095cc01924b31d88b7b47946b9e745051915cac20f0ce5"
+    },
+    {
+      "caseId": "ration-slot-5",
+      "sourceAttemptIds": [
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "sourceOutputDigest": "dcf7e13975b45a32adbb8ebc140e4c2161b91fb15c9afdd1967170bf7f72bb22",
+      "status": "passed",
+      "reports": [],
+      "actualExecution": true,
+      "idempotent": true,
+      "fullEffectOracle": true,
+      "beforeDigest": "46a52b80f292047c012d4af9595facd96f228c6b8be617efa64c10a10e205595",
+      "afterDigest": "a2b1b419785356fd28881552caff14207968c82a9eb0c2fc7d1130a5c8db3f38"
+    },
+    {
+      "caseId": "ration-slot-7",
+      "sourceAttemptIds": [
+        9,
+        10,
+        11,
+        12
+      ],
+      "sourceOutputDigest": "26ff669f50b062b9790c17f9829b9183947171601d77f36ccf090613e535a35e",
+      "status": "passed",
+      "reports": [],
+      "actualExecution": true,
+      "idempotent": true,
+      "fullEffectOracle": true,
+      "beforeDigest": "4940d90b45dd59aceab84507cc3309eb70ce56d458ac279465a7c17bebf19e79",
+      "afterDigest": "047e958e67feb1bd9c94bc096e7d0e3272eb43a88dcb35425cde12146f7954a7"
+    },
+    {
+      "caseId": "config-add",
+      "sourceAttemptIds": [
+        20,
+        21,
+        22
+      ],
+      "sourceOutputDigest": "923a06a4c859b5316eaa5b0843b8027ba77f128a1ac7812e0a7c3e47f1973126",
+      "status": "passed",
+      "reports": [
+        {
+          "level": "A",
+          "status": "pass",
+          "codes": []
+        },
+        {
+          "level": "B",
+          "status": "pass",
+          "codes": []
+        },
+        {
+          "level": "C",
+          "status": "pass",
+          "codes": [
+            "EXTENSION_GAMEPLAY_REVIEW"
+          ]
+        }
+      ],
+      "actualExecution": true,
+      "idempotent": true,
+      "fullEffectOracle": true,
+      "beforeDigest": "46a52b80f292047c012d4af9595facd96f228c6b8be617efa64c10a10e205595",
+      "afterDigest": "ffb0fce4944479fe7626d8a6e533a715752b10e90c8d44e277b43de2f99dcd2e"
+    },
+    {
+      "caseId": "config-replace",
+      "sourceAttemptIds": [
+        23,
+        24
+      ],
+      "sourceOutputDigest": "c165d32bae559d8ece4c3f367505c9d957e566a68962697e0ccf06c614e3c1eb",
+      "status": "passed",
+      "reports": [
+        {
+          "level": "A",
+          "status": "pass",
+          "codes": []
+        },
+        {
+          "level": "B",
+          "status": "pass",
+          "codes": []
+        },
+        {
+          "level": "C",
+          "status": "pass",
+          "codes": [
+            "EXTENSION_GAMEPLAY_REVIEW"
+          ]
+        }
+      ],
+      "actualExecution": true,
+      "idempotent": true,
+      "fullEffectOracle": true,
+      "beforeDigest": "46a52b80f292047c012d4af9595facd96f228c6b8be617efa64c10a10e205595",
+      "afterDigest": "d54edb5a8eb8dd3f22b1b9b44f153b5209830a9e19a0fc9d69f39f55bb2531bc"
+    },
+    {
+      "caseId": "config-remove",
+      "sourceAttemptIds": [
+        25,
+        26,
+        27,
+        28
+      ],
+      "sourceOutputDigest": "3f88ac9b4b5bddd0ebc941cb59cbf6fe221843dd255b0017d545eb01e5fca5b3",
+      "status": "passed",
+      "reports": [
+        {
+          "level": "A",
+          "status": "pass",
+          "codes": []
+        },
+        {
+          "level": "B",
+          "status": "pass",
+          "codes": []
+        },
+        {
+          "level": "C",
+          "status": "pass",
+          "codes": []
+        }
+      ],
+      "actualExecution": true,
+      "idempotent": true,
+      "fullEffectOracle": true,
+      "beforeDigest": "25c30b13b7a0db5da6f0ffdd508ead437815f1c9e277a110b527eee11d63097c",
+      "afterDigest": "46a52b80f292047c012d4af9595facd96f228c6b8be617efa64c10a10e205595"
+    },
+    {
+      "caseId": "c-coverage-adopt",
+      "sourceAttemptIds": [
+        29,
+        30,
+        31,
+        32
+      ],
+      "sourceOutputDigest": "d0320337cf0e45f58b27762e1aba9dfb167a18e280fdbd991baf5d6283fe750f",
+      "status": "passed",
+      "reports": [
+        {
+          "level": "A",
+          "status": "pass",
+          "codes": []
+        },
+        {
+          "level": "B",
+          "status": "pass",
+          "codes": []
+        },
+        {
+          "level": "C",
+          "status": "unknown",
+          "codes": [
+            "LIVE_SCENARIO_COVERAGE_MISSING"
+          ]
+        }
+      ],
+      "actualExecution": true,
+      "idempotent": true,
+      "fullEffectOracle": true,
+      "beforeDigest": "46a52b80f292047c012d4af9595facd96f228c6b8be617efa64c10a10e205595",
+      "afterDigest": "81b65dc45008c4ea2fedd03688bea19e32db6ee93b4a9cc73c2a0f6202fd8112"
+    },
+    {
+      "caseId": "c-extension-adopt",
+      "sourceAttemptIds": [
+        33,
+        34
+      ],
+      "sourceOutputDigest": "e903e19233aef654004e23f2407b7ba54f0fc49750e4031ea455891645fc6d57",
+      "status": "passed",
+      "reports": [
+        {
+          "level": "A",
+          "status": "pass",
+          "codes": []
+        },
+        {
+          "level": "B",
+          "status": "pass",
+          "codes": []
+        },
+        {
+          "level": "C",
+          "status": "unknown",
+          "codes": [
+            "EXTENSION_FORBIDDEN"
+          ]
+        }
+      ],
+      "actualExecution": true,
+      "idempotent": true,
+      "fullEffectOracle": true,
+      "beforeDigest": "46a52b80f292047c012d4af9595facd96f228c6b8be617efa64c10a10e205595",
+      "afterDigest": "dfefcb3c172f85f84757e88258888885ebd446d3ba9f72f8c02f27b1e4a0389c"
+    },
+    {
+      "caseId": "c-dynamic-basis",
+      "sourceAttemptIds": [
+        35,
+        36,
+        37,
+        38
+      ],
+      "sourceOutputDigest": "b0e4abb317277b3c9a1bb13c04ac7d3af39043bab4fbb9e2fdf03ca6637f022d",
+      "status": "passed",
+      "reports": [
+        {
+          "level": "A",
+          "status": "pass",
+          "codes": []
+        },
+        {
+          "level": "B",
+          "status": "pass",
+          "codes": []
+        },
+        {
+          "level": "C",
+          "status": "pass",
+          "codes": [
+            "LIVE_GAMEPLAY_REVIEW"
+          ]
+        }
+      ],
+      "actualExecution": true,
+      "idempotent": true,
+      "fullEffectOracle": true,
+      "beforeDigest": "46a52b80f292047c012d4af9595facd96f228c6b8be617efa64c10a10e205595",
+      "afterDigest": "81b65dc45008c4ea2fedd03688bea19e32db6ee93b4a9cc73c2a0f6202fd8112"
+    }
+  ]
+}

@@ -15,7 +15,9 @@ from test_sessions import submit
 def history_case(app,query=None,demand=False):
     enable(app.host,public=True,kp=True,private=True)
     sid=committed(command(app,'ai.session.create',{'title':'Historical intent'}))['sessionId']
-    if demand:app.coordinator.context=Context(app.proposals,demand=True)
+    if demand:
+        app.coordinator.context=Context(app.proposals,demand=True)
+        if query is None:query=query_for('search')
     async def callback(count,*_):
         if query and count==1:return tool_call(*query(app))
         return completion({'kind':'plan','text':'已确定：给 player1 的角色加1点护甲，保留其他状态；等待另行审批。'})
@@ -80,7 +82,7 @@ def test_query_history_identity_witness_and_legacy_boundary(application,operatio
 
 
 @pytest.mark.parametrize('change',['deleted','hidden','authorization','policy','profile','session_deleted'])
-def test_stale_history_never_restores_deleted_or_revoked_body(application,change):
+def test_delivered_body_survives_but_changed_sources_do_not_enter_new_context(application,change):
     app=application;sid,task=history_case(app)
     room=app.host.state()
     if change=='deleted':del room['entities']['actor-one']
@@ -93,13 +95,21 @@ def test_stale_history_never_restores_deleted_or_revoked_body(application,change
         assert not app.tasks('kp')['items'];return
     app.host.commit(room)
     row=app.sessions.get('kp',sid)['items'][0]
-    assert not row.get('response') and not row.get('historicalReadOnly'),row
+    if change=='authorization':assert not row.get('response') and row['sourceState']=='denied'
+    else:assert row['response']==task['text'] and row['historicalReadOnly'],row
+    req=submit(app,sid,'重新核对最新资料')
+    _,payload=Context(app.proposals,demand=True).capture('kp',app.repository.state()['requests'][req['requestId']])
+    assert not any(turn['content']==task['text'] for turn in payload['conversationHistory'])
 
 
 def test_new_query_witness_does_not_restore_deleted_object(application):
     app=application;sid,task=history_case(app,query_for('search'),demand=True)
     room=app.host.state();del room['entities']['actor-one'];app.host.commit(room)
-    assert not app.sessions.get('kp',sid)['items'][0].get('response')
+    row=app.sessions.get('kp',sid)['items'][0]
+    assert row['response']==task['text'] and row['historicalReadOnly']
+    req=submit(app,sid,'重新查询')
+    _,payload=Context(app.proposals,demand=True).capture('kp',app.repository.state()['requests'][req['requestId']])
+    assert not any(turn['content']==task['text'] for turn in payload['conversationHistory'])
 
 
 def test_historical_intent_is_rechecked_after_capture_and_has_no_execution_authority(application):
@@ -205,10 +215,11 @@ def test_new_generation_public_status_is_not_expired_historical_intent(applicati
             release.set();task=await wait_task(app.coordinator,dispatched['taskId'])
             row=next(i for i in app.sessions.get('kp',sid)['items'] if i['requestId']==req['requestId'])
             if change_during_generation:
-                assert task['status']=='failed' and row['status']=='failed',row
+                assert task['status']=='review_ready' and row['response']==task['text'],row
+                assert not row.get('error')
             else:
                 assert task['status']=='review_ready' and row['status']=='review_ready',row
-                assert not row.get('historicalReadOnly') and not row.get('sourceState')
+                assert not row.get('historicalReadOnly') and row.get('sourceState') in (None,'fresh')
             old_row=next(i for i in app.sessions.get('kp',sid)['items'] if i.get('taskId')==old['taskId'])
             assert old_row['historicalReadOnly'] and old_row['response']==old['text']
         finally:release.set();await app.coordinator.close()

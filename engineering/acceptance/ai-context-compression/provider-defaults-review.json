@@ -1,0 +1,22 @@
+{
+  "status": "passed",
+  "method": "Execute actual providers.js base factory with Node; existing profiles still enter edit(value) directly.",
+  "request": {
+    "connectTimeoutMs": 10000,
+    "totalTimeoutMs": 120000,
+    "maxOutputTokens": 8192,
+    "contextWindowTokens": 1048576,
+    "thinking": "disabled"
+  },
+  "limits": {
+    "maxConcurrentPerRoom": 1,
+    "maxQueuedPerRoom": 5,
+    "maxToolRounds": 12,
+    "maxRepairAttempts": 5,
+    "maxTransportRetries": 2,
+    "taskTimeoutMs": 600000,
+    "dailyTokenBudget": null
+  },
+  "enabled": false,
+  "sourceDigest": "3f25c4f2717fcb46e90a83c52585b257cbe2b807e10ff7ba402b83901bf2e329"
+}

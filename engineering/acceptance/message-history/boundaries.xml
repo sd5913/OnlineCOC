@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="7" time="16.565" timestamp="2026-11-20T15:00:31.925304+08:00" hostname="LAPTOP-BIFSL64A"><testcase classname="engineering.acceptance.message-history.test_boundaries" name="test_unproven_legacy_reply_never_migrates[generating]" time="1.447" /><testcase classname="engineering.acceptance.message-history.test_boundaries" name="test_unproven_legacy_reply_never_migrates[validating]" time="1.334" /><testcase classname="engineering.acceptance.message-history.test_boundaries" name="test_unproven_legacy_reply_never_migrates[failed]" time="1.361" /><testcase classname="engineering.acceptance.message-history.test_boundaries" name="test_unproven_legacy_reply_never_migrates[context-missing]" time="1.628" /><testcase classname="engineering.acceptance.message-history.test_boundaries" name="test_unproven_legacy_reply_never_migrates[context-tampered]" time="1.681" /><testcase classname="engineering.acceptance.message-history.test_boundaries" name="test_unproven_legacy_reply_never_migrates[owner-mismatch]" time="1.477" /><testcase classname="engineering.acceptance.message-history.test_boundaries" name="test_http_error_does_not_attach_unsafe_identifiers" time="5.058"><failure message="playwright._impl._errors.Error: Page.evaluate: SyntaxError: Invalid or unexpected token&#10;    at eval (&lt;anonymous&gt;)&#10;    at UtilityScript.evaluate (&lt;anonymous&gt;:370:30)&#10;    at UtilityScript.&lt;anonymous&gt; (&lt;anonymous&gt;:1:44)">browser_page = &lt;Page url='http://127.0.0.1:58738/ai-ui/conversation.html'&gt;
+
+    def test_http_error_does_not_attach_unsafe_identifiers(browser_page):
+        page=browser_page
+&gt;       result=page.evaluate("""async()=&gt;{
+          const {HttpTransport,AiClient}=await import('/ai-ui/client.js');const actual=fetch;
+          window.fetch=async()=&gt;new Response('SECRET_BODY',{status:502});const client=new AiClient(new HttpTransport());
+          client.connected=true;client.view={authorityEpoch:1};let result;
+          try{await client.aiCommand('ai.session.submit',{},'secret\nunsafe');}catch(e){result={message:e.message,...e};}
+          window.fetch=actual;return result;
+        }""")
+
+engineering\acceptance\message-history\test_boundaries.py:34: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+engineering\.venv\Lib\site-packages\playwright\sync_api\_generated.py:16843: in evaluate
+    self._sync(
+engineering\.venv\Lib\site-packages\playwright\_impl\_page.py:476: in evaluate
+    return await self._main_frame.evaluate(expression, arg)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+engineering\.venv\Lib\site-packages\playwright\_impl\_frame.py:346: in evaluate
+    await self._channel.send(
+engineering\.venv\Lib\site-packages\playwright\_impl\_connection.py:78: in send
+    return await self._connection.wrap_api_call(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;playwright._impl._connection.Connection object at 0x0000025D36AC2510&gt;
+cb = &lt;function Channel.send.&lt;locals&gt;.&lt;lambda&gt; at 0x0000025D36D3B060&gt;
+is_internal = False, title = None
+
+    async def wrap_api_call(
+        self, cb: Callable[[], Any], is_internal: bool = False, title: str = None
+    ) -&gt; Any:
+        if self._api_zone.get():
+            return await cb()
+        task = asyncio.current_task(self._loop)
+        parsed_st = _attach_api_call_information(
+            getattr(task, "__pw_stack__", None) or _capture_stack_trace(),
+            is_internal,
+            title,
+        )
+        self._api_zone.set(parsed_st)
+        try:
+            return await cb()
+        except Exception as error:
+&gt;           raise rewrite_error(error, f"{parsed_st['apiName']}: {error}") from None
+E           playwright._impl._errors.Error: Page.evaluate: SyntaxError: Invalid or unexpected token
+E               at eval (&lt;anonymous&gt;)
+E               at UtilityScript.evaluate (&lt;anonymous&gt;:370:30)
+E               at UtilityScript.&lt;anonymous&gt; (&lt;anonymous&gt;:1:44)
+
+engineering\.venv\Lib\site-packages\playwright\_impl\_connection.py:636: Error</failure></testcase></testsuite></testsuites>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="5.348" timestamp="2026-11-21T09:13:12.964601+08:00" hostname="LAPTOP-BIFSL64A"><testcase classname="engineering.ai.tests.test_chat_isolation_http" name="test_real_http_browser_retains_task_and_ruling_originals" time="3.645"><failure message="assert 200 == 401&#10; +  where 200 = evaluate(&quot;async()=&gt;(await fetch('/api/v1/ai/rulings')).status&quot;)&#10; +    where evaluate = &lt;Page url='http://127.0.0.1:53183/ai-ui/chat.html'&gt;.evaluate">application = &lt;onlinecoc_ai.api.Application object at 0x000001457DE21010&gt;
+
+    def test_real_http_browser_retains_task_and_ruling_originals(application):
+        app=application;s,task=generated(app,'/entities/actor-one')
+        async def idle():pass
+        sock=socket.socket();sock.bind(('127.0.0.1',0));port=sock.getsockname()[1];origin=f'http://127.0.0.1:{port}'
+        server=uvicorn.Server(uvicorn.Config(create_app(app.host,port=port,ai_runtime=SimpleNamespace(application=app,start=idle,close=idle)),log_level='error'))
+        worker=threading.Thread(target=lambda:server.run(sockets=[sock]),daemon=True);worker.start()
+        try:
+            deadline=time.monotonic()+10
+            while not server.started and time.monotonic()&lt;deadline:time.sleep(.01)
+            assert server.started
+            with httpx.Client(base_url=origin,headers={'origin':origin},trust_env=False) as client:
+                assert client.get('/api/v1/ai/rulings').status_code==401
+                assert not app.repository.state()['settings'].get('rulingDeliveries')
+                assert client.post('/api/v1/login',json={'loginName':'kp','password':'test-password'}).status_code==200
+                before=client.get('/api/v1/ai/rulings').json()['items'][0]
+                assert before['summary']==task['text']
+                assert app.repository.state()['settings'].get('rulingDeliveries')
+            with sync_playwright() as playwright:
+                browser=playwright.chromium.launch(channel='msedge',headless=True)
+                page=browser.new_page();page.goto(origin+'/ai-ui/chat.html')
+                login=page.evaluate("async()=&gt;{let r=await fetch('/api/v1/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({loginName:'kp',password:'test-password'})});return r.status}")
+                assert login==200
+                before_task=page.evaluate("async(sid)=&gt;(await fetch('/api/v1/ai/sessions/'+sid)).json()",s['sessionId'])['items'][0]
+                add_message(app.host,'player1','普通聊天不得影响AI卡片')
+                room=app.host.state();del room['entities']['actor-one'];app.host.commit(room)
+                values=page.evaluate("async(sid)=&gt;Promise.all(['/api/v1/ai/sessions/'+sid,'/api/v1/ai/rulings'].map(async p=&gt;(await fetch(p)).json()))",s['sessionId'])
+                item=values[0]['items'][0];ruling=values[1]['items'][0]
+                assert item['text']==before_task['text'] and item['initiator']=='kp' and item['response']==task['text']
+                assert item['sourceState']==ruling['sourceState']=='stale' and ruling['summary']==task['text'] and not ruling['canDecide']
+                room=app.host.state();room['members']['kp']['authorizationEpoch']+=1;app.host.commit(room)
+                # Existing HTTP session is revoked; no cached page data is used as a response.
+&gt;               assert page.evaluate("async()=&gt;(await fetch('/api/v1/ai/rulings')).status")==401
+E               assert 200 == 401
+E                +  where 200 = evaluate("async()=&gt;(await fetch('/api/v1/ai/rulings')).status")
+E                +    where evaluate = &lt;Page url='http://127.0.0.1:53183/ai-ui/chat.html'&gt;.evaluate
+
+engineering\ai\tests\test_chat_isolation_http.py:47: AssertionError</failure></testcase></testsuite></testsuites>

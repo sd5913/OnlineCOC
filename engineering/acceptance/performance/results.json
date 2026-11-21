@@ -1,0 +1,546 @@
+{
+  "createdAt": "2026-11-20T18:36:52.698654+08:00",
+  "scope": "engine-only isolated Host/Uvicorn/SDK/Edge workloads; no package proxy or AI runtime",
+  "comparisons": [
+    {
+      "beforeFile": "baseline.json",
+      "afterFile": "optimized.json",
+      "cases": [
+        {
+          "pages": 1,
+          "initialStateBytes": 936145,
+          "historyMessages": 1000,
+          "historyReceipts": 1000,
+          "throughputBefore": 2.273,
+          "throughputAfter": 3.763,
+          "before": {
+            "chat.read": {
+              "n": 8,
+              "p50Ms": 447.4,
+              "p95Ms": 501.6,
+              "totalMs": 3718.6
+            },
+            "chat.send": {
+              "n": 8,
+              "p50Ms": 458.3,
+              "p95Ms": 507.7,
+              "totalMs": 3765.7
+            },
+            "history": {
+              "n": 8,
+              "p50Ms": 16.8,
+              "p95Ms": 25.7,
+              "totalMs": 143.2
+            },
+            "rule.action": {
+              "n": 8,
+              "p50Ms": 1175.6,
+              "p95Ms": 1241.3,
+              "totalMs": 9511.2
+            },
+            "snapshot.after.response": {
+              "n": 8,
+              "p50Ms": 28.9,
+              "p95Ms": 53.1,
+              "totalMs": 221.7
+            },
+            "view": {
+              "n": 8,
+              "p50Ms": 28.3,
+              "p95Ms": 31.3,
+              "totalMs": 229.1
+            }
+          },
+          "after": {
+            "chat.read": {
+              "n": 8,
+              "p50Ms": 105.6,
+              "p95Ms": 176.7,
+              "totalMs": 1034.4
+            },
+            "chat.send": {
+              "n": 8,
+              "p50Ms": 103.2,
+              "p95Ms": 158.9,
+              "totalMs": 934.1
+            },
+            "history": {
+              "n": 8,
+              "p50Ms": 18.9,
+              "p95Ms": 33.5,
+              "totalMs": 189.0
+            },
+            "rule.action": {
+              "n": 8,
+              "p50Ms": 890,
+              "p95Ms": 1063.3,
+              "totalMs": 7088.2
+            },
+            "snapshot.after.response": {
+              "n": 8,
+              "p50Ms": 127.9,
+              "p95Ms": 184.3,
+              "totalMs": 1054.9
+            },
+            "view": {
+              "n": 8,
+              "p50Ms": 37.7,
+              "p95Ms": 66.4,
+              "totalMs": 319.5
+            }
+          },
+          "chatVisibleBefore": {
+            "n": 8,
+            "p50Ms": 495.6,
+            "p95Ms": 513.8
+          },
+          "chatVisibleAfter": {
+            "n": 8,
+            "p50Ms": 256.5,
+            "p95Ms": 275.9
+          },
+          "protocolBefore": null,
+          "protocolAfter": null,
+          "errorsBefore": 0,
+          "errorsAfter": 0
+        },
+        {
+          "pages": 4,
+          "initialStateBytes": 936145,
+          "historyMessages": 1000,
+          "historyReceipts": 1000,
+          "throughputBefore": 2.086,
+          "throughputAfter": 3.783,
+          "before": {
+            "chat.read": {
+              "n": 32,
+              "p50Ms": 1822,
+              "p95Ms": 3412.5,
+              "totalMs": 58773.0
+            },
+            "chat.send": {
+              "n": 32,
+              "p50Ms": 1413,
+              "p95Ms": 2210.4,
+              "totalMs": 46764.0
+            },
+            "history": {
+              "n": 32,
+              "p50Ms": 144.7,
+              "p95Ms": 1404.7,
+              "totalMs": 15929.7
+            },
+            "rule.action": {
+              "n": 32,
+              "p50Ms": 3708.2,
+              "p95Ms": 5338.3,
+              "totalMs": 120845.9
+            },
+            "snapshot.after.response": {
+              "n": 32,
+              "p50Ms": 75.8,
+              "p95Ms": 1633.1,
+              "totalMs": 18075.4
+            },
+            "view": {
+              "n": 32,
+              "p50Ms": 1316.2,
+              "p95Ms": 3477.1,
+              "totalMs": 38694.8
+            }
+          },
+          "after": {
+            "chat.read": {
+              "n": 32,
+              "p50Ms": 538.1,
+              "p95Ms": 1524,
+              "totalMs": 20504.0
+            },
+            "chat.send": {
+              "n": 32,
+              "p50Ms": 370.4,
+              "p95Ms": 928.7,
+              "totalMs": 13789.4
+            },
+            "history": {
+              "n": 32,
+              "p50Ms": 142.7,
+              "p95Ms": 1160.5,
+              "totalMs": 9038.0
+            },
+            "rule.action": {
+              "n": 32,
+              "p50Ms": 2204.5,
+              "p95Ms": 3907.1,
+              "totalMs": 75970.7
+            },
+            "snapshot.after.response": {
+              "n": 32,
+              "p50Ms": 219.9,
+              "p95Ms": 518.5,
+              "totalMs": 7866.6
+            },
+            "view": {
+              "n": 32,
+              "p50Ms": 1133.4,
+              "p95Ms": 2887.4,
+              "totalMs": 37819.7
+            }
+          },
+          "chatVisibleBefore": {
+            "n": 32,
+            "p50Ms": 2011.2,
+            "p95Ms": 3768.1
+          },
+          "chatVisibleAfter": {
+            "n": 32,
+            "p50Ms": 643.1,
+            "p95Ms": 1415.4
+          },
+          "protocolBefore": null,
+          "protocolAfter": null,
+          "errorsBefore": 0,
+          "errorsAfter": 0
+        }
+      ]
+    },
+    {
+      "beforeFile": "current-scale-baseline.json",
+      "afterFile": "current-scale-optimized.json",
+      "cases": [
+        {
+          "pages": 1,
+          "initialStateBytes": 415768,
+          "historyMessages": 100,
+          "historyReceipts": 100,
+          "throughputBefore": 5.082,
+          "throughputAfter": 5.819,
+          "before": {
+            "chat.read": {
+              "n": 8,
+              "p50Ms": 90.2,
+              "p95Ms": 104.6,
+              "totalMs": 733.5
+            },
+            "chat.send": {
+              "n": 8,
+              "p50Ms": 85.5,
+              "p95Ms": 103.5,
+              "totalMs": 735.4
+            },
+            "history": {
+              "n": 8,
+              "p50Ms": 6.3,
+              "p95Ms": 9.3,
+              "totalMs": 55.6
+            },
+            "rule.action": {
+              "n": 8,
+              "p50Ms": 616.7,
+              "p95Ms": 673.1,
+              "totalMs": 5030.8
+            },
+            "snapshot.after.response": {
+              "n": 8,
+              "p50Ms": 157.8,
+              "p95Ms": 175.1,
+              "totalMs": 1245.4
+            },
+            "view": {
+              "n": 8,
+              "p50Ms": 7.4,
+              "p95Ms": 10.9,
+              "totalMs": 64.2
+            }
+          },
+          "after": {
+            "chat.read": {
+              "n": 8,
+              "p50Ms": 27.7,
+              "p95Ms": 39.6,
+              "totalMs": 243.2
+            },
+            "chat.send": {
+              "n": 8,
+              "p50Ms": 26,
+              "p95Ms": 38.6,
+              "totalMs": 237.7
+            },
+            "history": {
+              "n": 8,
+              "p50Ms": 6.5,
+              "p95Ms": 10.3,
+              "totalMs": 58.7
+            },
+            "rule.action": {
+              "n": 8,
+              "p50Ms": 510.8,
+              "p95Ms": 733.4,
+              "totalMs": 4521.2
+            },
+            "snapshot.after.response": {
+              "n": 8,
+              "p50Ms": 225.4,
+              "p95Ms": 240.8,
+              "totalMs": 1755.5
+            },
+            "view": {
+              "n": 8,
+              "p50Ms": 5.6,
+              "p95Ms": 11,
+              "totalMs": 51.6
+            }
+          },
+          "chatVisibleBefore": {
+            "n": 8,
+            "p50Ms": 255.5,
+            "p95Ms": 260.3
+          },
+          "chatVisibleAfter": {
+            "n": 8,
+            "p50Ms": 251.3,
+            "p95Ms": 266.0
+          },
+          "protocolBefore": [
+            {
+              "resets": 0,
+              "closes": 0
+            }
+          ],
+          "protocolAfter": [
+            {
+              "resets": 0,
+              "closes": 0
+            }
+          ],
+          "errorsBefore": 0,
+          "errorsAfter": 0
+        },
+        {
+          "pages": 4,
+          "initialStateBytes": 415768,
+          "historyMessages": 100,
+          "historyReceipts": 100,
+          "throughputBefore": 4.876,
+          "throughputAfter": 7.796,
+          "before": {
+            "chat.read": {
+              "n": 32,
+              "p50Ms": 367.7,
+              "p95Ms": 2320.9,
+              "totalMs": 27942.2
+            },
+            "chat.send": {
+              "n": 32,
+              "p50Ms": 282.1,
+              "p95Ms": 575,
+              "totalMs": 9948.6
+            },
+            "history": {
+              "n": 32,
+              "p50Ms": 188.4,
+              "p95Ms": 898.5,
+              "totalMs": 12701.9
+            },
+            "rule.action": {
+              "n": 32,
+              "p50Ms": 1654.5,
+              "p95Ms": 2843.2,
+              "totalMs": 54390.5
+            },
+            "snapshot.after.response": {
+              "n": 32,
+              "p50Ms": 84.9,
+              "p95Ms": 398.1,
+              "totalMs": 5487.0
+            },
+            "view": {
+              "n": 32,
+              "p50Ms": 694.3,
+              "p95Ms": 984.7,
+              "totalMs": 17166.3
+            }
+          },
+          "after": {
+            "chat.read": {
+              "n": 32,
+              "p50Ms": 83.1,
+              "p95Ms": 806.3,
+              "totalMs": 10093.4
+            },
+            "chat.send": {
+              "n": 32,
+              "p50Ms": 64.7,
+              "p95Ms": 546.9,
+              "totalMs": 4968.1
+            },
+            "history": {
+              "n": 32,
+              "p50Ms": 30.9,
+              "p95Ms": 537.9,
+              "totalMs": 3940.3
+            },
+            "rule.action": {
+              "n": 32,
+              "p50Ms": 1044.1,
+              "p95Ms": 2090.2,
+              "totalMs": 37135.1
+            },
+            "snapshot.after.response": {
+              "n": 32,
+              "p50Ms": 185.5,
+              "p95Ms": 263.3,
+              "totalMs": 5839.6
+            },
+            "view": {
+              "n": 32,
+              "p50Ms": 520.7,
+              "p95Ms": 1302.9,
+              "totalMs": 17001.0
+            }
+          },
+          "chatVisibleBefore": {
+            "n": 32,
+            "p50Ms": 420.3,
+            "p95Ms": 1123.3
+          },
+          "chatVisibleAfter": {
+            "n": 32,
+            "p50Ms": 252.5,
+            "p95Ms": 810.2
+          },
+          "protocolBefore": [
+            {
+              "resets": 12,
+              "closes": 0
+            },
+            {
+              "resets": 7,
+              "closes": 0
+            },
+            {
+              "resets": 7,
+              "closes": 0
+            },
+            {
+              "resets": 12,
+              "closes": 0
+            }
+          ],
+          "protocolAfter": [
+            {
+              "resets": 0,
+              "closes": 0
+            },
+            {
+              "resets": 0,
+              "closes": 0
+            },
+            {
+              "resets": 0,
+              "closes": 0
+            },
+            {
+              "resets": 0,
+              "closes": 0
+            }
+          ],
+          "errorsBefore": 0,
+          "errorsAfter": 0
+        }
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "file": "core.xml",
+      "tests": 64,
+      "passed": 64,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "file": "boundaries.xml",
+      "tests": 35,
+      "passed": 35,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "file": "regression.xml",
+      "tests": 62,
+      "passed": 62,
+      "failed": 0,
+      "skipped": 0
+    }
+  ],
+  "passed": 161,
+  "failed": 0,
+  "uniqueTestCases": 160,
+  "initialBoundaryFailure": {
+    "file": "boundaries-initial.xml",
+    "tests": 35,
+    "passed": 34,
+    "failed": 1,
+    "skipped": 0
+  },
+  "initialBoundaryReason": "Test expected a trailing slash for additionalProperties error at the message object; assertion corrected, implementation unchanged.",
+  "initialFixtureFailures": "initial-fixture-failure.json",
+  "semanticsPreserved": [
+    "canonical generation bytes",
+    "fsync and atomic publication",
+    "fresh quota accounting",
+    "CAS and writer lock",
+    "receipt deduplication",
+    "all cross-record chat checks",
+    "live permission checks before snapshot.end",
+    "fresh isolated Lua processes"
+  ],
+  "limitations": [
+    "Synthetic fixtures approximate counts/bytes, not the exact production record distribution. No production room opened.",
+    "Eight rounds/page; p95 is descriptive, not a service-level guarantee. Other development processes share this machine.",
+    "Fresh Lua process startup and room execution lock still affect mixed-load read tail latency; not all p95 values improved.",
+    "Snapshot reset and client.connected waits do not imply socket disconnect; current-scale runs count them separately.",
+    "Chat visibility includes the existing approximately 250ms snapshot polling cadence."
+  ],
+  "productionRoomTouched": false,
+  "productionProcessChanged": false,
+  "modelCalls": 0,
+  "modifiedFiles": [
+    "engineering/backend/src/onlinecoc/host.py",
+    "engineering/backend/src/onlinecoc/contracts.py",
+    "engineering/backend/src/onlinecoc/server.py",
+    "engineering/data-management/onlinecoc_data/store.py",
+    "docs/current/engineering/first-test.md"
+  ],
+  "newFiles": [
+    "engineering/acceptance/performance/.gitignore",
+    "engineering/acceptance/performance/README.md",
+    "engineering/acceptance/performance/baseline.json",
+    "engineering/acceptance/performance/baseline_sources.py",
+    "engineering/acceptance/performance/benchmark.py",
+    "engineering/acceptance/performance/boundaries-initial.xml",
+    "engineering/acceptance/performance/boundaries.xml",
+    "engineering/acceptance/performance/core.xml",
+    "engineering/acceptance/performance/current-scale-baseline.json",
+    "engineering/acceptance/performance/current-scale-optimized.json",
+    "engineering/acceptance/performance/host_fixture.py",
+    "engineering/acceptance/performance/initial-fixture-failure.json",
+    "engineering/acceptance/performance/optimized.json",
+    "engineering/acceptance/performance/profile-baseline.txt",
+    "engineering/acceptance/performance/profile_command.py",
+    "engineering/acceptance/performance/record_results.py",
+    "engineering/acceptance/performance/regression.xml",
+    "engineering/acceptance/performance/results.json",
+    "engineering/acceptance/performance/test_boundaries.py",
+    "engineering/acceptance/performance/worker-probe.json",
+    "engineering/acceptance/performance/worker_probe.py"
+  ],
+  "sha256": {
+    "engineering/backend/src/onlinecoc/host.py": "c9f6df9dbf064c9417aec90254466d061aba05a5b75bbb499f2fc1d10e923bc8",
+    "engineering/backend/src/onlinecoc/contracts.py": "6fcc131e9be16be057646fdf4bd725a9b6992884bfa91ab3535c2c9d3db0c199",
+    "engineering/backend/src/onlinecoc/server.py": "bc5a65b861a0216803cff227954aa74e6612b2f8f1773bd08d6cc598a5450a23",
+    "engineering/data-management/onlinecoc_data/store.py": "19b7caaf48d4e1e1852f59bb49eb1a2d3dd63a37cf4f02093c37e5c55cb509a1",
+    "docs/current/engineering/first-test.md": "8d064c67848a8b829e1e9b14740729063b839500acc0ca2faec065e3bb0d7361"
+  }
+}

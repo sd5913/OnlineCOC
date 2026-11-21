@@ -1,0 +1,248 @@
+[
+  {
+    "report": "c-first.xml",
+    "test": "engineering.acceptance.local-accounts.test_c_gate::test_real_passed_bundle_approval_and_publication",
+    "outcome": "failed",
+    "message": "onlinecoc.errors.DomainError: HIGH_RISK_REVIEW_REQUIRED"
+  },
+  {
+    "report": "c-first.xml",
+    "test": "engineering.acceptance.local-accounts.test_c_gate::test_only_allowlisted_unknown_can_be_explicitly_adopted[EXTENSION_FORBIDDEN]",
+    "outcome": "failed",
+    "message": "onlinecoc.errors.DomainError: HIGH_RISK_REVIEW_REQUIRED"
+  },
+  {
+    "report": "c-first.xml",
+    "test": "engineering.acceptance.local-accounts.test_c_gate::test_only_allowlisted_unknown_can_be_explicitly_adopted[LIVE_SCENARIO_COVERAGE_MISSING]",
+    "outcome": "failed",
+    "message": "onlinecoc.errors.DomainError: HIGH_RISK_REVIEW_REQUIRED"
+  },
+  {
+    "report": "c-first.xml",
+    "test": "engineering.acceptance.local-accounts.test_c_gate::test_only_allowlisted_unknown_can_be_explicitly_adopted[EXISTING_INSTANCE_COVERAGE_MISSING]",
+    "outcome": "failed",
+    "message": "onlinecoc.errors.DomainError: HIGH_RISK_REVIEW_REQUIRED"
+  },
+  {
+    "report": "c-first.xml",
+    "test": "engineering.acceptance.local-accounts.test_c_gate::test_basis_update_invalidates_approval_and_apply",
+    "outcome": "failed",
+    "message": "onlinecoc.errors.DomainError: HIGH_RISK_REVIEW_REQUIRED"
+  },
+  {
+    "report": "c-first.xml",
+    "test": "engineering.acceptance.local-accounts.test_c_gate::test_approval_proof_is_in_digest",
+    "outcome": "failed",
+    "message": "onlinecoc.errors.DomainError: HIGH_RISK_REVIEW_REQUIRED"
+  },
+  {
+    "report": "regression.xml",
+    "test": "engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_network::test_http_boundary",
+    "outcome": "errors",
+    "message": "failed on setup with \"Failed: D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\.venv\\Scripts\\python.exe: can't open file 'D:\\\\Studies\\\\Art Programming\\\\OnlineCOC\\\\engineering\\\\acceptance\\\\local-accounts\\\\work\\\\engine\\\\engineering\\\\acceptance\\\\offline_server.py': [Errno 2] No such file or directory\""
+  },
+  {
+    "report": "regression.xml",
+    "test": "engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_network::test_three_browsers_and_eight_connections",
+    "outcome": "errors",
+    "message": "failed on setup with \"Failed: D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\.venv\\Scripts\\python.exe: can't open file 'D:\\\\Studies\\\\Art Programming\\\\OnlineCOC\\\\engineering\\\\acceptance\\\\local-accounts\\\\work\\\\engine\\\\engineering\\\\acceptance\\\\offline_server.py': [Errno 2] No such file or directory\""
+  },
+  {
+    "report": "regression.xml",
+    "test": "engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_faults::test_real_host_crash[before_t1]",
+    "outcome": "failed",
+    "message": "AssertionError: D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\.venv\\Scripts\\python.exe: can't open file 'D:\\\\Studies\\\\Art Programming\\\\OnlineCOC\\\\engineering\\\\acceptance\\\\local-accounts\\\\work\\\\engine\\\\engineering\\\\acceptance\\\\crash_worker.py': [Errno 2] No such file or directory\n  \nassert 2 == 70\n[+1 more line; full report in element text]"
+  },
+  {
+    "report": "regression.xml",
+    "test": "engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_faults::test_real_host_crash[after_t1]",
+    "outcome": "failed",
+    "message": "AssertionError: D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\.venv\\Scripts\\python.exe: can't open file 'D:\\\\Studies\\\\Art Programming\\\\OnlineCOC\\\\engineering\\\\acceptance\\\\local-accounts\\\\work\\\\engine\\\\engineering\\\\acceptance\\\\crash_worker.py': [Errno 2] No such file or directory\n  \nassert 2 == 70\n[+1 more line; full report in element text]"
+  },
+  {
+    "report": "regression.xml",
+    "test": "engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_faults::test_real_host_crash[after_random]",
+    "outcome": "failed",
+    "message": "AssertionError: D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\.venv\\Scripts\\python.exe: can't open file 'D:\\\\Studies\\\\Art Programming\\\\OnlineCOC\\\\engineering\\\\acceptance\\\\local-accounts\\\\work\\\\engine\\\\engineering\\\\acceptance\\\\crash_worker.py': [Errno 2] No such file or directory\n  \nassert 2 == 70\n[+1 more line; full report in element text]"
+  },
+  {
+    "report": "regression.xml",
+    "test": "engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_faults::test_real_host_crash[before_t2]",
+    "outcome": "failed",
+    "message": "AssertionError: D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\.venv\\Scripts\\python.exe: can't open file 'D:\\\\Studies\\\\Art Programming\\\\OnlineCOC\\\\engineering\\\\acceptance\\\\local-accounts\\\\work\\\\engine\\\\engineering\\\\acceptance\\\\crash_worker.py': [Errno 2] No such file or directory\n  \nassert 2 == 70\n[+1 more line; full report in element text]"
+  },
+  {
+    "report": "regression.xml",
+    "test": "engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_faults::test_real_host_crash[after_t2]",
+    "outcome": "failed",
+    "message": "AssertionError: D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\.venv\\Scripts\\python.exe: can't open file 'D:\\\\Studies\\\\Art Programming\\\\OnlineCOC\\\\engineering\\\\acceptance\\\\local-accounts\\\\work\\\\engine\\\\engineering\\\\acceptance\\\\crash_worker.py': [Errno 2] No such file or directory\n  \nassert 2 == 70\n[+1 more line; full report in element text]"
+  },
+  {
+    "report": "regression.xml",
+    "test": "engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_faults::test_real_file_crash[half_write]",
+    "outcome": "failed",
+    "message": "assert 2 == 70\n +  where 2 = CompletedProcess(args=['D:\\\\Studies\\\\Art Programming\\\\OnlineCOC\\\\engineering\\\\.venv\\\\Scripts\\\\python.exe', 'D:\\\\Studie...-accounts\\\\\\\\work\\\\\\\\engine\\\\\\\\engineering\\\\\\\\acceptance\\\\\\\\crash_worker.py': [Errno 2] No such file or directory\\r\\n\").returncode"
+  },
+  {
+    "report": "regression.xml",
+    "test": "engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_faults::test_real_file_crash[before_sync]",
+    "outcome": "failed",
+    "message": "assert 2 == 70\n +  where 2 = CompletedProcess(args=['D:\\\\Studies\\\\Art Programming\\\\OnlineCOC\\\\engineering\\\\.venv\\\\Scripts\\\\python.exe', 'D:\\\\Studie...-accounts\\\\\\\\work\\\\\\\\engine\\\\\\\\engineering\\\\\\\\acceptance\\\\\\\\crash_worker.py': [Errno 2] No such file or directory\\r\\n\").returncode"
+  },
+  {
+    "report": "regression.xml",
+    "test": "engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_faults::test_real_file_crash[before_publish]",
+    "outcome": "failed",
+    "message": "assert 2 == 70\n +  where 2 = CompletedProcess(args=['D:\\\\Studies\\\\Art Programming\\\\OnlineCOC\\\\engineering\\\\.venv\\\\Scripts\\\\python.exe', 'D:\\\\Studie...-accounts\\\\\\\\work\\\\\\\\engine\\\\\\\\engineering\\\\\\\\acceptance\\\\\\\\crash_worker.py': [Errno 2] No such file or directory\\r\\n\").returncode"
+  },
+  {
+    "report": "regression.xml",
+    "test": "engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_faults::test_real_file_crash[after_publish]",
+    "outcome": "failed",
+    "message": "assert 2 == 70\n +  where 2 = CompletedProcess(args=['D:\\\\Studies\\\\Art Programming\\\\OnlineCOC\\\\engineering\\\\.venv\\\\Scripts\\\\python.exe', 'D:\\\\Studie...-accounts\\\\\\\\work\\\\\\\\engine\\\\\\\\engineering\\\\\\\\acceptance\\\\\\\\crash_worker.py': [Errno 2] No such file or directory\\r\\n\").returncode"
+  },
+  {
+    "report": "regression.xml",
+    "test": "engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_faults::test_poison_cannot_be_caught",
+    "outcome": "failed",
+    "message": "AssertionError: Regex pattern did not match.\n  Expected regex: 'EXECUTION_REJECTED'\n  Actual message: 'INPUT_INVALID'"
+  },
+  {
+    "report": "regression.xml",
+    "test": "engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_faults::test_flow_stage_crash_preserves_wait_and_random[before_t2]",
+    "outcome": "failed",
+    "message": "assert 2 == 70\n +  where 2 = CompletedProcess(args=['D:\\\\Studies\\\\Art Programming\\\\OnlineCOC\\\\engineering\\\\.venv\\\\Scripts\\\\python.exe', 'D:\\\\Studie...-accounts\\\\\\\\work\\\\\\\\engine\\\\\\\\engineering\\\\\\\\acceptance\\\\\\\\crash_worker.py': [Errno 2] No such file or directory\\r\\n\").returncode"
+  },
+  {
+    "report": "regression.xml",
+    "test": "engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_faults::test_flow_stage_crash_preserves_wait_and_random[after_t2]",
+    "outcome": "failed",
+    "message": "assert 2 == 70\n +  where 2 = CompletedProcess(args=['D:\\\\Studies\\\\Art Programming\\\\OnlineCOC\\\\engineering\\\\.venv\\\\Scripts\\\\python.exe', 'D:\\\\Studie...-accounts\\\\\\\\work\\\\\\\\engine\\\\\\\\engineering\\\\\\\\acceptance\\\\\\\\crash_worker.py': [Errno 2] No such file or directory\\r\\n\").returncode"
+  },
+  {
+    "report": "regression.xml",
+    "test": "engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_ai_approval::test_approval_stages_evidence_without_loading",
+    "outcome": "failed",
+    "message": "AssertionError: {'status': 'rejected', 'commandId': 'approve', 'code': 'INPUT_INVALID'}"
+  },
+  {
+    "report": "regression.xml",
+    "test": "engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_ai_approval::test_edit_revokes_old_approval_and_requires_fresh_reports",
+    "outcome": "failed",
+    "message": "AssertionError: {'status': 'rejected', 'commandId': 'approve', 'code': 'INPUT_INVALID'}"
+  },
+  {
+    "report": "regression.xml",
+    "test": "engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_ai_approval::test_approved_context_and_evidence_cannot_drift[<lambda>-BASELINE_STALE]",
+    "outcome": "failed",
+    "message": "AssertionError: {'status': 'rejected', 'commandId': 'approve', 'code': 'INPUT_INVALID'}"
+  },
+  {
+    "report": "regression.xml",
+    "test": "engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_ai_approval::test_approved_context_and_evidence_cannot_drift[<lambda>-DIGEST_MISMATCH]",
+    "outcome": "failed",
+    "message": "AssertionError: {'status': 'rejected', 'commandId': 'approve', 'code': 'INPUT_INVALID'}"
+  },
+  {
+    "report": "regression.xml",
+    "test": "engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_ai_approval::test_approved_context_and_evidence_cannot_drift[<lambda>-VALIDATOR_STALE]",
+    "outcome": "failed",
+    "message": "AssertionError: {'status': 'rejected', 'commandId': 'approve', 'code': 'INPUT_INVALID'}"
+  },
+  {
+    "report": "regression.xml",
+    "test": "engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_ai_approval::test_approved_context_and_evidence_cannot_drift[<lambda>-PERMISSION_DENIED]",
+    "outcome": "failed",
+    "message": "AssertionError: {'status': 'rejected', 'commandId': 'approve', 'code': 'INPUT_INVALID'}"
+  },
+  {
+    "report": "regression.xml",
+    "test": "engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_ai_approval::test_expiry_blocks_loading",
+    "outcome": "failed",
+    "message": "AssertionError: {'status': 'rejected', 'commandId': 'approve', 'code': 'INPUT_INVALID'}"
+  },
+  {
+    "report": "regression.xml",
+    "test": "engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_ai_publication::test_load_once_after_ai_store_is_closed_and_restart",
+    "outcome": "failed",
+    "message": "AssertionError: {'status': 'rejected', 'commandId': 'approve', 'code': 'INPUT_INVALID'}"
+  },
+  {
+    "report": "regression.xml",
+    "test": "engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_ai_publication::test_same_command_id_different_payload_conflicts",
+    "outcome": "failed",
+    "message": "AssertionError: {'status': 'rejected', 'commandId': 'approve', 'code': 'INPUT_INVALID'}"
+  },
+  {
+    "report": "regression.xml",
+    "test": "engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_ai_publication::test_concurrent_duplicate_publications_have_one_effect",
+    "outcome": "failed",
+    "message": "AssertionError: {'status': 'rejected', 'commandId': 'approve', 'code': 'INPUT_INVALID'}"
+  },
+  {
+    "report": "regression.xml",
+    "test": "engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_ai_publication::test_publication_reconciliation_never_reapplies_effects",
+    "outcome": "failed",
+    "message": "AssertionError: {'status': 'rejected', 'commandId': 'approve', 'code': 'INPUT_INVALID'}"
+  },
+  {
+    "report": "regression.xml",
+    "test": "engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_ai_publication::test_two_kps_cannot_publish_against_the_same_old_baseline",
+    "outcome": "failed",
+    "message": "AssertionError: {'status': 'rejected', 'commandId': 'approve-kp', 'code': 'INPUT_INVALID'}\nassert 'rejected' == 'committed'\n  \n  - committed\n  + rejected"
+  },
+  {
+    "report": "regression.xml",
+    "test": "engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_ai_recovery::test_post_commit_error_keeps_committed_publication[exception0]",
+    "outcome": "failed",
+    "message": "AssertionError: {'status': 'rejected', 'commandId': 'approve', 'code': 'INPUT_INVALID'}"
+  },
+  {
+    "report": "regression.xml",
+    "test": "engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_ai_recovery::test_post_commit_error_keeps_committed_publication[exception1]",
+    "outcome": "failed",
+    "message": "AssertionError: {'status': 'rejected', 'commandId': 'approve', 'code': 'INPUT_INVALID'}"
+  },
+  {
+    "report": "regression.xml",
+    "test": "engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_ai_recovery::test_pre_commit_failure_has_no_partial_configuration",
+    "outcome": "failed",
+    "message": "AssertionError: {'status': 'rejected', 'commandId': 'approve', 'code': 'INPUT_INVALID'}"
+  },
+  {
+    "report": "regression.xml",
+    "test": "engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_ai_recovery::test_approval_reply_loss_can_be_queried_without_ai_repository",
+    "outcome": "failed",
+    "message": "AssertionError: {'status': 'rejected', 'commandId': 'approval-lost', 'code': 'INPUT_INVALID'}"
+  },
+  {
+    "report": "regression.xml",
+    "test": "engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_ai_recovery::test_failure_after_local_configuration_edit_rolls_back_everything",
+    "outcome": "failed",
+    "message": "AssertionError: {'status': 'rejected', 'commandId': 'approve', 'code': 'INPUT_INVALID'}"
+  },
+  {
+    "report": "triage.xml",
+    "test": "engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_ai_approval::test_approval_stages_evidence_without_loading",
+    "outcome": "failed",
+    "message": "AssertionError: {'status': 'rejected', 'commandId': 'approve', 'code': 'INPUT_INVALID'}"
+  },
+  {
+    "report": "regression-fixed.xml",
+    "test": "engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_network::test_http_boundary",
+    "outcome": "failed",
+    "message": "AssertionError: assert 'javascript' in 'application/json'"
+  },
+  {
+    "report": "regression-fixed.xml",
+    "test": "engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_network::test_three_browsers_and_eight_connections",
+    "outcome": "failed",
+    "message": "playwright._impl._errors.TimeoutError: Locator.fill: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\"#username\")"
+  },
+  {
+    "report": "regression-fixed.xml",
+    "test": "engineering.acceptance.local-accounts.work.engine.engineering.backend.tests.test_ai_publication::test_load_once_after_ai_store_is_closed_and_restart",
+    "outcome": "failed",
+    "message": "onlinecoc_data.store.StoreError: STORE_CLOSED"
+  }
+]

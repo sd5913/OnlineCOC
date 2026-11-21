@@ -1,0 +1,439 @@
+{
+  "label": "after",
+  "fixture": {
+    "extraActors": 120,
+    "existingMessages": 1200,
+    "browsers": 3,
+    "chatSends": 30,
+    "concurrentApprovals": 4
+  },
+  "sendMs": {
+    "p50": 1102.0499999970198,
+    "p95": 1140.5999999940395,
+    "max": 1146.7000000029802
+  },
+  "allPagesSyncedMs": {
+    "p50": 1138.7846500001615,
+    "p95": 2013.0850999994436,
+    "max": 2497.2404000000097
+  },
+  "chatFailureRate": 0.0,
+  "approvalFailureRate": 0.0,
+  "approvals": [
+    {
+      "ms": 919.0356000035536,
+      "receipt": {
+        "status": "committed",
+        "commandId": "approve-0",
+        "result": {
+          "approvalId": "f4e0989fe731414fad4a16c1835e52e6",
+          "expiresAt": 1795223974.3308263,
+          "candidateDigest": "e64b550962b84d8d1476717a1056c121559149cd04e2a179b016dc95a79eda4b"
+        }
+      }
+    },
+    {
+      "ms": 1332.1937000000617,
+      "receipt": {
+        "status": "committed",
+        "commandId": "approve-1",
+        "result": {
+          "approvalId": "282d4fa4eadf4dfbb5b477980daec2e2",
+          "expiresAt": 1795223975.5745037,
+          "candidateDigest": "e64b550962b84d8d1476717a1056c121559149cd04e2a179b016dc95a79eda4b"
+        }
+      }
+    },
+    {
+      "ms": 1842.7395999897271,
+      "receipt": {
+        "status": "committed",
+        "commandId": "approve-2",
+        "result": {
+          "approvalId": "1e35e8343af74c1fb14226d888e051d1",
+          "expiresAt": 1795223977.3115964,
+          "candidateDigest": "e64b550962b84d8d1476717a1056c121559149cd04e2a179b016dc95a79eda4b"
+        }
+      }
+    },
+    {
+      "ms": 2335.2269000024535,
+      "receipt": {
+        "status": "committed",
+        "commandId": "approve-3",
+        "result": {
+          "approvalId": "35416b50efca480daed446a7975aecb6",
+          "expiresAt": 1795223979.5645463,
+          "candidateDigest": "e64b550962b84d8d1476717a1056c121559149cd04e2a179b016dc95a79eda4b"
+        }
+      }
+    }
+  ],
+  "receipts": [
+    {
+      "status": "committed",
+      "commandId": "chat-0",
+      "result": {
+        "channelId": "general",
+        "messageId": "e89e50a6d306496e8f3e918eb25b8a54",
+        "sequence": 1201,
+        "revision": 1
+      }
+    },
+    {
+      "status": "committed",
+      "commandId": "chat-1",
+      "result": {
+        "channelId": "general",
+        "messageId": "79ae3c5c4ea94d4fba277fd31bac1479",
+        "sequence": 1202,
+        "revision": 1
+      }
+    },
+    {
+      "status": "committed",
+      "commandId": "chat-2",
+      "result": {
+        "channelId": "general",
+        "messageId": "ca53092de47c4aa9a049750b6ef0a2bc",
+        "sequence": 1203,
+        "revision": 1
+      }
+    },
+    {
+      "status": "committed",
+      "commandId": "chat-3",
+      "result": {
+        "channelId": "general",
+        "messageId": "d787d094532949a69b958f676bb62034",
+        "sequence": 1204,
+        "revision": 1
+      }
+    },
+    {
+      "status": "committed",
+      "commandId": "chat-4",
+      "result": {
+        "channelId": "general",
+        "messageId": "d6d86176e9ef40b0a42776420f2cfa67",
+        "sequence": 1205,
+        "revision": 1
+      }
+    },
+    {
+      "status": "committed",
+      "commandId": "chat-5",
+      "result": {
+        "channelId": "general",
+        "messageId": "1a5dda2a74cd4a7a88c331fca0fc660e",
+        "sequence": 1206,
+        "revision": 1
+      }
+    },
+    {
+      "status": "committed",
+      "commandId": "chat-6",
+      "result": {
+        "channelId": "general",
+        "messageId": "69ee41571c814fa681f0ba4e8ed1382a",
+        "sequence": 1207,
+        "revision": 1
+      }
+    },
+    {
+      "status": "committed",
+      "commandId": "chat-7",
+      "result": {
+        "channelId": "general",
+        "messageId": "928376af9d6640e295e154086d718b1d",
+        "sequence": 1208,
+        "revision": 1
+      }
+    },
+    {
+      "status": "committed",
+      "commandId": "chat-8",
+      "result": {
+        "channelId": "general",
+        "messageId": "5ec0566cce9e4e08962fe20bf29248eb",
+        "sequence": 1209,
+        "revision": 1
+      }
+    },
+    {
+      "status": "committed",
+      "commandId": "chat-9",
+      "result": {
+        "channelId": "general",
+        "messageId": "c09e328f473c4b1da6fcd3bd1448153f",
+        "sequence": 1210,
+        "revision": 1
+      }
+    },
+    {
+      "status": "committed",
+      "commandId": "chat-10",
+      "result": {
+        "channelId": "general",
+        "messageId": "6a5a358c841d41c096c18d95d39f9666",
+        "sequence": 1211,
+        "revision": 1
+      }
+    },
+    {
+      "status": "committed",
+      "commandId": "chat-11",
+      "result": {
+        "channelId": "general",
+        "messageId": "5d0db80087d24aaf920feafd03c0f253",
+        "sequence": 1212,
+        "revision": 1
+      }
+    },
+    {
+      "status": "committed",
+      "commandId": "chat-12",
+      "result": {
+        "channelId": "general",
+        "messageId": "de9116e1c6ea47e7894a9a07c3131e8a",
+        "sequence": 1213,
+        "revision": 1
+      }
+    },
+    {
+      "status": "committed",
+      "commandId": "chat-13",
+      "result": {
+        "channelId": "general",
+        "messageId": "1500e75822d641eda6672345888a766a",
+        "sequence": 1214,
+        "revision": 1
+      }
+    },
+    {
+      "status": "committed",
+      "commandId": "chat-14",
+      "result": {
+        "channelId": "general",
+        "messageId": "908c7a7a38ce4b0dbe27d9571f84e6db",
+        "sequence": 1215,
+        "revision": 1
+      }
+    },
+    {
+      "status": "committed",
+      "commandId": "chat-15",
+      "result": {
+        "channelId": "general",
+        "messageId": "260341a379cf4407a846b0d6bdc334c0",
+        "sequence": 1216,
+        "revision": 1
+      }
+    },
+    {
+      "status": "committed",
+      "commandId": "chat-16",
+      "result": {
+        "channelId": "general",
+        "messageId": "69e53dfc64254fa892f5a7acc0fd96fc",
+        "sequence": 1217,
+        "revision": 1
+      }
+    },
+    {
+      "status": "committed",
+      "commandId": "chat-17",
+      "result": {
+        "channelId": "general",
+        "messageId": "07a24ad5be014007b12cbb0c62cc388a",
+        "sequence": 1218,
+        "revision": 1
+      }
+    },
+    {
+      "status": "committed",
+      "commandId": "chat-18",
+      "result": {
+        "channelId": "general",
+        "messageId": "6aa47c465ba144179babda225894b5af",
+        "sequence": 1219,
+        "revision": 1
+      }
+    },
+    {
+      "status": "committed",
+      "commandId": "chat-19",
+      "result": {
+        "channelId": "general",
+        "messageId": "b030b430757747d58f4c09b3c6e83a33",
+        "sequence": 1220,
+        "revision": 1
+      }
+    },
+    {
+      "status": "committed",
+      "commandId": "chat-20",
+      "result": {
+        "channelId": "general",
+        "messageId": "f6f8fb5fb5e54c57b5bb4d3a551916c9",
+        "sequence": 1221,
+        "revision": 1
+      }
+    },
+    {
+      "status": "committed",
+      "commandId": "chat-21",
+      "result": {
+        "channelId": "general",
+        "messageId": "afd895a24ede4fcc9138708186cefed2",
+        "sequence": 1222,
+        "revision": 1
+      }
+    },
+    {
+      "status": "committed",
+      "commandId": "chat-22",
+      "result": {
+        "channelId": "general",
+        "messageId": "aa5aef6c4f914bf8a786d0ef79a278a2",
+        "sequence": 1223,
+        "revision": 1
+      }
+    },
+    {
+      "status": "committed",
+      "commandId": "chat-23",
+      "result": {
+        "channelId": "general",
+        "messageId": "064cf7a58c9745ebbbeb1db65c1b5c44",
+        "sequence": 1224,
+        "revision": 1
+      }
+    },
+    {
+      "status": "committed",
+      "commandId": "chat-24",
+      "result": {
+        "channelId": "general",
+        "messageId": "287dc32e8d2b4a10810a0c7181c93e7b",
+        "sequence": 1225,
+        "revision": 1
+      }
+    },
+    {
+      "status": "committed",
+      "commandId": "chat-25",
+      "result": {
+        "channelId": "general",
+        "messageId": "2407f94d9e6143129491c340d117c0c5",
+        "sequence": 1226,
+        "revision": 1
+      }
+    },
+    {
+      "status": "committed",
+      "commandId": "chat-26",
+      "result": {
+        "channelId": "general",
+        "messageId": "6885f6b6fca64074abc65a45ad552708",
+        "sequence": 1227,
+        "revision": 1
+      }
+    },
+    {
+      "status": "committed",
+      "commandId": "chat-27",
+      "result": {
+        "channelId": "general",
+        "messageId": "5597028c76544d7492a3c4733dbb4323",
+        "sequence": 1228,
+        "revision": 1
+      }
+    },
+    {
+      "status": "committed",
+      "commandId": "chat-28",
+      "result": {
+        "channelId": "general",
+        "messageId": "00400fcd29ef40508ae8d6da47b2c649",
+        "sequence": 1229,
+        "revision": 1
+      }
+    },
+    {
+      "status": "committed",
+      "commandId": "chat-29",
+      "result": {
+        "channelId": "general",
+        "messageId": "7252c87dd1ae423eb6b5f797ca224aab",
+        "sequence": 1230,
+        "revision": 1
+      }
+    }
+  ],
+  "sequenceUnique": true,
+  "sendSamples": [
+    76.09999999403954,
+    72.40000000596046,
+    59.70000000298023,
+    120.29999999701977,
+    315,
+    566.9000000059605,
+    1110.7000000029802,
+    1082,
+    1102.5999999940395,
+    1102.9000000059605,
+    1112.5999999940395,
+    1103,
+    1108.5,
+    1092.4000000059605,
+    1101.5,
+    1100.7000000029802,
+    1146.7000000029802,
+    1089.4000000059605,
+    1099.300000011921,
+    1134.1000000089407,
+    1140.5999999940395,
+    1090.3999999910593,
+    1085,
+    1119.3999999910593,
+    1125.0999999940395,
+    1087.7000000029802,
+    1108.5,
+    1104.2000000029802,
+    1108.5999999940395,
+    1103.699999988079
+  ],
+  "syncSamples": [
+    276.4924999937648,
+    274.2366000020411,
+    250.012999997125,
+    964.0566000016406,
+    1480.3338999918196,
+    2013.0850999994436,
+    2497.2404000000097,
+    1095.7607999880565,
+    1108.9823999936925,
+    1115.5279000086011,
+    1155.833700002404,
+    1150.935900004697,
+    1147.2407999972347,
+    1105.316600005608,
+    1115.107600009651,
+    1114.9049000086961,
+    1189.7352999949362,
+    1136.9921000004979,
+    1134.3920000072103,
+    1139.9504000000888,
+    1174.684099998558,
+    1162.6470999908634,
+    1133.6405000038212,
+    1163.8383000099566,
+    1137.6189000002341,
+    1162.2153000062099,
+    1150.9674999979325,
+    1148.0478000012226,
+    1115.2500000025611,
+    1153.5906000062823
+  ]
+}

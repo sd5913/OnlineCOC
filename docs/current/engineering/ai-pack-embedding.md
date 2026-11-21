@@ -4,7 +4,7 @@
 - 文档子类：工程
 - 状态：有效
 - 创建日期：2026-11-14
-- 最后更新：2026-11-20
+- 最后更新：2026-11-21
 - 关联文档：[管理器与 API](ai-manager.md)、[会话权限与执行批次](ai-session-access.md)、[AI 运行时](ai-runtime.md)、[配置包开发指南](../../../rulepacks/README.md)、[包侧交互计划](../../plans/ai-pack-interaction.md)
 
 ## 入口与选择
@@ -249,7 +249,7 @@ const queue = mountRulings(queueTarget, client, {
 
 `/ai-ui/settings.html` 为可直接打开的独立入口；当前宿主 iframe CSP 只允许原四个页面，新设置 HTML 尚未开放 iframe。需要内嵌时使用原生 `mountAISettings`，不绕过 CSP。分发新增 `settings.js/css/html`；固定拓扑构建中 `settings.js` 在 `styles.js`、`guard.js` 之后及 `pack.js` 之前，HTML 由 `page-entry.js` 的 settings 模式加载。
 
-`mountRulings(...,{compact:true})` 显示时间、来源、概要及操作，详情在模态浮窗中展开；完整修改默认折叠，风险填写、批准／拒绝及原回执核对沿用现有命令。未变化的轮询保留输入；裁决摘要／版本变化会替换详情，禁止沿用旧风险输入。`compact` 默认 false，原装配行为兼容。可见裁决增加 `initiator`；既有 `sessionId` 可直接用于打开关联会话。
+`mountRulings(...,{compact:true})` 显示时间、来源、概要及操作，详情在模态浮窗中展开；完整修改默认折叠，风险说明、批准／拒绝及原回执核对沿用现有命令。未变化的轮询保留输入；裁决摘要／版本变化会替换详情，禁止沿用旧风险输入。`compact` 默认 false，原装配行为兼容。可见裁决增加 `initiator`；既有 `sessionId` 可直接用于打开关联会话。
 
 ## 会话打开性能
 
@@ -257,11 +257,11 @@ const queue = mountRulings(queueTarget, client, {
 
 `mountChat` 的列表刷新直接使用 `aiSessions()` 同时返回的 access，不再先串行查询 `aiAccess()`；仅旧自定义客户端缺少 access 时回退一次。`mountChat`、三种视图的 `resume({sessionId})` 并行读取列表与目标会话，不先拉取旧会话。无参数仍恢复当前会话。包侧可按房间、账号、代际保留并移挂同一个组件，暂离时 suspend，回到指定会话时 resume；身份变化须销毁，不能把旧授权响应当永久缓存。
 
-服务端按选中会话的 requestIds 读取任务，单次构建派发／提案索引，保留每次来源复验与撤权处理。此优化减少网络往返、列表查找和重复扫描，不缩短模型推理时间。专项通过明确的请求次数与并行屏障验证；测量数值及适用范围见[工作台验收](../../../engineering/acceptance/ai-runtime/workbench-results.json)，不作为公网延迟保证。
+服务端先按账号／会话过滤并分页，再投影选中任务；单次读取复用只读仓库快照及历史图中的相同祖先校验，写入和事务结束立即失效。历史缓存仅属于本次加锁读取，每个根仍执行 100 节点上限和循环检查，下次请求重新检查来源与权限；全房间读取的双方 KP 身份由宿主针对当前房间验证，AI 回调补查策略。测量与长历史复现见[快照和性能验收](../../../engineering/acceptance/ai-snapshot-performance/README.md)，请求次数与并行屏障见[工作台验收](../../../engineering/acceptance/ai-runtime/workbench-results.json)；不作为公网延迟保证。
 
 ## 高危裁决与资料申请
 
-设置组件和本机审核面板提供完整的查询、写入、外发、PL 及普通自动审批开关，字段见[会话权限](ai-session-access.md)。高危策略不可自动通过。`mountRulings` 详情展示服务端 diff/riskTags，人工批准绑定 explicitHighRiskDigest。
+设置组件和本机审核面板提供完整的查询、写入、外发、PL 及普通自动审批开关，字段见[会话权限](ai-session-access.md)。高危策略不可自动通过。`mountRulings` 详情展示服务端 diff/riskTags，人工批准绑定 explicitHighRiskDigest。C 需人工采纳时按钮为“采纳评估并发布”，提交 cReview 三字段和明确点击记录；备注可空。依据过期按 canRevalidate 显示重新检测。设置组件提供指标阈值、补充场景 JSON 和依据备注，保存使用当前 revision。完整规则见[可变依据](ai-rulings.md#c-类评估与可变依据)，本次未新增 JS 模块。
 
 `mountRulings` 可传 `onKnowledgeRequest(item)`：宿主打开披露分面选择器，用真实 knowledge preview 取得参数，再以 `digest:item.digest`（不是 expectedDigest）提交 ai.ruling.decide。无回调时禁止直接批准知识申请。底层 `createAITools(client).knowledgeRequests.submit(sessionId,requestId,id?)` 与 reconcile 可独立装配；命令走现有 ai/commands 路由，无需新增管理路由。玩家聊天已内置明确申请按钮及状态显示，点击前不创建申请。
 
@@ -274,6 +274,12 @@ const queue = mountRulings(queueTarget, client, {
 
 KP 的 `mountRulings` 已支持 player_request 和“接收并生成方案”；既有 `onOpenSession` 收到审核会话 ID，无需额外业务批准回调。资料披露仍独立通过 onKnowledgeRequest 选择分面。配置包不得把“接收创作申请”显示成“修改已执行”或自动向 PL 复制 KP 生成内容。
 
+## 队列组织与回复关系
+
+`createAITools(client).queue.archive({targetId,digest,archived,reason?},commandId?)` 沿用 ai/commands，digest 使用 DTO 的 queueDigest。mountRulings 详情提供带理由的归档与恢复，保留原摘要及独立的过期提示；自绘队列依据服务端 queueStatus/canArchive/canRestore，不猜测执行结果。字段与保护规则见[裁决队列](ai-rulings.md#关联替代与归档)。
+
+`sessions.submit(sessionId,text,commandId?,{submissionKey?,replyToRequestId?})` 可显式关联原请求并防止重复提交；playerRequests 的文本模式也可带 submissionKey。通用聊天内置“继续此请求”和取消关联入口，发送结果未知时保留相同内容的提交键。包来源 correlationKey 仅表达真实业务关系，不能用会话 ID、账号或相似文字替代，详见[来源审核](ai-debug-review.md#来源审核)。
+
 ## 来源审核与调试
 
 新增 debug.js、来源卡与 onOpenSource，底层 ai.review.create、AiClient.aiDebug 和独立 helper 可自行装配；转交不等于执行。接口及桥接边界见[来源审核与调试](ai-debug-review.md)。
@@ -283,3 +289,23 @@ KP 的 `mountRulings` 已支持 player_request 和“接收并生成方案”；
 ## 旧首测操作台客户端
 
 宿主 `/sdk/client.js` 使用 `engineering/client-sdk/client.js`。其 `aiRulings()` 读取现有裁决列表与完整高危摘要，`aiResolve(tokens)` 带 CSRF 解析授权引用，`subscribe(listener)` 返回取消订阅函数并保留旧 `onChange` 回调。两项读取沿用会话代号检查，身份切换后的迟到响应拒绝；快照、reset、退出与断线通知组件更新或清空。读取不审批、不发布，高危摘要仍由审核界面提交明确批准。独立接口证据见[SDK 验收](../../../engineering/acceptance/rulings-sdk/README.md)。
+
+## 历史消息展示契约
+
+Task 提供 sentAt、responseAt（UNIX 秒，旧回复可为 null）、referenceLabels 及 historicalReadOnly/sourceNotice。保留已交付正文；不要以引用解析错误替换整条消息。通用组件将失效引用置为 unavailable、aria-disabled=true、tabIndex=-1，并禁止详情激活。自绘组件须遵循相同边界，不能用标签快照恢复详情。
+
+KP 审核的 recipientAccountId 来自服务端保存的原请求／审核来源链，且仅返回当前房间的玩家账号。揭示信息时使用该字段；缺省须由 KP 明确选玩家，不能回退 initiator（可能是当前审核 KP）。队列 resolution 字段及适用范围见[成功回执](ai-rulings.md#成功回执与关联闭环)。
+
+## 可见处理过程
+
+现有 Task DTO 扩展 `events`：按 seq 排序，at 为 UNIX 秒，stage/status/summary 表示阶段与安全摘要，durationMs 为耗时；工具带 tool，执行动作带 operation、receiptStatus 和可选 code。不增加 HTTP 端点，不提供隐藏推理、原始工具参数或私密载荷。运行中事件来自内存，完成后随既有检查点保存，轮询不逐阶段写盘。PL 仅见本人任务。
+
+`dependencyCheck` 包含 snapshotAt、checkedAt、status（unchanged/changed）、changes[{kind,id,code,summary}]、totalChanges、canRegenerate。它描述生成结束时的检查，不替代执行时验证。聊天 `.task-progress` 可折叠回看，条目带 data-stage/data-status/data-seq；`.dependency-warning` 展示变化，`.regenerate-current` 恢复原需求，用户发送后才建立新任务。完整待审指令与参数通过“查看执行批次／查看配置裁决”进入已有裁决详情，执行结果可追溯原回执；进度列表只给操作摘要。
+
+运行批次详情复用现有 `rulings.js/css`，无需新增组件文件。按编号显示每项参数、preflight、execution 及安全业务 result；提交、失败、撤销、未执行分别计数。正常玩法失败不会显示为技术异常或自动重试。自绘组件须按服务端 DTO 展示，不能用 completed 推断玩家目标完成；完整范围见[原子边界](ai-rulings.md#运行时预检与原子边界)。
+
+## 作者声明的运行时引用投影
+
+可在已登记为 KP 来源的 `contextMapping.gameTerms` JSON 中声明 `runtimeReferences`。每项限定 `configurationIds`、`dataFile`、`arrayPath`、`indexBase`（0或1）、`idField`、`labelField` 与显式 `slots:[{slot,definitionField,quantityField}]`；最多8项声明，每项128槽，单个投影不超过8KiB。工程不内置包名称或物品含义。
+
+仅管理员会话、KP 外发开启、`room_read_data` 已返回的 `host-state` 实体会得到 `items[].referenceProjections`。投影从同一发送快照的实际定义数组展开 `slot/definitionIndex/definitionId/label/remainingQuantity/sourceFields`，附定义文件、路径和修订；不遍历未读对象，不为玩家会话扩大资料范围。实体沿用查询证据，定义节点另记 `configDataReads` 摘要；发送后变化会进入依赖检查，不能据投影绕过批准和执行校验。

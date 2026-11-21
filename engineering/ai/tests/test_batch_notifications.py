@@ -42,15 +42,16 @@ def test_reviewed_notification_waits_for_approval_and_is_targeted_once(applicati
     assert decide(app,b,who='player1')['code']=='PERMISSION_DENIED'
     result=committed(decide(app,b));assert result['status']=='completed',result
     notices=inbox(app,'player1');assert len(notices)==1
-    assert notices[0]['source']['commandId']=='ai-batch:'+b['batchId']+':0'
+    assert notices[0]['source']['commandId']==result['execution']['items'][0]['commandId']
     assert notices[0]['source']['op']=='entity.patch' and not inbox(app,'player2')
     assert decide(app,b)['code']=='BATCH_NOT_PENDING' and len(inbox(app,'player1'))==1
 
 
 def test_failed_source_cannot_claim_success(application):
     app=application;candidate=actions();candidate[0]['args']['id']='missing'
-    result=committed(decide(app,batch(app,candidate)))
-    assert result['status']=='partial' and len(result['receipts'])==1 and not inbox(app,'player1')
+    b=batch(app,candidate)
+    assert b['status']=='blocked' and b['preflight']['items'][0]['status']=='blocked'
+    assert decide(app,b)['code']=='BATCH_NOT_PENDING' and not inbox(app,'player1')
 
 
 def test_rejected_batch_sends_nothing(application):
@@ -58,18 +59,17 @@ def test_rejected_batch_sends_nothing(application):
     assert result['status']=='rejected' and not inbox(app,'player1')
 
 
-@pytest.mark.parametrize('lost_index',[0,1])
-def test_lost_reply_never_blindly_replays_or_sends_early(application,lost_index):
-    app=application;b=batch(app,actions());original=app.host.command;calls=[]
-    def lost(account,envelope):
-        value=original(account,envelope);calls.append(envelope['payload']['op'])
-        if len(calls)==lost_index+1:raise OSError('lost durable response')
-        return value
-    app.host.command=lost
+@pytest.mark.parametrize('committed_before_loss',[False,True])
+def test_lost_reply_never_blindly_replays_or_sends_early(application,committed_before_loss):
+    app=application;b=batch(app,actions());original=app.host.execute_batch;calls=[]
+    def lost(*args,**kwargs):
+        calls.append(kwargs['command_id'])
+        if committed_before_loss:original(*args,**kwargs)
+        raise OSError('lost response')
+    app.host.execute_batch=lost
     try:result=committed(decide(app,b))
-    finally:app.host.command=original
-    assert result['status']=='unknown'
-    result=committed(decide(app,b,'reconcile'))
-    assert result['status']==('partial' if lost_index==0 else 'completed')
-    assert len(calls)==lost_index+1 and len(inbox(app,'player1'))==lost_index
+    finally:app.host.execute_batch=original
+    assert result['status']==('completed' if committed_before_loss else 'unknown')
+    if not committed_before_loss:assert committed(decide(app,b,'reconcile'))['status']=='unknown'
+    assert len(calls)==1 and len(inbox(app,'player1'))==int(committed_before_loss)
     assert decide(app,b)['code']=='BATCH_NOT_PENDING'

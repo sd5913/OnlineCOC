@@ -106,14 +106,20 @@ def create_app(host,port=8765,host_control=None,*,ai_runtime=None):
         def run():
             with host.lock:
                 local_authority(request)
-                return host.identity.host_change(data)
+                result=host.local_account_change(data)
+                if result['status']=='rejected':
+                    return JSONResponse(result,status_code=404 if result.get('code')=='NOT_VISIBLE' else 409)
+                return result
         return await asyncio.to_thread(run)
 
     @app.get('/api/v1/host-control/receipts/{request_id}')
     def host_receipt(request_id:str,request:Request):
         local_authority(request)
         with host.lock:
-            return host.identity.store.snapshot()[1].get('hostAdminReceipts',{}).get(request_id, {'requestId':request_id,'status':'unknown'})
+            result=host.local_account_receipt(request_id)
+            if result['status']=='pending':return JSONResponse(result,status_code=503)
+            if result['status']=='rejected':return JSONResponse(result,status_code=404 if result.get('code')=='NOT_VISIBLE' else 409)
+            return result
 
     @app.get('/api/v1/capabilities')
     def capabilities():return {'engineVersion':ENGINE_VERSION,'roomSchemaVersion':ROOM_SCHEMA_VERSION,'protocolVersion':1,'transports':['http','websocket'],'resumeWindow':0,'storage':'files','maxCommandBytes':65536,'ai':{'version':1,'available':ai_runtime is not None,'enabled':bool(ai_runtime and host.state()['aiControl']['settings']['enabled']),'maxCommandBytes':65536,'maxDraftBytes':8*1024*1024,'maxPage':100},'chat':{'version':1,'maxTextLength':4000,'maxHistoryPage':100,'maxChannels':128,'maxMessages':10000,'privateAssetAttachments':False}}
@@ -162,6 +168,9 @@ def create_app(host,port=8765,host_control=None,*,ai_runtime=None):
     @app.get('/api/v1/chat/members')
     def chat_members(request:Request):
         with host.lock:return {'items':host.chat_members(auth(request))}
+    @app.get('/api/v1/chat/channels')
+    def chat_channels(request:Request):
+        with host.lock:return host.chat_channels(auth(request))
     @app.post('/api/v1/chat/history')
     async def chat_history(request:Request):
         data=await read_object(request);check('chat.history',data)
@@ -240,17 +249,21 @@ def create_app(host,port=8765,host_control=None,*,ai_runtime=None):
             await ws.close(code=1008);return
         try:session=host.auth(ws.cookies.get('onlinecoc',''));account=session['accountId']
         except DomainError:await ws.close(code=1008);return
-        await ws.accept();last=None
+        await ws.accept();last=None;last_generation=None;can_skip=False
+        loop=asyncio.get_running_loop()
         try:
             # Each full projection is captured under the room lock and applied as one snapshot.
             # Superseded states are coalesced; no cross-connection delta replay is advertised.
             while True:
                 def capture():
                     with host.lock:
-                        host.auth(ws.cookies.get('onlinecoc',''));return host.project(account)
-                projection=await asyncio.to_thread(capture)
-                raw=canonical(projection);fingerprint=hashlib.sha256(raw).hexdigest()
-                if fingerprint!=last:
+                        host.auth(ws.cookies.get('onlinecoc',''))
+                        if can_skip and host.store.generation==last_generation:return None,host.store.generation
+                        return host.project(account),host.store.generation
+                projection,generation=await asyncio.to_thread(capture)
+                raw=canonical(projection) if projection is not None else None
+                fingerprint=hashlib.sha256(raw).hexdigest() if raw is not None else last
+                if projection is not None and fingerprint!=last:
                     if len(raw)>2*1024*1024:await ws.close(code=1009);return
                     snapshot=hashlib.sha256(raw).hexdigest()[:24]
                     # Chunk as JSON text, then atomically parse/apply after end.
@@ -260,14 +273,26 @@ def create_app(host,port=8765,host_control=None,*,ai_runtime=None):
                     host.hit('before_snapshot_end')
                     # The authorization check and outbound scheduling are one
                     # lock-protected boundary; network I/O runs after release.
-                    with host.lock:
-                        host.auth(ws.cookies.get('onlinecoc',''))
-                        current=hashlib.sha256(canonical(host.project(account))).hexdigest()
-                        valid=current==fingerprint
-                        outgoing=asyncio.create_task(ws.send_json({'type':'snapshot.end','id':snapshot} if valid else {'type':'reset'}))
-                    await asyncio.wait_for(outgoing,2)
+                    def finish():
+                        with host.lock:
+                            host.auth(ws.cookies.get('onlinecoc',''))
+                            # A room-owned projection cannot change at the same
+                            # committed generation. External knowledge still rechecks.
+                            if 'knowledge' not in projection and host.store.generation==generation:
+                                valid=True
+                            else:
+                                current=hashlib.sha256(canonical(host.project(account))).hexdigest()
+                                valid=current==fingerprint
+                            outgoing=asyncio.run_coroutine_threadsafe(ws.send_json({'type':'snapshot.end','id':snapshot} if valid else {'type':'reset'}),loop)
+                            return valid,outgoing
+                    valid,outgoing=await asyncio.to_thread(finish)
+                    await asyncio.wait_for(asyncio.wrap_future(outgoing),2)
                     if not valid:last=None;continue
                     last=fingerprint
+                if projection is not None:
+                    last_generation=generation
+                    # External providers may change without a room commit.
+                    can_skip='knowledge' not in projection
                 try:
                     message=await asyncio.wait_for(ws.receive_text(),timeout=.25)
                     if len(message)>65536:await ws.close(code=1009);return

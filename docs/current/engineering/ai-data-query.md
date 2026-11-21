@@ -4,14 +4,14 @@
 - 文档子类：工程
 - 状态：有效
 - 创建日期：2026-11-15
-- 最后更新：2026-11-20
+- 最后更新：2026-11-21
 - 关联文档：[AI 运行时](ai-runtime.md)、[嵌入组件](ai-pack-embedding.md)、[房间格式](room-format.md)、[剩余计划](../../plans/ai-data-query-adjudication.md)、[通用请求与决定规划](../../plans/interaction-records.md)
 
 ## 当前能力
 
 当前依赖后端 0.3.0 / Room v4。宿主已提供持久个人知识账本及显式离线格式转换，未实现通用 InteractionRequest / DecisionRecord 持久集合。下述原始房间、聊天及裁决工具用于 KP 管理员通路；严格 PL 通路只开放个人知识。
 
-房间启动的 AI Runtime 使用按需上下文：需求、包契约、允许外发的作者条款、确认记忆、有限会话历史和显式引用先进入输入，实体/配置/聊天详情通过工具读取；不再默认发送每频道最近 50 条聊天和全部运行源码。直接构造 `Context(proposals)` 仍保留旧模式，`Context(proposals, demand=True)` 使用新模式。
+房间 AI Runtime 使用按需上下文；需求、包契约、允许外发的作者条款、确认记忆、有限历史和显式引用先进入输入。明确配置编辑可预读有界模板页，其他详情经工具读取。`Context(proposals)` 与 `demand=True` 都不自动收集普通聊天室消息；旧非按需模式只保留实体／配置预加载。默认模型工具不提供 room_read_chat 或 channel/chat 搜索；当前显式转交或选择聊天来源时才开放对应能力。
 
 按需载荷明确提供 `dataAccess.initialFacts="not-loaded"`；空的roomFacts/rules不等于空数据库。系统提示要求先按类型搜索、再读取引用；query只匹配显示名称，空字符串枚举所选类型，不能用“entity/npc”关键词替代类型筛选。selectedReferences为空不妨碍搜索。
 
@@ -45,7 +45,7 @@ coverage: { status: complete | partial, within: requested-authorized-scope }
 
 AI Runtime 给模型的列表结果另附 `pageSummary`：`returnedItems`、`countsByType`、`hasMore`、`isFirstPage`，只统计当前已授权返回页，不提供隐藏数据总数。请求的 `limit` 是数量上限，不是实际条数；只有第一页且无下一页时可据此报告该查询的完整数量，否则须分页去重。该摘要只用于模型阅读，不改变 HTTP EvidencePage、原始查询摘要或来源复验证据。读取聊天前应先读取频道引用，取详情的 `data.channelId`；猜测 ID 后得到 NOT_VISIBLE 不能推导为需要扩大权限。
 
-每页默认 20、最多 50 项；详情最多 12 个引用；输入和单次结果各不超过 16 KiB；每次生成最多 24 次工具调用，并受 Profile 回合数、总期限及每日用量限制。初始资料快照不超过 96 KiB；累计消息与工具 Schema 共用现有传输请求的 256 KiB 预算，最终序列化请求仍须满足传输上限。超限明确失败，可缩小窗口/页数；不静默丢弃资料。分页游标绑定授权结果和筛选条件，数据变化后须从第一页重查。
+每页默认 20、最多 50 项；详情最多 12 个引用；普通查询输入和单次结果各不超过 16 KiB；每次生成最多 24 次工具调用，并受 Profile 回合数、期限及每日用量限制。初始组装、累计输入、模型窗口与语义压缩统一见[上下文预算](ai-session-access.md#上下文连续性与预算)。分页游标绑定授权结果和筛选条件，数据变化后须从第一页重查。
 
 管理员模板修改应先用 `room_read_management({section:"configurations",offset:0,limit:...})` 分页读取宿主权威模板、当前修订和默认值；结果摘要纳入管理读取证明，变化后 SOURCE_STALE。`room_manage_catalog` 只列运行时/会话操作，操作名 Schema 为枚举，不提供 `config.create` 或 `configuration.create`；模板增删改通过 draft 的 configurations 提交。管理查询的参数/输入/结果预算错误会返回有界反馈供模型修正，尝试继续计入原额度；权限与外发拒绝仍终止任务。失败读取不会附加虚假成功证明。
 
@@ -55,9 +55,9 @@ AI Runtime 给模型的列表结果另附 `pageSummary`：`returnedItems`、`cou
 
 模型查询使用审核者与原发起者的共同可见投影，再取房间允许外发类别的交集。普通查询不扩大未参与私聊范围；管理员 AI 的受信 kp-room 通道及包侧 read_scoped 另行传递全读授权，见下节。HTTP 预览可见不等于允许外发，生成时重新检查。搜索先授权再匹配和分页，不返回隐藏计数。
 
-每次查询的 operation、args、scopeId、initiator、结果摘要及返回对象的 readRefs 保存在任务上下文 `facts.dataQueries`；上下文摘要随新增资料更新。发送前、响应后、读回、审批及发布复用宿主校验。消息编辑/撤回、引用变化、权限变化或恢复分叉使旧依据失效；查询权限不会通过缓存绕过。审批/发布时主机查询复验不依赖 AI 仓库开启。readRefs 仅补充只读历史的对象身份，不能替换查询摘要或放宽当前审批；过期历史与旧存档边界见[会话权限](ai-session-access.md#同房间重启与历史)。
+每次查询的 operation、args、scopeId、initiator、结果摘要及返回对象的 readRefs 保存在任务上下文 `facts.dataQueries`；上下文摘要随新增资料更新。发送前、响应后、读回、审批及发布复用宿主校验。被明确引用的消息编辑／撤回、引用变化、权限变化或恢复分叉使旧依据失效；无关新聊天不影响 state 查询或单条消息引用；查询权限不会通过缓存绕过。审批/发布时主机查询复验不依赖 AI 仓库开启。readRefs 仅补充只读历史的对象身份，不能替换查询摘要或放宽当前审批；过期历史与旧存档边界见[会话权限](ai-session-access.md#同房间重启与历史)。
 
-使用包侧资料的任务标记 `consultationOnly`，宿主审批返回 CONSULTATION_ONLY。模型查询结果另带 `sourcePolicy`，包资料明确提示只能咨询；准备配置需以宿主 configurations 或活动工件 `pack_read_config_data` 为依据重新发起。提示不剥离原来源证明，也不将混合来源结果伪装为可发布。包文件与主机尚无跨存储原子快照；本轮明确保持包侧咨询边界，不能用它的输出绕过 A/B/C 或发布校验。撤回聊天不会回滚已经发生的游戏动作。
+独立包资料仍保留 `consultationOnly` 来源标记，现表示须 KP 明确接受的来源风险。模型结果 `sourcePolicy.publication=requires-kp-source-review`：应先读取宿主当前模板或活动工件目标，再生成可校验候选；不能把参考材料当作当前宿主事实。包文件与宿主没有跨存储原子保证，来源接受也不跳过 A/B、权限、版本、实际执行和来源复验。批准协议见[来源风险评估](ai-rulings.md#独立来源风险评估)。撤回聊天不会回滚已发生动作。
 
 ## 事件资料与树桩镇
 
@@ -69,7 +69,7 @@ EventBundle 是只读投影，包含 messages、actions、rulings、executions�
 
 可信包开发者的适配器实现 `create_adapter(data_path)`，返回有 `read(room_snapshot, account)` 的对象，可用 `kinds` 声明支持类型。每项输出 `{sourceId,kind,id,revision,label,data,visibility}`，引用、筛选、分页和复验由宿主统一处理。适配器获得完整主机快照，必须由管理员审查和明确安装；它是本机可信程序，不是模型沙箱或从包文档自动加载的脚本。
 
-公开 CLI 参数为 `serve --ai-config ... --ai-pack ... --ai-data-adapter <可信py文件> --ai-data-path <包存档>`；后两项成对且必须启用 AI。树桩镇可选 AI 启动已自动提供其 `tools/ai_data.py` 和本次运行目录的 package.json。适配器不创建/修改存档，读取文件最多 8 MiB，异常返回 DATA_SOURCE_UNAVAILABLE。代码摘要参与查询快照；未配置适配器的房间仅提供主机资料。
+公开 CLI 参数为 `serve --ai-config ... --ai-pack ... --ai-data-adapter <可信py文件> --ai-data-path <包存档>`；后两项成对且必须启用 AI。树桩镇启用 AI 启动时自动提供其 `tools/ai_data.py` 和本次运行目录的 package.json。适配器不创建/修改存档，读取文件最多 8 MiB，异常返回 DATA_SOURCE_UNAVAILABLE。代码摘要参与查询快照；未配置适配器的房间仅提供主机资料。
 
 KP 任务诊断的 `errors[]` 现可附带 `httpStatus`（100—599 的整数），旧记录缺失时不推测补齐。只记录阶段、内部错误码、模块栈和 HTTP 状态；PL 不返回诊断字段。服务商 HTTP 错误分类与修复边界见[回答协议](ai-responses.md#json-请求与服务商错误)。
 
@@ -104,9 +104,9 @@ if (found.items.length) {
 
 管理员上下文可带 `facts.aiReadScope='kp-room'` 与 `aiPolicyRevision`；查询传 `read_scope='kp-room'`，证据记录 readScope。宿主实际审核者和发起者均须为 KP、player 为空，且本机 AI 注册的 ai_room_read_authorizer 明确许可。PL／KP 的玩家级会话不使用此通道；普通聊天 API 不扩权。
 
-新增 `room` 类别以 `sourceId=host-room` 返回按 JSON path 分片的宿主游戏状态，包含历史规则、关系、流程、知识记录等；长文本带 textOffset/textLength。按 ref 小批读取，结果预算仍生效。外发 room 混合分片要求 public/private/kp 三开关全部开启；不包含 Identity、本机配置、密钥或任意文件。关闭 allowAdminRoomRead 后旧上下文和新读取均拒绝。
+`room` 查询按 JSON path 分片返回宿主状态，长文本带 textOffset/textLength。AI 生成侧强制 `roomMode=state`，返回 `sourceId=host-room-state`，排除 chat、commands、audit、outbox 和 AI 审批／发布流水。显式记录读取仍可使用引擎 records 模式；两类引用不能混用。按 ref 小批读取，结果预算仍生效。外发 room 混合分片要求 public/private/kp 三开关全部开启；不包含 Identity、本机配置、密钥或任意文件。关闭 allowAdminRoomRead 后旧上下文和新读取均拒绝。
 
-包独立资料必须由包适配器投影；新增类别可使用已有 config/memory，但不能仅以 KP 角色判断已获得全读授权。包来源仍 consultationOnly，与 host-room 可发布来源不同。
+包独立资料必须由包适配器投影；新增类别可使用已有 config/memory，但不能仅凭 KP 角色推断获得全读授权。独立来源保留 consultationOnly 标记，执行候选须读取当前目标并由 KP 明确接受来源评估。
 
 受信包适配器可实现 `read_scoped(state,account,*,read_scope=None)`。宿主先完成账号、发起者与全读开关校验，才传入 kp-room；普通路径传 None，旧 read(state,account) 保持兼容。包侧必须再次确认实际 KP，并仅在 kp-room 时追加全包状态和全场景聊天；关闭开关后旧证据复验失败。
 
@@ -165,9 +165,9 @@ PL 在生成前自动预载本人空 query 目录，计入 24 次查询；非空
 
 只接受工具本次发出的 ref，并复核工件修订、完整文件及目标摘要。拒绝猜引用、版本变化、同文件同时完整替换和增量、重叠修改；同一数组可多次追加，逐项检查新键。缺失路径不会隐式创建；超大节点不能未经完整读取就替换。单批增量输入最多 64 KiB。
 
-编译器在副本上展开完整文件：未触及字段取自权威基线，不能由模型猜测；任何编译错误都不产生部分候选。格式修复每次从同一基线重新展开，不能把上次追加重复累积。结构错误进入现有默认 5 次模型修复流程；真正缺少玩法决策时仍询问用户。
+编译器在副本上展开完整文件：未触及字段取自权威基线，不能由模型猜测；任何编译错误都不产生部分候选。格式修复每次从同一基线重新展开，不能把上次追加重复累积。结构错误进入最多两次的共用技术修复流程；真正缺少玩法决策时仍询问用户。
 
-持久 ChangeSet、A/B/C、差异、摘要指纹和发布接口保持原契约。完整候选会继续经过包 Schema、稳定数组/引用规则与游戏性检查，数据变更仍按高危人工审批。任务上下文记录 configDataEdits 的操作、路径和基线摘要；同一任务修复候选时保存本轮实际读取依据。该机制目前用于模型工具/输出编排；人工 HTTP ai.draft.create 仍提交原完整 ChangeSet，不接受顶层 dataEdits。
+增量最终形成完整 ChangeSet，沿用 A/B 硬校验、C 评估、差异及指纹；C 人工采纳的附加证明见[裁决](ai-rulings.md#c-类评估与可变依据)。完整候选会继续经过包 Schema、稳定数组/引用规则与游戏性检查，数据变更仍按高危人工审批。任务上下文分别保留 configDataReads 的原节点读取证明与 configDataEdits 的操作、路径和基线摘要；同一任务修复候选时保存本轮实际读取依据。历史只读显示允许仍存续节点的值更新，不放宽 editRef、批准或发布校验，具体边界见[历史授权](ai-session-access.md#同房间重启与历史)。该机制目前用于模型工具/输出编排；人工 HTTP ai.draft.create 仍提交原完整 ChangeSet，不接受顶层 dataEdits。
 
 专项覆盖字段保留、分页外重复键、猜引用、过期基线、重叠编辑、数组删除限制、PL/外发/查询禁用以及真实三检后高危人工批准；该阶段首次失败和复验关系见[验收记录](../../../engineering/acceptance/ai-runtime/data-edits-results.json)。包侧真实模型复验独立记录。
 

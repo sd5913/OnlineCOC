@@ -1,0 +1,32 @@
+[
+  {
+    "test": "engineering.acceptance.atomic-batches.test_atomic::test_preflight_no_mutation_and_sequential_dependency",
+    "category": "invalid_synthetic_fixture_hp_above_maxHp",
+    "correction": "Dedicated fixture maxHp=100; preserve the model invariant.",
+    "failure": "AssertionError: {'status': 'blocked', 'checkedAt': 1795178665.0050972, 'scope': 'host.room.atomic.v1', 'items': [{'index': 0, 'target'...y.update', 'status': 'blocked', ...}, {'index': 1, 'target': 'host', 'op': 'action.invoke', 'status': 'blocked', ...}]}\nassert 'blocked' == 'passed'\n  \n  - passed\n  + blocked"
+  },
+  {
+    "test": "engineering.acceptance.atomic-batches.test_atomic::test_failure_discards_first_middle_last[2]",
+    "category": "invalid_synthetic_fixture_hp_above_maxHp",
+    "correction": "Dedicated fixture maxHp=100; preserve the model invariant.",
+    "failure": "assert (1 == 2)"
+  },
+  {
+    "test": "engineering.acceptance.atomic-batches.test_atomic::test_success_dependency_receipt_and_dedupe",
+    "category": "invalid_synthetic_fixture_hp_above_maxHp",
+    "correction": "Dedicated fixture maxHp=100; preserve the model invariant.",
+    "failure": "AssertionError: {'status': 'rejected', 'commandId': 'batch', 'result': {'status': 'failed', 'scope': 'host.room.atomic.v1', 'items': [...t': 'host', 'op': 'action.invoke', 'status': 'not_executed', ...}], 'committedCount': 0, ...}, 'code': 'INPUT_INVALID'}\nassert ('rejected' == 'committed'\n  \n  - committed\n  + rejected)"
+  },
+  {
+    "test": "engineering.acceptance.atomic-batches.test_atomic::test_false_game_result_is_committed_once",
+    "category": "invalid_synthetic_fixture_hp_above_maxHp",
+    "correction": "Dedicated fixture maxHp=100; preserve the model invariant.",
+    "failure": "AssertionError: {'status': 'rejected', 'commandId': 'batch', 'result': {'status': 'failed', 'scope': 'host.room.atomic.v1', 'items': [...et': 'host', 'op': 'entity.patch', 'status': 'not_executed', ...}], 'committedCount': 0, ...}, 'code': 'INPUT_INVALID'}\nassert ('rejected' == 'committed'\n  \n  - committed\n  + rejected)"
+  },
+  {
+    "test": "engineering.acceptance.atomic-batches.test_atomic::test_two_threads_serialize_without_lost_update",
+    "category": "invalid_synthetic_fixture_hp_above_maxHp",
+    "correction": "Dedicated fixture maxHp=100; preserve the model invariant.",
+    "failure": "AssertionError: assert (2 == 2 and False)\n +  where 2 = len([{'status': 'committed', 'commandId': '0', 'result': {'status': 'committed', 'scope': 'host.room.atomic.v1', 'items': ...target': 'host', 'op': 'action.invoke', 'status': 'failed', ...}], 'committedCount': 0, ...}, 'code': 'INPUT_INVALID'}])\n +  and   False = all(<generator object test_two_threads_serialize_without_lost_update.<locals>.<genexpr> at 0x000002270BD36DC0>)"
+  }
+]

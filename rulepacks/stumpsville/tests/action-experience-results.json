@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-17T22:10:28.149865+08:00",
+  "date": "2026-11-20T18:34:06.822175+08:00",
   "passed": true,
   "checks": [
     "four distinct preset receipts settle through a KP browser in a separate context (no BroadcastChannel shortcut)",
@@ -15,151 +15,79 @@
     "browser has no uncaught JavaScript errors"
   ],
   "timingsMs": {
-    "before": [
-      3677,
-      4154,
-      3666,
-      3129
-    ],
     "after": [
-      1800,
-      1815,
-      1771,
-      1804
+      1677,
+      1540,
+      1573,
+      1618
     ]
   },
   "medianMs": {
-    "before": 3672,
-    "after": 1802
+    "after": 1596
   },
-  "presetCheckMs": 1716,
+  "presetCheckMs": 2552,
   "directScene": {
-    "elapsedMs": 1482,
+    "elapsedMs": 1617,
     "requests": [
       {
         "path": "/me",
         "operation": null,
-        "ms": 2
+        "ms": 3
       },
       {
         "path": "/view",
         "operation": null,
-        "ms": 20
+        "ms": 16
       },
       {
         "path": "/knowledge/search",
         "operation": null,
-        "ms": 8
+        "ms": 13
       },
       {
         "path": "/knowledge/read",
         "operation": null,
-        "ms": 8
+        "ms": 17
+      },
+      {
+        "path": "/knowledge/search",
+        "operation": null,
+        "ms": 15
+      },
+      {
+        "path": "/knowledge/read",
+        "operation": null,
+        "ms": 17
       },
       {
         "path": "/view",
         "operation": null,
-        "ms": 19
+        "ms": 18
       },
       {
         "path": "/me",
         "operation": null,
-        "ms": 2
+        "ms": 7
       },
       {
         "path": "/view",
         "operation": null,
-        "ms": 12
+        "ms": 16
       },
       {
         "path": "/me",
         "operation": null,
-        "ms": 12
+        "ms": 3
       },
       {
         "path": "/view",
         "operation": null,
-        "ms": 12
+        "ms": 16
       },
       {
         "path": "/view",
         "operation": null,
-        "ms": 12
-      },
-      {
-        "path": "/view",
-        "operation": null,
-        "ms": 13
-      },
-      {
-        "path": "/commands",
-        "operation": "action.invoke",
-        "ms": 510
-      },
-      {
-        "path": "/view",
-        "operation": null,
-        "ms": 12
-      },
-      {
-        "path": "/knowledge/capabilities",
-        "operation": null,
-        "ms": 6
-      },
-      {
-        "path": "/chat/members",
-        "operation": null,
-        "ms": 5
-      },
-      {
-        "path": "/knowledge/preview",
-        "operation": null,
-        "ms": 19
-      },
-      {
-        "path": "/view",
-        "operation": null,
-        "ms": 13
-      },
-      {
-        "path": "/commands",
-        "operation": "knowledge.observe",
-        "ms": 92
-      },
-      {
-        "path": "/knowledge/capabilities",
-        "operation": null,
-        "ms": 6
-      },
-      {
-        "path": "/chat/members",
-        "operation": null,
-        "ms": 5
-      },
-      {
-        "path": "/knowledge/preview",
-        "operation": null,
-        "ms": 26
-      },
-      {
-        "path": "/view",
-        "operation": null,
-        "ms": 12
-      },
-      {
-        "path": "/commands",
-        "operation": "knowledge.observe",
-        "ms": 118
-      },
-      {
-        "path": "/view",
-        "operation": null,
-        "ms": 13
-      },
-      {
-        "path": "/me",
-        "operation": null,
-        "ms": 2
+        "ms": 16
       },
       {
         "path": "/view",
@@ -167,6 +95,86 @@
         "ms": 14
       },
       {
+        "path": "/view",
+        "operation": null,
+        "ms": 15
+      },
+      {
+        "path": "/commands",
+        "operation": "action.invoke",
+        "ms": 819
+      },
+      {
+        "path": "/view",
+        "operation": null,
+        "ms": 16
+      },
+      {
+        "path": "/knowledge/capabilities",
+        "operation": null,
+        "ms": 13
+      },
+      {
+        "path": "/chat/members",
+        "operation": null,
+        "ms": 11
+      },
+      {
+        "path": "/knowledge/preview",
+        "operation": null,
+        "ms": 33
+      },
+      {
+        "path": "/view",
+        "operation": null,
+        "ms": 16
+      },
+      {
+        "path": "/commands",
+        "operation": "knowledge.observe",
+        "ms": 94
+      },
+      {
+        "path": "/knowledge/capabilities",
+        "operation": null,
+        "ms": 10
+      },
+      {
+        "path": "/chat/members",
+        "operation": null,
+        "ms": 11
+      },
+      {
+        "path": "/knowledge/preview",
+        "operation": null,
+        "ms": 27
+      },
+      {
+        "path": "/view",
+        "operation": null,
+        "ms": 15
+      },
+      {
+        "path": "/commands",
+        "operation": "knowledge.observe",
+        "ms": 94
+      },
+      {
+        "path": "/view",
+        "operation": null,
+        "ms": 23
+      },
+      {
+        "path": "/me",
+        "operation": null,
+        "ms": 3
+      },
+      {
+        "path": "/view",
+        "operation": null,
+        "ms": 19
+      },
+      {
         "path": "/knowledge/capabilities",
         "operation": null,
         "ms": 13
@@ -174,12 +182,17 @@
       {
         "path": "/knowledge/search",
         "operation": null,
-        "ms": 7
+        "ms": 16
       },
       {
         "path": "/knowledge/read",
         "operation": null,
-        "ms": 7
+        "ms": 15
+      },
+      {
+        "path": "/notifications?after=0&limit=50",
+        "operation": null,
+        "ms": 9
       }
     ]
   },

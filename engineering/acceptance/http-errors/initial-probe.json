@@ -1,0 +1,64 @@
+[
+  {
+    "name": "json-denial",
+    "error": {
+      "name": "Error",
+      "message": "PERMISSION_DENIED",
+      "code": "PERMISSION_DENIED",
+      "status": null,
+      "operation": null,
+      "requestId": null,
+      "commandId": null
+    }
+  },
+  {
+    "name": "plaintext-500",
+    "error": {
+      "name": "SyntaxError",
+      "message": "Unexpected token 'I', \"Internal S\"... is not valid JSON",
+      "code": null,
+      "status": null,
+      "operation": null,
+      "requestId": null,
+      "commandId": null
+    }
+  },
+  {
+    "name": "receipt-rejected",
+    "returned": {
+      "status": "rejected",
+      "commandId": "trace-command",
+      "code": "KNOWLEDGE_UNAVAILABLE"
+    }
+  },
+  {
+    "name": "receipt-unknown",
+    "returned": {
+      "status": "unknown",
+      "commandId": "trace-command"
+    }
+  },
+  {
+    "name": "no-response",
+    "error": {
+      "name": "TypeError",
+      "message": "Failed to fetch",
+      "code": null,
+      "status": null,
+      "operation": null,
+      "requestId": null,
+      "commandId": null
+    }
+  },
+  {
+    "name": "local-disconnected",
+    "error": {
+      "message": "DISCONNECTED",
+      "code": null,
+      "status": null,
+      "operation": null,
+      "requestId": null,
+      "commandId": null
+    }
+  }
+]

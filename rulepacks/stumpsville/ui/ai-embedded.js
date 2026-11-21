@@ -9,12 +9,12 @@ export const embeddedAI={
   queueHistory(content){if(!current?.queue)return false;current.queue.openHistory(content);return true;},
   refreshQueue(){return current?.queue?.refresh();},
   openSession(sessionId){if(!sessionId||!current?.manager)return;current.pendingSession=sessionId;current.attach?.();},
-  async mount(target,{base,manager=false,account='',scope='',onReview=()=>{},onQueueCount=()=>{},onSettings=()=>{},onReveal=()=>{},onKnowledgeRequest=()=>{},onOpenSource=()=>{},onNotice=()=>{},readBundle,renderReference,archived=false,rulingsTarget=null,settings=false}={}){
+  async mount(target,{base,manager=false,account='',scope='',onReview=()=>{},onQueueCount=()=>{},onSettings=()=>{},onReveal=()=>{},onKnowledgeRequest=()=>{},onOpenSource=()=>{},onNotice=()=>{},readBundle,renderReference,archived=false,rulingsTarget=null,statusTarget=null,timeline=null,settings=false}={}){
     const key=JSON.stringify([String(base),manager,account,scope]);
-    if(!target){if(manager&&current?.key===key){current.root.remove();current.queueRoot?.remove();current.rulingsTarget=null;}else this.close();return;}
-    if(current?.key===key){current.mode=settings?'settings':'chat';current.queue?.relocalize();current.rulingsTarget=rulingsTarget;current.archived=archived;current.queue?.setArchived(archived);target.append(current.root);current.attach?.();return;}
+    if(!target){if(manager&&current?.key===key){current.root.remove();current.queueRoot?.remove();current.rulingsTarget=null;current.queue?.setStatusTarget(null);}else this.close();return;}
+    if(current?.key===key){current.mode=settings?'settings':'chat';current.queue?.relocalize();current.rulingsTarget=rulingsTarget;current.statusTarget=statusTarget;current.queue?.setStatusTarget(statusTarget);current.timeline=timeline;current.queue?.setTimeline(timeline);current.archived=archived;current.queue?.setArchived(archived);target.append(current.root);current.attach?.();return;}
     this.close();const generation=epoch,root=document.createElement('div');root.className='embedded-ai-root';
-    target.append(root);current={key,root,rulingsTarget,manager,archived,mode:settings?'settings':'chat'};root.textContent=t('ai.loading');
+    target.append(root);current={key,root,rulingsTarget,statusTarget,timeline,manager,archived,mode:settings?'settings':'chat'};root.textContent=t('ai.loading');
     const live=()=>current?.root===root&&generation===epoch;
     try{
       const web=globalThis.stumpsvilleWeb;
@@ -65,7 +65,7 @@ export const embeddedAI={
         if(current.mode==='settings'&&!current.settings)current.settings=module.mountAISettings(settingsBody,client);
         if(current.mode==='chat'&&!current.view)current.view=module.mountAIConversation(body,client,{title:t('ai.title'),review:manager,renderReference,onOpenSource:handleSource,onReview:id=>{if(current?.queueRoot){current.queue.refresh();current.queue.focus();}else onReview(id);}});
         if(manager&&current.rulingsTarget){
-          if(!current.queue){const queueRoot=document.createElement('div');current.queueRoot=queueRoot;current.queue=mountKeeperAIQueue(queueRoot,client,module,{scope,account,archived:current.archived,onCount:onQueueCount,onSettings,onReveal,onKnowledgeRequest,onOpenSource:handleSource,onNotice,readBundle,renderReference,onSession:id=>current?.view?.resume({sessionId:id})});}
+          if(!current.queue){const queueRoot=document.createElement('div');current.queueRoot=queueRoot;current.queue=mountKeeperAIQueue(queueRoot,client,module,{scope,account,statusTarget:current.statusTarget,timeline:current.timeline,archived:current.archived,onCount:onQueueCount,onSettings,onReveal,onKnowledgeRequest,onOpenSource:handleSource,onNotice,readBundle,renderReference,onSession:id=>current?.view?.resume({sessionId:id})});}
           current.rulingsTarget.append(current.queueRoot);
         }
         if(current.mode==='chat'&&current.view&&current.pendingSession){const sessionId=current.pendingSession;current.pendingSession=null;Promise.resolve(current.view.resume({sessionId})).catch(error=>{if(live()){guide.textContent=error.code||error.message;guide.hidden=false;}});}

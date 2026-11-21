@@ -1,0 +1,13 @@
+{
+  "checkedDocuments": [
+    "engineering/acceptance/ai-command-reliability/README.md",
+    "docs/current/engineering/ai-rulings.md",
+    "docs/current/engineering/ai-responses.md",
+    "docs/current/engineering/ai-pack-embedding.md",
+    "docs/current/engineering/ai-session-access.md",
+    "docs/current/engineering/ai-debug-review.md"
+  ],
+  "missingTargets": [],
+  "changedFrozenSource": [],
+  "newPaths": 80
+}

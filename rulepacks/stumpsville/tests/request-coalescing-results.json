@@ -1,0 +1,21 @@
+{
+  "checkedAt": "2026-11-21T09:06:37.542930+08:00",
+  "checks": [
+    "同一频道版本的挂载与十次并发刷新只发出一次历史查询",
+    "身份切换不复用旧账号请求，迟到的旧回复不会渲染",
+    "十次并发裁决刷新合并为当前和一次后续读取，无并发堆积且保留刷新意图"
+  ],
+  "realSaveChanged": false,
+  "externalModelCalls": 0,
+  "evidenceDirectory": "tests/output/request-coalescing-344693b3",
+  "passed": true,
+  "passedCount": 3,
+  "pageErrors": [],
+  "previousRuns": [
+    {
+      "passed": true,
+      "error": null,
+      "evidenceDirectory": "tests/output/request-coalescing-2da5759a"
+    }
+  ]
+}

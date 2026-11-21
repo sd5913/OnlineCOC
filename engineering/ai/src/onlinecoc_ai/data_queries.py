@@ -10,7 +10,8 @@ PAGE={'limit':{'type':'integer','minimum':1,'maximum':50},'cursor':{'type':'stri
 PARAMETERS={
     'search':{'types':{'type':'array','items':{'enum':list(KINDS)},'minItems':1,'maxItems':len(KINDS),
         'description':'Categories to enumerate, not search keywords.'},
-        'query':{**STRING,'description':'Display-name substring only; omit or use an empty string to enumerate the selected types. This is not a type/configuration/location filter.'},**PAGE},
+        'query':{**STRING,'description':'Display-name substring only; omit or use an empty string to enumerate the selected types. This is not a type/configuration/location filter.'},
+        'roomMode':{'enum':['state'],'description':'Stable room state excluding ordinary chat and delivery/audit/command traffic.'},**PAGE},
     'read':{'refs':REFS,'fields':{'type':'array','items':STRING,'maxItems':20}},
     'chat':{'channelId':{'type':'string','maxLength':200,'description':'Actual channelId from a channel detail data.channelId. First read the channel search reference with room_read_data. ref.id is opaque and is NOT a channelId.'},'after':{'type':'integer','minimum':0},'before':{'type':'integer','minimum':1},'query':STRING,**PAGE},
     'case':{'refs':REFS}}
@@ -23,6 +24,19 @@ TOOLS=[{'type':'function','function':{'name':name,'description':description,
         'Read exact versioned references. Cite sources; participant statements are not host facts.',
         'Read a permitted channel window in sequence order. Paginate within the returned snapshot.',
         'Read event evidence. A confirmed decision does not imply execution succeeded.'])]
+
+
+def generation_tools(tools, request, payload):
+    """Only an explicitly selected chat source enables ordinary-chat discovery."""
+    if request.get('sourceKind')=='chat' or any(r.get('kind')=='chat' for r in payload.get('selectedReferences',[])):return tools
+    import copy
+    result=copy.deepcopy([t for t in tools if t['function']['name']!='room_read_chat'])
+    for t in result:
+        if t['function']['name']=='room_search_data':
+            schema=t['function']['parameters'];schema['required']=['types']
+            schema['properties'].pop('roomMode',None)  # Server attaches stable mode only to room queries.
+            schema['properties']['types']['items']['enum']=[k for k in KINDS if k not in ('channel','chat')]
+    return result
 
 
 class DataQueryService:
@@ -39,6 +53,7 @@ class DataQueryService:
         return query(self.host,state,account,operation,args,initiator=initiator,external=external,player=player,**options)
 
     def attach(self, account, operation, args, snapshot, initiator=None):
+        if operation=='search' and 'room' in args.get('types',[]):args={**args,'roomMode':'state'}
         player = snapshot[0]['facts'].get('sessionAccess', {})
         player = player.get('owner') if player.get('level') == 'player' else None
         scope=snapshot[0]['facts'].get('aiReadScope')
@@ -50,7 +65,7 @@ class DataQueryService:
         proof['readRefs']=[{'ref':item['ref'],'visibility':item['visibility']} for item in result['items']]
         if scope:proof['readScope']=scope
         if proof not in proofs:proofs.append(proof)
-        if any(item['ref']['sourceId'] not in ('host','host-room') for item in result['items']):context['facts']['consultationOnly']=True
+        if any(item['ref']['sourceId'] not in ('host','host-room','host-room-state') for item in result['items']):context['facts']['consultationOnly']=True
         # Recheck also catches changes between reading the snapshot and obtaining evidence.
         with self.host.lock:self.host.validate_ai_sources(self.host.state(),account,context)
         return result
@@ -80,7 +95,7 @@ def model_result(result, args, citations=None):
     for item in result['items']:
         kind = item['ref']['kind']
         counts[kind] = counts.get(kind, 0) + 1
-    source_policy={'publication':'consultation-only','notice':'This result includes independently stored package data and cannot authorize a configuration publication. Keep it for advice; prepare a fresh draft from authoritative host templates via room_read_management(section=configurations) or active artifact data via pack_read_config_data.'} if any(i['ref']['sourceId'] not in ('host','host-room') for i in result['items']) else {'publication':'host-evidence'}
+    source_policy={'publication':'requires-kp-source-review','notice':'This result includes independent package evidence. You may prepare a supported candidate after reading the current authoritative host target/templates or artifact data. KP explicitly decides whether to accept this source risk; this evidence cannot grant permission or make unsupported storage operations executable.'} if any(i['ref']['sourceId'] not in ('host','host-room','host-room-state') for i in result['items']) else {'publication':'host-evidence'}
     return {**result, 'sourcePolicy':source_policy, 'items':[{**item,**({'citation':citations[digest(item['ref'])]} if citations and digest(item['ref']) in citations else {})} for item in result['items']],
         'pageSummary': {'returnedItems': len(result['items']),
         'countsByType': counts, 'hasMore': result['page']['nextCursor'] is not None,

@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="5" skipped="0" tests="44" time="124.397" timestamp="2026-11-21T15:42:33.149808+08:00" hostname="LAPTOP-BIFSL64A"><testcase classname="engineering.ai.tests.test_context_compression" name="test_compacts_semantically_keeps_current_request_exact_and_recall_archives" time="0.053" /><testcase classname="engineering.ai.tests.test_context_compression" name="test_invalid_summary_repairs_once_and_preserves_failed_feedback" time="0.050" /><testcase classname="engineering.ai.tests.test_context_compression" name="test_persistent_bad_summary_fails_closed_keeps_originals" time="0.039" /><testcase classname="engineering.ai.tests.test_context_compression" name="test_summary_cannot_forge_provenance_or_convert_ai_suggestion_to_confirmation[assistant-not approval]" time="0.001" /><testcase classname="engineering.ai.tests.test_context_compression" name="test_summary_cannot_forge_provenance_or_convert_ai_suggestion_to_confirmation[user-invented quote]" time="0.001" /><testcase classname="engineering.ai.tests.test_context_compression" name="test_guard_change_during_summary_rejects_before_output_and_recall" time="0.036" /><testcase classname="engineering.ai.tests.test_context_compression" name="test_tool_exchanges_stay_paired" time="0.063" /><testcase classname="engineering.ai.tests.test_context_compression" name="test_under_threshold_no_call_and_uncompressible_overflow_no_provider" time="0.006" /><testcase classname="engineering.ai.tests.test_context_compression" name="test_model_budget_reserves_output_protocol_and_declared_window" time="0.001" /><testcase classname="engineering.ai.tests.test_context_compression" name="test_coordinator_bills_summary_and_final_reply_with_visible_progress" time="2.024" /><testcase classname="engineering.ai.tests.test_context_compression" name="test_identical_revalidated_records_reuse_persisted_semantic_summary" time="0.117" /><testcase classname="engineering.ai.tests.test_context_usability" name="test_old_parameters_survive_four_turn_window_without_factual_authority" time="1.303" /><testcase classname="engineering.ai.tests.test_context_usability" name="test_retained_requirements_recheck_original_provenance[cancelled]" time="1.362" /><testcase classname="engineering.ai.tests.test_context_usability" name="test_retained_requirements_recheck_original_provenance[session_deleted]" time="1.300" /><testcase classname="engineering.ai.tests.test_context_usability" name="test_retention_is_bounded_reports_omissions_and_respects_history_off" time="2.317" /><testcase classname="engineering.ai.tests.test_context_usability" name="test_only_exact_previously_answered_choices_trigger_bounded_correction" time="1.407" /><testcase classname="engineering.ai.tests.test_context_usability" name="test_new_material_choice_is_not_suppressed" time="0.001" /><testcase classname="engineering.ai.tests.test_context_usability" name="test_recorded_false_numeric_capability_claim_is_rejected_without_suppressing_real_choice" time="0.001" /><testcase classname="engineering.ai.tests.test_context_usability" name="test_configuration_request_preloads_only_authorized_templates[True]" time="1.341" /><testcase classname="engineering.ai.tests.test_context_usability" name="test_configuration_request_preloads_only_authorized_templates[False]" time="1.310" /><testcase classname="engineering.ai.tests.test_context_usability" name="test_older_assistant_plan_survives_recent_window_but_rechecks_authority" time="1.431" /><testcase classname="engineering.ai.tests.test_rulings" name="test_chat_approval_is_bound_to_batch_and_not_another_model_request" time="1.337" /><testcase classname="engineering.ai.tests.test_rulings" name="test_config_is_one_checked_ruling_and_publishes_once" time="15.741" /><testcase classname="engineering.ai.tests.test_rulings" name="test_high_risk_config_never_uses_auto_approval" time="7.871" /><testcase classname="engineering.ai.tests.test_rulings" name="test_player_cannot_decide_and_stale_digest_cannot_execute" time="1.284" /><testcase classname="engineering.ai.tests.test_rulings" name="test_consultation_evidence_requires_current_target_and_explicit_kp_acceptance" time="17.933" /><testcase classname="engineering.ai.tests.test_rulings" name="test_invalid_model_output_has_specific_cause[[]-MODEL_OBJECT_REQUIRED]" time="0.001" /><testcase classname="engineering.ai.tests.test_rulings" name="test_invalid_model_output_has_specific_cause[null-MODEL_OBJECT_REQUIRED]" time="0.001" /><testcase classname="engineering.ai.tests.test_rulings" name="test_invalid_model_output_has_specific_cause[broken-MODEL_JSON_INVALID]" time="0.001" /><testcase classname="engineering.ai.tests.test_rulings" name="test_invalid_model_output_has_specific_cause[{&quot;kind&quot;:&quot;other&quot;,&quot;text&quot;:&quot;a&quot;}-MODEL_KIND_INVALID]" time="0.001" /><testcase classname="engineering.ai.tests.test_rulings" name="test_single_json_fence_is_accepted_without_extracting_arbitrary_text" time="0.000" /><testcase classname="engineering.ai.tests.test_rulings" name="test_two_repairs_cap_legacy_profile_without_consuming_tool_rounds[True]" time="1.289" /><testcase classname="engineering.ai.tests.test_rulings" name="test_two_repairs_cap_legacy_profile_without_consuming_tool_rounds[False]" time="1.359" /><testcase classname="engineering.ai.tests.test_rulings" name="test_user_decision_pauses_instead_of_retrying[clarification]" time="1.331" /><testcase classname="engineering.ai.tests.test_rulings" name="test_user_decision_pauses_instead_of_retrying[plan]" time="1.303" /><testcase classname="engineering.ai.tests.test_rulings" name="test_basic_lua_error_repairs_same_proposal_before_review" time="10.256" /><testcase classname="engineering.ai.tests.test_management_queries" name="test_bad_management_query_can_recover_into_checked_unpublished_draft[room_manage_catalog-args0]" time="9.103"><failure message="AssertionError: assert 'completed' == 'rejected'&#10;  &#10;  - rejected&#10;  + completed">application = &lt;onlinecoc_ai.api.Application object at 0x0000027936939310&gt;
+name = 'room_manage_catalog'
+args = {'operations': ['config.create', 'configuration.create']}
+
+    @pytest.mark.parametrize('name,args',[
+        ('room_manage_catalog',{'operations':['config.create','configuration.create']}),
+        ('room_manage_catalog',{'operations':['config.list','configuration.update']}),
+        ('room_read_management',{'section':'invented'}),
+        ('room_read_management',{'section':'configurations','limit':0}),
+        ('room_read_sessions',{'limit':100}),
+    ])
+    def test_bad_management_query_can_recover_into_checked_unpublished_draft(application,name,args):
+        app=application;enable(app.host,public=True,kp=True,private=True)
+        async def callback(count,messages,tools):
+            if count==1:return tool_call(name,args)
+            result=json.loads(messages[-1]['content'])
+            if count==2:
+                assert result['error']['code']=='INPUT_INVALID'
+                assert 'No data was returned' in result['notice']
+                return tool_call('room_read_management',{'section':'configurations'})
+            assert any(row['id']=='fixture.token' and row['value']['defaults']['bonus']==0 for row in result['items'])
+            return completion({'kind':'draft','text':'Checked configuration candidate','changeSet':delta()})
+        async def run():
+            app.coordinator.provider_factory=lambda _:Fake(callback);await app.coordinator.start()
+            try:
+                sid=committed(command(app,'ai.session.create',{'title':'Management recovery'}))['sessionId']
+                req=submit(app,sid,'Prepare a configuration draft')
+                dispatched=committed(command(app,'ai.request.dispatch',{'requestId':req['requestId']}))
+                task=await wait_task(app.coordinator,dispatched['taskId'])
+                assert task['status']=='review_ready',task
+                assert task['diagnostics']['toolCalls'][0]['status']=='rejected'
+                context=app.repository.state()['contexts'][task['contextRef']]
+                assert 'configurations' in context['facts']['managementReads']
+                assert not context['facts'].get('consultationOnly')
+                row=next(r for r in app.rulings.list('kp')['items'] if r['rulingId']=='proposal:'+task['proposalId'])
+                assert row['status']=='pending' and row['canDecide']
+                assert app.host.state()['configurations']['fixture.token']['defaults']['bonus']==0
+            finally:await app.coordinator.close()
+&gt;       asyncio.run(run())
+
+engineering\ai\tests\test_management_queries.py:49: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:204: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:127: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\base_events.py:719: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    async def run():
+        app.coordinator.provider_factory=lambda _:Fake(callback);await app.coordinator.start()
+        try:
+            sid=committed(command(app,'ai.session.create',{'title':'Management recovery'}))['sessionId']
+            req=submit(app,sid,'Prepare a configuration draft')
+            dispatched=committed(command(app,'ai.request.dispatch',{'requestId':req['requestId']}))
+            task=await wait_task(app.coordinator,dispatched['taskId'])
+            assert task['status']=='review_ready',task
+&gt;           assert task['diagnostics']['toolCalls'][0]['status']=='rejected'
+E           AssertionError: assert 'completed' == 'rejected'
+E             
+E             - rejected
+E             + completed
+
+engineering\ai\tests\test_management_queries.py:41: AssertionError</failure></testcase><testcase classname="engineering.ai.tests.test_management_queries" name="test_bad_management_query_can_recover_into_checked_unpublished_draft[room_manage_catalog-args1]" time="9.032"><failure message="AssertionError: assert 'completed' == 'rejected'&#10;  &#10;  - rejected&#10;  + completed">application = &lt;onlinecoc_ai.api.Application object at 0x00000279391E4110&gt;
+name = 'room_manage_catalog'
+args = {'operations': ['config.list', 'configuration.update']}
+
+    @pytest.mark.parametrize('name,args',[
+        ('room_manage_catalog',{'operations':['config.create','configuration.create']}),
+        ('room_manage_catalog',{'operations':['config.list','configuration.update']}),
+        ('room_read_management',{'section':'invented'}),
+        ('room_read_management',{'section':'configurations','limit':0}),
+        ('room_read_sessions',{'limit':100}),
+    ])
+    def test_bad_management_query_can_recover_into_checked_unpublished_draft(application,name,args):
+        app=application;enable(app.host,public=True,kp=True,private=True)
+        async def callback(count,messages,tools):
+            if count==1:return tool_call(name,args)
+            result=json.loads(messages[-1]['content'])
+            if count==2:
+                assert result['error']['code']=='INPUT_INVALID'
+                assert 'No data was returned' in result['notice']
+                return tool_call('room_read_management',{'section':'configurations'})
+            assert any(row['id']=='fixture.token' and row['value']['defaults']['bonus']==0 for row in result['items'])
+            return completion({'kind':'draft','text':'Checked configuration candidate','changeSet':delta()})
+        async def run():
+            app.coordinator.provider_factory=lambda _:Fake(callback);await app.coordinator.start()
+            try:
+                sid=committed(command(app,'ai.session.create',{'title':'Management recovery'}))['sessionId']
+                req=submit(app,sid,'Prepare a configuration draft')
+                dispatched=committed(command(app,'ai.request.dispatch',{'requestId':req['requestId']}))
+                task=await wait_task(app.coordinator,dispatched['taskId'])
+                assert task['status']=='review_ready',task
+                assert task['diagnostics']['toolCalls'][0]['status']=='rejected'
+                context=app.repository.state()['contexts'][task['contextRef']]
+                assert 'configurations' in context['facts']['managementReads']
+                assert not context['facts'].get('consultationOnly')
+                row=next(r for r in app.rulings.list('kp')['items'] if r['rulingId']=='proposal:'+task['proposalId'])
+                assert row['status']=='pending' and row['canDecide']
+                assert app.host.state()['configurations']['fixture.token']['defaults']['bonus']==0
+            finally:await app.coordinator.close()
+&gt;       asyncio.run(run())
+
+engineering\ai\tests\test_management_queries.py:49: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:204: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:127: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\base_events.py:719: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    async def run():
+        app.coordinator.provider_factory=lambda _:Fake(callback);await app.coordinator.start()
+        try:
+            sid=committed(command(app,'ai.session.create',{'title':'Management recovery'}))['sessionId']
+            req=submit(app,sid,'Prepare a configuration draft')
+            dispatched=committed(command(app,'ai.request.dispatch',{'requestId':req['requestId']}))
+            task=await wait_task(app.coordinator,dispatched['taskId'])
+            assert task['status']=='review_ready',task
+&gt;           assert task['diagnostics']['toolCalls'][0]['status']=='rejected'
+E           AssertionError: assert 'completed' == 'rejected'
+E             
+E             - rejected
+E             + completed
+
+engineering\ai\tests\test_management_queries.py:41: AssertionError</failure></testcase><testcase classname="engineering.ai.tests.test_management_queries" name="test_bad_management_query_can_recover_into_checked_unpublished_draft[room_read_management-args2]" time="8.910"><failure message="AssertionError: assert 'completed' == 'rejected'&#10;  &#10;  - rejected&#10;  + completed">application = &lt;onlinecoc_ai.api.Application object at 0x00000279391E4A10&gt;
+name = 'room_read_management', args = {'section': 'invented'}
+
+    @pytest.mark.parametrize('name,args',[
+        ('room_manage_catalog',{'operations':['config.create','configuration.create']}),
+        ('room_manage_catalog',{'operations':['config.list','configuration.update']}),
+        ('room_read_management',{'section':'invented'}),
+        ('room_read_management',{'section':'configurations','limit':0}),
+        ('room_read_sessions',{'limit':100}),
+    ])
+    def test_bad_management_query_can_recover_into_checked_unpublished_draft(application,name,args):
+        app=application;enable(app.host,public=True,kp=True,private=True)
+        async def callback(count,messages,tools):
+            if count==1:return tool_call(name,args)
+            result=json.loads(messages[-1]['content'])
+            if count==2:
+                assert result['error']['code']=='INPUT_INVALID'
+                assert 'No data was returned' in result['notice']
+                return tool_call('room_read_management',{'section':'configurations'})
+            assert any(row['id']=='fixture.token' and row['value']['defaults']['bonus']==0 for row in result['items'])
+            return completion({'kind':'draft','text':'Checked configuration candidate','changeSet':delta()})
+        async def run():
+            app.coordinator.provider_factory=lambda _:Fake(callback);await app.coordinator.start()
+            try:
+                sid=committed(command(app,'ai.session.create',{'title':'Management recovery'}))['sessionId']
+                req=submit(app,sid,'Prepare a configuration draft')
+                dispatched=committed(command(app,'ai.request.dispatch',{'requestId':req['requestId']}))
+                task=await wait_task(app.coordinator,dispatched['taskId'])
+                assert task['status']=='review_ready',task
+                assert task['diagnostics']['toolCalls'][0]['status']=='rejected'
+                context=app.repository.state()['contexts'][task['contextRef']]
+                assert 'configurations' in context['facts']['managementReads']
+                assert not context['facts'].get('consultationOnly')
+                row=next(r for r in app.rulings.list('kp')['items'] if r['rulingId']=='proposal:'+task['proposalId'])
+                assert row['status']=='pending' and row['canDecide']
+                assert app.host.state()['configurations']['fixture.token']['defaults']['bonus']==0
+            finally:await app.coordinator.close()
+&gt;       asyncio.run(run())
+
+engineering\ai\tests\test_management_queries.py:49: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:204: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:127: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\base_events.py:719: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    async def run():
+        app.coordinator.provider_factory=lambda _:Fake(callback);await app.coordinator.start()
+        try:
+            sid=committed(command(app,'ai.session.create',{'title':'Management recovery'}))['sessionId']
+            req=submit(app,sid,'Prepare a configuration draft')
+            dispatched=committed(command(app,'ai.request.dispatch',{'requestId':req['requestId']}))
+            task=await wait_task(app.coordinator,dispatched['taskId'])
+            assert task['status']=='review_ready',task
+&gt;           assert task['diagnostics']['toolCalls'][0]['status']=='rejected'
+E           AssertionError: assert 'completed' == 'rejected'
+E             
+E             - rejected
+E             + completed
+
+engineering\ai\tests\test_management_queries.py:41: AssertionError</failure></testcase><testcase classname="engineering.ai.tests.test_management_queries" name="test_bad_management_query_can_recover_into_checked_unpublished_draft[room_read_management-args3]" time="9.201"><failure message="AssertionError: assert 'completed' == 'rejected'&#10;  &#10;  - rejected&#10;  + completed">application = &lt;onlinecoc_ai.api.Application object at 0x00000279391E5490&gt;
+name = 'room_read_management', args = {'section': 'configurations', 'limit': 0}
+
+    @pytest.mark.parametrize('name,args',[
+        ('room_manage_catalog',{'operations':['config.create','configuration.create']}),
+        ('room_manage_catalog',{'operations':['config.list','configuration.update']}),
+        ('room_read_management',{'section':'invented'}),
+        ('room_read_management',{'section':'configurations','limit':0}),
+        ('room_read_sessions',{'limit':100}),
+    ])
+    def test_bad_management_query_can_recover_into_checked_unpublished_draft(application,name,args):
+        app=application;enable(app.host,public=True,kp=True,private=True)
+        async def callback(count,messages,tools):
+            if count==1:return tool_call(name,args)
+            result=json.loads(messages[-1]['content'])
+            if count==2:
+                assert result['error']['code']=='INPUT_INVALID'
+                assert 'No data was returned' in result['notice']
+                return tool_call('room_read_management',{'section':'configurations'})
+            assert any(row['id']=='fixture.token' and row['value']['defaults']['bonus']==0 for row in result['items'])
+            return completion({'kind':'draft','text':'Checked configuration candidate','changeSet':delta()})
+        async def run():
+            app.coordinator.provider_factory=lambda _:Fake(callback);await app.coordinator.start()
+            try:
+                sid=committed(command(app,'ai.session.create',{'title':'Management recovery'}))['sessionId']
+                req=submit(app,sid,'Prepare a configuration draft')
+                dispatched=committed(command(app,'ai.request.dispatch',{'requestId':req['requestId']}))
+                task=await wait_task(app.coordinator,dispatched['taskId'])
+                assert task['status']=='review_ready',task
+                assert task['diagnostics']['toolCalls'][0]['status']=='rejected'
+                context=app.repository.state()['contexts'][task['contextRef']]
+                assert 'configurations' in context['facts']['managementReads']
+                assert not context['facts'].get('consultationOnly')
+                row=next(r for r in app.rulings.list('kp')['items'] if r['rulingId']=='proposal:'+task['proposalId'])
+                assert row['status']=='pending' and row['canDecide']
+                assert app.host.state()['configurations']['fixture.token']['defaults']['bonus']==0
+            finally:await app.coordinator.close()
+&gt;       asyncio.run(run())
+
+engineering\ai\tests\test_management_queries.py:49: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:204: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:127: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\base_events.py:719: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    async def run():
+        app.coordinator.provider_factory=lambda _:Fake(callback);await app.coordinator.start()
+        try:
+            sid=committed(command(app,'ai.session.create',{'title':'Management recovery'}))['sessionId']
+            req=submit(app,sid,'Prepare a configuration draft')
+            dispatched=committed(command(app,'ai.request.dispatch',{'requestId':req['requestId']}))
+            task=await wait_task(app.coordinator,dispatched['taskId'])
+            assert task['status']=='review_ready',task
+&gt;           assert task['diagnostics']['toolCalls'][0]['status']=='rejected'
+E           AssertionError: assert 'completed' == 'rejected'
+E             
+E             - rejected
+E             + completed
+
+engineering\ai\tests\test_management_queries.py:41: AssertionError</failure></testcase><testcase classname="engineering.ai.tests.test_management_queries" name="test_bad_management_query_can_recover_into_checked_unpublished_draft[room_read_sessions-args4]" time="9.342"><failure message="AssertionError: assert 'completed' == 'rejected'&#10;  &#10;  - rejected&#10;  + completed">application = &lt;onlinecoc_ai.api.Application object at 0x00000279391E5FD0&gt;
+name = 'room_read_sessions', args = {'limit': 100}
+
+    @pytest.mark.parametrize('name,args',[
+        ('room_manage_catalog',{'operations':['config.create','configuration.create']}),
+        ('room_manage_catalog',{'operations':['config.list','configuration.update']}),
+        ('room_read_management',{'section':'invented'}),
+        ('room_read_management',{'section':'configurations','limit':0}),
+        ('room_read_sessions',{'limit':100}),
+    ])
+    def test_bad_management_query_can_recover_into_checked_unpublished_draft(application,name,args):
+        app=application;enable(app.host,public=True,kp=True,private=True)
+        async def callback(count,messages,tools):
+            if count==1:return tool_call(name,args)
+            result=json.loads(messages[-1]['content'])
+            if count==2:
+                assert result['error']['code']=='INPUT_INVALID'
+                assert 'No data was returned' in result['notice']
+                return tool_call('room_read_management',{'section':'configurations'})
+            assert any(row['id']=='fixture.token' and row['value']['defaults']['bonus']==0 for row in result['items'])
+            return completion({'kind':'draft','text':'Checked configuration candidate','changeSet':delta()})
+        async def run():
+            app.coordinator.provider_factory=lambda _:Fake(callback);await app.coordinator.start()
+            try:
+                sid=committed(command(app,'ai.session.create',{'title':'Management recovery'}))['sessionId']
+                req=submit(app,sid,'Prepare a configuration draft')
+                dispatched=committed(command(app,'ai.request.dispatch',{'requestId':req['requestId']}))
+                task=await wait_task(app.coordinator,dispatched['taskId'])
+                assert task['status']=='review_ready',task
+                assert task['diagnostics']['toolCalls'][0]['status']=='rejected'
+                context=app.repository.state()['contexts'][task['contextRef']]
+                assert 'configurations' in context['facts']['managementReads']
+                assert not context['facts'].get('consultationOnly')
+                row=next(r for r in app.rulings.list('kp')['items'] if r['rulingId']=='proposal:'+task['proposalId'])
+                assert row['status']=='pending' and row['canDecide']
+                assert app.host.state()['configurations']['fixture.token']['defaults']['bonus']==0
+            finally:await app.coordinator.close()
+&gt;       asyncio.run(run())
+
+engineering\ai\tests\test_management_queries.py:49: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:204: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:127: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\base_events.py:719: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    async def run():
+        app.coordinator.provider_factory=lambda _:Fake(callback);await app.coordinator.start()
+        try:
+            sid=committed(command(app,'ai.session.create',{'title':'Management recovery'}))['sessionId']
+            req=submit(app,sid,'Prepare a configuration draft')
+            dispatched=committed(command(app,'ai.request.dispatch',{'requestId':req['requestId']}))
+            task=await wait_task(app.coordinator,dispatched['taskId'])
+            assert task['status']=='review_ready',task
+&gt;           assert task['diagnostics']['toolCalls'][0]['status']=='rejected'
+E           AssertionError: assert 'completed' == 'rejected'
+E             
+E             - rejected
+E             + completed
+
+engineering\ai\tests\test_management_queries.py:41: AssertionError</failure></testcase><testcase classname="engineering.ai.tests.test_management_queries" name="test_authoritative_templates_are_paginated_kp_only_and_changes_invalidate_proof" time="1.272" /><testcase classname="engineering.ai.tests.test_management_queries" name="test_configuration_read_cannot_recover_from_disabled_external_scope" time="1.367" /><testcase classname="engineering.ai.tests.test_management_queries" name="test_mixed_search_warns_model_without_relabeling_or_removing_evidence" time="0.001" /></testsuite></testsuites>

@@ -1,0 +1,43 @@
+{
+  "at": "2026-11-21T09:18:49.461459+08:00",
+  "label": "combined",
+  "source": "D:\\Studies\\Art Programming\\OnlineCOC\\rulepacks\\stumpsville\\tests\\output\\chat-combined-679e70c2\\source",
+  "output": "D:\\Studies\\Art Programming\\OnlineCOC\\rulepacks\\stumpsville\\tests\\output\\chat-delivery-combined-075a376c",
+  "externalApiCalls": 0,
+  "checks": [
+    "four real pages deliver six distinct chat messages without transport failure",
+    "chat submits while an unrelated ruling response is held, with no shared busy rejection",
+    "newly typed draft survives completion of an earlier message",
+    "lost success response blocks new sends and recovers original ID exactly once, preserving the new draft",
+    "host history bypasses package write lock; metadata/history isolate private and inaccessible scene channels; edit/retract and party delivery work"
+  ],
+  "measurements": {
+    "sendComposerReady": {
+      "samples": 6,
+      "p50Ms": 161.32,
+      "p95Ms": 1931.53,
+      "maxMs": 1931.53
+    },
+    "receiverVisible": {
+      "samples": 6,
+      "p50Ms": 1239.04,
+      "p95Ms": 2756.93,
+      "maxMs": 2756.93
+    },
+    "failures": []
+  },
+  "fixture": {
+    "chatHistory": 16,
+    "pages": 4,
+    "visibility": [
+      "visible",
+      "visible",
+      "visible",
+      "visible"
+    ]
+  },
+  "chatWhileRulingPending": true,
+  "concurrentToast": "正在提交行动，等待服务器确认…",
+  "passed": true,
+  "pageErrors": []
+}

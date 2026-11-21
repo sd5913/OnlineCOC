@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="50" time="102.508" timestamp="2026-11-20T18:33:30.637899+08:00" hostname="LAPTOP-BIFSL64A"><testcase classname="tests.test_generation_snapshot" name="test_frozen_tools_and_retained_batch[chat-queued]" time="2.083" /><testcase classname="tests.test_generation_snapshot" name="test_frozen_tools_and_retained_batch[chat-provider]" time="2.164" /><testcase classname="tests.test_generation_snapshot" name="test_frozen_tools_and_retained_batch[entity-queued]" time="1.906" /><testcase classname="tests.test_generation_snapshot" name="test_frozen_tools_and_retained_batch[entity-provider]" time="1.573" /><testcase classname="tests.test_generation_snapshot" name="test_draft_kept_and_checked_on_original_snapshot" time="9.870" /><testcase classname="tests.test_generation_snapshot" name="test_live_authority_still_discards_unpublished_output[revoke]" time="1.763" /><testcase classname="tests.test_generation_snapshot" name="test_live_authority_still_discards_unpublished_output[delete-session]" time="1.362" /><testcase classname="tests.test_generation_snapshot" name="test_live_authority_still_discards_unpublished_output[disable-egress]" time="1.599" /><testcase classname="tests.test_generation_snapshot" name="test_live_authority_still_discards_unpublished_output[cancel]" time="1.398" /><testcase classname="tests.test_generation_snapshot" name="test_progress_visible_while_provider_waits_and_no_extra_stage_writes" time="1.644" /><testcase classname="tests.test_generation_snapshot" name="test_read_scope_snapshot_reuse_invalidation_and_rollback" time="1.376" /><testcase classname="tests.test_coordinator" name="test_draft_is_checked_but_never_published" time="10.585" /><testcase classname="tests.test_coordinator" name="test_blocked_model_does_not_hold_host_lock_and_can_cancel" time="1.299" /><testcase classname="tests.test_coordinator" name="test_request_dedup_queue_and_budget" time="1.477" /><testcase classname="tests.test_coordinator" name="test_untrusted_model_and_retry_limits[forged-TOOL_FORBIDDEN]" time="1.437" /><testcase classname="tests.test_coordinator" name="test_untrusted_model_and_retry_limits[loop-TOOL_ROUND_LIMIT]" time="1.675" /><testcase classname="tests.test_coordinator" name="test_untrusted_model_and_retry_limits[retry-PROVIDER_UNAVAILABLE]" time="1.613" /><testcase classname="tests.test_coordinator" name="test_untrusted_model_and_retry_limits[repair-MODEL_OUTPUT_INVALID]" time="1.579" /><testcase classname="tests.test_coordinator" name="test_expired_task_and_authority_change_fail_closed" time="1.304" /><testcase classname="tests.test_coordinator" name="test_disabled_service_makes_no_provider_calls" time="1.547" /><testcase classname="tests.test_coordinator" name="test_retry_budget_records_each_attempt_once" time="1.585" /><testcase classname="tests.test_coordinator" name="test_restart_interrupts_queued_tasks_and_preserves_budget" time="1.596" /><testcase classname="tests.test_coordinator" name="test_permissions_changed_during_generation_discard_output" time="1.604" /><testcase classname="tests.test_coordinator" name="test_profile_changed_during_generation_discards_output_and_runner_survives" time="1.733" /><testcase classname="tests.test_coordinator" name="test_real_contract_is_exposed_and_repair_names_invalid_field" time="9.730" /><testcase classname="tests.test_known_runtime" name="test_unconfigured_player_never_falls_back_or_calls_model" time="1.679" /><testcase classname="tests.test_known_runtime" name="test_initial_context_contains_no_pack_guide_world_or_old_model_history" time="1.499" /><testcase classname="tests.test_known_runtime" name="test_snapshot_reference_cannot_cross_account_or_follow_world_update" time="1.327" /><testcase classname="tests.test_known_runtime" name="test_model_secret_prose_is_repaired_and_never_stored_or_replayed" time="1.527" /><testcase classname="tests.test_known_runtime" name="test_inflight_revoke_suppresses_entire_response" time="1.591" /><testcase classname="tests.test_known_runtime" name="test_private_export_block_and_kp_player_session_ceiling" time="1.401" /><testcase classname="tests.test_known_runtime" name="test_second_package_witness_testimony_stays_personal_and_fixed" time="1.204" /><testcase classname="tests.test_known_runtime" name="test_ask_kp_option_is_queued_for_human_without_model_redispatch" time="1.341" /><testcase classname="tests.test_known_runtime" name="test_player_real_adapter_json_mode_and_http_error_projection[200]" time="1.470" /><testcase classname="tests.test_known_runtime" name="test_player_real_adapter_json_mode_and_http_error_projection[400]" time="1.262" /><testcase classname="tests.test_known_runtime" name="test_legacy_response_projection_still_requires_live_authorization" time="1.574" /><testcase classname="tests.test_access_batches" name="test_defaults_binding_and_no_permission_escalation" time="1.138" /><testcase classname="tests.test_access_batches" name="test_player_auto_dispatch_context_output_and_revoke" time="1.516" /><testcase classname="tests.test_access_batches" name="test_kp_player_session_has_player_ceiling_and_data_proof" time="1.173" /><testcase classname="tests.test_access_batches" name="test_batch_human_approval_idempotence_and_player_denial" time="1.222" /><testcase classname="tests.test_access_batches" name="test_batch_stale_reject_auto_and_bypass_forbidden" time="1.364" /><testcase classname="tests.test_access_batches" name="test_batch_unknown_reconciles_without_reexecuting" time="1.388" /><testcase classname="tests.test_access_batches" name="test_batch_stops_after_partial_failure_and_restart_never_replays" time="1.409" /><testcase classname="tests.test_access_batches" name="test_delete_cancels_queue_hides_session_and_keeps_usage_audit" time="1.354" /><testcase classname="tests.test_access_batches" name="test_administrator_tools_respect_external_scope" time="1.434" /><testcase classname="tests.test_access_batches" name="test_player_contract_tool_and_batch_output_cannot_escalate" time="1.318" /><testcase classname="tests.test_access_batches" name="test_delete_interrupts_active_generation" time="1.404" /><testcase classname="tests.test_access_batches" name="test_management_catalog_is_bounded_and_schema_complete" time="1.132" /><testcase classname="tests.test_access_batches" name="test_other_administrator_can_inspect_draft_without_taking_review_identity" time="1.320" /><testcase classname="tests.test_access_batches" name="test_player_history_rechecks_package_evidence_during_generation" time="1.424"><failure message="AssertionError: {'taskId': '11f94cb5d5c04441a55bee1614ecf638', 'requestId': '11f94cb5d5c04441a55bee1614ecf638', 'account': 'kp', 'profile': {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...}, ...}&#10;assert ('failed' == 'failed'&#10;  &#10;    failed and 'PERMISSION_DENIED' == 'NOT_VISIBLE'&#10;  &#10;  - NOT_VISIBLE&#10;  + PERMISSION_DENIED)">application = &lt;onlinecoc_ai.api.Application object at 0x000001E39F501D90&gt;
+
+    def test_player_history_rechecks_package_evidence_during_generation(application):
+        from test_known_runtime import install,observe,host_call
+        install(application);grant=observe(application)
+        app=application;access(app);enable(app.host,public=True,private=True,kp=True)
+        class Evidence:
+            kinds=('event',)
+            value='已知事件'
+            def read(self,room,account):
+                return [{'sourceId':'fixture','kind':'event','id':'event-one','revision':digest(self.value),
+                    'label':'事件','data':{'text':self.value},'visibility':'private'}]
+        adapter=Evidence();app.host.ai_data_adapter=adapter
+        async def callback(count,messages,tools):
+            payload=loads(messages[1]['content'].encode())
+            if any(turn['role']=='assistant' for turn in payload['conversationHistory']):
+                host_call(app,'knowledge.revoke',{'grantId':grant['grantId'],'expectedRevision':1,'reason':'历史来源撤回'})
+                return completion({'kind':'known','evidence':[],'next':'none'})
+            if count==1:return tool_call('room_search_knowledge',{})
+            return completion({'kind':'known','evidence':[],'next':'none'})
+        async def run():
+            app.coordinator.provider_factory=lambda p:Fake(callback);await app.coordinator.start()
+            try:
+                s=session(app,'player1');one=submit(app,s,who='player1')
+                assert (await wait_task(app.coordinator,one['taskId']))['status']=='review_ready'
+                two=submit(app,s,'继续解释经历',who='player1');result=await wait_task(app.coordinator,two['taskId'])
+                assert result['status']=='failed' and result['error']=='NOT_VISIBLE',result
+                assert '不应返回' not in str(app.sessions.get('player1',s['sessionId']))
+            finally:await app.coordinator.close()
+&gt;       asyncio.run(run())
+
+engineering\ai\tests\test_access_batches.py:280: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:204: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:127: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\base_events.py:719: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    async def run():
+        app.coordinator.provider_factory=lambda p:Fake(callback);await app.coordinator.start()
+        try:
+            s=session(app,'player1');one=submit(app,s,who='player1')
+            assert (await wait_task(app.coordinator,one['taskId']))['status']=='review_ready'
+            two=submit(app,s,'继续解释经历',who='player1');result=await wait_task(app.coordinator,two['taskId'])
+&gt;           assert result['status']=='failed' and result['error']=='NOT_VISIBLE',result
+E           AssertionError: {'taskId': '11f94cb5d5c04441a55bee1614ecf638', 'requestId': '11f94cb5d5c04441a55bee1614ecf638', 'account': 'kp', 'profile': {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...}, ...}
+E           assert ('failed' == 'failed'
+E             
+E               failed and 'PERMISSION_DENIED' == 'NOT_VISIBLE'
+E             
+E             - NOT_VISIBLE
+E             + PERMISSION_DENIED)
+
+engineering\ai\tests\test_access_batches.py:277: AssertionError</failure></testcase></testsuite></testsuites>

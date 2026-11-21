@@ -1,0 +1,101 @@
+{
+  "checkedAt": "2026-11-20T19:24:24.185981+08:00",
+  "checks": [
+    "重复转交与同request关联事件复用审核任务，无多余模型调用",
+    "提交键阻止重交；明确同事件新候选通过后替代旧项，旧裁决在服务端拒绝批准",
+    "包侧手动归档与恢复使用服务端记录，自动替代入历史，刷新保持且390px可达",
+    "实际执行后原回复仍显示；核验成功回执后关联前驱标为需求已完成，保留完成批次定位且不能恢复重做",
+    "PL真实知识回答只显示紧凑授权引用入口，点击复用语义详情，正文不铺行动树",
+    "同档重启保留手动归档及已执行旧回复，不重新调用模型"
+  ],
+  "realSaveChanged": false,
+  "realProviderCalls": 0,
+  "provider": "deterministic loopback",
+  "evidenceDirectory": "tests/output/review-followup-13619859",
+  "previousRuns": [
+    {
+      "passed": false,
+      "error": "{'waitingFor': '852f9be918844f16bb084b7a2f38ec56', 'last': {'requestId': '852f9be918844f16bb084b7a2f38ec56', 'sessionId': '03578535c8b74cc3b6cf8c5c03ffb6c2', 'status': 'received', 'createdAt': 1795152856.4314618, 'text': '给木栗增加1枚钱币，准备待审方案', 'initiator': 'kp', 'taskId': None, 'proposalId': None, 'error': None, 'response': None, 'queueTargetId': 'request:852f9be918844f16bb084b7a2f38ec56', 'queueDigest': '9a614c0650387933a10d205344b63cdd76b74d37a98e705fe3629265faf2ed96', 'correlationId': '2992e1b75ce6ba17be6b98e4ebdd978bb3f5a950470c7ad3a6450c8a845fc651', 'queueStatus': 'active', 'archived': False, 'canArchive': True, 'canRestore': False, 'supersedes': []}}",
+      "checks": [
+        "重复转交与同request关联事件复用审核任务，无多余模型调用"
+      ],
+      "evidenceDirectory": "tests/output/review-followup-81c6ee3f"
+    },
+    {
+      "passed": false,
+      "error": "Locator expected to contain text '过时'\nActual value: 请求结果未知，请先查询回执查询回执AI 助手kp · KP引用与调试KP 审核与设置用量统计本房间的会话新建会话选择会话历史正文与关联方案验收审核 · 玩家行动申请归档会话会话管理改名管理员 · kp归档给木栗增加1枚钱币，准备待审方案依据已变化保留的历史方案：给木栗增加1枚钱币，仅修改目标角色。历史回答的资料依据已变化，仅用于理解此前意图；涉及修改时必须重新查询当前资料并另行审核。资料查询：已完成 2 次room_search_data · 已完成room_read_data · 已完成累计请求 56 / 256 KiB；工具资料 4 KiB查看执行批次继续此请求复制回答将同一方案改为增加2枚钱币已执行保留的历史方案：给木栗增加2枚钱币，仅修改目标角色。历史回答的资料依据已变化，仅用于理解此前意图；涉及修改时必须重新查询当前资料并另行审核。资料查询：已完成 2 次room_search_data · 已完成room_read_data · 已完成累计请求 57 / 256 KiB；工具资料 4 KiB查看执行批次继续此请求复制回答↓ 回到最新＋ 引用查看引用提交创作申请Enter 发送Ctrl + Enter 发送0 / 8000■↑会话已就绪引用与调试关闭调试范围 引用详情关闭返回对话返回对话返回对话 \nCall log:\n  - Expect \"to_contain_text\" locator(\"#kp-ai-embedded\") with timeout 30000ms\n  - waiting for locator(\"#kp-ai-embedded\")\n    63 × locator resolved to <div id=\"kp-ai-embedded\">…</div>\n       - unexpected value \"请求结果未知，请先查询回执查询回执AI 助手kp · KP引用与调试KP 审核与设置用量统计本房间的会话新建会话选择会话历史正文与关联方案验收审核 · 玩家行动申请归档会话会话管理改名管理员 · kp归档给木栗增加1枚钱币，准备待审方案依据已变化保留的历史方案：给木栗增加1枚钱币，仅修改目标角色。历史回答的资料依据已变化，仅用于理解此前意图；涉及修改时必须重新查询当前资料并另行审核。资料查询：已完成 2 次room_search_data · 已完成room_read_data · 已完成累计请求 56 / 256 KiB；工具资料 4 KiB查看执行批次继续此请求复制回答将同一方案改为增加2枚钱币已执行保留的历史方案：给木栗增加2枚钱币，仅修改目标角色。历史回答的资料依据已变化，仅用于理解此前意图；涉及修改时必须重新查询当前资料并另行审核。资料查询：已完成 2 次room_search_data · 已完成room_read_data · 已完成累计请求 57 / 256 KiB；工具资料 4 KiB查看执行批次继续此请求复制回答↓ 回到最新＋ 引用查看引用提交创作申请Enter 发送Ctrl + Enter 发送0 / 8000■↑会话已就绪引用与调试关闭调试范围 引用详情关闭返回对话返回对话返回对话\"\n\nAria snapshot:\n- strong: AI 助手\n- text: kp · KP\n- button \"引用与调试\"\n- button \"KP 审核与设置\"\n- button \"用量统计\"\n- main:\n  - navigation:\n    - button \"新建会话\"\n    - combobox \"选择会话\":\n      - option \"选择会话\"\n      - option \"历史正文与关联方案验收\" [selected]\n      - option \"审核 · 玩家行动申请\"\n    - button \"归档会话\"\n    - button \"会话管理\"\n  - textbox \"会话名称\": 历史正文与关联方案验收\n  - button \"改名\"\n  - text: 管理员 · kp\n  - button \"归档\"\n  - log \"对话记录\":\n    - article: 给木栗增加1枚钱币，准备待审方案\n    - article:\n      - text: AI 依据已变化\n      - paragraph: 保留的历史方案：给木栗增加1枚钱币，仅修改目标角色。\n      - paragraph: 历史回答的资料依据已变化，仅用于理解此前意图；涉及修改时必须重新查询当前资料并另行审核。\n      - group: 资料查询：已完成 2 次\n      - button \"查看执行批次\"\n      - button \"继续此请求\"\n      - button \"复制回答\"\n    - article: 将同一方案改为增加2枚钱币\n    - article:\n      - text: AI 已执行\n      - paragraph: 保留的历史方案：给木栗增加2枚钱币，仅修改目标角色。\n      - paragraph: 历史回答的资料依据已变化，仅用于理解此前意图；涉及修改时必须重新查询当前资料并另行审核。\n      - group: 资料查询：已完成 2 次\n      - button \"查看执行批次\"\n      - button \"继续此请求\"\n      - button \"复制回答\"\n  - textbox \"输入需求\": 描述需求，输入 / 选择指令或引用房间数据\n  - button \"插入数据引用\": ＋ 引用\n  - button \"查看引用\" [disabled]\n  - combobox \"发送快捷键\":\n    - option \"Enter 发送\" [selected]\n    - option \"Ctrl + Enter 发送\"\n  - button \"发送消息\" [disabled]: ↑\n  - status: 会话已就绪",
+      "checks": [
+        "重复转交与同request关联事件复用审核任务，无多余模型调用",
+        "提交键阻止重交；明确同事件新候选通过后替代旧项，旧裁决在服务端拒绝批准",
+        "包侧手动归档与恢复使用服务端记录，自动替代入历史，刷新保持且390px可达"
+      ],
+      "evidenceDirectory": "tests/output/review-followup-2ae30022"
+    },
+    {
+      "passed": false,
+      "error": "{'requestId': 'dfea87548681491185b2b860f835f8c3', 'sessionId': '7b13fd45bb5c4f0784c112d784e83941', 'status': 'blocked', 'createdAt': 1795153663.3251002, 'error': 'TRANSACTION_NESTED', 'text': '这里的奶酪机关具体怎么连接的？', 'initiator': 'player1', 'taskId': None, 'proposalId': None, 'response': None}",
+      "checks": [
+        "重复转交与同request关联事件复用审核任务，无多余模型调用",
+        "提交键阻止重交；明确同事件新候选通过后替代旧项，旧裁决在服务端拒绝批准",
+        "包侧手动归档与恢复使用服务端记录，自动替代入历史，刷新保持且390px可达",
+        "实际执行改变依据后，原回复与裁决概要仍显示；执行状态和仅目标改值保持真实"
+      ],
+      "evidenceDirectory": "tests/output/review-followup-bac28d7d"
+    },
+    {
+      "passed": true,
+      "error": null,
+      "checks": [
+        "重复转交与同request关联事件复用审核任务，无多余模型调用",
+        "提交键阻止重交；明确同事件新候选通过后替代旧项，旧裁决在服务端拒绝批准",
+        "包侧手动归档与恢复使用服务端记录，自动替代入历史，刷新保持且390px可达",
+        "实际执行改变依据后，原回复与裁决概要仍显示；执行状态和仅目标改值保持真实",
+        "PL真实知识回答只显示紧凑授权引用入口，点击复用语义详情，正文不铺行动树",
+        "同档重启保留手动归档及已执行旧回复，不重新调用模型"
+      ],
+      "evidenceDirectory": "tests/output/review-followup-34c2f048"
+    },
+    {
+      "passed": true,
+      "error": null,
+      "checks": [
+        "重复转交与同request关联事件复用审核任务，无多余模型调用",
+        "提交键阻止重交；明确同事件新候选通过后替代旧项，旧裁决在服务端拒绝批准",
+        "包侧手动归档与恢复使用服务端记录，自动替代入历史，刷新保持且390px可达",
+        "实际执行后原回复仍显示；核验成功回执后关联前驱标为需求已完成，保留完成批次定位且不能恢复重做",
+        "PL真实知识回答只显示紧凑授权引用入口，点击复用语义详情，正文不铺行动树",
+        "同档重启保留手动归档及已执行旧回复，不重新调用模型"
+      ],
+      "evidenceDirectory": "tests/output/review-followup-eb2e7362"
+    },
+    {
+      "passed": true,
+      "error": null,
+      "checks": [
+        "重复转交与同request关联事件复用审核任务，无多余模型调用",
+        "提交键阻止重交；明确同事件新候选通过后替代旧项，旧裁决在服务端拒绝批准",
+        "包侧手动归档与恢复使用服务端记录，自动替代入历史，刷新保持且390px可达",
+        "实际执行后原回复仍显示；核验成功回执后关联前驱标为需求已完成，保留完成批次定位且不能恢复重做",
+        "PL真实知识回答只显示紧凑授权引用入口，点击复用语义详情，正文不铺行动树",
+        "同档重启保留手动归档及已执行旧回复，不重新调用模型"
+      ],
+      "evidenceDirectory": "tests/output/review-followup-672818bd"
+    }
+  ],
+  "loopbackCalls": 10,
+  "passed": true,
+  "sourceDigests": {
+    "engineering/ai/src/onlinecoc_ai/api.py": "5a16a234f98f2a7235006067f11b1446a48258261ce0320bdbe8a714c801f72c",
+    "engineering/ai/src/onlinecoc_ai/rulings.py": "2b54abb33775ab22aaf4cac9908921c83ce1ac0d61a73360ad418281db9a9af4",
+    "engineering/ai/src/onlinecoc_ai/sessions.py": "aaccb324af83da1b133e75f89c9ae24f5c0ddc37d743e3fb7bc893388f38181e",
+    "engineering/ai/src/onlinecoc_ai/review_queue.py": "931a6abd90fa1f8f2477a4b7d0b540e44f69f2feefcdafd4cb93babebe247e05",
+    "engineering/ai/src/onlinecoc_ai/known_answers.py": "a30cdc1d652128a4703e6c6dd7d3d043080ae300a13ba96991590b822d51cf5b",
+    "engineering/ai/web/components/chat.js": "e4492efed23ded3bb78262c2c5a70a44d2eda5698494024ddf56ffc907f97ad7",
+    "engineering/contracts/ai-operations.json": "2b6db3e8ce7811a3a25da12a501de766d542af485d81a61f668037a034594ef8",
+    "rulepacks/stumpsville/ui/keeper-queue.js": "2c9bc7fb7a80a3f417145e18e050229e599f831ae1487004bb203e4f3610e839",
+    "rulepacks/stumpsville/ui/keeper-rulings.js": "678021e9262d345266a0cee300de71f70e0104d0077795e6e569123e7e11b001",
+    "rulepacks/stumpsville/tools/ai_review.py": "ecfa366c1e747924ddc97f7e34a0e28ce90bb577fab3f25e4ce81a53a750f01d"
+  },
+  "pageErrors": [],
+  "passedCount": 6
+}

@@ -1,0 +1,33 @@
+{
+  "actualNewFiles": [
+    "engineering/acceptance/review-followup/.gitignore",
+    "engineering/acceptance/review-followup/README.md",
+    "engineering/acceptance/review-followup/boundaries-final.xml",
+    "engineering/acceptance/review-followup/boundaries-initial.xml",
+    "engineering/acceptance/review-followup/dispatch-final.xml",
+    "engineering/acceptance/review-followup/first.xml",
+    "engineering/acceptance/review-followup/freeze.xml",
+    "engineering/acceptance/review-followup/history-ui.png",
+    "engineering/acceptance/review-followup/initial.xml",
+    "engineering/acceptance/review-followup/manifest.json",
+    "engineering/acceptance/review-followup/nodes-final.xml",
+    "engineering/acceptance/review-followup/nodes-verified.xml",
+    "engineering/acceptance/review-followup/nodes.xml",
+    "engineering/acceptance/review-followup/pl-dispatch-initial.xml",
+    "engineering/acceptance/review-followup/pl-final.xml",
+    "engineering/acceptance/review-followup/player-retry-initial.xml",
+    "engineering/acceptance/review-followup/public-paths.xml",
+    "engineering/acceptance/review-followup/queue-first.xml",
+    "engineering/acceptance/review-followup/record_results.py",
+    "engineering/acceptance/review-followup/regression.xml",
+    "engineering/acceptance/review-followup/results.json",
+    "engineering/acceptance/review-followup/test_history_nodes.py",
+    "engineering/acceptance/review-followup/test_player_retry.py",
+    "engineering/acceptance/review-followup/test_queue_boundaries.py",
+    "engineering/acceptance/review-followup/ui-first.xml",
+    "engineering/ai/src/onlinecoc_ai/review_queue.py",
+    "engineering/ai/tests/test_review_followup.py",
+    "engineering/ai/tests/test_review_followup_ui.py"
+  ],
+  "ignoredGeneratedDirectory": "engineering/acceptance/review-followup/work/"
+}

@@ -68,5 +68,7 @@ class HostControl:
             accounts = self.host.identity.store.snapshot()[1]['accounts']
             return {'instanceId': self.instance, 'pid': os.getpid(), 'dataDirectory': str(self.host.path.resolve()),
                     'items': [{**{k:a[k] for k in ('accountId','loginName','nickname','disabled')},
-                               'roomRole': members.get(a['accountId'], {}).get('role')}
-                              for a in sorted(accounts.values(), key=lambda a:a['loginName'])]}
+                               'roomRole': members.get(a['accountId'], {}).get('role'),
+                               'roomActive': members.get(a['accountId'], {}).get('active', False),
+                               'pending': bool(a.get('hostAdminPending'))}
+                              for a in sorted(accounts.values(), key=lambda a:a['loginName']) if not a.get('deleted')]}

@@ -91,8 +91,10 @@ def test_lua_invalid_boundaries(host,source):
 
 def test_poison_cannot_be_caught(host):
     source="return rule('x',{'actor'},function(r,a) pcall(function() r.set(a,'quantity',1) end); r.set(a,'hp',1) end)"
-    with pytest.raises(DomainError,match='EXECUTION_REJECTED'):
+    # The transaction preserves its first domain error even if Lua catches it.
+    with pytest.raises(DomainError,match='INPUT_INVALID'):
         execute({'x.lua':source},{'kind':'run','rule':'x','mode':'action','input':{'actor':'actor-player1'},'state':host.snapshot_for_execution(host.state()),'account':'player1'})
+    assert host.state()['entities']['actor-player1']['numbers']['hp']==9
 
 def test_invalid_dependency_and_wait():
     with pytest.raises(DomainError):stage({'a.lua':"return rule('a',{},function() end,{dependencies={'b'}})",'b.lua':"return rule('b',{},function() end,{dependencies={'a'}})"})

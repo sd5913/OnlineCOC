@@ -1,0 +1,14 @@
+{
+  "limits": {
+    "providerCalls": 4,
+    "repairAttempts": 1,
+    "reservedOrUsedBudget": 20000
+  },
+  "realCalls": [],
+  "formalDataChanged": false,
+  "sourceConfigDigest": "c8f5dd3721527fd1cefa6d2682eb5120d429c5613d34b1fd81c0eab528c1a546",
+  "requestedModel": "deepseek-flash",
+  "status": "budget-blocked",
+  "preflightReserved": 27911,
+  "sourceConfigUnchanged": true
+}

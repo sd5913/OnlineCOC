@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="7" skipped="0" tests="71" time="123.444" timestamp="2026-11-21T08:58:43.885764+08:00" hostname="LAPTOP-BIFSL64A"><testcase classname="engineering.ai.tests.test_chat_isolation" name="test_context_never_auto_collects_ordinary_chat" time="1.325" /><testcase classname="engineering.ai.tests.test_chat_isolation" name="test_broad_room_query_batch_survives_ordinary_chat" time="1.379"><failure message="AssertionError: {'sessionId': '2c3d9fcc5da14eb38db2fedd16939a53', 'requestId': '16b60062f2f94452b33f2489a86861d0', 'summary': '原始裁决正文：将角色改名为测试名称。', 'status': 'pending', ...}&#10;assert ('\u539f\u59cb...d\u79f0\u3002' == '\u539f\u59cb...d\u79f0\u3002'&#10;  &#10;    原始裁决正文：将角色改名为测试名称。 and False)">application = &lt;onlinecoc_ai.api.Application object at 0x0000026EE0590550&gt;
+
+    def test_broad_room_query_batch_survives_ordinary_chat(application):
+        app=application;s,t=generated(app)
+        before=ruling(app,t);assert before['canDecide']
+        for account in ('kp','player1'):add_message(app.host,account,'并发普通聊天')
+        after=ruling(app,t)
+&gt;       assert after['summary']==before['summary'] and after['canDecide'],after
+E       AssertionError: {'sessionId': '2c3d9fcc5da14eb38db2fedd16939a53', 'requestId': '16b60062f2f94452b33f2489a86861d0', 'summary': '原始裁决正文：将角色改名为测试名称。', 'status': 'pending', ...}
+E       assert ('\u539f\u59cb...d\u79f0\u3002' == '\u539f\u59cb...d\u79f0\u3002'
+E         
+E           原始裁决正文：将角色改名为测试名称。 and False)
+
+engineering\ai\tests\test_chat_isolation.py:47: AssertionError</failure></testcase><testcase classname="engineering.ai.tests.test_chat_isolation" name="test_ruling_keeps_only_proven_delivered_summary[value]" time="1.354" /><testcase classname="engineering.ai.tests.test_chat_isolation" name="test_ruling_keeps_only_proven_delivered_summary[removed]" time="1.444" /><testcase classname="engineering.ai.tests.test_chat_isolation" name="test_ruling_keeps_only_proven_delivered_summary[revoked]" time="1.421" /><testcase classname="engineering.ai.tests.test_chat_isolation" name="test_ruling_keeps_only_proven_delivered_summary[unproven]" time="1.475" /><testcase classname="engineering.ai.tests.test_chat_isolation" name="test_selected_message_depends_only_on_that_message" time="1.164" /><testcase classname="engineering.ai.tests.test_chat_isolation" name="test_task_original_request_and_delivered_reply_are_separate_from_source_access[value]" time="1.319" /><testcase classname="engineering.ai.tests.test_chat_isolation" name="test_task_original_request_and_delivered_reply_are_separate_from_source_access[removed]" time="1.365" /><testcase classname="engineering.ai.tests.test_chat_isolation" name="test_task_original_request_and_delivered_reply_are_separate_from_source_access[revoked]" time="1.282" /><testcase classname="engineering.ai.tests.test_chat_isolation" name="test_public_ruling_delivery_preserves_manual_summary_without_inventing_task" time="1.225"><failure message="AssertionError: assert (not [{'target': 'host', 'op': 'entity.patch', 'args': {'id': 'actor-one', 'name': '审核后的名称'}}])">application = &lt;onlinecoc_ai.api.Application object at 0x0000026EE0955310&gt;
+
+    def test_public_ruling_delivery_preserves_manual_summary_without_inventing_task(application):
+        from test_access_batches import batch
+        app=application;b=batch(app);rid='batch:'+b['batchId']
+        before=next(i for i in app.rulings.list('kp',delivered=True)['items'] if i['rulingId']==rid)
+        generation=app.repository.store.generation;app.rulings.list('kp',delivered=True)
+        assert app.repository.store.generation==generation
+        room=app.host.state();del room['entities']['actor-one'];app.host.commit(room)
+        after=next(i for i in app.rulings.list('kp')['items'] if i['rulingId']==rid)
+        assert after['summary']==before['summary'] and after['sourceState']=='stale' and not after['canDecide']
+&gt;       assert not after['actions'] and not app.repository.state()['tasks']
+E       AssertionError: assert (not [{'target': 'host', 'op': 'entity.patch', 'args': {'id': 'actor-one', 'name': '审核后的名称'}}])
+
+engineering\ai\tests\test_chat_isolation.py:107: AssertionError</failure></testcase><testcase classname="engineering.ai.tests.test_context" name="test_default_excludes_room_and_pack_text" time="1.169" /><testcase classname="engineering.ai.tests.test_context" name="test_public_context_strips_secret_and_never_reads_others_private_chat" time="1.200"><failure message="assert ('public message' in '{&quot;aiPermissions&quot;:{&quot;allowAdminRoomRead&quot;:true,&quot;allowConfigurationChanges&quot;:true,&quot;allowDataQueries&quot;:true,&quot;allowKnowledgeR...一账号，写道具仍由宿主校验操作者权限。\\n\\n## scenarios\\n\\n同一初始描述分别用基线/候选配置实例化道具，以评估新建实例的影响；这不代表迁移房间里的旧实例。AI 不得更改条款、夹具或阈值来让候选通过。\\n&quot;}}')">setup = (&lt;onlinecoc.host.Host object at 0x0000026EE09C07D0&gt;, &lt;onlinecoc_ai.proposals.Proposals object at 0x0000026EE09A07D0&gt;, {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...})
+
+    def test_public_context_strips_secret_and_never_reads_others_private_chat(setup):
+        host,service,_=setup;enable(host,public=True,private=True)
+        state=host.state();state['entities']['actor-one']['metadata']['secret']='hidden-secret'
+        state['chat']['channels']['private']=chat.channel('private','direct','private',['player1','player2']);state['chat']['messages']['private']=[]
+        host.commit(state)
+        add_message(host,'player1','public message');add_message(host,'player1','private-message','private')
+        snapshot,payload=Context(service).capture('kp',request())
+        from onlinecoc_ai.contracts import canonical
+        raw=canonical(payload).decode()
+&gt;       assert 'public message' in raw and 'private-message' not in raw and 'hidden-secret' not in raw
+E       assert ('public message' in '{"aiPermissions":{"allowAdminRoomRead":true,"allowConfigurationChanges":true,"allowDataQueries":true,"allowKnowledgeR...一账号，写道具仍由宿主校验操作者权限。\\n\\n## scenarios\\n\\n同一初始描述分别用基线/候选配置实例化道具，以评估新建实例的影响；这不代表迁移房间里的旧实例。AI 不得更改条款、夹具或阈值来让候选通过。\\n"}}')
+
+engineering\ai\tests\test_context.py:40: AssertionError</failure></testcase><testcase classname="engineering.ai.tests.test_context" name="test_context_rechecks_source_and_policy_after_generation[edit]" time="1.134"><failure message="Failed: DID NOT RAISE any of (AiError, DomainError)">setup = (&lt;onlinecoc.host.Host object at 0x0000026EE09C1E50&gt;, &lt;onlinecoc_ai.proposals.Proposals object at 0x0000026EE072B0B0&gt;, {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...})
+change = 'edit'
+
+    @pytest.mark.parametrize('change',['edit','delete','policy','revoke','profile'])
+    def test_context_rechecks_source_and_policy_after_generation(setup,change):
+        host,service,_=setup;enable(host,public=True)
+        add_message(host,'player1','original');context=Context(service);snapshot,_=context.capture('kp',request())
+        state=host.state()
+        if change=='policy':state['aiControl']['settings']['externalSources']['public']=False
+        elif change=='profile':state['aiControl']['settings']['profileId']='other-provider'
+        elif change=='revoke':state['members']['kp']['authorizationEpoch']+=1
+        else:
+            message=state['chat']['messages']['general'][0];message['revision']+=1
+            if change=='edit':message['text']='changed'
+            else:message.update(deleted=True,text='')
+        host.commit(state)
+&gt;       with pytest.raises((AiError,DomainError)):context.recheck('kp',snapshot)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE any of (AiError, DomainError)
+
+engineering\ai\tests\test_context.py:59: Failed</failure></testcase><testcase classname="engineering.ai.tests.test_context" name="test_context_rechecks_source_and_policy_after_generation[delete]" time="1.082"><failure message="Failed: DID NOT RAISE any of (AiError, DomainError)">setup = (&lt;onlinecoc.host.Host object at 0x0000026EE09C3020&gt;, &lt;onlinecoc_ai.proposals.Proposals object at 0x0000026EE0A0ACD0&gt;, {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...})
+change = 'delete'
+
+    @pytest.mark.parametrize('change',['edit','delete','policy','revoke','profile'])
+    def test_context_rechecks_source_and_policy_after_generation(setup,change):
+        host,service,_=setup;enable(host,public=True)
+        add_message(host,'player1','original');context=Context(service);snapshot,_=context.capture('kp',request())
+        state=host.state()
+        if change=='policy':state['aiControl']['settings']['externalSources']['public']=False
+        elif change=='profile':state['aiControl']['settings']['profileId']='other-provider'
+        elif change=='revoke':state['members']['kp']['authorizationEpoch']+=1
+        else:
+            message=state['chat']['messages']['general'][0];message['revision']+=1
+            if change=='edit':message['text']='changed'
+            else:message.update(deleted=True,text='')
+        host.commit(state)
+&gt;       with pytest.raises((AiError,DomainError)):context.recheck('kp',snapshot)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE any of (AiError, DomainError)
+
+engineering\ai\tests\test_context.py:59: Failed</failure></testcase><testcase classname="engineering.ai.tests.test_context" name="test_context_rechecks_source_and_policy_after_generation[policy]" time="1.174" /><testcase classname="engineering.ai.tests.test_context" name="test_context_rechecks_source_and_policy_after_generation[revoke]" time="1.122" /><testcase classname="engineering.ai.tests.test_context" name="test_context_rechecks_source_and_policy_after_generation[profile]" time="1.206" /><testcase classname="engineering.ai.tests.test_context" name="test_manual_revision_keeps_original_source_authorization" time="1.168"><failure message="Failed: DID NOT RAISE DomainError">setup = (&lt;onlinecoc.host.Host object at 0x0000026EE0A719A0&gt;, &lt;onlinecoc_ai.proposals.Proposals object at 0x0000026EE0A667B0&gt;, {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...})
+
+    def test_manual_revision_keeps_original_source_authorization(setup):
+        from pathlib import Path
+        from onlinecoc_ai.contracts import loads
+        host, service, _ = setup;enable(host, public=True)
+        add_message(host, 'player1', 'source information')
+        snapshot, _ = Context(service).capture('kp', request())
+        delta = loads((Path(__file__).parents[1] / 'examples/bonus-15.json').read_bytes())
+        proposal = service.create('kp', 'draft from sources', delta, snapshot=snapshot)
+        revised = service.revise('kp', proposal['proposalId'], 1, delta)
+        state = host.state();state['chat']['messages']['general'][0].update(deleted=True, text='', revision=2);host.commit(state)
+&gt;       with pytest.raises(DomainError, match='SOURCE_STALE'):service.get('kp', revised['proposalId'])
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE DomainError
+
+engineering\ai\tests\test_context.py:72: Failed</failure></testcase><testcase classname="engineering.ai.tests.test_context" name="test_chat_source_requires_actual_current_text_and_external_permission" time="1.115" /><testcase classname="engineering.ai.tests.test_context" name="test_unrelated_read_position_and_ai_history_do_not_change_world" time="1.074" /><testcase classname="engineering.ai.tests.test_context" name="test_scope_mismatch_rejects_cross_room_context" time="1.124" /><testcase classname="engineering.ai.tests.test_context" name="test_context_size_is_bounded" time="1.066" /><testcase classname="engineering.ai.tests.test_context" name="test_two_actual_demo_directories_do_not_share_secrets_or_memory" time="1.755" /><testcase classname="engineering.ai.tests.test_message_history" name="test_published_player_text_survives_revoke_without_restoring_source[False]" time="1.397" /><testcase classname="engineering.ai.tests.test_message_history" name="test_published_player_text_survives_revoke_without_restoring_source[True]" time="1.320" /><testcase classname="engineering.ai.tests.test_message_history" name="test_unpublished_or_unproven_legacy_body_is_not_recovered" time="1.227" /><testcase classname="engineering.ai.tests.test_message_history" name="test_public_delivery_remembers_legacy_text_but_never_invents_time" time="1.344" /><testcase classname="engineering.ai.tests.test_message_history" name="test_deleted_session_is_not_revived_by_delivery_receipt" time="1.270" /><testcase classname="engineering.ai.tests.test_message_history" name="test_explicit_completed_followup_archives_predecessors_with_proof" time="1.303" /><testcase classname="engineering.ai.tests.test_message_history" name="test_uncertain_predecessor_is_never_closed[partial]" time="1.360" /><testcase classname="engineering.ai.tests.test_message_history" name="test_uncertain_predecessor_is_never_closed[unknown]" time="1.219" /><testcase classname="engineering.ai.tests.test_message_history" name="test_uncertain_predecessor_is_never_closed[executing]" time="1.277" /><testcase classname="engineering.ai.tests.test_message_history" name="test_completion_without_matching_host_receipts_cannot_close_group" time="1.188" /><testcase classname="engineering.ai.tests.test_message_history" name="test_legacy_final_reply_migrates_after_revoke_and_survives_restart" time="3.340" /><testcase classname="engineering.ai.tests.test_message_history" name="test_nested_review_recipient_remains_original_player" time="1.357" /><testcase classname="engineering.ai.tests.test_message_history" name="test_public_http_routes_record_only_authorized_deliveries[tasks]" time="1.558" /><testcase classname="engineering.ai.tests.test_message_history" name="test_public_http_routes_record_only_authorized_deliveries[session]" time="1.367" /><testcase classname="engineering.ai.tests.test_history_continuity" name="test_stale_authorized_response_stays_visible_with_readonly_notice" time="1.266" /><testcase classname="engineering.ai.tests.test_history_continuity" name="test_short_confirmation_retains_stale_intent_without_old_execution_proofs" time="1.297" /><testcase classname="engineering.ai.tests.test_history_continuity" name="test_query_history_identity_witness_and_legacy_boundary[read-True-True]" time="1.282" /><testcase classname="engineering.ai.tests.test_history_continuity" name="test_query_history_identity_witness_and_legacy_boundary[search-False-True]" time="1.245" /><testcase classname="engineering.ai.tests.test_history_continuity" name="test_query_history_identity_witness_and_legacy_boundary[search-True-False]" time="1.261" /><testcase classname="engineering.ai.tests.test_history_continuity" name="test_delivered_body_survives_but_changed_sources_do_not_enter_new_context[deleted]" time="1.237" /><testcase classname="engineering.ai.tests.test_history_continuity" name="test_delivered_body_survives_but_changed_sources_do_not_enter_new_context[hidden]" time="1.235" /><testcase classname="engineering.ai.tests.test_history_continuity" name="test_delivered_body_survives_but_changed_sources_do_not_enter_new_context[authorization]" time="1.218"><failure message="KeyError: 'response'">application = &lt;onlinecoc_ai.api.Application object at 0x0000026EE0C622D0&gt;
+change = 'authorization'
+
+    @pytest.mark.parametrize('change',['deleted','hidden','authorization','policy','profile','session_deleted'])
+    def test_delivered_body_survives_but_changed_sources_do_not_enter_new_context(application,change):
+        app=application;sid,task=history_case(app)
+        room=app.host.state()
+        if change=='deleted':del room['entities']['actor-one']
+        elif change=='hidden':room['entities']['actor-one']['visibility']='kp'
+        elif change=='authorization':room['members']['kp']['authorizationEpoch']+=1
+        elif change=='policy':room['aiControl']['settings']['externalSources']['private']=False
+        elif change=='profile':room['aiControl']['settings']['profileId']='other-profile'
+        elif change=='session_deleted':
+            record=app.sessions.get('kp',sid)['session'];committed(command(app,'ai.session.delete',{'sessionId':sid,'revision':record['revision']}))
+            assert not app.tasks('kp')['items'];return
+        app.host.commit(room)
+        row=app.sessions.get('kp',sid)['items'][0]
+&gt;       assert row['response']==task['text'] and row['historicalReadOnly'],row
+               ^^^^^^^^^^^^^^^
+E       KeyError: 'response'
+
+engineering\ai\tests\test_history_continuity.py:98: KeyError</failure></testcase><testcase classname="engineering.ai.tests.test_history_continuity" name="test_delivered_body_survives_but_changed_sources_do_not_enter_new_context[policy]" time="1.224" /><testcase classname="engineering.ai.tests.test_history_continuity" name="test_delivered_body_survives_but_changed_sources_do_not_enter_new_context[profile]" time="1.251" /><testcase classname="engineering.ai.tests.test_history_continuity" name="test_delivered_body_survives_but_changed_sources_do_not_enter_new_context[session_deleted]" time="1.282" /><testcase classname="engineering.ai.tests.test_history_continuity" name="test_new_query_witness_does_not_restore_deleted_object" time="1.320" /><testcase classname="engineering.ai.tests.test_history_continuity" name="test_historical_intent_is_rechecked_after_capture_and_has_no_execution_authority" time="1.318" /><testcase classname="engineering.ai.tests.test_history_continuity" name="test_history_scope_mismatch_never_falls_back" time="1.276" /><testcase classname="engineering.ai.tests.test_history_continuity" name="test_short_confirmation_requires_current_target_read_before_batch" time="1.383" /><testcase classname="engineering.ai.tests.test_history_continuity" name="test_model_repairs_stale_intent_by_reading_target_without_reasking" time="1.877" /><testcase classname="engineering.ai.tests.test_history_continuity" name="test_new_generation_public_status_is_not_expired_historical_intent[False]" time="1.477" /><testcase classname="engineering.ai.tests.test_history_continuity" name="test_new_generation_public_status_is_not_expired_historical_intent[True]" time="1.715" /><testcase classname="engineering.ai.tests.test_rulings" name="test_chat_approval_is_bound_to_batch_and_not_another_model_request" time="1.584" /><testcase classname="engineering.ai.tests.test_rulings" name="test_config_is_one_checked_ruling_and_publishes_once" time="15.245" /><testcase classname="engineering.ai.tests.test_rulings" name="test_high_risk_config_never_uses_auto_approval" time="7.183" /><testcase classname="engineering.ai.tests.test_rulings" name="test_player_cannot_decide_and_stale_digest_cannot_execute" time="1.095" /><testcase classname="engineering.ai.tests.test_rulings" name="test_consultation_only_evidence_cannot_enter_publish_queue_or_auto_approve" time="7.464" /><testcase classname="engineering.ai.tests.test_rulings" name="test_invalid_model_output_has_specific_cause[[]-MODEL_OBJECT_REQUIRED]" time="0.001" /><testcase classname="engineering.ai.tests.test_rulings" name="test_invalid_model_output_has_specific_cause[null-MODEL_OBJECT_REQUIRED]" time="0.001" /><testcase classname="engineering.ai.tests.test_rulings" name="test_invalid_model_output_has_specific_cause[broken-MODEL_JSON_INVALID]" time="0.001" /><testcase classname="engineering.ai.tests.test_rulings" name="test_invalid_model_output_has_specific_cause[{&quot;kind&quot;:&quot;other&quot;,&quot;text&quot;:&quot;a&quot;}-MODEL_KIND_INVALID]" time="0.001" /><testcase classname="engineering.ai.tests.test_rulings" name="test_single_json_fence_is_accepted_without_extracting_arbitrary_text" time="0.000" /><testcase classname="engineering.ai.tests.test_rulings" name="test_two_repairs_cap_legacy_profile_without_consuming_tool_rounds[True]" time="1.159" /><testcase classname="engineering.ai.tests.test_rulings" name="test_two_repairs_cap_legacy_profile_without_consuming_tool_rounds[False]" time="1.383" /><testcase classname="engineering.ai.tests.test_rulings" name="test_user_decision_pauses_instead_of_retrying[clarification]" time="1.197" /><testcase classname="engineering.ai.tests.test_rulings" name="test_user_decision_pauses_instead_of_retrying[plan]" time="1.253" /><testcase classname="engineering.ai.tests.test_rulings" name="test_basic_lua_error_repairs_same_proposal_before_review" time="8.747" /></testsuite></testsuites>

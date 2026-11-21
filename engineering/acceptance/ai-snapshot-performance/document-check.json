@@ -1,0 +1,16 @@
+{
+  "checked": 117,
+  "errors": [],
+  "pendingCoordinatorArchive": [
+    "docs/history/2026-11-20-issue-019-performance-generation-progress.md"
+  ],
+  "documents": {
+    "docs/current/engineering/ai-session-access.md": "3f0adc3441106ea30b525098a5b8f08a6b2eb92b9c1acfda8ed0a6143960419b",
+    "docs/current/engineering/ai-player-knowledge.md": "ef7a98f7e994cd0f1e69ce1a4ace84ad2272ce9efa3021787af4055c883e1310",
+    "docs/current/engineering/ai-rulings.md": "14fdbe007ad00a8cd6e904cdc33b81da69478b455ad33ea943cefcd87f9d6ae5",
+    "docs/current/engineering/ai-responses.md": "805eab3f1697bbe835d60e626b21b086d978135a8450f69138bb57b5668fd0e7",
+    "docs/current/engineering/ai-pack-embedding.md": "0319a5fa29bc5ea480229574ad74c8fa166271f373936fde8ae3992b77b54065",
+    "docs/current/engineering/ai-debug-review.md": "08ce0b1a3471fe1e7f0c7dbdbb8694adc324336a8bbf4aa629ba52d8ac0fa605",
+    "engineering/acceptance/ai-snapshot-performance/README.md": "f6697447192c6f1d5c32e6f6bea905bdf8dcde72ac1dd5038413db2c476272e9"
+  }
+}

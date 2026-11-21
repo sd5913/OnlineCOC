@@ -84,7 +84,11 @@ def test_player_restart_preserves_fixed_evidence_but_revocation_still_hides_it(a
         assert len([h for h in payload['conversationHistory'] if h['role']=='assistant'])==2
         host_call(current,'knowledge.revoke',{'grantId':grant['grantId'],'expectedRevision':1,'reason':'Revoke disclosed evidence'})
         rows=current.sessions.get('player1',sid)['items'][:2]
-        assert all(i['status']=='stale' and not i.get('response') for i in rows)
+        assert [i['response'] for i in rows]==original
+        assert all(i['historicalReadOnly'] and not i.get('choices') for i in rows)
+        # Displayed history survives, but revoked evidence is not fresh authority.
+        _,revoked=current.coordinator.context.capture('kp',current.repository.state()['requests'][req['requestId']])
+        assert not any(h['role']=='assistant' for h in revoked['conversationHistory'])
         assert current.sessions.list('player2')['items']==[]
     finally:current.proposals.close();current.host.close()
 

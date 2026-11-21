@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="19" time="14.471" timestamp="2026-11-21T15:58:57.125974+08:00" hostname="LAPTOP-BIFSL64A"><testcase classname="engineering.ai.tests.test_context_compression" name="test_compacts_semantically_keeps_current_request_exact_and_recall_archives" time="0.085" /><testcase classname="engineering.ai.tests.test_context_compression" name="test_invalid_summary_repairs_once_and_preserves_failed_feedback" time="0.079" /><testcase classname="engineering.ai.tests.test_context_compression" name="test_persistent_bad_summary_fails_closed_keeps_originals" time="0.064" /><testcase classname="engineering.ai.tests.test_context_compression" name="test_summary_cannot_forge_provenance_or_convert_ai_suggestion_to_confirmation[assistant-not approval]" time="0.001" /><testcase classname="engineering.ai.tests.test_context_compression" name="test_summary_cannot_forge_provenance_or_convert_ai_suggestion_to_confirmation[user-not approval]" time="0.001" /><testcase classname="engineering.ai.tests.test_context_compression" name="test_guard_change_during_summary_rejects_before_output_and_recall" time="0.064" /><testcase classname="engineering.ai.tests.test_context_compression" name="test_tool_exchanges_stay_paired" time="0.094" /><testcase classname="engineering.ai.tests.test_context_compression" name="test_under_threshold_no_call_and_uncompressible_overflow_no_provider" time="0.006" /><testcase classname="engineering.ai.tests.test_context_compression" name="test_model_budget_reserves_output_protocol_and_declared_window" time="0.001" /><testcase classname="engineering.ai.tests.test_context_compression" name="test_coordinator_bills_summary_and_final_reply_with_visible_progress" time="1.987" /><testcase classname="engineering.ai.tests.test_context_compression" name="test_identical_revalidated_records_reuse_persisted_semantic_summary" time="0.120" /><testcase classname="engineering.ai.tests.test_context_compression" name="test_current_entity_evidence_accepts_only_complete_stable_room_path[path0-None-True]" time="0.001" /><testcase classname="engineering.ai.tests.test_context_compression" name="test_current_entity_evidence_accepts_only_complete_stable_room_path[path1-None-False]" time="0.001" /><testcase classname="engineering.ai.tests.test_context_compression" name="test_current_entity_evidence_accepts_only_complete_stable_room_path[path2-None-False]" time="0.001" /><testcase classname="engineering.ai.tests.test_context_compression" name="test_current_entity_evidence_accepts_only_complete_stable_room_path[path3-0-False]" time="0.001" /><testcase classname="engineering.ai.tests.test_context_compression" name="test_nonverbatim_quote_becomes_explicit_record_locator_not_fabricated_quote" time="0.000" /><testcase classname="engineering.ai.tests.test_context_compression" name="test_paraphrase_cannot_invent_confirmation_or_change_numeric_anchor[\u7528\u6237\u5df2\u7ecf\u6279\u51c6HP=30]" time="0.001" /><testcase classname="engineering.ai.tests.test_context_compression" name="test_paraphrase_cannot_invent_confirmation_or_change_numeric_anchor[\u5c1a\u672a\u540c\u610fHP=3]" time="0.001" /><testcase classname="engineering.ai.tests.test_context_compression" name="test_concurrent_object_and_summary_publication_has_unique_temporaries" time="10.037"><failure message="threading.BrokenBarrierError">tmp_path = WindowsPath('D:/Studies/Art Programming/OnlineCOC/engineering/acceptance/ai-context-compression/work/v2-concurrency-1795247934933325300/pytest-tmp/test_concurrent_object_and_sum0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001D80590F950&gt;
+
+    def test_concurrent_object_and_summary_publication_has_unique_temporaries(tmp_path,monkeypatch):
+        import threading,os
+        from concurrent.futures import ThreadPoolExecutor
+        barrier=threading.Barrier(2);replace=os.replace;temporaries=[]
+        def simultaneous(source,target):
+            if str(target).endswith(('.json.gz','.summary.json')):
+                temporaries.append(str(source));barrier.wait(timeout=10)
+            return replace(source,target)
+        monkeypatch.setattr(os,'replace',simultaneous)
+        first=fixture(tmp_path);second=fixture(tmp_path);second.task['taskId']='task-b'
+        with ThreadPoolExecutor(2) as pool:
+            futures=[pool.submit(asyncio.run,c.fit(messages(),[])) for c in (first,second)]
+&gt;           for future in futures:assert future.result(timeout=25)
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+engineering\ai\tests\test_context_compression.py:198: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\concurrent\futures\_base.py:450: in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\concurrent\futures\_base.py:395: in __get_result
+    raise self._exception
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\concurrent\futures\thread.py:86: in run
+    result = ctx.run(self.task)
+             ^^^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\concurrent\futures\thread.py:73: in run
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:204: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:127: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\base_events.py:719: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+engineering\ai\src\onlinecoc_ai\compression.py:122: in fit
+    keys=list(dict.fromkeys(keys));self._save();self.rounds+=1
+                                   ^^^^^^^^^^^^
+engineering\ai\src\onlinecoc_ai\compression.py:40: in _save
+    atomic_write(path,raw)
+engineering\ai\src\onlinecoc_ai\compression.py:16: in atomic_write
+    temporary.write_bytes(raw);os.replace(temporary,path)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+engineering\ai\tests\test_context_compression.py:192: in simultaneous
+    temporaries.append(str(source));barrier.wait(timeout=10)
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\threading.py:740: in wait
+    self._wait(timeout)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;threading.Barrier at 0x1d805905a90: broken&gt;, timeout = 10
+
+    def _wait(self, timeout):
+        if not self._cond.wait_for(lambda : self._state != 0, timeout):
+            #timed out.  Break the barrier
+            self._break()
+&gt;           raise BrokenBarrierError
+E           threading.BrokenBarrierError
+
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\threading.py:778: BrokenBarrierError</failure></testcase></testsuite></testsuites>

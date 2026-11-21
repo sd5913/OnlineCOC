@@ -1,0 +1,10 @@
+{
+  "roomBytes": 941542,
+  "beforeAiBytes": 224,
+  "afterAiBytes": 11935,
+  "incrementBytes": 11711,
+  "contextCount": 1,
+  "toolCalls": 4,
+  "events": 16,
+  "realModelCalls": 0
+}

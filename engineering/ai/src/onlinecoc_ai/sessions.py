@@ -58,12 +58,12 @@ class Sessions:
             'defaultLevel': 'administrator' if role == 'kp' else 'player',
             **{k: v for k, v in p.items() if k != 'principal'}}
 
-    def get(self, account, identifier):
+    def get(self, account, identifier, *, delivered=False):
         record = self._record(account, identifier)
         # Reuse the existing read policy; old model output is not a bypass.
         items = [];before = None
         while True:
-            page = self.app.tasks(account, before, 100, request_ids=set(record['requestIds']))
+            page = self.app.tasks(account, before, 100, request_ids=set(record['requestIds']), delivered=delivered)
             items.extend(x for x in page['items'] if x['requestId'] in record['requestIds'])
             before = page['nextBefore']
             if not before:break
@@ -72,7 +72,7 @@ class Sessions:
             request = state['requests'][item['requestId']]
             if request['initiator'] == account and request['sourceKind'] == 'manual':
                 from .reviews import request_text
-                item['text'] = request_text(self.repository,request)
+                item['text'] = request_text(self.repository,request,state)
         return {'session': public(record), 'items': sorted(items, key=lambda x: x['createdAt'])}
 
     def execute(self, account, identifier, op, args):
@@ -116,5 +116,15 @@ class Sessions:
         if self.app.rulings.is_confirmation(args['text']) and role=='kp' and record['accessLevel']=='administrator':
             confirmation=self.app.rulings.confirm_session(account,record)
             if confirmation is not None:return confirmation
-        return self.app._execute(account, 'session:' + identifier, 'ai.request.create',
+        related=args.get('replyToRequestId')
+        if related:
+            from .review_queue import canonical_request
+            related=canonical_request(self.repository.state(),related)
+            require(related in record['requestIds'],'NOT_VISIBLE')
+        token,prior=self.app.queue.submission(account,record['sessionId'],'session',args)
+        if prior:return prior
+        result=self.app._execute(account, 'session:' + identifier, 'ai.request.create',
             {'sourceKind': 'manual', 'text': args['text']}, session_id=args['sessionId'])
+        self.app.queue.bind(result['requestId'],related=related)
+        self.app.queue.save_submission(token,result['requestId'])
+        return result

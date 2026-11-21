@@ -17,6 +17,8 @@ class Host:
         from .knowledge import KnowledgeService
         self.knowledge=KnowledgeService(self)
         self.ai_prepared_resolver=None
+        self.ai_c_basis_resolver=None
+        self._projection_generation=None;self._projection_cache={};self._idle_tick_generation=None
         self.metrics={'commands':[],'commits':[],'workers':[]};self.clock=clock;self.fault=fault;self.epoch=uid();self.views={}
         self.identity=Identity(self.path/'identity',store_factory)
         try:self.store=store_factory(self.path/'rooms/demo')
@@ -39,20 +41,30 @@ class Host:
     def state(self):return self.store.snapshot()[1]
     def register_knowledge_provider(self, descriptor, provider):
         return self.knowledge.register(descriptor, provider)
-    def commit(self,state):
-        start=time.perf_counter();validate(state);self.store.commit(self.store.generation,state)
+    def commit(self,state,*,expected_generation=None):
+        start=time.perf_counter();validate(state);self.store.commit(self.store.generation if expected_generation is None else expected_generation,state)
         self.metrics['commits'].append((time.perf_counter()-start)*1000);self.metrics['commits']=self.metrics['commits'][-1000:]
     def hit(self,stage):
         if self.fault:self.fault(stage)
     def kp(self,account):require(member(self.state(),account)['role']=='kp','PERMISSION_DENIED')
     def auth(self,token):
         with self.lock:return self.identity.authenticate(token)
-    def catalog(self,account):
-        s=self.state();m=member(s,account);a=s['artifacts'][s['activeRuleset']]
+    def local_account_change(self,data):
+        from .local_accounts import change
+        return change(self,data)
+    def local_account_receipt(self,request_id):
+        from .local_accounts import receipt
+        return receipt(self,request_id)
+    def catalog(self,account,*,state=None):
+        s=self.state() if state is None else state;m=member(s,account);a=s['artifacts'][s['activeRuleset']]
         return {'revision':s['activeRuleset']+':'+str(m['authorizationEpoch']),'rulesetRevision':s['activeRuleset'],
                 'actions':self.knowledge.project_catalog(s,account,[v for v in a['metadata'].values() if v['public'] and (not v['kp'] or m['role']=='kp')])}
     def project(self,account):
         with self.lock:
+            generation=self.store.generation
+            if self._projection_generation!=generation:
+                self._projection_generation=generation;self._projection_cache={}
+            if account in self._projection_cache:return copy.deepcopy(self._projection_cache[account])
             s=self.state();m=member(s,account);entities={}
             full={};knowledge_summary=None
             if s['knowledge']['policies']:
@@ -75,14 +87,23 @@ class Host:
             flows={k:{x:v[x] for x in ('id','rule','status','cursor','error') if x in v} for k,v in s['flows'].items() if m['role']=='kp' or v['account']==account}
             if self.knowledge.strict(s,account):relations={};waits={};progress={};flows={}
             result = {'roomId':s['roomId'],'name':s['name'],'runId':s['runId'],'status':s['status'],'authorityEpoch':self.epoch,'authorizationEpoch':m['authorizationEpoch'],
-                    'accountId':account,'role':m['role'],'entities':entities,'relations':relations,'progress':progress,'waits':waits,'flows':flows,'catalog':self.catalog(account),'chatChannels':chat.project(s,account)}
+                    'accountId':account,'role':m['role'],'entities':entities,'relations':relations,'progress':progress,'waits':waits,'flows':flows,'catalog':self.catalog(account,state=s),'chatChannels':chat.project(s,account)}
             if s['knowledge']['policies']:
                 result['knowledge']=knowledge_summary
+            # External disclosure providers can change without a room commit.
+            # Cache only room-owned projections, and never expose the cached object.
+            if not s['knowledge']['policies'] and len(self._projection_cache)<128:
+                self._projection_cache[account]=copy.deepcopy(result)
             return result
     def receipt(self,account,id):
-        s=self.state();member(s,account);rec=s['commands'].get(account+':'+id)
+        with self.lock:return self._receipt(self.state(),account,id)
+    def _receipt(self,s,account,id):
+        member(s,account);rec=s['commands'].get(account+':'+id)
         if not rec:return {'status':'unknown','commandId':id}
         if rec['status']=='pending':return {'status':'pending','commandId':id}
+        if rec.get('op')=='batch.execute':
+            from .atomic_batches import project_receipt
+            return project_receipt(self,s,account,rec)
         result=copy.deepcopy(rec['receipt'])
         if rec.get('op')=='notification.ack':return result
         if (rec.get('op') or '').startswith('chat.'):
@@ -97,6 +118,15 @@ class Host:
             if projected is None:result.pop('result',None)
             else:result['result']=projected
         return result
+    def preflight_batch(self,account,actions):
+        from .atomic_batches import preflight
+        return preflight(self,account,actions)
+    def execute_batch(self,account,actions,*,command_id):
+        from .atomic_batches import submit
+        return submit(self,account,actions,command_id)
+    def commit_memory_fact(self,account,fact,*,command_id,expected_revision):
+        from .atomic_batches import commit_memory_fact
+        return commit_memory_fact(self,account,fact,command_id,expected_revision)
     def snapshot_for_execution(self,s):
         return execution_snapshot(s)
     def dispatch(self,token,csrf,message):
@@ -118,14 +148,15 @@ class Host:
             # Resolve only a server-registered proposal ID, outside the room lock.
             # Duplicate receipts remain available without the independent AI store.
             with self.lock:
-                check('command',message);pre=self.state();member(pre,account)
-                payload=message['payload'];prior=pre['commands'].get(account+':'+payload['commandId'])
-                needs_prepare=not prior and payload['op']=='ai.proposal.approve'
-                if needs_prepare:
-                    require(member(pre,account)['role']=='kp','PERMISSION_DENIED')
-                    validate_operation(payload['op'],payload['args'])
-                    resolver=self.ai_prepared_resolver
-                    require(resolver is not None,'AI_SERVICE_UNAVAILABLE')
+                check('command',message);payload=message['payload'];needs_prepare=False
+                if payload['op']=='ai.proposal.approve':
+                    pre=self.state();member(pre,account)
+                    needs_prepare=not pre['commands'].get(account+':'+payload['commandId'])
+                    if needs_prepare:
+                        require(member(pre,account)['role']=='kp','PERMISSION_DENIED')
+                        validate_operation(payload['op'],payload['args'])
+                        resolver=self.ai_prepared_resolver
+                        require(resolver is not None,'AI_SERVICE_UNAVAILABLE')
             if needs_prepare:prepared=resolver(account,payload['args']['proposalId'],payload['args']['proposalRevision'])
             with self.lock:
                 check('command',message);s=self.state();m=member(s,account)
@@ -152,7 +183,7 @@ class Host:
                 if op in ('action.invoke','behavior.invoke'):
                     self.knowledge.authorize_operation(s,account,args['actionId'],args['input'])
                     require(s['status']=='active','ROOM_PAUSED')
-                    cat=self.catalog(account);require(p.get('catalogRevision')==cat['revision'] and p.get('rulesetRevision')==s['activeRuleset'],'STALE_CATALOG')
+                    cat=self.catalog(account,state=s);require(p.get('catalogRevision')==cat['revision'] and p.get('rulesetRevision')==s['activeRuleset'],'STALE_CATALOG')
                     require(p.get('runId')==s['runId'],'STALE_AUTHORITY')
                     require(set(args)=={'actionId','input'})
                     metadata=s['artifacts'][s['activeRuleset']]['metadata'].get(args['actionId'])
@@ -173,7 +204,7 @@ class Host:
                         result=self.manage(s,account,op,args,prepared=prepared,command_id=p['commandId'])
                         if op in ('entity.create','entity.update','entity.patch'):
                             self.knowledge.derive(s,account,p['commandId'],{'commandId':p['commandId'],'operation':op,'input':args,'result':result,'effects':[]},previous=before_manage)
-                        validate(s);rec['status']='committed';rec['receipt']={'status':'committed','commandId':rec['id'],'result':result}
+                        rec['status']='committed';rec['receipt']={'status':'committed','commandId':rec['id'],'result':result}
                         s['audit'].append({'commandId':rec['id'],'account':account,'op':op,'at':self.clock()})
                         if op.startswith('chat.'):self.hit('before_chat_commit')
                         if op in ('ai.proposal.approve','publication.apply'):self.hit('before_'+op+'_commit')
@@ -194,10 +225,15 @@ class Host:
                         if committed and committed.get('status')=='committed' and committed['signature']==signature:
                             return self.receipt(account,p['commandId'])
                         raise
+                    if op.startswith('chat.') and not s['flows'] and not s['waits']:
+                        return self._receipt(s,account,p['commandId'])
                     self.tick()
                 return self.receipt(account,p['commandId'])
         finally:self.capacity.release()
     def run_attempt(self,key):
+        if self.state()['commands'][key].get('op')=='batch.execute':
+            from .atomic_batches import resume
+            return resume(self,key)
         s=self.state();rec=s['commands'][key];account=rec['account'];artifact=s['artifacts'][rec['ruleset']];ordinal=0
         if s['knowledge']['policies']:self.knowledge.ready(s)
         def random(sides):
@@ -259,7 +295,10 @@ class Host:
             else:return
     def tick(self):
         with self.lock:
+            if self._idle_tick_generation==self.store.generation:return
             s=self.state()
+            if not s['flows'] and not s['waits']:
+                self._idle_tick_generation=self.store.generation;return
             if s['status']!='active':return
             if s['knowledge']['policies']:
                 try:self.knowledge.ready(s)
@@ -269,10 +308,12 @@ class Host:
                 if w['status']=='waiting' and w['deadline']<=self.clock():
                     w.update(status='timeout',resolvedAt=self.clock(),revision=w['revision']+1);self.move_flow(s,s['flows'][w['flowId']],w['options']['timeout']);changed=True
             if changed:self.commit(s)
-            for f in list(self.state()['flows']):self.advance(f)
+            for f in list(s['flows']):self.advance(f)
     def recover(self):
         with self.lock:
             validate(self.state())
+            from .local_accounts import recover
+            recover(self)
             if self.state()['knowledge']['policies']:
                 try:self.knowledge.ready(self.state())
                 except DomainError:return  # Trusted providers are installed by composition after opening.
@@ -330,17 +371,21 @@ class Host:
             require(set(args)=={'status'} and args['status'] in ('active','paused','archived'));s['status']=args['status'];return True
         if op=='member.update':
             require(set(args)<={'accountId','active','role'} and args['accountId'] in s['members'])
+            from .local_accounts import usable,viable_kp
+            identities=self.identity.store.snapshot()[1]['accounts']
+            require(usable(identities.get(args['accountId'])),'ACCOUNT_UNAVAILABLE')
             target=s['members'][args['accountId']]
             if 'active' in args:require(type(args['active']) is bool);target['active']=args['active']
             if 'role' in args:require(args['role'] in ('kp','player'));target['role']=args['role']
-            require(any(x['active'] and x['role']=='kp' for x in s['members'].values()))
+            require(viable_kp(s,identities),'LAST_KP_REQUIRED')
             target['authorizationEpoch']+=1;return True
         if op=='rule.stage':
             require(set(args)<={'sources','data'} and 'sources' in args);artifact=stage(args['sources'],args.get('data'));s['artifacts'][artifact['revision']]=artifact;return artifact['revision']
         if op=='rule.activate':
             require(set(args)=={'revision'} and args['revision'] in s['artifacts']);s['activeRuleset']=args['revision'];return args['revision']
         if op=='member.add':
-            require(args['accountId'] in self.identity.store.snapshot()[1]['accounts'],'NOT_VISIBLE')
+            from .local_accounts import usable
+            require(usable(self.identity.store.snapshot()[1]['accounts'].get(args['accountId'])),'NOT_VISIBLE')
             require(args['accountId'] not in s['members'],'MEMBER_EXISTS')
             s['members'][args['accountId']]={'memberId':uid(),'accountId':args['accountId'],'role':args['role'],'active':True,'authorizationEpoch':1,'metadata':{}};return True
         if op=='configuration.put':
@@ -402,6 +447,11 @@ class Host:
             s=self.state();member(s,account);accounts=self.identity.store.snapshot()[1]['accounts']
             return [{'accountId':a,'memberId':m['memberId'],'nickname':accounts[a]['nickname'],'role':m['role']}
                     for a,m in s['members'].items() if m['active'] and a in accounts and not accounts[a]['disabled']]
+    def chat_channels(self,account):
+        with self.lock:
+            s=self.state();m=member(s,account)
+            return {'roomId':s['roomId'],'authorityEpoch':self.epoch,'authorizationEpoch':m['authorizationEpoch'],
+                    'accountId':account,'channels':chat.project(s,account)}
     def chat_history(self,account,channel_id,before=None,limit=50):
         with self.lock:
             s=self.state();member(s,account)

@@ -1,0 +1,249 @@
+{
+  "group": "map",
+  "work": "D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\ai-context-compression\\work\\live-map-1795248371462053900",
+  "tree": "engineering\\acceptance\\ai-context-compression\\work\\v2-release-fixed-1795248122100425600",
+  "rows": [
+    {
+      "group": "map",
+      "phase": "add",
+      "request": "在 game.json/locations 数组末尾新增地点：index=99，name=验收树洞，description=只供合成验收，truth=无秘密，exits=[]，features=[]，stock=[]，clues=[]；不改其他数据，准备草稿。",
+      "status": "failed",
+      "task": {
+        "taskId": "5dc2d8a15d2e4dedb78c1520b1e9b699",
+        "requestId": "5dc2d8a15d2e4dedb78c1520b1e9b699",
+        "account": "kp",
+        "profile": {
+          "adapter": "deepseek-chat",
+          "allowPrivateEndpoint": false,
+          "baseUrl": "https://api.deepseek.com",
+          "credentialRef": "env:ONLINECOC_DEEPSEEK_API_KEY",
+          "enabled": true,
+          "limits": {
+            "dailyTokenBudget": null,
+            "maxConcurrentPerRoom": 1,
+            "maxQueuedPerRoom": 5,
+            "maxRepairAttempts": 5,
+            "maxToolRounds": 12,
+            "maxTransportRetries": 2,
+            "taskTimeoutMs": 600000
+          },
+          "model": "deepseek-flash",
+          "profileId": "deepseek-main",
+          "request": {
+            "connectTimeoutMs": 10000,
+            "maxOutputTokens": 8192,
+            "thinking": "disabled",
+            "totalTimeoutMs": 120000,
+            "contextWindowTokens": 1048576
+          },
+          "revision": 7,
+          "schemaVersion": 1,
+          "versionInfo": {
+            "label": "DeepSeek-V4.1-Flash-1017",
+            "sourceUrl": "https://api-docs.deepseek.com/quick_start/pricing/",
+            "verifiedAt": "2026-11-19"
+          }
+        },
+        "status": "blocked",
+        "createdAt": 1795248373.0445442,
+        "lease": null,
+        "error": null,
+        "proposalId": "be7504e31bf7417e9d734d27530ce329",
+        "text": "已在 locations 数组末尾追加新地点（index=99，验收树洞），现有 1–10 条目保持不变。\n\n- 依据稳定数组规则，index 应连续追加；99 会与 1–10 之间形成空档，A/B 结构检查可能因此失败。\n- 该地点 `exits` 为空，因此无法从任何现有地点到达；从入口到这里的通路需要由 KP 另外决定是否添加。\n- 地图属于高危修改，仍需完成三项校验，并由 KP 在详情中确认整个配置包的指纹。",
+        "calls": [
+          {
+            "callId": "f35112fd8ec14150963af98289358356",
+            "requestDigest": "3086418fcb9b8f31d6ff97caeb9c749974e4b65347f0161d992c1bb880abae95",
+            "profileRevision": 7,
+            "requestedModel": "deepseek-flash",
+            "responseDigest": "fce5028aff05e620442571607b9735476e61839bd703bac718fc7a464bc25fe4",
+            "usage": {
+              "prompt_tokens": 14509,
+              "completion_tokens": 92,
+              "total_tokens": 14601
+            },
+            "returnedModel": "deepseek-flash",
+            "systemFingerprint": "bc19ba97cbe016479903222bb1578db6"
+          },
+          {
+            "callId": "b51cd53b61814c68a7e31cf138940575",
+            "requestDigest": "37cf196a52b39c8ce4b95decbd6409fbac73eb97845b2d94f8cf71eb39682855",
+            "profileRevision": 7,
+            "requestedModel": "deepseek-flash",
+            "responseDigest": "34fcb060fa4d6c4efbd662ac3f856b14906e48de7f762cc0a2d4992384a51846",
+            "usage": {
+              "prompt_tokens": 15801,
+              "completion_tokens": 257,
+              "total_tokens": 16058
+            },
+            "returnedModel": "deepseek-flash",
+            "systemFingerprint": "bc19ba97cbe016479903222bb1578db6"
+          }
+        ],
+        "usage": 30659,
+        "events": [
+          {
+            "seq": 1,
+            "at": 1795248373.0445447,
+            "stage": "queued",
+            "status": "completed",
+            "summary": "已接收，等待生成",
+            "durationMs": 9.96
+          },
+          {
+            "seq": 2,
+            "at": 1795248373.054519,
+            "stage": "profile_check",
+            "status": "completed",
+            "summary": "检查服务配置",
+            "durationMs": 359.27
+          },
+          {
+            "seq": 3,
+            "at": 1795248373.4137988,
+            "stage": "context_capture",
+            "status": "completed",
+            "summary": "使用发送时资料快照",
+            "durationMs": 42.47
+          },
+          {
+            "seq": 4,
+            "at": 1795248373.4562762,
+            "stage": "provider_complete",
+            "status": "completed",
+            "summary": "等待 AI 服务回复",
+            "durationMs": 1067.86
+          },
+          {
+            "seq": 5,
+            "at": 1795248374.5241427,
+            "stage": "tool_execute",
+            "status": "completed",
+            "summary": "读取已授权资料",
+            "tool": "pack_read_config_data",
+            "durationMs": 8.04
+          },
+          {
+            "seq": 6,
+            "at": 1795248374.5458963,
+            "stage": "provider_complete",
+            "status": "completed",
+            "summary": "等待 AI 服务回复",
+            "durationMs": 1725.96
+          },
+          {
+            "seq": 7,
+            "at": 1795248376.271863,
+            "stage": "output_validate",
+            "status": "completed",
+            "summary": "检查回答格式",
+            "durationMs": 32.01
+          },
+          {
+            "seq": 8,
+            "at": 1795248376.3038797,
+            "stage": "dependency_check",
+            "status": "completed",
+            "summary": "核对发送后的资料变化",
+            "durationMs": 8.51
+          },
+          {
+            "seq": 9,
+            "at": 1795248376.3123996,
+            "stage": "proposal_create",
+            "status": "completed",
+            "summary": "保存待审核候选",
+            "durationMs": 316.08
+          },
+          {
+            "seq": 10,
+            "at": 1795248376.628489,
+            "stage": "validation_a",
+            "status": "completed",
+            "summary": "校验 A：格式与引用",
+            "durationMs": 665.3
+          },
+          {
+            "seq": 11,
+            "at": 1795248377.293796,
+            "stage": "validation_b",
+            "status": "completed",
+            "summary": "校验 B：规则执行",
+            "durationMs": 639.02
+          },
+          {
+            "seq": 12,
+            "at": 1795248377.9328237,
+            "stage": "validation_c",
+            "status": "completed",
+            "summary": "校验 C：游戏场景",
+            "durationMs": 5353.26
+          },
+          {
+            "seq": 13,
+            "at": 1795248383.2860906,
+            "stage": "completed",
+            "status": "completed",
+            "summary": "生成完成，等待后续处理",
+            "durationMs": 2.09
+          }
+        ],
+        "contextRef": "67b0c374523128c7b9e3ee483b02f2d09bfa9ea0105c1789ef22165adda5d4c9",
+        "dependencyCheck": {
+          "snapshotAt": 1795248373.0094483,
+          "checkedAt": 1795248383.1591096,
+          "status": "unchanged",
+          "changes": [],
+          "totalChanges": 0,
+          "canRegenerate": false
+        },
+        "responseAt": 1795248383.1634185,
+        "messagePublication": {
+          "scopeId": "19c2d491ac2c43adbc48bbe2e59be109",
+          "sessionId": "c8de9c1668a84f8b99cd102b667e82e0",
+          "account": "kp",
+          "accessLevel": "administrator",
+          "contextRef": "67b0c374523128c7b9e3ee483b02f2d09bfa9ea0105c1789ef22165adda5d4c9",
+          "textDigest": "890693de2183de60836923a921bd82b2ab632ed8f0d4d9b61b06e9ea082d9360",
+          "responseAt": 1795248383.1634185,
+          "referenceLabels": {}
+        },
+        "diagnostics": {
+          "schemaVersion": 1,
+          "stage": "completed",
+          "turn": 1,
+          "toolCalls": [
+            {
+              "name": "pack_read_config_data",
+              "status": "completed",
+              "argumentsDigest": "9d1434e002203bda022c9a906b2e14cf09db9b656ca603617b5f9ff95e438cb2",
+              "keys": [
+                "file",
+                "limit",
+                "path"
+              ],
+              "unknownKeys": false,
+              "turn": 0
+            }
+          ],
+          "errors": [],
+          "outputFailures": [],
+          "preflightChecks": [],
+          "contextBudget": {
+            "bytes": 67018,
+            "limitBytes": 784384,
+            "toolSchemaBytes": 5627,
+            "toolMessageBytes": 4553
+          }
+        }
+      },
+      "attemptIds": [
+        33,
+        34
+      ],
+      "code": "AssertionError",
+      "reason": "blocked",
+      "traceback": "Traceback (most recent call last):\n  File \"D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\ai-context-compression\\live_scenarios.py\", line 180, in main\n    assert task['status']=='review_ready',task.get('error') or task['status']\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: blocked\n"
+    }
+  ]
+}

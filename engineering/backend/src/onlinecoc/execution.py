@@ -5,13 +5,15 @@ from .model import visible,writable,finite,uid,validate_execution_state,executio
 class Execution:
     def __init__(self,state,account,mode,random):
         self.state=copy.deepcopy(state); self.account=account;self.mode=mode;self.random=random
-        self.original=copy.deepcopy(state);self.reads={};self.failed=False;self.operations=0;self.effects=[]
+        self.original=copy.deepcopy(state);self.reads={};self.failed=False;self.failure=None;self.operations=0;self.effects=[]
     def guard(self,fn,*args):
         try:
             self.operations+=1;require(self.operations<=2048,"LIMIT_EXCEEDED")
             return fn(*args)
-        except Exception:
-            self.failed=True;raise
+        except Exception as error:
+            self.failed=True
+            if self.failure is None:self.failure=error
+            raise
     def read(self,id):
         e=self.state["entities"].get(id)
         require(e and e["lifecycle"]=="active" and visible(self.state,self.account,e),"NOT_VISIBLE")
@@ -72,6 +74,7 @@ class Execution:
         self.effects.append({"type":"transfer","item":item,"target":target_id,"quantity":quantity,"bag":bag})
         return target_id
     def finish(self):
+        if self.failure is not None:raise self.failure
         require(not self.failed,"EXECUTION_REJECTED")
         require(len(self.effects)<=256,"LIMIT_EXCEEDED");validate_execution_state(execution_snapshot(self.state))
         return {"entities":self.state["entities"],"relations":self.state["relations"],"reads":self.reads,"effects":self.effects}

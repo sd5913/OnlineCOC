@@ -15,9 +15,10 @@ def main():
         result(ai(kp,'ai.settings.update',{'enabled':True,'profileId':'offline','externalSources':{'public':True,'private':True,'kp':False},'auto':{'enabled':False,'channelIds':[],'prefix':'!ai '}}))
         channel='sv-scene-'+str(p1.state()['character']['numbers']['location'])
         sent=p1.action('chat',{'operation':'chat.message.send','input':{'channelId':channel,'text':'我想观察门锁。'}})
-        # Fetch via the same host-facing API the AI and custom developers use.
-        page=p1.request('/api/v1/ai/data/chat',{'channelId':channel})
-        msg=next(x['data'] for x in page['items'] if x['data']['text']=='我想观察门锁。')
+        # Player conversation uses the package's authorized chat API. The AI
+        # data-query API has a separate strict-player knowledge boundary.
+        page=p1.request('/package/chat/history',{'channelId':channel,'limit':50})
+        msg=next(x for x in page['items'] if x['text']=='我想观察门锁。')
         ref={k:msg[k] for k in ('channelId','messageId','revision','sequence')}
         pending=p1.action('request',{'kind':'free','text':'观察门锁','manual':True,'sourceMessages':[ref]})
         kp.action('resolve',{'requestId':pending['requestId'],'approve':True,'reason':'可以观察，无需检定'})
@@ -30,7 +31,7 @@ def main():
         assert chosen['data']['executions'][0]['status']=='none'
         checks.append('真实消息→申请→KP叙事裁决；无执行不伪造成功')
         denied=p2.request('/api/v1/ai/data/case',{'refs':[chosen['ref']]},allow_error=True)
-        assert denied.get('code')=='SOURCE_STALE',denied
+        assert denied.get('code')=='PERMISSION_DENIED',denied
         checks.append('其他玩家不可读取裁决资料')
         refs=kp.request('/api/v1/ai/references?kind=ruling&q=')['items']
         selection=next(x for x in refs if x['id']==chosen['ref']['id'])

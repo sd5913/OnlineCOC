@@ -1,0 +1,126 @@
+{
+  "runs": [
+    {
+      "phase": "baseline",
+      "checkedAt": "2026-11-20T18:10:02.161285+08:00",
+      "scope": "Package transport over real TCP; constant fixture, not full engine or model benchmark",
+      "externalModelCalls": 0,
+      "formalDataChanged": false,
+      "evidenceDirectory": "tests/output/local-performance-baseline-772d29bf",
+      "measurements": {
+        "directConcurrency1": {
+          "samples": 12,
+          "p50Ms": 5.132,
+          "p95Ms": 43.47,
+          "totalSeconds": 0.101,
+          "requestsPerSecond": 119.31
+        },
+        "directConcurrency4": {
+          "samples": 12,
+          "p50Ms": 22.87,
+          "p95Ms": 37.216,
+          "totalSeconds": 0.082,
+          "requestsPerSecond": 146.83
+        },
+        "proxyConcurrency1": {
+          "samples": 12,
+          "p50Ms": 324.954,
+          "p95Ms": 337.785,
+          "totalSeconds": 3.926,
+          "requestsPerSecond": 3.06
+        },
+        "proxyConcurrency4": {
+          "samples": 12,
+          "p50Ms": 1401.274,
+          "p95Ms": 1768.222,
+          "totalSeconds": 4.46,
+          "requestsPerSecond": 2.69
+        },
+        "composition4RequestsConcurrency1": {
+          "samples": 12,
+          "p50Ms": 109.593,
+          "p95Ms": 128.719,
+          "totalSeconds": 1.341,
+          "requestsPerSecond": 8.95
+        },
+        "composition4RequestsConcurrency4": {
+          "samples": 12,
+          "p50Ms": 418.36,
+          "p95Ms": 612.135,
+          "totalSeconds": 1.252,
+          "requestsPerSecond": 9.59
+        }
+      },
+      "checks": [
+        "single and four concurrent clients retain per-request identities",
+        "login cookie forwarded only to matching slot; anonymous caller inherits no session"
+      ],
+      "sourceHashes": {
+        "tools/launch.py": "dad19ab4ef66833d0b1119136221c64ec161692b883b98a853e1068b86b25db5",
+        "tools/client.py": "bfde2d84df81e36f52e9155d8be49b0a97e5a605f13180106bea2e552647a5b0"
+      },
+      "passed": true
+    },
+    {
+      "phase": "optimized",
+      "checkedAt": "2026-11-20T18:11:25.657389+08:00",
+      "scope": "Package transport over real TCP; constant fixture, not full engine or model benchmark",
+      "externalModelCalls": 0,
+      "formalDataChanged": false,
+      "evidenceDirectory": "tests/output/local-performance-optimized-556ff33a",
+      "measurements": {
+        "directConcurrency1": {
+          "samples": 12,
+          "p50Ms": 5.332,
+          "p95Ms": 42.8,
+          "totalSeconds": 0.102,
+          "requestsPerSecond": 118.21
+        },
+        "directConcurrency4": {
+          "samples": 12,
+          "p50Ms": 24.886,
+          "p95Ms": 40.319,
+          "totalSeconds": 0.087,
+          "requestsPerSecond": 137.76
+        },
+        "proxyConcurrency1": {
+          "samples": 12,
+          "p50Ms": 6.841,
+          "p95Ms": 13.899,
+          "totalSeconds": 0.09,
+          "requestsPerSecond": 134.07
+        },
+        "proxyConcurrency4": {
+          "samples": 12,
+          "p50Ms": 28.385,
+          "p95Ms": 43.242,
+          "totalSeconds": 0.095,
+          "requestsPerSecond": 125.72
+        },
+        "composition4RequestsConcurrency1": {
+          "samples": 12,
+          "p50Ms": 4.167,
+          "p95Ms": 9.451,
+          "totalSeconds": 0.056,
+          "requestsPerSecond": 215.34
+        },
+        "composition4RequestsConcurrency4": {
+          "samples": 12,
+          "p50Ms": 17.182,
+          "p95Ms": 22.121,
+          "totalSeconds": 0.055,
+          "requestsPerSecond": 219.18
+        }
+      },
+      "checks": [
+        "single and four concurrent clients retain per-request identities",
+        "login cookie forwarded only to matching slot; anonymous caller inherits no session"
+      ],
+      "sourceHashes": {
+        "tools/launch.py": "ba432d502e9ca5677bde0eb2ba87e4a13a61a86bafa7136e1717654a5c4e12c9",
+        "tools/client.py": "e3611765a3ab10101e9ffd5a57b71dfead1b2fef221a48e2b0e0fbae2bde93d8"
+      },
+      "passed": true
+    }
+  ]
+}

@@ -1,0 +1,85 @@
+{
+  "limits": {
+    "providerCalls": 4,
+    "repairAttempts": 1,
+    "reservedOrUsedBudget": 50000
+  },
+  "realCalls": [
+    {
+      "number": 1,
+      "status": "completed",
+      "reserved": 27911,
+      "usage": {
+        "prompt_tokens": 6298,
+        "completion_tokens": 85,
+        "total_tokens": 6383
+      },
+      "returnedModel": "deepseek-flash",
+      "seconds": 1.391
+    },
+    {
+      "number": 2,
+      "status": "completed",
+      "reserved": 30128,
+      "usage": {
+        "prompt_tokens": 6819,
+        "completion_tokens": 283,
+        "total_tokens": 7102
+      },
+      "returnedModel": "deepseek-flash",
+      "seconds": 1.505
+    }
+  ],
+  "formalDataChanged": false,
+  "sourceConfigDigest": "c8f5dd3721527fd1cefa6d2682eb5120d429c5613d34b1fd81c0eab528c1a546",
+  "requestedModel": "deepseek-flash",
+  "status": "passed",
+  "preflightReserved": 27911,
+  "unrelatedChatInserted": true,
+  "liveProgressVisible": true,
+  "taskStatus": "review_ready",
+  "error": null,
+  "usageTokens": 13485,
+  "responseDigest": "6640497f0f80a1fc397cdfdaaedd1a2fb2079fde0f4015e72a2142676698f45d",
+  "dependencyCheck": {
+    "snapshotAt": 1795171962.0612776,
+    "checkedAt": 1795171972.3005104,
+    "status": "unchanged",
+    "changes": [],
+    "totalChanges": 0,
+    "canRegenerate": false
+  },
+  "stages": [
+    "queued",
+    "profile_check",
+    "context_capture",
+    "provider_complete",
+    "tool_execute",
+    "tool_execute",
+    "provider_complete",
+    "output_validate",
+    "dependency_check",
+    "proposal_create",
+    "validation_a",
+    "validation_b",
+    "validation_c",
+    "completed"
+  ],
+  "reports": [
+    {
+      "level": "A",
+      "status": "pass"
+    },
+    {
+      "level": "B",
+      "status": "pass"
+    },
+    {
+      "level": "C",
+      "status": "pass"
+    }
+  ],
+  "publishedInIsolatedRoom": true,
+  "publications": 1,
+  "sourceConfigUnchanged": true
+}

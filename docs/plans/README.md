@@ -8,6 +8,7 @@ ISSUE-011首版与AI消费接入已完成，见[现行知识服务](../current/e
 
 | 文档 | 状态 | 说明 |
 | --- | --- | --- |
+| [AI 指令生成正确性、自动修复与整批执行](ai-command-reliability.md) | 进行中 | 本轮已实现并隔离验收；71类真实样例、限次技术修复与原子批次，剩余泛化和未支持范围持续记录 |
 | [AI 数据查询与聊天裁决资料后续计划](ai-data-query-adjudication.md) | 进行中 | 四类查询、来源复验、组件引用与树桩镇只读适配已实现；通用记录、索引与跨存储发布仍待实施 |
 | [Stumpsville 网页联机调整规划](stumpsville-web-integration.md) | 进行中 | S0–S2、云端部署及S3本地/强制TURN双浏览器验收完成；真人独立家庭/移动网待验收 |
 | [配置包 AI 人机交互原型与接入计划](ai-pack-interaction.md) | 草案 | 已交付 KP／PL 可操作演示；对象引用、对话与分步审核，包侧正式接线和配置闭环待实施 |
@@ -49,3 +50,5 @@ ISSUE-011首版与AI消费接入已完成，见[现行知识服务](../current/e
 - [AI 场景实验与配置变更验收](ai-rulings-experiments.md)：重启、调试、配置增删改、失败处理及首轮/复测计数口径。
 
 - [AI 会话管理交互原型](ai-session-management-prototype.md)：房间／列表／详情三栏、KP／PL、归档撤销和窄屏交互，等待试玩反馈。
+
+本轮默认AI、账号管理与C类裁决已实现并完成有界实验，见[归档记录](../history/2026-11-21-ai-defaults-c-review.md)；当前说明见[包侧使用](../../rulepacks/stumpsville/docs/current/usage.md)与[AI裁决](../current/engineering/ai-rulings.md)。

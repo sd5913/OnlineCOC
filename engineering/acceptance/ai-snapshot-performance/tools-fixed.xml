@@ -1,0 +1,425 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="6" skipped="0" tests="41" time="48.377" timestamp="2026-11-20T18:43:08.229786+08:00" hostname="LAPTOP-BIFSL64A"><testcase classname="tests.test_data_edits" name="test_append_from_partial_array_preserves_all_unread_data_and_is_repeatable" time="0.002" /><testcase classname="tests.test_data_edits" name="test_append_uniqueness_checks_items_outside_returned_page" time="0.001" /><testcase classname="tests.test_data_edits" name="test_add_replace_remove_are_explicit_and_preserve_siblings" time="0.002" /><testcase classname="tests.test_data_edits" name="test_rejects_unsafe_edits_atomically[mixed-DATA_EDIT_MIXED_REPLACEMENT]" time="0.002" /><testcase classname="tests.test_data_edits" name="test_rejects_unsafe_edits_atomically[stale-DATA_EDIT_BASELINE_STALE]" time="0.001" /><testcase classname="tests.test_data_edits" name="test_rejects_unsafe_edits_atomically[forged-DATA_EDIT_REFERENCE_UNVERIFIED]" time="0.001" /><testcase classname="tests.test_data_edits" name="test_rejects_unsafe_edits_atomically[incomplete-DATA_EDIT_INCOMPLETE_READ]" time="0.002" /><testcase classname="tests.test_data_edits" name="test_rejects_unsafe_edits_atomically[overlap-DATA_EDIT_OVERLAP]" time="0.002" /><testcase classname="tests.test_data_edits" name="test_rejects_unsafe_edits_atomically[array-remove-DATA_EDIT_TARGET_INVALID]" time="0.002" /><testcase classname="tests.test_data_edits" name="test_rejects_unsafe_edits_atomically[root-DATA_EDIT_INCOMPLETE_READ]" time="0.002" /><testcase classname="tests.test_data_edits" name="test_rejects_unsafe_edits_atomically[add-existing-DATA_EDIT_TARGET_INVALID]" time="0.001" /><testcase classname="tests.test_data_edits" name="test_multiple_appends_and_large_object_index_do_not_require_reconstruction" time="0.004" /><testcase classname="tests.test_data_edits" name="test_read_does_not_issue_ref_on_invalid_path_or_page[args0]" time="0.001" /><testcase classname="tests.test_data_edits" name="test_read_does_not_issue_ref_on_invalid_path_or_page[args1]" time="0.001" /><testcase classname="tests.test_data_edits" name="test_read_does_not_issue_ref_on_invalid_path_or_page[args2]" time="0.001" /><testcase classname="tests.test_data_edits" name="test_read_does_not_issue_ref_on_invalid_path_or_page[args3]" time="0.001" /><testcase classname="tests.test_data_edits" name="test_real_application_egress_and_session_ceiling[kp-EXTERNAL_SCOPE_DISABLED]" time="1.617" /><testcase classname="tests.test_data_edits" name="test_real_application_egress_and_session_ceiling[queries-DATA_QUERIES_DISABLED]" time="1.560" /><testcase classname="tests.test_data_edits" name="test_real_application_egress_and_session_ceiling[player-TOOL_FORBIDDEN]" time="1.747" /><testcase classname="tests.test_data_edits" name="test_model_increment_compiles_to_checked_manual_candidate[False]" time="14.021" /><testcase classname="tests.test_data_edits" name="test_model_increment_compiles_to_checked_manual_candidate[True]" time="12.692" /><testcase classname="tests.test_data_edits" name="test_data_edits_are_only_valid_on_draft" time="0.001" /><testcase classname="tests.test_task_diagnostics" name="test_failure_diagnostics_redact_messages_and_preserve_primary" time="1.112" /><testcase classname="tests.test_task_diagnostics" name="test_cleanup_error_does_not_replace_result_or_cancellation[False]" time="1.106" /><testcase classname="tests.test_task_diagnostics" name="test_cleanup_error_does_not_replace_result_or_cancellation[True]" time="1.191" /><testcase classname="tests.test_task_diagnostics" name="test_tool_metadata_is_bounded_and_contains_no_argument_values" time="0.001" /><testcase classname="tests.test_task_diagnostics" name="test_deepseek_wire_query_replay_and_parameter_repair[None]" time="1.313"><failure message="AssertionError: {'taskId': '29b588724d0f48ccbfeb9500de60f0a2', 'requestId': '29b588724d0f48ccbfeb9500de60f0a2', 'account': 'kp', 'profile': {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...}, ...}&#10;assert 'failed' == 'review_ready'&#10;  &#10;  - review_ready&#10;  + failed">setup = (&lt;onlinecoc.host.Host object at 0x00000200886064E0&gt;, &lt;onlinecoc_ai.proposals.Proposals object at 0x00000200882CC750&gt;, {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...})
+bad = None
+
+    @pytest.mark.parametrize('bad', [None, {'limit':None}, {'types':['unknown']}, {'fields':['no-such-field']}])
+    def test_deepseek_wire_query_replay_and_parameter_repair(setup, bad):
+        host,service,profile=setup;enable(host,public=True,kp=True,private=True)
+        seen=[]
+        def handler(request):
+            body=json.loads(request.content);seen.append(body)
+            assert body['thinking']=={'type':'disabled'}
+            assert 'NOT LOADED' in body['messages'][0]['content']
+            tools=[m for m in body['messages'] if m['role']=='tool']
+            if bad is not None and not tools:
+                name='room_read_data' if 'fields' in bad else 'room_search_data'
+                arguments={**bad}
+                if name=='room_read_data':
+                    arguments['refs']=[DataQueryService(host).execute('kp','search',{'types':['entity'],'limit':1},external=True)['items'][0]['ref']]
+            elif not tools or (json.loads(tools[-1]['content']).get('error') and len(tools)==1):
+                if tools:assert json.loads(tools[-1]['content'])['error']['code']=='INPUT_INVALID'
+                name,arguments='room_search_data',{'types':['entity'],'query':'','limit':12}
+            elif not any(m['role']=='assistant' and any(c['function']['name']=='room_read_data' and 'fields' not in json.loads(c['function']['arguments']) for c in m.get('tool_calls',[])) for m in body['messages']):
+                found=json.loads(tools[-1]['content']);assert found['items']
+                name,arguments='room_read_data',{'refs':[found['items'][0]['ref']]}
+            else:
+                data=json.loads(tools[-1]['content']);assert data['items'][0]['data']['name']
+                message={'role':'assistant','content':json.dumps({'kind':'plan','text':'已读取角色 '+data['items'][0]['data']['name']})}
+                return httpx.Response(200,json={'choices':[{'finish_reason':'stop','message':message}],'usage':{'prompt_tokens':10,'completion_tokens':10,'total_tokens':20}})
+            message={'role':'assistant','content':None,'tool_calls':[{'id':'call'+str(len(seen)),'type':'function',
+                'function':{'name':name,'arguments':json.dumps(arguments)}}]}
+            return httpx.Response(200,json={'choices':[{'finish_reason':'tool_calls','message':message}],'usage':{'prompt_tokens':10,'completion_tokens':10,'total_tokens':20}})
+        async def run():
+            c=Coordinator(service,{profile['profileId']:profile},context=Context(service,demand=True),
+                provider_factory=lambda p:create_provider(p,transport=httpx.MockTransport(handler),credential_loader=lambda _:'offline-key'))
+            await c.start()
+            try:
+                task=c.enqueue('kp','wire','查看所有房间信息并梳理')
+                saved=await wait_task(c,task['taskId'])
+                assert saved['status']=='review_ready',saved
+                assert '已读取角色' in saved['text']
+                diagnostics=saved['diagnostics']
+                assert not diagnostics['errors'] and diagnostics['stage']=='completed'
+                assert len(diagnostics['toolCalls'])==(3 if bad is not None else 2)
+                assert diagnostics['toolCalls'][0]['status']==('rejected' if bad is not None else 'completed')
+                app=Application(SimpleNamespace(proposals=service,coordinator=c))
+                assert app.tasks('kp')['items'][0]['diagnostics']==diagnostics
+                app.repository.update(lambda state:state['settings'].update(accessPolicy={'revision':1,'allowPlayerChat':True,'autoApproveBatches':False,'principal':'kp'}))
+                assert app.tasks('player1')['items']==[]
+                assert not host.state()['aiControl']['approvals']
+            finally:await c.close()
+&gt;       asyncio.run(run())
+
+engineering\ai\tests\test_task_diagnostics.py:118: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:204: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:127: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\base_events.py:719: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    async def run():
+        c=Coordinator(service,{profile['profileId']:profile},context=Context(service,demand=True),
+            provider_factory=lambda p:create_provider(p,transport=httpx.MockTransport(handler),credential_loader=lambda _:'offline-key'))
+        await c.start()
+        try:
+            task=c.enqueue('kp','wire','查看所有房间信息并梳理')
+            saved=await wait_task(c,task['taskId'])
+&gt;           assert saved['status']=='review_ready',saved
+E           AssertionError: {'taskId': '29b588724d0f48ccbfeb9500de60f0a2', 'requestId': '29b588724d0f48ccbfeb9500de60f0a2', 'account': 'kp', 'profile': {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...}, ...}
+E           assert 'failed' == 'review_ready'
+E             
+E             - review_ready
+E             + failed
+
+engineering\ai\tests\test_task_diagnostics.py:106: AssertionError</failure></testcase><testcase classname="tests.test_task_diagnostics" name="test_deepseek_wire_query_replay_and_parameter_repair[bad1]" time="1.258"><failure message="AssertionError: {'taskId': '33159809c97c44c8abaf5571b6b4c489', 'requestId': '33159809c97c44c8abaf5571b6b4c489', 'account': 'kp', 'profile': {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...}, ...}&#10;assert 'failed' == 'review_ready'&#10;  &#10;  - review_ready&#10;  + failed">setup = (&lt;onlinecoc.host.Host object at 0x00000200883827B0&gt;, &lt;onlinecoc_ai.proposals.Proposals object at 0x000002008853A690&gt;, {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...})
+bad = {'limit': None}
+
+    @pytest.mark.parametrize('bad', [None, {'limit':None}, {'types':['unknown']}, {'fields':['no-such-field']}])
+    def test_deepseek_wire_query_replay_and_parameter_repair(setup, bad):
+        host,service,profile=setup;enable(host,public=True,kp=True,private=True)
+        seen=[]
+        def handler(request):
+            body=json.loads(request.content);seen.append(body)
+            assert body['thinking']=={'type':'disabled'}
+            assert 'NOT LOADED' in body['messages'][0]['content']
+            tools=[m for m in body['messages'] if m['role']=='tool']
+            if bad is not None and not tools:
+                name='room_read_data' if 'fields' in bad else 'room_search_data'
+                arguments={**bad}
+                if name=='room_read_data':
+                    arguments['refs']=[DataQueryService(host).execute('kp','search',{'types':['entity'],'limit':1},external=True)['items'][0]['ref']]
+            elif not tools or (json.loads(tools[-1]['content']).get('error') and len(tools)==1):
+                if tools:assert json.loads(tools[-1]['content'])['error']['code']=='INPUT_INVALID'
+                name,arguments='room_search_data',{'types':['entity'],'query':'','limit':12}
+            elif not any(m['role']=='assistant' and any(c['function']['name']=='room_read_data' and 'fields' not in json.loads(c['function']['arguments']) for c in m.get('tool_calls',[])) for m in body['messages']):
+                found=json.loads(tools[-1]['content']);assert found['items']
+                name,arguments='room_read_data',{'refs':[found['items'][0]['ref']]}
+            else:
+                data=json.loads(tools[-1]['content']);assert data['items'][0]['data']['name']
+                message={'role':'assistant','content':json.dumps({'kind':'plan','text':'已读取角色 '+data['items'][0]['data']['name']})}
+                return httpx.Response(200,json={'choices':[{'finish_reason':'stop','message':message}],'usage':{'prompt_tokens':10,'completion_tokens':10,'total_tokens':20}})
+            message={'role':'assistant','content':None,'tool_calls':[{'id':'call'+str(len(seen)),'type':'function',
+                'function':{'name':name,'arguments':json.dumps(arguments)}}]}
+            return httpx.Response(200,json={'choices':[{'finish_reason':'tool_calls','message':message}],'usage':{'prompt_tokens':10,'completion_tokens':10,'total_tokens':20}})
+        async def run():
+            c=Coordinator(service,{profile['profileId']:profile},context=Context(service,demand=True),
+                provider_factory=lambda p:create_provider(p,transport=httpx.MockTransport(handler),credential_loader=lambda _:'offline-key'))
+            await c.start()
+            try:
+                task=c.enqueue('kp','wire','查看所有房间信息并梳理')
+                saved=await wait_task(c,task['taskId'])
+                assert saved['status']=='review_ready',saved
+                assert '已读取角色' in saved['text']
+                diagnostics=saved['diagnostics']
+                assert not diagnostics['errors'] and diagnostics['stage']=='completed'
+                assert len(diagnostics['toolCalls'])==(3 if bad is not None else 2)
+                assert diagnostics['toolCalls'][0]['status']==('rejected' if bad is not None else 'completed')
+                app=Application(SimpleNamespace(proposals=service,coordinator=c))
+                assert app.tasks('kp')['items'][0]['diagnostics']==diagnostics
+                app.repository.update(lambda state:state['settings'].update(accessPolicy={'revision':1,'allowPlayerChat':True,'autoApproveBatches':False,'principal':'kp'}))
+                assert app.tasks('player1')['items']==[]
+                assert not host.state()['aiControl']['approvals']
+            finally:await c.close()
+&gt;       asyncio.run(run())
+
+engineering\ai\tests\test_task_diagnostics.py:118: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:204: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:127: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\base_events.py:719: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    async def run():
+        c=Coordinator(service,{profile['profileId']:profile},context=Context(service,demand=True),
+            provider_factory=lambda p:create_provider(p,transport=httpx.MockTransport(handler),credential_loader=lambda _:'offline-key'))
+        await c.start()
+        try:
+            task=c.enqueue('kp','wire','查看所有房间信息并梳理')
+            saved=await wait_task(c,task['taskId'])
+&gt;           assert saved['status']=='review_ready',saved
+E           AssertionError: {'taskId': '33159809c97c44c8abaf5571b6b4c489', 'requestId': '33159809c97c44c8abaf5571b6b4c489', 'account': 'kp', 'profile': {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...}, ...}
+E           assert 'failed' == 'review_ready'
+E             
+E             - review_ready
+E             + failed
+
+engineering\ai\tests\test_task_diagnostics.py:106: AssertionError</failure></testcase><testcase classname="tests.test_task_diagnostics" name="test_deepseek_wire_query_replay_and_parameter_repair[bad2]" time="1.562"><failure message="AssertionError: {'taskId': '5d9b7cd35a7e4d199662f4bbef331ed8', 'requestId': '5d9b7cd35a7e4d199662f4bbef331ed8', 'account': 'kp', 'profile': {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...}, ...}&#10;assert 'failed' == 'review_ready'&#10;  &#10;  - review_ready&#10;  + failed">setup = (&lt;onlinecoc.host.Host object at 0x00000200882F73E0&gt;, &lt;onlinecoc_ai.proposals.Proposals object at 0x000002008835C050&gt;, {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...})
+bad = {'types': ['unknown']}
+
+    @pytest.mark.parametrize('bad', [None, {'limit':None}, {'types':['unknown']}, {'fields':['no-such-field']}])
+    def test_deepseek_wire_query_replay_and_parameter_repair(setup, bad):
+        host,service,profile=setup;enable(host,public=True,kp=True,private=True)
+        seen=[]
+        def handler(request):
+            body=json.loads(request.content);seen.append(body)
+            assert body['thinking']=={'type':'disabled'}
+            assert 'NOT LOADED' in body['messages'][0]['content']
+            tools=[m for m in body['messages'] if m['role']=='tool']
+            if bad is not None and not tools:
+                name='room_read_data' if 'fields' in bad else 'room_search_data'
+                arguments={**bad}
+                if name=='room_read_data':
+                    arguments['refs']=[DataQueryService(host).execute('kp','search',{'types':['entity'],'limit':1},external=True)['items'][0]['ref']]
+            elif not tools or (json.loads(tools[-1]['content']).get('error') and len(tools)==1):
+                if tools:assert json.loads(tools[-1]['content'])['error']['code']=='INPUT_INVALID'
+                name,arguments='room_search_data',{'types':['entity'],'query':'','limit':12}
+            elif not any(m['role']=='assistant' and any(c['function']['name']=='room_read_data' and 'fields' not in json.loads(c['function']['arguments']) for c in m.get('tool_calls',[])) for m in body['messages']):
+                found=json.loads(tools[-1]['content']);assert found['items']
+                name,arguments='room_read_data',{'refs':[found['items'][0]['ref']]}
+            else:
+                data=json.loads(tools[-1]['content']);assert data['items'][0]['data']['name']
+                message={'role':'assistant','content':json.dumps({'kind':'plan','text':'已读取角色 '+data['items'][0]['data']['name']})}
+                return httpx.Response(200,json={'choices':[{'finish_reason':'stop','message':message}],'usage':{'prompt_tokens':10,'completion_tokens':10,'total_tokens':20}})
+            message={'role':'assistant','content':None,'tool_calls':[{'id':'call'+str(len(seen)),'type':'function',
+                'function':{'name':name,'arguments':json.dumps(arguments)}}]}
+            return httpx.Response(200,json={'choices':[{'finish_reason':'tool_calls','message':message}],'usage':{'prompt_tokens':10,'completion_tokens':10,'total_tokens':20}})
+        async def run():
+            c=Coordinator(service,{profile['profileId']:profile},context=Context(service,demand=True),
+                provider_factory=lambda p:create_provider(p,transport=httpx.MockTransport(handler),credential_loader=lambda _:'offline-key'))
+            await c.start()
+            try:
+                task=c.enqueue('kp','wire','查看所有房间信息并梳理')
+                saved=await wait_task(c,task['taskId'])
+                assert saved['status']=='review_ready',saved
+                assert '已读取角色' in saved['text']
+                diagnostics=saved['diagnostics']
+                assert not diagnostics['errors'] and diagnostics['stage']=='completed'
+                assert len(diagnostics['toolCalls'])==(3 if bad is not None else 2)
+                assert diagnostics['toolCalls'][0]['status']==('rejected' if bad is not None else 'completed')
+                app=Application(SimpleNamespace(proposals=service,coordinator=c))
+                assert app.tasks('kp')['items'][0]['diagnostics']==diagnostics
+                app.repository.update(lambda state:state['settings'].update(accessPolicy={'revision':1,'allowPlayerChat':True,'autoApproveBatches':False,'principal':'kp'}))
+                assert app.tasks('player1')['items']==[]
+                assert not host.state()['aiControl']['approvals']
+            finally:await c.close()
+&gt;       asyncio.run(run())
+
+engineering\ai\tests\test_task_diagnostics.py:118: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:204: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:127: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\base_events.py:719: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    async def run():
+        c=Coordinator(service,{profile['profileId']:profile},context=Context(service,demand=True),
+            provider_factory=lambda p:create_provider(p,transport=httpx.MockTransport(handler),credential_loader=lambda _:'offline-key'))
+        await c.start()
+        try:
+            task=c.enqueue('kp','wire','查看所有房间信息并梳理')
+            saved=await wait_task(c,task['taskId'])
+&gt;           assert saved['status']=='review_ready',saved
+E           AssertionError: {'taskId': '5d9b7cd35a7e4d199662f4bbef331ed8', 'requestId': '5d9b7cd35a7e4d199662f4bbef331ed8', 'account': 'kp', 'profile': {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...}, ...}
+E           assert 'failed' == 'review_ready'
+E             
+E             - review_ready
+E             + failed
+
+engineering\ai\tests\test_task_diagnostics.py:106: AssertionError</failure></testcase><testcase classname="tests.test_task_diagnostics" name="test_deepseek_wire_query_replay_and_parameter_repair[bad3]" time="1.375"><failure message="AssertionError: {'taskId': '243d578850314f2da2a1ff63b510dbe4', 'requestId': '243d578850314f2da2a1ff63b510dbe4', 'account': 'kp', 'profile': {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...}, ...}&#10;assert 'failed' == 'review_ready'&#10;  &#10;  - review_ready&#10;  + failed">setup = (&lt;onlinecoc.host.Host object at 0x00000200882F4F50&gt;, &lt;onlinecoc_ai.proposals.Proposals object at 0x000002008857AB70&gt;, {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...})
+bad = {'fields': ['no-such-field']}
+
+    @pytest.mark.parametrize('bad', [None, {'limit':None}, {'types':['unknown']}, {'fields':['no-such-field']}])
+    def test_deepseek_wire_query_replay_and_parameter_repair(setup, bad):
+        host,service,profile=setup;enable(host,public=True,kp=True,private=True)
+        seen=[]
+        def handler(request):
+            body=json.loads(request.content);seen.append(body)
+            assert body['thinking']=={'type':'disabled'}
+            assert 'NOT LOADED' in body['messages'][0]['content']
+            tools=[m for m in body['messages'] if m['role']=='tool']
+            if bad is not None and not tools:
+                name='room_read_data' if 'fields' in bad else 'room_search_data'
+                arguments={**bad}
+                if name=='room_read_data':
+                    arguments['refs']=[DataQueryService(host).execute('kp','search',{'types':['entity'],'limit':1},external=True)['items'][0]['ref']]
+            elif not tools or (json.loads(tools[-1]['content']).get('error') and len(tools)==1):
+                if tools:assert json.loads(tools[-1]['content'])['error']['code']=='INPUT_INVALID'
+                name,arguments='room_search_data',{'types':['entity'],'query':'','limit':12}
+            elif not any(m['role']=='assistant' and any(c['function']['name']=='room_read_data' and 'fields' not in json.loads(c['function']['arguments']) for c in m.get('tool_calls',[])) for m in body['messages']):
+                found=json.loads(tools[-1]['content']);assert found['items']
+                name,arguments='room_read_data',{'refs':[found['items'][0]['ref']]}
+            else:
+                data=json.loads(tools[-1]['content']);assert data['items'][0]['data']['name']
+                message={'role':'assistant','content':json.dumps({'kind':'plan','text':'已读取角色 '+data['items'][0]['data']['name']})}
+                return httpx.Response(200,json={'choices':[{'finish_reason':'stop','message':message}],'usage':{'prompt_tokens':10,'completion_tokens':10,'total_tokens':20}})
+            message={'role':'assistant','content':None,'tool_calls':[{'id':'call'+str(len(seen)),'type':'function',
+                'function':{'name':name,'arguments':json.dumps(arguments)}}]}
+            return httpx.Response(200,json={'choices':[{'finish_reason':'tool_calls','message':message}],'usage':{'prompt_tokens':10,'completion_tokens':10,'total_tokens':20}})
+        async def run():
+            c=Coordinator(service,{profile['profileId']:profile},context=Context(service,demand=True),
+                provider_factory=lambda p:create_provider(p,transport=httpx.MockTransport(handler),credential_loader=lambda _:'offline-key'))
+            await c.start()
+            try:
+                task=c.enqueue('kp','wire','查看所有房间信息并梳理')
+                saved=await wait_task(c,task['taskId'])
+                assert saved['status']=='review_ready',saved
+                assert '已读取角色' in saved['text']
+                diagnostics=saved['diagnostics']
+                assert not diagnostics['errors'] and diagnostics['stage']=='completed'
+                assert len(diagnostics['toolCalls'])==(3 if bad is not None else 2)
+                assert diagnostics['toolCalls'][0]['status']==('rejected' if bad is not None else 'completed')
+                app=Application(SimpleNamespace(proposals=service,coordinator=c))
+                assert app.tasks('kp')['items'][0]['diagnostics']==diagnostics
+                app.repository.update(lambda state:state['settings'].update(accessPolicy={'revision':1,'allowPlayerChat':True,'autoApproveBatches':False,'principal':'kp'}))
+                assert app.tasks('player1')['items']==[]
+                assert not host.state()['aiControl']['approvals']
+            finally:await c.close()
+&gt;       asyncio.run(run())
+
+engineering\ai\tests\test_task_diagnostics.py:118: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:204: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:127: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\base_events.py:719: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    async def run():
+        c=Coordinator(service,{profile['profileId']:profile},context=Context(service,demand=True),
+            provider_factory=lambda p:create_provider(p,transport=httpx.MockTransport(handler),credential_loader=lambda _:'offline-key'))
+        await c.start()
+        try:
+            task=c.enqueue('kp','wire','查看所有房间信息并梳理')
+            saved=await wait_task(c,task['taskId'])
+&gt;           assert saved['status']=='review_ready',saved
+E           AssertionError: {'taskId': '243d578850314f2da2a1ff63b510dbe4', 'requestId': '243d578850314f2da2a1ff63b510dbe4', 'account': 'kp', 'profile': {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...}, ...}
+E           assert 'failed' == 'review_ready'
+E             
+E             - review_ready
+E             + failed
+
+engineering\ai\tests\test_task_diagnostics.py:106: AssertionError</failure></testcase><testcase classname="tests.test_task_diagnostics" name="test_provider_error_and_cleanup_keep_stable_code" time="1.617" /><testcase classname="tests.test_task_diagnostics" name="test_model_page_counts_do_not_change_proofs_or_reveal_hidden_totals" time="1.532" /><testcase classname="tests.test_task_diagnostics" name="test_channel_reference_resolves_actual_id_before_chat" time="1.310"><failure message="AssertionError: {'taskId': '00ff7a8bcb4e44d1883c95212fab52ab', 'requestId': '00ff7a8bcb4e44d1883c95212fab52ab', 'account': 'kp', 'profile': {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...}, ...}&#10;assert 'failed' == 'review_ready'&#10;  &#10;  - review_ready&#10;  + failed">setup = (&lt;onlinecoc.host.Host object at 0x00000200886049B0&gt;, &lt;onlinecoc_ai.proposals.Proposals object at 0x00000200885EE820&gt;, {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...})
+
+    def test_channel_reference_resolves_actual_id_before_chat(setup):
+        host,service,profile=setup;enable(host,public=True,kp=True,private=True)
+        profile['limits']['maxToolRounds']=4
+        seen=[]
+        def handler(request):
+            body=json.loads(request.content);seen.append(body)
+            assert 'ref.id is an opaque' in body['messages'][0]['content']
+            tools=[m for m in body['messages'] if m['role']=='tool']
+            if not tools:name,args='room_search_data',{'types':['channel'],'limit':50}
+            else:
+                found=json.loads(tools[-1]['content'])
+                assert found['pageSummary']['returnedItems']==len(found['items'])
+                if len(tools)==1:
+                    assert found['items'][0]['ref']['id']!='general'
+                    name,args='room_read_data',{'refs':[found['items'][0]['ref']]}
+                elif len(tools)==2:
+                    cid=found['items'][0]['data']['channelId'];assert cid=='general'
+                    name,args='room_read_chat',{'channelId':cid,'limit':50}
+                else:
+                    assert found['items']==[]
+                    return httpx.Response(200,json={'choices':[{'finish_reason':'stop','message':{'role':'assistant','content':json.dumps({'kind':'plan','text':'One channel; no messages in the authorized window.'})}}],'usage':{'prompt_tokens':10,'completion_tokens':10,'total_tokens':20}})
+            message={'role':'assistant','content':None,'tool_calls':[{'id':'c'+str(len(seen)),'type':'function','function':{'name':name,'arguments':json.dumps(args)}}]}
+            return httpx.Response(200,json={'choices':[{'finish_reason':'tool_calls','message':message}],'usage':{'prompt_tokens':10,'completion_tokens':10,'total_tokens':20}})
+        async def run():
+            c=Coordinator(service,{profile['profileId']:profile},context=Context(service,demand=True),provider_factory=lambda p:create_provider(p,transport=httpx.MockTransport(handler),credential_loader=lambda _:'offline-key'))
+            await c.start()
+            try:
+                saved=await wait_task(c,c.enqueue('kp','channel-id','check chat')['taskId'])
+                assert saved['status']=='review_ready',saved
+                assert all(x['status']=='completed' for x in saved['diagnostics']['toolCalls'])
+            finally:await c.close()
+&gt;       asyncio.run(run())
+
+engineering\ai\tests\test_task_diagnostics.py:190: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:204: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:127: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\base_events.py:719: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    async def run():
+        c=Coordinator(service,{profile['profileId']:profile},context=Context(service,demand=True),provider_factory=lambda p:create_provider(p,transport=httpx.MockTransport(handler),credential_loader=lambda _:'offline-key'))
+        await c.start()
+        try:
+            saved=await wait_task(c,c.enqueue('kp','channel-id','check chat')['taskId'])
+&gt;           assert saved['status']=='review_ready',saved
+E           AssertionError: {'taskId': '00ff7a8bcb4e44d1883c95212fab52ab', 'requestId': '00ff7a8bcb4e44d1883c95212fab52ab', 'account': 'kp', 'profile': {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...}, ...}
+E           assert 'failed' == 'review_ready'
+E             
+E             - review_ready
+E             + failed
+
+engineering\ai\tests\test_task_diagnostics.py:187: AssertionError</failure></testcase><testcase classname="tests.test_task_diagnostics" name="test_last_round_closes_tools_and_returns_bounded_partial_answer" time="1.447"><failure message="AssertionError: {'taskId': '77c08e6a0e73441691b941599c36b99a', 'requestId': '77c08e6a0e73441691b941599c36b99a', 'account': 'kp', 'profile': {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...}, ...}&#10;assert ('failed' == 'review_ready'&#10;  &#10;  - review_ready&#10;  + failed)">setup = (&lt;onlinecoc.host.Host object at 0x0000020088604140&gt;, &lt;onlinecoc_ai.proposals.Proposals object at 0x00000200885EFB60&gt;, {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...})
+
+    def test_last_round_closes_tools_and_returns_bounded_partial_answer(setup):
+        from onlinecoc_ai.providers.base import Completion
+        host,service,profile=setup;enable(host,public=True)
+        profile['limits']['maxToolRounds']=1
+        seen=[]
+        async def callback(count,messages,tools):
+            seen.append(tools)
+            if count==1:
+                assert tools
+                return Completion({'role':'assistant','content':None,'tool_calls':[{'id':'one','type':'function','function':{'name':'room_search_data','arguments':json.dumps({'types':['entity'],'limit':1})}}]}, {'prompt_tokens':10,'completion_tokens':10,'total_tokens':20},'tool_calls','f'*64)
+            assert tools==[] and len(seen)==2
+            assert messages[-1]['role']=='system' and 'final response-only turn' in messages[-1]['content']
+            result=json.loads(next(m['content'] for m in reversed(messages) if m['role']=='tool'))
+            assert result['pageSummary']['hasMore']
+            return completion({'kind':'plan','text':'One entity on this page; further pages and details were not read.'})
+        async def run():
+            c=Coordinator(service,{profile['profileId']:profile},context=Context(service,demand=True),provider_factory=lambda _:Fake(callback))
+            await c.start()
+            try:
+                saved=await wait_task(c,c.enqueue('kp','bounded','overview')['taskId'])
+                assert saved['status']=='review_ready' and len(saved['calls'])==2,saved
+                assert len(saved['diagnostics']['toolCalls'])==1
+            finally:await c.close()
+&gt;       asyncio.run(run())
+
+engineering\ai\tests\test_task_diagnostics.py:216: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:204: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:127: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\base_events.py:719: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    async def run():
+        c=Coordinator(service,{profile['profileId']:profile},context=Context(service,demand=True),provider_factory=lambda _:Fake(callback))
+        await c.start()
+        try:
+            saved=await wait_task(c,c.enqueue('kp','bounded','overview')['taskId'])
+&gt;           assert saved['status']=='review_ready' and len(saved['calls'])==2,saved
+E           AssertionError: {'taskId': '77c08e6a0e73441691b941599c36b99a', 'requestId': '77c08e6a0e73441691b941599c36b99a', 'account': 'kp', 'profile': {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...}, ...}
+E           assert ('failed' == 'review_ready'
+E             
+E             - review_ready
+E             + failed)
+
+engineering\ai\tests\test_task_diagnostics.py:213: AssertionError</failure></testcase><testcase classname="tests.test_task_diagnostics" name="test_http_diagnostics_keep_only_valid_status_without_remote_text[400]" time="0.001" /><testcase classname="tests.test_task_diagnostics" name="test_http_diagnostics_keep_only_valid_status_without_remote_text[422]" time="0.001" /><testcase classname="tests.test_task_diagnostics" name="test_http_diagnostics_keep_only_valid_status_without_remote_text[None]" time="0.001" /><testcase classname="tests.test_task_diagnostics" name="test_http_diagnostics_keep_only_valid_status_without_remote_text[private error]" time="0.001" /><testcase classname="tests.test_task_diagnostics" name="test_http_diagnostics_keep_only_valid_status_without_remote_text[True]" time="0.001" /><testcase classname="tests.test_task_diagnostics" name="test_http_diagnostics_keep_only_valid_status_without_remote_text[99]" time="0.001" /><testcase classname="tests.test_task_diagnostics" name="test_http_diagnostics_keep_only_valid_status_without_remote_text[600]" time="0.001" /></testsuite></testsuites>

@@ -1,7 +1,5 @@
 import argparse,getpass,json,os
 from pathlib import Path
-from .host import Host
-from .assets import Assets,restore_host
 
 def main():
     parser=argparse.ArgumentParser(description='OnlineCOC file-backed first test')
@@ -19,8 +17,13 @@ def main():
     backup=sub.add_parser('backup');backup.add_argument('--output',required=True);backup.add_argument('--include-identity',action='store_true')
     restore=sub.add_parser('restore');restore.add_argument('--bundle',required=True);restore.add_argument('--identity-dir')
     create=sub.add_parser('account-create');create.add_argument('account');create.add_argument('--role',choices=['kp','player'],default='player')
+    create.add_argument('--request-id')
+    delete=sub.add_parser('account-delete');delete.add_argument('account');delete.add_argument('--request-id')
+    local=sub.add_parser('host-account-request',help='通过stdin JSON管理匹配data-dir的运行中本机实例')
+    local.add_argument('--host-control-dir')
     sub.add_parser('collect-assets')
     password=sub.add_parser('password');password.add_argument('account')
+    password.add_argument('--request-id')
     validation=sub.add_parser('validate-room', help='只读检查目标房间格式，不启动宿主或迁移')
     validation.add_argument('--input', required=True)
     validation.add_argument('--format', choices=['room','snapshot','backup'], default='room')
@@ -43,6 +46,11 @@ def main():
         print(json.dumps({'valid':True,'engineVersion':ENGINE_VERSION,'roomSchemaVersion':ROOM_SCHEMA_VERSION}))
         return
     if not args.data_dir:parser.error('--data-dir is required for this operation')
+    if args.operation=='host-account-request':
+        from .host_control_client import run
+        raise SystemExit(run(args.data_dir,args.host_control_dir))
+    from .host import Host
+    from .assets import Assets,restore_host
     if args.operation=='serve' and bool(args.ai_config)!=bool(args.ai_pack):parser.error('--ai-config and --ai-pack must be supplied together')
     if args.operation=='serve' and (bool(args.ai_data_adapter)!=bool(args.ai_data_path) or (args.ai_data_adapter and not args.ai_config)):
         parser.error('--ai-data-adapter and --ai-data-path require AI and must be supplied together')
@@ -52,10 +60,15 @@ def main():
     host=Host(args.data_dir,bootstrap=password_value)
     try:
         if args.operation=='init':print('已创建房间及 kp/player1/player2 账号。')
-        elif args.operation=='password':host.identity.password(args.account,getpass.getpass('新密码：'))
-        elif args.operation=='account-create':
-            host.identity.create(args.account,getpass.getpass('账号密码：'))
-            s=host.state();host.manage(s,'kp','member.add',{'accountId':args.account,'role':args.role});host.commit(s)
+        elif args.operation in ('password','account-create','account-delete'):
+            from uuid import uuid4
+            operation={'account-create':'create','account-delete':'delete','password':'password'}[args.operation]
+            data={'requestId':args.request_id or str(uuid4()),'operation':operation,'accountId':args.account}
+            if operation!='delete':data['password']=getpass.getpass('账号密码：')
+            if operation=='create':data['role']=args.role
+            result=host.local_account_change(data)
+            print(json.dumps(result,ensure_ascii=True))
+            if result['status']!='committed':raise SystemExit(2)
         elif args.operation=='collect-assets':print(Assets(host).collect_orphans('kp'))
         elif args.operation=='backup':print(Assets(host).backup('kp',args.output,args.include_identity))
         else:

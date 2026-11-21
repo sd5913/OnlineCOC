@@ -1,0 +1,949 @@
+{
+  "tree": "engineering\\acceptance\\ai-chat-isolation\\work\\http-and-source-fixed-1795223636797561000",
+  "mode": "before",
+  "cases": [
+    {
+      "mode": "before",
+      "caseId": "single-request",
+      "status": "passed",
+      "historyRequests": [],
+      "request": "修改 fixture.token 道具配置模板：默认 bonus 设为15，修订从1改为2，其他字段、规则和现有实例保持不变。请准备草稿。",
+      "task": {
+        "taskId": "c266ae2730c1473faeb72ee23f4ffa83",
+        "requestId": "c266ae2730c1473faeb72ee23f4ffa83",
+        "account": "kp",
+        "profile": {
+          "adapter": "deepseek-chat",
+          "allowPrivateEndpoint": false,
+          "baseUrl": "https://api.deepseek.com",
+          "credentialRef": "env:ONLINECOC_DEEPSEEK_API_KEY",
+          "enabled": true,
+          "limits": {
+            "dailyTokenBudget": null,
+            "maxConcurrentPerRoom": 1,
+            "maxQueuedPerRoom": 5,
+            "maxRepairAttempts": 2,
+            "maxToolRounds": 4,
+            "maxTransportRetries": 0,
+            "taskTimeoutMs": 300000
+          },
+          "model": "deepseek-flash",
+          "profileId": "deepseek-main",
+          "request": {
+            "connectTimeoutMs": 10000,
+            "maxOutputTokens": 2200,
+            "thinking": "disabled",
+            "totalTimeoutMs": 120000
+          },
+          "revision": 6,
+          "schemaVersion": 1,
+          "versionInfo": {
+            "label": "DeepSeek-V4.1-Flash-1017",
+            "sourceUrl": "https://api-docs.deepseek.com/quick_start/pricing/",
+            "verifiedAt": "2026-11-19"
+          }
+        },
+        "status": "review_ready",
+        "createdAt": 1795224330.9633358,
+        "lease": null,
+        "error": null,
+        "proposalId": "1a0aa04e6fcf4968b45997b0cc6bf786",
+        "text": "已按当前 fixture.token 模板准备草稿：仅将 defaults.bonus 由 0 改为 15，revision 由 1 升为 2，charge/quantity/behaviors 及所用规则 fixture.check 全部保持不变。\n\n- 新模板成功目标 = 60 + 15 = 75，d100 成功率 75%，仍在 0—15 的 bonus 允许范围内。\n- 现有实例不迁移，房间中已建道具仍沿用旧值，此草稿只影响新建实例。\n- 关于「新增道具是否使其他选择失去价值」：本改动不新增道具，只调整同一模板默认值，故不涉及替代其他选项。\n\n提交后仍需独立 KP 审批与 A/B/C 校验，草稿本身不代表通过或已发布。",
+        "calls": [
+          {
+            "callId": "a1a57a18eef5407986402ddcb5bac18a",
+            "requestDigest": "566591a9ab62f8b380645fce72338e32c7f24b75faa5f063ff97905200bf50d5",
+            "profileRevision": 6,
+            "requestedModel": "deepseek-flash",
+            "responseDigest": "bdbc5c45af36873a85a7c224998ffcabb348d5fac92ff7df19ac93705fba24ec",
+            "usage": {
+              "prompt_tokens": 6607,
+              "completion_tokens": 69,
+              "total_tokens": 6676
+            },
+            "returnedModel": "deepseek-flash",
+            "systemFingerprint": "bc19ba97cbe016479903222bb1578db6"
+          },
+          {
+            "callId": "98afabf3fe0a406c828a35451f563915",
+            "requestDigest": "4afe389abcdf25b636c1748bdac9fbe297d71d5068043c3ba5686e95e1e86f3e",
+            "profileRevision": 6,
+            "requestedModel": "deepseek-flash",
+            "responseDigest": "42424ae045c52ff5b25e38f0c4d843007ec09b96b1fd6cd66db06f78d871ce05",
+            "usage": {
+              "prompt_tokens": 7112,
+              "completion_tokens": 296,
+              "total_tokens": 7408
+            },
+            "returnedModel": "deepseek-flash",
+            "systemFingerprint": "bc19ba97cbe016479903222bb1578db6"
+          }
+        ],
+        "usage": 14084,
+        "events": [
+          {
+            "seq": 1,
+            "at": 1795224330.9633362,
+            "stage": "queued",
+            "status": "completed",
+            "summary": "已接收，等待生成",
+            "durationMs": 9.25
+          },
+          {
+            "seq": 2,
+            "at": 1795224330.9726005,
+            "stage": "profile_check",
+            "status": "completed",
+            "summary": "检查服务配置",
+            "durationMs": 364.57
+          },
+          {
+            "seq": 3,
+            "at": 1795224331.3371844,
+            "stage": "context_capture",
+            "status": "completed",
+            "summary": "使用发送时资料快照",
+            "durationMs": 19.71
+          },
+          {
+            "seq": 4,
+            "at": 1795224331.356907,
+            "stage": "provider_complete",
+            "status": "completed",
+            "summary": "等待 AI 服务回复",
+            "durationMs": 994.38
+          },
+          {
+            "seq": 5,
+            "at": 1795224332.3512967,
+            "stage": "tool_execute",
+            "status": "completed",
+            "summary": "读取已授权资料",
+            "tool": "room_read_management",
+            "durationMs": 6.1
+          },
+          {
+            "seq": 6,
+            "at": 1795224332.3575907,
+            "stage": "tool_execute",
+            "status": "completed",
+            "summary": "读取已授权资料",
+            "tool": "pack_read_contract",
+            "durationMs": 0.01
+          },
+          {
+            "seq": 7,
+            "at": 1795224332.3661916,
+            "stage": "provider_complete",
+            "status": "completed",
+            "summary": "等待 AI 服务回复",
+            "durationMs": 1968.81
+          },
+          {
+            "seq": 8,
+            "at": 1795224334.3350139,
+            "stage": "output_validate",
+            "status": "completed",
+            "summary": "检查回答格式",
+            "durationMs": 0.71
+          },
+          {
+            "seq": 9,
+            "at": 1795224334.3357263,
+            "stage": "dependency_check",
+            "status": "completed",
+            "summary": "核对发送后的资料变化",
+            "durationMs": 6.29
+          },
+          {
+            "seq": 10,
+            "at": 1795224334.3420305,
+            "stage": "proposal_create",
+            "status": "completed",
+            "summary": "保存待审核候选",
+            "durationMs": 24.38
+          },
+          {
+            "seq": 11,
+            "at": 1795224334.3664181,
+            "stage": "validation_a",
+            "status": "completed",
+            "summary": "校验 A：格式与引用",
+            "durationMs": 460.13
+          },
+          {
+            "seq": 12,
+            "at": 1795224334.8265595,
+            "stage": "validation_b",
+            "status": "completed",
+            "summary": "校验 B：规则执行",
+            "durationMs": 430.52
+          },
+          {
+            "seq": 13,
+            "at": 1795224335.257088,
+            "stage": "validation_c",
+            "status": "completed",
+            "summary": "校验 C：游戏场景",
+            "durationMs": 5431.24
+          },
+          {
+            "seq": 14,
+            "at": 1795224340.6883423,
+            "stage": "completed",
+            "status": "completed",
+            "summary": "生成完成，等待后续处理",
+            "durationMs": 2.3
+          }
+        ],
+        "contextRef": "5a8e5c60a08f9207651d8027fa243adfe628d7e4bd84ac2137742876c4620ed2",
+        "dependencyCheck": {
+          "snapshotAt": 1795224330.9364283,
+          "checkedAt": 1795224340.1099908,
+          "status": "unchanged",
+          "changes": [],
+          "totalChanges": 0,
+          "canRegenerate": false
+        },
+        "responseAt": 1795224340.1183245,
+        "messagePublication": {
+          "scopeId": "fc92cd64384b4831be6eab786c161eeb",
+          "sessionId": "93aba2590c0745af8e8eb8318c5b8755",
+          "account": "kp",
+          "accessLevel": "administrator",
+          "contextRef": "5a8e5c60a08f9207651d8027fa243adfe628d7e4bd84ac2137742876c4620ed2",
+          "textDigest": "216f7a1db823cba2c9fb22157cbe78233fee184a0c8005f7c6414da19036aea9",
+          "responseAt": 1795224340.1183245,
+          "referenceLabels": {}
+        },
+        "diagnostics": {
+          "schemaVersion": 1,
+          "stage": "completed",
+          "turn": 1,
+          "toolCalls": [
+            {
+              "name": "room_read_management",
+              "status": "completed",
+              "argumentsDigest": "014b4b3f0019435aa48b06cc62fcd65509614ed91924530dda40b7a595ff1b77",
+              "keys": [
+                "section"
+              ],
+              "unknownKeys": false,
+              "turn": 0
+            },
+            {
+              "name": "pack_read_contract",
+              "status": "completed",
+              "argumentsDigest": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+              "keys": [],
+              "unknownKeys": false,
+              "turn": 0
+            }
+          ],
+          "errors": [],
+          "outputFailures": [],
+          "preflightChecks": [],
+          "contextBudget": {
+            "bytes": 30241,
+            "limitBytes": 262144,
+            "toolSchemaBytes": 5751,
+            "toolMessageBytes": 1797
+          }
+        }
+      },
+      "modelCalls": 2,
+      "unnecessaryClarifications": 0,
+      "tokens": 14084,
+      "firstUsable": true,
+      "actualExecution": true,
+      "seconds": 16.02
+    },
+    {
+      "mode": "before",
+      "caseId": "older-parameters",
+      "status": "passed",
+      "historyRequests": [
+        "修改 fixture.token 道具配置模板：默认 bonus 设为15，修订从1改为2，其他字段、规则和现有实例保持不变。请准备草稿。",
+        "该需求已经确定；仅准备候选，之后由我审核。",
+        "说明简短即可。",
+        "不需要修改描述文案。",
+        "请保留原有规则实现。",
+        "不要另增其他道具。"
+      ],
+      "request": "按前面确定的参数，准备配置草稿。",
+      "task": {
+        "taskId": "5ca48942563e450b908f5b008e517b1e",
+        "requestId": "5ca48942563e450b908f5b008e517b1e",
+        "account": "kp",
+        "profile": {
+          "adapter": "deepseek-chat",
+          "allowPrivateEndpoint": false,
+          "baseUrl": "https://api.deepseek.com",
+          "credentialRef": "env:ONLINECOC_DEEPSEEK_API_KEY",
+          "enabled": true,
+          "limits": {
+            "dailyTokenBudget": null,
+            "maxConcurrentPerRoom": 1,
+            "maxQueuedPerRoom": 5,
+            "maxRepairAttempts": 2,
+            "maxToolRounds": 4,
+            "maxTransportRetries": 0,
+            "taskTimeoutMs": 300000
+          },
+          "model": "deepseek-flash",
+          "profileId": "deepseek-main",
+          "request": {
+            "connectTimeoutMs": 10000,
+            "maxOutputTokens": 2200,
+            "thinking": "disabled",
+            "totalTimeoutMs": 120000
+          },
+          "revision": 6,
+          "schemaVersion": 1,
+          "versionInfo": {
+            "label": "DeepSeek-V4.1-Flash-1017",
+            "sourceUrl": "https://api-docs.deepseek.com/quick_start/pricing/",
+            "verifiedAt": "2026-11-19"
+          }
+        },
+        "status": "review_ready",
+        "createdAt": 1795224348.7541254,
+        "lease": null,
+        "error": null,
+        "proposalId": "640988d644134ac3a8a44342a7f12a4c",
+        "text": "按前面已确认的参数（fixture.token 的 bonus 由 0 改为 15，描述文案、其余规则与道具数量均不变），已准备配置替换草案，待你独立审批；它不会自动发布或改动任何现有实例。\n\n- **范围**：仅 fixture.token 一件道具，defaults.bonus 0→15；charges=2、quantity、unitMass 与 behaviors.use→fixture.check 保持原样。\n- **预期影响**：目标 60→75，d100 成功率约 75%；charges 与同账号归属校验仍由宿主执行。\n- **未改动**：fixture.actor 的 target/hp 不变，未新增任何道具，未改规则实现。",
+        "calls": [
+          {
+            "callId": "604a8b3ba4324588b7963f17890faffc",
+            "requestDigest": "37dfbe272bc26d634c19edaeccd402d482512182b5e9a045c2c12502485e6205",
+            "profileRevision": 6,
+            "requestedModel": "deepseek-flash",
+            "responseDigest": "2ce4cc926565e097b639427f46050834e7643b95aa9646bb54ba8b280a8461a2",
+            "usage": {
+              "prompt_tokens": 6667,
+              "completion_tokens": 68,
+              "total_tokens": 6735
+            },
+            "returnedModel": "deepseek-flash",
+            "systemFingerprint": "bc19ba97cbe016479903222bb1578db6"
+          },
+          {
+            "callId": "c992e95893b148c991082d01e599994c",
+            "requestDigest": "fc3ef305da550f33ec8cca7c486f062220257ff30707560a9fdc186505b83e14",
+            "profileRevision": 6,
+            "requestedModel": "deepseek-flash",
+            "responseDigest": "71685a17ebbd022fda7a071e7cf397091d5c30bfd56a9acfb1c33a9237d3d436",
+            "usage": {
+              "prompt_tokens": 7171,
+              "completion_tokens": 273,
+              "total_tokens": 7444
+            },
+            "returnedModel": "deepseek-flash",
+            "systemFingerprint": "bc19ba97cbe016479903222bb1578db6"
+          }
+        ],
+        "usage": 14179,
+        "events": [
+          {
+            "seq": 1,
+            "at": 1795224348.7541258,
+            "stage": "queued",
+            "status": "completed",
+            "summary": "已接收，等待生成",
+            "durationMs": 12.15
+          },
+          {
+            "seq": 2,
+            "at": 1795224348.7662873,
+            "stage": "profile_check",
+            "status": "completed",
+            "summary": "检查服务配置",
+            "durationMs": 359.55
+          },
+          {
+            "seq": 3,
+            "at": 1795224349.1258478,
+            "stage": "context_capture",
+            "status": "completed",
+            "summary": "使用发送时资料快照",
+            "durationMs": 16.59
+          },
+          {
+            "seq": 4,
+            "at": 1795224349.1424456,
+            "stage": "provider_complete",
+            "status": "completed",
+            "summary": "等待 AI 服务回复",
+            "durationMs": 817.67
+          },
+          {
+            "seq": 5,
+            "at": 1795224349.960128,
+            "stage": "tool_execute",
+            "status": "completed",
+            "summary": "读取已授权资料",
+            "tool": "pack_read_contract",
+            "durationMs": 0.01
+          },
+          {
+            "seq": 6,
+            "at": 1795224349.960281,
+            "stage": "tool_execute",
+            "status": "completed",
+            "summary": "读取已授权资料",
+            "tool": "room_read_management",
+            "durationMs": 8.25
+          },
+          {
+            "seq": 7,
+            "at": 1795224349.97913,
+            "stage": "provider_complete",
+            "status": "completed",
+            "summary": "等待 AI 服务回复",
+            "durationMs": 2074.71
+          },
+          {
+            "seq": 8,
+            "at": 1795224352.0538511,
+            "stage": "output_validate",
+            "status": "completed",
+            "summary": "检查回答格式",
+            "durationMs": 0.61
+          },
+          {
+            "seq": 9,
+            "at": 1795224352.0544612,
+            "stage": "dependency_check",
+            "status": "completed",
+            "summary": "核对发送后的资料变化",
+            "durationMs": 7.56
+          },
+          {
+            "seq": 10,
+            "at": 1795224352.0620344,
+            "stage": "proposal_create",
+            "status": "completed",
+            "summary": "保存待审核候选",
+            "durationMs": 31.51
+          },
+          {
+            "seq": 11,
+            "at": 1795224352.0935585,
+            "stage": "validation_a",
+            "status": "completed",
+            "summary": "校验 A：格式与引用",
+            "durationMs": 392.43
+          },
+          {
+            "seq": 12,
+            "at": 1795224352.4859946,
+            "stage": "validation_b",
+            "status": "completed",
+            "summary": "校验 B：规则执行",
+            "durationMs": 420.99
+          },
+          {
+            "seq": 13,
+            "at": 1795224352.906997,
+            "stage": "validation_c",
+            "status": "completed",
+            "summary": "校验 C：游戏场景",
+            "durationMs": 5679.0
+          },
+          {
+            "seq": 14,
+            "at": 1795224358.5860114,
+            "stage": "completed",
+            "status": "completed",
+            "summary": "生成完成，等待后续处理",
+            "durationMs": 2.3
+          }
+        ],
+        "contextRef": "d1bf90cefbb6faa5b347940bb8e7dec12e5fcc5e12931580b64c63baac0eedcc",
+        "dependencyCheck": {
+          "snapshotAt": 1795224348.7368047,
+          "checkedAt": 1795224358.0319607,
+          "status": "unchanged",
+          "changes": [],
+          "totalChanges": 0,
+          "canRegenerate": false
+        },
+        "responseAt": 1795224358.034285,
+        "messagePublication": {
+          "scopeId": "5b849033de93474f9b13db455f6afc53",
+          "sessionId": "0cdd92bd05ef419fad49c1d9464f6c66",
+          "account": "kp",
+          "accessLevel": "administrator",
+          "contextRef": "d1bf90cefbb6faa5b347940bb8e7dec12e5fcc5e12931580b64c63baac0eedcc",
+          "textDigest": "ef8cf6fd6b8a5e2eee970d67a0c0002f284cb78a8cd0819dd9ae766c4df1c66c",
+          "responseAt": 1795224358.034285,
+          "referenceLabels": {}
+        },
+        "diagnostics": {
+          "schemaVersion": 1,
+          "stage": "completed",
+          "turn": 1,
+          "toolCalls": [
+            {
+              "name": "pack_read_contract",
+              "status": "completed",
+              "argumentsDigest": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+              "keys": [],
+              "unknownKeys": false,
+              "turn": 0
+            },
+            {
+              "name": "room_read_management",
+              "status": "completed",
+              "argumentsDigest": "014b4b3f0019435aa48b06cc62fcd65509614ed91924530dda40b7a595ff1b77",
+              "keys": [
+                "section"
+              ],
+              "unknownKeys": false,
+              "turn": 0
+            }
+          ],
+          "errors": [],
+          "outputFailures": [],
+          "preflightChecks": [],
+          "contextBudget": {
+            "bytes": 30480,
+            "limitBytes": 262144,
+            "toolSchemaBytes": 5751,
+            "toolMessageBytes": 1797
+          }
+        }
+      },
+      "modelCalls": 2,
+      "unnecessaryClarifications": 0,
+      "tokens": 14179,
+      "firstUsable": true,
+      "actualExecution": true,
+      "seconds": 16.19
+    },
+    {
+      "mode": "before",
+      "caseId": "genuine-choice",
+      "status": "passed",
+      "historyRequests": [],
+      "request": "给 player1 的角色加1点。",
+      "task": {
+        "taskId": "11a0de3c57824e46a77f0cbdc9c8278b",
+        "requestId": "11a0de3c57824e46a77f0cbdc9c8278b",
+        "account": "kp",
+        "profile": {
+          "adapter": "deepseek-chat",
+          "allowPrivateEndpoint": false,
+          "baseUrl": "https://api.deepseek.com",
+          "credentialRef": "env:ONLINECOC_DEEPSEEK_API_KEY",
+          "enabled": true,
+          "limits": {
+            "dailyTokenBudget": null,
+            "maxConcurrentPerRoom": 1,
+            "maxQueuedPerRoom": 5,
+            "maxRepairAttempts": 2,
+            "maxToolRounds": 4,
+            "maxTransportRetries": 0,
+            "taskTimeoutMs": 300000
+          },
+          "model": "deepseek-flash",
+          "profileId": "deepseek-main",
+          "request": {
+            "connectTimeoutMs": 10000,
+            "maxOutputTokens": 2200,
+            "thinking": "disabled",
+            "totalTimeoutMs": 120000
+          },
+          "revision": 6,
+          "schemaVersion": 1,
+          "versionInfo": {
+            "label": "DeepSeek-V4.1-Flash-1017",
+            "sourceUrl": "https://api-docs.deepseek.com/quick_start/pricing/",
+            "verifiedAt": "2026-11-19"
+          }
+        },
+        "status": "needs_input",
+        "createdAt": 1795224366.6232672,
+        "lease": null,
+        "error": null,
+        "proposalId": null,
+        "text": "房间里目前只有一个角色 [[entity:actor-one@1]]（测试角色）和一件道具 [[entity:token-one@1]]，我没有查到名字叫 player1 的角色，因此不确定“加1点”要加在哪一项上。\n\n- 加属性：把目标值 target 从 60 提到 61（规则中目标是 target 与道具 bonus 之和，上限 100）。\n- 加生命：把 hp 由 10 提到上限 11，但会超过 maxHp=10，通常不合规。\n- 加道具：给该角色背包里放一件道具，属于运行时操作，与角色属性修改路径不同。\n\n另外，角色与道具都标记为公开，但实体记录里未读取到所属账号，我无法确认正式服中哪一个属于玩家。",
+        "calls": [
+          {
+            "callId": "928c91e075f84063a70e87e8460e9f70",
+            "requestDigest": "d615137c3d6acce7c8208c7f3b0492ca9c8e3812044c55c8d524b617466cc54f",
+            "profileRevision": 6,
+            "requestedModel": "deepseek-flash",
+            "responseDigest": "ebe4fdcb2dfa007f10e73cf28c5ab80fb8977ed7c6b5254a9f8c156f961e9ad0",
+            "usage": {
+              "prompt_tokens": 6582,
+              "completion_tokens": 53,
+              "total_tokens": 6635
+            },
+            "returnedModel": "deepseek-flash",
+            "systemFingerprint": "bc19ba97cbe016479903222bb1578db6"
+          },
+          {
+            "callId": "a2c44bae6a8a469b8ff69c8fbaf955f1",
+            "requestDigest": "8cf6f65dbbfe66f0569d9b9afe91b9727e06b2a74184df7a36709cb982857ed5",
+            "profileRevision": 6,
+            "requestedModel": "deepseek-flash",
+            "responseDigest": "3f660f4608456abf5f8af182dc611d3f294d56b57cc7b0a4b67f190669219c9c",
+            "usage": {
+              "prompt_tokens": 7969,
+              "completion_tokens": 105,
+              "total_tokens": 8074
+            },
+            "returnedModel": "deepseek-flash",
+            "systemFingerprint": "bc19ba97cbe016479903222bb1578db6"
+          },
+          {
+            "callId": "3eee960e739441cb8a8a946108f33642",
+            "requestDigest": "81582c6eda731b0ef8c5b3e68f625a8d72a32c1b5090f9428c59f84f7ad9490b",
+            "profileRevision": 6,
+            "requestedModel": "deepseek-flash",
+            "responseDigest": "025eb16796cc1d71de8a1a664fe6baf79185aa0026b06ae7b96cf43e913e54f9",
+            "usage": {
+              "prompt_tokens": 8482,
+              "completion_tokens": 71,
+              "total_tokens": 8553
+            },
+            "returnedModel": "deepseek-flash",
+            "systemFingerprint": "bc19ba97cbe016479903222bb1578db6"
+          },
+          {
+            "callId": "075189b154e746c982b1881d36d32190",
+            "requestDigest": "f2a44cb098765d24e850002842d68abffd6f409cf7a7547f8a167ef6b0250d4b",
+            "profileRevision": 6,
+            "requestedModel": "deepseek-flash",
+            "responseDigest": "a70a623c29010e229da080eff17b411e960d22b595226d0ce22f644382f8e362",
+            "usage": {
+              "prompt_tokens": 8784,
+              "completion_tokens": 40,
+              "total_tokens": 8824
+            },
+            "returnedModel": "deepseek-flash",
+            "systemFingerprint": "bc19ba97cbe016479903222bb1578db6"
+          },
+          {
+            "callId": "6ceb7dfb3e8d4f7b96b6a414501d6ca3",
+            "requestDigest": "9f200d954a4c888aadc145f68ac1e132b27c18ead18dcb7d7000c5b1b061d435",
+            "profileRevision": 6,
+            "requestedModel": "deepseek-flash",
+            "responseDigest": "7eeaa5cf2ed9a87af9e4c1eae1d5d5c2e3800419d081b8849c2bf86e659f8ecb",
+            "usage": {
+              "prompt_tokens": 7502,
+              "completion_tokens": 292,
+              "total_tokens": 7794
+            },
+            "returnedModel": "deepseek-flash",
+            "systemFingerprint": "bc19ba97cbe016479903222bb1578db6"
+          }
+        ],
+        "usage": 39880,
+        "events": [
+          {
+            "seq": 1,
+            "at": 1795224366.6232674,
+            "stage": "queued",
+            "status": "completed",
+            "summary": "已接收，等待生成",
+            "durationMs": 9.31
+          },
+          {
+            "seq": 2,
+            "at": 1795224366.632585,
+            "stage": "profile_check",
+            "status": "completed",
+            "summary": "检查服务配置",
+            "durationMs": 355.51
+          },
+          {
+            "seq": 3,
+            "at": 1795224366.9881015,
+            "stage": "context_capture",
+            "status": "completed",
+            "summary": "使用发送时资料快照",
+            "durationMs": 14.57
+          },
+          {
+            "seq": 4,
+            "at": 1795224367.0026782,
+            "stage": "provider_complete",
+            "status": "completed",
+            "summary": "等待 AI 服务回复",
+            "durationMs": 634.64
+          },
+          {
+            "seq": 5,
+            "at": 1795224367.637334,
+            "stage": "tool_execute",
+            "status": "completed",
+            "summary": "读取已授权资料",
+            "tool": "room_read_context",
+            "durationMs": 0.01
+          },
+          {
+            "seq": 6,
+            "at": 1795224367.6377838,
+            "stage": "tool_execute",
+            "status": "completed",
+            "summary": "读取已授权资料",
+            "tool": "pack_read_contract",
+            "durationMs": 0.01
+          },
+          {
+            "seq": 7,
+            "at": 1795224367.6498432,
+            "stage": "provider_complete",
+            "status": "completed",
+            "summary": "等待 AI 服务回复",
+            "durationMs": 852.62
+          },
+          {
+            "seq": 8,
+            "at": 1795224368.5024726,
+            "stage": "tool_execute",
+            "status": "failed",
+            "summary": "读取已授权资料",
+            "tool": "room_search_data",
+            "durationMs": 5.71,
+            "code": "INPUT_INVALID"
+          },
+          {
+            "seq": 9,
+            "at": 1795224368.5085917,
+            "stage": "tool_execute",
+            "status": "completed",
+            "summary": "读取已授权资料",
+            "tool": "room_read_management",
+            "durationMs": 6.61
+          },
+          {
+            "seq": 10,
+            "at": 1795224368.5261645,
+            "stage": "provider_complete",
+            "status": "completed",
+            "summary": "等待 AI 服务回复",
+            "durationMs": 716.18
+          },
+          {
+            "seq": 11,
+            "at": 1795224369.2423477,
+            "stage": "tool_execute",
+            "status": "failed",
+            "summary": "读取已授权资料",
+            "tool": "room_search_data",
+            "durationMs": 7.35,
+            "code": "INPUT_INVALID"
+          },
+          {
+            "seq": 12,
+            "at": 1795224369.2648454,
+            "stage": "provider_complete",
+            "status": "completed",
+            "summary": "等待 AI 服务回复",
+            "durationMs": 675.17
+          },
+          {
+            "seq": 13,
+            "at": 1795224369.940024,
+            "stage": "tool_execute",
+            "status": "completed",
+            "summary": "读取已授权资料",
+            "tool": "room_search_data",
+            "durationMs": 27.1
+          },
+          {
+            "seq": 14,
+            "at": 1795224369.9786804,
+            "stage": "provider_complete",
+            "status": "completed",
+            "summary": "等待 AI 服务回复",
+            "durationMs": 2186.67
+          },
+          {
+            "seq": 15,
+            "at": 1795224372.1653602,
+            "stage": "output_validate",
+            "status": "completed",
+            "summary": "检查回答格式",
+            "durationMs": 0.4
+          },
+          {
+            "seq": 16,
+            "at": 1795224372.16576,
+            "stage": "dependency_check",
+            "status": "completed",
+            "summary": "核对发送后的资料变化",
+            "durationMs": 11.86
+          },
+          {
+            "seq": 17,
+            "at": 1795224372.1776237,
+            "stage": "result_save",
+            "status": "completed",
+            "summary": "保存回答",
+            "durationMs": 8.83
+          },
+          {
+            "seq": 18,
+            "at": 1795224372.1864586,
+            "stage": "completed",
+            "status": "completed",
+            "summary": "生成完成，等待后续处理",
+            "durationMs": 1.9
+          }
+        ],
+        "contextRef": "9dac1c509824b761b0c68d950be5bb16bc8c0c770861f14a509b99eb3952b893",
+        "dependencyCheck": {
+          "snapshotAt": 1795224366.606022,
+          "checkedAt": 1795224372.1683826,
+          "status": "unchanged",
+          "changes": [],
+          "totalChanges": 0,
+          "canRegenerate": false
+        },
+        "choices": {
+          "prompt": "“加1点”指哪一项？",
+          "options": [
+            {
+              "id": "target",
+              "label": "目标值 +1",
+              "text": "把测试角色的 target 从 60 提高到 61，请准备候选。"
+            },
+            {
+              "id": "hp",
+              "label": "生命 +1",
+              "text": "把测试角色的 hp 与 maxHp 各提高 1 点。"
+            },
+            {
+              "id": "item",
+              "label": "加一件道具",
+              "text": "给该角色背包里新增一件已有定义的道具。"
+            }
+          ]
+        },
+        "responseAt": 1795224372.1777651,
+        "messagePublication": {
+          "scopeId": "44cc8573ff244c9dad62cd3a299fc9a9",
+          "sessionId": "b5cf1617dfe349b5885229d2a1db5313",
+          "account": "kp",
+          "accessLevel": "administrator",
+          "contextRef": "9dac1c509824b761b0c68d950be5bb16bc8c0c770861f14a509b99eb3952b893",
+          "textDigest": "10c478b057b07b2f3f25ff6bfe2c20e133e5376b1181fc898415ba73579e6314",
+          "responseAt": 1795224372.1777651,
+          "referenceLabels": {
+            "[[entity:actor-one@1]]": "测试角色",
+            "[[entity:token-one@1]]": "测试道具"
+          }
+        },
+        "diagnostics": {
+          "schemaVersion": 1,
+          "stage": "completed",
+          "turn": 4,
+          "toolCalls": [
+            {
+              "name": "room_read_context",
+              "status": "completed",
+              "argumentsDigest": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+              "keys": [],
+              "unknownKeys": false,
+              "turn": 0
+            },
+            {
+              "name": "pack_read_contract",
+              "status": "completed",
+              "argumentsDigest": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+              "keys": [],
+              "unknownKeys": false,
+              "turn": 0
+            },
+            {
+              "name": "room_search_data",
+              "status": "rejected",
+              "argumentsDigest": "f88bcccc133af4455265932bb082f340d89a473a05886b2d8e43b947306cf307",
+              "keys": [
+                "query",
+                "types"
+              ],
+              "unknownKeys": true,
+              "turn": 1,
+              "types": [
+                "entity",
+                "config"
+              ],
+              "hasQuery": false,
+              "code": "INPUT_INVALID"
+            },
+            {
+              "name": "room_read_management",
+              "status": "completed",
+              "argumentsDigest": "014b4b3f0019435aa48b06cc62fcd65509614ed91924530dda40b7a595ff1b77",
+              "keys": [
+                "section"
+              ],
+              "unknownKeys": false,
+              "turn": 1
+            },
+            {
+              "name": "room_search_data",
+              "status": "rejected",
+              "argumentsDigest": "634f604db410ac9660c81eeb55d3920982d155783cfa6057ace1397eb351ba80",
+              "keys": [
+                "query",
+                "types"
+              ],
+              "unknownKeys": true,
+              "turn": 2,
+              "types": [
+                "entity"
+              ],
+              "hasQuery": false,
+              "code": "INPUT_INVALID"
+            },
+            {
+              "name": "room_search_data",
+              "status": "completed",
+              "argumentsDigest": "5cefbf0f47bc3d4f5e027e45f9ddd9b60773c20d2791bf8a204c97c4966f9add",
+              "keys": [
+                "types"
+              ],
+              "unknownKeys": false,
+              "turn": 3,
+              "types": [
+                "entity"
+              ]
+            }
+          ],
+          "errors": [],
+          "outputFailures": [
+            {
+              "attempt": 1,
+              "code": "INPUT_INVALID",
+              "path": "/"
+            },
+            {
+              "attempt": 2,
+              "code": "INPUT_INVALID",
+              "path": "/"
+            }
+          ],
+          "preflightChecks": [],
+          "contextBudget": {
+            "bytes": 33658,
+            "limitBytes": 262144,
+            "toolSchemaBytes": 2,
+            "toolMessageBytes": 9965
+          }
+        }
+      },
+      "modelCalls": 5,
+      "unnecessaryClarifications": 0,
+      "tokens": 39880,
+      "firstUsable": true,
+      "seconds": 5.62
+    }
+  ],
+  "sourceConfigUnchanged": true
+}

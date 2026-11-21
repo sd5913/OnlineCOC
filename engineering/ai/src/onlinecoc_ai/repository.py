@@ -17,8 +17,11 @@ def initial(scope_id):
 
 class Repository:
     def __init__(self, directory, scope_id, *, store_factory=FileDataStore):
+        from pathlib import Path
+        self.directory=Path(directory)
         self.lock = threading.RLock()
         self.pending = None
+        self.read_local = threading.local()
         self.store = store_factory(directory, auto_compress=True) if store_factory is FileDataStore else store_factory(directory)
         try:
             if self.store.snapshot()[1] is None:
@@ -59,6 +62,40 @@ class Repository:
             return self.store.snapshot()[1]
 
     @contextmanager
+    def read_scope(self):
+        """Share one private snapshot among explicitly read-only projections."""
+        with self.lock:
+            if hasattr(self.read_local,'snapshot'):
+                yield
+                return
+            self.read_local.snapshot=None
+            try:yield
+            finally:del self.read_local.snapshot
+
+    def read_state(self):
+        """Internal read-only view; callers must copy before changing values."""
+        if not hasattr(self.read_local,'snapshot'):return self.state()
+        if self.read_local.snapshot is None:self.read_local.snapshot=self.state()
+        return self.read_local.snapshot
+
+    def validation_state(self):
+        """Host callbacks remain valid after AI shutdown, using current disk evidence."""
+        from onlinecoc.errors import DomainError
+        with self.lock:
+            if not getattr(self.store,'closed',False):return self.read_state()
+            store=None
+            try:
+                require(self.store.path.is_dir(),'AI_SERVICE_UNAVAILABLE')
+                store=FileDataStore(self.store.path)
+                state=store.snapshot()[1]
+                require(state is not None,'AI_SERVICE_UNAVAILABLE')
+                self.verify(state)
+                return state
+            except Exception as exc:raise DomainError('AI_SERVICE_UNAVAILABLE') from exc
+            finally:
+                if store is not None:store.close()
+
+    @contextmanager
     def transaction(self):
         """Only for self-contained AI-store commands, never host publication."""
         with self.lock:
@@ -70,7 +107,9 @@ class Repository:
                 if self.pending != initial:
                     self.verify(self.pending)
                     self.store.commit(self.store.generation, self.pending)
-            finally:self.pending = None
+            finally:
+                self.pending = None
+                if hasattr(self.read_local,'snapshot'):self.read_local.snapshot=None
 
     def verify(self, state):
         canonical(state)
@@ -85,11 +124,12 @@ class Repository:
         require(type(access) is dict and not set(access)-set(DEFAULT_POLICY), 'SESSION_STATE_INVALID')
         require(type(access.get('revision',1)) is int and access.get('revision',1)>0 and all(type(access.get(k,v)) is bool for k,v in DEFAULT_POLICY.items() if type(v) is bool), 'SESSION_STATE_INVALID')
         require(access.get('principal') is None or type(access['principal']) is str, 'SESSION_STATE_INVALID')
+        if 'cReviewBasis' in state['settings']:validate('CReviewBasis', state['settings']['cReviewBasis'])
         batches=state['settings'].get('batches',{})
         require(type(batches) is dict,'BATCH_STATE_INVALID')
         for key,batch in batches.items():
             require(type(batch) is dict and key==batch.get('batchId') and re.fullmatch('[a-f0-9]{32}',key) and
-                batch.get('status') in ('pending','executing','completed','rejected','partial','unknown') and
+                batch.get('status') in ('pending','executing','completed','rejected','partial','unknown','blocked','failed','rolled_back') and
                 type(batch.get('actions')) is list and 1<=len(batch['actions']) and type(batch.get('receipts')) is list and
                 len(batch['receipts'])<=len(batch['actions']),'BATCH_STATE_INVALID')
             require(batch['digest']==digest({k:batch[k] for k in ('batchId','sessionId','requestId','creator','actions','context','baseline','authorityEpoch')}),'BATCH_STATE_INVALID')
@@ -123,6 +163,8 @@ class Repository:
             require(record.get('sessionId')==key and record.get('requestId') in session.get('requestIds',[]) and
                 session.get('accessLevel')=='administrator' and session.get('owner')==record.get('owner') and
                 record.get('digest')==digest({k:v for k,v in record.items() if k!='digest'}),'REVIEW_STATE_INVALID')
+        from .review_queue import verify as verify_queue
+        verify_queue(state)
         errors=state['settings'].get('requestErrors',{})
         require(type(errors) is dict and all(k in state['requests'] and isinstance(v,str) and re.fullmatch('[A-Z][A-Z0-9_]{0,100}',v) for k,v in errors.items()),'REQUEST_STATE_INVALID')
         linked = set()
@@ -163,6 +205,7 @@ class Repository:
 
     def commit(self, state):
         with self.lock:
+            if hasattr(self.read_local,'snapshot'):self.read_local.snapshot=None
             if self.pending is not None:
                 self.pending = copy.deepcopy(state)
                 return self.store.generation

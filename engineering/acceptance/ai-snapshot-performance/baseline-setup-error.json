@@ -1,0 +1,9 @@
+{
+  "phase": "fixture-setup",
+  "result": "failed",
+  "code": "KeyError:baseline",
+  "cause": "The public batch fixture omits the private baseline/context fields required for seeding persisted records.",
+  "fix": "Read the actual newly created batch from the isolated AI repository before cloning.",
+  "providerCalls": 0,
+  "measurementsRecorded": 0
+}

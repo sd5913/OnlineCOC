@@ -1,0 +1,122 @@
+{
+  "status": "complete",
+  "uniqueNaturalCases": 16,
+  "terminalAnswers": 15,
+  "firstRun": {
+    "format": {
+      "passed": 15,
+      "denominator": 15
+    },
+    "semanticOriginalOracle": {
+      "passed": 13,
+      "denominator": 15
+    },
+    "semanticAfterIndependentOracleCorrection": {
+      "passed": 14,
+      "denominator": 15,
+      "note": "Short-rest attribute is unused by the short branch; source and actual effects independently verified. Original result retained."
+    },
+    "completedWholeCases": {
+      "passed": 7,
+      "denominator": 16
+    },
+    "actualMutation": {
+      "passed": 2,
+      "denominator": 9
+    },
+    "correctRefusals": {
+      "passed": 2,
+      "denominator": 2
+    }
+  },
+  "replay": {
+    "externalCalls": 0,
+    "actualMutation": {
+      "passed": 9,
+      "denominator": 9
+    },
+    "configurationCases": 6,
+    "runtimeCases": 3,
+    "preservesOriginalOutputs": true
+  },
+  "focusedFeedback": {
+    "externalCalls": 3,
+    "factualRetrieval": "passed",
+    "exactAnswerOnlyInstruction": "failed-extra-source-prose",
+    "fullProductionPrompt": false,
+    "note": "Production Coordinator guard verified with controlled provider; real API probe uses reduced prompt and actual authorized read tools. Not counted as full-prompt E2E success."
+  },
+  "uncovered": [
+    {
+      "caseId": "genuine-ambiguity",
+      "reason": "One external tool-call response; next request stopped by conservative full-request budget reservation before HTTP. No final answer, not counted as a successful clarification."
+    }
+  ],
+  "budget": {
+    "externalAttempts": 43,
+    "knownTokens": 597278,
+    "unknownReservedTokens": 0,
+    "accountedTokens": 597278,
+    "tokenLimit": 650000,
+    "attemptLimit": 80,
+    "totalExternalSeconds": 72.364
+  },
+  "regressions": {
+    "core-integrated.xml": {
+      "tests": 643,
+      "failures": 8,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 865.7
+    },
+    "core-v3-final.xml": {
+      "tests": 648,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 933.543
+    },
+    "coverage-first.xml": {
+      "tests": 17,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 54.586
+    },
+    "coverage-fixed.xml": {
+      "tests": 45,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 114.549
+    },
+    "defaults-first.xml": {
+      "tests": 22,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 61.212
+    },
+    "lifecycle-evidence-fixed.xml": {
+      "tests": 38,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 104.286
+    },
+    "lifecycle-evidence.xml": {
+      "tests": 38,
+      "failures": 2,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 98.289
+    },
+    "ui-first.xml": {
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 9.578
+    }
+  }
+}

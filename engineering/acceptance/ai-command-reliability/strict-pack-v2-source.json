@@ -1,0 +1,28 @@
+{
+  "source": "rulepacks\\stumpsville\\tests\\output\\reliability-source-20261120-v2",
+  "copiedTo": "engineering\\acceptance\\ai-command-reliability\\work\\strict-real-pack-v2",
+  "manifest": {
+    "packPath": "D:\\Studies\\Art Programming\\OnlineCOC\\rulepacks\\stumpsville\\tests\\output\\reliability-source-20261120-v2\\integrations\\ai-pack-6e53556afda3b5f63824",
+    "guideSha256": "2aa5ebd0f02391a18e8b549ad4e69c9fd20916017b201c09c46e2c9131f8ae75",
+    "termsSha256": "b581fcc681e17196e94a7d0e25b41bdea2e674c2d5fa775b0505c5cb2575e71c",
+    "manifestSha256": "7403d725d3aa04e2c1f2d0c05fa6c8179851fd246034d0bf72f44673aac8c39b",
+    "formalDataIncluded": false,
+    "declarationCheck": {
+      "slots": 20,
+      "fieldsExist": true,
+      "sample": [
+        {
+          "slot": 3,
+          "id": "cheese",
+          "remaining": 0
+        },
+        {
+          "slot": 5,
+          "id": "ration",
+          "remaining": 3
+        }
+      ]
+    },
+    "note": "declaration only; AI runtime permission/snapshot tests are separate"
+  }
+}

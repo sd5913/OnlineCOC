@@ -1,0 +1,23 @@
+[
+  "engineering/acceptance/engine-kp-policy-interface-snapshot/.gitignore",
+  "engineering/acceptance/engine-kp-policy-interface-snapshot/v1/engineering/",
+  "engineering/acceptance/engine-kp-policy-interface-snapshot/v1/source.json",
+  "engineering/acceptance/kp-policy-audit/.gitignore",
+  "engineering/acceptance/kp-policy-audit/README.md",
+  "engineering/acceptance/kp-policy-audit/compatibility-source.json",
+  "engineering/acceptance/kp-policy-audit/failures.json",
+  "engineering/acceptance/kp-policy-audit/finalize.py",
+  "engineering/acceptance/kp-policy-audit/first-field-error.xml",
+  "engineering/acceptance/kp-policy-audit/first-source.json",
+  "engineering/acceptance/kp-policy-audit/fixed.xml",
+  "engineering/acceptance/kp-policy-audit/freeze.py",
+  "engineering/acceptance/kp-policy-audit/new-files.json",
+  "engineering/acceptance/kp-policy-audit/official.xml",
+  "engineering/acceptance/kp-policy-audit/parameter-expectation.xml",
+  "engineering/acceptance/kp-policy-audit/prepare.py",
+  "engineering/acceptance/kp-policy-audit/results.json",
+  "engineering/acceptance/kp-policy-audit/source.json",
+  "engineering/acceptance/kp-policy-audit/special.xml",
+  "engineering/acceptance/kp-policy-audit/test_kp_policy.py",
+  "engineering/acceptance/kp-policy-audit/work/"
+]

@@ -1,0 +1,9 @@
+{
+  "phase": "fixture-setup",
+  "result": "failed",
+  "code": "RATE_LIMITED",
+  "cause": "The history fixture initially assigned all 1000 chat messages to one second, correctly hitting the 30-per-10-second limiter.",
+  "fix": "Seed historical messages one second apart in the past, retaining the real chat operation and limiter.",
+  "providerCalls": 0,
+  "measurementsRecorded": 0
+}

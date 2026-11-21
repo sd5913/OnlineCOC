@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="notification paging uses authenticated read transport" time="0.002418" classname="test" file="D:\Studies\Art Programming\OnlineCOC\engineering\acceptance\notifications\test_client.mjs"/>
+	<testcase name="acknowledgement is an idempotent CSRF protected host command" time="0.005032" classname="test" file="D:\Studies\Art Programming\OnlineCOC\engineering\acceptance\notifications\test_client.mjs"/>
+	<testcase name="late list response cannot cross account reset" time="0.000363" classname="test" file="D:\Studies\Art Programming\OnlineCOC\engineering\acceptance\notifications\test_client.mjs"/>
+	<testcase name="late ack response cannot cross account reset" time="0.000188" classname="test" file="D:\Studies\Art Programming\OnlineCOC\engineering\acceptance\notifications\test_client.mjs"/>
+	<testcase name="legacy review and ruling components have all client methods they call" time="0.005546" classname="test" file="D:\Studies\Art Programming\OnlineCOC\engineering\acceptance\rulings-sdk\test_client.mjs"/>
+	<testcase name="ruling reads preserve high-risk digest and do not submit a decision" time="0.001284" classname="test" file="D:\Studies\Art Programming\OnlineCOC\engineering\acceptance\rulings-sdk\test_client.mjs"/>
+	<testcase name="reference resolution uses authenticated POST and preserves reference tokens" time="0.000299" classname="test" file="D:\Studies\Art Programming\OnlineCOC\engineering\acceptance\rulings-sdk\test_client.mjs"/>
+	<testcase name="aiRulings discards a late private response after identity reset" time="0.000787" classname="test" file="D:\Studies\Art Programming\OnlineCOC\engineering\acceptance\rulings-sdk\test_client.mjs"/>
+	<testcase name="aiResolve discards a late private response after identity reset" time="0.000318" classname="test" file="D:\Studies\Art Programming\OnlineCOC\engineering\acceptance\rulings-sdk\test_client.mjs"/>
+	<testcase name="ruling errors remain errors, never an empty approved queue" time="0.000251" classname="test" file="D:\Studies\Art Programming\OnlineCOC\engineering\acceptance\rulings-sdk\test_client.mjs"/>
+	<testcase name="subscription and legacy onChange both see atomic snapshots, resets and disconnects" time="0.000553" classname="test" file="D:\Studies\Art Programming\OnlineCOC\engineering\acceptance\rulings-sdk\test_client.mjs"/>
+	<testcase name="identity reset notifies subscribers and old socket cannot restore private data" time="0.000219" classname="test" file="D:\Studies\Art Programming\OnlineCOC\engineering\acceptance\rulings-sdk\test_client.mjs"/>
+	<!-- tests 12 -->
+	<!-- suites 0 -->
+	<!-- pass 12 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 128.373 -->
+</testsuites>

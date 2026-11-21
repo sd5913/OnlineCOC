@@ -97,13 +97,15 @@ def test_plan_without_proposal_rechecks_context_on_read(application):
     import asyncio
     from test_coordinator import Fake, completion, wait_task
     app = application;enable(app.host, public=True)
-    add_message(app.host, 'player1', 'context source')
+    message=add_message(app.host, 'player1', 'context source')
+    from onlinecoc_ai.references import References
+    token=References(app.host).search('kp','chat')['items'][0]['token']
     async def callback(*args):return completion({'kind': 'plan', 'text': 'sensitive generated plan'})
     async def run():
         app.coordinator.provider_factory = lambda p: Fake(callback)
         await app.coordinator.start()
         try:
-            request = committed(command(app, 'ai.request.create', {'sourceKind': 'manual', 'text': 'make plan'}))
+            request = committed(command(app, 'ai.request.create', {'sourceKind':'manual','text':'基于这条明确引用准备方案 '+token}))
             task = committed(command(app, 'ai.request.dispatch', request))
             assert (await wait_task(app.coordinator, task['taskId']))['status'] == 'review_ready'
             assert app.tasks('kp')['items'][0]['response'] == 'sensitive generated plan'

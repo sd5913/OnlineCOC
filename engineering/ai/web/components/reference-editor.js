@@ -8,7 +8,7 @@ export const referenceToken=item=>item.token||`[[${item.kind}:${item.id}@${item.
 function chip(token,label,editable=false){
  const node=document.createElement('span');node.className='reference-chip';node.contentEditable='false';node.dataset.token=token;
  const text=document.createElement('span');text.className='reference-label';text.textContent=label||'数据引用';node.append(text);
- if(label)node.dataset.resolved='true';
+ if(label){node.dataset.resolved='true';node.dataset.referenceLabel=label;}
  if(!editable){node.tabIndex=0;node.setAttribute('role','button');node.setAttribute('aria-haspopup','dialog');}
  const kind=token.slice(2,token.indexOf(':'));node.title=(names[kind]||'数据')+'引用';
  if(editable){const remove=document.createElement('button');remove.type='button';remove.className='reference-remove';remove.tabIndex=-1;remove.textContent='×';remove.setAttribute('aria-label','移除引用：'+text.textContent);node.append(remove);}
@@ -30,26 +30,29 @@ export async function hydrateReferences(target,resolve,valid=()=>true){
  if(!resolve)return;
  const generation=(hydrationVersions.get(target)||0)+1;hydrationVersions.set(target,generation);
  const current=()=>valid()&&hydrationVersions.get(target)===generation;
- const nodes=[...target.querySelectorAll('.reference-chip')].filter(n=>!n.dataset.resolved||n.dataset.token.startsWith('[[knowledge:')),
+ const nodes=[...target.querySelectorAll('.reference-chip')],
   tokens=[...new Set(nodes.map(n=>n.dataset.token))];
  async function batch(part){
   try{
    const result=await resolve(part);if(!current())return;
+   if(!Array.isArray(result?.items)||part.some(token=>!result.items.some(item=>referenceToken(item)===token)))throw Object.assign(new Error('NOT_VISIBLE'),{code:'NOT_VISIBLE'});
    for(const item of result.items){const token=referenceToken(item);for(const node of nodes.filter(n=>n.dataset.token===token)){
     if(!target.contains(node))continue;
     const label=node.querySelector('.reference-label');if(label.textContent!==item.label)label.textContent=item.label;
-    node.dataset.resolved='true';node.classList.remove('unavailable');
+    node.dataset.resolved='true';node.dataset.referenceLabel=item.label;node.classList.remove('unavailable');node.removeAttribute('aria-disabled');if(node.getAttribute('role')==='button')node.tabIndex=0;
     node.querySelector('button')?.setAttribute('aria-label','移除引用：'+item.label);
    }}
   }catch(error){
    if(!current())return;
    if(part.length>1){for(const token of part)await batch([token]);return;}
-   for(const node of nodes.filter(n=>n.dataset.token===part[0])){node.querySelector('.reference-label').textContent=error.code==='REFERENCE_STALE'?'已过期引用':'不可用引用';node.classList.add('unavailable');}
+   for(const node of nodes.filter(n=>n.dataset.token===part[0])){node.querySelector('.reference-label').textContent=node.dataset.referenceLabel||(error.code==='REFERENCE_STALE'?'已过期引用':'不可用引用');node.classList.add('unavailable');node.setAttribute('aria-disabled','true');if(node.getAttribute('role')==='button')node.tabIndex=-1;}
   }
  }
  for(let i=0;i<tokens.length&&current();i+=12)await batch(tokens.slice(i,i+12));
 }
 export function renderReferenceText(target,text){target.replaceChildren(fragment(text));}
+/** Labels already delivered to this audience; never grant access to details. */
+export function applyReferenceLabels(target,labels={}){for(const node of target.querySelectorAll('.reference-chip')){const label=labels[node.dataset.token];if(typeof label==='string'&&label){node.dataset.referenceLabel=label;node.querySelector('.reference-label').textContent=label;}}}
 
 export function createReferenceEditor(element,{resolveReferences}={}){
  let dead=false,version=0,composing=false,labels=new Map(),history=[''],historyIndex=0,restoring=false;

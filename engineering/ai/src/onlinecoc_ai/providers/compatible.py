@@ -12,7 +12,7 @@ from .base import CAPABILITIES, Completion, ProviderError
 from .transport import VerifiedTransport
 
 MAX_RESPONSE_BYTES = 4 * 1024 * 1024
-MAX_REQUEST_BYTES = 256 * 1024
+from ..context_budget import MAX_REQUEST_BYTES,budget
 
 
 class CompatibleProvider:
@@ -53,7 +53,7 @@ class CompatibleProvider:
         require(self.profile["enabled"] or allow_disabled, "PROFILE_DISABLED")
         body = self.body(messages, list(tools))
         raw = canonical(body)
-        require(len(raw) <= MAX_REQUEST_BYTES, "CONTEXT_LIMIT_EXCEEDED")
+        require(len(raw) <= budget(self.profile)['inputBytes'], "CONTEXT_LIMIT_EXCEEDED")
         key = self.credential_loader(self.profile)
         require(isinstance(key, str) and 0 < len(key) <= 8192 and all(32 < ord(c) < 127 for c in key), "CREDENTIAL_MISSING")
         try:
@@ -121,7 +121,9 @@ class CompatibleProvider:
                     require(call["type"] == "function" and isinstance(call["id"], str) and 0 < len(call["id"]) <= 200 and call["id"] not in identifiers, "PROVIDER_RESPONSE_INVALID")
                     require(isinstance(function["name"], str) and re.fullmatch(r"[A-Za-z0-9_-]{1,64}", function["name"]) and isinstance(function["arguments"], str), "PROVIDER_RESPONSE_INVALID")
                     identifiers.add(call["id"])
-                    require(type(loads(function["arguments"])) is dict, "PROVIDER_RESPONSE_INVALID")
+                    # Argument JSON/schema errors are billable model output,
+                    # not a malformed provider envelope. The coordinator gives
+                    # bounded tool feedback without executing rejected arguments.
                     normalized["tool_calls"].append({"id": call["id"], "type": "function", "function": {"name": function["name"], "arguments": function["arguments"]}})
             else:
                 require(reason == "stop" and content and content.strip(), "PROVIDER_EMPTY_OUTPUT")

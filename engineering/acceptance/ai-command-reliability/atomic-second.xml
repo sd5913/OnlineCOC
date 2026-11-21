@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="9" skipped="0" tests="71" time="97.834" timestamp="2026-11-20T21:16:51.614500+08:00" hostname="LAPTOP-BIFSL64A"><testcase classname="tests.test_atomic_integration" name="test_real_runtime_failure_rolls_back_whole_batch[0]" time="1.243" /><testcase classname="tests.test_atomic_integration" name="test_real_runtime_failure_rolls_back_whole_batch[1]" time="1.071" /><testcase classname="tests.test_atomic_integration" name="test_real_runtime_failure_rolls_back_whole_batch[2]" time="1.079" /><testcase classname="tests.test_atomic_integration" name="test_unknown_receipt_reconciles_original_id_without_replay" time="1.127" /><testcase classname="tests.test_atomic_integration" name="test_ai_only_group_commits_and_rolls_back_in_one_store" time="1.129"><failure message="AssertionError: assert {'88980e77e41...ion': 1, ...}} == {'88980e77e41...ion': 2, ...}}&#10;  &#10;  Omitting 1 identical items, use -vv to show&#10;  Left contains 3 more items:&#10;  {'14a9cf6999f449038530b639af58ad73': {'accessLevel': 'administrator',&#10;                                        'archived': False,&#10;                                        'createdAt': 1795180618.8700244,&#10;                                        'owner': 'kp',...&#10;  &#10;  ...Full output truncated, use '-vv' to show">engineering\ai\tests\test_atomic_integration.py:63: in test_ai_only_group_commits_and_rolls_back_in_one_store
+    assert app.repository.state()['settings']['sessions']==before['settings']['sessions']
+E   AssertionError: assert {'88980e77e41...ion': 1, ...}} == {'88980e77e41...ion': 2, ...}}
+E     
+E     Omitting 1 identical items, use -vv to show
+E     Left contains 3 more items:
+E     {'14a9cf6999f449038530b639af58ad73': {'accessLevel': 'administrator',
+E                                           'archived': False,
+E                                           'createdAt': 1795180618.8700244,
+E                                           'owner': 'kp',...
+E     
+E     ...Full output truncated, use '-vv' to show</failure></testcase><testcase classname="tests.test_atomic_integration" name="test_cross_store_and_unsupported_host_commands_block_before_execution" time="1.056" /><testcase classname="tests.test_atomic_integration" name="test_single_memory_receipt_repairs_mirror_after_commit" time="0.957"><failure message="KeyError: 'memoryFacts'">engineering\ai\tests\test_atomic_integration.py:89: in test_single_memory_receipt_repairs_mirror_after_commit
+    first=command(app,'ai.memory.confirm',args,identifier='recover-memory');assert first['status']=='unknown'
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+engineering\ai\tests\test_entrypoints.py:29: in command
+    return app.command(account, {'requestId': identifier or uuid.uuid4().hex,
+engineering\ai\src\onlinecoc_ai\api.py:66: in command
+    return self._command(account, envelope)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+engineering\ai\src\onlinecoc_ai\api.py:86: in _command
+    self.repository.update(lambda s: s['commands'].update({key: {'signature': signature,
+engineering\ai\tests\test_atomic_integration.py:85: in update
+    if fail[0] and app.host.state()['aiControl']['memoryFacts'].get(memory['memoryId']):
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   KeyError: 'memoryFacts'</failure></testcase><testcase classname="tests.test_atomic_integration" name="test_single_memory_batch_mirrors_exact_authoritative_fact" time="1.125" /><testcase classname="tests.test_atomic_integration" name="test_semantic_feedback_repairs_or_preserves_blocked_candidate[True]" time="1.109" /><testcase classname="tests.test_atomic_integration" name="test_semantic_feedback_repairs_or_preserves_blocked_candidate[False]" time="1.104" /><testcase classname="tests.test_atomic_integration" name="test_business_failure_is_committed_without_reroll_or_goal_resolution" time="2.069"><failure message="assert 1 == 2">engineering\ai\tests\test_atomic_integration.py:140: in test_business_failure_is_committed_without_reroll_or_goal_resolution
+    assert app.host.state()['entities']['token-one']['numbers']['charges']==2
+E   assert 1 == 2</failure></testcase><testcase classname="tests.test_atomic_integration" name="test_more_than_32_actions_have_no_count_cap" time="1.259" /><testcase classname="tests.test_atomic_integration" name="test_legacy_pending_batch_cannot_enter_sequential_executor" time="0.992" /><testcase classname="tests.test_command_reliability" name="test_action_schema_errors_identify_exact_step_and_field" time="0.941" /><testcase classname="tests.test_command_reliability" name="test_tool_json_and_schema_are_feedback_not_execution[{]" time="0.001" /><testcase classname="tests.test_command_reliability" name="test_tool_json_and_schema_are_feedback_not_execution[[]]" time="0.001" /><testcase classname="tests.test_command_reliability" name="test_tool_json_and_schema_are_feedback_not_execution[{&quot;limit&quot;:0}]" time="0.001" /><testcase classname="tests.test_command_reliability" name="test_tool_json_and_schema_are_feedback_not_execution[{&quot;unexpected&quot;:true}]" time="0.001" /><testcase classname="tests.test_command_reliability" name="test_bad_tool_arguments_repair_with_declared_schema_without_user_question[{]" time="1.085" /><testcase classname="tests.test_command_reliability" name="test_bad_tool_arguments_repair_with_declared_schema_without_user_question[{&quot;section&quot;:&quot;invalid&quot;}]" time="1.082" /><testcase classname="tests.test_command_reliability" name="test_billable_malformed_tool_arguments_reach_coordinator" time="0.020" /><testcase classname="tests.test_command_reliability" name="test_tool_repairs_stop_at_two_and_do_not_ask_business_question" time="1.070" /><testcase classname="tests.test_access_batches" name="test_defaults_binding_and_no_permission_escalation" time="1.010" /><testcase classname="tests.test_access_batches" name="test_player_auto_dispatch_context_output_and_revoke" time="1.141" /><testcase classname="tests.test_access_batches" name="test_kp_player_session_has_player_ceiling_and_data_proof" time="1.002" /><testcase classname="tests.test_access_batches" name="test_batch_human_approval_idempotence_and_player_denial" time="1.113" /><testcase classname="tests.test_access_batches" name="test_batch_stale_reject_auto_and_bypass_forbidden" time="1.132" /><testcase classname="tests.test_access_batches" name="test_batch_unknown_reconciles_without_reexecuting" time="1.027" /><testcase classname="tests.test_access_batches" name="test_preflight_blocks_bad_middle_step_without_any_business_writes" time="1.167" /><testcase classname="tests.test_access_batches" name="test_delete_cancels_queue_hides_session_and_keeps_usage_audit" time="0.990" /><testcase classname="tests.test_access_batches" name="test_administrator_tools_respect_external_scope" time="1.064" /><testcase classname="tests.test_access_batches" name="test_player_contract_tool_and_batch_output_cannot_escalate" time="1.089" /><testcase classname="tests.test_access_batches" name="test_delete_interrupts_active_generation" time="1.089" /><testcase classname="tests.test_access_batches" name="test_management_catalog_is_bounded_and_schema_complete" time="0.952" /><testcase classname="tests.test_access_batches" name="test_other_administrator_can_inspect_draft_without_taking_review_identity" time="1.001" /><testcase classname="tests.test_access_batches" name="test_player_history_rechecks_package_evidence_during_generation" time="1.184" /><testcase classname="tests.test_memory" name="test_draft_is_not_fact_and_confirmed_memory_survives_restart" time="2.008" /><testcase classname="tests.test_memory" name="test_source_change_invalidates_memory_and_descendants" time="0.971" /><testcase classname="tests.test_memory" name="test_stale_ai_store_draft_cannot_reconfirm_revoked_room_memory" time="0.963" /><testcase classname="tests.test_memory" name="test_revoke_and_expiry_never_leave_usable_summary" time="0.983" /><testcase classname="tests.test_memory" name="test_secret_summary_cannot_be_downgraded_to_public" time="0.940" /><testcase classname="tests.test_memory" name="test_player_cannot_confirm_and_private_memory_is_not_shared" time="0.945" /><testcase classname="tests.test_memory" name="test_scope_fork_does_not_reuse_old_memory" time="0.967" /><testcase classname="tests.test_memory" name="test_context_approval_binding_tracks_memory_revision" time="0.989" /><testcase classname="tests.test_rulings" name="test_chat_approval_is_bound_to_batch_and_not_another_model_request" time="1.058" /><testcase classname="tests.test_rulings" name="test_config_is_one_checked_ruling_and_publishes_once" time="13.761" /><testcase classname="tests.test_rulings" name="test_high_risk_config_never_uses_auto_approval" time="6.576" /><testcase classname="tests.test_rulings" name="test_player_cannot_decide_and_stale_digest_cannot_execute" time="1.064" /><testcase classname="tests.test_rulings" name="test_consultation_only_evidence_cannot_enter_publish_queue_or_auto_approve" time="6.332" /><testcase classname="tests.test_rulings" name="test_invalid_model_output_has_specific_cause[[]-MODEL_OBJECT_REQUIRED]" time="0.001" /><testcase classname="tests.test_rulings" name="test_invalid_model_output_has_specific_cause[null-MODEL_OBJECT_REQUIRED]" time="0.001" /><testcase classname="tests.test_rulings" name="test_invalid_model_output_has_specific_cause[broken-MODEL_JSON_INVALID]" time="0.001" /><testcase classname="tests.test_rulings" name="test_invalid_model_output_has_specific_cause[{&quot;kind&quot;:&quot;other&quot;,&quot;text&quot;:&quot;a&quot;}-MODEL_KIND_INVALID]" time="0.001" /><testcase classname="tests.test_rulings" name="test_single_json_fence_is_accepted_without_extracting_arbitrary_text" time="0.000" /><testcase classname="tests.test_rulings" name="test_five_repairs_do_not_consume_tool_rounds[True]" time="1.043"><failure message="assert 4 == 7&#10; +  where 4 = &lt;test_coordinator.Fake object at 0x000002DEC8AD4D70&gt;.calls">engineering\ai\tests\test_rulings.py:83: in test_five_repairs_do_not_consume_tool_rounds
+    asyncio.run(run())
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:204: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:127: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\base_events.py:719: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+engineering\ai\tests\test_rulings.py:78: in run
+    assert provider.calls==7  # One tool round + first output + five repairs.
+    ^^^^^^^^^^^^^^^^^^^^^^^^
+E   assert 4 == 7
+E    +  where 4 = &lt;test_coordinator.Fake object at 0x000002DEC8AD4D70&gt;.calls</failure></testcase><testcase classname="tests.test_rulings" name="test_five_repairs_do_not_consume_tool_rounds[False]" time="1.009"><failure message="assert 4 == 7&#10; +  where 4 = &lt;test_coordinator.Fake object at 0x000002DEC69F2350&gt;.calls">engineering\ai\tests\test_rulings.py:83: in test_five_repairs_do_not_consume_tool_rounds
+    asyncio.run(run())
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:204: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:127: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\base_events.py:719: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+engineering\ai\tests\test_rulings.py:78: in run
+    assert provider.calls==7  # One tool round + first output + five repairs.
+    ^^^^^^^^^^^^^^^^^^^^^^^^
+E   assert 4 == 7
+E    +  where 4 = &lt;test_coordinator.Fake object at 0x000002DEC69F2350&gt;.calls</failure></testcase><testcase classname="tests.test_rulings" name="test_user_decision_pauses_instead_of_retrying[clarification]" time="1.003" /><testcase classname="tests.test_rulings" name="test_user_decision_pauses_instead_of_retrying[plan]" time="0.977" /><testcase classname="tests.test_rulings" name="test_basic_lua_error_repairs_same_proposal_before_review" time="7.950" /><testcase classname="tests.test_batch_notifications" name="test_review_catalog_exposes_only_server_bound_source_index" time="0.942" /><testcase classname="tests.test_batch_notifications" name="test_notification_rejects_nonprior_source[-1]" time="0.975" /><testcase classname="tests.test_batch_notifications" name="test_notification_rejects_nonprior_source[1]" time="0.939" /><testcase classname="tests.test_batch_notifications" name="test_notification_rejects_nonprior_source[2]" time="0.937" /><testcase classname="tests.test_batch_notifications" name="test_notification_rejects_nonprior_source[True]" time="0.938" /><testcase classname="tests.test_batch_notifications" name="test_notification_rejects_unsupported_source[source0]" time="0.932" /><testcase classname="tests.test_batch_notifications" name="test_notification_rejects_unsupported_source[source1]" time="0.933" /><testcase classname="tests.test_batch_notifications" name="test_reviewed_notification_waits_for_approval_and_is_targeted_once" time="1.038"><failure message="AssertionError: assert 'batch-1dba34...81ab320a01fca' == 'ai-batch:11e...6f754e182e1:0'&#10;  &#10;  - ai-batch:11ea8b70174e4b2f9e0da6f754e182e1:0&#10;  + batch-1dba34a656c1670c35c71d46db1c48aef32b042cbd01a16412b81ab320a01fca">engineering\ai\tests\test_batch_notifications.py:45: in test_reviewed_notification_waits_for_approval_and_is_targeted_once
+    assert notices[0]['source']['commandId']==result['execution']['items'][0]['commandId']
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AssertionError: assert 'batch-1dba34...81ab320a01fca' == 'ai-batch:11e...6f754e182e1:0'
+E     
+E     - ai-batch:11ea8b70174e4b2f9e0da6f754e182e1:0
+E     + batch-1dba34a656c1670c35c71d46db1c48aef32b042cbd01a16412b81ab320a01fca</failure></testcase><testcase classname="tests.test_batch_notifications" name="test_failed_source_cannot_claim_success" time="0.977"><failure message="AssertionError: {'requestId': 'c1712f5a3195442192d9687cafb5fbe6', 'status': 'rejected', 'code': 'BATCH_NOT_PENDING'}&#10;assert 'rejected' == 'committed'&#10;  &#10;  - committed&#10;  + rejected">engineering\ai\tests\test_batch_notifications.py:52: in test_failed_source_cannot_claim_success
+    b=batch(app,candidate)
+           ^^^^^^^^^^^^^^^^
+engineering\ai\tests\test_entrypoints.py:34: in committed
+    assert receipt['status'] == 'committed', receipt
+E   AssertionError: {'requestId': 'c1712f5a3195442192d9687cafb5fbe6', 'status': 'rejected', 'code': 'BATCH_NOT_PENDING'}
+E   assert 'rejected' == 'committed'
+E     
+E     - committed
+E     + rejected</failure></testcase><testcase classname="tests.test_batch_notifications" name="test_rejected_batch_sends_nothing" time="0.984" /><testcase classname="tests.test_batch_notifications" name="test_lost_reply_never_blindly_replays_or_sends_early[0]" time="1.046"><failure message="AssertionError: assert 'completed' == 'unknown'&#10;  &#10;  - unknown&#10;  + completed">engineering\ai\tests\test_batch_notifications.py:71: in test_lost_reply_never_blindly_replays_or_sends_early
+    finally:app.host.execute_batch=original
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AssertionError: assert 'completed' == 'unknown'
+E     
+E     - unknown
+E     + completed</failure></testcase><testcase classname="tests.test_batch_notifications" name="test_lost_reply_never_blindly_replays_or_sends_early[1]" time="1.032"><failure message="AssertionError: assert 'completed' == 'unknown'&#10;  &#10;  - unknown&#10;  + completed">engineering\ai\tests\test_batch_notifications.py:71: in test_lost_reply_never_blindly_replays_or_sends_early
+    finally:app.host.execute_batch=original
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AssertionError: assert 'completed' == 'unknown'
+E     
+E     - unknown
+E     + completed</failure></testcase></testsuite></testsuites>

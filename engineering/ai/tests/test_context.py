@@ -37,16 +37,18 @@ def test_public_context_strips_secret_and_never_reads_others_private_chat(setup)
     snapshot,payload=Context(service).capture('kp',request())
     from onlinecoc_ai.contracts import canonical
     raw=canonical(payload).decode()
-    assert 'public message' in raw and 'private-message' not in raw and 'hidden-secret' not in raw
+    assert 'public message' not in raw and 'private-message' not in raw and 'hidden-secret' not in raw
     assert payload['rules'] == {}
     assert len(payload['roomFacts']['configurations'])==2
-    assert payload['roomFacts']['messages'][0]['authority']=='participant-statement'
+    assert payload['roomFacts']['messages']==[]
 
 
 @pytest.mark.parametrize('change',['edit','delete','policy','revoke','profile'])
 def test_context_rechecks_source_and_policy_after_generation(setup,change):
     host,service,_=setup;enable(host,public=True)
-    add_message(host,'player1','original');context=Context(service);snapshot,_=context.capture('kp',request())
+    message=add_message(host,'player1','original');context=Context(service)
+    selected={'sourceKind':'chat','sourceId':message['messageId'],'sourceRevision':str(message['revision']),'text':message['text']}
+    snapshot,_=context.capture('kp',selected)
     state=host.state()
     if change=='policy':state['aiControl']['settings']['externalSources']['public']=False
     elif change=='profile':state['aiControl']['settings']['profileId']='other-provider'
@@ -63,8 +65,9 @@ def test_manual_revision_keeps_original_source_authorization(setup):
     from pathlib import Path
     from onlinecoc_ai.contracts import loads
     host, service, _ = setup;enable(host, public=True)
-    add_message(host, 'player1', 'source information')
-    snapshot, _ = Context(service).capture('kp', request())
+    message=add_message(host, 'player1', 'source information')
+    selected={'sourceKind':'chat','sourceId':message['messageId'],'sourceRevision':str(message['revision']),'text':message['text']}
+    snapshot, _ = Context(service).capture('kp', selected)
     delta = loads((Path(__file__).parents[1] / 'examples/bonus-15.json').read_bytes())
     proposal = service.create('kp', 'draft from sources', delta, snapshot=snapshot)
     revised = service.revise('kp', proposal['proposalId'], 1, delta)
@@ -96,7 +99,7 @@ def test_context_size_is_bounded(setup):
     host,service,_=setup;enable(host,public=True)
     state=host.state()
     for i in range(30):
-        entity=copy.deepcopy(state['entities']['token-one']);entity.update(instanceId='large-'+str(i));entity['metadata']['notes']='x'*4000;state['entities'][entity['instanceId']]=entity
+        entity=copy.deepcopy(state['entities']['token-one']);entity.update(instanceId='large-'+str(i));entity['metadata']['notes']='x'*80000;state['entities'][entity['instanceId']]=entity
     host.commit(state)
     with pytest.raises(AiError,match='CONTEXT_LIMIT_EXCEEDED'):Context(service).capture('kp',request())
 

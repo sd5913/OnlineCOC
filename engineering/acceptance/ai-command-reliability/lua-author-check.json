@@ -1,0 +1,5806 @@
+{
+  "proposal": {
+    "alternatives": [],
+    "candidateDigest": "611642ab24d2f794764cd3229a8fd5c34c71e2e05f6125c6683f18c95c5de302",
+    "changeSet": {
+      "configurations": [],
+      "data": {
+        "edits.json": {
+          "items": [
+            {
+              "id": "one",
+              "value": 1
+            }
+          ],
+          "title": "preserve",
+          "tuning": {
+            "a": 1,
+            "b": 2
+          }
+        },
+        "tuning.json": {
+          "maxTarget": 100
+        }
+      },
+      "schemaVersion": 1,
+      "sources": {
+        "check.lua": "return rule('fixture.check', {'actor', 'item'}, function(r, actor, item)\n  assert(r.matches(item, 'fixture.token'))\n  assert(r.read(actor).owner == r.read(item).owner)\n  local charges = r.number(item, 'charges')\n  assert(charges > 0, 'No charges remain')\n  r.set(item, 'charges', charges - 1)\n  local target = math.min(r.readData('tuning.json').maxTarget,\n                         r.number(actor, 'target') + r.number(item, 'bonus'))\n  local rolled = r.roll(100)\n  return {passed=rolled <= target, rolled=rolled, target=target, cost=1}\nend)\n",
+        "extra.lua": "return rule(\"fixture.ext.inspect\", {\"actor\"}, function(r, actor)\n  return {ok=true}\nend)\n",
+        "inspect.lua": "return rule('fixture.inspect', {}, function(r) return {ok=true} end)",
+        "retry.lua": "return flow('fixture.retry', {'actor'}, {step('fail',function(r,actor) assert(false,'FIXTURE_RETRY_FAILURE') end)})",
+        "wait.lua": "return flow('fixture.wait', {'actor'}, {ask('wait',{role='kp',seconds=3600,yes='end',no='end',timeout='end'})})"
+      },
+      "suggestions": []
+    },
+    "contextRef": "b1219f146958523422d5a3cdb276df8bb8a21308863016942cd79afa52ef99b6",
+    "createdAt": 1795182000,
+    "model": null,
+    "profileRevision": null,
+    "proposalId": "685e9afd4ec7495a82c1546e8b51894f",
+    "reportRefs": [
+      "1ac2d324621d4434ad0e4e514495ba86",
+      "34c4672f0882418fac3528041cc2948c",
+      "62d2cbc094ff421a945e77a46c46a20d"
+    ],
+    "requestId": "848cbc15d6f44b0b9eb17582046e9fbb",
+    "revision": 2,
+    "schemaVersion": 1,
+    "scopeId": "92e9835b339a4036977443b55eff8e58",
+    "status": "blocked",
+    "summary": "已按 DSL 规范修正 extra.lua：整个文件直接 return rule(...)，规则仍为 fixture.ext.inspect，输入 actor，返回 {ok=true}，未改动配置或数据。\n\n- 仅新增该 Lua 文件，未新增其他规则或条目。\n- 提交后仍需 A/B/C 校验与独立审批才会加载。\n\n请审阅该候选。"
+  },
+  "reports": [
+    {
+      "baselineDigest": "d882e97920b846519c73e6393882fad04ab8e252da0396f197a17348ab88e506",
+      "candidateDigest": "611642ab24d2f794764cd3229a8fd5c34c71e2e05f6125c6683f18c95c5de302",
+      "contextDigest": "b1219f146958523422d5a3cdb276df8bb8a21308863016942cd79afa52ef99b6",
+      "contractDigest": "30d765b9fe69410084778567202256babe66adc4511bfad3db34aa556dcaa246",
+      "coverage": [
+        "json",
+        "full-artifact",
+        "host-stage",
+        "pack-schemas",
+        "host-model",
+        "references"
+      ],
+      "createdAt": 1795184020.4349053,
+      "evidence": {
+        "artifactRevision": "aa4160b11cee485bc6642779814e8a482d2e4bfc7b37728cf66e6c78ad5eec08",
+        "configurationCount": 3
+      },
+      "findings": [],
+      "level": "A",
+      "reportId": "1ac2d324621d4434ad0e4e514495ba86",
+      "reviewItems": [],
+      "risk": "low",
+      "schemaVersion": 1,
+      "status": "pass",
+      "validatorSetDigest": "cf55a6940c1fac19669c17d2f18664156610d0e1ddb6f97cc90ae53e2320b791"
+    },
+    {
+      "baselineDigest": "d882e97920b846519c73e6393882fad04ab8e252da0396f197a17348ab88e506",
+      "candidateDigest": "611642ab24d2f794764cd3229a8fd5c34c71e2e05f6125c6683f18c95c5de302",
+      "contextDigest": "b1219f146958523422d5a3cdb276df8bb8a21308863016942cd79afa52ef99b6",
+      "contractDigest": "30d765b9fe69410084778567202256babe66adc4511bfad3db34aa556dcaa246",
+      "coverage": [
+        "bonus-range",
+        "charges-range"
+      ],
+      "createdAt": 1795184021.2152221,
+      "evidence": {
+        "bonus-range": {
+          "matched": 1,
+          "values": [
+            0
+          ]
+        },
+        "charges-range": {
+          "matched": 1,
+          "values": [
+            2
+          ]
+        },
+        "existingInstances": {
+          "ids": [],
+          "valuesPreserved": true
+        }
+      },
+      "findings": [],
+      "level": "B",
+      "reportId": "34c4672f0882418fac3528041cc2948c",
+      "reviewItems": [],
+      "risk": "low",
+      "schemaVersion": 1,
+      "status": "pass",
+      "validatorSetDigest": "cf55a6940c1fac19669c17d2f18664156610d0e1ddb6f97cc90ae53e2320b791"
+    },
+    {
+      "baselineDigest": "d882e97920b846519c73e6393882fad04ab8e252da0396f197a17348ab88e506",
+      "candidateDigest": "611642ab24d2f794764cd3229a8fd5c34c71e2e05f6125c6683f18c95c5de302",
+      "contextDigest": "b1219f146958523422d5a3cdb276df8bb8a21308863016942cd79afa52ef99b6",
+      "contractDigest": "30d765b9fe69410084778567202256babe66adc4511bfad3db34aa556dcaa246",
+      "coverage": [
+        "token-check",
+        "wrong-owner",
+        "resource-exhaustion"
+      ],
+      "createdAt": 1795184026.6993146,
+      "evidence": {
+        "comparisons": [
+          {
+            "absoluteDelta": 0.0,
+            "baseline": 0.6,
+            "candidate": 0.6,
+            "exact": true,
+            "metricId": "success-rate",
+            "relativeDelta": 0.0,
+            "relativeUnavailableReason": null,
+            "scenarioId": "token-check",
+            "unit": "probability"
+          },
+          {
+            "absoluteDelta": 0.0,
+            "baseline": 1.0,
+            "candidate": 1.0,
+            "exact": true,
+            "metricId": "resource-cost",
+            "relativeDelta": 0.0,
+            "relativeUnavailableReason": null,
+            "scenarioId": "token-check",
+            "unit": "charges"
+          }
+        ],
+        "limitations": [
+          "Only declared scenarios and metrics are covered",
+          "Existing instance values are not migrated",
+          "KP judgment is required for subjective gameplay impact"
+        ],
+        "measuredMetrics": [
+          "resource-cost",
+          "success-rate"
+        ],
+        "requiredMetrics": [
+          "resource-cost",
+          "success-rate"
+        ],
+        "scenarios": [
+          {
+            "policies": {
+              "baseline": {
+                "algorithm": "exact-single-die-v1",
+                "randomCalls": [
+                  1
+                ],
+                "seed": 1,
+                "trials": 100
+              },
+              "candidate": {
+                "algorithm": "exact-single-die-v1",
+                "randomCalls": [
+                  1
+                ],
+                "seed": 1,
+                "trials": 100
+              }
+            },
+            "population": "new-instances-from-same-fixture",
+            "scenarioId": "token-check",
+            "trials": {
+              "baseline": [
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 1
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 1,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 2
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 2,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 3
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 3,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 4
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 4,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 5
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 5,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 6
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 6,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 7
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 7,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 8
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 8,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 9
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 9,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 10
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 10,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 11
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 11,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 12
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 12,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 13
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 13,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 14
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 14,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 15
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 15,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 16
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 16,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 17
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 17,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 18
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 18,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 19
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 19,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 20
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 20,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 21
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 21,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 22
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 22,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 23
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 23,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 24
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 24,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 25
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 25,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 26
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 26,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 27
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 27,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 28
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 28,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 29
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 29,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 30
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 30,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 31
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 31,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 32
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 32,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 33
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 33,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 34
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 34,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 35
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 35,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 36
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 36,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 37
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 37,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 38
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 38,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 39
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 39,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 40
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 40,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 41
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 41,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 42
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 42,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 43
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 43,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 44
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 44,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 45
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 45,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 46
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 46,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 47
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 47,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 48
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 48,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 49
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 49,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 50
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 50,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 51
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 51,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 52
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 52,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 53
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 53,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 54
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 54,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 55
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 55,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 56
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 56,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 57
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 57,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 58
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 58,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 59
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 59,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 60
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 60,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 61
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 61,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 62
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 62,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 63
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 63,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 64
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 64,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 65
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 65,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 66
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 66,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 67
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 67,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 68
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 68,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 69
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 69,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 70
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 70,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 71
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 71,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 72
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 72,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 73
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 73,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 74
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 74,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 75
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 75,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 76
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 76,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 77
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 77,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 78
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 78,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 79
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 79,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 80
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 80,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 81
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 81,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 82
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 82,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 83
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 83,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 84
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 84,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 85
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 85,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 86
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 86,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 87
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 87,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 88
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 88,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 89
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 89,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 90
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 90,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 91
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 91,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 92
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 92,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 93
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 93,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 94
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 94,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 95
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 95,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 96
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 96,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 97
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 97,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 98
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 98,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 99
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 99,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 100
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 100,
+                        "target": 60
+                      }
+                    }
+                  ]
+                }
+              ],
+              "candidate": [
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 1
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 1,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 2
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 2,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 3
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 3,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 4
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 4,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 5
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 5,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 6
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 6,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 7
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 7,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 8
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 8,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 9
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 9,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 10
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 10,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 11
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 11,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 12
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 12,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 13
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 13,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 14
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 14,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 15
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 15,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 16
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 16,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 17
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 17,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 18
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 18,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 19
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 19,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 20
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 20,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 21
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 21,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 22
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 22,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 23
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 23,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 24
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 24,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 25
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 25,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 26
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 26,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 27
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 27,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 28
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 28,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 29
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 29,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 30
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 30,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 31
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 31,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 32
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 32,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 33
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 33,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 34
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 34,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 35
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 35,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 36
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 36,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 37
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 37,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 38
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 38,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 39
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 39,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 40
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 40,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 41
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 41,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 42
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 42,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 43
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 43,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 44
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 44,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 45
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 45,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 46
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 46,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 47
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 47,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 48
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 48,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 49
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 49,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 50
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 50,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 51
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 51,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 52
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 52,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 53
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 53,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 54
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 54,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 55
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 55,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 56
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 56,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 57
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 57,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 58
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 58,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 59
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 59,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 60
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 60,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 61
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 61,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 62
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 62,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 63
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 63,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 64
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 64,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 65
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 65,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 66
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 66,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 67
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 67,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 68
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 68,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 69
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 69,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 70
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 70,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 71
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 71,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 72
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 72,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 73
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 73,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 74
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 74,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 75
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 75,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 76
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 76,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 77
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 77,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 78
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 78,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 79
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 79,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 80
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 80,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 81
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 81,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 82
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 82,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 83
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 83,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 84
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 84,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 85
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 85,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 86
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 86,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 87
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 87,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 88
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 88,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 89
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 89,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 90
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 90,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 91
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 91,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 92
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 92,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 93
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 93,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 94
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 94,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 95
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 95,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 96
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 96,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 97
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 97,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 98
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 98,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 99
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 99,
+                        "target": 60
+                      }
+                    }
+                  ]
+                },
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 100
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": false,
+                        "rolled": 100,
+                        "target": 60
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "policies": {
+              "baseline": {
+                "algorithm": "fixed-sequence-v1",
+                "randomCalls": [
+                  0
+                ],
+                "seed": 1,
+                "trials": 1
+              },
+              "candidate": {
+                "algorithm": "fixed-sequence-v1",
+                "randomCalls": [
+                  0
+                ],
+                "seed": 1,
+                "trials": 1
+              }
+            },
+            "population": "new-instances-from-same-fixture",
+            "scenarioId": "wrong-owner",
+            "trials": {
+              "baseline": [
+                {
+                  "random": [],
+                  "steps": [
+                    {
+                      "code": "PERMISSION_DENIED",
+                      "ok": false
+                    }
+                  ]
+                }
+              ],
+              "candidate": [
+                {
+                  "random": [],
+                  "steps": [
+                    {
+                      "code": "PERMISSION_DENIED",
+                      "ok": false
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "policies": {
+              "baseline": {
+                "algorithm": "fixed-sequence-v1",
+                "randomCalls": [
+                  2
+                ],
+                "seed": 1,
+                "trials": 1
+              },
+              "candidate": {
+                "algorithm": "fixed-sequence-v1",
+                "randomCalls": [
+                  2
+                ],
+                "seed": 1,
+                "trials": 1
+              }
+            },
+            "population": "new-instances-from-same-fixture",
+            "scenarioId": "resource-exhaustion",
+            "trials": {
+              "baseline": [
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 50
+                    },
+                    {
+                      "sides": 100,
+                      "value": 50
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 50,
+                        "target": 60
+                      }
+                    },
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 0
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 50,
+                        "target": 60
+                      }
+                    },
+                    {
+                      "code": "RULE_FAILED",
+                      "ok": false
+                    }
+                  ]
+                }
+              ],
+              "candidate": [
+                {
+                  "random": [
+                    {
+                      "sides": 100,
+                      "value": 50
+                    },
+                    {
+                      "sides": 100,
+                      "value": 50
+                    }
+                  ],
+                  "steps": [
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 1
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 50,
+                        "target": 60
+                      }
+                    },
+                    {
+                      "effects": [
+                        {
+                          "id": "token-one",
+                          "key": "charges",
+                          "type": "number",
+                          "value": 0
+                        }
+                      ],
+                      "ok": true,
+                      "result": {
+                        "cost": 1,
+                        "passed": true,
+                        "rolled": 50,
+                        "target": 60
+                      }
+                    },
+                    {
+                      "code": "RULE_FAILED",
+                      "ok": false
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "findings": [
+        {
+          "code": "EXISTING_INSTANCE_COVERAGE_MISSING",
+          "evidence": {
+            "ids": [
+              "bag-one"
+            ]
+          },
+          "message": "EXISTING_INSTANCE_COVERAGE_MISSING",
+          "path": "",
+          "severity": "error",
+          "sourceRef": "",
+          "suggestion": ""
+        }
+      ],
+      "level": "C",
+      "reportId": "62d2cbc094ff421a945e77a46c46a20d",
+      "reviewItems": [
+        {
+          "id": "choice-value",
+          "question": "新增道具是否使其他选择失去价值？请说明依据。",
+          "required": true
+        }
+      ],
+      "risk": "unknown",
+      "schemaVersion": 1,
+      "status": "unknown",
+      "validatorSetDigest": "cf55a6940c1fac19669c17d2f18664156610d0e1ddb6f97cc90ae53e2320b791"
+    }
+  ],
+  "sourceRun": "1795184015563359400"
+}

@@ -1,0 +1,7 @@
+{
+  "status": "interrupted",
+  "reason": "发现旧历史正文断言和只实现state()的嵌入仓库兼容失败后停止该广泛初跑，改为分组定位并以最终XML完整复验。该次未生成JUnit文件，不计入成功率。",
+  "countsReported": false,
+  "followup": ["history-diagnosis.xml", "tools-diagnosis.xml", "final-regression.xml", "final-core-all.xml", "history-final.xml"],
+  "realProviderCalls": 0
+}

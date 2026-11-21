@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "configurations": [
+    {
+      "kind": "replace",
+      "id": "fixture.token",
+      "expectedRevision": "1",
+      "value": {
+        "configurationId": "fixture.token",
+        "revision": "2",
+        "typeRef": "item",
+        "defaults": {
+          "quantity": 1,
+          "unitMass": 0,
+          "charges": 2,
+          "bonus": 15
+        },
+        "behaviors": {
+          "use": {
+            "ruleId": "fixture.check"
+          }
+        }
+      }
+    }
+  ],
+  "sources": {},
+  "data": {},
+  "suggestions": []
+}

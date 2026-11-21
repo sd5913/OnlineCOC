@@ -1,0 +1,349 @@
+{
+  "scope": "ISSUE-023 synthetic rooms with actual Stumpsville pack; prior round excluded",
+  "api": {
+    "attempts": 49,
+    "completedResponses": 49,
+    "tokens": 912755,
+    "unknownUsage": 0,
+    "summaryCalls": 11,
+    "summaryRepairCalls": 4
+  },
+  "supportedCrud": {
+    "distinctOperations": 8,
+    "eventuallyExecutedExactly": 8,
+    "requestAttempts": 9,
+    "successfulAttempts": 8,
+    "firstAttemptOperationsPassed": 7,
+    "successfulTasksWithAutomaticTechnicalRepair": 2,
+    "automaticTechnicalRepairs": 3,
+    "excluded": "compression workflow, physical item/map deletion, invalid map index=99"
+  },
+  "negativeBoundaries": {
+    "cases": 4,
+    "noBusinessMutation": 4,
+    "clearCorrectFeedback": 1,
+    "casesDetail": [
+      {
+        "report": "items-1795248206108486700.json",
+        "phase": "delete",
+        "status": "needs_input",
+        "noBusinessMutation": true,
+        "clearCorrectFeedback": false
+      },
+      {
+        "report": "map-1795248371462053900.json",
+        "phase": "add",
+        "status": "blocked",
+        "noBusinessMutation": true,
+        "clearCorrectFeedback": false
+      },
+      {
+        "report": "map-1795248575201243400.json",
+        "phase": "delete",
+        "status": "blocked",
+        "noBusinessMutation": true,
+        "clearCorrectFeedback": false
+      },
+      {
+        "report": "pl-1795248201266683700.json",
+        "phase": "hidden",
+        "status": "needs_input",
+        "noBusinessMutation": true,
+        "clearCorrectFeedback": true
+      }
+    ]
+  },
+  "compressionWorkflow": {
+    "businessRequests": 4,
+    "successfulBusinessRequests": 2,
+    "finalWorkflowPassed": true,
+    "planRequests": 1,
+    "review": {
+      "status": "passed",
+      "definitionPublications": 1,
+      "instances": 1,
+      "assistantSuggestedHp": 3,
+      "userCorrection": "+1",
+      "actualHp": 4,
+      "definitionExact": true,
+      "instanceIdempotent": true,
+      "diagnostics": [
+        {
+          "afterBytes": 56534,
+          "beforeBytes": 448206,
+          "cacheHits": 0,
+          "recordCount": 39,
+          "recordLocators": 2,
+          "repairCount": 0,
+          "repairs": [],
+          "round": 1,
+          "status": "compressed",
+          "summaryDigest": "9407ed6173d9f20084494288d4fb8d5de429b293d053a50e97d3684a31e28c34"
+        }
+      ],
+      "proofs": [
+        {
+          "file": "engineering\\acceptance\\ai-context-compression\\work\\live-compression-1795247144510978100\\host\\rooms\\demo\\generations\\000000000009.json",
+          "sha256": "9f2bfc455ba97004e5107b1eecacbb8fbf8f30abd8c07227d1a75b5ccfff5ecf"
+        },
+        {
+          "file": "engineering\\acceptance\\ai-context-compression\\work\\live-compression-1795247144510978100\\host\\ai\\generations\\000000000142.json",
+          "sha256": "7552b55d767611a1fa4c3cadd93054b3b83a9e792677c29d2db8e4c796734329"
+        }
+      ],
+      "harnessCorrections": [
+        "definition oracle omitted mandatory isNpc=1",
+        "task terminal status was visible before diagnostics finally persisted"
+      ]
+    }
+  },
+  "overallRequestQuality": {
+    "requests": 18,
+    "passed": 9,
+    "failed": 9,
+    "definition": "Usable outcome/refusal plus materially accurate text; all attempts retained, automatic repairs allowed. Exact execution and language quality are separate.",
+    "rows": [
+      {
+        "report": "compression-1795247144510978100.json",
+        "group": "compression",
+        "phase": "assistant-plan",
+        "passed": false,
+        "failure": "Claims 13 base default fields; actual sv.npc has 12.",
+        "attemptIds": [
+          1
+        ]
+      },
+      {
+        "report": "compression-1795247144510978100.json",
+        "group": "compression",
+        "phase": "compressed-npc",
+        "passed": false,
+        "failure": "Claims 11 base default fields; actual sv.npc has 12. Exact candidate is correct.",
+        "attemptIds": [
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ]
+      },
+      {
+        "report": "compression-1795247324248927700.json",
+        "group": "compression",
+        "phase": "spawn",
+        "passed": false,
+        "failure": "Compression provenance failure; request did not reach a usable answer.",
+        "attemptIds": [
+          8,
+          9
+        ]
+      },
+      {
+        "report": "compression-1795247490062917900.json",
+        "group": "compression",
+        "phase": "spawn",
+        "passed": false,
+        "failure": "Compression quote/provenance failure; request did not reach a usable answer.",
+        "attemptIds": [
+          10,
+          11,
+          12
+        ]
+      },
+      {
+        "report": "compression-1795247911156773000.json",
+        "group": "compression",
+        "phase": "spawn",
+        "passed": true,
+        "failure": null,
+        "attemptIds": [
+          13,
+          14,
+          15,
+          16
+        ]
+      },
+      {
+        "report": "consultation-1795248177952401900.json",
+        "group": "consultation",
+        "phase": "independent-source",
+        "passed": false,
+        "failure": "Did not read explicitly required independent map source, but implies it did; also changed exact description punctuation.",
+        "attemptIds": [
+          17,
+          18
+        ]
+      },
+      {
+        "report": "consultation-1795248549857621900.json",
+        "group": "consultation",
+        "phase": "independent-source",
+        "passed": true,
+        "failure": null,
+        "attemptIds": [
+          35,
+          36,
+          37
+        ]
+      },
+      {
+        "report": "items-1795248206108486700.json",
+        "group": "items",
+        "phase": "add",
+        "passed": true,
+        "failure": null,
+        "attemptIds": [
+          20,
+          21,
+          22
+        ]
+      },
+      {
+        "report": "items-1795248206108486700.json",
+        "group": "items",
+        "phase": "modify",
+        "passed": true,
+        "failure": null,
+        "attemptIds": [
+          23,
+          24,
+          25
+        ]
+      },
+      {
+        "report": "items-1795248206108486700.json",
+        "group": "items",
+        "phase": "delete",
+        "passed": false,
+        "failure": "Offers an unsupported high-risk exception to an append-only A/B restriction.",
+        "attemptIds": [
+          26,
+          27
+        ]
+      },
+      {
+        "report": "map-1795248371462053900.json",
+        "group": "map",
+        "phase": "add",
+        "passed": false,
+        "failure": "Invalid test input index=99 is blocked; text still says it has been appended.",
+        "attemptIds": [
+          33,
+          34
+        ]
+      },
+      {
+        "report": "map-1795248575201243400.json",
+        "group": "map",
+        "phase": "add",
+        "passed": true,
+        "failure": null,
+        "attemptIds": [
+          38,
+          39
+        ]
+      },
+      {
+        "report": "map-1795248575201243400.json",
+        "group": "map",
+        "phase": "modify",
+        "passed": true,
+        "failure": null,
+        "attemptIds": [
+          40,
+          41,
+          42,
+          43,
+          44
+        ]
+      },
+      {
+        "report": "map-1795248575201243400.json",
+        "group": "map",
+        "phase": "delete",
+        "passed": false,
+        "failure": "Stable-array removal blocked; text still presents it as awaiting KP approval.",
+        "attemptIds": [
+          45,
+          46,
+          47,
+          48,
+          49
+        ]
+      },
+      {
+        "report": "npc-1795248289799830800.json",
+        "group": "npc",
+        "phase": "add",
+        "passed": false,
+        "failure": "Correct candidate, but offers to remove the mandatory isNpc marker if asked.",
+        "attemptIds": [
+          28,
+          29
+        ]
+      },
+      {
+        "report": "npc-1795248289799830800.json",
+        "group": "npc",
+        "phase": "modify",
+        "passed": true,
+        "failure": null,
+        "attemptIds": [
+          30,
+          31
+        ]
+      },
+      {
+        "report": "npc-1795248289799830800.json",
+        "group": "npc",
+        "phase": "delete",
+        "passed": true,
+        "failure": null,
+        "attemptIds": [
+          32
+        ]
+      },
+      {
+        "report": "pl-1795248201266683700.json",
+        "group": "pl",
+        "phase": "hidden",
+        "passed": true,
+        "failure": null,
+        "attemptIds": [
+          19
+        ]
+      }
+    ]
+  },
+  "fullCore": {
+    "tests": 692,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "seconds": 1039.355,
+    "passed": 692
+  },
+  "providerDefaults": {
+    "status": "passed",
+    "method": "Execute actual providers.js base factory with Node; existing profiles still enter edit(value) directly.",
+    "request": {
+      "connectTimeoutMs": 10000,
+      "totalTimeoutMs": 120000,
+      "maxOutputTokens": 8192,
+      "contextWindowTokens": 1048576,
+      "thinking": "disabled"
+    },
+    "limits": {
+      "maxConcurrentPerRoom": 1,
+      "maxQueuedPerRoom": 5,
+      "maxToolRounds": 12,
+      "maxRepairAttempts": 5,
+      "maxTransportRetries": 2,
+      "taskTimeoutMs": 600000,
+      "dailyTokenBudget": null
+    },
+    "enabled": false,
+    "sourceDigest": "3f25c4f2717fcb46e90a83c52585b257cbe2b807e10ff7ba402b83901bf2e329"
+  }
+}
