@@ -5,7 +5,7 @@
 - 状态：有效
 - 创建日期：2026-10-29
 - 最后更新：2026-11-21
-- 最近目录核对：2026-11-21（本轮在聊天隔离基础上核对ISSUE-023上下文压缩、KP来源采纳、715项AI新增清单、三版AI冻结源码、21项宿主证据和包侧新测试；不含运行存档）。此前默认AI与C评估见[前阶段记录](../../history/2026-11-21-ai-defaults-c-review.md)，前轮证据见[ISSUE-022](../../history/2026-11-21-issue-022-chat-isolation-ruling-status.md)，本轮见[ISSUE-023](../../history/2026-11-21-issue-023-context-compression-kp-autonomy.md)。
+- 最近目录核对：2026-11-21（本轮核对ISSUE-024官方压缩适配、36份精选验收文件、三版AI冻结源码及包侧独立验证，不含临时存档）。本轮见[ISSUE-024](../../history/2026-11-21-issue-024-deepseek-official-compaction.md)，前轮见[ISSUE-023](../../history/2026-11-21-issue-023-context-compression-kp-autonomy.md)。
 - 关联文档：[工程文档索引](README.md)、[文档维护标准](../../standards/document-maintenance.md)
 
 ## 工程实际目录
@@ -21,6 +21,7 @@
 | 实际文件 | 用途 |
 | --- | --- |
 | `AGENTS.md` | Agent 协作与施工要求 |
+| `.gitattributes` | 保留ISSUE-024验收及依赖冻结版本的原始字节，避免跨系统换行改变证据哈希 |
 | `README.md` | 项目入口 |
 | `engineering/README.md` | 工程代码目录用途与相关入口 |
 | `docs/current/engineering/network-p2p.md` | 公网模块配置、玩家包/内容导出、协议、云端运维与验收 |
@@ -2148,6 +2149,56 @@ AI 可选限额与用量统计（2026-11-16）：
 | `engineering/acceptance/ai-command-reliability/probe-source/casebook.py` | 指令可靠性实验的独立来源探针与复核脚本 |
 | `engineering/acceptance/ai-command-reliability/probe-source/evaluate.py` | 指令可靠性实验的独立来源探针与复核脚本 |
 | `engineering/acceptance/ai-command-reliability/probe-source/live.py` | 指令可靠性实验的独立来源探针与复核脚本 |
+
+| `docs/history/2026-11-21-issue-024-deepseek-official-compaction.md` | 官方压缩机制适配、真实对照与失败修复的完成记录 |
+| `rulepacks/stumpsville/tests/official-compaction-results.json` | ISSUE-024冻结接口的包侧19项验收、来源哈希与测试边界 |
+| `engineering/acceptance/engine-kp-policy-interface-snapshot/v1/engineering/` | ISSUE-024复现依赖的宿主冻结源码；只按同版source.json列出的327项入库，不含运行存档 |
+
+| `engineering/ai/src/onlinecoc_ai/compaction_units.py` | 完整历史/工具单元、短需求预算选择与安全工具文字裁剪 |
+| `engineering/ai/tests/test_official_compaction.py` | 官方压缩适配、关键原文、工具保护与明确溢出恢复专项 |
+| `engineering/acceptance/ai-official-compaction/.gitignore` | ISSUE-024精选来源、预算、实验、统计或交接证据 |
+| `engineering/acceptance/ai-official-compaction/README.md` | ISSUE-024当前机制、确定性/真实API证据与重现边界 |
+| `engineering/acceptance/ai-official-compaction/adapted-1795256916717539800.json` | ISSUE-024精选来源、预算、实验、统计或交接证据 |
+| `engineering/acceptance/ai-official-compaction/adapted-1795257596167240900.json` | ISSUE-024精选来源、预算、实验、统计或交接证据 |
+| `engineering/acceptance/ai-official-compaction/baseline-1795256781623400600.json` | ISSUE-024精选来源、预算、实验、统计或交接证据 |
+| `engineering/acceptance/ai-official-compaction/baseline-source.json` | ISSUE-024精选来源、预算、实验、统计或交接证据 |
+| `engineering/acceptance/ai-official-compaction/bounded_provider.py` | ISSUE-024隔离构建、限额模型调用或统计重算驱动 |
+| `engineering/acceptance/ai-official-compaction/budget.json` | ISSUE-024精选来源、预算、实验、统计或交接证据 |
+| `engineering/acceptance/ai-official-compaction/comparison.json` | ISSUE-024精选来源、预算、实验、统计或交接证据 |
+| `engineering/acceptance/ai-official-compaction/diagnostic-correction-source.json` | ISSUE-024精选来源、预算、实验、统计或交接证据 |
+| `engineering/acceptance/ai-official-compaction/diagnostic-correction.xml` | ISSUE-024保留的单轮回归结果，含失败与复测 |
+| `engineering/acceptance/ai-official-compaction/final-core-source.json` | ISSUE-024精选来源、预算、实验、统计或交接证据 |
+| `engineering/acceptance/ai-official-compaction/final-core.xml` | ISSUE-024保留的单轮回归结果，含失败与复测 |
+| `engineering/acceptance/ai-official-compaction/handoff-files.json` | ISSUE-024精选来源、预算、实验、统计或交接证据 |
+| `engineering/acceptance/ai-official-compaction/initial-source.json` | ISSUE-024精选来源、预算、实验、统计或交接证据 |
+| `engineering/acceptance/ai-official-compaction/initial.xml` | ISSUE-024保留的单轮回归结果，含失败与复测 |
+| `engineering/acceptance/ai-official-compaction/integration-v1-source.json` | ISSUE-024精选来源、预算、实验、统计或交接证据 |
+| `engineering/acceptance/ai-official-compaction/integration-v1.xml` | ISSUE-024保留的单轮回归结果，含失败与复测 |
+| `engineering/acceptance/ai-official-compaction/live-ledger.json` | ISSUE-024精选来源、预算、实验、统计或交接证据 |
+| `engineering/acceptance/ai-official-compaction/live_pair.py` | ISSUE-024隔离构建、限额模型调用或统计重算驱动 |
+| `engineering/acceptance/ai-official-compaction/live_support.py` | ISSUE-024隔离构建、限额模型调用或统计重算驱动 |
+| `engineering/acceptance/ai-official-compaction/mechanism-fixed-source.json` | ISSUE-024精选来源、预算、实验、统计或交接证据 |
+| `engineering/acceptance/ai-official-compaction/mechanism-fixed.xml` | ISSUE-024保留的单轮回归结果，含失败与复测 |
+| `engineering/acceptance/ai-official-compaction/mechanism-source.json` | ISSUE-024精选来源、预算、实验、统计或交接证据 |
+| `engineering/acceptance/ai-official-compaction/mechanism-verified-source.json` | ISSUE-024精选来源、预算、实验、统计或交接证据 |
+| `engineering/acceptance/ai-official-compaction/mechanism-verified.xml` | ISSUE-024保留的单轮回归结果，含失败与复测 |
+| `engineering/acceptance/ai-official-compaction/mechanism.xml` | ISSUE-024保留的单轮回归结果，含失败与复测 |
+| `engineering/acceptance/ai-official-compaction/official-sources.json` | ISSUE-024精选来源、预算、实验、统计或交接证据 |
+| `engineering/acceptance/ai-official-compaction/run_tests.py` | ISSUE-024隔离构建、限额模型调用或统计重算驱动 |
+| `engineering/acceptance/ai-official-compaction/short-instructions-source.json` | ISSUE-024精选来源、预算、实验、统计或交接证据 |
+| `engineering/acceptance/ai-official-compaction/short-instructions.xml` | ISSUE-024保留的单轮回归结果，含失败与复测 |
+| `engineering/acceptance/ai-official-compaction/summarize.py` | ISSUE-024隔离构建、限额模型调用或统计重算驱动 |
+| `engineering/acceptance/ai-official-compaction/tail-boundary-source.json` | ISSUE-024精选来源、预算、实验、统计或交接证据 |
+| `engineering/acceptance/ai-official-compaction/tail-boundary.xml` | ISSUE-024保留的单轮回归结果，含失败与复测 |
+| `engineering/acceptance/ai-official-compaction/tail-selection-proof.json` | ISSUE-024精选来源、预算、实验、统计或交接证据 |
+| `engineering/acceptance/ai-official-compaction/verification.json` | ISSUE-024精选来源、预算、实验、统计或交接证据 |
+| `engineering/acceptance/ai-official-compaction-interface-snapshot/v1/source.json` | ISSUE-024本版冻结清单与逐文件SHA256 |
+| `engineering/acceptance/ai-official-compaction-interface-snapshot/v1/engineering/` | ISSUE-024不可变冻结源码，具体219项路径和哈希见同版source.json |
+| `engineering/acceptance/ai-official-compaction-interface-snapshot/v2/source.json` | ISSUE-024本版冻结清单与逐文件SHA256 |
+| `engineering/acceptance/ai-official-compaction-interface-snapshot/v2/engineering/` | ISSUE-024不可变冻结源码，具体219项路径和哈希见同版source.json |
+| `engineering/acceptance/ai-official-compaction-interface-snapshot/v3/source.json` | ISSUE-024本版冻结清单与逐文件SHA256 |
+| `engineering/acceptance/ai-official-compaction-interface-snapshot/v3/engineering/` | ISSUE-024不可变冻结源码，具体219项路径和哈希见同版source.json |
+| `engineering/acceptance/ai-official-compaction/work/` | Git忽略的隔离运行树、生成档案与测试证据临时目录；禁止用作正式存档 |
 
 ## 施工登记
 

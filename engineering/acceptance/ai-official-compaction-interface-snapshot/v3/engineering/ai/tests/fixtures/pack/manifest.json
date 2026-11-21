@@ -1,0 +1,13 @@
+{
+  "id": "ai-fixture",
+  "version": "0.1.0",
+  "protocolVersion": 1,
+  "configurations": "config/configurations.json",
+  "rules": [
+    "check.lua"
+  ],
+  "data": [
+    "tuning.json"
+  ],
+  "ai": "ai/contract.json"
+}

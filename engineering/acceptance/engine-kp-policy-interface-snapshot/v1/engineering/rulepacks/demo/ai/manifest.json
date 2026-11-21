@@ -1,0 +1,23 @@
+{
+  "id": "host-demo",
+  "version": "1.0.0-ai.1",
+  "protocolVersion": 1,
+  "layout": "flat",
+  "configurations": "ai/configurations.json",
+  "rules": [
+    "attack.lua",
+    "check-library.lua",
+    "damage-library.lua",
+    "damage.lua",
+    "environment.lua",
+    "rules.lua",
+    "ruling.lua",
+    "timed.lua",
+    "transfer-library.lua",
+    "transfer.lua"
+  ],
+  "data": [
+    "environment.json"
+  ],
+  "ai": "ai/contract.json"
+}

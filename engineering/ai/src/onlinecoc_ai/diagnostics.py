@@ -124,6 +124,8 @@ class TaskTrace:
         return {'schemaVersion': 1, 'stage': self.stage, 'turn': self.turn,
                 'toolCalls': self.tools[-24:], 'errors': self.errors[:3], 'outputFailures':self.output_failures[-3:],
                 'preflightChecks':copy.deepcopy(self.preflight_checks),
+                **({'contextPolicy':copy.deepcopy(self.context_policy)} if hasattr(self,'context_policy') else {}),
+                **({'contextOverflow':copy.deepcopy(self.context_overflow)} if hasattr(self,'context_overflow') else {}),
                 **({'contextBudget':self.context_budget} if self.context_budget else {}), **({'compression':copy.deepcopy(self.compression)} if hasattr(self,'compression') else {})}
 
     def log(self, task_id):

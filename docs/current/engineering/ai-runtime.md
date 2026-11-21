@@ -19,7 +19,7 @@
 | 批次、配置和高危审批 | [修改裁决](ai-rulings.md) |
 | 嵌入、来源审核和故障导出 | [组件](ai-pack-embedding.md)、[调试](ai-debug-review.md) |
 
-新房间默认权限和 C 评估见[默认配置验收](../../../engineering/acceptance/ai-defaults-c-review/README.md)；语义压缩、KP 来源采纳及真实配置增改删的成功率与失败记录见[上下文验收](../../../engineering/acceptance/ai-context-compression/README.md)。重启与调试修复见[此前验收](../../../engineering/acceptance/ai-runtime/repair-20261120.md)，早期阶段见[开发记录](../../history/2026-11-20-ai-development-records.md)；各轮重复用例不相加为独立覆盖。
+新房间默认权限和 C 评估见[默认配置验收](../../../engineering/acceptance/ai-defaults-c-review/README.md)；KP 来源采纳及真实配置增改删的成功率与失败记录见[上下文验收](../../../engineering/acceptance/ai-context-compression/README.md)，当前压缩机制及长对话对照见[官方机制适配验收](../../../engineering/acceptance/ai-official-compaction/README.md)。重启与调试修复见[此前验收](../../../engineering/acceptance/ai-runtime/repair-20261120.md)，早期阶段见[开发记录](../../history/2026-11-20-ai-development-records.md)；各轮重复用例不相加为独立覆盖。
 
 ## 已有内容
 

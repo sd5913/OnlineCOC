@@ -1,0 +1,17 @@
+{
+  "commit": "2e39e70496aa02986ca6a820c5d497e816b69d7e",
+  "reviewedAt": "2026-11-21",
+  "sources": [
+    "https://github.com/deepseek-ai/deepseek-harness/blob/2e39e70496aa02986ca6a820c5d497e816b69d7e/packages/compaction/compaction-basic/README.md",
+    "https://github.com/deepseek-ai/deepseek-harness/blob/2e39e70496aa02986ca6a820c5d497e816b69d7e/packages/compaction/compaction-tool-result-pruner/README.md",
+    "https://github.com/deepseek-ai/deepseek-harness/blob/2e39e70496aa02986ca6a820c5d497e816b69d7e/packages/llm/token-meter/README.md",
+    "https://github.com/deepseek-ai/deepseek-harness/blob/2e39e70496aa02986ca6a820c5d497e816b69d7e/docs/subsystems/compaction.md"
+  ],
+  "communityReproductions": [
+    "https://github.com/deepseek-ai/deepseek-harness/discussions/13918",
+    "https://github.com/deepseek-ai/deepseek-harness/discussions/11773",
+    "https://github.com/deepseek-ai/deepseek-harness/discussions/3399"
+  ],
+  "implementation": "Python algorithm adaptation; not an installed Harness plugin; no new server compact endpoint",
+  "scope": "one generation task rolling checkpoint; identical authorized summary cache can persist across tasks; existing history-capture ceilings unchanged"
+}

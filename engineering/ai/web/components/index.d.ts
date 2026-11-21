@@ -54,7 +54,9 @@ export interface Task extends Partial<QueueItem> {
   /** KP only. No raw arguments, exception text, credentials or local file paths. */
   diagnostics?: {
     schemaVersion: 1; stage: string; turn: number;
-    compression?: {round:number;beforeBytes:number;afterBytes?:number;recordCount:number;summaryDigest?:string;status:string;code?:string;repairCount?:number;cacheHits?:number;recordLocators?:number;repairs?:{attempt:number;code:string}[]}[];
+    compression?: {round:number;kind?:'prune'|'summary';trigger?:'pressure'|'overflow';beforeBytes:number;afterBytes?:number;afterPruneBytes?:number;afterExtractionBytes?:number;recordCount:number;summaryDigest?:string;status:string;code?:string;repairCount?:number;cacheHits?:number;recordLocators?:number;prunedResults?:number;retainedBytes?:number;checkpointReplaced?:boolean;summaryCalls?:number;summaryDurationMs?:number;repairs?:{attempt:number;code:string}[]}[];
+    contextPolicy?: {contextWindowTokens:number;compressAtBytes:number;retainBytes:number;headroomTokens:number;modelTriggerTokens:number;measurement:'conservative-utf8-bytes'};
+    contextOverflow?: {retries:number;status:string};
     contextBudget?: {bytes:number;limitBytes:number;toolSchemaBytes:number;toolMessageBytes:number};
     toolCalls: {name: string; status: string; turn: number; argumentsDigest: string;
       keys: string[]; unknownKeys: boolean; types?: string[]; referenceCount?: number; hasQuery?: boolean; code?: string}[];

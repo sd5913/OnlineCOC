@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "packId": "ai-fixture",
+  "packVersion": "0.1.0",
+  "hostProtocolRange": {
+    "min": 1,
+    "max": 1
+  },
+  "sources": [
+    {
+      "id": "rules",
+      "path": "docs/rules.md",
+      "visibility": "public"
+    }
+  ],
+  "schemas": {
+    "config/tuning.json": "ai/schemas/tuning.schema.json"
+  },
+  "checks": "ai/checks.json",
+  "scenarios": [
+    "ai/scenarios/token.json",
+    "ai/scenarios/wrong-owner.json",
+    "ai/scenarios/exhaustion.json"
+  ],
+  "metrics": "ai/metrics.json",
+  "reviewChecklist": "ai/review-checklist.md",
+  "extensionPoints": [
+    {
+      "namespace": "fixture.ext.",
+      "typeRefs": [
+        "item"
+      ],
+      "allowedPaths": [
+        "/defaults/bonus"
+      ],
+      "allowExistingIds": [
+        "fixture.token"
+      ],
+      "rulePrefixes": [
+        "fixture."
+      ]
+    }
+  ],
+  "requiredChecks": [
+    "bonus-range",
+    "charges-range"
+  ],
+  "requiredMetrics": [
+    "success-rate"
+  ],
+  "reviewPolicy": {
+    "approvalTtlSeconds": 900,
+    "items": [
+      {
+        "id": "choice-value",
+        "question": "新增道具是否使其他选择失去价值？请说明依据。",
+        "required": true
+      }
+    ],
+    "allowUnmeasuredOptional": true
+  },
+  "contextMapping": {
+    "actor": "entities",
+    "items": "entities"
+  }
+}

@@ -42,9 +42,10 @@ def test_compacts_semantically_keeps_current_request_exact_and_recall_archives(t
     assert before==messages() and len(canonical(out))<len(canonical(before))
     p=json.loads(out[1]['content']);old=json.loads(before[1]['content'])
     for key in ('request','selectedReferences','contract'):assert p[key]==old[key]
-    assert p['conversationHistory']==old['conversationHistory'][-2:]
+    assert p['conversationHistory']==old['conversationHistory']  # All short complete turns fit the retained budget.
+    assert p['earlierRequirements']==old['earlierRequirements']
     assert json.loads(out[2]['content'])['contextSummary']['sections']
-    original=next(r for r in c.records.values() if '恢复3点' in r['content'])
+    original=next(r for r in c.records.values() if r['origin']=='reference')
     assert c.recall({'refIds':[original['refId']]})['records'][0]==original
     archive=tmp_path/'context-archives/objects'/ (original['refId']+'.json.gz')
     assert json.loads(gzip.decompress(archive.read_bytes()))==original

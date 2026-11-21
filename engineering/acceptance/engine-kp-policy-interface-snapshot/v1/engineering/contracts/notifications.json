@@ -1,0 +1,292 @@
+{
+  "send": {
+    "type": "object",
+    "properties": {
+      "recipientAccountIds": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "minItems": 1,
+        "maxItems": 100,
+        "uniqueItems": true
+      },
+      "text": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 2000
+      },
+      "sourceCommandId": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 200
+      },
+      "sourceOp": {
+        "enum": [
+          "entity.create",
+          "entity.update",
+          "entity.patch",
+          "entity.archive",
+          "relation.set",
+          "relation.remove",
+          "progress.set",
+          "asset.attach",
+          "asset.remove",
+          "action.invoke",
+          "behavior.invoke",
+          "publication.apply"
+        ]
+      }
+    },
+    "required": [
+      "recipientAccountIds",
+      "text",
+      "sourceCommandId",
+      "sourceOp"
+    ],
+    "additionalProperties": false
+  },
+  "ack": {
+    "type": "object",
+    "properties": {
+      "notificationId": {
+        "type": "string",
+        "pattern": "^[a-f0-9]{64}$"
+      }
+    },
+    "required": [
+      "notificationId"
+    ],
+    "additionalProperties": false
+  },
+  "record": {
+    "type": "object",
+    "properties": {
+      "kind": {
+        "const": "notification"
+      },
+      "schemaVersion": {
+        "const": 1
+      },
+      "id": {
+        "type": "string",
+        "pattern": "^[a-f0-9]{64}$"
+      },
+      "sequence": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 9007199254740991
+      },
+      "senderAccountId": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 200
+      },
+      "recipientAccountIds": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "minItems": 1,
+        "maxItems": 100,
+        "uniqueItems": true
+      },
+      "recipientAuthorization": {
+        "type": "object",
+        "maxProperties": 100,
+        "additionalProperties": {
+          "type": "object",
+          "properties": {
+            "memberId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "authorizationEpoch": {
+              "type": "integer",
+              "minimum": 1
+            }
+          },
+          "required": [
+            "memberId",
+            "authorizationEpoch"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "text": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 2000
+      },
+      "createdAt": {
+        "type": "number",
+        "minimum": 0,
+        "maximum": 9007199254740991
+      },
+      "sourceSignature": {
+        "type": "string",
+        "pattern": "^[a-f0-9]{64}$"
+      },
+      "source": {
+        "type": "object",
+        "properties": {
+          "commandId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "op": {
+            "enum": [
+              "entity.create",
+              "entity.update",
+              "entity.patch",
+              "entity.archive",
+              "relation.set",
+              "relation.remove",
+              "progress.set",
+              "asset.attach",
+              "asset.remove",
+              "action.invoke",
+              "behavior.invoke",
+              "publication.apply"
+            ]
+          },
+          "status": {
+            "const": "committed"
+          }
+        },
+        "required": [
+          "commandId",
+          "op",
+          "status"
+        ],
+        "additionalProperties": false
+      },
+      "acknowledgedAt": {
+        "type": "object",
+        "maxProperties": 100,
+        "additionalProperties": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        }
+      }
+    },
+    "required": [
+      "kind",
+      "schemaVersion",
+      "id",
+      "sequence",
+      "senderAccountId",
+      "recipientAccountIds",
+      "recipientAuthorization",
+      "text",
+      "createdAt",
+      "sourceSignature",
+      "source",
+      "acknowledgedAt"
+    ],
+    "additionalProperties": false
+  },
+  "page": {
+    "type": "object",
+    "properties": {
+      "items": {
+        "type": "array",
+        "maxItems": 100,
+        "items": {
+          "type": "object",
+          "properties": {
+            "notificationId": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "sequence": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9007199254740991
+            },
+            "senderAccountId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "text": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2000
+            },
+            "createdAt": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "source": {
+              "type": "object",
+              "properties": {
+                "commandId": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                },
+                "op": {
+                  "enum": [
+                    "entity.create",
+                    "entity.update",
+                    "entity.patch",
+                    "entity.archive",
+                    "relation.set",
+                    "relation.remove",
+                    "progress.set",
+                    "asset.attach",
+                    "asset.remove",
+                    "action.invoke",
+                    "behavior.invoke",
+                    "publication.apply"
+                  ]
+                },
+                "status": {
+                  "const": "committed"
+                }
+              },
+              "required": [
+                "commandId",
+                "op",
+                "status"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "notificationId",
+            "sequence",
+            "senderAccountId",
+            "text",
+            "createdAt",
+            "source"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "nextAfter": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 9007199254740991
+      },
+      "hasMore": {
+        "type": "boolean"
+      }
+    },
+    "required": [
+      "items",
+      "nextAfter",
+      "hasMore"
+    ],
+    "additionalProperties": false
+  }
+}

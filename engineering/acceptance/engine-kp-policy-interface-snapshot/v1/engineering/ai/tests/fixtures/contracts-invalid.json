@@ -1,0 +1,32 @@
+[
+  {
+    "model": "Profile",
+    "field": "schemaVersion",
+    "value": 2
+  },
+  {
+    "model": "Request",
+    "field": "status",
+    "value": "self_approved"
+  },
+  {
+    "model": "Proposal",
+    "field": "revision",
+    "value": 0
+  },
+  {
+    "model": "ValidationReport",
+    "field": "status",
+    "value": "balanced"
+  },
+  {
+    "model": "Approval",
+    "field": "reviewer",
+    "value": ""
+  },
+  {
+    "model": "AiCommand",
+    "field": "op",
+    "value": "publication.apply"
+  }
+]

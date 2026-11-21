@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "scenarioId": "new-skill",
+  "fixtureRef": "ai/fixtures/new-world.json",
+  "account": "player1",
+  "steps": [
+    {
+      "rule": "demo.check",
+      "input": {
+        "actor": "actor-player1",
+        "skill": "skill-player1"
+      }
+    }
+  ],
+  "randomPolicy": {
+    "mode": "enumerate",
+    "sides": 100,
+    "samples": 100,
+    "seed": 1
+  },
+  "maxSteps": 1,
+  "metricIds": [
+    "new-skill-success"
+  ]
+}

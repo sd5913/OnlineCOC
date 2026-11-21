@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-11-21T16:03:52.062535+08:00",
+  "checkedAt": "2026-11-21T18:24:55.941903+08:00",
   "checks": [
     "wrong-slot-repaired-without-human-input-or-game-mutation",
     "real-ruling-displays-three-actions-and-preflight",
@@ -10,7 +10,7 @@
   "realProviderCalls": 0,
   "realSaveChanged": false,
   "scope": "real isolated host and UI, synthetic model outputs",
-  "evidenceDirectory": "tests/output/batch-workflow-10a27eb5",
+  "evidenceDirectory": "tests/output/batch-workflow-b6d0f98f",
   "packageSourceSha256": {
     "ui/batch-details.js": "518e28cb7084e92ac7089e2226e59ccc4dd0927b9aa1b68f24eb6f652b00e772",
     "ui/keeper-rulings.js": "6be4aa9e0c127c7140257082fe764830ab824d9388a2c2b1f46e81ceb3888289",
@@ -62,6 +62,18 @@
       ],
       "error": null,
       "evidenceDirectory": "tests/output/batch-workflow-876c1930"
+    },
+    {
+      "passed": true,
+      "checks": [
+        "wrong-slot-repaired-without-human-input-or-game-mutation",
+        "real-ruling-displays-three-actions-and-preflight",
+        "approved-batch-commits-consumption-rest-and-notification",
+        "same-command-replay-has-no-extra-consumption-roll-or-notice",
+        "local-notice-displays-persisted-outcomes-without-browser-errors"
+      ],
+      "error": null,
+      "evidenceDirectory": "tests/output/batch-workflow-10a27eb5"
     }
   ]
 }

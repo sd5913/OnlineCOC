@@ -502,6 +502,7 @@ class Coordinator:
                     except BaseException:
                         self._uncertain(reservation);raise
                 compactor=Compactor(self.repository,{**task,'sessionId':access.get('sessionId')},profile,compress_call,generation.guard,trace)
+                overflow_retries=0
                 turn = 0
                 closing_turn = False
                 while turn <= profile["limits"]["maxToolRounds"]:
@@ -539,11 +540,24 @@ class Coordinator:
                         try:
                             trace.at('provider_complete')
                             completion = await provider.complete(messages, available_tools)
+                            if overflow_retries:trace.context_overflow={'retries':overflow_retries,'status':'recovered'}
                             trace.at('budget_settle')
                             self._settle(identifier, reservation, completion)
                             break
                         except ProviderError as exc:
                             self._uncertain(reservation)
+                            if exc.code=='PROVIDER_CONTEXT_OVERFLOW' and not strict and overflow_retries<1:
+                                overflow_retries+=1
+                                trace.context_overflow={'retries':overflow_retries,'status':'compacting'}
+                                try:reduced=await compactor.fit(messages,available_tools,force=True)
+                                except BaseException:
+                                    trace.context_overflow['status']='failed';raise
+                                if len(canonical(reduced))>=len(canonical(messages)):
+                                    trace.context_overflow['status']='not_reduced';raise
+                                messages=reduced
+                                trace.context_overflow={'retries':overflow_retries,'status':'retrying'}
+                                continue
+                            if overflow_retries:trace.context_overflow={'retries':overflow_retries,'status':'failed'}
                             if exc.code in ("PROVIDER_EMPTY_OUTPUT", "PROVIDER_RESPONSE_INVALID", "PROVIDER_OUTPUT_TRUNCATED") and repairs < repair_limit:
                                 trace.output_failure(exc,repairs+1)
                                 repairs += 1

@@ -15,6 +15,25 @@ MAX_RESPONSE_BYTES = 4 * 1024 * 1024
 from ..context_budget import MAX_REQUEST_BYTES,budget
 
 
+async def context_overflow(response):
+    """Inspect bounded error JSON in memory; never persist upstream body text."""
+    raw=bytearray()
+    async for chunk in response.aiter_bytes():
+        if len(raw)+len(chunk)>32768:return False
+        raw.extend(chunk)
+    try:
+        body=loads(bytes(raw));error=body.get('error',body)
+        if not isinstance(error,dict):return False
+        code=error.get('code');message=error.get('message','')
+        if code in ('context_length_exceeded','context_window_exceeded','max_context_length_exceeded'):return True
+        if not isinstance(message,str):return False
+        # These explicit input/context failures are distinct from max_tokens
+        # validation, ordinary 400/422, body-size 413, and finish_reason=length.
+        return bool(re.search(r'\b(?:input tokens? exceeds? the limit|context_length_exceeded|context_window_exceeded)\b',message,re.I)
+            or (re.search(r'maximum context length',message,re.I) and re.search(r'(?:you requested|your messages resulted in|input.*exceed)',message,re.I)))
+    except (AiError,AttributeError,TypeError):return False
+
+
 class CompatibleProvider:
     capabilities = CAPABILITIES
 
@@ -64,6 +83,8 @@ class CompatibleProvider:
                     if status in (401, 403):
                         raise ProviderError("PROVIDER_AUTH_FAILED", status=status)
                     if status in (400, 422):
+                        if await context_overflow(response):
+                            raise ProviderError('PROVIDER_CONTEXT_OVERFLOW',status=status)
                         raise ProviderError("PROVIDER_REQUEST_INVALID", status=status)
                     if status == 402:
                         raise ProviderError("PROVIDER_BALANCE_INSUFFICIENT", status=status)

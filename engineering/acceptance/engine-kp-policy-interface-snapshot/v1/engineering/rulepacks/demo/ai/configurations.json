@@ -1,0 +1,59 @@
+[
+  {
+    "configurationId": "demo.actor",
+    "revision": "1",
+    "typeRef": "actor",
+    "defaults": {
+      "hp": 10,
+      "maxHp": 10,
+      "armor": 0,
+      "attack": 0
+    },
+    "behaviors": {}
+  },
+  {
+    "configurationId": "demo.bag",
+    "revision": "1",
+    "typeRef": "bag",
+    "defaults": {
+      "capacity": 2000
+    },
+    "behaviors": {}
+  },
+  {
+    "configurationId": "demo.item",
+    "revision": "1",
+    "typeRef": "item",
+    "defaults": {
+      "quantity": 1,
+      "unitMass": 0
+    },
+    "behaviors": {}
+  },
+  {
+    "configurationId": "demo.skill",
+    "revision": "1",
+    "typeRef": "skill",
+    "defaults": {
+      "value": 0
+    },
+    "behaviors": {}
+  },
+  {
+    "configurationId": "demo.status",
+    "revision": "1",
+    "typeRef": "status",
+    "defaults": {},
+    "behaviors": {}
+  },
+  {
+    "configurationId": "demo.weapon",
+    "revision": "1",
+    "typeRef": "weapon",
+    "defaults": {
+      "quantity": 1,
+      "unitMass": 0
+    },
+    "behaviors": {}
+  }
+]

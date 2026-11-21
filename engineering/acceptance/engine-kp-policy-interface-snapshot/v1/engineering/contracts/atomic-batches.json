@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "scope": "host.room.atomic.v1",
+  "entryPoints": {
+    "preflight": "Host.preflight_batch(account, actions)",
+    "execute": "Host.execute_batch(account, actions, *, command_id)",
+    "receipt": "Host.receipt(account, command_id)",
+    "singleMemoryFact": "Host.commit_memory_fact(account, fact, *, command_id, expected_revision)"
+  },
+  "transport": "trusted in-process composition; account must come from an authenticated principal",
+  "limits": {"canonicalUtf8Bytes":32768,"randomDraws":256,"preflightSeconds":10,"executionSeconds":30,"workerSeconds":10},
+  "actionCount":"non-empty; no separate business count limit, bounded by canonical bytes and execution budgets",
+  "supportedOperations": ["entity.create","entity.patch","entity.update","entity.archive","relation.set","relation.remove","progress.set","asset.attach","asset.remove","room.status","member.update","notification.send","action.invoke","behavior.invoke","chat.direct.open","chat.channel.create","chat.channel.update","chat.message.send","chat.message.share","chat.message.edit","chat.message.retract"],
+  "unsupported": ["any non-host target","flow.* and rules in flow/calculation mode","member.add","member.update on the executing account","rule/configuration publication","AI storage mutations","external waiting or side effects"],
+  "actionSchema": {
+    "type":"object","required":["target","op","args"],"additionalProperties":false,
+    "properties":{"target":{"const":"host"},"op":{"type":"string"},"args":{"type":"object"}}
+  },
+  "notificationSource": {"sourceActionIndex":"zero-based earlier action index; excludes sourceCommandId/sourceOp; resolved to the deterministic child command ID and operation by the host"},
+  "preflight": {
+    "status":["passed","blocked","unsupported","runtime_required"],
+    "fields":["status","checkedAt","scope","items"],
+    "notes":"No writes or random draws; checks sequential staged state until the first random-dependent item. Remaining dependent items are runtime_required. All operation/scope/schema admission checks run before staging. If admission fails, otherwise eligible items are runtime_required and have not run business checks. Deterministic items may include permission-projected result and preview:true; IDs/results are provisional. A passed result is a point-in-time check, not a future execution guarantee."
+  },
+  "receipt": {
+    "status":["unknown","pending","committed","rejected"],
+    "fields":["status","commandId","result?","code?"],
+    "resultFields":["status","scope","items","committedCount","failedCount","notExecutedCount","rolledBackCount"],
+    "executionStatus":["committed","rolled_back","failed"],
+    "itemStatus":["committed","rolled_back","failed","not_executed"],
+    "itemFields":["index","target","op","status","commandId","code?","reason?","path?","ruleId?","ruleCode?","object?","result?"],
+    "notes":"result is the execution DTO. Pending/unknown has no completed execution. Same account and command ID with the same actions returns the existing receipt; different content raises COMMAND_ID_CONFLICT. Child IDs are batch- + SHA256(canonical([command_id,index])). Results reapply current receipt permissions."
+  },
+  "singleMemoryFact": {"scope":"single authoritative host memory fact and receipt; not part of execute_batch", "principal":"KP only; trusted AI service validates source refs and memory-specific ownership first", "fact":"complete next MemoryEntry, status confirmed or revoked, current host scopeId, revision greater than the current authoritative revision", "expected_revision":"current host memoryFacts revision or 0 if absent; not the independent AI draft revision", "receiptResult":{"memory":"exact committed fact; AI mirror restores from this"}, "boundary":"No AI-store write in this method. Multi-item host/AI combinations remain unsupported."},
+  "recovery":"A durable intent and per-draw journal can survive a crash. Recovery requires the same room digest excluding this parent record. Changed room fails closed; no old snapshot restoration. The final business state, child receipts, notification outbox and parent success receipt publish together."
+}

@@ -1,0 +1,467 @@
+{
+  "schemaVersion": 1,
+  "sealed": true,
+  "fixtureDigest": "d4fb32e8b6fe992099d27078fd81f06e916d697056fdbdd3231c39a9f243ec8b",
+  "packManifestDigest": "4eda2949b31de89ff67d1ca52598024534de6ddaf0c37a0a875f968f3a09a212",
+  "conditions": {
+    "declaredWindowTokens": 131072,
+    "assistantPlanIsSeededFixture": true,
+    "seedExternalCalls": 0,
+    "syntheticRoomsOnly": true,
+    "sameThreeScenarios": [
+      "accepted",
+      "replace",
+      "cancel"
+    ],
+    "repetitionsPerVersion": 1,
+    "productionProfileUnchanged": true
+  },
+  "versions": {
+    "baseline": {
+      "report": "baseline-1795256781623400600.json",
+      "sourceTree": "D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\ai-official-compaction\\work\\baseline-1795256776964798500",
+      "passed": 3,
+      "attempted": 3,
+      "planned": 3,
+      "successRate": 1.0,
+      "phaseEndToEndSeconds": 121.826,
+      "allCalls": {
+        "calls": 10,
+        "promptTokens": 175631,
+        "completionTokens": 6258,
+        "chargedTokens": 181889,
+        "providerSeconds": 31.348,
+        "unknownUsageCalls": 0
+      },
+      "summaryCalls": {
+        "calls": 4,
+        "promptTokens": 85348,
+        "completionTokens": 5020,
+        "chargedTokens": 90368,
+        "providerSeconds": 22.444,
+        "unknownUsageCalls": 0
+      },
+      "businessCalls": {
+        "calls": 6,
+        "promptTokens": 90283,
+        "completionTokens": 1238,
+        "chargedTokens": 91521,
+        "providerSeconds": 8.904,
+        "unknownUsageCalls": 0
+      },
+      "phases": [
+        {
+          "phase": "accepted",
+          "status": "passed",
+          "seconds": 37.395,
+          "attemptIds": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "usage": {
+            "calls": 5,
+            "promptTokens": 90019,
+            "completionTokens": 2620,
+            "chargedTokens": 92639,
+            "providerSeconds": 13.962,
+            "unknownUsageCalls": 0
+          },
+          "compression": [
+            {
+              "round": 1,
+              "beforeBytes": 280796,
+              "recordCount": 31,
+              "status": "compressed",
+              "afterBytes": 52101,
+              "summaryDigest": "bfc3fed19bbac194d3aa60115d41ce75a9436679e7c7960116369937f0b06342",
+              "repairCount": 0,
+              "cacheHits": 0,
+              "recordLocators": 1,
+              "repairs": []
+            }
+          ],
+          "candidateConfigurations": [
+            {
+              "kind": "add",
+              "id": "sv.ext.npc.official_a",
+              "hp": 4,
+              "maxHp": 4
+            }
+          ]
+        },
+        {
+          "phase": "replace",
+          "status": "passed",
+          "seconds": 57.906,
+          "attemptIds": [
+            6,
+            7,
+            8
+          ],
+          "usage": {
+            "calls": 3,
+            "promptTokens": 49744,
+            "completionTokens": 1906,
+            "chargedTokens": 51650,
+            "providerSeconds": 9.919,
+            "unknownUsageCalls": 0
+          },
+          "compression": [
+            {
+              "round": 1,
+              "beforeBytes": 282859,
+              "recordCount": 39,
+              "status": "compressed",
+              "afterBytes": 52163,
+              "summaryDigest": "ed74fb478e05d47f25dafeda07ae7dde1dff8be1063af62c3a9fea425769a911",
+              "repairCount": 0,
+              "cacheHits": 1,
+              "recordLocators": 0,
+              "repairs": []
+            }
+          ],
+          "candidateConfigurations": [
+            {
+              "kind": "add",
+              "id": "sv.ext.npc.official_b",
+              "hp": 7,
+              "maxHp": 7
+            }
+          ]
+        },
+        {
+          "phase": "cancel",
+          "status": "passed",
+          "seconds": 26.525,
+          "attemptIds": [
+            9,
+            10
+          ],
+          "usage": {
+            "calls": 2,
+            "promptTokens": 35868,
+            "completionTokens": 1732,
+            "chargedTokens": 37600,
+            "providerSeconds": 7.467,
+            "unknownUsageCalls": 0
+          },
+          "compression": [
+            {
+              "round": 1,
+              "beforeBytes": 284080,
+              "recordCount": 41,
+              "status": "compressed",
+              "afterBytes": 54089,
+              "summaryDigest": "2a57e03cc87a588626c09f5b5a8bde03bbab6fdb0e464e745e6d94720b9cd2f4",
+              "repairCount": 0,
+              "cacheHits": 1,
+              "recordLocators": 0,
+              "repairs": []
+            }
+          ]
+        }
+      ]
+    },
+    "adapted-v1": {
+      "report": "adapted-1795256916717539800.json",
+      "sourceTree": "D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\ai-official-compaction\\work\\integration-v1-1795256566628466400",
+      "passed": 0,
+      "attempted": 1,
+      "planned": 3,
+      "successRate": 0.0,
+      "phaseEndToEndSeconds": 31.606,
+      "allCalls": {
+        "calls": 4,
+        "promptTokens": 72702,
+        "completionTokens": 1828,
+        "chargedTokens": 74530,
+        "providerSeconds": 9.527,
+        "unknownUsageCalls": 0
+      },
+      "summaryCalls": {
+        "calls": 2,
+        "promptTokens": 40768,
+        "completionTokens": 1529,
+        "chargedTokens": 42297,
+        "providerSeconds": 6.652,
+        "unknownUsageCalls": 0
+      },
+      "businessCalls": {
+        "calls": 2,
+        "promptTokens": 31934,
+        "completionTokens": 299,
+        "chargedTokens": 32233,
+        "providerSeconds": 2.875,
+        "unknownUsageCalls": 0
+      },
+      "phases": [
+        {
+          "phase": "accepted",
+          "status": "failed",
+          "seconds": 31.606,
+          "attemptIds": [
+            11,
+            12,
+            13,
+            14
+          ],
+          "usage": {
+            "calls": 4,
+            "promptTokens": 72702,
+            "completionTokens": 1828,
+            "chargedTokens": 74530,
+            "providerSeconds": 9.527,
+            "unknownUsageCalls": 0
+          },
+          "compression": [
+            {
+              "kind": "summary",
+              "round": 1,
+              "beforeBytes": 280796,
+              "afterPruneBytes": 56527,
+              "recordCount": 25,
+              "retainedBytes": 13065,
+              "trigger": "pressure",
+              "status": "compressed",
+              "afterBytes": 63132,
+              "summaryDigest": "174edfa795f8a5e708d40489306bd04ec843bf44b7b05756e3c24229da065067",
+              "repairCount": 0,
+              "cacheHits": 0,
+              "recordLocators": 2,
+              "checkpointReplaced": false,
+              "repairs": [],
+              "summaryCalls": 2,
+              "summaryDurationMs": 6909.84
+            }
+          ],
+          "candidateConfigurations": [
+            {
+              "kind": "add",
+              "id": "sv.ext.npc.official_a",
+              "hp": 5,
+              "maxHp": 5
+            }
+          ],
+          "failure": {
+            "code": "AssertionError",
+            "reason": "Unexpected target, parameter, or extra configuration",
+            "publishedInSyntheticRoomBeforeOracle": true
+          }
+        }
+      ]
+    },
+    "adapted-v2": {
+      "report": "adapted-1795257596167240900.json",
+      "sourceTree": "D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\ai-official-compaction\\work\\short-instructions-1795257226037939100",
+      "passed": 3,
+      "attempted": 3,
+      "planned": 3,
+      "successRate": 1.0,
+      "phaseEndToEndSeconds": 119.444,
+      "allCalls": {
+        "calls": 9,
+        "promptTokens": 153325,
+        "completionTokens": 3675,
+        "chargedTokens": 157000,
+        "providerSeconds": 21.515,
+        "unknownUsageCalls": 0
+      },
+      "summaryCalls": {
+        "calls": 3,
+        "promptTokens": 59154,
+        "completionTokens": 2419,
+        "chargedTokens": 61573,
+        "providerSeconds": 9.894,
+        "unknownUsageCalls": 0
+      },
+      "businessCalls": {
+        "calls": 6,
+        "promptTokens": 94171,
+        "completionTokens": 1256,
+        "chargedTokens": 95427,
+        "providerSeconds": 11.621,
+        "unknownUsageCalls": 0
+      },
+      "phases": [
+        {
+          "phase": "accepted",
+          "status": "passed",
+          "seconds": 51.786,
+          "attemptIds": [
+            15,
+            16,
+            17,
+            18,
+            19,
+            20
+          ],
+          "usage": {
+            "calls": 6,
+            "promptTokens": 105583,
+            "completionTokens": 3210,
+            "chargedTokens": 108793,
+            "providerSeconds": 16.97,
+            "unknownUsageCalls": 0
+          },
+          "compression": [
+            {
+              "kind": "summary",
+              "round": 1,
+              "beforeBytes": 280796,
+              "afterPruneBytes": 280796,
+              "afterExtractionBytes": 56881,
+              "recordCount": 23,
+              "retainedBytes": 13387,
+              "trigger": "pressure",
+              "status": "compressed",
+              "afterBytes": 61860,
+              "summaryDigest": "2879a09b09288dfd99f92265ee51076820d0e9d23f331df22f05bb9c325789ca",
+              "repairCount": 1,
+              "cacheHits": 0,
+              "recordLocators": 0,
+              "checkpointReplaced": false,
+              "repairs": [
+                {
+                  "attempt": 1,
+                  "code": "COMPRESSION_INVALID"
+                }
+              ],
+              "summaryCalls": 3,
+              "summaryDurationMs": 10335.96
+            }
+          ],
+          "candidateConfigurations": [
+            {
+              "kind": "add",
+              "id": "sv.ext.npc.official_a",
+              "hp": 4,
+              "maxHp": 4
+            }
+          ]
+        },
+        {
+          "phase": "replace",
+          "status": "passed",
+          "seconds": 49.318,
+          "attemptIds": [
+            21,
+            22
+          ],
+          "usage": {
+            "calls": 2,
+            "promptTokens": 31761,
+            "completionTokens": 431,
+            "chargedTokens": 32192,
+            "providerSeconds": 3.361,
+            "unknownUsageCalls": 0
+          },
+          "compression": [
+            {
+              "kind": "summary",
+              "round": 1,
+              "beforeBytes": 282833,
+              "afterPruneBytes": 282833,
+              "afterExtractionBytes": 58918,
+              "recordCount": 23,
+              "retainedBytes": 15738,
+              "trigger": "pressure",
+              "status": "compressed",
+              "afterBytes": 63897,
+              "summaryDigest": "2879a09b09288dfd99f92265ee51076820d0e9d23f331df22f05bb9c325789ca",
+              "repairCount": 0,
+              "cacheHits": 2,
+              "recordLocators": 0,
+              "checkpointReplaced": false,
+              "repairs": [],
+              "summaryCalls": 0,
+              "summaryDurationMs": 0
+            }
+          ],
+          "candidateConfigurations": [
+            {
+              "kind": "add",
+              "id": "sv.ext.npc.official_b",
+              "hp": 7,
+              "maxHp": 7
+            }
+          ]
+        },
+        {
+          "phase": "cancel",
+          "status": "passed",
+          "seconds": 18.34,
+          "attemptIds": [
+            23
+          ],
+          "usage": {
+            "calls": 1,
+            "promptTokens": 15981,
+            "completionTokens": 34,
+            "chargedTokens": 16015,
+            "providerSeconds": 1.184,
+            "unknownUsageCalls": 0
+          },
+          "compression": [
+            {
+              "kind": "summary",
+              "round": 1,
+              "beforeBytes": 284162,
+              "afterPruneBytes": 284162,
+              "afterExtractionBytes": 60247,
+              "recordCount": 23,
+              "retainedBytes": 16857,
+              "trigger": "pressure",
+              "status": "compressed",
+              "afterBytes": 65226,
+              "summaryDigest": "2879a09b09288dfd99f92265ee51076820d0e9d23f331df22f05bb9c325789ca",
+              "repairCount": 0,
+              "cacheHits": 2,
+              "recordLocators": 0,
+              "checkpointReplaced": false,
+              "repairs": [],
+              "summaryCalls": 0,
+              "summaryDurationMs": 0
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "experimentTotal": {
+    "calls": 23,
+    "promptTokens": 401658,
+    "completionTokens": 11761,
+    "chargedTokens": 413419,
+    "providerSeconds": 62.39,
+    "unknownUsageCalls": 0
+  },
+  "retainedOutcomeTotals": {
+    "passed": 6,
+    "attempted": 7
+  },
+  "comparison": {
+    "totalTokensReductionFraction": 0.13683620229920446,
+    "summaryTokensReductionFraction": 0.3186415545325779,
+    "providerSecondsReductionFraction": 0.3136723235932116,
+    "phaseEndToEndSecondsReductionFraction": 0.01955247648285252
+  },
+  "limitations": [
+    "One synthetic paired sequence per version, not a statistical reliability estimate.",
+    "Paired adapted-v2 run required one summary repair; the failed first adapted implementation remains in the totals.",
+    "No real upstream context overflow occurred; overflow recovery and tool pruning were deterministic tests.",
+    "The first adapted report mislabels afterExtractionBytes as afterPruneBytes; do not infer pruning savings from it.",
+    "Success is checked after explicit synthetic approval: the failed HP5 candidate was published only inside its isolated test room.",
+    "Rolling checkpoints cover one generation task; later tasks reuse identical authorized summary groups, not an unlimited session checkpoint."
+  ],
+  "evidenceHashes": {
+    "live-ledger.json": "a87b2998705040a0fa02db8f07ae5e08f8bd795819c17128f54b431df3b9c62b",
+    "budget.json": "f17572dca00e2d2a48b125a401620f2a560ad7966e2b7a8a23aee2a1fc7e665e",
+    "live_pair.py": "664469a26a25262b0d425f96cd6fcb4ebeaaf126c30be852f0f2c8f8f0dc84d5",
+    "baseline-1795256781623400600.json": "eb6ba66a0457f4dce36ed1a6397891cf11a67fc5005a5c0c22e8356bdc96c7ae",
+    "adapted-1795256916717539800.json": "d79e8f35f899ff08eb1c40d6971037cdafdd95c92027bf0008121705c661b9be",
+    "adapted-1795257596167240900.json": "1c5094a17205944715e2d580547ec19634079f7d4c78c4f222ed9d7553439efe"
+  }
+}

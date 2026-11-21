@@ -166,6 +166,6 @@ KP 审核会话明确区分当前 KP 指令与被引用玩家材料；前者显�
 
 ## 压缩与来源评估反馈
 
-过程卡新增“压缩上下文并保留可追溯原文”。每个摘要分组的 COMPRESSION_INVALID、COMPRESSION_PROVENANCE_INVALID、COMPRESSION_RESULT_LIMIT 会尝试一次纠正；持续失败、COMPRESSION_NOT_REDUCED、COMPRESSION_LIMIT 或 CONTEXT_LIMIT_EXCEEDED 明确结束本次生成，保留原始会话与压缩档案，用户可缩小当前请求后重试。KP 诊断记录压缩前后字节、原文数量、缓存复用和修复次数；正常 PL 输出不包含这些内部记录。
+过程卡新增“压缩上下文并保留可追溯原文”。每个摘要分组的 COMPRESSION_INVALID、COMPRESSION_PROVENANCE_INVALID、COMPRESSION_RESULT_LIMIT 会尝试一次纠正；持续失败、COMPRESSION_NOT_REDUCED、COMPRESSION_LIMIT 或 CONTEXT_LIMIT_EXCEEDED 明确结束本次生成，保留原始会话与压缩档案，用户可缩小当前请求后重试。工具文本裁剪可能无需摘要调用；同一任务中的后续摘要替换单个检查点。KP 诊断另区分裁剪／摘要及其字节、调用、耗时和失败；正常 PL 输出不包含这些内部记录。仅明确的 PROVIDER_CONTEXT_OVERFLOW 可在实际缩小输入后自动恢复一次，普通参数错误与输出截断不会触发此恢复；持续失败提示缩小需求。完整策略见[语义压缩](ai-session-access.md#语义压缩与原文定位)。
 
 独立包资料产生可审核候选时显示来源评估，并由 KP 明确接受后执行。`CONSULTATION_REVIEW_REQUIRED` 提示回到裁决卡核对本次来源风险；不要重新询问用户已经确认的创作参数，也不要把缺少批准描述为模型无法创建配置。协议和技术拒绝边界见[裁决说明](ai-rulings.md#独立来源风险评估)。

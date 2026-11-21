@@ -1,0 +1,7 @@
+{
+  "checkId": "bonus-range",
+  "configurationId": "fixture.token",
+  "pointer": "/defaults/bonus",
+  "value": 16,
+  "expected": "fail"
+}

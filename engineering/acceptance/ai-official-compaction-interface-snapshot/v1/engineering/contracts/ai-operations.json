@@ -1,0 +1,866 @@
+{
+  "ai.request.create": {
+    "type": "object",
+    "properties": {
+      "text": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 8000
+      },
+      "sourceKind": {
+        "enum": [
+          "manual",
+          "external-text",
+          "chat"
+        ]
+      },
+      "channelId": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 200
+      },
+      "sourceId": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 200
+      },
+      "sourceRevision": {
+        "type": [
+          "string",
+          "integer"
+        ]
+      }
+    },
+    "required": [
+      "text",
+      "sourceKind"
+    ],
+    "additionalProperties": false
+  },
+  "ai.request.dispatch": {
+    "type": "object",
+    "properties": {
+      "requestId": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 200
+      }
+    },
+    "required": [
+      "requestId"
+    ],
+    "additionalProperties": false
+  },
+  "ai.request.cancel": {
+    "type": "object",
+    "properties": {
+      "requestId": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 200
+      }
+    },
+    "required": [
+      "requestId"
+    ],
+    "additionalProperties": false
+  },
+  "ai.proposal.validate": {
+    "type": "object",
+    "properties": {
+      "proposalId": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 200
+      },
+      "revision": {
+        "type": "integer",
+        "minimum": 1
+      }
+    },
+    "required": [
+      "proposalId",
+      "revision"
+    ],
+    "additionalProperties": false
+  },
+  "ai.proposal.revise": {
+    "type": "object",
+    "properties": {
+      "proposalId": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 200
+      },
+      "revision": {
+        "type": "integer",
+        "minimum": 1
+      },
+      "changeSet": {
+        "$ref": "#/$defs/ChangeSet"
+      },
+      "summary": {
+        "type": "string",
+        "maxLength": 2000
+      }
+    },
+    "required": [
+      "proposalId",
+      "revision",
+      "changeSet"
+    ],
+    "additionalProperties": false
+  },
+  "ai.memory.create": {
+    "type": "object",
+    "properties": {
+      "content": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 8000
+      },
+      "sourceRefs": {
+        "type": "array",
+        "items": {
+          "$ref": "#/$defs/SourceRef"
+        },
+        "minItems": 1,
+        "maxItems": 100
+      },
+      "kind": {
+        "enum": [
+          "summary",
+          "ruling",
+          "preference",
+          "event"
+        ]
+      },
+      "visibility": {
+        "enum": [
+          "public",
+          "kp",
+          "private"
+        ]
+      }
+    },
+    "required": [
+      "content",
+      "sourceRefs"
+    ],
+    "additionalProperties": false
+  },
+  "ai.memory.confirm": {
+    "type": "object",
+    "properties": {
+      "memoryId": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 200
+      },
+      "revision": {
+        "type": "integer",
+        "minimum": 1
+      }
+    },
+    "required": [
+      "memoryId",
+      "revision"
+    ],
+    "additionalProperties": false
+  },
+  "ai.memory.revoke": {
+    "type": "object",
+    "properties": {
+      "memoryId": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 200
+      },
+      "revision": {
+        "type": "integer",
+        "minimum": 1
+      }
+    },
+    "required": [
+      "memoryId",
+      "revision"
+    ],
+    "additionalProperties": false
+  },
+  "ai.settings.update": {
+    "type": "object",
+    "properties": {
+      "enabled": {
+        "type": "boolean"
+      },
+      "profileId": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "externalSources": {
+        "type": "object",
+        "properties": {
+          "public": {
+            "type": "boolean"
+          },
+          "kp": {
+            "type": "boolean"
+          },
+          "private": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "public",
+          "kp",
+          "private"
+        ],
+        "additionalProperties": false
+      },
+      "auto": {
+        "type": "object",
+        "properties": {
+          "enabled": {
+            "type": "boolean"
+          },
+          "channelIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "maxItems": 32,
+            "uniqueItems": true
+          },
+          "prefix": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 32
+          }
+        },
+        "required": [
+          "enabled",
+          "channelIds",
+          "prefix"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "required": [
+      "enabled",
+      "profileId",
+      "externalSources",
+      "auto"
+    ],
+    "additionalProperties": false
+  },
+  "ai.draft.create": {
+    "type": "object",
+    "properties": {
+      "text": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 8000
+      },
+      "changeSet": {
+        "$ref": "#/$defs/ChangeSet"
+      }
+    },
+    "required": [
+      "text",
+      "changeSet"
+    ],
+    "additionalProperties": false
+  },
+  "ai.session.create": {
+    "type": "object",
+    "properties": {
+      "title": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 120
+      },
+      "accessLevel": {
+        "enum": [
+          "administrator",
+          "player"
+        ]
+      }
+    },
+    "required": [
+      "title"
+    ],
+    "additionalProperties": false
+  },
+  "ai.session.update": {
+    "type": "object",
+    "properties": {
+      "sessionId": {
+        "type": "string",
+        "pattern": "^[a-f0-9]{32}$"
+      },
+      "revision": {
+        "type": "integer",
+        "minimum": 1
+      },
+      "title": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 120
+      },
+      "archived": {
+        "type": "boolean"
+      },
+      "pinned": {
+        "type": "boolean"
+      },
+      "historyTurns": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 4
+      },
+      "renderMode": {
+        "enum": [
+          "formatted",
+          "plain"
+        ]
+      },
+      "showDiagnostics": {
+        "type": "boolean"
+      }
+    },
+    "required": [
+      "sessionId",
+      "revision"
+    ],
+    "additionalProperties": false
+  },
+  "ai.session.submit": {
+    "type": "object",
+    "properties": {
+      "sessionId": {
+        "type": "string",
+        "pattern": "^[a-f0-9]{32}$"
+      },
+      "text": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 8000
+      },
+      "submissionKey": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 200
+      },
+      "replyToRequestId": {
+        "type": "string",
+        "minLength": 32,
+        "maxLength": 32,
+        "pattern": "^[a-f0-9]{32}$"
+      }
+    },
+    "required": [
+      "sessionId",
+      "text"
+    ],
+    "additionalProperties": false
+  },
+  "ai.session.delete": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "sessionId": {
+        "type": "string",
+        "pattern": "^[a-f0-9]{32}$"
+      },
+      "revision": {
+        "type": "integer",
+        "minimum": 1
+      }
+    },
+    "required": [
+      "sessionId",
+      "revision"
+    ]
+  },
+  "ai.access.update": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "revision": {
+        "type": "integer",
+        "minimum": 1
+      },
+      "allowPlayerChat": {
+        "type": "boolean"
+      },
+      "autoApproveBatches": {
+        "type": "boolean"
+      },
+      "autoApproveConfigurations": {
+        "type": "boolean"
+      },
+      "allowAdminRoomRead": {
+        "type": "boolean"
+      },
+      "allowDataQueries": {
+        "type": "boolean"
+      },
+      "allowRuntimeChanges": {
+        "type": "boolean"
+      },
+      "allowConfigurationChanges": {
+        "type": "boolean"
+      },
+      "allowKnowledgeRequests": {
+        "type": "boolean"
+      },
+      "allowPlayerRequests": {
+        "type": "boolean"
+      }
+    },
+    "required": [
+      "revision",
+      "allowPlayerChat",
+      "autoApproveBatches"
+    ]
+  },
+  "ai.batch.approve": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "batchId": {
+        "type": "string",
+        "pattern": "^[a-f0-9]{32}$"
+      },
+      "digest": {
+        "type": "string",
+        "minLength": 64,
+        "maxLength": 64
+      },
+      "consultationReview": {
+        "type": "object",
+        "properties": {
+          "sourceDigest": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          }
+        },
+        "required": [
+          "sourceDigest"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "required": [
+      "batchId",
+      "digest"
+    ]
+  },
+  "ai.batch.reject": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "batchId": {
+        "type": "string",
+        "pattern": "^[a-f0-9]{32}$"
+      },
+      "digest": {
+        "type": "string",
+        "minLength": 64,
+        "maxLength": 64
+      }
+    },
+    "required": [
+      "batchId",
+      "digest"
+    ]
+  },
+  "ai.batch.reconcile": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "batchId": {
+        "type": "string",
+        "pattern": "^[a-f0-9]{32}$"
+      },
+      "digest": {
+        "type": "string",
+        "minLength": 64,
+        "maxLength": 64
+      }
+    },
+    "required": [
+      "batchId",
+      "digest"
+    ]
+  },
+  "ai.ruling.decide": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "rulingId",
+      "digest",
+      "decision"
+    ],
+    "properties": {
+      "rulingId": {
+        "type": "string",
+        "pattern": "^(batch|proposal|knowledge|player):[a-f0-9]{32}$"
+      },
+      "digest": {
+        "type": "string",
+        "pattern": "^[a-f0-9]{64}$"
+      },
+      "decision": {
+        "enum": [
+          "approve",
+          "reject"
+        ]
+      },
+      "riskDecisions": {
+        "type": "object",
+        "maxProperties": 51,
+        "additionalProperties": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 1000
+        }
+      },
+      "explicitHighRiskDigest": {
+        "type": "string",
+        "pattern": "^[a-f0-9]{64}$"
+      },
+      "disclosures": {
+        "type": "array",
+        "minItems": 1,
+        "items": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "op",
+            "args"
+          ],
+          "properties": {
+            "op": {
+              "const": "knowledge.observe"
+            },
+            "args": {
+              "type": "object"
+            }
+          }
+        }
+      },
+      "cReview": {
+        "$ref": "#/$defs/CReview"
+      },
+      "consultationReview": {
+        "type": "object",
+        "properties": {
+          "sourceDigest": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          }
+        },
+        "required": [
+          "sourceDigest"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "ai.knowledge.request": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "sessionId",
+      "requestId"
+    ],
+    "properties": {
+      "sessionId": {
+        "type": "string",
+        "pattern": "^[a-f0-9]{32}$"
+      },
+      "requestId": {
+        "type": "string",
+        "pattern": "^[a-f0-9]{32}$"
+      }
+    }
+  },
+  "ai.knowledge.reconcile": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "rulingId",
+      "digest"
+    ],
+    "properties": {
+      "rulingId": {
+        "type": "string",
+        "pattern": "^knowledge:[a-f0-9]{32}$"
+      },
+      "digest": {
+        "type": "string",
+        "pattern": "^[a-f0-9]{64}$"
+      }
+    }
+  },
+  "ai.player.request": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "sessionId"
+    ],
+    "properties": {
+      "sessionId": {
+        "type": "string",
+        "pattern": "^[a-f0-9]{32}$"
+      },
+      "requestId": {
+        "type": "string",
+        "pattern": "^[a-f0-9]{32}$"
+      },
+      "text": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 8000
+      },
+      "submissionKey": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 200
+      }
+    },
+    "oneOf": [
+      {
+        "required": [
+          "requestId"
+        ],
+        "not": {
+          "anyOf": [
+            {
+              "required": [
+                "text"
+              ]
+            },
+            {
+              "required": [
+                "submissionKey"
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "required": [
+          "text"
+        ],
+        "not": {
+          "required": [
+            "requestId"
+          ]
+        }
+      }
+    ]
+  },
+  "ai.review.create": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "source"
+    ],
+    "properties": {
+      "source": {
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "kind",
+              "rulingId"
+            ],
+            "properties": {
+              "kind": {
+                "const": "ruling"
+              },
+              "rulingId": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              },
+              "digest": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "kind",
+              "sourceId",
+              "category",
+              "id",
+              "revision",
+              "title",
+              "summary"
+            ],
+            "properties": {
+              "kind": {
+                "const": "package"
+              },
+              "sourceId": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              },
+              "category": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              },
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              },
+              "revision": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              },
+              "requestedBy": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              },
+              "title": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 120
+              },
+              "summary": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 8000
+              },
+              "context": {
+                "type": "object"
+              },
+              "correlationKey": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              }
+            }
+          },
+          {
+            "type": "object",
+            "required": [
+              "kind",
+              "requestId"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "kind": {
+                "const": "request"
+              },
+              "requestId": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              }
+            }
+          }
+        ]
+      },
+      "instruction": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 4000
+      }
+    }
+  },
+  "ai.queue.archive": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "targetId",
+      "digest",
+      "archived"
+    ],
+    "properties": {
+      "targetId": {
+        "type": "string",
+        "pattern": "^(request|batch|proposal|player|knowledge):[a-f0-9]{32}$",
+        "not": {
+          "pattern": "[\\r\\n]"
+        }
+      },
+      "digest": {
+        "type": "string",
+        "minLength": 64,
+        "maxLength": 64,
+        "pattern": "^[a-f0-9]{64}$"
+      },
+      "archived": {
+        "type": "boolean"
+      },
+      "reason": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 500
+      }
+    },
+    "allOf": [
+      {
+        "if": {
+          "properties": {
+            "archived": {
+              "const": true
+            }
+          },
+          "required": [
+            "archived"
+          ]
+        },
+        "then": {
+          "required": [
+            "reason"
+          ]
+        }
+      }
+    ]
+  },
+  "ai.c_basis.update": {
+    "$ref": "#/$defs/CReviewBasis"
+  },
+  "ai.room.initialize": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "scopeId": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 200
+      },
+      "profileId": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "maxLength": 200
+      }
+    },
+    "required": [
+      "scopeId",
+      "profileId"
+    ]
+  }
+}

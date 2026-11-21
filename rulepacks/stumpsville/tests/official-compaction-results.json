@@ -1,0 +1,141 @@
+{
+  "at": "2026-11-21T18:30:08.367021+08:00",
+  "scope": "package-interface-regression; synthetic loopback models, not external-model success rate",
+  "sources": {
+    "engine": {
+      "snapshot": "engineering/acceptance/engine-kp-policy-interface-snapshot/v1",
+      "manifestSha256": "fe8c8a799be17938c7e6a39181e9ef343aadc266fbe256209dd0167a18640ea3",
+      "filesVerified": 327
+    },
+    "ai": {
+      "snapshot": "engineering/acceptance/ai-official-compaction-interface-snapshot/v1",
+      "manifestSha256": "4ac5096f5b9babca9c8453041867c8ce108a5672644ba4c946497f34b2c5fcca",
+      "filesVerified": 219
+    }
+  },
+  "passed": true,
+  "externalApiCalls": 0,
+  "realSaveChanged": false,
+  "groups": [
+    {
+      "name": "actual-data-and-source-permissions",
+      "passed": 4,
+      "total": 4
+    },
+    {
+      "name": "desktop-mobile-embedding-debug-export",
+      "passed": 6,
+      "total": 6
+    },
+    {
+      "name": "atomic-batch-repair-notification-idempotence",
+      "passed": 5,
+      "total": 5
+    },
+    {
+      "name": "source-adoption-publication-and-player-denial",
+      "passed": 4,
+      "total": 4
+    }
+  ],
+  "evidence": [
+    "chat-combined-results.json",
+    "ai-recovery-ui-results.json",
+    "batch-workflow-results.json",
+    "context-autonomy-results.json"
+  ],
+  "latestRunPaths": [
+    "output/chat-combined-b07720e1",
+    "output/context-autonomy-a2778069"
+  ],
+  "limitations": [
+    "No repeated four-page latency experiment; communication transport unchanged.",
+    "Does not establish long-conversation model answer correctness; independent live paired experiment is recorded by AI owner."
+  ],
+  "finalReview": {
+    "at": "2026-11-21T18:52:01.650609+08:00",
+    "aiSnapshot": "engineering/acceptance/ai-official-compaction-interface-snapshot/v3",
+    "manifestSha256": "eb4aeefcd5a2ccdbecfe9fd031ee80257e75e9fe7ef8c6355004f7abc5f99c61",
+    "filesVerified": 219,
+    "changedSinceV2": [
+      "engineering/ai/src/onlinecoc_ai/compaction_units.py",
+      "engineering/ai/tests/test_official_compaction.py"
+    ],
+    "v2SourceAdoptionRepeat": {
+      "passed": 4,
+      "total": 4,
+      "evidence": "output/context-autonomy-3e913a84/results.json"
+    },
+    "v3BoundaryRepeat": [
+      {
+        "limitBytes": 0,
+        "retainedBytes": 0,
+        "acceptanceRetained": false,
+        "backgroundArchived": true
+      },
+      {
+        "limitBytes": 2048,
+        "retainedBytes": 65,
+        "acceptanceRetained": true,
+        "backgroundArchived": true
+      }
+    ],
+    "resolvedFindings": [
+      {
+        "version": "v1",
+        "issue": "afterPruneBytes measured after history extraction",
+        "resolution": "v2 names both actual post-prune and post-extraction size"
+      },
+      {
+        "version": "v2",
+        "issue": "oversized last historical requirement evicted short acceptance and exceeded retention budget",
+        "before": {
+          "limitBytes": 2048,
+          "retainedBytes": 18011,
+          "acceptanceRetained": false,
+          "latestBackgroundRetained": true,
+          "rowsBytes": [
+            65,
+            18011
+          ],
+          "originalPreservedForSummary": true
+        },
+        "resolution": "v3 only admits rows fitting remaining budget, including zero; original omitted rows still go into source-backed summary"
+      }
+    ],
+    "notRepeated": "Unchanged UI/runtime integration suites are retained from v1; v2 changed one error string and optional diagnostics typings only."
+  },
+  "releaseAudit": {
+    "at": "2026-11-21T19:05:00.492520+08:00",
+    "currentSourceFilesMatchV3": 219,
+    "linkedDocumentsChecked": 8,
+    "localLinksChecked": 284,
+    "brokenLinks": 0,
+    "liveLedgerSha256": "a87b2998705040a0fa02db8f07ae5e08f8bd795819c17128f54b431df3b9c62b",
+    "liveCalls": 23,
+    "liveTokens": 413419,
+    "evidenceHashesVerified": 6,
+    "coreAndDifferenceReports": [
+      {
+        "file": "final-core.xml",
+        "tests": 717,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "file": "tail-boundary.xml",
+        "tests": 100,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    ],
+    "scope": "v2 full core and v3 difference tests, counts overlap; live benchmark separately reported",
+    "gitEvidenceBlobsVerified": 1242,
+    "redactionFixturePatternMatches": 5,
+    "unexpectedSecretPatternMatches": 0,
+    "baselineSemanticChanges": 0,
+    "archiveLinksValid": true
+  }
+}

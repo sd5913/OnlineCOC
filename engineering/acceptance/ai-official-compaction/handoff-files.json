@@ -1,0 +1,69 @@
+{
+  "newSourceFiles": [
+    "engineering/ai/src/onlinecoc_ai/compaction_units.py",
+    "engineering/ai/tests/test_official_compaction.py"
+  ],
+  "changedSourceFiles": [
+    "engineering/ai/src/onlinecoc_ai/compaction_units.py",
+    "engineering/ai/src/onlinecoc_ai/compression.py",
+    "engineering/ai/src/onlinecoc_ai/context_budget.py",
+    "engineering/ai/src/onlinecoc_ai/coordinator.py",
+    "engineering/ai/src/onlinecoc_ai/diagnostics.py",
+    "engineering/ai/src/onlinecoc_ai/providers/compatible.py",
+    "engineering/ai/tests/test_context_compression.py",
+    "engineering/ai/tests/test_official_compaction.py",
+    "engineering/ai/web/components/chat.js",
+    "engineering/ai/web/components/index.d.ts"
+  ],
+  "documentation": [
+    "docs/current/engineering/ai-session-access.md",
+    "docs/current/engineering/ai-responses.md",
+    "docs/current/engineering/ai-debug-review.md",
+    "docs/current/engineering/ai-runtime.md"
+  ],
+  "acceptanceFiles": [
+    "engineering/acceptance/ai-official-compaction/.gitignore",
+    "engineering/acceptance/ai-official-compaction/README.md",
+    "engineering/acceptance/ai-official-compaction/adapted-1795256916717539800.json",
+    "engineering/acceptance/ai-official-compaction/adapted-1795257596167240900.json",
+    "engineering/acceptance/ai-official-compaction/baseline-1795256781623400600.json",
+    "engineering/acceptance/ai-official-compaction/baseline-source.json",
+    "engineering/acceptance/ai-official-compaction/bounded_provider.py",
+    "engineering/acceptance/ai-official-compaction/budget.json",
+    "engineering/acceptance/ai-official-compaction/comparison.json",
+    "engineering/acceptance/ai-official-compaction/diagnostic-correction-source.json",
+    "engineering/acceptance/ai-official-compaction/diagnostic-correction.xml",
+    "engineering/acceptance/ai-official-compaction/final-core-source.json",
+    "engineering/acceptance/ai-official-compaction/final-core.xml",
+    "engineering/acceptance/ai-official-compaction/handoff-files.json",
+    "engineering/acceptance/ai-official-compaction/initial-source.json",
+    "engineering/acceptance/ai-official-compaction/initial.xml",
+    "engineering/acceptance/ai-official-compaction/integration-v1-source.json",
+    "engineering/acceptance/ai-official-compaction/integration-v1.xml",
+    "engineering/acceptance/ai-official-compaction/live-ledger.json",
+    "engineering/acceptance/ai-official-compaction/live_pair.py",
+    "engineering/acceptance/ai-official-compaction/live_support.py",
+    "engineering/acceptance/ai-official-compaction/mechanism-fixed-source.json",
+    "engineering/acceptance/ai-official-compaction/mechanism-fixed.xml",
+    "engineering/acceptance/ai-official-compaction/mechanism-source.json",
+    "engineering/acceptance/ai-official-compaction/mechanism-verified-source.json",
+    "engineering/acceptance/ai-official-compaction/mechanism-verified.xml",
+    "engineering/acceptance/ai-official-compaction/mechanism.xml",
+    "engineering/acceptance/ai-official-compaction/official-sources.json",
+    "engineering/acceptance/ai-official-compaction/run_tests.py",
+    "engineering/acceptance/ai-official-compaction/short-instructions-source.json",
+    "engineering/acceptance/ai-official-compaction/short-instructions.xml",
+    "engineering/acceptance/ai-official-compaction/summarize.py",
+    "engineering/acceptance/ai-official-compaction/tail-boundary-source.json",
+    "engineering/acceptance/ai-official-compaction/tail-boundary.xml",
+    "engineering/acceptance/ai-official-compaction/tail-selection-proof.json",
+    "engineering/acceptance/ai-official-compaction/verification.json"
+  ],
+  "frozenSnapshotDirectories": [
+    "engineering/acceptance/ai-official-compaction-interface-snapshot/v1/",
+    "engineering/acceptance/ai-official-compaction-interface-snapshot/v2/",
+    "engineering/acceptance/ai-official-compaction-interface-snapshot/v3/"
+  ],
+  "ignoredOutputs": "engineering/acceptance/ai-official-compaction/work/",
+  "status": "complete; all code/docs frozen and evidence sealed; root owns directory/index and Git delivery"
+}

@@ -30,6 +30,7 @@ const providerErrorHints={
  NOT_VISIBLE:'所选资料当前不可核验，请重新选择本人已知引用',
  SESSION_ACCESS_CHANGED:'会话授权已变化，请重新发送需求',
  PROVIDER_REQUEST_INVALID:'AI 服务商拒绝了请求参数，请联系 KP 检查接入设置',
+ PROVIDER_CONTEXT_OVERFLOW:'输入超出 AI 模型窗口，本次生成未完成；请缩小需求后重试',
  PROVIDER_BALANCE_INSUFFICIENT:'AI 服务商余额不足，请联系 KP 处理',
  PROVIDER_NOT_FOUND:'AI 服务接口或模型不存在，请联系 KP 检查配置',
  PROVIDER_REQUEST_TOO_LARGE:'发送给 AI 服务商的请求过大，请缩小资料范围',

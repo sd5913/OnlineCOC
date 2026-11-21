@@ -1,0 +1,6 @@
+{
+  "externalAttemptLimit": 30,
+  "totalTokenLimit": 500000,
+  "scope": "ISSUE-024 paired baseline v3 and official-algorithm adaptation; synthetic rooms only",
+  "unknownUsage": "charge full conservative reserve"
+}

@@ -1,0 +1,43 @@
+{
+  "sourceDifferences": [
+    "engineering/ai/src/onlinecoc_ai/compaction_units.py",
+    "engineering/ai/tests/test_official_compaction.py"
+  ],
+  "rows": [
+    {
+      "phase": "accepted",
+      "businessAttemptId": 18,
+      "keptEarlierCount": 5,
+      "keptEarlierBytes": 12522,
+      "earlierBudget": 17157,
+      "lastEarlierRowBytes": 167,
+      "firstSelectionFitsBudget": true,
+      "sameV2V3Selection": true,
+      "proof": "The only branch change removes the unconditional first-row exception. The actual first selected last historical row fits the computed remaining budget; all later branch decisions are unchanged."
+    },
+    {
+      "phase": "replace",
+      "businessAttemptId": 21,
+      "keptEarlierCount": 12,
+      "keptEarlierBytes": 14024,
+      "earlierBudget": 16308,
+      "lastEarlierRowBytes": 161,
+      "firstSelectionFitsBudget": true,
+      "sameV2V3Selection": true,
+      "proof": "The only branch change removes the unconditional first-row exception. The actual first selected last historical row fits the computed remaining budget; all later branch decisions are unchanged."
+    },
+    {
+      "phase": "cancel",
+      "businessAttemptId": 23,
+      "keptEarlierCount": 13,
+      "keptEarlierBytes": 14185,
+      "earlierBudget": 15350,
+      "lastEarlierRowBytes": 161,
+      "firstSelectionFitsBudget": true,
+      "sameV2V3Selection": true,
+      "proof": "The only branch change removes the unconditional first-row exception. The actual first selected last historical row fits the computed remaining budget; all later branch decisions are unchanged."
+    }
+  ],
+  "realCallsAdded": 0,
+  "ledgerSHA256": "a87b2998705040a0fa02db8f07ae5e08f8bd795819c17128f54b431df3b9c62b"
+}

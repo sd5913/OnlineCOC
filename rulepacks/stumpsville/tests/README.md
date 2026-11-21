@@ -6,11 +6,12 @@
 
 | 入口 | 状态与范围 |
 | --- | --- |
+| [官方压缩适配的包侧联合验收](official-compaction-results.json) | ISSUE-024三版AI冻结源码各219项与宿主327项逐文件核对；v1资料4、嵌入6、批次5、来源采纳4项通过，v2采纳4项复验通过，v3超大末条历史/零预算两项边界复核通过。0外部API，不计入真实长对话成功率；保留旧结果与两处独立审查发现 |
 | [参考资料风险界面](verify_consultation_review.py) · [结果](consultation-review-results.json) | 4组合成DTO Edge检查通过：来源与C评估同次接受、高危整包指纹、拒绝不夹带确认、缺失证明禁用批准、运行时失败原因与390px转义；0外部API。实际服务权限／落地另见下面的联合测试 |
-| [参考资料与KP采纳联测](verify_context_autonomy.py) · [旧基线](context-autonomy-baseline-results.json) · [结果](context-autonomy-results.json) | 最终4/4组通过，使用宿主KP策略v1＋AI压缩v3和真实树桩镇隔离宿主。旧基线复现CONSULTATION_ONLY；改后配置生成、缺失/错误证明与PL拒绝、包界面接受后只追加一次、运行时自动审批开启仍须接受来源评估，接受后钱币+1与单次定向通知。完整房间实体路径误拒绝已修复且沿用原查询复验；保留夹具及产品首次失败。0外部API |
+| [参考资料与KP采纳联测](verify_context_autonomy.py) · [旧基线](context-autonomy-baseline-results.json) · [结果](context-autonomy-results.json) | 最新4/4组通过，使用宿主KP策略v1＋AI官方压缩适配v2和真实树桩镇隔离宿主。旧基线复现CONSULTATION_ONLY；改后配置生成、缺失/错误证明与PL拒绝、包界面接受后只追加一次、运行时自动审批开启仍须接受来源评估，接受后钱币+1与单次定向通知。完整房间实体路径误拒绝已修复且沿用原查询复验；保留夹具及产品首次失败。0外部API |
 | [聊天对照与恢复](verify_chat_delivery.py) · [基线](chat-delivery-baseline-results.json) · [改后](chat-delivery-optimized-results.json) · [引擎v2＋AI v1](chat-delivery-combined-results.json) | 四个真实本机页面、每组六条消息、0外部API；旧引擎固定对照接收p50从2582.56ms降至1300.74ms，p95从4410.37ms降至2223.79ms；新组合1239.04/2756.93ms。5组包括裁决处理中发送、在途新草稿、丢响应原ID恢复且只发一次、宿主历史不等待包锁、私聊/场景隔离与编辑/撤回/队伍同步。端到端含浏览器断言等待，发送输入框尾延迟仍约2秒；保留两次夹具首失败，不混同引擎纯HTTP数据 |
 | [聊天与包配置依据](verify_chat_sources.py) · [基线](chat-sources-baseline-results.json) · [结果](chat-sources-results.json) | 4组通过：普通发送/编辑/撤回/已读及恢复账本使宽配置摘要变化由4/4降至0/4；真正游戏资料变化仍改变摘要；明确聊天编辑/撤回、事件裁决和权限边界保留。0外部API |
-| [冻结接口组合](verify_chat_combined.py) · [结果](chat-combined-results.json) | 最新宿主KP策略v1与AI压缩v2逐文件哈希核对，4组通过：实际资料链4项、AI嵌入/调试/导出6项、原子批次5项，以及来源/导出白名单检查。使用--batch-workflow复验自动槽位修复、消耗/短休/通知和幂等恢复；本轮未重跑四页延迟，保留此前独立证据。旧PL直接资料API夹具曾被403正确拒绝，首次结果保留 |
+| [冻结接口组合](verify_chat_combined.py) · [结果](chat-combined-results.json) | 最新宿主KP策略v1与AI官方压缩适配v1逐文件哈希核对，4组通过：实际资料链4项、AI嵌入/调试/导出6项、原子批次5项，以及来源/导出白名单检查。使用--batch-workflow复验自动槽位修复、消耗/短休/通知和幂等恢复；本轮未重跑四页延迟，保留此前独立证据。旧PL直接资料API夹具曾被403正确拒绝，首次结果保留 |
 | [默认启动与账号管理](verify_panel_defaults.py) · [结果](panel-defaults-results.json) | 10组通过：原生Tk标签与恢复状态、真实隔离宿主三个默认账号/全部AI能力和外发权限、账号创建/改密/删除/历史保留/最后KP保护、重启保持密码和关闭的权限。最新使用引擎冻结v3；0外部API。保留截图依赖、删除列表预期、输入Schema及Origin夹具首失败 |
 | [C类评估裁决界面](verify_c_review_ui.py) · [结果](c-review-ui-results.json) | 5组合成DTO Edge检查通过：风险/依据/版本、三动作与可选备注、采纳提交精确证明且关窗、拒绝不附采纳证明、过期重检及390px转义。0外部API；真实发布与动态依据另外由工程联测验证 |
 | [批次完整联测](verify_batch_workflow.py) · [结果](batch-workflow-results.json) | 5组通过：真实Host/AI/Edge，合成模型首次错槽位后自动修正；批准前零副作用，批准后三项及定向通知原子提交；原请求重放无额外扣物/骰子/通知，通知逐项可读。每轮2次回环调用、0外部API；保留夹具漏必填参数及CSP等待方式首次失败 |
@@ -64,10 +65,11 @@
 
 ## 真实模型证据
 
-真实测试必须显式 `--live`，遵守当前授权和配置范围。脚本使用隔离房间与服务商副本，检查原配置字节未变，记录实际调用和确认Token；原始模型工具输入留在隔离目录，精选报告不含凭据。
+真实测试必须显式使用 `--live` 或对应驱动指定的 `--run`，遵守当前授权和配置范围。脚本使用隔离房间与服务商副本，检查原配置字节未变，记录实际调用和确认Token；原始模型工具输入留在隔离目录，精选报告不含凭据。
 
 | 主题 | 记录与边界 |
 | --- | --- |
+| 官方机制压缩适配（ISSUE-024） | [报告](../../../engineering/acceptance/ai-official-compaction/README.md) · [统计](../../../engineering/acceptance/ai-official-compaction/comparison.json)：23次／413419tokens，旧版3/3、适配v1为0/1、v2复测3/3；HP5首次语义错误和摘要一次格式修复均保留。单组合成长历史对照：tokens下降13.68%，端到端仅下降1.96%，首项更慢；未实触发工具裁剪或上游超限。v2核心717/717＋v3差异100/100，范围不累加；v3未重复实模，离线证明确认本组三例输入选择不变 |
 | 上下文与减少往返 | [工程报告](../../../engineering/acceptance/ai-context-usability/README.md)：18次／140825已确认tokens、0未知用量。3例配对严格可用率2/3→2/3；明确模板修改调用2→1、tokens14084→7082。另加跨4轮bonus13案例1/1且实际审批成功，非配对提升率。错误能力说明保留为失败，最终技术纠正尚未重跑该真实歧义例 |
 | 语义压缩与KP参考方案 | [报告](../../../engineering/acceptance/ai-context-compression/README.md) · [统计](../../../engineering/acceptance/ai-context-compression/results-summary.json)：49次／912755tokens，未知0。8个支持修改目标最终8/8、全部有效请求8/9、首次任务内7/8（含技术修复）；负例零业务4/4但准确拒绝仅1/4；所有18次请求完整质量9/18。跨30轮修改HP3→4并发布/重启/创建，最终2/2业务步骤完成，保留两次压缩失败；最终输入448206→56534字节。原字段数量和不支持删除的误导措辞均保留为质量失败。单次AI完整回归692/692，不与实模分母混算 |
 | 新房间默认与C类KP裁决 | [工程报告](../../../engineering/acceptance/ai-defaults-c-review/README.md) · [16个自然案例](../../../engineering/acceptance/ai-defaults-c-review/natural-1795193315656682400.json)：首轮完整7/16，终结输出格式15/15，语义复核14/15；修改首轮2/9，v3原输出重放9/9实际生效，正确拒绝2/2。43次／597278 tokens。1例预算未完成；短反馈事实查询成功但有多余来源文字，非完整提示复测。核心648/648＋Edge4/4，不与38项重复相加 |

@@ -1,0 +1,5 @@
+# Keep hash-addressed evidence byte-identical; do not reformat frozen bytes.
+engineering/acceptance/ai-official-compaction/** -text -whitespace
+engineering/acceptance/ai-official-compaction-interface-snapshot/** -text -whitespace
+engineering/acceptance/ai-compression-interface-snapshot/v3/** -text -whitespace
+engineering/acceptance/engine-kp-policy-interface-snapshot/v1/** -text -whitespace

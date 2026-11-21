@@ -1,7 +1,7 @@
 {
-  "at": "2026-11-21T16:03:15.964175+08:00",
-  "output": "D:\\Studies\\Art Programming\\OnlineCOC\\rulepacks\\stumpsville\\tests\\output\\chat-combined-8a55ec6e",
-  "source": "D:\\Studies\\Art Programming\\OnlineCOC\\rulepacks\\stumpsville\\tests\\output\\chat-combined-8a55ec6e\\source",
+  "at": "2026-11-21T18:24:11.307066+08:00",
+  "output": "D:\\Studies\\Art Programming\\OnlineCOC\\rulepacks\\stumpsville\\tests\\output\\chat-combined-b07720e1",
+  "source": "D:\\Studies\\Art Programming\\OnlineCOC\\rulepacks\\stumpsville\\tests\\output\\chat-combined-b07720e1\\source",
   "externalApiCalls": 0,
   "checks": [
     "engine and AI frozen file hashes verified; separate combined runtime created",
@@ -67,6 +67,21 @@
       "deliverySkipped": true,
       "passed": true,
       "passedCount": 3
+    },
+    {
+      "at": "2026-11-21T16:03:15.964175+08:00",
+      "output": "D:\\Studies\\Art Programming\\OnlineCOC\\rulepacks\\stumpsville\\tests\\output\\chat-combined-8a55ec6e",
+      "source": "D:\\Studies\\Art Programming\\OnlineCOC\\rulepacks\\stumpsville\\tests\\output\\chat-combined-8a55ec6e\\source",
+      "externalApiCalls": 0,
+      "checks": [
+        "engine and AI frozen file hashes verified; separate combined runtime created",
+        "real package explicit message -> request -> ruling evidence preserved; message edit invalidates selected old evidence",
+        "current frozen host/AI atomic batch: automatic slot repair, consumption/rest/notification, idempotent replay and result UI passed",
+        "real AI component embedding, 1440/390px dialogs, reload, exported module graph and chat service/storage whitelist passed"
+      ],
+      "deliverySkipped": true,
+      "passed": true,
+      "passedCount": 4
     }
   ]
 }

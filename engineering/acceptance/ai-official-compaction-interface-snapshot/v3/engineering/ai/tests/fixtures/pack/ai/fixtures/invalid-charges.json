@@ -1,0 +1,7 @@
+{
+  "checkId": "charges-range",
+  "configurationId": "fixture.token",
+  "pointer": "/defaults/charges",
+  "value": 0,
+  "expected": "fail"
+}

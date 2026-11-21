@@ -1,0 +1,30 @@
+[
+  {
+    "metricId": "new-skill-success",
+    "calculatorId": "core.success-rate@1",
+    "parameters": {
+      "pointer": "/result",
+      "stepIndex": 0
+    },
+    "unit": "probability",
+    "required": true,
+    "threshold": {
+      "absoluteDelta": 0.1,
+      "risk": "high"
+    }
+  },
+  {
+    "metricId": "existing-skill-success",
+    "calculatorId": "core.success-rate@1",
+    "parameters": {
+      "pointer": "/result",
+      "stepIndex": 0
+    },
+    "unit": "probability",
+    "required": true,
+    "threshold": {
+      "absoluteDelta": 0,
+      "risk": "high"
+    }
+  }
+]

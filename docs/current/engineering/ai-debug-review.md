@@ -79,6 +79,7 @@ appendReviewSource(target, source, {onOpenSource, onOpenSession});
 | CONSULTATION_REVIEW_REQUIRED | 候选引用独立来源，需在裁决卡明确接受当前 sourceDigest 与来源风险 | 不能伪造、移除来源或自动批准 |
 | CONSULTATION_ONLY | 严格玩家会话等只读边界禁止修改 | 由真实 KP 在管理员会话处理 |
 | COMPRESSION_* | 语义摘要未通过格式／来源校验或容量限制；保留原文、错误、修复和计费用量 | 缩小当前需求后重试；不得声称已执行 |
+| PROVIDER_CONTEXT_OVERFLOW | 服务商明确确认输入窗口超限；管理员最多在输入实际缩小后重试一次，失败调用保留未知用量预留 | 持续失败时缩小当前需求；普通 400/422 和输出 length 不冒充窗口超限 |
 | STORAGE_UNAVAILABLE／STORE_FULL | 保留原 ID，先核对回执及磁盘；新版 AI 存储会无损压缩旧代，真正不足仍须备份恢复到新目录 | 不删除中间代、不盲目重放 |
 | 生成期间资料版本变化 | 保留发送快照生成的正文／候选，列出具体变化，由 KP 判断是否重新生成；执行仍复验当前依据 | 使用明确重新生成入口，旧批准不沿用 |
 | HISTORY_PROVENANCE_INCOMPLETE | 旧搜索只留摘要，变化后无法证明原对象仍可查看；无独立交付证明时隐藏正文，重新查询 | 不猜测补造来源 |

@@ -1,0 +1,44 @@
+{
+  "verifiedAt": "2026-11-21T19:02:24.643357+08:00",
+  "status": "complete",
+  "testRuns": [
+    {
+      "xml": "final-core.xml",
+      "tests": 717,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 1139.798,
+      "sha256": "f7e321adaaed4c866f6b1584ad0e624758a19eb90f2b458aee8df8c1d7fa0002"
+    },
+    {
+      "xml": "tail-boundary.xml",
+      "tests": 100,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 46.685,
+      "sha256": "3b9675037878914bf9d4b29a848b15df4b861c355f6a714cefde69bba85df4db"
+    }
+  ],
+  "testScope": "single v2 full-core run plus v3 targeted difference regression; overlapping counts are not added",
+  "sourceFilesMatchingV3": 219,
+  "v2ToV3Differences": [
+    "engineering/ai/src/onlinecoc_ai/compaction_units.py",
+    "engineering/ai/tests/test_official_compaction.py"
+  ],
+  "snapshotManifestSha256": {
+    "v2": "a1e80951366888d721f3d2f2255bd719bed050d50374b85499a2118a7ef3b08a",
+    "v3": "eb4aeefcd5a2ccdbecfe9fd031ee80257e75e9fe7ef8c6355004f7abc5f99c61"
+  },
+  "liveLedger": {
+    "status": "sealed",
+    "calls": 23,
+    "chargedTokens": 413419,
+    "sha256": "a87b2998705040a0fa02db8f07ae5e08f8bd795819c17128f54b431df3b9c62b"
+  },
+  "pairedVersion": "adapted-v2",
+  "v3InputSelectionProof": "tail-selection-proof.json",
+  "productionWritesDuringRealExperiment": 0,
+  "gitOperationsByThisChat": 0
+}
