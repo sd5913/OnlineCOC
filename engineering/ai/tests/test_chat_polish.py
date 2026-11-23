@@ -66,12 +66,12 @@ def test_reading_anchor_directory_and_stop(browser_page):
     history=page.locator('#history');expect(page.locator('.assistant')).to_have_count(12)
     page.locator('.session-link').focus()
     page.evaluate('window.beforeLink=document.querySelector("#demo").firstElementChild.shadowRoot.querySelector(".session-link")')
-    history.evaluate('el=>el.scrollTop=100');expect(page.locator('#latest')).to_be_visible()
+    history.evaluate("el=>{el.scrollTop=100;el.dispatchEvent(new WheelEvent('wheel',{bubbles:true}));}");expect(page.locator('#latest')).to_be_visible()
     page.evaluate("async()=>{for(let i=0;i<3;i++){await ui.refresh();await ui.select('s1');}}")
     assert page.evaluate('beforeLink.isConnected')
     assert history.evaluate('el=>el.scrollTop')<150
     page.evaluate("holdRefs=true;records.s1.items.push({requestId:'late',text:'新增信息',response:'[[entity:lamp@1]]',status:'review_ready'});ui.select('s1')")
-    page.wait_for_function('pendingRefs.length>0');history.evaluate('el=>el.scrollTop=160')
+    page.wait_for_function('pendingRefs.length>0');history.evaluate("el=>{el.scrollTop=160;el.dispatchEvent(new WheelEvent('wheel',{bubbles:true}));}")
     page.evaluate('pendingRefs.forEach(r=>r());holdRefs=false')
     assert history.evaluate('el=>el.scrollTop')<220
     page.locator('#latest').click();expect(page.locator('#latest')).to_be_hidden()
@@ -110,3 +110,12 @@ def test_delayed_send_does_not_switch_session_or_erase_other_draft(browser_page)
     page.evaluate("ui.select('s1')");expect(page.locator('#history')).to_contain_text('原会话的需求')
     expect(page.locator('#text')).to_be_empty()
     page.evaluate("ui.select('s2')");expect(page.locator('#text')).to_have_text('另一个会话的草稿')
+
+
+def test_publication_continuation_is_labeled_and_not_resent(browser_page):
+    page=browser_page;page.evaluate(BOOT,{"rows":1})
+    page.evaluate("records.s1.items[0].continuationOrigin={proposalId:'published',requestId:'source'};ui.select('s1')")
+    expect(page.locator(".continuation-origin")).to_have_text("发布后继续")
+    page.evaluate("ui.select('s1')")
+    expect(page.locator(".continuation-origin")).to_have_count(1)
+    assert page.evaluate("calls.length")==0

@@ -75,6 +75,10 @@ def main():
                     decision = {'rulingId': row['rulingId'], 'digest': row['digest'], 'decision': 'approve',
                                 'riskDecisions': {r['id']: '隔离矩阵：核对完整候选与存量影响' for r in row['risks']}}
                     if row.get('highRisk'): decision['explicitHighRiskDigest'] = row['digest']
+                    assessment = row.get('cAssessment') or {}
+                    if assessment.get('requiresAcceptance'):
+                        assert assessment['adoptable'] and not assessment.get('stale')
+                        decision['cReview'] = {key: assessment[key] for key in ('basisRevision', 'basisDigest', 'reportDigest')}
                     done = measured_ai(key, 'ai.ruling.decide', decision)
                     assert done['status'] == 'completed', done
                     kp.state()

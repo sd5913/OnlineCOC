@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="9" skipped="0" tests="12" time="65.740" timestamp="2026-11-23T16:04:31.581511+08:00" hostname="LAPTOP-BIFSL64A"><testcase classname="tests.test_chat_interaction" name="test_idle_update_follows_latest_from_long_history[page]" time="5.815"><failure message="AssertionError: assert 12748 &lt; 3&#10; +  where 12748 = evaluate('bottomGap()')&#10; +    where evaluate = &lt;Page url='http://127.0.0.1:59212/ai-ui/conversation.html'&gt;.evaluate">browser_page = &lt;Page url='http://127.0.0.1:59212/ai-ui/conversation.html'&gt;
+variant = 'page'
+
+    @pytest.mark.parametrize('variant', ['page', 'conversation', 'collapsible'])
+    def test_idle_update_follows_latest_from_long_history(browser_page, variant):
+        page = browser_page; boot(page, variant)
+        page.evaluate('historyElement.scrollTop=140')
+        page.wait_for_timeout(1100)
+        page.evaluate('updateChat()')
+&gt;       assert page.evaluate('bottomGap()') &lt; 3
+E       AssertionError: assert 12748 &lt; 3
+E        +  where 12748 = evaluate('bottomGap()')
+E        +    where evaluate = &lt;Page url='http://127.0.0.1:59212/ai-ui/conversation.html'&gt;.evaluate
+
+engineering\ai\tests\test_chat_interaction.py:29: AssertionError</failure></testcase><testcase classname="tests.test_chat_interaction" name="test_idle_update_follows_latest_from_long_history[conversation]" time="5.583"><failure message="AssertionError: assert 12748 &lt; 3&#10; +  where 12748 = evaluate('bottomGap()')&#10; +    where evaluate = &lt;Page url='http://127.0.0.1:59255/ai-ui/conversation.html'&gt;.evaluate">browser_page = &lt;Page url='http://127.0.0.1:59255/ai-ui/conversation.html'&gt;
+variant = 'conversation'
+
+    @pytest.mark.parametrize('variant', ['page', 'conversation', 'collapsible'])
+    def test_idle_update_follows_latest_from_long_history(browser_page, variant):
+        page = browser_page; boot(page, variant)
+        page.evaluate('historyElement.scrollTop=140')
+        page.wait_for_timeout(1100)
+        page.evaluate('updateChat()')
+&gt;       assert page.evaluate('bottomGap()') &lt; 3
+E       AssertionError: assert 12748 &lt; 3
+E        +  where 12748 = evaluate('bottomGap()')
+E        +    where evaluate = &lt;Page url='http://127.0.0.1:59255/ai-ui/conversation.html'&gt;.evaluate
+
+engineering\ai\tests\test_chat_interaction.py:29: AssertionError</failure></testcase><testcase classname="tests.test_chat_interaction" name="test_idle_update_follows_latest_from_long_history[collapsible]" time="5.632"><failure message="AssertionError: assert 13012 &lt; 3&#10; +  where 13012 = evaluate('bottomGap()')&#10; +    where evaluate = &lt;Page url='http://127.0.0.1:59292/ai-ui/conversation.html'&gt;.evaluate">browser_page = &lt;Page url='http://127.0.0.1:59292/ai-ui/conversation.html'&gt;
+variant = 'collapsible'
+
+    @pytest.mark.parametrize('variant', ['page', 'conversation', 'collapsible'])
+    def test_idle_update_follows_latest_from_long_history(browser_page, variant):
+        page = browser_page; boot(page, variant)
+        page.evaluate('historyElement.scrollTop=140')
+        page.wait_for_timeout(1100)
+        page.evaluate('updateChat()')
+&gt;       assert page.evaluate('bottomGap()') &lt; 3
+E       AssertionError: assert 13012 &lt; 3
+E        +  where 13012 = evaluate('bottomGap()')
+E        +    where evaluate = &lt;Page url='http://127.0.0.1:59292/ai-ui/conversation.html'&gt;.evaluate
+
+engineering\ai\tests\test_chat_interaction.py:29: AssertionError</failure></testcase><testcase classname="tests.test_chat_interaction" name="test_recent_activity_preserves_position_then_expires[wheel]" time="5.598"><failure message="AssertionError: assert 12785 &lt; 3&#10; +  where 12785 = evaluate('bottomGap()')&#10; +    where evaluate = &lt;Page url='http://127.0.0.1:59327/ai-ui/conversation.html'&gt;.evaluate">browser_page = &lt;Page url='http://127.0.0.1:59327/ai-ui/conversation.html'&gt;
+event = 'wheel'
+
+    @pytest.mark.parametrize('event', ['wheel', 'keydown', 'pointerdown', 'touchstart', 'input'])
+    def test_recent_activity_preserves_position_then_expires(browser_page, event):
+        page = browser_page; boot(page)
+        page.evaluate(r"""event=&gt;{
+          historyElement.scrollTop=140;
+          const target=event==='input'?originalEditor:historyElement;
+          const constructors={wheel:WheelEvent,keydown:KeyboardEvent,pointerdown:PointerEvent,touchstart:TouchEvent,input:InputEvent};
+          target.dispatchEvent(new constructors[event](event,{bubbles:true,key:'ArrowUp',pointerId:5}));
+        }""", event)
+        page.evaluate('updateChat()')
+        assert abs(page.evaluate('historyElement.scrollTop') - 140) &lt; 3
+        page.evaluate("historyElement.dispatchEvent(new PointerEvent('pointerup',{bubbles:true,pointerId:5}));historyElement.dispatchEvent(new TouchEvent('touchend',{bubbles:true}))")
+        page.wait_for_timeout(1100)
+        page.evaluate('updateChat()')
+&gt;       assert page.evaluate('bottomGap()') &lt; 3
+E       AssertionError: assert 12785 &lt; 3
+E        +  where 12785 = evaluate('bottomGap()')
+E        +    where evaluate = &lt;Page url='http://127.0.0.1:59327/ai-ui/conversation.html'&gt;.evaluate
+
+engineering\ai\tests\test_chat_interaction.py:46: AssertionError</failure></testcase><testcase classname="tests.test_chat_interaction" name="test_recent_activity_preserves_position_then_expires[keydown]" time="5.623"><failure message="AssertionError: assert 12785 &lt; 3&#10; +  where 12785 = evaluate('bottomGap()')&#10; +    where evaluate = &lt;Page url='http://127.0.0.1:59362/ai-ui/conversation.html'&gt;.evaluate">browser_page = &lt;Page url='http://127.0.0.1:59362/ai-ui/conversation.html'&gt;
+event = 'keydown'
+
+    @pytest.mark.parametrize('event', ['wheel', 'keydown', 'pointerdown', 'touchstart', 'input'])
+    def test_recent_activity_preserves_position_then_expires(browser_page, event):
+        page = browser_page; boot(page)
+        page.evaluate(r"""event=&gt;{
+          historyElement.scrollTop=140;
+          const target=event==='input'?originalEditor:historyElement;
+          const constructors={wheel:WheelEvent,keydown:KeyboardEvent,pointerdown:PointerEvent,touchstart:TouchEvent,input:InputEvent};
+          target.dispatchEvent(new constructors[event](event,{bubbles:true,key:'ArrowUp',pointerId:5}));
+        }""", event)
+        page.evaluate('updateChat()')
+        assert abs(page.evaluate('historyElement.scrollTop') - 140) &lt; 3
+        page.evaluate("historyElement.dispatchEvent(new PointerEvent('pointerup',{bubbles:true,pointerId:5}));historyElement.dispatchEvent(new TouchEvent('touchend',{bubbles:true}))")
+        page.wait_for_timeout(1100)
+        page.evaluate('updateChat()')
+&gt;       assert page.evaluate('bottomGap()') &lt; 3
+E       AssertionError: assert 12785 &lt; 3
+E        +  where 12785 = evaluate('bottomGap()')
+E        +    where evaluate = &lt;Page url='http://127.0.0.1:59362/ai-ui/conversation.html'&gt;.evaluate
+
+engineering\ai\tests\test_chat_interaction.py:46: AssertionError</failure></testcase><testcase classname="tests.test_chat_interaction" name="test_recent_activity_preserves_position_then_expires[pointerdown]" time="5.653"><failure message="AssertionError: assert 12785 &lt; 3&#10; +  where 12785 = evaluate('bottomGap()')&#10; +    where evaluate = &lt;Page url='http://127.0.0.1:59407/ai-ui/conversation.html'&gt;.evaluate">browser_page = &lt;Page url='http://127.0.0.1:59407/ai-ui/conversation.html'&gt;
+event = 'pointerdown'
+
+    @pytest.mark.parametrize('event', ['wheel', 'keydown', 'pointerdown', 'touchstart', 'input'])
+    def test_recent_activity_preserves_position_then_expires(browser_page, event):
+        page = browser_page; boot(page)
+        page.evaluate(r"""event=&gt;{
+          historyElement.scrollTop=140;
+          const target=event==='input'?originalEditor:historyElement;
+          const constructors={wheel:WheelEvent,keydown:KeyboardEvent,pointerdown:PointerEvent,touchstart:TouchEvent,input:InputEvent};
+          target.dispatchEvent(new constructors[event](event,{bubbles:true,key:'ArrowUp',pointerId:5}));
+        }""", event)
+        page.evaluate('updateChat()')
+        assert abs(page.evaluate('historyElement.scrollTop') - 140) &lt; 3
+        page.evaluate("historyElement.dispatchEvent(new PointerEvent('pointerup',{bubbles:true,pointerId:5}));historyElement.dispatchEvent(new TouchEvent('touchend',{bubbles:true}))")
+        page.wait_for_timeout(1100)
+        page.evaluate('updateChat()')
+&gt;       assert page.evaluate('bottomGap()') &lt; 3
+E       AssertionError: assert 12785 &lt; 3
+E        +  where 12785 = evaluate('bottomGap()')
+E        +    where evaluate = &lt;Page url='http://127.0.0.1:59407/ai-ui/conversation.html'&gt;.evaluate
+
+engineering\ai\tests\test_chat_interaction.py:46: AssertionError</failure></testcase><testcase classname="tests.test_chat_interaction" name="test_recent_activity_preserves_position_then_expires[touchstart]" time="5.636"><failure message="AssertionError: assert 12785 &lt; 3&#10; +  where 12785 = evaluate('bottomGap()')&#10; +    where evaluate = &lt;Page url='http://127.0.0.1:59447/ai-ui/conversation.html'&gt;.evaluate">browser_page = &lt;Page url='http://127.0.0.1:59447/ai-ui/conversation.html'&gt;
+event = 'touchstart'
+
+    @pytest.mark.parametrize('event', ['wheel', 'keydown', 'pointerdown', 'touchstart', 'input'])
+    def test_recent_activity_preserves_position_then_expires(browser_page, event):
+        page = browser_page; boot(page)
+        page.evaluate(r"""event=&gt;{
+          historyElement.scrollTop=140;
+          const target=event==='input'?originalEditor:historyElement;
+          const constructors={wheel:WheelEvent,keydown:KeyboardEvent,pointerdown:PointerEvent,touchstart:TouchEvent,input:InputEvent};
+          target.dispatchEvent(new constructors[event](event,{bubbles:true,key:'ArrowUp',pointerId:5}));
+        }""", event)
+        page.evaluate('updateChat()')
+        assert abs(page.evaluate('historyElement.scrollTop') - 140) &lt; 3
+        page.evaluate("historyElement.dispatchEvent(new PointerEvent('pointerup',{bubbles:true,pointerId:5}));historyElement.dispatchEvent(new TouchEvent('touchend',{bubbles:true}))")
+        page.wait_for_timeout(1100)
+        page.evaluate('updateChat()')
+&gt;       assert page.evaluate('bottomGap()') &lt; 3
+E       AssertionError: assert 12785 &lt; 3
+E        +  where 12785 = evaluate('bottomGap()')
+E        +    where evaluate = &lt;Page url='http://127.0.0.1:59447/ai-ui/conversation.html'&gt;.evaluate
+
+engineering\ai\tests\test_chat_interaction.py:46: AssertionError</failure></testcase><testcase classname="tests.test_chat_interaction" name="test_recent_activity_preserves_position_then_expires[input]" time="5.635"><failure message="AssertionError: assert 12785 &lt; 3&#10; +  where 12785 = evaluate('bottomGap()')&#10; +    where evaluate = &lt;Page url='http://127.0.0.1:59482/ai-ui/conversation.html'&gt;.evaluate">browser_page = &lt;Page url='http://127.0.0.1:59482/ai-ui/conversation.html'&gt;
+event = 'input'
+
+    @pytest.mark.parametrize('event', ['wheel', 'keydown', 'pointerdown', 'touchstart', 'input'])
+    def test_recent_activity_preserves_position_then_expires(browser_page, event):
+        page = browser_page; boot(page)
+        page.evaluate(r"""event=&gt;{
+          historyElement.scrollTop=140;
+          const target=event==='input'?originalEditor:historyElement;
+          const constructors={wheel:WheelEvent,keydown:KeyboardEvent,pointerdown:PointerEvent,touchstart:TouchEvent,input:InputEvent};
+          target.dispatchEvent(new constructors[event](event,{bubbles:true,key:'ArrowUp',pointerId:5}));
+        }""", event)
+        page.evaluate('updateChat()')
+        assert abs(page.evaluate('historyElement.scrollTop') - 140) &lt; 3
+        page.evaluate("historyElement.dispatchEvent(new PointerEvent('pointerup',{bubbles:true,pointerId:5}));historyElement.dispatchEvent(new TouchEvent('touchend',{bubbles:true}))")
+        page.wait_for_timeout(1100)
+        page.evaluate('updateChat()')
+&gt;       assert page.evaluate('bottomGap()') &lt; 3
+E       AssertionError: assert 12785 &lt; 3
+E        +  where 12785 = evaluate('bottomGap()')
+E        +    where evaluate = &lt;Page url='http://127.0.0.1:59482/ai-ui/conversation.html'&gt;.evaluate
+
+engineering\ai\tests\test_chat_interaction.py:46: AssertionError</failure></testcase><testcase classname="tests.test_chat_interaction" name="test_async_reference_completion_respects_new_activity" time="4.938" /><testcase classname="tests.test_chat_interaction" name="test_updates_keep_editor_caret_and_native_composition" time="5.763" /><testcase classname="tests.test_chat_interaction" name="test_reader_anchor_and_selected_answer_survive_changed_rows" time="4.587"><failure message="AssertionError: assert False&#10; +  where False = evaluate('readingAnswer.isConnected&amp;&amp;readingBody.isConnected')&#10; +    where evaluate = &lt;Page url='http://127.0.0.1:59593/ai-ui/conversation.html'&gt;.evaluate">browser_page = &lt;Page url='http://127.0.0.1:59593/ai-ui/conversation.html'&gt;
+
+    def test_reader_anchor_and_selected_answer_survive_changed_rows(browser_page):
+        page = browser_page; boot(page)
+        page.evaluate(r"""()=&gt;{
+          const answer=chatRoot.querySelectorAll('.assistant')[8];
+          historyElement.scrollTop=answer.offsetTop-100;
+          window.readingAnswer=answer;window.readingBody=answer.children[1];
+          const text=readingBody.querySelector('p').firstChild,r=document.createRange();r.setStart(text,0);r.setEnd(text,5);
+          const s=chatRoot.getSelection();s.removeAllRanges();s.addRange(r);
+          window.selectedAnswerText=s.toString();window.anchorTop=answer.getBoundingClientRect().top;
+          historyElement.dispatchEvent(new KeyboardEvent('keydown',{bubbles:true,key:'Shift'}));
+          records.s1.items[0].response+='\n\n'+('上方新增内容。'.repeat(80));
+          records.s1.items[8].task={events:[{eventId:'new',kind:'read',status:'completed',message:'读取完成'}]};
+        }""")
+        page.evaluate("ui.select('s1')")
+&gt;       assert page.evaluate('readingAnswer.isConnected&amp;&amp;readingBody.isConnected')
+E       AssertionError: assert False
+E        +  where False = evaluate('readingAnswer.isConnected&amp;&amp;readingBody.isConnected')
+E        +    where evaluate = &lt;Page url='http://127.0.0.1:59593/ai-ui/conversation.html'&gt;.evaluate
+
+engineering\ai\tests\test_chat_interaction.py:99: AssertionError</failure></testcase><testcase classname="tests.test_chat_interaction" name="test_session_switch_discards_old_read_without_overwriting_current_draft" time="4.647" /></testsuite></testsuites>

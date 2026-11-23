@@ -87,6 +87,9 @@ def menu(content, location, clues):
 
 # These are observable changes at the event location, in latest-stage-first order.
 EVENT_STAGES = {
+    'hall-negotiate': [('ratsDeal','双方已达成通行约定。'), ('ratsTalked','鼠帮已经拒绝说辞，仍可用口粮交换。')],
+    'cage-gate': [('caveOpen','洞窟铁门已经打开。'), ('snakeCalmed','蛇已平静，可以接近门闩。')],
+    'cave-sleeper': [('ernieSpoken','Ernie 已准许搬取奶酪，可再向他询问北方线索。')],
     'storm-commission': [('home','获救的居民已在庭院安顿下来。'), ('delivered','栗婶已签收奶酪，正在安排住处。'),
                          ('batch','运货筐已经送到，栗婶等候签收。'), ('stormStart','栗婶在庭院等候搜救和补给的消息。')],
     'storm-pump': [('pump','泵轮已经转动，积水开始退去。'), ('temporary','木楔已经撑住传动装置，还需校准。'),
@@ -109,6 +112,23 @@ def unavailable(action, choice, step, flags, turn):
     if completed and flags.get(completed):
         return next((text for flag, text in EVENT_STAGES.get(action, ()) if flag == completed),
                     '这一步已经完成，无需再次办理。')
+    if action == 'tunnel-cheese' and choice == 'careful' and flags.get('trapState'):
+        return '机关已经失效，无需再次拆解。'
+    if action == 'hall-negotiate':
+        if flags.get('ratsDeal') and (choice == 'food' or not flags.get('fluteRemaining')):
+            return '已达成通行约定，无需再次交换。'
+        if choice == 'talk' and flags.get('ratsTalked') and not flags.get('ratsDeal'):
+            return '鼠帮已拒绝说辞，可以用口粮交换。'
+    if action == 'factory-exits' and choice == 'iron' and flags.get('ironOpen'):
+        return '通向蛇笼的铁门已开放。'
+    if action == 'cage-listen' and choice == 'flute' and (flags.get('caveOpen') or flags.get('snakeCalmed')):
+        return '通路已开或守卫蛇已平静，无需再吹笛。'
+    if (action, choice) in {('cage-gate','open'), ('cage-listen','sneak')} and flags.get('caveOpen'):
+        return '洞窟铁门已经打开。'
+    if (action, choice) == ('cage-gate','open') and not flags.get('snakeCalmed'):
+        return '需要先安抚守卫蛇，或另选绕行。'
+    if (action, choice) == ('cave-cheese','take') and flags.get('ernieAwake') and not flags.get('ernieSpoken'):
+        return 'Ernie 已醒来，请先与他交谈。'
     if action in ('gate-open', 'gate-handle') and flags.get('gateOpen'):
         return '石板门已经打开。'
     if action == 'web-call' and flags.get('villagersFreed'):
@@ -137,9 +157,46 @@ def unavailable(action, choice, step, flags, turn):
 def describe_events(view, content, flags, turn):
     recipes = {(a['id'], c['id']): c.get('storm', {}) for a in content.get('actions', [])
                if a['location'] == view['index'] for c in a['choices']}
+    known = {c['id'] for c in view.get('clues', [])}
     for action in view['actions']:
         key = action['id']
         status = next((text for flag, text in EVENT_STAGES.get(key, []) if flags.get(flag)), '')
+        if key == 'tunnel-cheese' and 'tunnel-trap' in known and flags.get('trapState'):
+            status = '落石已落下。' if flags['trapState'] == 2 else '机关连接已经解除。'
+        if key == 'courtyard-ladders' and flags.get('laddersKnown') and any(x in view['exits'] for x in (4,5,6)):
+            status = '梯子的去向已标在地图上，可以再次辨认路线。'
+        if key == 'house-painting' and 'festival' in known:
+            status = '这幅节庆画已记入你的线索，可以重看画面。'
+        if key == 'factory-exits' and 'factory-exits' in known:
+            status = '升降机仍通向庭院。' + ('蛇笼铁门开着。' if flags.get('ironOpen') else '蛇笼铁门关着。')
+        if key.startswith('storm-supplies') and f"supplies{view['index']}" in known:
+            status = '物资已经清点，可以复查现场余量。'
+        if key == 'storm-mill' and flags.get('ledgerDone'):
+            status = (status + ' 账本已经交给 Jack。').strip()
+        if key == 'storm-escape' and not flags.get('evacuated'):
+            status = ''.join(text for flag, text in EVENT_STAGES[key] if flags.get(flag))
+            if flags.get('braced'):
+                status += '系缆和扶手均已加固。'
+        if key == 'cage-listen' and 'snake-rhythm' in known:
+            if flags.get('caveOpen'):
+                status = '门已经打开，可直接前往熟成洞。'
+            elif flags.get('snakeCalmed'):
+                status = '笛声已经奏效，现在可以开启铁门。'
+            elif flags.get('snakeAlert'):
+                status = '蛇仍警戒着门闩，再次绕行仍有风险。'
+        if key == 'web-inspect' and 'web-captives' in known and flags.get('spidersAlert') and not flags.get('villagersFreed'):
+            status = (status + ' 蜘蛛已经警觉，村民仍未脱困。').strip()
+        if key == 'storm-pump' and flags.get('stormStart') and turn-flags['stormStart']+1>=18 and not (flags.get('pump') or flags.get('dredged')):
+            status = (status + ' 泵壳进水，启动前还需清淤。').strip()
+        if key == 'house-pots' and 'pots-observed' in known:
+            status = '器具已整理；复查只清点余量。'
+        if key == 'cave-cheese' and 'cave-stock' in known:
+            status = 'Ernie 已允许取用奶酪。' if flags.get('ernieSpoken') else (
+                'Ernie 醒着，先取得他的许可。' if flags.get('ernieAwake') else 'Ernie 仍在睡，搬动奶酪可能惊醒他。')
+        if key == 'hall-negotiate' and flags.get('ratsDeal') and flags.get('fluteRemaining'):
+            for c in action['choices']:
+                if c['id'] == 'talk':
+                    c.update(label='领取约定的蛇笛', process='领取尚未交付的蛇笛，不再投骰或支付口粮。')
         if status:
             initial = {'storm-brace': '石板门阻挡着前进的道路，门上留有可转动的把手。',
                        'storm-pump': '水正从破裂的泵壳渗进低处。'}
@@ -167,7 +224,8 @@ def describe_stock(view, stock, pips, game):
     if index == 3 and clue in known:
         entries.append(f'池底剩余钱币 {pips}p。')
     if f'supplies{index}' in known:
-        items.extend(r['item'] for r in game['stormStocks'] if r['location']==index and r['item'] != 24)
+        choices = {c['id'] for a in view['actions'] if a['id']==f'storm-supplies{index}' for c in a['choices']}
+        items.extend(r['item'] for r in game['stormStocks'] if r['location']==index and str(r['item']) in choices)
     for item in items:
         entries.append(f"{game['items'][item-1]['name']}剩余 {stock.get(item,0)}。")
     if entries:
@@ -190,7 +248,7 @@ def describe_stock(view, stock, pips, game):
 
 def outcome_clues(content, action, choice, result, source):
     """Facts already disclosed by a committed outcome, including stock Lua artifacts."""
-    if (source != STOCK_SOURCE and hashlib.sha256((source or '').encode()).hexdigest() != '70b60d8a55804c753ec56a476d27393cff2a7466a8b83693db30fafa67e5897d') or result.get('outcome') == 'blocked':
+    if (source != STOCK_SOURCE and hashlib.sha256((source or '').encode()).hexdigest() not in ('70b60d8a55804c753ec56a476d27393cff2a7466a8b83693db30fafa67e5897d','b9ab3a0b44202563593913f19de3f1f561cdebd754f2f019c664ba6478ba3d5d')) or result.get('outcome') == 'blocked':
         return []
     key = {('house-pots', 'search'): 'pots-observed', ('house-pots', 'take'): 'pots-observed',
            ('hall-observe', 'inspect'): 'hall-company', ('hall-negotiate', 'talk'): 'hall-company',

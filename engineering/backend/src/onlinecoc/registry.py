@@ -13,6 +13,23 @@ _STAGED_LOCK=threading.Lock()
 _STAGED_BYTES=0
 STATIC_VALIDATION_VERSION='stage-1:'+POLICY_VERSION
 
+def stage_delta(base,changes):
+    """Reconstruct a detached complete artifact; never validate a fragment alone.
+
+    The caller checks the active revision and holds the room lock through commit.
+    Explicit deletions keep JSON null available as an ordinary data value.
+    """
+    sources=changes.get('sources',{});data=changes.get('data',{})
+    remove_sources=changes.get('removeSources',[]);remove_data=changes.get('removeData',[])
+    require(bool(sources or data or remove_sources or remove_data),'INPUT_INVALID')
+    require(not set(sources).intersection(remove_sources) and not set(data).intersection(remove_data),'INPUT_INVALID')
+    require(all(key in base['sources'] for key in remove_sources) and all(key in base['data'] for key in remove_data),'RULE_FILE_NOT_FOUND')
+    merged_sources=copy.deepcopy(base['sources']);merged_data=copy.deepcopy(base['data'])
+    for key in remove_sources:del merged_sources[key]
+    for key in remove_data:del merged_data[key]
+    merged_sources.update(copy.deepcopy(sources));merged_data.update(copy.deepcopy(data))
+    return stage(merged_sources,merged_data)
+
 def stage(sources,data=None):
     global _STAGED_BYTES
     require(isinstance(sources,dict) and 0<len(sources)<=64)

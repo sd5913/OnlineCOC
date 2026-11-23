@@ -1,0 +1,36 @@
+{
+  "date": "2026-11-23",
+  "operation": "rule.stage.delta",
+  "tests": {
+    "passed": 73,
+    "newCases": 30
+  },
+  "files": {
+    "docs/current/engineering/first-test.md": "b362e4137428dc7111578b8b6d9e33ece5329c9316019c8a02361dc39340765f",
+    "docs/current/engineering/lua-authoring.md": "4c5903b0fd4841bdb7105fb2af5bb58f3fc47f71fba164c2f498ca9e280282c6",
+    "engineering/acceptance/rule-stage-delta/.gitignore": "7c0e3807a109f275f04fa607825e26c8d69f2e23f684cf4ca68e03df1173780a",
+    "engineering/acceptance/rule-stage-delta/README.md": "2424a7f61fc159767aa24a4845ac8ad4830be936aaeb6cfa4fc75b7e281a7c88",
+    "engineering/acceptance/rule-stage-delta/delta-v1.xml": "50528482b6a5a2ccbcd6621aa54a635110d38e50c643f24dbeaa1592bb11e702",
+    "engineering/acceptance/rule-stage-delta/delta-v2.xml": "0c4fc6e6e7ac47bc5fd066790bd2da2d21e82a60801b8c1551999cb822f1ac4f",
+    "engineering/acceptance/rule-stage-delta/delta-v3.xml": "eac8e07e95748f238bfef59ae21783c049415f828bafa749cd6260588c6ee419",
+    "engineering/acceptance/rule-stage-delta/freeze.py": "f2181afabb46ba6084687f14c0cd0cdf737c1330b9048deab8b6eebec8c48027",
+    "engineering/acceptance/rule-stage-delta/interface-v1/engineering/backend/src/onlinecoc/host.py": "0913359b51e646fe69a157228882726121bd66235a0d5c34401f4bdb0caa5964",
+    "engineering/acceptance/rule-stage-delta/interface-v1/engineering/backend/src/onlinecoc/registry.py": "5a3c0fd56d96c9cc08b3c6976d77671b134d6bd82adaeec49cff4219abcc59d6",
+    "engineering/acceptance/rule-stage-delta/interface-v1/engineering/contracts/operations.json": "90313c610933550980b2f1abb2552fb4521f005c7a31073b92529486ea47a756",
+    "engineering/acceptance/rule-stage-delta/interface-v1/source.json": "2c0b9f41b734bb1e145b877e7d0626e02694fff83cb2021cb871f2886c797e10",
+    "engineering/acceptance/rule-stage-delta/measure.py": "5f9954bd5e91f84b0239edb27374c5e9025615c004cfc2864ef9d36fc087677c",
+    "engineering/acceptance/rule-stage-delta/measurements.json": "022f997877a3b56d40f8f2f05340c0c276c50d3260a9ae70a5099f836281c54c",
+    "engineering/acceptance/rule-stage-delta/v1-source.json": "b44778fe9c712b6b1f9ff480155b898cfc43d705f94074c494798af24e8b63f5",
+    "engineering/acceptance/rule-stage-delta/v2-source.json": "55f602a5866201f1dd8d37bdd17b8eb9f0f27be6f381d74f1c3eae1ff39a63d3",
+    "engineering/acceptance/rule-stage-delta/v3-source.json": "31c1edc1f924355bb078030ea6ed51c0c1bd907c0e1357e961dee9ceb75610f9",
+    "engineering/backend/src/onlinecoc/host.py": "0913359b51e646fe69a157228882726121bd66235a0d5c34401f4bdb0caa5964",
+    "engineering/backend/src/onlinecoc/registry.py": "5a3c0fd56d96c9cc08b3c6976d77671b134d6bd82adaeec49cff4219abcc59d6",
+    "engineering/backend/tests/test_rule_stage_delta.py": "397289ebd523955a492184d8519eef5ca83541bab9fdfad1df3e4538f23b6bed",
+    "engineering/contracts/operations.json": "90313c610933550980b2f1abb2552fb4521f005c7a31073b92529486ea47a756"
+  },
+  "limitations": [
+    "delta request still max 65536 bytes",
+    "whole changed files; no text patch/chunk upload",
+    "active baseline only; no automatic activation"
+  ]
+}

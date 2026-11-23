@@ -1,0 +1,608 @@
+{
+  "Profile": {
+    "schemaVersion": 1,
+    "profileId": "deepseek-main",
+    "revision": 1,
+    "adapter": "deepseek-chat",
+    "baseUrl": "https://api.deepseek.com",
+    "model": "deepseek-flash",
+    "credentialRef": "env:ONLINECOC_DEEPSEEK_API_KEY",
+    "request": {
+      "connectTimeoutMs": 10000,
+      "totalTimeoutMs": 120000,
+      "maxOutputTokens": 4096,
+      "thinking": "disabled"
+    },
+    "limits": {
+      "maxConcurrentPerRoom": 1,
+      "maxQueuedPerRoom": 5,
+      "maxToolRounds": 6,
+      "maxRepairAttempts": 2,
+      "maxTransportRetries": 2,
+      "taskTimeoutMs": 300000,
+      "dailyTokenBudget": 100000
+    },
+    "allowPrivateEndpoint": false,
+    "enabled": false
+  },
+  "PackContract": {
+    "schemaVersion": 1,
+    "packId": "ai-fixture",
+    "packVersion": "0.1.0",
+    "hostProtocolRange": {
+      "min": 1,
+      "max": 1
+    },
+    "sources": [
+      {
+        "id": "rules",
+        "path": "docs/rules.md",
+        "visibility": "public"
+      }
+    ],
+    "schemas": {
+      "config/tuning.json": "ai/schemas/tuning.schema.json"
+    },
+    "checks": "ai/checks.json",
+    "scenarios": [
+      "ai/scenarios/token.json"
+    ],
+    "metrics": "ai/metrics.json",
+    "reviewChecklist": "ai/review-checklist.md",
+    "extensionPoints": [
+      {
+        "namespace": "fixture.ext.",
+        "typeRefs": [
+          "item"
+        ],
+        "allowedPaths": [
+          "/defaults/bonus"
+        ],
+        "allowExistingIds": [
+          "fixture.token"
+        ],
+        "rulePrefixes": [
+          "fixture."
+        ]
+      }
+    ],
+    "requiredChecks": [
+      "bonus-range",
+      "charges-range"
+    ],
+    "requiredMetrics": [
+      "success-rate"
+    ],
+    "reviewPolicy": {
+      "approvalTtlSeconds": 900,
+      "items": [
+        {
+          "id": "choice-value",
+          "question": "新增道具是否使其他选择失去价值？请说明依据。",
+          "required": true
+        }
+      ],
+      "allowUnmeasuredOptional": true
+    },
+    "contextMapping": {
+      "actor": "entities",
+      "items": "entities"
+    }
+  },
+  "ContextSnapshot": {
+    "schemaVersion": 1,
+    "scopeId": "scope-one",
+    "initiator": "player1",
+    "reviewPrincipal": "kp",
+    "authorityEpoch": "epoch-one",
+    "authorizationEpoch": 1,
+    "baseRuleset": "baseline-one",
+    "configDigest": "80bd4715706e1a3d74378aa1a199daf68cbff581700d8fb92a3c60c796832822",
+    "contractDigest": "45676b6be26911e05f04c5da2730f32e7c1c1df7de1e900810a65462b598d396",
+    "validatorSetDigest": "2430f1a2ad2982d0067885488a4c89e21ad1d7c83b115ba8f1b20acc88dfaea8",
+    "worldDigest": "d9a6c1c64ad16895d46fa648534cb562f00f5893c6c77bceff2e8527eb71baf3",
+    "sourceRefs": [],
+    "memoryRefs": [],
+    "includedSources": [
+      "rules"
+    ],
+    "omittedSources": [],
+    "facts": {},
+    "createdAt": 1
+  },
+  "Request": {
+    "schemaVersion": 1,
+    "requestId": "request-one",
+    "scopeId": "scope-one",
+    "sourceKind": "manual",
+    "sourceId": "source-one",
+    "sourceRevision": 1,
+    "initiator": "player1",
+    "text": "Create a limited-use token",
+    "intent": "configure",
+    "dedupKey": "7f583691ae0847a050407c59258a723f07cd05a194674bae908bcab63ee91ac0",
+    "status": "received",
+    "createdAt": 1
+  },
+  "Proposal": {
+    "schemaVersion": 1,
+    "proposalId": "proposal-one",
+    "revision": 1,
+    "requestId": "request-one",
+    "scopeId": "scope-one",
+    "contextRef": "context-one",
+    "profileRevision": "deepseek-main:1",
+    "model": "deepseek-flash",
+    "summary": "Increase token bonus to 15",
+    "alternatives": [],
+    "changeSet": {
+      "schemaVersion": 1,
+      "configurations": [
+        {
+          "kind": "replace",
+          "id": "fixture.token",
+          "expectedRevision": "1",
+          "value": {
+            "configurationId": "fixture.token",
+            "revision": "2",
+            "typeRef": "item",
+            "defaults": {
+              "quantity": 1,
+              "unitMass": 0,
+              "charges": 2,
+              "bonus": 15
+            },
+            "behaviors": {
+              "use": {
+                "ruleId": "fixture.check"
+              }
+            }
+          }
+        }
+      ],
+      "sources": {
+        "check.lua": "return rule('fixture.check', {'actor', 'item'}, function(r, actor, item)\n  assert(r.matches(item, 'fixture.token'))\n  assert(r.read(actor).owner == r.read(item).owner)\n  local charges = r.number(item, 'charges')\n  assert(charges > 0, 'No charges remain')\n  r.set(item, 'charges', charges - 1)\n  local target = math.min(r.readData('tuning.json').maxTarget,\n                         r.number(actor, 'target') + r.number(item, 'bonus'))\n  local rolled = r.roll(100)\n  return {passed=rolled <= target, rolled=rolled, target=target, cost=1}\nend)\n"
+      },
+      "data": {
+        "tuning.json": {
+          "maxTarget": 100
+        }
+      },
+      "suggestions": []
+    },
+    "candidateDigest": "97c7a4b2a5a06793066d21706577a2d3d5421be52d9e54d1ea5b7fe011d0cad1",
+    "reportRefs": [
+      "report-A",
+      "report-B",
+      "report-C"
+    ],
+    "status": "review_ready",
+    "createdAt": 2
+  },
+  "ChangeSet": {
+    "schemaVersion": 1,
+    "configurations": [
+      {
+        "kind": "replace",
+        "id": "fixture.token",
+        "expectedRevision": "1",
+        "value": {
+          "configurationId": "fixture.token",
+          "revision": "2",
+          "typeRef": "item",
+          "defaults": {
+            "quantity": 1,
+            "unitMass": 0,
+            "charges": 2,
+            "bonus": 15
+          },
+          "behaviors": {
+            "use": {
+              "ruleId": "fixture.check"
+            }
+          }
+        }
+      }
+    ],
+    "sources": {
+      "check.lua": "return rule('fixture.check', {'actor', 'item'}, function(r, actor, item)\n  assert(r.matches(item, 'fixture.token'))\n  assert(r.read(actor).owner == r.read(item).owner)\n  local charges = r.number(item, 'charges')\n  assert(charges > 0, 'No charges remain')\n  r.set(item, 'charges', charges - 1)\n  local target = math.min(r.readData('tuning.json').maxTarget,\n                         r.number(actor, 'target') + r.number(item, 'bonus'))\n  local rolled = r.roll(100)\n  return {passed=rolled <= target, rolled=rolled, target=target, cost=1}\nend)\n"
+    },
+    "data": {
+      "tuning.json": {
+        "maxTarget": 100
+      }
+    },
+    "suggestions": []
+  },
+  "ValidationReport": {
+    "schemaVersion": 1,
+    "reportId": "report-A",
+    "level": "A",
+    "status": "pass",
+    "candidateDigest": "97c7a4b2a5a06793066d21706577a2d3d5421be52d9e54d1ea5b7fe011d0cad1",
+    "baselineDigest": "1912c803012654247c72427144020f2b2ab13dd0836704d11eba8c8f2b1fa30f",
+    "contextDigest": "93d225264e16c227ee1cdc0815a4ce1814e78091d8ccd27eba806f2338ef51fd",
+    "contractDigest": "45676b6be26911e05f04c5da2730f32e7c1c1df7de1e900810a65462b598d396",
+    "validatorSetDigest": "2430f1a2ad2982d0067885488a4c89e21ad1d7c83b115ba8f1b20acc88dfaea8",
+    "coverage": [
+      "fixture"
+    ],
+    "findings": [],
+    "evidence": {},
+    "risk": "low",
+    "reviewItems": [],
+    "createdAt": 2
+  },
+  "PreparedBundle": {
+    "schemaVersion": 1,
+    "proposalId": "proposal-one",
+    "proposalRevision": 1,
+    "scopeId": "scope-one",
+    "context": {
+      "schemaVersion": 1,
+      "scopeId": "scope-one",
+      "initiator": "player1",
+      "reviewPrincipal": "kp",
+      "authorityEpoch": "epoch-one",
+      "authorizationEpoch": 1,
+      "baseRuleset": "baseline-one",
+      "configDigest": "80bd4715706e1a3d74378aa1a199daf68cbff581700d8fb92a3c60c796832822",
+      "contractDigest": "45676b6be26911e05f04c5da2730f32e7c1c1df7de1e900810a65462b598d396",
+      "validatorSetDigest": "2430f1a2ad2982d0067885488a4c89e21ad1d7c83b115ba8f1b20acc88dfaea8",
+      "worldDigest": "d9a6c1c64ad16895d46fa648534cb562f00f5893c6c77bceff2e8527eb71baf3",
+      "sourceRefs": [],
+      "memoryRefs": [],
+      "includedSources": [
+        "rules"
+      ],
+      "omittedSources": [],
+      "facts": {},
+      "createdAt": 1
+    },
+    "changeSet": {
+      "schemaVersion": 1,
+      "configurations": [
+        {
+          "kind": "replace",
+          "id": "fixture.token",
+          "expectedRevision": "1",
+          "value": {
+            "configurationId": "fixture.token",
+            "revision": "2",
+            "typeRef": "item",
+            "defaults": {
+              "quantity": 1,
+              "unitMass": 0,
+              "charges": 2,
+              "bonus": 15
+            },
+            "behaviors": {
+              "use": {
+                "ruleId": "fixture.check"
+              }
+            }
+          }
+        }
+      ],
+      "sources": {
+        "check.lua": "return rule('fixture.check', {'actor', 'item'}, function(r, actor, item)\n  assert(r.matches(item, 'fixture.token'))\n  assert(r.read(actor).owner == r.read(item).owner)\n  local charges = r.number(item, 'charges')\n  assert(charges > 0, 'No charges remain')\n  r.set(item, 'charges', charges - 1)\n  local target = math.min(r.readData('tuning.json').maxTarget,\n                         r.number(actor, 'target') + r.number(item, 'bonus'))\n  local rolled = r.roll(100)\n  return {passed=rolled <= target, rolled=rolled, target=target, cost=1}\nend)\n"
+      },
+      "data": {
+        "tuning.json": {
+          "maxTarget": 100
+        }
+      },
+      "suggestions": []
+    },
+    "artifact": {
+      "sources": {
+        "check.lua": "return rule('fixture.check', {'actor', 'item'}, function(r, actor, item)\n  assert(r.matches(item, 'fixture.token'))\n  assert(r.read(actor).owner == r.read(item).owner)\n  local charges = r.number(item, 'charges')\n  assert(charges > 0, 'No charges remain')\n  r.set(item, 'charges', charges - 1)\n  local target = math.min(r.readData('tuning.json').maxTarget,\n                         r.number(actor, 'target') + r.number(item, 'bonus'))\n  local rolled = r.roll(100)\n  return {passed=rolled <= target, rolled=rolled, target=target, cost=1}\nend)\n"
+      },
+      "data": {
+        "tuning.json": {
+          "maxTarget": 100
+        }
+      },
+      "metadata": {},
+      "apiVersion": 1,
+      "revision": "97b496f0880d53578b24f8360bda402271fee8fd8a2bb4eca77d214adb421931"
+    },
+    "reports": [
+      {
+        "schemaVersion": 1,
+        "reportId": "report-A",
+        "level": "A",
+        "status": "pass",
+        "candidateDigest": "97c7a4b2a5a06793066d21706577a2d3d5421be52d9e54d1ea5b7fe011d0cad1",
+        "baselineDigest": "1912c803012654247c72427144020f2b2ab13dd0836704d11eba8c8f2b1fa30f",
+        "contextDigest": "93d225264e16c227ee1cdc0815a4ce1814e78091d8ccd27eba806f2338ef51fd",
+        "contractDigest": "45676b6be26911e05f04c5da2730f32e7c1c1df7de1e900810a65462b598d396",
+        "validatorSetDigest": "2430f1a2ad2982d0067885488a4c89e21ad1d7c83b115ba8f1b20acc88dfaea8",
+        "coverage": [
+          "fixture"
+        ],
+        "findings": [],
+        "evidence": {},
+        "risk": "low",
+        "reviewItems": [],
+        "createdAt": 2
+      },
+      {
+        "schemaVersion": 1,
+        "reportId": "report-B",
+        "level": "B",
+        "status": "pass",
+        "candidateDigest": "97c7a4b2a5a06793066d21706577a2d3d5421be52d9e54d1ea5b7fe011d0cad1",
+        "baselineDigest": "1912c803012654247c72427144020f2b2ab13dd0836704d11eba8c8f2b1fa30f",
+        "contextDigest": "93d225264e16c227ee1cdc0815a4ce1814e78091d8ccd27eba806f2338ef51fd",
+        "contractDigest": "45676b6be26911e05f04c5da2730f32e7c1c1df7de1e900810a65462b598d396",
+        "validatorSetDigest": "2430f1a2ad2982d0067885488a4c89e21ad1d7c83b115ba8f1b20acc88dfaea8",
+        "coverage": [
+          "fixture"
+        ],
+        "findings": [],
+        "evidence": {},
+        "risk": "low",
+        "reviewItems": [],
+        "createdAt": 2
+      },
+      {
+        "schemaVersion": 1,
+        "reportId": "report-C",
+        "level": "C",
+        "status": "pass",
+        "candidateDigest": "97c7a4b2a5a06793066d21706577a2d3d5421be52d9e54d1ea5b7fe011d0cad1",
+        "baselineDigest": "1912c803012654247c72427144020f2b2ab13dd0836704d11eba8c8f2b1fa30f",
+        "contextDigest": "93d225264e16c227ee1cdc0815a4ce1814e78091d8ccd27eba806f2338ef51fd",
+        "contractDigest": "45676b6be26911e05f04c5da2730f32e7c1c1df7de1e900810a65462b598d396",
+        "validatorSetDigest": "2430f1a2ad2982d0067885488a4c89e21ad1d7c83b115ba8f1b20acc88dfaea8",
+        "coverage": [
+          "fixture"
+        ],
+        "findings": [],
+        "evidence": {},
+        "risk": "low",
+        "reviewItems": [],
+        "createdAt": 2
+      }
+    ],
+    "candidateDigest": "97c7a4b2a5a06793066d21706577a2d3d5421be52d9e54d1ea5b7fe011d0cad1",
+    "baselineDigest": "1912c803012654247c72427144020f2b2ab13dd0836704d11eba8c8f2b1fa30f",
+    "createdAt": 2
+  },
+  "Approval": {
+    "schemaVersion": 1,
+    "approvalId": "approval-one",
+    "proposalId": "proposal-one",
+    "proposalRevision": 1,
+    "scopeId": "scope-one",
+    "candidateDigest": "97c7a4b2a5a06793066d21706577a2d3d5421be52d9e54d1ea5b7fe011d0cad1",
+    "baselineDigest": "1912c803012654247c72427144020f2b2ab13dd0836704d11eba8c8f2b1fa30f",
+    "contextDigest": "93d225264e16c227ee1cdc0815a4ce1814e78091d8ccd27eba806f2338ef51fd",
+    "contractDigest": "45676b6be26911e05f04c5da2730f32e7c1c1df7de1e900810a65462b598d396",
+    "validatorSetDigest": "2430f1a2ad2982d0067885488a4c89e21ad1d7c83b115ba8f1b20acc88dfaea8",
+    "reviewer": "kp",
+    "riskDecisions": {
+      "choice-value": "Accepted for fixture only"
+    },
+    "expiresAt": 903,
+    "status": "approved",
+    "artifactRevision": "97b496f0880d53578b24f8360bda402271fee8fd8a2bb4eca77d214adb421931",
+    "changeSet": {
+      "schemaVersion": 1,
+      "configurations": [
+        {
+          "kind": "replace",
+          "id": "fixture.token",
+          "expectedRevision": "1",
+          "value": {
+            "configurationId": "fixture.token",
+            "revision": "2",
+            "typeRef": "item",
+            "defaults": {
+              "quantity": 1,
+              "unitMass": 0,
+              "charges": 2,
+              "bonus": 15
+            },
+            "behaviors": {
+              "use": {
+                "ruleId": "fixture.check"
+              }
+            }
+          }
+        }
+      ],
+      "sources": {
+        "check.lua": "return rule('fixture.check', {'actor', 'item'}, function(r, actor, item)\n  assert(r.matches(item, 'fixture.token'))\n  assert(r.read(actor).owner == r.read(item).owner)\n  local charges = r.number(item, 'charges')\n  assert(charges > 0, 'No charges remain')\n  r.set(item, 'charges', charges - 1)\n  local target = math.min(r.readData('tuning.json').maxTarget,\n                         r.number(actor, 'target') + r.number(item, 'bonus'))\n  local rolled = r.roll(100)\n  return {passed=rolled <= target, rolled=rolled, target=target, cost=1}\nend)\n"
+      },
+      "data": {
+        "tuning.json": {
+          "maxTarget": 100
+        }
+      },
+      "suggestions": []
+    },
+    "context": {
+      "schemaVersion": 1,
+      "scopeId": "scope-one",
+      "initiator": "player1",
+      "reviewPrincipal": "kp",
+      "authorityEpoch": "epoch-one",
+      "authorizationEpoch": 1,
+      "baseRuleset": "baseline-one",
+      "configDigest": "80bd4715706e1a3d74378aa1a199daf68cbff581700d8fb92a3c60c796832822",
+      "contractDigest": "45676b6be26911e05f04c5da2730f32e7c1c1df7de1e900810a65462b598d396",
+      "validatorSetDigest": "2430f1a2ad2982d0067885488a4c89e21ad1d7c83b115ba8f1b20acc88dfaea8",
+      "worldDigest": "d9a6c1c64ad16895d46fa648534cb562f00f5893c6c77bceff2e8527eb71baf3",
+      "sourceRefs": [],
+      "memoryRefs": [],
+      "includedSources": [
+        "rules"
+      ],
+      "omittedSources": [],
+      "facts": {},
+      "createdAt": 1
+    },
+    "reports": [
+      {
+        "schemaVersion": 1,
+        "reportId": "report-A",
+        "level": "A",
+        "status": "pass",
+        "candidateDigest": "97c7a4b2a5a06793066d21706577a2d3d5421be52d9e54d1ea5b7fe011d0cad1",
+        "baselineDigest": "1912c803012654247c72427144020f2b2ab13dd0836704d11eba8c8f2b1fa30f",
+        "contextDigest": "93d225264e16c227ee1cdc0815a4ce1814e78091d8ccd27eba806f2338ef51fd",
+        "contractDigest": "45676b6be26911e05f04c5da2730f32e7c1c1df7de1e900810a65462b598d396",
+        "validatorSetDigest": "2430f1a2ad2982d0067885488a4c89e21ad1d7c83b115ba8f1b20acc88dfaea8",
+        "coverage": [
+          "fixture"
+        ],
+        "findings": [],
+        "evidence": {},
+        "risk": "low",
+        "reviewItems": [],
+        "createdAt": 2
+      },
+      {
+        "schemaVersion": 1,
+        "reportId": "report-B",
+        "level": "B",
+        "status": "pass",
+        "candidateDigest": "97c7a4b2a5a06793066d21706577a2d3d5421be52d9e54d1ea5b7fe011d0cad1",
+        "baselineDigest": "1912c803012654247c72427144020f2b2ab13dd0836704d11eba8c8f2b1fa30f",
+        "contextDigest": "93d225264e16c227ee1cdc0815a4ce1814e78091d8ccd27eba806f2338ef51fd",
+        "contractDigest": "45676b6be26911e05f04c5da2730f32e7c1c1df7de1e900810a65462b598d396",
+        "validatorSetDigest": "2430f1a2ad2982d0067885488a4c89e21ad1d7c83b115ba8f1b20acc88dfaea8",
+        "coverage": [
+          "fixture"
+        ],
+        "findings": [],
+        "evidence": {},
+        "risk": "low",
+        "reviewItems": [],
+        "createdAt": 2
+      },
+      {
+        "schemaVersion": 1,
+        "reportId": "report-C",
+        "level": "C",
+        "status": "pass",
+        "candidateDigest": "97c7a4b2a5a06793066d21706577a2d3d5421be52d9e54d1ea5b7fe011d0cad1",
+        "baselineDigest": "1912c803012654247c72427144020f2b2ab13dd0836704d11eba8c8f2b1fa30f",
+        "contextDigest": "93d225264e16c227ee1cdc0815a4ce1814e78091d8ccd27eba806f2338ef51fd",
+        "contractDigest": "45676b6be26911e05f04c5da2730f32e7c1c1df7de1e900810a65462b598d396",
+        "validatorSetDigest": "2430f1a2ad2982d0067885488a4c89e21ad1d7c83b115ba8f1b20acc88dfaea8",
+        "coverage": [
+          "fixture"
+        ],
+        "findings": [],
+        "evidence": {},
+        "risk": "low",
+        "reviewItems": [],
+        "createdAt": 2
+      }
+    ],
+    "createdAt": 3,
+    "approvalDigest": "41bd2e08cd08c2e3418c0c6b4cec390abb16bb6b80a79b725536c19b2275b7b3"
+  },
+  "Publication": {
+    "schemaVersion": 1,
+    "publicationId": "publication-one",
+    "approvalId": "approval-one",
+    "scopeId": "scope-one",
+    "commandId": "command-one",
+    "accountId": "kp",
+    "candidateDigest": "97c7a4b2a5a06793066d21706577a2d3d5421be52d9e54d1ea5b7fe011d0cad1",
+    "previousRuleset": "baseline-one",
+    "ruleset": "97b496f0880d53578b24f8360bda402271fee8fd8a2bb4eca77d214adb421931",
+    "configurationRevisions": {
+      "fixture.token": "2"
+    },
+    "createdAt": 4
+  },
+  "MemoryEntry": {
+    "schemaVersion": 1,
+    "memoryId": "memory-one",
+    "scopeId": "scope-one",
+    "kind": "preference",
+    "content": "Keep games short",
+    "sourceRefs": [],
+    "visibility": "kp",
+    "owner": "kp",
+    "status": "confirmed",
+    "validUntil": null,
+    "supersedes": null,
+    "revision": 1,
+    "createdAt": 1
+  },
+  "Scenario": {
+    "schemaVersion": 1,
+    "scenarioId": "token-check",
+    "fixtureRef": "ai/fixtures/world.json",
+    "account": "player1",
+    "steps": [
+      {
+        "rule": "fixture.check",
+        "input": {
+          "actor": "actor-one",
+          "item": "token-one"
+        }
+      }
+    ],
+    "randomPolicy": {
+      "mode": "enumerate",
+      "sides": 100,
+      "samples": 100,
+      "seed": 1
+    },
+    "maxSteps": 1,
+    "metricIds": [
+      "success-rate",
+      "resource-cost"
+    ]
+  },
+  "CheckSpec": {
+    "checkId": "bonus-range",
+    "sourceRef": "rules#bonus",
+    "selector": {
+      "collection": "configurations",
+      "ids": [
+        "fixture.token"
+      ]
+    },
+    "checkerId": "core.numeric-range@1",
+    "parameters": {
+      "pointer": "/defaults/bonus",
+      "minimum": 0,
+      "maximum": 15
+    },
+    "required": true,
+    "caseRefs": [
+      "ai/fixtures/valid-bonus.json",
+      "ai/fixtures/invalid-bonus.json"
+    ]
+  },
+  "Metric": {
+    "metricId": "success-rate",
+    "calculatorId": "core.success-rate@1",
+    "parameters": {
+      "pointer": "/result/passed",
+      "stepIndex": 0
+    },
+    "unit": "probability",
+    "required": true,
+    "threshold": {
+      "absoluteDelta": 0.1,
+      "risk": "high"
+    }
+  },
+  "AiCommand": {
+    "requestId": "command-one",
+    "authorityEpoch": "epoch-one",
+    "op": "ai.request.create",
+    "args": {
+      "text": "hello"
+    }
+  }
+}

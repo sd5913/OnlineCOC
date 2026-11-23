@@ -1,0 +1,95 @@
+{
+  "externalApiCalls": 0,
+  "kind": "deterministic-synthetic-fixtures",
+  "results": {
+    "combined-targeted": {
+      "tests": 83,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 82,
+      "passRate": 0.9879518072289156,
+      "seconds": 100.579
+    },
+    "edit-publication": {
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 3,
+      "passRate": 1.0,
+      "seconds": 19.732
+    },
+    "engine-self-stale": {
+      "tests": 1,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 0,
+      "passRate": 0.0,
+      "seconds": 6.498
+    },
+    "engine-stale-confirmed": {
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 1,
+      "passRate": 1.0,
+      "seconds": 6.18
+    },
+    "engine-stale-reproduction": {
+      "tests": 1,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 0,
+      "passRate": 0.0,
+      "seconds": 2.894
+    },
+    "full-regression": {
+      "tests": 794,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 793,
+      "passRate": 0.9987405541561712,
+      "seconds": 461.284
+    },
+    "repairs-second": {
+      "tests": 50,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 49,
+      "passRate": 0.98,
+      "seconds": 18.157
+    },
+    "v2-full-regression": {
+      "tests": 800,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 800,
+      "passRate": 1.0,
+      "seconds": 525.706
+    },
+    "v2-targeted": {
+      "tests": 103,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 103,
+      "passRate": 1.0,
+      "seconds": 79.184
+    }
+  },
+  "frozenOverlay": "engineering/acceptance/ai-ambiguity-interface-snapshot/v2",
+  "filesDigest": "47473304a9f95e6309633cac61a53b5fdc8f1d16e1d56f9334fca22a455419d0",
+  "overlayFilesMatch": true,
+  "runtimeMatchesFrozenComposition": true,
+  "runtimeFileCount": 67,
+  "failedFileChecks": [],
+  "browserTestsRun": false,
+  "note": "Each run has its own denominator. Intermediate failures are retained; do not sum repeated cases."
+}

@@ -83,10 +83,14 @@ class Pack:
             self.text(source["path"])
         self.text(self.contract["reviewChecklist"])
         self.schemas = {}
+        self.inherited_only = {}
         for target, schema in self.contract["schemas"].items():
             safe_path(target)
             require(target.startswith("config/") and target[7:] in self.data, "SCHEMA_TARGET_INVALID")
-            self.schemas[target[7:]] = local_schema(self.json(schema))
+            document = self.json(schema)
+            self.schemas[target[7:]] = local_schema(document)
+            if 'x-ai-inherited-only' in document:
+                self.inherited_only[target[7:]] = local_schema(document['x-ai-inherited-only'])
         for check in self.checks:
             require(check["sourceRef"].split("#")[0] in {s["id"] for s in self.contract["sources"]}, "SOURCE_MISSING")
             for case in check["caseRefs"]:

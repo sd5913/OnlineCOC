@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="12" time="4.812" timestamp="2026-11-23T12:58:39.815101+08:00" hostname="LAPTOP-BIFSL64A"><testcase classname="tests.test_rule_stage_delta" name="test_delta_matches_full_stage_preserves_base_and_json_null" time="0.690" /><testcase classname="tests.test_rule_stage_delta" name="test_bad_delta_preserves_artifacts_and_active_revision[change0-INPUT_INVALID]" time="0.191" /><testcase classname="tests.test_rule_stage_delta" name="test_bad_delta_preserves_artifacts_and_active_revision[change1-INPUT_INVALID]" time="0.192" /><testcase classname="tests.test_rule_stage_delta" name="test_bad_delta_preserves_artifacts_and_active_revision[change2-RULE_FILE_NOT_FOUND]" time="0.206" /><testcase classname="tests.test_rule_stage_delta" name="test_bad_delta_preserves_artifacts_and_active_revision[change3-RULE_FILE_NOT_FOUND]" time="0.191" /><testcase classname="tests.test_rule_stage_delta" name="test_bad_delta_preserves_artifacts_and_active_revision[change4-INPUT_INVALID]" time="0.198" /><testcase classname="tests.test_rule_stage_delta" name="test_bad_delta_preserves_artifacts_and_active_revision[change5-INPUT_INVALID]" time="0.215" /><testcase classname="tests.test_rule_stage_delta" name="test_bad_delta_preserves_artifacts_and_active_revision[change6-INPUT_INVALID]" time="0.245" /><testcase classname="tests.test_rule_stage_delta" name="test_bad_delta_preserves_artifacts_and_active_revision[change7-INPUT_INVALID]" time="0.236" /><testcase classname="tests.test_rule_stage_delta" name="test_bad_delta_preserves_artifacts_and_active_revision[change8-RULE_FAILED]" time="0.223" /><testcase classname="tests.test_rule_stage_delta" name="test_bad_delta_preserves_artifacts_and_active_revision[change9-DUPLICATE_RULE]" time="0.600" /><testcase classname="tests.test_rule_stage_delta" name="test_bad_delta_preserves_artifacts_and_active_revision[change10-RULE_CYCLE_OR_MISSING]" time="0.608"><failure message="AssertionError: {'status': 'committed', 'commandId': 'delta', 'result': 'b64af4aeb96df0d30b48350953898aff6982bf2f005cce8ab031cfe0f5a5aa4b'}&#10;assert ('committed' == 'rejected'&#10;  &#10;  - rejected&#10;  + committed)">host = &lt;onlinecoc.host.Host object at 0x00000291A1B3A8A0&gt;
+change = {'removeSources': ['check-library.lua']}
+code = 'RULE_CYCLE_OR_MISSING'
+
+    @pytest.mark.parametrize('change,code',[
+        ({},'INPUT_INVALID'),({'sources':{}},'INPUT_INVALID'),
+        ({'removeSources':['missing.lua']},'RULE_FILE_NOT_FOUND'),
+        ({'removeData':['missing.json']},'RULE_FILE_NOT_FOUND'),
+        ({'sources':{'extra.lua':SOURCE},'removeSources':['extra.lua']},'INPUT_INVALID'),
+        ({'data':{'environment.json':None},'removeData':['environment.json']},'INPUT_INVALID'),
+        ({'sources':{'../evil.lua':SOURCE}},'INPUT_INVALID'),
+        ({'sources':{'evil.txt':SOURCE}},'INPUT_INVALID'),
+        ({'sources':{'broken.lua':'not Lua'}},'RULE_FAILED'),
+        ({'sources':{'duplicate.lua':"return rule('demo.attack',{},function() end)"}},'DUPLICATE_RULE'),
+        ({'removeSources':['check-library.lua']},'RULE_CYCLE_OR_MISSING'),
+        ({'sources':{'dependency.lua':"return rule('dep',{},function() end,{dependencies={'missing'}})"}},'RULE_CYCLE_OR_MISSING'),
+        ({'data':{'huge.json':'x'*(1024*1024)}},'LIMIT_EXCEEDED'),
+        ({'sources':{'huge.lua':'--'+('x'*(1024*1024))+'\n'+SOURCE}},'LIMIT_EXCEEDED'),
+    ])
+    def test_bad_delta_preserves_artifacts_and_active_revision(host,change,code):
+        before=host.state();args={'baseRevision':before['activeRuleset'],**change}
+        result=submit(host,args)
+&gt;       assert result['status']=='rejected' and result['code']==code,result
+E       AssertionError: {'status': 'committed', 'commandId': 'delta', 'result': 'b64af4aeb96df0d30b48350953898aff6982bf2f005cce8ab031cfe0f5a5aa4b'}
+E       assert ('committed' == 'rejected'
+E         
+E         - rejected
+E         + committed)
+
+backend\tests\test_rule_stage_delta.py:53: AssertionError</failure></testcase></testsuite></testsuites>

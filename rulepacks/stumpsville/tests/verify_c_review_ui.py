@@ -23,6 +23,10 @@ def main():
               'limitations':['评估未证明所有旧存档的玩法效果。']},
           'reports':[{'findings':[{'severity':'error','code':'LIVE_SCENARIO_COVERAGE_MISSING','message':'未覆盖'}]}]}
     errors=[]
+    item['continuation'] = {'status':'waiting_publication'}
+    item['changeOverview'] = {'total':2,'truncated':False,'items':[
+        {'path':'/data/game.json/items/28','operation':'add','summary':'新增物品：测试盾'},
+        {'path':'/sources/new.lua','operation':'add','summary':'<img src=x onerror=window.injected=true>'}]}
     try:
         with sync_playwright() as pw:
             browser=pw.chromium.launch(channel='msedge',headless=True)
@@ -39,6 +43,16 @@ def main():
                     }});
             }''',item)
             page.locator('[data-open]').click();dialog=page.locator('dialog.ruling-dialog')
+            expect(dialog.locator('.continuation-status')).to_have_text('发布后继续 · 等待配置发布')
+            changes=dialog.locator('details.ruling-changes')
+            assert not changes.evaluate('el=>el.open')
+            changes.locator('summary').click()
+            expect(changes.locator('li')).to_have_count(2)
+            expect(changes).to_contain_text('config/game.json · items / 28')
+            expect(changes).to_contain_text('rules/new.lua')
+            assert not changes.locator('img').count()
+            changes.locator('summary').click()
+            report['checks'].append('concrete file, target and summary for each change; collapsed by default, literal HTML text')
             expect(dialog.locator('.c-review-assessment')).to_contain_text('判断依据版本 2')
             expect(dialog.locator('.c-review-assessment')).to_contain_text('LIVE_SCENARIO_COVERAGE_MISSING')
             expect(dialog.locator('textarea')).to_have_count(1)

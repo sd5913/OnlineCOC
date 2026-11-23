@@ -129,6 +129,8 @@ class Batches:
                 require(existing['actions']==actions and existing['summary']==summary,'REQUEST_CANDIDATE_CONFLICT')
                 return existing['batchId']
             self.validate_actions(account, actions)
+            from .execution_ledger import capture_before
+            context['facts']['runtimeBefore']=capture_before((generation.host if generation else self.host).state(),actions)
             from .history import require_current_evidence
             require_current_evidence(context,{'kind':'batch','actions':actions})
             from .consultation import require_current,assessment

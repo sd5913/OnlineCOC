@@ -1,23 +1,24 @@
 {
-  "at": "2026-11-21T18:44:22.100741+08:00",
-  "source": "D:\\Studies\\Art Programming\\OnlineCOC\\rulepacks\\stumpsville\\tests\\output\\official-compaction-v2-587dd9f0\\source",
-  "output": "D:\\Studies\\Art Programming\\OnlineCOC\\rulepacks\\stumpsville\\tests\\output\\context-autonomy-3e913a84",
+  "at": "2026-11-23T13:30:47.924367+08:00",
+  "source": "C:\\Users\\26077\\AppData\\Local\\Temp\\sv-final-combined-evuhbe64",
+  "output": "D:\\Studies\\Art Programming\\OnlineCOC\\rulepacks\\stumpsville\\tests\\output\\context-autonomy-6e2dcca4",
   "baseline": false,
+  "staged": true,
   "checks": [
     "real package reference and current artifact read produce pending source-risk candidate with no mutation",
     "missing/wrong source proof and player approval are rejected by actual server without changing the item table",
     "actual package dialog submits exact source proof and high-risk/C acceptance; item published once and same request replay is idempotent",
-    "source-risk runtime batch stays pending even with auto-approval enabled, requires acceptance, then changes current money and delivers one actual notification"
+    "single original request, published item path, automatic follow-up in same session, grant to player1, one targeted notice"
   ],
   "externalApiCalls": 0,
   "realSaveChanged": false,
   "task": {
     "status": "review_ready",
     "error": null,
-    "proposalId": "9c4a3ecc642b414c966249a2adab16df",
+    "proposalId": "72302d20f16b49f289501b4c0950a409",
     "response": null
   },
-  "loopbackModelCalls": 9,
+  "loopbackModelCalls": 10,
   "ruling": {
     "status": "pending",
     "blockingReason": null,
@@ -25,7 +26,7 @@
     "consultationAssessment": {
       "requiresAcceptance": true,
       "sourceCount": 1,
-      "sourceDigest": "3812826027c8cfb272c8d05d4a277a1fb74e78e82533a486c94183a163135254",
+      "sourceDigest": "9cee33832d997fb7d7a3211f107210c2572c7c817f80aa9723ed513e6f1b2ee6",
       "notice": "独立包资料用于方案依据，可能不具备跨存储原子保证。请核对当前目标、完整变更及检查结果后决定；摘要或资料本身不授权执行。"
     }
   },
@@ -34,6 +35,30 @@
     "CONSULTATION_REVIEW_REQUIRED",
     "PERMISSION_DENIED"
   ],
+  "stagedEvidence": {
+    "sessionId": "b4bfd5f66f5040f48ff049e6b5e7c380",
+    "proposalId": "72302d20f16b49f289501b4c0950a409",
+    "changeOverview": {
+      "total": 1,
+      "items": [
+        {
+          "path": "/data/game.json/items/28",
+          "operation": "add",
+          "summary": "新增 参考资料验收盾"
+        }
+      ],
+      "truncated": false
+    },
+    "continuationOrigin": {
+      "proposalId": "72302d20f16b49f289501b4c0950a409",
+      "requestId": "642b606f4b01470b8a2a397d8b240287"
+    },
+    "runtimeBatchId": "38ca9a25bd484ec28af194c4f6ac2323",
+    "recipient": "player1",
+    "slot": 11,
+    "receivedItemIndex": 29,
+    "matchingNotifications": 1
+  },
   "passed": true,
   "passedCount": 4,
   "pageErrors": [],
@@ -226,6 +251,166 @@
           "requiresAcceptance": true,
           "sourceCount": 1,
           "sourceDigest": "75efba0210cbca08137170aad690622f5858ebb663226da2917e70b74dd67997",
+          "notice": "独立包资料用于方案依据，可能不具备跨存储原子保证。请核对当前目标、完整变更及检查结果后决定；摘要或资料本身不授权执行。"
+        }
+      },
+      "negativeCodes": [
+        "CONSULTATION_REVIEW_REQUIRED",
+        "CONSULTATION_REVIEW_REQUIRED",
+        "PERMISSION_DENIED"
+      ],
+      "passed": true,
+      "passedCount": 4,
+      "pageErrors": []
+    },
+    {
+      "at": "2026-11-21T18:44:22.100741+08:00",
+      "source": "D:\\Studies\\Art Programming\\OnlineCOC\\rulepacks\\stumpsville\\tests\\output\\official-compaction-v2-587dd9f0\\source",
+      "output": "D:\\Studies\\Art Programming\\OnlineCOC\\rulepacks\\stumpsville\\tests\\output\\context-autonomy-3e913a84",
+      "baseline": false,
+      "checks": [
+        "real package reference and current artifact read produce pending source-risk candidate with no mutation",
+        "missing/wrong source proof and player approval are rejected by actual server without changing the item table",
+        "actual package dialog submits exact source proof and high-risk/C acceptance; item published once and same request replay is idempotent",
+        "source-risk runtime batch stays pending even with auto-approval enabled, requires acceptance, then changes current money and delivers one actual notification"
+      ],
+      "externalApiCalls": 0,
+      "realSaveChanged": false,
+      "task": {
+        "status": "review_ready",
+        "error": null,
+        "proposalId": "9c4a3ecc642b414c966249a2adab16df",
+        "response": null
+      },
+      "loopbackModelCalls": 9,
+      "ruling": {
+        "status": "pending",
+        "blockingReason": null,
+        "canDecide": true,
+        "consultationAssessment": {
+          "requiresAcceptance": true,
+          "sourceCount": 1,
+          "sourceDigest": "3812826027c8cfb272c8d05d4a277a1fb74e78e82533a486c94183a163135254",
+          "notice": "独立包资料用于方案依据，可能不具备跨存储原子保证。请核对当前目标、完整变更及检查结果后决定；摘要或资料本身不授权执行。"
+        }
+      },
+      "negativeCodes": [
+        "CONSULTATION_REVIEW_REQUIRED",
+        "CONSULTATION_REVIEW_REQUIRED",
+        "PERMISSION_DENIED"
+      ],
+      "passed": true,
+      "passedCount": 4,
+      "pageErrors": []
+    },
+    {
+      "at": "2026-11-23T13:21:37.370990+08:00",
+      "source": "C:\\Users\\26077\\AppData\\Local\\Temp\\sv-config-combined-fme4o78k",
+      "output": "D:\\Studies\\Art Programming\\OnlineCOC\\rulepacks\\stumpsville\\tests\\output\\context-autonomy-69064533",
+      "baseline": false,
+      "checks": [
+        "real package reference and current artifact read produce pending source-risk candidate with no mutation",
+        "missing/wrong source proof and player approval are rejected by actual server without changing the item table",
+        "actual package dialog submits exact source proof and high-risk/C acceptance; item published once and same request replay is idempotent"
+      ],
+      "externalApiCalls": 0,
+      "realSaveChanged": false,
+      "task": {
+        "status": "review_ready",
+        "error": null,
+        "proposalId": "29940a0cbd9741aa9b77718955dbd57a",
+        "response": null
+      },
+      "loopbackModelCalls": 4,
+      "ruling": {
+        "status": "pending",
+        "blockingReason": null,
+        "canDecide": true,
+        "consultationAssessment": {
+          "requiresAcceptance": true,
+          "sourceCount": 1,
+          "sourceDigest": "d76b65443fc8824dba30bf29a352189c6f10e9e43588bc1ec9ee596d0f54f019",
+          "notice": "独立包资料用于方案依据，可能不具备跨存储原子保证。请核对当前目标、完整变更及检查结果后决定；摘要或资料本身不授权执行。"
+        }
+      },
+      "negativeCodes": [
+        "CONSULTATION_REVIEW_REQUIRED",
+        "CONSULTATION_REVIEW_REQUIRED",
+        "PERMISSION_DENIED"
+      ],
+      "passed": false,
+      "error": "AssertionError()",
+      "passedCount": 3,
+      "pageErrors": []
+    },
+    {
+      "at": "2026-11-23T13:24:41.503112+08:00",
+      "source": "C:\\Users\\26077\\AppData\\Local\\Temp\\sv-config-combined-fme4o78k",
+      "output": "D:\\Studies\\Art Programming\\OnlineCOC\\rulepacks\\stumpsville\\tests\\output\\context-autonomy-5437321a",
+      "baseline": false,
+      "checks": [
+        "real package reference and current artifact read produce pending source-risk candidate with no mutation",
+        "missing/wrong source proof and player approval are rejected by actual server without changing the item table",
+        "actual package dialog submits exact source proof and high-risk/C acceptance; item published once and same request replay is idempotent",
+        "single original request, published item path, automatic follow-up in same session, grant to player1, one targeted notice"
+      ],
+      "externalApiCalls": 0,
+      "realSaveChanged": false,
+      "task": {
+        "status": "review_ready",
+        "error": null,
+        "proposalId": "1b5578ad2170411cb0540f8e570bdb79",
+        "response": null
+      },
+      "loopbackModelCalls": 10,
+      "ruling": {
+        "status": "pending",
+        "blockingReason": null,
+        "canDecide": true,
+        "consultationAssessment": {
+          "requiresAcceptance": true,
+          "sourceCount": 1,
+          "sourceDigest": "df690d07e9554979bc3cddec10133f56fc2eeabddee7596b8dea6996d8146c2d",
+          "notice": "独立包资料用于方案依据，可能不具备跨存储原子保证。请核对当前目标、完整变更及检查结果后决定；摘要或资料本身不授权执行。"
+        }
+      },
+      "negativeCodes": [
+        "CONSULTATION_REVIEW_REQUIRED",
+        "CONSULTATION_REVIEW_REQUIRED",
+        "PERMISSION_DENIED"
+      ],
+      "passed": true,
+      "passedCount": 4,
+      "pageErrors": []
+    },
+    {
+      "at": "2026-11-23T13:27:06.461552+08:00",
+      "source": "C:\\Users\\26077\\AppData\\Local\\Temp\\sv-final-combined-evuhbe64",
+      "output": "D:\\Studies\\Art Programming\\OnlineCOC\\rulepacks\\stumpsville\\tests\\output\\context-autonomy-c3e79a87",
+      "baseline": false,
+      "checks": [
+        "real package reference and current artifact read produce pending source-risk candidate with no mutation",
+        "missing/wrong source proof and player approval are rejected by actual server without changing the item table",
+        "actual package dialog submits exact source proof and high-risk/C acceptance; item published once and same request replay is idempotent",
+        "single original request, published item path, automatic follow-up in same session, grant to player1, one targeted notice"
+      ],
+      "externalApiCalls": 0,
+      "realSaveChanged": false,
+      "task": {
+        "status": "review_ready",
+        "error": null,
+        "proposalId": "67e7e74f68554de2a408e73e705fe079",
+        "response": null
+      },
+      "loopbackModelCalls": 10,
+      "ruling": {
+        "status": "pending",
+        "blockingReason": null,
+        "canDecide": true,
+        "consultationAssessment": {
+          "requiresAcceptance": true,
+          "sourceCount": 1,
+          "sourceDigest": "e36560e9352a07b938ae180708bf3e0769152e98e790f618c0f9c740f1afe991",
           "notice": "独立包资料用于方案依据，可能不具备跨存储原子保证。请核对当前目标、完整变更及检查结果后决定；摘要或资料本身不授权执行。"
         }
       },

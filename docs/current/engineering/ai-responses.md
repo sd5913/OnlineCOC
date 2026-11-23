@@ -4,7 +4,7 @@
 - 文档子类：工程
 - 状态：有效
 - 创建日期：2026-11-16
-- 最后更新：2026-11-21
+- 最后更新：2026-11-23
 - 关联文档：[嵌入接口](ai-pack-embedding.md)、[数据查询](ai-data-query.md)、[权限与批次](ai-session-access.md)、[包侧写入责任](../../plans/Issues/issue-010-ai-package-mutations.md)
 
 ## 基础错误修正与用户决策
@@ -15,7 +15,15 @@ JSON 解析、非对象输出、缺失／错误字段、非法引用和选项会
 
 系统提示统一列出 plan、clarification、draft、batch 四种顶层格式；仅 draft 使用 changeSet，管理员运行时批次必须使用 actions。修正反馈附 requiredFields／allowedFields／missingFields／unexpectedFields，批次另附实际输出 Schema 与已成功工具名。格式失败后的批次不能改为 plan 或 draft 来绕过修正，返回 MODEL_REPAIR_KIND_CHANGED 后继续使用剩余额度；真实缺失决策仍可返回 clarification。不会将 changeSet.suggestions 自动转换为可执行动作，也不据格式错误宣称工具未开放。
 
-需要决定意图、风格、冲突目标或重大取舍时，模型返回 `clarification` 和简短问题，可附结构化选项；任务进入 `needs_input` 等待用户。兼容旧模型的 plan+choices 也进入 needs_input。未知偏好不能作为格式错误反复重试，已确认方向不能再次追问。
+用户已委托的文案、氛围、装饰名称等低影响细节，提示要求选保守兼容方案并简述假设；涉及对象、公开或保密、不可逆范围或不同玩法效果的重大未决选择，模型返回一次合并的 `clarification`，任务进入 `needs_input` 等待用户。显式要求等选择时必须等待；用户选定后保留决定。兼容旧模型的 plan+choices 也进入 needs_input。技术失败不构成重新确认意图的理由。
+
+管理员模型若把单个合法 plan/clarification 放进同名工具调用的 arguments，服务端转为正常回答并占用一次共用纠错额度，随后继续校验选择项与引用；不执行伪工具。多工具、未知名称、批次或发布命令不走此兼容。实体引用与错误字段过滤的限定纠正见[数据查询](ai-data-query.md#工具与接口)。
+
+提示要求逐项核对实际候选差异与用户目标，部分已完成时读取活动资料并只补缺项，尤其核对双向连接的两端。候选、已批准未发布工件及模型文字都不是成功凭证；结果以真实 publication/execution 回执为准。这些语义提示不等于任意自然语言目标的自动证明器，真实模型成功率须单独实验。
+
+执行账本提供最近同会话裁决的原请求、授权动作和真实状态；新数值修改附原值，旧记录不补猜。已识别的简短“继续”若重新写最近意图已完成／待批／结果不明动作的相同目标，返回 `INTENT_EXECUTION_REPLAY` 并在共用额度内要求说明真实状态，不能再扣款、再发放或重复通知。明确追加是新的需求。该检查不覆盖任意自然语言，也不推断不同请求属于同一业务；权限撤回后账本详情仍隐藏。
+
+明确“发一份”属于增量，不能用已有库存替代。已复现的“已经有，所以不需要再发”误拒绝触发 `REQUESTED_INCREMENT_OMITTED`；“确保有”仍可按现状满足。金额结算的支付／收取方向如确实不明，提示要求一次澄清该重大选择。确定性与真实模型结果分别见[本轮记录](../../../engineering/acceptance/ai-ambiguity-recovery/README.md)。
 
 `MODEL_OUTPUT_INVALID` 表示基础输出修正次数耗尽；诊断展开可查看 `MODEL_JSON_INVALID`、`MODEL_FIELDS_INVALID`、`MODEL_CHOICES_INVALID`、`MODEL_REPAIR_KIND_CHANGED`、`REFERENCE_UNVERIFIED` 或 A 检查代码等具体原因及修正次数。只记录结构路径，不记录原异常文本。空响应、协议错误或输出截断也使用这项修正额度，但耗尽后保留对应 `PROVIDER_*` 原因；认证、连接、权限、基线或任务超时不包装成格式错误。
 
@@ -161,6 +169,8 @@ KP 审核会话明确区分当前 KP 指令与被引用玩家材料；前者显�
 本轮回答与工具使用发送时快照，后续无关聊天不触发 SOURCE_STALE。真正依赖变化保留正文和候选并展示检查项，由 KP 选择继续讨论或按最新资料重新生成；成员撤权、会话删除及外发关闭仍阻止新输出。冻结、重启和审批边界统一见[发送快照与执行校验](ai-session-access.md#发送快照与执行校验)。
 
 技术反馈保留真实错误原因。Lua 基础错误附 DSL 构造器语法；草稿修复不能降级为 plan 后误报可审核。NPC 扩展缺少固定判别字段时返回 `EXTENSION_MARKER_REQUIRED` 和精确 `/configurations/<id>/defaults/isNpc`，可在同一两次额度内修正；数值范围、权限和作者场景覆盖失败不因此放宽。
+
+配置 B 层 `DATA_REFERENCE_CONFLICT` 也可在该额度内修订同一提案，反馈实际 JSON 路径；自环另指出记录业务键及零基下标。修复后完整重跑 A/B/C，持续失败不可批准，不能通过人工接受 C 评估跳过 B。
 
 批次纠错目录只附本次行动 Schema；KP 外发允许时另附发送快照中相关规则及声明依赖源码（最多16KiB）。技术反馈不含测试预期答案，不能保证模型语义或正文始终正确。真实失败及复核边界见[指令可靠性验收](../../../engineering/acceptance/ai-command-reliability/README.md)。
 

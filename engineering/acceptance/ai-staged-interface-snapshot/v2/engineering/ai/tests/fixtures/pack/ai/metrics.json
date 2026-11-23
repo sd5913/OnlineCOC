@@ -1,0 +1,30 @@
+[
+  {
+    "metricId": "success-rate",
+    "calculatorId": "core.success-rate@1",
+    "parameters": {
+      "pointer": "/result/passed",
+      "stepIndex": 0
+    },
+    "unit": "probability",
+    "required": true,
+    "threshold": {
+      "absoluteDelta": 0.1,
+      "risk": "high"
+    }
+  },
+  {
+    "metricId": "resource-cost",
+    "calculatorId": "core.mean@1",
+    "parameters": {
+      "pointer": "/result/cost",
+      "stepIndex": 0
+    },
+    "unit": "charges",
+    "required": true,
+    "threshold": {
+      "absoluteDelta": 0,
+      "risk": "medium"
+    }
+  }
+]

@@ -46,6 +46,8 @@ class Application:
         from .review_queue import ReviewQueue
         self.queue = ReviewQueue(self)
         self.proposals.queue = self.queue
+        from .continuations import Continuations
+        self.continuations = Continuations(self)
         from .access import policy
         # room_read.authorize checks both principals against its current room.
         # This callback supplies only the AI policy; copying Host again for each
@@ -338,6 +340,9 @@ class Application:
                 if recipient:item['recipientAccountId']=recipient
             if request['sourceKind']=='manual':
                 item.update(text=request_text(self.repository,request,state),initiator=request['initiator'])
+            continuation=self.continuations.for_request(request,state)
+            if continuation and continuation[1]['owner']==account:
+                item['continuationOrigin']={'proposalId':continuation[0],'requestId':continuation[1]['sourceRequestId']}
             dispatch_error=state['settings'].get('requestErrors',{}).get(request['requestId']) if request['status']!='cancelled' else None
             if dispatch_error:item.update(error=dispatch_error,status='blocked')
             disclosure=next((r for r in state['settings'].get('knowledgeRequests',{}).values() if r['requestId']==request['requestId']),None)

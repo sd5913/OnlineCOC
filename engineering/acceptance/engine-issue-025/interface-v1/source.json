@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "issue": "ISSUE-025",
+  "kind": "sparse-overlay",
+  "base": "engineering/acceptance/engine-performance-interface-snapshot/v2",
+  "aiTestDependency": "engineering/acceptance/ai-staged-interface-snapshot/v2",
+  "files": {
+    "engineering/backend/src/onlinecoc/data_queries.py": "4c2f9955a6cb343c08405dbcf46e708625b45093a9c75a201a0278d7405c584a"
+  },
+  "baseFiles": {
+    "engineering/backend/src/onlinecoc/data_queries.py": "b1941bd2fbeef56ff3bb5fa4aac035f390679d8d4727301c6b530e36b76fecaf"
+  }
+}

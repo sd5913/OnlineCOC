@@ -106,7 +106,12 @@ def extension_check(pack, state, baseline, artifact, changes):
                 require([v[key] for v in values]==list(range(start,start+len(values))), 'DATA_REFERENCE_CONFLICT',path='/data/'+name+declaration['pointer'])
             if 'allowSelf' in declaration:
                 require(type(declaration['allowSelf']) is bool, 'DATA_REFERENCE_POLICY_INVALID')
-                if not declaration['allowSelf']:require(all(v[key] not in v[refs] for v in values), 'DATA_REFERENCE_CONFLICT',path='/data/'+name+declaration['pointer'])
+                if not declaration['allowSelf']:
+                    for index,value in enumerate(values):
+                        require(value[key] not in value[refs], 'DATA_REFERENCE_CONFLICT',
+                            'Self-reference is forbidden for '+key+'='+str(value[key])+'. This entry is at zero-based JSON index '+str(index)+
+                            '; read its identity and correct the intended entry, not a guessed business-ID offset.',
+                            path='/data/'+name+declaration['pointer']+'/'+str(index)+'/'+refs)
     stable_path=pack.contract['contextMapping'].get('stableArrays')
     if stable_path:
         declarations=pack.json(stable_path)

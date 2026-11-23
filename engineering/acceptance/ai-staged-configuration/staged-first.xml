@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="3" skipped="0" tests="11" time="37.568" timestamp="2026-11-23T13:03:27.283360+08:00" hostname="LAPTOP-BIFSL64A"><testcase classname="engineering.ai.tests.test_staged_configuration" name="test_publication_gates_fresh_runtime_batch_and_notification_once" time="9.435" /><testcase classname="engineering.ai.tests.test_staged_configuration" name="test_continuation_stops_for_current_authority_or_revision[archive]" time="1.893" /><testcase classname="engineering.ai.tests.test_staged_configuration" name="test_continuation_stops_for_current_authority_or_revision[revoke]" time="2.171"><failure message="onlinecoc.errors.DomainError: INPUT_INVALID">application = &lt;onlinecoc_ai.api.Application object at 0x000001AD57402EA0&gt;
+reason = 'revoke'
+
+    @pytest.mark.parametrize('reason',['archive','revoke','cancel','revision'])
+    def test_continuation_stops_for_current_authority_or_revision(application,reason):
+        app=application;p,s=prepare(app)
+        if reason=='archive':
+            app.repository.update(lambda state:state['settings']['sessions'][s['sessionId']].update(archived=True))
+        elif reason=='revoke':
+&gt;           room=app.host.state();room['members']['kp']['authorizationEpoch']='new-epoch';app.host.commit(room)
+                                                                                          ^^^^^^^^^^^^^^^^^^^^^
+
+engineering\ai\tests\test_staged_configuration.py:76: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+engineering\backend\src\onlinecoc\host.py:45: in commit
+    start=time.perf_counter();validate(state);validated=time.perf_counter()
+                              ^^^^^^^^^^^^^^^
+engineering\backend\src\onlinecoc\model.py:70: in validate
+    validate_world(state)
+engineering\backend\src\onlinecoc\model.py:90: in validate_world
+    for value in state.get(collection,{}).values():validate_model(kind,value)
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^
+engineering\backend\src\onlinecoc\contracts.py:144: in validate_model
+    if error is not None:_model_error(kind,error)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+kind = 'Member'
+error = &lt;ValidationError: "'new-epoch' is not of type 'integer'"&gt;, prefix = ()
+
+    def _model_error(kind,error,prefix=()):
+        path=list(prefix)+list(error.absolute_path)
+        if error.validator=='required' and isinstance(error.instance,dict):
+            path.append(next(k for k in error.validator_value if k not in error.instance))
+        pointer='/'+'/'.join(str(k).replace('~','~0').replace('/','~1') for k in path)
+&gt;       raise DomainError('INPUT_INVALID',{'model':kind,'path':pointer[:512],'constraint':error.validator})
+E       onlinecoc.errors.DomainError: INPUT_INVALID
+
+engineering\backend\src\onlinecoc\contracts.py:97: DomainError</failure></testcase><testcase classname="engineering.ai.tests.test_staged_configuration" name="test_continuation_stops_for_current_authority_or_revision[cancel]" time="2.067" /><testcase classname="engineering.ai.tests.test_staged_configuration" name="test_continuation_stops_for_current_authority_or_revision[revision]" time="2.218" /><testcase classname="engineering.ai.tests.test_staged_configuration" name="test_resume_after_request_saved_dispatch_failure_never_duplicates" time="4.964"><failure message="KeyError: 'requestIds'">application = &lt;onlinecoc_ai.api.Application object at 0x000001AD57AF8490&gt;
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001AD57EC6520&gt;
+
+    def test_resume_after_request_saved_dispatch_failure_never_duplicates(application,monkeypatch):
+        app=application;p,s=prepare(app);original=app._execute
+        def fail(*args,**kwargs):
+            if args[2]=='ai.request.dispatch':raise OSError('simulated dispatch outage')
+            return original(*args,**kwargs)
+        monkeypatch.setattr(app,'_execute',fail);approve(app,p)
+        first=copy.deepcopy(app.repository.state()['settings']['publicationContinuations'][p['proposalId']])
+        assert first['status']=='blocked' and first['nextRequestId'] and not first.get('nextTaskId')
+        monkeypatch.setattr(app,'_execute',original);app.continuations.reconcile();app.continuations.reconcile()
+        second=app.repository.state()['settings']['publicationContinuations'][p['proposalId']]
+        assert second['nextRequestId']==first['nextRequestId'] and second['nextTaskId']
+&gt;       assert len(app.sessions.get('kp',s['sessionId'])['session']['requestIds'])==2
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'requestIds'
+
+engineering\ai\tests\test_staged_configuration.py:96: KeyError</failure></testcase><testcase classname="engineering.ai.tests.test_staged_configuration" name="test_approval_without_publication_does_not_advance" time="1.941"><failure message="onlinecoc.errors.DomainError: UNKNOWN_OPERATION">application = &lt;onlinecoc_ai.api.Application object at 0x000001AD575A1750&gt;
+
+    def test_approval_without_publication_does_not_advance(application):
+        app=application;p,s=prepare(app)
+        item=app.rulings.detail('kp','proposal:'+p['proposalId'])
+&gt;       receipt=app.rulings.host_command('kp','approval-only','ai.approval.create',{'proposalId':p['proposalId'],'proposalRevision':1,
+            'candidateDigest':p['candidateDigest'],'riskDecisions':{r['id']:'测试接受该项风险' for r in item['risks']},'explicitHighRiskDigest':item['digest']})
+
+engineering\ai\tests\test_staged_configuration.py:102: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+engineering\ai\src\onlinecoc_ai\rulings.py:205: in host_command
+    return self.host.command(account,{'protocolVersion':1,'type':'command','requestId':identifier,'roomId':room['roomId'],
+engineering\backend\src\onlinecoc\host.py:203: in command
+    validate_operation(op,args)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+op = 'ai.approval.create'
+args = {'proposalId': '18a1e8f346244dd9ab556991873d4066', 'proposalRevision': 1, 'candidateDigest': '916faa384a62b61d127a579f...3d66f68f5e2', 'riskDecisions': {'choice-value': '测试接受该项风险', 'gameplay-risk': '测试接受该项风险', 'high-risk': '测试接受该项风险'}, ...}
+
+    def validate_operation(op,args):
+&gt;       if op not in OPERATIONS:raise DomainError('UNKNOWN_OPERATION')
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       onlinecoc.errors.DomainError: UNKNOWN_OPERATION
+
+engineering\backend\src\onlinecoc\contracts.py:146: DomainError</failure></testcase><testcase classname="engineering.ai.tests.test_staged_configuration" name="test_continuation_integrity_detects_modified_plan" time="1.965" /><testcase classname="engineering.ai.tests.test_staged_configuration" name="test_two_consecutive_publications_refresh_baseline_keep_external_conflict" time="9.022" /><testcase classname="engineering.ai.tests.test_staged_configuration" name="test_exact_paths_escape_and_bounded_overview" time="0.001" /><testcase classname="engineering.ai.tests.test_staged_configuration" name="test_projection_inheritance_only_selector" time="0.076" /></testsuite></testsuites>

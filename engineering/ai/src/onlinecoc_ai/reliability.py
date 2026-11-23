@@ -4,6 +4,53 @@ from .contracts import loads
 from .errors import AiError,require
 
 
+def answer_tool(message):
+    """One display-only answer in the wrong envelope; never run a fake tool."""
+    calls=message.get('tool_calls',[])
+    if len(calls)!=1 or calls[0].get('function',{}).get('name') not in ('clarification','plan'):return None
+    call=calls[0]['function']
+    try:value=loads(call.get('arguments',''))
+    except AiError:return None
+    if type(value) is not dict or set(value)-{'kind','text','choices'}:return None
+    if value.get('kind',call['name'])!=call['name']:return None
+    from .answers import parse_answer
+    from .contracts import canonical
+    value={**value,'kind':call['name']}
+    try:parse_answer(canonical(value).decode())
+    except AiError:return None
+    return {'role':'assistant','content':canonical(value).decode()}
+
+
+def remember_targets(result,pool):
+    """Only complete, already-authorized host entity details prove a target ID."""
+    for item in result.get('items',[]):
+        ref=item.get('ref',{});data=item.get('data',{})
+        if item.get('authority')=='host-state' and ref.get('sourceId')=='host' and ref.get('kind')=='entity' and isinstance(data,dict) and data.get('instanceId'):
+            key=ref['id'];value={'instanceId':data['instanceId'],'typeRef':data.get('typeRef')}
+            if key in pool and pool[key]!=value:pool[key]=None
+            elif key not in pool:pool[key]=value
+
+
+def resolve_targets(actions,pool,artifact):
+    """Replace exact opaque refs only at declared entity-reference positions."""
+    import copy
+    result=copy.deepcopy(actions);fixed=[]
+    if type(result) is not list:return result,fixed
+    for index,action in enumerate(result):
+        if type(action) is not dict or type(action.get('args')) is not dict:continue
+        if action.get('target')!='host':continue
+        args=action.get('args',{});op=action.get('op');positions=[]
+        if op in ('entity.patch','entity.update','entity.archive'):positions=[(args,'id',None,'/args/id')]
+        if op=='action.invoke' and isinstance(args.get('actionId'),str) and type(args.get('input')) is dict:
+            metadata=artifact['metadata'].get(args.get('actionId'),{})
+            positions=[(args.get('input',{}),key,kind,'/args/input/'+key) for key,kind in metadata.get('inputs',{}).items()]
+        for parent,key,kind,path in positions:
+            raw=parent.get(key);target=pool.get(raw) if isinstance(raw,str) else None
+            if target and (kind is None or kind==target['typeRef']) and raw!=target['instanceId']:
+                parent[key]=target['instanceId'];fixed.append('/actions/'+str(index)+path)
+    return result,fixed
+
+
 def require_capability_evidence(payload,output):
     """Reject a specific observed false capability claim against the host index."""
     import re
@@ -12,6 +59,18 @@ def require_capability_evidence(payload,output):
     text=output.get('text','')
     if 'entity.patch' in text and 'entity.update' not in text and re.search(r'(没有|不存在)[^。！？\n]{0,40}(可改|可写|修改)[^。！？\n]{0,20}数值[^。！？\n]{0,20}(操作|命令)',text):
         raise AiError('MODEL_CAPABILITY_UNPROVEN','The complete host operation index includes entity.update for numeric fields. Reading only entity.patch is not proof that numeric mutation is unavailable. Remove the unsupported blanket limitation. If the requested numeric field is still ambiguous, ask only that genuine choice; otherwise read the entity.update schema and current target before preparing a candidate. Do not invent permission or execute.',path='/text')
+
+
+def require_increment_intent(payload,output):
+    """Reject the observed substitution of existing stock for a new grant."""
+    import re
+    request=payload.get('request','');text=output.get('text','')
+    if output.get('kind')!='plan' or not payload.get('aiPermissions',{}).get('allowRuntimeChanges'):return
+    if re.search(r'确保|保证.*有|ensure|make sure',request,re.I):return
+    explicit=re.search(r'(发|给予|赠送|grant|give).{0,15}(一|两|[1-9]|one|two)',request,re.I)
+    dismiss=re.search(r'(已有|已经有|现有).{0,150}(不需要再发|无需再发|不需要.*新增|no need)',text,re.I|re.S)
+    if explicit and dismiss:
+        raise AiError('REQUESTED_INCREMENT_OMITTED','The user explicitly requested a new grant, not merely ensuring ownership. Existing stock is the before-state, not a receipt for this request. Prepare the requested increment in a compatible free position and its requested notification; retain all existing stock. Query actual definitions and current capacity. Do not ask again whether the already explicit grant is wanted.',path='/text')
 
 
 def require_search_evidence(request,payload,snapshot,output):

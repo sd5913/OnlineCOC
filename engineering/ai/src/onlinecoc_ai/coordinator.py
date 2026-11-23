@@ -18,7 +18,7 @@ from onlinecoc.errors import DomainError
 
 RECOVERABLE_QUERY_ERRORS = {'INPUT_INVALID', 'QUERY_INPUT_LIMIT', 'QUERY_RESULT_LIMIT', 'SOURCE_STALE', 'NOT_VISIBLE'}
 BASIC_DRAFT_ERRORS = {'INPUT_INVALID', 'RULE_INVALID', 'RULE_FAILED', 'DUPLICATE_RULE',
-    'PACK_SCHEMA_INVALID', 'REFERENCE_CONFLICT', 'SCHEMA_TARGET_MISSING'}
+    'PACK_SCHEMA_INVALID', 'PACK_PROJECTION_EDIT_FORBIDDEN', 'REFERENCE_CONFLICT', 'SCHEMA_TARGET_MISSING'}
 
 
 def tool(name, description):
@@ -143,15 +143,41 @@ SYSTEM += ('\nFor editing existing artifact JSON, prefer pack_read_config_data(f
     'dataEdits are explicit instructions compiled locally against the exact server-issued editRef. Example: '
     '{"kind":"draft","text":"追加一种物品，待审批","changeSet":{"schemaVersion":1,"configurations":[],"sources":{},"data":{},"suggestions":[]},'
     '"dataEdits":[{"op":"append","ref":"<editRef from pack_read_config_data(file, path:[items])>","keyField":"id","value":{"id":"new-item"}}]}. '
-    'Use the actual pack item schema, not the abbreviated example value. append preserves every existing item and checks key uniqueness over the full array; '
+    'Use the actual pack item schema, not the abbreviated example value. append with keyField preserves every existing item and checks key uniqueness over the full array; '
+    'For a fully read string node, append with a string value and no keyField concatenates that text; replace needs the entire final string. '
+    'For ordinary arrays whose elements or IDs may legitimately repeat (for example stock rows), use append_value with the exact new JSON value; author schemas and reference checks still apply. '
+    'An append at the array end can accompany edits to old elements in the same draft; whole-array replacement still overlaps. '
     'do not paginate untouched fields merely to reconstruct the file. add inserts a missing object key; replace/remove need a fully read non-root node; array removal is unsupported. '
     'Never put a fragment such as {items:[...]} in changeSet.data[file]: that field is a COMPLETE FILE replacement. Never combine dataEdits and data replacement for the same file. '
     'Untouched fields come from the authoritative baseline, not model guesses. This still produces a full A/B/C checked candidate for independent approval. dataEdits schema: '
     +canonical(data_edits.EDITS_SCHEMA).decode())
+SYSTEM += ('\nPreserve the same user goal across technical corrections. A syntax, field-name, read-ref or schema error is not a new user decision. '
+    'When the user delegates wording, atmosphere, a cosmetic name or comparable modest design details, choose a conservative compatible recommendation and prepare it; briefly state the assumption. '
+    'Ask one combined clarification only for a material unresolved choice such as which recipient, public disclosure versus a KP secret, irreversible scope, or genuinely different gameplay effects. '
+    'If the user explicitly says to wait for their choice, wait; once they answer, retain that decision and do not ask the same design confirmation again. '
+    'Before returning a candidate, check every requested subgoal against the ACTUAL edits/actions, including both ends of a promised two-way link. '
+    'Query current active data and executionLedger first. If part of this same goal already exists, repair the missing part using its current identity; do not create a second same-name object merely because the next numeric ID is available. '
+    'Array positions are JSON zero-based indexes; a runtime definition number uses the author mapping, never a guess from another location stock. '
+    'A candidate, an approved-but-unpublished artifact, and model prose are not proof of completion. Only committed publication/execution receipts establish success; blocked or unknown work remains incomplete. '
+    'Do not claim missing privileges just because an ID or field filter was malformed. Clarification and plan are final JSON answer kinds, not tool names.')
+SYSTEM += ('\nAn explicit grant/add request is an increment, not an ensure-present request. Existing inventory is the BEFORE state, never a receipt for this new grant; keep existing items and add the requested amount using a compatible free position. '
+    'Only explicit ensure-present wording allows satisfying the request from pre-existing stock. '
+    'Settling a bill normally charges the named payer, not rewards them. If payer/payee or debit/credit is genuinely unclear, ask that one material direction question before changing money. '
+    'executionLedger associates original requests, exact actions, runtimeBefore and actual receipt status. Completed historical actions remain executed even when old model text says pending. '
+    'A bare continue asks for remaining work, not a second relative debit/grant/notification. For correcting an earlier mistake, compare the original before-value and all actual effects; do not silently recompute the whole original delta from the changed balance. '
+    'If the correction target is still ambiguous, ask whether to correct the original net result or perform an additional transaction.')
 SYSTEM += ('\nONLY kind=draft includes changeSet, which must follow this JSON Schema; it does not apply to batch actions. Configuration changes use kind=add/replace/remove, '
            'id, expectedRevision (string for replace/remove, null for add), and value (a full Configuration, null for remove). '
            'Preserve unchanged value fields. Omit unchanged files from sources/data; the host merges them.\n'
            + canonical(generation_contract()).decode())
+SYSTEM += ('\nFor a request that needs NEW configuration followed by runtime use (create an item, then grant it and notify its owner), '
+    'prepare the configuration draft first and add afterPublish:{"text":"the remaining requested runtime work, target and notification intent"}. '
+    'The server waits for actual publication, then generates the remaining work with fresh queries. Never issue runtime commands against an unpublished definition. '
+    'afterPublish is allowed only in an administrator conversation and cannot approve or execute anything. Do not add follow-up work the user did not request. '
+    'When publicationContinuation is present, that configuration stage is already complete: return a runtime batch, or clarify a genuinely missing decision; do not recreate it. '
+    'For an underspecified design, recommend a concrete suitable option and its meaningful tradeoff in your answer; use concise choices only when needed. '
+    'Once the user chooses or requests creation, prepare it directly without another direction-confirmation question. Change only necessary definitions or dependencies; '
+    'do not regenerate unrelated scene presentation, travel rules or existing configuration merely to add an item.')
 SYSTEM += ('\nBefore proposing runtime commands, read their exact target namespace, operation schema and action input schema. '
     'Resolve IDs from current authorized records; never confuse an item definition ID with a character inventory slot. '
     'For example, if item5=3 then using definition 3 requires slot 5, while granting definition 3 uses item=3. '
@@ -178,7 +204,7 @@ def repair_feedback(exc, content, expected_kind=None):
         'instruction':'Correct this output error and return the complete JSON object. Paths refer to the output, except ChangeSet validation paths. Do not ask the user to fix formatting. A format error does not mean a tool is unavailable. If a genuine user decision is missing, return kind=clarification with a concise question and choices. Never invent permissions, decisions or validation reports.'}
     if kind in ('batch','draft','plan','clarification'):
         required={'kind','text'}|({'actions'} if kind=='batch' else {'changeSet'} if kind=='draft' else set())
-        allowed=required|({'choices'} if kind in ('plan','clarification') else {'dataEdits'} if kind=='draft' else set())
+        allowed=required|({'choices'} if kind in ('plan','clarification') else {'dataEdits','afterPublish'} if kind=='draft' else set())
         feedback.update(expectedKind=kind,requiredFields=sorted(required),allowedFields=sorted(allowed),
             missingFields=sorted(required-set(value)),unexpectedFields=[k[:80] for k in sorted(set(value)-allowed)][:12])
         if kind=='draft':
@@ -189,7 +215,9 @@ def repair_feedback(exc, content, expected_kind=None):
             feedback['outputSchema']={'type':'object','required':['kind','text','actions'],'additionalProperties':False,
                 'properties':{'kind':{'const':'batch'},'text':{'type':'string','minLength':1,'maxLength':8000},'actions':ACTIONS}}
             feedback['instruction']+=' Keep the runtime batch intent; changeSet and suggestions cannot represent executable actions. Use the operation schemas already returned by room_manage_catalog and real IDs from read data. Do not switch to plan to avoid correction; clarification remains available for a genuine missing decision.'
-    if exc.code in ('HISTORY_REQUERY_REQUIRED','MODEL_EVIDENCE_REQUIRED','REPEATED_RESOLVED_CHOICE','MODEL_CAPABILITY_UNPROVEN'):feedback['instruction']=str(exc.detail)
+    if exc.code in ('HISTORY_REQUERY_REQUIRED','MODEL_EVIDENCE_REQUIRED','REPEATED_RESOLVED_CHOICE','MODEL_CAPABILITY_UNPROVEN','REQUESTED_INCREMENT_OMITTED'):feedback['instruction']=str(exc.detail)
+    if exc.code=='INTENT_EXECUTION_REPLAY':
+        feedback.update(expectedKind='plan',requiredFields=['kind','text'],allowedFields=['kind','text','choices'],instruction=exc.detail)
     return feedback
 
 
@@ -397,10 +425,23 @@ class Coordinator:
 
     async def _loop(self):
         while not self.stopping:
+            watching=False
+            if hasattr(self,'application'):
+                try:watching=await asyncio.to_thread(self.application.continuations.reconcile)
+                except Exception as exc:
+                    import logging
+                    logging.getLogger(__name__).error('Publication continuation reconciliation failed: %s',error_code(exc))
+                    watching=True
+            # close() may signal while reconciliation is awaiting a worker.
+            # Do not clear that wake and then wait forever after shutdown.
+            if self.stopping:break
             queued = [t for t in self.repository.state()["tasks"].values() if t["status"] == "queued"]
             if not queued:
                 self.wake.clear()
-                await self.wake.wait()
+                if watching:
+                    try:await asyncio.wait_for(self.wake.wait(),2)
+                    except asyncio.TimeoutError:pass
+                else:await self.wake.wait()
                 continue
             task = min(queued, key=lambda t: t["createdAt"])
             self.active_id = task["taskId"]
@@ -493,6 +534,7 @@ class Coordinator:
                 repair_limit = min(profile["limits"]["maxRepairAttempts"],2)
                 repair_kind = None
                 edit_pool={}
+                target_pool={}
                 proposal = None
                 query_calls = 1 if strict else automatic_queries
                 from .compression import Compactor,TOOL as COMPRESSION_TOOL
@@ -577,6 +619,12 @@ class Coordinator:
                     check_profile()
                     generation.guard()
                     message = completion.message
+                    if not strict:
+                        from .reliability import answer_tool
+                        corrected=answer_tool(message)
+                        if corrected is not None and repairs<repair_limit:
+                            trace.output_failure(AiError('MODEL_ANSWER_ENVELOPE_REPAIRED'),repairs+1)
+                            repairs+=1;message=corrected
                     if message.get("tool_calls"):
                         require(turn < profile["limits"]["maxToolRounds"], "TOOL_ROUND_LIMIT")
                         messages.append(message)
@@ -624,7 +672,16 @@ class Coordinator:
                             elif name in DATA_NAMES:
                                 proofs = len(snapshot[0]['facts'].get('dataQueries', []))
                                 try:
-                                    value = await asyncio.to_thread(DataQueryService(read_host).attach, account, DATA_NAMES[name], args, snapshot, request.get('initiator'))
+                                    try:
+                                        value = await asyncio.to_thread(DataQueryService(read_host).attach, account, DATA_NAMES[name], args, snapshot, request.get('initiator'))
+                                    except (AiError,DomainError) as exc:
+                                        if exc.code!='INPUT_INVALID' or name!='room_read_data' or 'fields' not in args or repairs>=repair_limit or len(snapshot[0]['facts'].get('dataQueries',[]))!=proofs:raise
+                                        # The same exact refs are checked with the same egress and
+                                        # scope. Only the invalid display field filter is removed.
+                                        trace.output_failure(AiError('QUERY_FIELDS_REPAIRED'),repairs+1);repairs+=1
+                                        args={k:v for k,v in args.items() if k!='fields'}
+                                        value=await asyncio.to_thread(DataQueryService(read_host).attach,account,DATA_NAMES[name],args,snapshot,request.get('initiator'))
+                                        value={**value,'technicalCorrection':{'code':'QUERY_FIELDS_REPAIRED','notice':'Returned complete authorized details for these exact references because requested top-level fields did not exist. Nested numeric fields are inside data.numbers. Use data.instanceId for entity writes; ref.id is only a read reference.'}}
                                 except (AiError, DomainError) as exc:
                                     # Invalid filters/stale supplied refs are tool results, not
                                     # an opaque task crash. Never recover changed permissions
@@ -637,6 +694,8 @@ class Coordinator:
                                 trace.at('tool_evidence_save')
                                 self.repository.update(remember_context)
                                 if 'items' in value:
+                                    from .reliability import remember_targets
+                                    remember_targets(value,target_pool)
                                     citations=DataQueryService(read_host).citations(account,value,snapshot,request.get('initiator'))
                                     issued.update(c['token'] for c in citations.values())
                                     value = model_result(value, args, citations)
@@ -702,13 +761,23 @@ class Coordinator:
                             validate_answer(output,issued)
                             from .intent_context import require_new_question
                             require_new_question(payload,output)
-                            from .reliability import require_search_evidence,require_capability_evidence
+                            from .reliability import require_search_evidence,require_capability_evidence,require_increment_intent
                             require_search_evidence(request['text'],payload,snapshot[0],output)
                             require_capability_evidence(payload,output)
+                            require_increment_intent(payload,output)
+                            from .execution_ledger import require_no_replay
+                            require_no_replay(payload,output)
                         if output['kind'] == 'batch':
                             require(admin,'TOOL_FORBIDDEN')
+                            from .reliability import resolve_targets
+                            corrected,fixes=resolve_targets(output['actions'],target_pool,snapshot[2])
+                            if fixes and repairs<repair_limit:
+                                trace.output_failure(AiError('ENTITY_REFERENCE_REPAIRED',path=fixes[0]),repairs+1);repairs+=1
+                                output['actions']=corrected
                             read_app.batches.validate_actions(account,output['actions'])
                         if output["kind"] == "draft":
+                            if payload.get('publicationContinuation'):require(False,'CONTINUATION_RUNTIME_REQUIRED')
+                            if 'afterPublish' in output:require(admin and snapshot[0]['facts'].get('sessionAccess',{}).get('level')=='administrator','CONTINUATION_SESSION_REQUIRED')
                             validate("ChangeSet", output["changeSet"])
                             if 'dataEdits' in output:
                                 require(admin,'TOOL_FORBIDDEN')
@@ -775,6 +844,7 @@ class Coordinator:
                         proposal = self.proposals.create(account, request["text"], output["changeSet"], summary=output["text"], snapshot=snapshot, request=request, profile=profile, generation=generation)
                     else:
                         proposal = self.proposals.revise(account,proposal['proposalId'],proposal['revision'],output['changeSet'],summary=output['text'],snapshot=snapshot,generation=generation)
+                    if hasattr(self,'application'):self.application.continuations.register(account,proposal,output.get('afterPublish'))
                     self._set(identifier, "validating", proposalId=proposal["proposalId"])
                     # The thread only writes a checked draft. Cancellation cannot
                     # publish anything; its eventual report is not a room command.
@@ -795,7 +865,7 @@ class Coordinator:
                     basic = [r for r in result['reports'] if r['level']=='A' and r['status']=='fail'
                         and r['findings'] and all(f['code'] in BASIC_DRAFT_ERRORS for f in r['findings'])]
                     basic += [r for r in result['reports'] if r['level']=='B' and r['status']=='fail'
-                        and r['findings'] and all(f['code']=='EXTENSION_MARKER_REQUIRED' for f in r['findings'])]
+                        and r['findings'] and all(f['code'] in ('EXTENSION_MARKER_REQUIRED','DATA_REFERENCE_CONFLICT') for f in r['findings'])]
                     if basic:
                         finding=basic[0]['findings'][0]
                         trace.output_failure(AiError(finding['code'],path=finding['path']),repairs+1)
@@ -803,7 +873,7 @@ class Coordinator:
                         repairs += 1;repair_kind='draft'
                         messages.extend([message,{'role':'user','content':canonical({'errors':[
                             {'code':f['code'],'path':f['path'],'reason':f['message']} for f in basic[0]['findings']],
-                            'instruction':'Fix these basic configuration/Lua format errors and return a corrected draft. For existing JSON files use pack_read_config_data and top-level dataEdits to preserve untouched baseline fields; do not reconstruct the complete file from partial query fragments. Each Lua file must return the DSL constructor result, never a hand-built table. Syntax example: return rule("example.inspect", {"actor"}, function(r, actor) return {ok=true} end). Use the requested rule ID, inputs and behavior; this example grants no permission. If a user decision is genuinely missing, ask it with kind=clarification. Do not broaden permissions or change the confirmed design.'}).decode()}])
+                            'instruction':'Fix these technical configuration/Lua errors and return a corrected draft for complete A/B/C revalidation. DATA_REFERENCE_CONFLICT never permits approval: read the actual array entry and its parent page again, match its declared ID/name to positions.zeroBasedIndex, and correct only the misaddressed or missing reference. A business number is not a JSON index; preserve the intended targets and both ends of links. For existing JSON files use pack_read_config_data and top-level dataEdits to preserve untouched baseline fields; do not reconstruct the complete file from partial query fragments. Each Lua file must return the DSL constructor result, never a hand-built table. Syntax example: return rule("example.inspect", {"actor"}, function(r, actor) return {ok=true} end). Use the requested rule ID, inputs and behavior; this example grants no permission. If a user decision is genuinely missing, ask it with kind=clarification. Do not broaden permissions or change the confirmed design.'}).decode()}])
                         self._set(identifier,'generating')
                         continue
                     dependency_check=generation.check()

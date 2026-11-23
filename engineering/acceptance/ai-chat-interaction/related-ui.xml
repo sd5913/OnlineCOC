@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="3" skipped="0" tests="36" time="187.199" timestamp="2026-11-23T16:13:45.809550+08:00" hostname="LAPTOP-BIFSL64A"><testcase classname="tests.test_access_ui" name="test_permissions_archive_delete_batches_and_mobile" time="11.518"><failure message="AssertionError: Locator expected to contain text '已执行'&#10;Actual value: 运行时修改指令已提交将首个对象改名为批次验收名称引用详情关闭提交 1 项 · 撤销 0 项 · 失败 0 项 · 未执行 0 项第 1 步 · entity.patch预检：预检通过&quot;actor-player1&quot;执行：已提交&quot;actor-player1&quot;查看该步参数{&#10;  &quot;id&quot;: &quot;actor-player1&quot;,&#10;  &quot;name&quot;: &quot;批次验收名称&quot;&#10;}完整修改与检查结果{&#10;  &quot;actions&quot;: [&#10;    {&#10;      &quot;args&quot;: {&#10;        &quot;id&quot;: &quot;actor-player1&quot;,&#10;        &quot;name&quot;: &quot;批次验收名称&quot;&#10;      },&#10;      &quot;op&quot;: &quot;entity.patch&quot;,&#10;      &quot;target&quot;: &quot;host&quot;&#10;    }&#10;  ],&#10;  &quot;preflight&quot;: {&#10;    &quot;status&quot;: &quot;passed&quot;,&#10;[+158 more lines; full report in element text]">services = ('http://127.0.0.1:62572', {'key': 'pvhiJ4ObnSKbvwV3NOic2YOzbfYGYMdoGZg-K4SMa3U', 'roomPort': 62571, 'managerPort': 62572}, WindowsPath('C:/Users/26077/AppData/Local/Temp/pytest-of-26077/pytest-125/test_permissions_archive_delet0'))
+
+    def test_permissions_archive_delete_batches_and_mobile(services):
+        _,entry,_=services;origin=f'http://127.0.0.1:{entry["roomPort"]}'
+        with sync_playwright() as p:
+            browser=p.chromium.launch(channel='msedge',headless=True);page=browser.new_page(viewport={'width':1380,'height':920});errors=[]
+            page.on('pageerror',lambda e:errors.append(str(e)))
+            try:
+                page.goto(origin+'/ai-ui/conversation.html');login(page,'player1')
+                expect(page.locator('#status')).to_contain_text('尚未允许')
+                expect(page.locator('#send')).to_be_disabled()
+                page.locator('#logout').click();login(page,'kp')
+                page.locator('.review-open').click();page.locator('[data-tab=settings]').click()
+                expect(page.locator('#ai-allow-player')).not_to_be_checked();expect(page.locator('#ai-auto-approve')).not_to_be_checked()
+                page.locator('#ai-allow-player').check();page.locator('#ai-save-access').click();expect(page.locator('#ai-result')).to_have_text('权限设置已保存')
+                page.get_by_text('服务与外发范围',exact=True).click();page.locator('#ai-enabled').check();page.locator('#ai-public').check();page.locator('#ai-private').check();page.locator('#ai-save-settings').click();expect(page.locator('#ai-result')).to_have_text('设置已保存')
+                page.screenshot(path=str(OUTPUT/'access-settings.png'),full_page=True)
+                page.locator('.review-close').click();page.locator('.new-chat').click();expect(page.locator('#session-access')).to_contain_text('管理员')
+                page.locator('#text').fill('批次验收：请改名');page.locator('#send').click();expect(page.locator('#history')).to_contain_text('查看执行批次',timeout=30000)
+                page.locator('.review-open').click();page.locator('[data-tab=batches]').click();expect(page.locator('.batch-card')).to_contain_text('等待 KP 裁决')
+&gt;               page.get_by_role('button',name='批准并执行',exact=True).click();expect(page.locator('.batch-card')).to_contain_text('已执行')
+                                                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E               AssertionError: Locator expected to contain text '已执行'
+E               Actual value: 运行时修改指令已提交将首个对象改名为批次验收名称引用详情关闭提交 1 项 · 撤销 0 项 · 失败 0 项 · 未执行 0 项第 1 步 · entity.patch预检：预检通过"actor-player1"执行：已提交"actor-player1"查看该步参数{
+E                 "id": "actor-player1",
+E                 "name": "批次验收名称"
+E               }完整修改与检查结果{
+E                 "actions": [
+E                   {
+E                     "args": {
+E                       "id": "actor-player1",
+E                       "name": "批次验收名称"
+E                     },
+E                     "op": "entity.patch",
+E                     "target": "host"
+E                   }
+E                 ],
+E                 "preflight": {
+E                   "status": "passed",
+E                   "checkedAt": 1795421632.8953967,
+E                   "scope": "host.room.atomic.v1",
+E                   "items": [
+E                     {
+E                       "index": 0,
+E                       "target": "host",
+E                       "op": "entity.patch",
+E                       "status": "passed",
+E                       "result": "actor-player1",
+E                       "preview": true
+E                     }
+E                   ]
+E                 },
+E                 "execution": {
+E                   "status": "committed",
+E                   "scope": "host.room.atomic.v1",
+E                   "items": [
+E                     {
+E                       "index": 0,
+E                       "target": "host",
+E                       "op": "entity.patch",
+E                       "status": "committed",
+E                       "commandId": "batch-fc2e35fd8a36d50330a43a05ec32d304a066af4e26201cf24196a7010f5547dd",
+E                       "result": "actor-player1"
+E                     }
+E                   ],
+E                   "committedCount": 1,
+E                   "failedCount": 0,
+E                   "notExecutedCount": 0,
+E                   "rolledBackCount": 0
+E                 },
+E                 "receipts": [
+E                   {
+E                     "id": "batch-fc2e35fd8a36d50330a43a05ec32d304a066af4e26201cf24196a7010f5547dd",
+E                     "account": "kp",
+E                     "target": "host",
+E                     "receipt": {
+E                       "status": "committed",
+E                       "commandId": "batch-fc2e35fd8a36d50330a43a05ec32d304a066af4e26201cf24196a7010f5547dd",
+E                       "result": "actor-player1"
+E                     }
+E                   }
+E                 ]
+E               }转 AI 处理引用与调试复制定位包含当前可见正文（可能含私密资料）导出调试 JSON 
+E               Call log:
+E                 - Expect "to_contain_text" locator(".batch-card") with timeout 5000ms
+E                 - waiting for locator(".batch-card")
+E                   3 × locator resolved to &lt;article class="batch-card"&gt;…&lt;/article&gt;
+E                     - unexpected value "运行时修改等待 KP 裁决将首个对象改名为批次验收名称引用详情关闭归档记录预检不会执行修改；批准时重新核对当前条件。第 1 步 · entity.patch预检：预检通过"actor-player1"查看该步参数{
+E                 "id": "actor-player1",
+E                 "name": "批次验收名称"
+E               }完整修改与检查结果{
+E                 "actions": [
+E                   {
+E                     "args": {
+E                       "id": "actor-player1",
+E                       "name": "批次验收名称"
+E                     },
+E                     "op": "entity.patch",
+E                     "target": "host"
+E                   }
+E                 ],
+E                 "preflight": {
+E                   "status": "passed",
+E                   "checkedAt": 1795421632.0577726,
+E                   "scope": "host.room.atomic.v1",
+E                   "items": [
+E                     {
+E                       "index": 0,
+E                       "target": "host",
+E                       "op": "entity.patch",
+E                       "status": "passed",
+E                       "result": "actor-player1",
+E                       "preview": true
+E                     }
+E                   ]
+E                 },
+E                 "receipts": []
+E               }批准并执行拒绝转 AI 处理引用与调试复制定位包含当前可见正文（可能含私密资料）导出调试 JSON"
+E                   11 × locator resolved to &lt;article class="batch-card"&gt;…&lt;/article&gt;
+E                      - unexpected value "运行时修改指令已提交将首个对象改名为批次验收名称引用详情关闭提交 1 项 · 撤销 0 项 · 失败 0 项 · 未执行 0 项第 1 步 · entity.patch预检：预检通过"actor-player1"执行：已提交"actor-player1"查看该步参数{
+E                 "id": "actor-player1",
+E                 "name": "批次验收名称"
+E               }完整修改与检查结果{
+E                 "actions": [
+E                   {
+E                     "args": {
+E                       "id": "actor-player1",
+E                       "name": "批次验收名称"
+E                     },
+E                     "op": "entity.patch",
+E                     "target": "host"
+E                   }
+E                 ],
+E                 "preflight": {
+E                   "status": "passed",
+E                   "checkedAt": 1795421632.8953967,
+E                   "scope": "host.room.atomic.v1",
+E                   "items": [
+E                     {
+E                       "index": 0,
+E                       "target": "host",
+E                       "op": "entity.patch",
+E                       "status": "passed",
+E                       "result": "actor-player1",
+E                       "preview": true
+E                     }
+E                   ]
+E                 },
+E                 "execution": {
+E                   "status": "committed",
+E                   "scope": "host.room.atomic.v1",
+E                   "items": [
+E                     {
+E                       "index": 0,
+E                       "target": "host",
+E                       "op": "entity.patch",
+E                       "status": "committed",
+E                       "commandId": "batch-fc2e35fd8a36d50330a43a05ec32d304a066af4e26201cf24196a7010f5547dd",
+E                       "result": "actor-player1"
+E                     }
+E                   ],
+E                   "committedCount": 1,
+E                   "failedCount": 0,
+E                   "notExecutedCount": 0,
+E                   "rolledBackCount": 0
+E                 },
+E                 "receipts": [
+E                   {
+E                     "id": "batch-fc2e35fd8a36d50330a43a05ec32d304a066af4e26201cf24196a7010f5547dd",
+E                     "account": "kp",
+E                     "target": "host",
+E                     "receipt": {
+E                       "status": "committed",
+E                       "commandId": "batch-fc2e35fd8a36d50330a43a05ec32d304a066af4e26201cf24196a7010f5547dd",
+E                       "result": "actor-player1"
+E                     }
+E                   }
+E                 ]
+E               }转 AI 处理引用与调试复制定位包含当前可见正文（可能含私密资料）导出调试 JSON"
+E               
+E               Aria snapshot:
+E               - article:
+E                 - heading "运行时修改" [level=4]
+E                 - paragraph: 指令已提交
+E                 - paragraph: 将首个对象改名为批次验收名称
+E                 - paragraph: 提交 1 项 · 撤销 0 项 · 失败 0 项 · 未执行 0 项
+E                 - list:
+E                   - listitem:
+E                     - strong: 第 1 步 · entity.patch
+E                     - paragraph: 预检：预检通过
+E                     - text: "\"actor-player1\""
+E                     - paragraph: 执行：已提交
+E                     - text: "\"actor-player1\""
+E                     - group: 查看该步参数
+E                 - group: 完整修改与检查结果
+E                 - button "转 AI 处理"
+E                 - group: 引用与调试
+
+engineering\ai\tests\test_access_ui.py:27: AssertionError</failure></testcase><testcase classname="tests.test_answers_ui" name="test_answer_choices_in_all_embeds[page]" time="6.495" /><testcase classname="tests.test_answers_ui" name="test_answer_choices_in_all_embeds[conversation]" time="7.073" /><testcase classname="tests.test_answers_ui" name="test_answer_choices_in_all_embeds[collapsible]" time="8.176" /><testcase classname="tests.test_answers_ui" name="test_standalone_choices_and_inline_citation" time="4.782" /><testcase classname="tests.test_debug_dialog_ui" name="test_header_debug_modal_scope_export_close_and_identity[1100]" time="2.566" /><testcase classname="tests.test_debug_dialog_ui" name="test_header_debug_modal_scope_export_close_and_identity[390]" time="2.411" /><testcase classname="tests.test_debug_dialog_ui" name="test_failure_guidance_and_retry_do_not_replay_completed_work" time="1.928" /><testcase classname="tests.test_embeds" name="test_package_manifest_covers_public_runtime_dependencies" time="0.011" /><testcase classname="tests.test_embeds" name="test_real_room_page_variants[page]" time="11.278" /><testcase classname="tests.test_embeds" name="test_real_room_page_variants[conversation]" time="10.375"><failure message="AssertionError: Locator expected to contain text 'EXTERNAL_SCOPE_DISABLED'&#10;Actual value: 将新建技能初值改为 15，已有技能保持原值。发送 · 2026/11/23 16:14:48检查未通过向 KP 申请披露错误：AI_DISABLED提交创作／配置申请取消方案未通过检查。请打开配置裁决查看 A/B/C 报告，修改需求或候选后重新校验；当前未发布。编辑后重试 &#10;Call log:&#10;  - Expect &quot;to_contain_text&quot; locator(&quot;#history&quot;) with timeout 5000ms&#10;  - waiting for locator(&quot;#history&quot;)&#10;    2 × locator resolved to &lt;div role=&quot;log&quot; id=&quot;history&quot; class=&quot;messages&quot; aria-label=&quot;对话记录&quot;&gt;…&lt;/div&gt;&#10;[+17 more lines; full report in element text]">services = ('http://127.0.0.1:63122', {'key': 'f6kfoysQRBCrrLNj_ZSi9eZ7xXgHX_2H5xyeihf4c2I', 'roomPort': 63121, 'managerPort': 63122}, WindowsPath('C:/Users/26077/AppData/Local/Temp/pytest-of-26077/pytest-125/test_real_room_page_variants_c0'))
+variant = 'conversation'
+
+    @pytest.mark.parametrize('variant',['page','conversation','collapsible'])
+    def test_real_room_page_variants(services,variant):
+        _,entry,_=services;origin=f'http://127.0.0.1:{entry["roomPort"]}'
+        allow_players(origin)
+        with sync_playwright() as p:
+            browser=p.chromium.launch(channel='msedge',headless=True);page=browser.new_page(viewport={'width':1360,'height':940});errors=[];queries=[]
+            page.on('pageerror',lambda error:errors.append(str(error)))
+            page.on('request',lambda request:queries.append(request.url) if '/api/v1/ai/sessions' in request.url else None)
+            try:
+                response=page.goto(origin+'/ai-ui/'+variant+'.html')
+                assert "frame-ancestors 'self'" in response.headers['content-security-policy']
+                login(page,'kp' if variant=='page' else 'player1')
+                if variant=='collapsible':
+                    expect(page.locator('.collapse-toggle')).to_have_attribute('aria-expanded','false')
+                    assert page.locator('.view-chat').count()==0 and not queries
+                    page.locator('.collapse-toggle').click()
+                expect(page.locator('#text')).to_be_visible()
+                if variant=='page':expect(page.locator('.view-sidebar')).to_be_visible()
+                else:expect(page.locator('.session-select')).to_be_visible()
+                if variant=='page':
+                    page.locator('.review-open').click();page.locator('[data-tab=settings]').click();page.get_by_text('服务与外发范围',exact=True).click()
+                    expect(page.locator('#ai-save-settings')).to_be_enabled()
+                    page.locator('#ai-enabled').check();page.locator('#ai-profile').select_option('deepseek-main');page.locator('#ai-public').check();page.locator('#ai-save-settings').click()
+                    expect(page.locator('#ai-result')).to_have_text('设置已保存');page.locator('.review-close').click()
+                else:expect(page.locator('.review-open')).to_be_hidden()
+                page.locator('.new-chat').click();expect(page.locator('#status')).to_have_text('新会话已创建')
+                page.locator('#text').fill('将新建技能初值改为 15，已有技能保持原值。')
+                if variant=='collapsible':
+                    page.locator('.collapse-toggle').click();expect(page.locator('.collapse-body')).to_be_hidden()
+                    page.screenshot(path=str(OUTPUT/'embed-collapsed.png'),full_page=True)
+                    count=len(queries);page.wait_for_timeout(1600);assert len(queries)==count
+                    page.locator('.collapse-toggle').click();expect(page.locator('#text')).to_contain_text('已有技能保持原值')
+                page.locator('#send').click()
+                if variant=='page':
+                    button=page.get_by_role('button',name='查看配置裁决',exact=True);expect(button).to_be_enabled(timeout=40000);button.click()
+                    expect(page.get_by_role('button',name='批准并执行',exact=True)).to_be_enabled()
+                    for field in page.locator('.batch-card textarea').all():field.fill('验收接受新建技能收益，已有技能保持原值。')
+                    page.get_by_role('button',name='批准并执行',exact=True).click()
+                    expect(page.locator('.batch-card')).to_contain_text('已执行',timeout=40000);page.locator('.review-close').click()
+                else:
+&gt;                   expect(page.locator('#history')).to_contain_text('EXTERNAL_SCOPE_DISABLED')
+E                   AssertionError: Locator expected to contain text 'EXTERNAL_SCOPE_DISABLED'
+E                   Actual value: 将新建技能初值改为 15，已有技能保持原值。发送 · 2026/11/23 16:14:48检查未通过向 KP 申请披露错误：AI_DISABLED提交创作／配置申请取消方案未通过检查。请打开配置裁决查看 A/B/C 报告，修改需求或候选后重新校验；当前未发布。编辑后重试 
+E                   Call log:
+E                     - Expect "to_contain_text" locator("#history") with timeout 5000ms
+E                     - waiting for locator("#history")
+E                       2 × locator resolved to &lt;div role="log" id="history" class="messages" aria-label="对话记录"&gt;…&lt;/div&gt;
+E                         - unexpected value "✳从一个想法开始引用资料、梳理线索，或准备下一步方案。整理已知线索只使用本人已经获知的资料查找一份资料输入 /knowledge 选择引用向 KP 请求说明提交问题，由 KP 决定揭示范围"
+E                       12 × locator resolved to &lt;div role="log" id="history" class="messages" aria-label="对话记录"&gt;…&lt;/div&gt;
+E                          - unexpected value "将新建技能初值改为 15，已有技能保持原值。发送 · 2026/11/23 16:14:48检查未通过向 KP 申请披露错误：AI_DISABLED提交创作／配置申请取消方案未通过检查。请打开配置裁决查看 A/B/C 报告，修改需求或候选后重新校验；当前未发布。编辑后重试"
+E                   
+E                   Aria snapshot:
+E                   - log "对话记录":
+E                     - article:
+E                       - text: 将新建技能初值改为 15，已有技能保持原值。
+E                       - time: 发送 · 2026/11/23 16:14:48
+E                     - article:
+E                       - text: AI 检查未通过
+E                       - button "向 KP 申请披露"
+E                       - paragraph: 错误：AI_DISABLED
+E                       - button "提交创作／配置申请"
+E                       - button "取消"
+E                       - paragraph: 方案未通过检查。请打开配置裁决查看 A/B/C 报告，修改需求或候选后重新校验；当前未发布。
+E                       - button "编辑后重试"
+
+engineering\ai\tests\test_embeds.py:70: AssertionError</failure></testcase><testcase classname="tests.test_embeds" name="test_real_room_page_variants[collapsible]" time="12.109"><failure message="AssertionError: Locator expected to contain text 'EXTERNAL_SCOPE_DISABLED'&#10;Actual value: 将新建技能初值改为 15，已有技能保持原值。发送 · 2026/11/23 16:15:00检查未通过向 KP 申请披露错误：AI_DISABLED提交创作／配置申请取消方案未通过检查。请打开配置裁决查看 A/B/C 报告，修改需求或候选后重新校验；当前未发布。编辑后重试 &#10;Call log:&#10;  - Expect &quot;to_contain_text&quot; locator(&quot;#history&quot;) with timeout 5000ms&#10;  - waiting for locator(&quot;#history&quot;)&#10;    2 × locator resolved to &lt;div role=&quot;log&quot; id=&quot;history&quot; class=&quot;messages&quot; aria-label=&quot;对话记录&quot;&gt;…&lt;/div&gt;&#10;[+17 more lines; full report in element text]">services = ('http://127.0.0.1:63162', {'key': 'iPF2LKLTrHtgp6UsGEe81rwhji632x_ybBpJLpHGpWk', 'roomPort': 63161, 'managerPort': 63162}, WindowsPath('C:/Users/26077/AppData/Local/Temp/pytest-of-26077/pytest-125/test_real_room_page_variants_c1'))
+variant = 'collapsible'
+
+    @pytest.mark.parametrize('variant',['page','conversation','collapsible'])
+    def test_real_room_page_variants(services,variant):
+        _,entry,_=services;origin=f'http://127.0.0.1:{entry["roomPort"]}'
+        allow_players(origin)
+        with sync_playwright() as p:
+            browser=p.chromium.launch(channel='msedge',headless=True);page=browser.new_page(viewport={'width':1360,'height':940});errors=[];queries=[]
+            page.on('pageerror',lambda error:errors.append(str(error)))
+            page.on('request',lambda request:queries.append(request.url) if '/api/v1/ai/sessions' in request.url else None)
+            try:
+                response=page.goto(origin+'/ai-ui/'+variant+'.html')
+                assert "frame-ancestors 'self'" in response.headers['content-security-policy']
+                login(page,'kp' if variant=='page' else 'player1')
+                if variant=='collapsible':
+                    expect(page.locator('.collapse-toggle')).to_have_attribute('aria-expanded','false')
+                    assert page.locator('.view-chat').count()==0 and not queries
+                    page.locator('.collapse-toggle').click()
+                expect(page.locator('#text')).to_be_visible()
+                if variant=='page':expect(page.locator('.view-sidebar')).to_be_visible()
+                else:expect(page.locator('.session-select')).to_be_visible()
+                if variant=='page':
+                    page.locator('.review-open').click();page.locator('[data-tab=settings]').click();page.get_by_text('服务与外发范围',exact=True).click()
+                    expect(page.locator('#ai-save-settings')).to_be_enabled()
+                    page.locator('#ai-enabled').check();page.locator('#ai-profile').select_option('deepseek-main');page.locator('#ai-public').check();page.locator('#ai-save-settings').click()
+                    expect(page.locator('#ai-result')).to_have_text('设置已保存');page.locator('.review-close').click()
+                else:expect(page.locator('.review-open')).to_be_hidden()
+                page.locator('.new-chat').click();expect(page.locator('#status')).to_have_text('新会话已创建')
+                page.locator('#text').fill('将新建技能初值改为 15，已有技能保持原值。')
+                if variant=='collapsible':
+                    page.locator('.collapse-toggle').click();expect(page.locator('.collapse-body')).to_be_hidden()
+                    page.screenshot(path=str(OUTPUT/'embed-collapsed.png'),full_page=True)
+                    count=len(queries);page.wait_for_timeout(1600);assert len(queries)==count
+                    page.locator('.collapse-toggle').click();expect(page.locator('#text')).to_contain_text('已有技能保持原值')
+                page.locator('#send').click()
+                if variant=='page':
+                    button=page.get_by_role('button',name='查看配置裁决',exact=True);expect(button).to_be_enabled(timeout=40000);button.click()
+                    expect(page.get_by_role('button',name='批准并执行',exact=True)).to_be_enabled()
+                    for field in page.locator('.batch-card textarea').all():field.fill('验收接受新建技能收益，已有技能保持原值。')
+                    page.get_by_role('button',name='批准并执行',exact=True).click()
+                    expect(page.locator('.batch-card')).to_contain_text('已执行',timeout=40000);page.locator('.review-close').click()
+                else:
+&gt;                   expect(page.locator('#history')).to_contain_text('EXTERNAL_SCOPE_DISABLED')
+E                   AssertionError: Locator expected to contain text 'EXTERNAL_SCOPE_DISABLED'
+E                   Actual value: 将新建技能初值改为 15，已有技能保持原值。发送 · 2026/11/23 16:15:00检查未通过向 KP 申请披露错误：AI_DISABLED提交创作／配置申请取消方案未通过检查。请打开配置裁决查看 A/B/C 报告，修改需求或候选后重新校验；当前未发布。编辑后重试 
+E                   Call log:
+E                     - Expect "to_contain_text" locator("#history") with timeout 5000ms
+E                     - waiting for locator("#history")
+E                       2 × locator resolved to &lt;div role="log" id="history" class="messages" aria-label="对话记录"&gt;…&lt;/div&gt;
+E                         - unexpected value "✳从一个想法开始引用资料、梳理线索，或准备下一步方案。整理已知线索只使用本人已经获知的资料查找一份资料输入 /knowledge 选择引用向 KP 请求说明提交问题，由 KP 决定揭示范围"
+E                       12 × locator resolved to &lt;div role="log" id="history" class="messages" aria-label="对话记录"&gt;…&lt;/div&gt;
+E                          - unexpected value "将新建技能初值改为 15，已有技能保持原值。发送 · 2026/11/23 16:15:00检查未通过向 KP 申请披露错误：AI_DISABLED提交创作／配置申请取消方案未通过检查。请打开配置裁决查看 A/B/C 报告，修改需求或候选后重新校验；当前未发布。编辑后重试"
+E                   
+E                   Aria snapshot:
+E                   - log "对话记录":
+E                     - article:
+E                       - text: 将新建技能初值改为 15，已有技能保持原值。
+E                       - time: 发送 · 2026/11/23 16:15:00
+E                     - article:
+E                       - text: AI 检查未通过
+E                       - button "向 KP 申请披露"
+E                       - paragraph: 错误：AI_DISABLED
+E                       - button "提交创作／配置申请"
+E                       - button "取消"
+E                       - paragraph: 方案未通过检查。请打开配置裁决查看 A/B/C 报告，修改需求或候选后重新校验；当前未发布。
+E                       - button "编辑后重试"
+
+engineering\ai\tests\test_embeds.py:70: AssertionError</failure></testcase><testcase classname="tests.test_embeds" name="test_same_origin_iframe_entry_and_csp_scope" time="4.440" /><testcase classname="tests.test_embeds" name="test_headless_tools_and_shared_client_ownership" time="5.188" /><testcase classname="tests.test_progress_ui" name="test_progress_warning_and_regenerate" time="3.957" /><testcase classname="tests.test_reference_details_ui" name="test_inspector_authorization_races_and_keyboard" time="4.669" /><testcase classname="tests.test_reference_details_ui" name="test_chat_repeated_refresh_keeps_chips_and_dialog" time="4.778" /><testcase classname="tests.test_reference_renderer_ui" name="test_view_chat_renderer_authorized_full_dto_preview_and_revocation[1100]" time="1.894" /><testcase classname="tests.test_reference_renderer_ui" name="test_view_chat_renderer_authorized_full_dto_preview_and_revocation[390]" time="2.440" /><testcase classname="tests.test_reference_renderer_ui" name="test_markdown_renderer_fallback_option_change_and_late_result" time="1.842" /><testcase classname="tests.test_reference_renderer_ui" name="test_historical_notice_and_notification_candidate_are_visible" time="1.441" /><testcase classname="tests.test_session_ui" name="test_markdown_format_reference_security_and_mobile" time="5.424" /><testcase classname="tests.test_session_ui" name="test_embedded_management_settings_drafts_and_identity" time="6.859" /><testcase classname="tests.test_session_ui" name="test_standalone_manager_and_same_origin_frame" time="5.669" /><testcase classname="tests.test_session_ui" name="test_management_lost_response_and_version_conflict" time="5.607" /><testcase classname="tests.test_style_stability" name="test_style_reparent_and_failed_load_retry" time="4.680" /><testcase classname="tests.test_style_stability" name="test_session_management_prototype" time="5.139" /><testcase classname="tests.test_message_history_ui" name="test_unavailable_references_keep_label_and_disable_details" time="4.725" /><testcase classname="tests.test_message_history_ui" name="test_timestamps_are_real_and_missing_history_is_explicit" time="4.681" /><testcase classname="tests.test_message_history_ui" name="test_transport_errors_keep_status_and_never_expose_body" time="4.406" /><testcase classname="tests.test_player_requests_ui" name="test_real_player_direct_request_without_knowledge_then_kp_queue" time="5.801" /><testcase classname="tests.test_player_requests_ui" name="test_player_error_is_visible_and_choice_forwards_original_request_once" time="4.764" /><testcase classname="tests.test_player_requests_ui" name="test_kp_accept_label_and_open_private_review_session" time="4.637" /><testcase classname="tests.test_review_followup_ui" name="test_continue_request_and_retry_keep_identity_without_linking_new_topic" time="4.850" /><testcase classname="tests.test_review_followup_ui" name="test_history_notice_does_not_replace_response" time="4.753" /><testcase classname="tests.test_review_followup_ui" name="test_queue_archive_needs_reason_and_preserves_receipt_content" time="4.771" /></testsuite></testsuites>

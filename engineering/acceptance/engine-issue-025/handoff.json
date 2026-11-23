@@ -1,0 +1,27 @@
+{
+  "issue": "ISSUE-025",
+  "date": "2026-11-23",
+  "overlay": "engineering/acceptance/engine-issue-025/interface-v1",
+  "sourceSha256": "4d5d70c57c4124552db4d16e758961b2bffe26a7ed957dc23efae780bd6b35f1",
+  "files": {
+    "engineering/backend/src/onlinecoc/data_queries.py": "4c2f9955a6cb343c08405dbcf46e708625b45093a9c75a201a0278d7405c584a"
+  },
+  "tests": {
+    "backend-regression.xml": {
+      "tests": 104,
+      "failed": 0,
+      "errors": 0
+    },
+    "ai-query-context.xml": {
+      "tests": 29,
+      "failed": 0,
+      "errors": 0
+    }
+  },
+  "newTests": 15,
+  "limitations": [
+    "Frozen AI extended generation test interrupted after asyncio wait in both baseline and fixed trees; see ai-wait-diagnostics.json.",
+    "No external model API test in this engine task; package owner runs the 16-case integration separately."
+  ],
+  "gitPublished": false
+}

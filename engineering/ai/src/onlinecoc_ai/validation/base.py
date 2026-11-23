@@ -21,6 +21,11 @@ def check_base(pack, state, baseline, context, changes):
         artifact = stage(changes["sources"], changes["data"])
         for name, validator in pack.schemas.items():
             require(name in changes["data"], "SCHEMA_TARGET_MISSING")
+            inherited = pack.inherited_only.get(name)
+            if inherited is not None and inherited.is_valid(changes['data'][name]):
+                require(changes['data'][name] == baseline['data'].get(name),
+                        'PACK_PROJECTION_EDIT_FORBIDDEN',
+                        'This runtime projection is inheritance-only; submit the complete author document to change it.', '/data/' + name)
             error = next(validator.iter_errors(changes["data"][name]), None)
             require(error is None, "PACK_SCHEMA_INVALID", str(error)[:500] if error else "", "/data/" + name)
         for name in changes["data"]:

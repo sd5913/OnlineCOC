@@ -4,7 +4,7 @@
 - 文档子类：工程
 - 状态：有效
 - 创建日期：2026-11-15
-- 最后更新：2026-11-21
+- 最后更新：2026-11-23
 - 关联文档：[AI 运行时](ai-runtime.md)、[嵌入组件](ai-pack-embedding.md)、[房间格式](room-format.md)、[剩余计划](../../plans/ai-data-query-adjudication.md)、[通用请求与决定规划](../../plans/interaction-records.md)
 
 ## 当前能力
@@ -42,6 +42,8 @@ coverage: { status: complete | partial, within: requested-authorized-scope }
 ```
 
 搜索不返回 data；详情返回已授权字段。ref.id 是稳定的来源键摘要，不是可直接代入游戏命令的实体/消息 ID。实际业务 ID 保留在授权详情中。旧引用、跨房间引用、来源变化返回 SOURCE_STALE；不可见频道返回 NOT_VISIBLE，不能据此区分未知与越权对象。
+
+管理员生成中的 `room_read_data` 若仅因 `fields` 无效而失败，且未附加新证明，可在共用技术纠错额度内去掉该字段过滤，按相同 refs、权限与外发范围重读；成功证明记录实际重读参数。模型批次误用 ref.id 时，只凭本轮已授权 host-state 实体详情中的 instanceId 精确替换 entity.patch/update/archive 的 id 或类型匹配的 action.invoke 输入；不从名称、序号、未读引用或包材料猜 ID。冲突映射、未匹配值继续走正常校验，审批时仍复验来源。
 
 AI Runtime 给模型的列表结果另附 `pageSummary`：`returnedItems`、`countsByType`、`hasMore`、`isFirstPage`，只统计当前已授权返回页，不提供隐藏数据总数。请求的 `limit` 是数量上限，不是实际条数；只有第一页且无下一页时可据此报告该查询的完整数量，否则须分页去重。该摘要只用于模型阅读，不改变 HTTP EvidencePage、原始查询摘要或来源复验证据。读取聊天前应先读取频道引用，取详情的 `data.channelId`；猜测 ID 后得到 NOT_VISIBLE 不能推导为需要扩大权限。
 
@@ -106,6 +108,8 @@ if (found.items.length) {
 
 `room` 查询按 JSON path 分片返回宿主状态，长文本带 textOffset/textLength。AI 生成侧强制 `roomMode=state`，返回 `sourceId=host-room-state`，排除 chat、commands、audit、outbox 和 AI 审批／发布流水。显式记录读取仍可使用引擎 records 模式；两类引用不能混用。按 ref 小批读取，结果预算仍生效。外发 room 混合分片要求 public/private/kp 三开关全部开启；不包含 Identity、本机配置、密钥或任意文件。关闭 allowAdminRoomRead 后旧上下文和新读取均拒绝。
 
+state 投影只保留活动与执行中依赖的工件，标签标明 `[active]`／`[in-flight]`，详情附 `artifactUsage`。批准新候选产生的纯暂存工件不作为当前活动资料，也不改变此前 state 查询的证明；实际活动数据、执行中依赖、权限和外发变化继续失效。records 模式仍可显式查询原始暂存记录，不能作为已发布依据。
+
 包独立资料必须由包适配器投影；新增类别可使用已有 config/memory，但不能仅凭 KP 角色推断获得全读授权。独立来源保留 consultationOnly 标记，执行候选须读取当前目标并由 KP 明确接受来源评估。
 
 受信包适配器可实现 `read_scoped(state,account,*,read_scope=None)`。宿主先完成账号、发起者与全读开关校验，才传入 kp-room；普通路径传 None，旧 read(state,account) 保持兼容。包侧必须再次确认实际 KP，并仅在 kp-room 时追加全包状态和全场景聊天；关闭开关后旧证据复验失败。
@@ -135,6 +139,8 @@ PL 在生成前自动预载本人空 query 目录，计入 24 次查询；非空
 
 返回 editRef、revision、fileDigest、path、targetDigest、type 和读取内容/目录；complete 表示是否一次完整返回目标值。单次返回最多 28 KiB。editRef 只在本次生成中有效，不是客户端可自造的修改凭据，也不授予发布权限。
 
+数组页另给出与 value 一一对应的 `positions:[{zeroBasedIndex,path}]`，包含分页偏移后的真实 JSON 路径。它不是运行时物品序号或实体 ID；业务命令仍按包作者声明的映射与实际定义取值。
+
 模型 draft 可在 changeSet 之外附加 dataEdits：
 
 ```json
@@ -159,11 +165,13 @@ PL 在生成前自动预载本人空 query 目录，计入 24 次查询；非空
 | op | 目标和附加字段 | 前置条件 |
 | --- | --- | --- |
 | append | 对象数组；keyField、value | 整个基线数组的业务键类型一致且唯一，新键未存在；可用部分页取得 ref，不要求读取未触及的其他物品 |
+| append | 非根字符串；字符串 value，不带 keyField | 已完整读取该字符串；直接拼接，原有文字保留 |
+| append_value | 普通数组；任意 JSON value | 在末尾追加一个值，不假定元素或业务编号唯一；仍须通过作者 Schema 与引用校验 |
 | add | 对象；key、value | 对象中该键不存在；只新增此键 |
 | replace | 非根节点；value | 对应节点曾被完整返回；替换该节点，保留其余字段 |
 | remove | 非根对象属性 | 对应节点曾被完整返回；不支持删除数组元素，避免隐式索引位移 |
 
-只接受工具本次发出的 ref，并复核工件修订、完整文件及目标摘要。拒绝猜引用、版本变化、同文件同时完整替换和增量、重叠修改；同一数组可多次追加，逐项检查新键。缺失路径不会隐式创建；超大节点不能未经完整读取就替换。单批增量输入最多 64 KiB。
+只接受工具本次发出的 ref，并复核工件修订、完整文件及目标摘要。拒绝猜引用、版本变化、同文件同时完整替换和增量、真正重叠的修改。数组追加按原长度及本批已追加数计算实际末尾写位置，因此可与旧元素的独立字段修改共存，次序不限；整数组替换仍冲突。带 keyField 的追加在合并完成后再次校验唯一键，不能用后续字段修改制造重复键。缺失路径不会隐式创建；超大节点不能未经完整读取就替换。单批增量输入最多 64 KiB。
 
 编译器在副本上展开完整文件：未触及字段取自权威基线，不能由模型猜测；任何编译错误都不产生部分候选。格式修复每次从同一基线重新展开，不能把上次追加重复累积。结构错误进入最多两次的共用技术修复流程；真正缺少玩法决策时仍询问用户。
 

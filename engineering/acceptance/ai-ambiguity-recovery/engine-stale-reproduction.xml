@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="2.894" timestamp="2026-11-23T14:48:52.107712+08:00" hostname="LAPTOP-BIFSL64A"><testcase classname="engineering.ai.tests.test_ambiguity_recovery" name="test_approval_does_not_invalidate_its_own_stable_room_query" time="1.129"><failure message="AssertionError: {'proposal': {'schemaVersion': 1, 'proposalId': 'e5d80bd8d3684c62888da6e7359fdb43', 'revision': 1, 'requestId': '78125...', ...}, {'schemaVersion': 1, 'reportId': '1f022a977ac143968a360f100e7e26a4', 'level': 'C', 'status': 'unknown', ...}]}&#10;assert 'blocked' == 'review_ready'&#10;  &#10;  - review_ready&#10;  + blocked">application = &lt;onlinecoc_ai.api.Application object at 0x0000028ED7078440&gt;
+
+    def test_approval_does_not_invalidate_its_own_stable_room_query(application):
+        app=application;enable(app.host,public=True,private=True,kp=True)
+        snapshot=app.proposals.snapshot('kp');snapshot[0]['facts']['aiReadScope']='kp-room'
+        DataQueryService(app.host).attach('kp','search',{'types':['room'],'query':'tuning.json','limit':12},snapshot)
+        changes=delta();changes['data']={'tuning.json':{'maxTarget':99}}
+        p=app.proposals.create('kp','只调整活动数据',changes,snapshot=snapshot)
+        result=app.proposals.validate('kp',p['proposalId'],1)
+&gt;       assert result['proposal']['status']=='review_ready',result
+E       AssertionError: {'proposal': {'schemaVersion': 1, 'proposalId': 'e5d80bd8d3684c62888da6e7359fdb43', 'revision': 1, 'requestId': '78125...', ...}, {'schemaVersion': 1, 'reportId': '1f022a977ac143968a360f100e7e26a4', 'level': 'C', 'status': 'unknown', ...}]}
+E       assert 'blocked' == 'review_ready'
+E         
+E         - review_ready
+E         + blocked
+
+engineering\ai\tests\test_ambiguity_recovery.py:20: AssertionError</failure></testcase></testsuite></testsuites>

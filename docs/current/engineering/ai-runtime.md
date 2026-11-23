@@ -4,7 +4,7 @@
 - 文档子类：工程
 - 状态：有效
 - 创建日期：2026-11-12
-- 最后更新：2026-11-22
+- 最后更新：2026-11-23
 - 关联文档：[工程索引](README.md)、[模块入口](../../../engineering/ai/README.md)、[设计](../../plans/ai-runtime-design.md)、[施工计划](../../plans/ai-runtime-construction-plan.md)
 
 ## 当前阶段
@@ -17,9 +17,14 @@
 | 查询、引用和配置增量 | [数据查询](ai-data-query.md) |
 | 玩家知识与创作申请 | [个人知识](ai-player-knowledge.md)、[会话权限](ai-session-access.md) |
 | 批次、配置和高危审批 | [修改裁决](ai-rulings.md) |
+| 配置发布后继续发放、通知与中断恢复 | [分步推进](ai-rulings.md#发布后继续运行需求) |
 | 嵌入、来源审核和故障导出 | [组件](ai-pack-embedding.md)、[调试](ai-debug-review.md) |
 
 新房间默认权限和 C 评估见[默认配置验收](../../../engineering/acceptance/ai-defaults-c-review/README.md)；KP 来源采纳及真实配置增改删的成功率与失败记录见[上下文验收](../../../engineering/acceptance/ai-context-compression/README.md)，当前压缩机制及长对话对照见[官方机制适配验收](../../../engineering/acceptance/ai-official-compaction/README.md)。重启与调试修复见[此前验收](../../../engineering/acceptance/ai-runtime/repair-20261120.md)，早期阶段见[开发记录](../../history/2026-11-20-ai-development-records.md)；各轮重复用例不相加为独立覆盖。
+
+紧凑运行投影兼容、发布后继续发放与通知、NPC 未写字段隔离及失败恢复，见[分步配置验收](../../../engineering/acceptance/ai-staged-configuration/README.md)。
+
+模糊需求的有界技术纠错、普通数组／文本增量、独立写集合和批准自失效复验，见[模糊需求恢复验收](../../../engineering/acceptance/ai-ambiguity-recovery/README.md)。确定性验收与包侧真实模型实验分别统计。
 
 ## 已有内容
 

@@ -46,6 +46,7 @@ class Rulings:
             item.update(summary=summaries.get(item['status'],'来源权限或资料已变化，当前内容不能执行；请重新读取并生成方案。'),
                 canDecide=False,canRevalidate=False,risks=[],receipts=receipts)
             item.pop('cAssessment',None)
+            item.pop('changeOverview',None)
             for key in ('actions','changeSet','reports','publications','diff'):
                 if key in item:item[key]=[]
             item.pop('preflight',None)
@@ -124,6 +125,8 @@ class Rulings:
                 from .change_policy import describe
                 snapshot=state['snapshots'][proposal['contextRef']]
                 item.update(describe(self.app.proposals.pack.contract,snapshot['state'],snapshot['artifact'],proposal['changeSet'],include_diff=not compact))
+                from .change_overview import overview
+                item['changeOverview']=overview(snapshot['state'],snapshot['artifact'],proposal['changeSet'])
                 if item['highRisk']:item['risks'].append({'id':'high-risk','question':'高危修改必须人工确认：请核对完整指令包和差异，填写接受理由','required':True})
                 c_report = next((r for r in reports if r['level'] == 'C'), None)
                 if c_report and c_report.get('evidence', {}).get('reviewBasis'):
@@ -144,13 +147,17 @@ class Rulings:
                 items.append(self.redact_stale(account,room,item,context,history_shared))
             items.extend(self.app.knowledge_requests.list(account,ruling_ids=ruling_ids))
             items.extend(self.app.player_requests.list(account,ruling_ids=ruling_ids))
-            for item in items:self.app.queue.decorate(item,state=state,room=room)
+            for item in items:
+                self.app.queue.decorate(item,state=state,room=room)
+                if item['kind']=='configuration' and not item.get('sourceUnavailable') and not item.get('sourceDetailsUnavailable'):
+                    continuation=self.app.continuations.public(item['rulingId'].split(':',1)[1],account)
+                    if continuation:item['continuation']=continuation
             visible=sorted([i for i in items if session_id is None or i['sessionId']==session_id],key=lambda i:i['createdAt'],reverse=True)
             if delivered:
                 from .ruling_history import remember
                 remember(self.repository,room,account,visible,contexts)
             if compact:
-                keys={'rulingId','kind','sessionId','requestId','initiator','summary','status','createdAt','digest','revision','sourceState','sourceError','sourceNotice','sourceUnavailable','sourceDetailsUnavailable','historicalReadOnly','queueTargetId','queueDigest','correlationId','queueStatus','archived','canArchive','canRestore','supersededBy','supersedes','archiveReason','resolution','highRisk','riskTags','reviewSessionId','generationError','blockingReason','consultationAssessment'}
+                keys={'rulingId','kind','sessionId','requestId','initiator','summary','status','createdAt','digest','revision','sourceState','sourceError','sourceNotice','sourceUnavailable','sourceDetailsUnavailable','historicalReadOnly','queueTargetId','queueDigest','correlationId','queueStatus','archived','canArchive','canRestore','supersededBy','supersedes','archiveReason','resolution','highRisk','riskTags','reviewSessionId','generationError','blockingReason','consultationAssessment','changeOverview','continuation'}
                 visible=[{**{k:v for k,v in i.items() if k in keys},'compact':True,'canDecide':False} for i in visible]
             return {'items':visible}
 
@@ -253,6 +260,7 @@ class Rulings:
                             return self.detail(account,item['rulingId'])
                         save()
                     record['status']='completed';save();self.app.proposals.reconcile()
+            self.app.continuations.reconcile()
             return self.detail(account,item['rulingId'])
 
     def confirm_session(self, account, session):

@@ -374,6 +374,18 @@
     ],
     "additionalProperties": false
   },
+  "rule.stage.delta": {
+    "type": "object",
+    "properties": {
+      "baseRevision": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+      "sources": {"type": "object", "maxProperties": 64, "additionalProperties": {"type": "string"}},
+      "data": {"type": "object"},
+      "removeSources": {"type": "array", "maxItems": 64, "uniqueItems": true, "items": {"type": "string"}},
+      "removeData": {"type": "array", "uniqueItems": true, "items": {"type": "string"}}
+    },
+    "required": ["baseRevision"],
+    "additionalProperties": false
+  },
   "rule.activate": {
     "type": "object",
     "properties": {

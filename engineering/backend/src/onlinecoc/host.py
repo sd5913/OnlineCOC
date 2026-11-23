@@ -408,6 +408,11 @@ class Host:
             target['authorizationEpoch']+=1;return True
         if op=='rule.stage':
             require(set(args)<={'sources','data'} and 'sources' in args);artifact=stage(args['sources'],args.get('data'));s['artifacts'][artifact['revision']]=artifact;return artifact['revision']
+        if op=='rule.stage.delta':
+            from .registry import stage_delta
+            require(args['baseRevision']==s['activeRuleset'],'VERSION_CONFLICT')
+            artifact=stage_delta(s['artifacts'][s['activeRuleset']],args)
+            s['artifacts'][artifact['revision']]=artifact;return artifact['revision']
         if op=='rule.activate':
             require(set(args)=={'revision'} and args['revision'] in s['artifacts']);s['activeRuleset']=args['revision'];return args['revision']
         if op=='member.add':

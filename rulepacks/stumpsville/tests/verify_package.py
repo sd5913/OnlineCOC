@@ -9,6 +9,32 @@ from websockets.sync.client import connect
 from harness import PACK, Account, running, provision
 
 
+def verify_file_import(kp, player):
+    authored = kp.request('/package/bundle')
+    active = kp.request('/package/bundle?form=active')
+    assert 'presentationDigest' in active['data']['scene-actions.json']
+    assert 'playerKnowledge' in authored['data']['scene-actions.json']
+    assert player.request('/package/bundle?form=active', allow_error=True)['code'] == 'KP_REQUIRED'
+    base = kp.request('/api/v1/view')['catalog']['rulesetRevision']
+    game = copy.deepcopy(authored['data']['game.json'])
+    game['items'].append({**game['items'][0], 'name': '独立导入验收', 'id': 'single-import-test'})
+    payload = {'file': 'config/game.json', 'value': game, 'baseRevision': base}
+    action_id = str(uuid.uuid4())
+    revision = kp.action('rules.stage', payload, action_id)['revision']
+    assert kp.action('rules.stage', payload, action_id)['revision'] == revision
+    assert kp.request('/package/bundle?form=active') == active
+    changed = copy.deepcopy(game)
+    changed['items'][-1]['name'] += '（竞争修订）'
+    rival = kp.action('rules.stage', {**payload, 'value': changed})['revision']
+    invalid = dict(active['data']['scene-actions.json'], presentationDigest='0' * 64)
+    assert 'code' in kp.action('rules.stage', {**payload, 'file': 'config/scene-actions.json', 'value': invalid}, allow_error=True)
+    kp.action('rules.activate', {'revision': revision})
+    assert kp.request('/package/bundle?form=active') == {**active, 'data': {**active['data'], 'game.json': game}}
+    assert 'code' in kp.action('rules.activate', {'revision': rival}, allow_error=True)
+    assert 'code' in kp.action('rules.stage', payload, allow_error=True)
+    assert kp.request('/package/bundle')['data']['game.json'] == game
+
+
 def main():
     checks = []
     with running() as (runtime, password):
@@ -143,6 +169,9 @@ def main():
         assert '暂停' in p1.action('check', {'attribute': 'dex', 'mode': 'normal'}, allow_error=True)['code']
         kp.action('room', {'status': 'active'})
         checks.append('published recap excludes private notes; pause rejects gameplay')
+
+        verify_file_import(kp, p1)
+        checks.append('single file stage and replay, independent activation, unchanged scene and Lua, stale baseline and restricted artifact view')
 
         content = kp.request('/package/bundle')
         revision = kp.action('rules.stage', {'bundle': content})['revision']

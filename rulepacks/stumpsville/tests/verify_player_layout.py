@@ -39,8 +39,34 @@ def main():
             page.locator('#chat-form textarea').fill('聊天草稿保留')
             page.locator('#comm-tab-ai').click()
             editor=page.locator('#player-ai-embedded .reference-editor');editor.wait_for()
-            expect(page.locator('#player-ai-embedded .ai-view')).to_have_css('min-height','420px',timeout=15000)
+            expect(editor).to_be_in_viewport(ratio=0.9)
             editor.fill('AI草稿保留')
+            # A shell redraw must leave the live editor attached, including its DOM selection.
+            position=editor.evaluate("""node => {
+                node.focus();
+                const range = document.createRange();
+                range.setStart(node.firstChild, 2);
+                range.collapse(true);
+                const selection = getSelection();
+                selection.removeAllRanges();
+                selection.addRange(range);
+                const wasFocused = node.getRootNode().activeElement === node;
+                document.querySelector('[data-action=notebook-toggle][data-args*=records]').click();
+                return {wasFocused, focused:node.getRootNode().activeElement === node,
+                    offset:selection.anchorOffset, inEditor:node.contains(selection.anchorNode)};
+            }""")
+            assert position=={'wasFocused':True,'focused':True,'offset':2,'inEditor':True}, position
+            page.keyboard.insert_text('继续')
+            expect(editor).to_have_text('AI继续草稿保留')
+            editor.fill('')
+            ime=context.new_cdp_session(page)
+            ime.send('Input.imeSetComposition',{'text':'shu','selectionStart':3,'selectionEnd':3})
+            page.locator('[data-action=notebook-toggle][data-args*=records]').evaluate('button => button.click()')
+            ime.send('Input.insertText',{'text':'树'})
+            expect(editor).to_have_text('树')
+            ime.detach()
+            editor.fill('AI草稿保留')
+            checks.append('package refresh preserves the focused AI editor, caret and native IME composition through commit')
             page.locator('#comm-tab-chat').click()
             expect(page.locator('#chat-form textarea')).to_have_value('聊天草稿保留')
             p1.action('check',{'attribute':'dex','mode':'normal'})
@@ -101,7 +127,7 @@ def main():
                 expect(page.locator('#scene-desktop>.workspace-column:visible')).to_have_count(1)
                 assert page.evaluate('document.documentElement.scrollHeight<=innerHeight+1 && document.documentElement.scrollWidth<=innerWidth+1')
             page.locator('#comm-tab-ai').click();expect(editor).to_be_visible()
-            expect(page.locator('#player-ai-embedded .ai-view')).to_have_css('min-height','420px',timeout=15000)
+            expect(editor).to_be_in_viewport(ratio=0.9)
             expect(page.locator('#player-ai-embedded .conversation')).to_have_css('display','flex',timeout=15000)
             page.wait_for_timeout(200)
             page.screenshot(path=str(output/'player-mobile-ai.png'),full_page=True)
@@ -109,10 +135,41 @@ def main():
             page.locator('[name=locale]').select_option('en')
             expect(page.locator('#comm-tab-chat')).to_have_text('Chat')
             expect(page.locator('.notebook-grip')).to_have_attribute('aria-label','Drag panel; arrow keys to move')
+            # Refresh the page behind the separate PL conversation dialog.
+            modal=context.new_page()
+            modal.goto(runtime.origin+'/sessions/player1/#/lobby')
+            modal.locator('[data-action=ai-assistant]').click()
+            modal_editor=modal.locator('#dialog .reference-editor')
+            modal_editor.fill('弹窗草稿')
+            modal.evaluate("""() => {
+                document.querySelector('.topbar').dataset.beforeRefresh='1';
+                document.querySelector('[name=locale]').dispatchEvent(new Event('change',{bubbles:true}));
+            }""")
+            expect(modal.locator('[data-before-refresh]')).to_have_count(0)
+            expect(modal_editor).to_have_text('弹窗草稿')
+            expect(modal_editor).to_be_focused()
+            modal.keyboard.insert_text('继续')
+            expect(modal_editor).to_contain_text('继续')
+            modal.keyboard.press('Escape')
+            expect(modal.locator('#dialog')).not_to_be_visible()
+            modal.close()
+            checks.append('a PL conversation dialog keeps its draft and focus across background page refresh and closes with Escape')
             own=login('kp',True)
             expect(own.locator('.communication-tabs')).to_be_visible()
             assert not own.locator('.sidebar,#kp-ai-embedded').count()
             checks.append('390px columns and clamped notebook stay reachable; English labels and KP own-player view use the same PL layout')
+            own.goto(runtime.origin+'/sessions/kp/#/gm/rulings')
+            composer=own.locator('#kp-ai-embedded .reference-editor')
+            composer.fill('主持草稿')
+            own.evaluate("""() => {
+                document.querySelector('.topbar').dataset.beforeRefresh='1';
+                document.querySelector('[name=locale]').dispatchEvent(new Event('change',{bubbles:true}));
+            }""")
+            expect(own.locator('[data-before-refresh]')).to_have_count(0)
+            expect(composer).to_be_focused()
+            own.keyboard.insert_text('继续')
+            expect(composer).to_contain_text('主持草稿继续')
+            checks.append('KP package refresh retains editor focus and allows uninterrupted typing')
             browser.close()
     assert not errors,errors
     report={'checkedAt':datetime.now().astimezone().isoformat(),'passed':len(checks),'checks':checks,'consoleErrors':errors,'provider':'loopback; no model calls','realSaveModified':False}

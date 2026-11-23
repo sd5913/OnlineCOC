@@ -24,7 +24,8 @@ def test_permissions_archive_delete_batches_and_mobile(services):
             page.locator('.review-close').click();page.locator('.new-chat').click();expect(page.locator('#session-access')).to_contain_text('管理员')
             page.locator('#text').fill('批次验收：请改名');page.locator('#send').click();expect(page.locator('#history')).to_contain_text('查看执行批次',timeout=30000)
             page.locator('.review-open').click();page.locator('[data-tab=batches]').click();expect(page.locator('.batch-card')).to_contain_text('等待 KP 裁决')
-            page.get_by_role('button',name='批准并执行',exact=True).click();expect(page.locator('.batch-card')).to_contain_text('已执行')
+            page.get_by_role('button',name='批准并执行',exact=True).click();expect(page.locator('.batch-card .ruling-state')).to_have_text('指令已提交')
+            expect(page.locator('.batch-card')).to_contain_text('提交 1 项 · 撤销 0 项 · 失败 0 项 · 未执行 0 项')
             page.screenshot(path=str(OUTPUT/'execution-batches.png'),full_page=True);page.locator('.review-close').click()
             page.locator('.manage-sessions').click();expect(page.locator('.binding')).to_contain_text('创建者 kp')
             for _ in range(3):

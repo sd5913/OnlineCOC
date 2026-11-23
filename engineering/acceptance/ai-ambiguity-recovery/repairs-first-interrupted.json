@@ -1,0 +1,6 @@
+{
+  "status": "interrupted",
+  "reason": "coordinator.close lost its wake during idle reconciliation; clarification was already needs_input, no provider call in flight",
+  "test": "test_miswrapped_clarification_is_delivered_once_without_executing_tool",
+  "followup": "added shutdown recheck after awaited reconciliation and deterministic race regression"
+}

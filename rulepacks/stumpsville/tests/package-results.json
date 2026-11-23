@@ -1,6 +1,6 @@
 {
   "passed": true,
-  "checkedAt": "2026-11-23T09:48:37.945332+08:00",
+  "checkedAt": "2026-11-23T16:45:15.388940+08:00",
   "checks": [
     "real host initialized; KP + two scoped player sessions; approved characters",
     "check receipt replay does not reroll",
@@ -13,6 +13,7 @@
     "long rest restores HP or one attribute; armor and WIL morale save",
     "chat edit, server-derived receipt summary, direct/group audience isolation",
     "published recap excludes private notes; pause rejects gameplay",
+    "single file stage and replay, independent activation, unchanged scene and Lua, stale baseline and restricted artifact view",
     "stage, isolated preview, activate and paired backup",
     "authenticated scoped WebSocket proxy delivers host snapshots",
     "host and adapter restart preserve resources, notes and idempotent receipts",

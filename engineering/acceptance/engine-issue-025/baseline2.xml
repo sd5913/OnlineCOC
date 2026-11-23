@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="6.481" timestamp="2026-11-23T14:59:11.265799+08:00" hostname="LAPTOP-BIFSL64A"><testcase classname="tests.test_room_state_artifacts" name="test_real_abc_approve_stage_then_publish_once_without_self_stale" time="6.021"><failure message="AssertionError: {'status': 'rejected', 'commandId': 'publish-comment', 'code': 'SOURCE_STALE'}&#10;assert 'rejected' == 'committed'&#10;  &#10;  - committed&#10;  + rejected">ai_case = (&lt;onlinecoc.host.Host object at 0x00000183598AE510&gt;, &lt;onlinecoc_ai.proposals.Proposals object at 0x0000018359A1C050&gt;, ...'item', 'defaults': {'quantity': 1, 'unitMass': 0, 'charges': 2, 'bonus': 15}, ...}}], 'sources': {}, 'data': {}, ...})
+
+    def test_real_abc_approve_stage_then_publish_once_without_self_stale(ai_case):
+        host, approval, prepared = candidate(ai_case)
+        message = ai_message(host, 'publication.apply', {'approvalId': approval}, 'publish-comment')
+        result = host.command('kp', message)
+&gt;       assert result['status'] == 'committed', result
+E       AssertionError: {'status': 'rejected', 'commandId': 'publish-comment', 'code': 'SOURCE_STALE'}
+E       assert 'rejected' == 'committed'
+E         
+E         - committed
+E         + rejected
+
+engineering\acceptance\engine-issue-025\work\baseline2\engineering\backend\tests\test_room_state_artifacts.py:123: AssertionError</failure></testcase></testsuite></testsuites>

@@ -5,6 +5,24 @@ from ..pack import local_schema, fixture_state
 from ..sandbox import run_scenario, execute
 
 
+def validate_effect_numbers(validator,before,after,touched,*,existing=False):
+    """Retain only identical pre-existing field failures outside the write set.
+
+    Root/composite constraints cannot establish an unrelated field, so remain
+    strict. An explicit write of the same invalid value is still checked.
+    """
+    from ..contracts import digest
+    def signature(error):
+        return digest([list(error.absolute_path),list(error.absolute_schema_path),error.validator_value,error.instance])
+    previous={signature(e) for e in validator.iter_errors(before)} if existing else set()
+    retained=[]
+    for error in validator.iter_errors(after):
+        path=list(error.absolute_path)
+        require(bool(path) and path[0] not in touched and signature(error) in previous,'EXTENSION_EFFECT_RANGE')
+        retained.append({'path':path,'constraint':error.validator})
+    return retained
+
+
 def configuration_checks(pack, state, baseline, artifact, changes):
     spec=getattr(pack,'extension_validation',None)
     if not spec:return
@@ -72,13 +90,16 @@ def assess_extensions(pack, state, baseline, artifact, changes, account):
             variants=[('candidate',artifact)]+([('baseline',baseline)] if rule in baseline['metadata'] else [])
             for variant,rules in variants:
                 trials=run_scenario(rules,world,scenario,[[n]*64 for n in (1,10,20)])
+                inherited=[]
                 for trial in trials:
                     step=trial['steps'][0];require(step['ok'],'EXTENSION_SCENARIO_FAILED')
-                    numbers=copy.deepcopy(world['entities'][actor]['numbers'])
+                    before=world['entities'][actor]['numbers'];numbers=copy.deepcopy(before);touched=set()
                     for effect in step['effects']:
                         require(effect['type']=='number' and effect['id']==actor,'EXTENSION_EFFECT_FORBIDDEN')
-                        numbers[effect['key']]=effect['value']
-                    require(validator.is_valid(numbers),'EXTENSION_EFFECT_RANGE')
-                evidence.append({'rule':rule,'target':label,'variant':variant,'trials':trials})
+                        numbers[effect['key']]=effect['value'];touched.add(effect['key'])
+                    retained=validate_effect_numbers(validator,before,numbers,touched,existing=label.startswith('existing:'))
+                    for finding in retained:
+                        if finding not in inherited:inherited.append(finding)
+                evidence.append({'rule':rule,'target':label,'variant':variant,'trials':trials,'inheritedValidationFindings':inherited})
     return {'templateComparisons':comparisons,'ruleProbes':evidence,'changedRules':changed,
         'existingInstancesPreserved':True,'limitations':['Only explicit NPC-family inputs are covered','d20 probes use 1, 10 and 20; not exhaustive probabilities','Package discoveries, dialogue and scene side effects are outside this transaction']}

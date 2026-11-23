@@ -1,0 +1,44 @@
+{
+  "newCodeFiles": [
+    "engineering/ai/src/onlinecoc_ai/change_overview.py",
+    "engineering/ai/src/onlinecoc_ai/continuations.py",
+    "engineering/ai/tests/test_staged_configuration.py"
+  ],
+  "acceptanceFiles": [
+    "engineering/acceptance/ai-staged-configuration/.gitignore",
+    "engineering/acceptance/ai-staged-configuration/README.md",
+    "engineering/acceptance/ai-staged-configuration/extension-live-final-source.json",
+    "engineering/acceptance/ai-staged-configuration/extension-live-final.xml",
+    "engineering/acceptance/ai-staged-configuration/extension-live-source.json",
+    "engineering/acceptance/ai-staged-configuration/extension-live-verified-source.json",
+    "engineering/acceptance/ai-staged-configuration/extension-live-verified.xml",
+    "engineering/acceptance/ai-staged-configuration/extension-live.xml",
+    "engineering/acceptance/ai-staged-configuration/files-manifest.json",
+    "engineering/acceptance/ai-staged-configuration/final-validation-source.json",
+    "engineering/acceptance/ai-staged-configuration/final-validation.xml",
+    "engineering/acceptance/ai-staged-configuration/freeze.py",
+    "engineering/acceptance/ai-staged-configuration/full-regression-source.json",
+    "engineering/acceptance/ai-staged-configuration/full-regression.xml",
+    "engineering/acceptance/ai-staged-configuration/idle-stage-final-source.json",
+    "engineering/acceptance/ai-staged-configuration/idle-stage-final.xml",
+    "engineering/acceptance/ai-staged-configuration/pack-matrix-final.json",
+    "engineering/acceptance/ai-staged-configuration/pack-matrix.json",
+    "engineering/acceptance/ai-staged-configuration/run_tests.py",
+    "engineering/acceptance/ai-staged-configuration/staged-final-source.json",
+    "engineering/acceptance/ai-staged-configuration/staged-final.xml",
+    "engineering/acceptance/ai-staged-configuration/staged-first-source.json",
+    "engineering/acceptance/ai-staged-configuration/staged-first.xml",
+    "engineering/acceptance/ai-staged-configuration/staged-second-source.json",
+    "engineering/acceptance/ai-staged-configuration/staged-second.xml",
+    "engineering/acceptance/ai-staged-configuration/staged-third-source.json",
+    "engineering/acceptance/ai-staged-configuration/staged-third.xml",
+    "engineering/acceptance/ai-staged-configuration/staged-ui-source.json",
+    "engineering/acceptance/ai-staged-configuration/staged-ui.xml",
+    "engineering/acceptance/ai-staged-configuration/verification.json",
+    "engineering/acceptance/ai-staged-configuration/verify_pack.py"
+  ],
+  "frozenDirectories": [
+    "engineering/acceptance/ai-staged-interface-snapshot/v1/",
+    "engineering/acceptance/ai-staged-interface-snapshot/v2/"
+  ]
+}

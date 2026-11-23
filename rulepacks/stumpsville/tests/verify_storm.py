@@ -215,5 +215,157 @@ def play(route, alternate=False):
     print('PASS',route,'alternate' if alternate else 'primary','incl. restart',flush=True)
 
 
+def verify_event_catalog():
+    import json
+    from harness import PACK
+    import scene_knowledge as knowledge
+    content = json.loads((PACK/'config/scene-actions.json').read_bytes())
+    game = json.loads((PACK/'config/game.json').read_bytes())
+    checked = 0
+    for a in content['actions']:
+        ix = a['location']
+        clues = [c for c in content['playerKnowledge'] if c['location']==ix]
+        def offered(flags, remaining=1):
+            place = {'index':ix,'description':'','exits':[],'clues':clues,'actions':knowledge.menu(content,ix,clues)}
+            knowledge.describe_events(place,content,flags,1)
+            knowledge.describe_stock(place,{i:remaining for i in range(1,len(game['items'])+1)},remaining,game)
+            return {c['id'] for action in place['actions'] if action['id']==a['id'] for c in action['choices']}
+        for c in a['choices']:
+            step = c.get('storm', {})
+            flags = dict.fromkeys(step.get('need',[]),1)
+            if (a['id'],c['id'])==('cage-gate','open'): flags['snakeCalmed']=1
+            if step.get('evac'): flags.update(foot=1,fed=1)
+            assert c['id'] in offered(flags), (a['id'],c['id'],'cannot reach eligible stage')
+            done = step.get('set') or ('sent' if step.get('send') else 'stormStart' if step.get('start') else None)
+            if done:
+                assert c['id'] not in offered({**flags,done:1}), (a['id'],c['id'],'completed')
+            if step.get('take'):
+                assert c['id'] not in offered(flags,0), (a['id'],c['id'],'empty stock')
+            for needed in step.get('need',[]):
+                assert c['id'] not in offered({**flags,needed:0}), (a['id'],c['id'],needed)
+            for excluded in step.get('absent',[]):
+                assert c['id'] not in offered({**flags,excluded:1})
+            checked += 1
+    print('PASS catalog:',len(content['actions']),'actions,',checked,'choices')
+
+
+def multiplayer_events():
+    from concurrent.futures import ThreadPoolExecutor
+    from threading import Barrier
+    with running('event-races', no_browser=True) as (runtime, password):
+        kp, one, two = provision(runtime, password)
+        keepers = [kp, Account(runtime.origin,'kp',password,'second-executor')]
+        players = [one,two]
+        actors = [p.state()['character']['instanceId'] for p in players]
+
+        def simultaneous(fn):
+            gate = Barrier(2)
+            def run(i):
+                gate.wait(timeout=10)
+                return fn(i)
+            with ThreadPoolExecutor(2) as pool:
+                return list(pool.map(run,range(2)))
+
+        evidence = []
+        def visit(index, clues=()):
+            kp.action('location.publish', {'index':index})
+            for actor in actors:
+                kp.command('entity.update', {'id':actor,'numbers':{'location':index}})
+            kp.action('location.reveal', {'index':index,'accounts':['player1','player2'],'knowledge':list(clues)})
+
+        def race(action, choice):
+            ids = [str(uuid.uuid4()) for _ in players]
+            args = {'action':action,'choice':choice}
+            queued = simultaneous(lambda i: players[i].action('scene.action',args,ids[i]))
+            jobs = [runtime.package.state['autoSceneQueue'][row['jobId']] for row in queued]
+            outcomes = simultaneous(lambda i: keepers[i].action('scene.autorun',{'jobId':jobs[i]['id']},jobs[i]['commandId']))
+            for i, player in enumerate(players):
+                assert player.action('scene.action',args,ids[i]) == outcomes[i]
+            evidence.append({'action':action, 'choice':choice, 'outcomes':[r['outcome'] for r in outcomes],
+                             'costs':[r.get('cost',0) for r in outcomes], 'sameReceiptOnRetry':True})
+            return outcomes
+
+        def turn():
+            return kp.state()['session']['numbers']['round']
+        def held(item, uses=False):
+            total = 0
+            for player in players:
+                n = player.state()['character']['numbers']
+                for slot in range(1,21):
+                    if n['item'+str(slot)] == item:
+                        total += n['uses'+str(slot)] if uses else 1
+            return total
+        def one_wins(action, choice):
+            outcomes = race(action,choice)
+            assert sorted(x['outcome'] for x in outcomes)==['blocked','success'], outcomes
+
+        visit(4)
+        start=turn()
+        found=race('house-pots','search')
+        assert all(x['outcome']=='success' for x in found)
+        assert sum(len(x['rolls']) for x in found)==1 and turn()==start+1
+        assert all(any(c['id']=='pots-observed' for loc in p.state()['locations'] for c in loc['clues']) for p in players)
+        visit(3,['pool-treasure'])
+        # Even a failed dive spends its turn; the other queued dive must not roll again.
+        round_before = turn()
+        kp.command('entity.update', {'id':runtime.package.state['sceneId'],'numbers':{'poolKnown':1}})
+        dives = race('courtyard-pool','money')
+        assert sum(len(r['checks'])>0 for r in dives)==1 and sum(r['outcome']=='blocked' for r in dives)==1, dives
+        assert turn()==round_before+1
+        visit(7,['hall-company'])
+        for actor in actors:
+            kp.action('grant',{'actor':actor,'item':3,'uses':3,'slot':18})
+        start,food,flutes=turn(),held(3,True),held(9)
+        one_wins('hall-negotiate','food')
+        assert turn()==start+1 and held(3,True)==food-1 and held(9)==flutes+1
+        visit(9,['snake-rhythm'])
+        for actor in actors:
+            kp.action('grant',{'actor':actor,'item':9,'uses':0,'slot':19})
+        start=turn()
+        one_wins('cage-listen','flute')
+        assert turn()==start+1
+        # Both players make a new observation of the now calm snake.
+        visit(9,['snake-rhythm'])
+        one_wins('cage-gate','open')
+        assert turn()==start+1
+        visit(12,['supplies12'])
+        start,before=turn(),held(18)
+        wax=race('storm-supplies12','18')
+        assert all(x['outcome']=='success' for x in wax) and held(18)==before+2 and turn()==start
+        kp.command('entity.update',{'id':runtime.package.state['sceneId'],'numbers':{'stormStart':1,'sent':start,'aid':0}})
+        visit(14)
+        old = next(c['eventVersion'] for a in two.state()['sceneActions'] if a['id']=='storm-ferry' for c in a['choices'] if c['id']=='wait')
+        one_wins('storm-ferry','wait')
+        assert turn()==start+1
+        late = two.action('scene.action', {'action':'storm-ferry','choice':'wait','eventVersion':old,'manual':True}, allow_error=True)
+        assert '刷新选项' in str(late) and turn()==start+1
+        one_wins('storm-ferry','wait')
+        assert turn()==start+2 and runtime.package.state['sceneState']['aid']==1
+        visit(1)
+        kp.action('door', {'edge':'1-14','status':'locked'})
+        observed = race('storm-roads1','survey')
+        assert all('仍关闭' in ''.join(o['narrative']) for o in observed)
+        assert kp.state()['doors']['1-14']=='locked' and turn()==start+2
+        visit(11)
+        for actor in actors:
+            kp.action('grant', {'actor':actor,'item':17,'slot':15,'uses':0})
+            kp.action('grant', {'actor':actor,'item':18,'slot':16,'uses':1})
+        # Two independently approved requests race for a single shared repair.
+        before = (held(17), held(18,True), turn())
+        queued = simultaneous(lambda i: players[i].action('scene.action',{'action':'storm-pump','choice':'gear','manual':True}))
+        approval_ids = [str(uuid.uuid4()) for _ in queued]
+        approvals = [{'requestId':q['requestId'],'approve':True} for q in queued]
+        results = simultaneous(lambda i: keepers[i].action('resolve',approvals[i],approval_ids[i],allow_error=True))
+        assert sum('泵轮已经转动' in str(r.get('code','')) for r in results)==1, results
+        assert (held(17), held(18,True), turn()) == (before[0]-1, before[1]-1, before[2]+1)
+        winner = next(i for i,r in enumerate(results) if not r.get('code'))
+        assert keepers[winner].action('resolve',approvals[winner],approval_ids[winner])==results[winner]
+        evidence.append({'action':'storm-pump','choice':'gear','manualApprovals':2,'repairs':1,'gearsUsed':1,'waxUsesSpent':1,'roundsAdvanced':1})
+        import json
+        (runtime.data/'event-races.json').write_text(json.dumps(evidence,ensure_ascii=False,indent=2),encoding='utf8')
+        print('PASS multiplayer generation, payment, reward, finite stock, doors, shared waits and replay')
+
 if __name__=='__main__':
-    play(sys.argv[1], '--alternate' in sys.argv[2:])
+    if sys.argv[1]=='--races': multiplayer_events()
+    elif sys.argv[1]=='--catalog': verify_event_catalog()
+    else: play(sys.argv[1], '--alternate' in sys.argv[2:])

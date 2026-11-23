@@ -1,0 +1,15 @@
+{
+  "kind": "overlay",
+  "base": "engineering/acceptance/ai-staged-interface-snapshot/v2",
+  "baseFilesDigest": "a1a4cd65d54ee3009e9c00c31792f719ce3e5da921f4049b52e926d66b76ae46",
+  "files": {
+    "engineering/ai/src/onlinecoc_ai/coordinator.py": "afe4936511e5f3a7d36ea454ebccbd0b94d17e97805eb1aad076fed807b3c3d7",
+    "engineering/ai/src/onlinecoc_ai/data_edits.py": "ea38a5dde7dd2fe561dd3e3767c2911c4fc4098dec1989292a9ae7db0f413975",
+    "engineering/ai/src/onlinecoc_ai/reliability.py": "e0f0c98914336a87ca864848d85784d63c2d4dc3510e3cd52f90322a58120264",
+    "engineering/ai/tests/test_ambiguity_recovery.py": "f6836e388cd1d85ae1b6e17db64af4035fd0e2cc2da9b443da98241d9b98c9cc",
+    "engineering/ai/tests/test_data_edits.py": "8e1a94d761aa131e61a8287a60c203deaf6f64fb1239ed2aedacc24635498034"
+  },
+  "fileCount": 5,
+  "removedFiles": [],
+  "filesDigest": "ab94d058c0aadd809c2b45411ba496dce77d487a6d7db4eaae792f9ece2d6bef"
+}

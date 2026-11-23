@@ -176,10 +176,11 @@ def ai_snapshot(data):
     strict['ai'] = 'ai/contract.json'
     values = {'manifest.json': strict, 'ai/contract.json': contract, 'ai/checks.json': [], 'ai/metrics.json': []}
     from ai_extensions import materials
-    values.update(materials(contract,json.loads(files[manifest['configurations']])))
+    pack_data = {name: json.loads(files['config/' + name]) for name in manifest['data']}
+    configurations = json.loads(files[manifest['configurations']])
+    values.update(materials(contract, configurations, pack_data['game.json']['locations']))
     from ai_gameplay import materials as gameplay_materials
-    values.update(gameplay_materials(contract, json.loads(files[manifest['configurations']]),
-        {name: json.loads(files['config/' + name]) for name in manifest['data']}, manifest['rules']))
+    values.update(gameplay_materials(contract, configurations, pack_data, manifest['rules']))
     files.update({name: (json.dumps(value, ensure_ascii=False, indent=2)+'\n').encode('utf-8') for name, value in values.items()})
     digest = hashlib.sha256()
     for name, raw in sorted(files.items()):

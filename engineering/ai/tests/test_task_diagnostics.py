@@ -107,8 +107,10 @@ def test_deepseek_wire_query_replay_and_parameter_repair(setup, bad):
             assert '已读取角色' in saved['text']
             diagnostics=saved['diagnostics']
             assert not diagnostics['errors'] and diagnostics['stage']=='completed'
-            assert len(diagnostics['toolCalls'])==(3 if bad is not None else 2)
-            assert diagnostics['toolCalls'][0]['status']==('rejected' if bad is not None else 'completed')
+            recovered_fields=bad is not None and 'fields' in bad
+            assert len(diagnostics['toolCalls'])==(3 if bad is not None and not recovered_fields else 2)
+            assert diagnostics['toolCalls'][0]['status']==('rejected' if bad is not None and not recovered_fields else 'completed')
+            if recovered_fields:assert any(f['code']=='QUERY_FIELDS_REPAIRED' for f in diagnostics['outputFailures'])
             app=Application(SimpleNamespace(proposals=service,coordinator=c))
             assert app.tasks('kp')['items'][0]['diagnostics']==diagnostics
             app.repository.update(lambda state:state['settings'].update(accessPolicy={'revision':1,'allowPlayerChat':True,'autoApproveBatches':False,'principal':'kp'}))

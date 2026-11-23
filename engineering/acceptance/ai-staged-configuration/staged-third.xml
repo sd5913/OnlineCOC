@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="13" time="50.373" timestamp="2026-11-23T13:06:13.666072+08:00" hostname="LAPTOP-BIFSL64A"><testcase classname="engineering.ai.tests.test_staged_configuration" name="test_publication_gates_fresh_runtime_batch_and_notification_once" time="8.286" /><testcase classname="engineering.ai.tests.test_staged_configuration" name="test_continuation_stops_for_current_authority_or_revision[archive]" time="2.296" /><testcase classname="engineering.ai.tests.test_staged_configuration" name="test_continuation_stops_for_current_authority_or_revision[revoke]" time="2.380" /><testcase classname="engineering.ai.tests.test_staged_configuration" name="test_continuation_stops_for_current_authority_or_revision[cancel]" time="2.305" /><testcase classname="engineering.ai.tests.test_staged_configuration" name="test_continuation_stops_for_current_authority_or_revision[revision]" time="2.376" /><testcase classname="engineering.ai.tests.test_staged_configuration" name="test_resume_after_request_saved_dispatch_failure_never_duplicates" time="5.461" /><testcase classname="engineering.ai.tests.test_staged_configuration" name="test_model_draft_registers_stage_without_asking_again" time="0.325"><failure message="KeyError: 'taskId'">application = &lt;onlinecoc_ai.api.Application object at 0x0000022B8001CE50&gt;
+
+    def test_model_draft_registers_stage_without_asking_again(application):
+        app=application;enable(app.host,public=True,private=True,kp=True)
+        async def callback(*args):return completion({'kind':'draft','text':'先准备已要求的配置',
+            'changeSet':delta(),'afterPublish':{'text':'发布后改名并通知玩家'}})
+        async def run():
+            provider=Fake(callback);app.coordinator.provider_factory=lambda p:provider;await app.coordinator.start()
+            try:
+                s=session(app);r=submit(app,s,'调整配置，随后改名并通知玩家')
+                task=await wait_task(app.coordinator,r['taskId'],60)
+                assert task['status']=='review_ready',task
+                record=app.continuations.public(task['proposalId'],'kp')
+                assert record=={'status':'waiting_publication'} and provider.calls==1
+                item=app.rulings.detail('kp','proposal:'+task['proposalId'])
+                compact=app.rulings.page('kp')['items'][0]
+                assert compact['changeOverview']==item['changeOverview'] and compact['highRisk']==item['highRisk']
+                assert any(i['path'].endswith('/defaults/bonus') for i in item['changeOverview']['items'])
+            finally:await app.coordinator.close()
+&gt;       asyncio.run(run())
+
+engineering\ai\tests\test_staged_configuration.py:116: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:204: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\runners.py:127: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\26077\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\base_events.py:719: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    async def run():
+        provider=Fake(callback);app.coordinator.provider_factory=lambda p:provider;await app.coordinator.start()
+        try:
+            s=session(app);r=submit(app,s,'调整配置，随后改名并通知玩家')
+&gt;           task=await wait_task(app.coordinator,r['taskId'],60)
+                                                 ^^^^^^^^^^^
+E           KeyError: 'taskId'
+
+engineering\ai\tests\test_staged_configuration.py:107: KeyError</failure></testcase><testcase classname="engineering.ai.tests.test_staged_configuration" name="test_restart_keeps_interrupted_task_and_does_not_redispatch" time="7.980" /><testcase classname="engineering.ai.tests.test_staged_configuration" name="test_approval_without_publication_does_not_advance" time="3.285" /><testcase classname="engineering.ai.tests.test_staged_configuration" name="test_continuation_integrity_detects_modified_plan" time="2.049" /><testcase classname="engineering.ai.tests.test_staged_configuration" name="test_two_consecutive_publications_refresh_baseline_keep_external_conflict" time="11.602" /><testcase classname="engineering.ai.tests.test_staged_configuration" name="test_exact_paths_escape_and_bounded_overview" time="0.001" /><testcase classname="engineering.ai.tests.test_staged_configuration" name="test_projection_inheritance_only_selector" time="0.091" /></testsuite></testsuites>

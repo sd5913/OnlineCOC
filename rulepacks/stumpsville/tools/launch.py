@@ -506,6 +506,11 @@ def create_app(runtime):
                     if view['role'] != 'kp':
                         return response({'code': 'KP_REQUIRED'}, 403)
                     await asyncio.to_thread(runtime.package.sync_rules,client,view)
+                    if request.query_params.get('form') == 'active':
+                        revision = view['catalog']['rulesetRevision']
+                        artifact = (await asyncio.to_thread(client.request, '/admin/artifacts/' + revision))['artifact']
+                        configs = (await asyncio.to_thread(client.request, '/admin'))['configurations']
+                        return response({'sources': artifact['sources'], 'data': artifact['data'], 'configurations': list(configs.values())})
                     content = bundle()
                     content['configurations']=list((await asyncio.to_thread(client.request,'/admin'))['configurations'].values())
                     active = runtime.package.state.get('activeRevision')

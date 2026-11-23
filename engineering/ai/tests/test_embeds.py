@@ -2,6 +2,7 @@
 from pathlib import Path
 import json
 import re
+import httpx
 import pytest
 from playwright.sync_api import sync_playwright, expect
 from test_manager_ui import services, allow_players
@@ -31,6 +32,17 @@ def login(page,account):
 def test_real_room_page_variants(services,variant):
     _,entry,_=services;origin=f'http://127.0.0.1:{entry["roomPort"]}'
     allow_players(origin)
+    if variant!='page':
+        # Test the external-source denial, not the earlier AI-disabled gate.
+        with httpx.Client(base_url=origin,trust_env=False,headers={'Origin':origin}) as api:
+            csrf=api.post('/api/v1/login',json={'loginName':'kp','password':'test-password'}).json()['csrf']
+            epoch=api.get('/api/v1/view').json()['authorityEpoch']
+            receipt=api.post('/api/v1/ai/commands',headers={'X-CSRF-Token':csrf},json={
+                'requestId':'enable-service-without-external-sources','authorityEpoch':epoch,
+                'op':'ai.settings.update','args':{'enabled':True,'profileId':'deepseek-main',
+                    'externalSources':{'public':False,'private':False,'kp':False},
+                    'auto':{'enabled':False,'channelIds':[],'prefix':'!ai '}}}).json()
+            assert receipt['status']=='committed',receipt
     with sync_playwright() as p:
         browser=p.chromium.launch(channel='msedge',headless=True);page=browser.new_page(viewport={'width':1360,'height':940});errors=[];queries=[]
         page.on('pageerror',lambda error:errors.append(str(error)))

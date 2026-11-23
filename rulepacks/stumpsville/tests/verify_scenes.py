@@ -28,7 +28,7 @@ def main():
                 for task in kp.request('/package/scene-executor', {})['jobs']:
                     kp.action('scene.autorun', {'jobId': task['id']}, task['commandId'])
                 result = account.action('scene.action', args, key)
-            assert result['sceneAction'] == action and result['status'] == 'completed', result
+            assert result.get('sceneAction') == action and result['status'] == 'completed', result
             assert result['narrative'] and result['process']
             actions.add(action)
             return result
@@ -88,7 +88,7 @@ def main():
         act('factory-equipment', 'inspect')
         act('factory-equipment', 'paddle'); act('factory-equipment', 'cloth')
         act('factory-exits', 'survey'); act('factory-exits', 'iron')
-        assert act('factory-exits', 'iron')['cost'] == 0
+        assert 'iron' not in {c['id'] for a in p1.state()['sceneActions'] if a['id']=='factory-exits' for c in a['choices']}
         move(9)
         act('cage-gate', 'inspect'); act('cage-listen', 'listen'); act('cage-listen', 'flute')
         act('cage-gate', 'open'); move(10)
@@ -105,6 +105,7 @@ def main():
         failed = None
         for _ in range(12):
             kp.action('door', {'edge': '9-10', 'status': 'closed'})
+            kp.action('location.reveal', {'index':9,'accounts':['player1']})
             attempt = act('cage-listen', 'sneak')
             if attempt['outcome'] == 'failure':
                 failed = attempt

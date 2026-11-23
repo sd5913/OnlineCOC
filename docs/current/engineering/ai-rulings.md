@@ -4,7 +4,7 @@
 - 文档子类：工程
 - 状态：有效
 - 创建日期：2026-11-16
-- 最后更新：2026-11-22
+- 最后更新：2026-11-23
 - 关联文档：[会话权限](ai-session-access.md)、[回答约定](ai-responses.md)、[嵌入组件](ai-pack-embedding.md)、[数据查询](ai-data-query.md)
 
 ## 一次提交，一次裁决
@@ -24,6 +24,8 @@
 
 ## 紧凑分页与按需详情
 
+配置列表与详情均提供 `changeOverview:{total,items:[{path,operation,summary}],truncated}`。路径从基线和完整候选计算，为 JSON Pointer（文件名中的 `/` 转为 `~1`）；operation 为 add/replace/remove。最多显示 40 项并保留实际总数，摘要不携带完整值；原候选和 diff 仍在详情。来源撤销或详情不可访问时隐藏此字段，不用概述替代批准时的完整检查。
+
 Python `Rulings.page(account, queue="active", before=None, limit=30, session_id=None, delivered=False)` 返回 `{items,nextBefore,activeCount}`；limit 为 1—100，before 为上一页最后一个 rulingId。active 排除显式归档、已替代和 completed/published/accepted/rejected/cancelled/failed/rolled_back；archived 包含这些记录，all 不筛选。activeCount 按会话范围统计、与游标无关。排序按创建时间与 ID 倒序，游标不再属于当前范围时返回 CURSOR_INVALID，调用方应重新取第一页。
 
 卡片保留摘要、来源状态、业务状态、高危标识与 riskTags、审核会话及经当前授权复验的 resolution、归档定位，不返回完整动作、候选差异、报告或回执；`compact=true`、`canDecide=false` 表示需先加载详情。`Rulings.detail(account,ruling_id,delivered=False)` 只读取目标项并按当前身份、来源和权限复验。旧 `list` 接口保持兼容；审批、自动批准和拒绝也按单项读取，仍执行现有审批与发布检查。面向用户的读取应传 delivered=True 保存本次交付的摘要证明，来源变化后可继续灰显已交付原文，撤权后不恢复。
@@ -33,6 +35,16 @@ HTTP：`GET /api/v1/ai/rulings?compact=true&queue=active&limit=30&before=<ruling
 列表索引按 AI 仓库版本和已发布候选更新；不缓存来源授权或“可执行”判断。每页仅核验所选记录，详情和审批再次核验。历史会话读取复用同一请求的只读快照，不把旧正文当成当前执行依据。
 
 ## 运行时预检与原子边界
+
+### 发布后继续运行需求
+
+管理员会话的模型草稿可附 `afterPublish:{text}`（1—2000 字符），描述原需求剩余的运行步骤。例如先新增物品配置，待真实发布后再生成发放与通知批次。此字段不是批准；普通模型建议不能成为新用户指令。服务保存提案修订、候选摘要、原请求、会话、账号授权版本和作用域，仅匹配宿主已提交的 publication 才继续，批准但未加载不会继续。
+
+后续请求沿用原用户文本；模型上下文单独提供 `publicationContinuation`，明确 suggestedNextStep 只是未经授权的模型建议。重新查询当前定义、目标及操作契约；禁止再次生成配置草稿。用户已确定的设计不重复确认，确有缺失决策仍可澄清；模糊设计先给具体建议。发放和来源绑定通知仍走现有批次预检、当前权限及人工／已配置的自动批准策略，不提前宣称成功。
+
+配置裁决可读 `continuation:{status,nextRequestId?,nextTaskId?,error?}`；仅原管理员且授权版本仍有效时返回。状态包括 waiting_publication、ready、queued/generating/validating、review_ready、needs_input、awaiting_runtime_approval、completed、blocked、failed、interrupted、cancelled、superseded，以及运行批次的 executing/unknown/partial/rejected/rolled_back。会话项的 `continuationOrigin:{proposalId,requestId}` 标识自动续办，通用 AI 面板显示“发布后继续”。
+
+请求创建及来源关联同事务持久化，派发使用固定去重键。发布成功后保存／派发中断，可从原请求恢复；已派发任务失败或重启中断不会重新调用模型或重放业务。失败保留状态和稳定错误码，按原任务与回执核对，再由用户明确重新发起剩余工作。归档会话、撤销权限、取消来源或更换提案修订会停止推进；未知执行结果仍用原回执核对，不新建命令。恢复权限或取消归档不会重放已派发任务。
 
 新候选携带 `preflight`，逐项给出 passed / blocked / unsupported / runtime_required、错误码及路径。确定性预检不写状态、不消费正式骰子。生成器将可修复的技术失败反馈模型，最多两次；失败或不支持的候选保留为 blocked，不能批准。权限、目标、代价和效果的真实分歧不能靠重试替用户决定。
 
@@ -116,6 +128,7 @@ AI 服务关闭后，宿主依据和权限回调重新读取持久化仓库，�
 | 声明 | 格式与作用 |
 | --- | --- |
 | `PackContract.highRisk` | `{configurationIds,configurationPrefixes,ruleFiles,dataFiles,allowRemove}`；显式高危扩展目标，不免除结构、引用或三检。普通扩展仍用 extensionPoints |
+| 数据 Schema 的 `x-ai-inherited-only` | 值为本地 JSON Schema 选择器。命中的运行投影只能与活动基线完全一致地继承；修改时 A 返回 PACK_PROJECTION_EDIT_FORBIDDEN，须提交完整作者文档并通过普通 Schema。例：`{"type":"object","required":["presentationDigest"]}`。不只凭 digest 允许修改，也不跳过未修改文件的正常 Schema 校验 |
 | `contextMapping.gameTerms` | JSON 文件路径；仅 KP 在允许外发 KP 信息时加载到模型 gameTerms，解释复活等术语、前提与歧义。不是执行授权，不进入 PL 隐藏资料 |
 | `contextMapping.stableArrays` | JSON 数组 `[{dataRef:'game.json',pointer:'/items',idKey:'id',appendOnly:true}]`；B 对比当时活动基线逐位 ID，禁止删减、重排和重复，覆盖后续已发布项 |
 | `contextMapping.dataReferences` | `[{dataRef:'game.json',pointer:'/locations',idKey:'index',referencesKey:'exits',contiguousFrom:1,allowSelf:false}]`；最后两项可选，检查候选引用完整、连续编号及自引用 |
@@ -124,6 +137,8 @@ AI 服务关闭后，宿主依据和权限回调重新读取持久化仓库，�
 存量场景仅运行与实际 changed_data/changed_rules 相交的声明，其他记录 skipped-unaffected；相关声明的每个匹配实体都运行所声明骰面数的低／中／高三点探针（randomSides 默认 20，范围 2—10000）。声明覆盖的数据和变更文件导出的规则必须完整；`coversRules` 只可覆盖本条实际调用的 rule。两侧同一错误且在 expectedErrors 中才记录 blocked-compatible，不冒充执行成功；一侧成功、不同错误或未声明错误均失败。零匹配明确记录零样本。仍需包 fixture、必需指标及 A/B 校验，不代表剧情平衡的穷尽证明。
 
 NPC 专项 `contextMapping.extensionValidation` 保留；其已完整验证的 NPC 规则不会再要求静态核心场景重复覆盖。核心或地图变更转用通用及存量场景。B 已允许但不属于 NPC 家族的配置修改，在 C 记录 EXTENSION_FORBIDDEN 覆盖边界，不能用 NPC 探针冒充覆盖。模板、规则、探测对象不再设置 32/8/64 条业务上限。
+
+NPC 存量实例探针按动作实际写集合校验结果：未触及字段中执行前已有且路径、约束和问题值完全相同的错误，可保留为 `inheritedValidationFindings`；不会宣称已修复。模板／新增实例仍完整校验，写回同一个非法值也拒绝；跨字段或根级约束无法证明无关时继续拒绝。这使无关治疗不被历史地点上限误阻断，同时禁止动作写入新的越界位置或数值。
 
 Stumpsville 的实际材料、发布后的包状态同步及限制由[包侧集成文档](../../../rulepacks/stumpsville/docs/current/integrations.md)维护，避免在模块文档复制过期清单。配置包默认应提供结构 Schema、稳定 ID、引用约束、B 正反例、C 场景与未覆盖范围、高危名单及回执恢复；空扩展点不表示任意修改获准。
 

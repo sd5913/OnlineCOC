@@ -52,6 +52,18 @@ def materials(contract, configurations, data, rule_files):
         contract['scenarios'].append(path)
     for name, value in data.items():
         files['ai/' + name + '.schema.json'] = shape(value)
+    # Installation stages executable recipes with a digest linking to the author's
+    # private presentation. Unrelated proposals inherit that exact active file.
+    from scene_knowledge import execution_data
+    authored = data.get('scene-actions.json')
+    if authored:
+        compact = execution_data(authored)
+        if 'presentationDigest' in compact and compact != authored:
+            compact_schema = shape(compact)
+            compact_schema['properties']['presentationDigest'] = {'type':'string','pattern':'^[0-9a-f]{64}$'}
+            path = 'ai/scene-actions.json.schema.json'
+            files[path] = {'anyOf': [files[path], compact_schema],
+                           'x-ai-inherited-only': {'type': 'object', 'required': ['presentationDigest']}}
     game = files['ai/game.json.schema.json']
     game['properties']['items']['items'] = {
         'type': 'object', 'required': ['id', 'name', 'kind', 'slots', 'uses', 'description'],

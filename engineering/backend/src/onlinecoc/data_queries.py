@@ -116,10 +116,20 @@ def rows(host, state, account, initiator=None, external=False, kinds=KINDS, *, r
         if room_mode=='state':
             room={k:v for k,v in state.items() if k not in ('chat','commands','audit','outbox')}
             room['aiControl']={k:v for k,v in state['aiControl'].items() if k in ('schemaVersion','scopeId','packBinding','settings','memoryFacts')}
+            # Approval stages artifacts before publication. Only executable versions
+            # belong to state evidence; historical/staged artifacts remain in records.
+            revisions={state['activeRuleset']}
+            revisions.update(r['ruleset'] for r in state.get('commands',{}).values() if r['status']=='pending' and 'ruleset' in r)
+            revisions.update(f['ruleset'] for f in state.get('flows',{}).values() if f['status'] in ('running','waiting','needs_attention'))
+            room['artifacts']={key:value for key,value in state['artifacts'].items() if key in revisions}
         for data in fragments(room):
             key = digest([data['path'],data.get('textOffset')])
             label = '/' + '/'.join(str(p).replace('~','~0').replace('/','~1') for p in data['path'])
             if 'textOffset' in data:label += ' ['+str(data['textOffset'])+']'
+            if room_mode=='state' and data['path'][0]=='artifacts' and len(data['path'])>1:
+                usage='active' if data['path'][1]==state['activeRuleset'] else 'in-flight'
+                data={**data,'artifactUsage':usage}
+                label='['+usage+'] '+label
             add('room',key,digest(data),label,data,'kp','host-room','host-room-state' if room_mode=='state' else 'host-room')
     adapter = getattr(host, 'ai_data_adapter', None)
     if adapter and set(getattr(adapter,'kinds',KINDS))&set(kinds):

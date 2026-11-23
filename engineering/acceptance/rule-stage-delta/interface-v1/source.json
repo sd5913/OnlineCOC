@@ -1,0 +1,8 @@
+{
+  "kind": "current engine file overlay, not standalone installation",
+  "files": {
+    "engineering/backend/src/onlinecoc/host.py": "0913359b51e646fe69a157228882726121bd66235a0d5c34401f4bdb0caa5964",
+    "engineering/backend/src/onlinecoc/registry.py": "5a3c0fd56d96c9cc08b3c6976d77671b134d6bd82adaeec49cff4219abcc59d6",
+    "engineering/contracts/operations.json": "90313c610933550980b2f1abb2552fb4521f005c7a31073b92529486ea47a756"
+  }
+}

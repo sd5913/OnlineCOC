@@ -1,0 +1,26 @@
+{
+  "format": 1,
+  "createdAt": "2026-11-23T16:13:38.912649+08:00",
+  "purpose": "AI chat interaction UI overlay; apply over current AI runtime; no API change",
+  "files": [
+    {
+      "path": "engineering/ai/web/components/chat.js",
+      "sha256": "16022a00e8dfcb094d2869b5dd5320ff0caaa9887a9eacf056aab4bc151da6d3",
+      "bytes": 43782
+    },
+    {
+      "path": "engineering/ai/web/components/chat.css",
+      "sha256": "577ec1db27d2d7481526364126fbf009f6f9f8a2730f173e5df678b1e588994e",
+      "bytes": 9321
+    },
+    {
+      "path": "engineering/ai/web/components/reference-editor.js",
+      "sha256": "2d0d1f2a46c9d0176a2de324260caedb37ed22a95e3e366b115f1fe532ef9326",
+      "bytes": 12267
+    }
+  ],
+  "validation": {
+    "targeted": "25 passed",
+    "evidence": "engineering/acceptance/ai-chat-interaction/targeted.xml"
+  }
+}

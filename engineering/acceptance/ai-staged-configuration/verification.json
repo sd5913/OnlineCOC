@@ -1,0 +1,19 @@
+{
+  "frozenVersion": "v2",
+  "frozenFiles": 226,
+  "filesDigest": "a1a4cd65d54ee3009e9c00c31792f719ce3e5da921f4049b52e926d66b76ae46",
+  "activeSourceMatchesFrozen": true,
+  "finalStageManifestMatchesFrozen": true,
+  "matchedFiles": 218,
+  "changedSinceCoreRegression": [
+    "engineering/ai/src/onlinecoc_ai/continuations.py",
+    "engineering/ai/src/onlinecoc_ai/coordinator.py",
+    "engineering/ai/src/onlinecoc_ai/validation/extensions.py",
+    "engineering/ai/tests/test_chat_polish.py",
+    "engineering/ai/tests/test_runtime_references.py",
+    "engineering/ai/tests/test_staged_configuration.py",
+    "engineering/ai/web/components/chat.js",
+    "engineering/ai/web/components/sessions.js"
+  ],
+  "externalModelCalls": 0
+}

@@ -1,0 +1,33 @@
+{
+  "format": 1,
+  "files": [
+    {
+      "path": "engineering/ai/web/components/chat.js",
+      "sha256": "16022a00e8dfcb094d2869b5dd5320ff0caaa9887a9eacf056aab4bc151da6d3"
+    },
+    {
+      "path": "engineering/ai/web/components/chat.css",
+      "sha256": "577ec1db27d2d7481526364126fbf009f6f9f8a2730f173e5df678b1e588994e"
+    },
+    {
+      "path": "engineering/ai/web/components/reference-editor.js",
+      "sha256": "2d0d1f2a46c9d0176a2de324260caedb37ed22a95e3e366b115f1fe532ef9326"
+    },
+    {
+      "path": "engineering/ai/tests/test_chat_interaction.py",
+      "sha256": "c4f13b839c3724e7b3ac829817ec44b0b7c6ebde8c2623819ad0f5b49eaf4733"
+    },
+    {
+      "path": "engineering/ai/tests/test_chat_polish.py",
+      "sha256": "1343056c1418e68f6c3f1a04588e9b8a1c6bbb6abaed0f347fb799937f0b489a"
+    },
+    {
+      "path": "engineering/ai/tests/test_access_ui.py",
+      "sha256": "1e33fe8555a2b9d41a6ea580dcc43a165cb9a4d9af98a127d4caf79f2d422bc0"
+    },
+    {
+      "path": "engineering/ai/tests/test_embeds.py",
+      "sha256": "9af1549dad24ce0d584b61698ad0209f6ca2db60a1b6578c36713a633e31a30b"
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="24" time="7.961" timestamp="2026-11-23T13:00:01.385290+08:00" hostname="LAPTOP-BIFSL64A"><testcase classname="tests.test_rule_stage_delta" name="test_delta_matches_full_stage_preserves_base_and_json_null" time="0.692" /><testcase classname="tests.test_rule_stage_delta" name="test_bad_delta_preserves_artifacts_and_active_revision[change0-INPUT_INVALID]" time="0.193" /><testcase classname="tests.test_rule_stage_delta" name="test_bad_delta_preserves_artifacts_and_active_revision[change1-INPUT_INVALID]" time="0.190" /><testcase classname="tests.test_rule_stage_delta" name="test_bad_delta_preserves_artifacts_and_active_revision[change2-RULE_FILE_NOT_FOUND]" time="0.201" /><testcase classname="tests.test_rule_stage_delta" name="test_bad_delta_preserves_artifacts_and_active_revision[change3-RULE_FILE_NOT_FOUND]" time="0.203" /><testcase classname="tests.test_rule_stage_delta" name="test_bad_delta_preserves_artifacts_and_active_revision[change4-INPUT_INVALID]" time="0.214" /><testcase classname="tests.test_rule_stage_delta" name="test_bad_delta_preserves_artifacts_and_active_revision[change5-INPUT_INVALID]" time="0.210" /><testcase classname="tests.test_rule_stage_delta" name="test_bad_delta_preserves_artifacts_and_active_revision[change6-INPUT_INVALID]" time="0.215" /><testcase classname="tests.test_rule_stage_delta" name="test_bad_delta_preserves_artifacts_and_active_revision[change7-INPUT_INVALID]" time="0.243" /><testcase classname="tests.test_rule_stage_delta" name="test_bad_delta_preserves_artifacts_and_active_revision[change8-RULE_FAILED]" time="0.241" /><testcase classname="tests.test_rule_stage_delta" name="test_bad_delta_preserves_artifacts_and_active_revision[change9-DUPLICATE_RULE]" time="0.611" /><testcase classname="tests.test_rule_stage_delta" name="test_bad_delta_preserves_artifacts_and_active_revision[change10-RULE_CYCLE_OR_MISSING]" time="0.592" /><testcase classname="tests.test_rule_stage_delta" name="test_bad_delta_preserves_artifacts_and_active_revision[change11-LIMIT_EXCEEDED]" time="0.234" /><testcase classname="tests.test_rule_stage_delta" name="test_bad_delta_preserves_artifacts_and_active_revision[change12-LIMIT_EXCEEDED]" time="0.270" /><testcase classname="tests.test_rule_stage_delta" name="test_delta_schema_rejects_invalid_envelopes[change0]" time="0.251" /><testcase classname="tests.test_rule_stage_delta" name="test_delta_schema_rejects_invalid_envelopes[change1]" time="0.271" /><testcase classname="tests.test_rule_stage_delta" name="test_delta_schema_rejects_invalid_envelopes[change2]" time="0.242" /><testcase classname="tests.test_rule_stage_delta" name="test_delta_schema_rejects_invalid_envelopes[change3]" time="0.248" /><testcase classname="tests.test_rule_stage_delta" name="test_delta_schema_rejects_invalid_envelopes[change4]" time="0.256" /><testcase classname="tests.test_rule_stage_delta" name="test_delta_schema_rejects_invalid_envelopes[change5]" time="0.207" /><testcase classname="tests.test_rule_stage_delta" name="test_maximum_rule_count_checked_after_merge" time="0.209" /><testcase classname="tests.test_rule_stage_delta" name="test_deleting_dependency_revalidates_unchanged_rules" time="0.227" /><testcase classname="tests.test_rule_stage_delta" name="test_removing_all_sources_rejected" time="0.205" /><testcase classname="tests.test_rule_stage_delta" name="test_stale_base_inactive_base_and_permissions" time="0.323"><failure message="onlinecoc.errors.DomainError: COMMAND_ID_CONFLICT">host = &lt;onlinecoc.host.Host object at 0x0000020D8B5BE6D0&gt;
+
+    def test_stale_base_inactive_base_and_permissions(host):
+        old=base(host);args={'baseRevision':old['revision'],'sources':{'extra.lua':SOURCE}}
+        assert submit(host,args,account='player1')['code']=='PERMISSION_DENIED'
+        result=submit(host,args,'accepted');new=result['result']
+        assert submit(host,{'baseRevision':new,'data':{'x':1}},'inactive')['code']=='VERSION_CONFLICT'
+        host.command('kp',message(host,'kp','rule.activate',{'revision':new},'activate'))
+        assert submit(host,args,'stale')['code']=='VERSION_CONFLICT'
+&gt;       assert submit(host,args,'accepted')==result
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+backend\tests\test_rule_stage_delta.py:92: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+backend\tests\test_rule_stage_delta.py:17: in submit
+    return h.command(account,message(h,account,'rule.stage.delta',args,identifier))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+backend\src\onlinecoc\host.py:193: in command
+    require(s['commands'][key]['signature']==signature,'COMMAND_ID_CONFLICT')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+condition = False, code = 'COMMAND_ID_CONFLICT'
+
+    def require(condition, code="INPUT_INVALID"):
+&gt;       if not condition: raise DomainError(code)
+                          ^^^^^^^^^^^^^^^^^^^^^^^
+E       onlinecoc.errors.DomainError: COMMAND_ID_CONFLICT
+
+backend\src\onlinecoc\errors.py:7: DomainError</failure></testcase></testsuite></testsuites>

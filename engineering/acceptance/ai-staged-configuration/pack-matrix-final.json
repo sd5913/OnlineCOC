@@ -1,0 +1,80 @@
+{
+  "oldPackDigest": "dbb7d534c7a20260f0f533a2ee966ce1850116d310bad9fb2ad7e48203dda00d",
+  "newPackDigest": "8edca9aed6f05790151a276c809c695729973a45fe91517b2529b666e2412dbf",
+  "artifactFileSha256": "d35afdacf33b70718b02e23d71afcdac3a251594053af2ebc726407aa3c132ee",
+  "scope": "real artifact A validation; no HTTP, provider calls or runtime publication in this script",
+  "tests": [
+    {
+      "case": "old-schema-item-add",
+      "expected": "PACK_SCHEMA_INVALID",
+      "actual": "PACK_SCHEMA_INVALID",
+      "success": true,
+      "unrelatedSceneUnchanged": true
+    },
+    {
+      "case": "new-schema-item-add",
+      "expected": "pass",
+      "actual": "pass",
+      "success": true,
+      "unrelatedSceneUnchanged": true
+    },
+    {
+      "case": "second-item-next-baseline",
+      "expected": "pass",
+      "actual": "pass",
+      "success": true,
+      "unrelatedSceneUnchanged": true
+    },
+    {
+      "case": "items-edit-without-scene-coupling",
+      "expected": "pass",
+      "actual": "pass",
+      "success": true,
+      "unrelatedSceneUnchanged": true
+    },
+    {
+      "case": "locations-edit-without-scene-coupling",
+      "expected": "pass",
+      "actual": "pass",
+      "success": true,
+      "unrelatedSceneUnchanged": true
+    },
+    {
+      "case": "npcs-edit-without-scene-coupling",
+      "expected": "pass",
+      "actual": "pass",
+      "success": true,
+      "unrelatedSceneUnchanged": true
+    },
+    {
+      "case": "rules-edit-without-scene-coupling",
+      "expected": "pass",
+      "actual": "pass",
+      "success": true,
+      "unrelatedSceneUnchanged": true
+    },
+    {
+      "case": "changed-compact-digest",
+      "expected": "PACK_PROJECTION_EDIT_FORBIDDEN",
+      "actual": "PACK_PROJECTION_EDIT_FORBIDDEN",
+      "success": true,
+      "unrelatedSceneUnchanged": false
+    },
+    {
+      "case": "changed-compact-actions",
+      "expected": "PACK_PROJECTION_EDIT_FORBIDDEN",
+      "actual": "PACK_PROJECTION_EDIT_FORBIDDEN",
+      "success": true,
+      "unrelatedSceneUnchanged": false
+    },
+    {
+      "case": "complete-author-form",
+      "expected": "pass",
+      "actual": "pass",
+      "success": true,
+      "unrelatedSceneUnchanged": false
+    }
+  ],
+  "passed": 10,
+  "total": 10
+}

@@ -1,0 +1,55 @@
+{
+  "format": 1,
+  "files": [
+    {
+      "path": "baseline.xml",
+      "bytes": 14954,
+      "sha256": "294f1054a21d4803e72807d07a02e5bf7240108bf623edb97ea82c432c5c4662"
+    },
+    {
+      "path": "browser.json",
+      "bytes": 92,
+      "sha256": "c3f2528d0dd719df6ae882cb31cddb9a1df80cee9273201c3b3aeae6099bc150"
+    },
+    {
+      "path": "long-history-editor.png",
+      "bytes": 51079,
+      "sha256": "0fc5ba9606504e1e2761e42a7689aceeed47a0e42651bc5d28ef403d4173ebd1"
+    },
+    {
+      "path": "README.md",
+      "bytes": 6425,
+      "sha256": "081e34406b100c7c788ee9f2dfdb744c5af80a9ba586c739b7ca23e2c2b70b45"
+    },
+    {
+      "path": "related-ui-recheck.xml",
+      "bytes": 676,
+      "sha256": "7323912c393e2e525e095b990b794fea17696599600fda48a7c911912964b359"
+    },
+    {
+      "path": "related-ui.xml",
+      "bytes": 31084,
+      "sha256": "575560675b972d2ee30e14552ad0c1bad463922e6581096078b548a31f1026f0"
+    },
+    {
+      "path": "source.json",
+      "bytes": 1148,
+      "sha256": "054477e82873785ea05f0484d0e279ea66fe1eec0d10a5f3eca450e53ba529a5"
+    },
+    {
+      "path": "targeted.xml",
+      "bytes": 3457,
+      "sha256": "3b824f6386370c03e7e3a1e7fff27541fa9673f1dd612a16a22ab8d8fadeca02"
+    },
+    {
+      "path": "verification.json",
+      "bytes": 1933,
+      "sha256": "19364fe456e0624e3313dd07c82bef531e7dc6cae9db9174df8715b25f979c3c"
+    },
+    {
+      "path": "verify.py",
+      "bytes": 1863,
+      "sha256": "ba7208eab427f33b48c1c4d13b11825353819e49770da52aae573bb73f4e73e7"
+    }
+  ]
+}

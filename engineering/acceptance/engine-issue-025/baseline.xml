@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="5.550" timestamp="2026-11-23T14:58:15.225562+08:00" hostname="LAPTOP-BIFSL64A"><testcase classname="tests.test_room_state_artifacts" name="test_real_abc_approve_stage_then_publish_once_without_self_stale" time="5.098"><failure message="AssertionError: {'status': 'rejected', 'commandId': 'approve-comment', 'code': 'RISK_REVIEW_REQUIRED'}&#10;assert 'rejected' == 'committed'&#10;  &#10;  - committed&#10;  + rejected">ai_case = (&lt;onlinecoc.host.Host object at 0x000001225FB6A3C0&gt;, &lt;onlinecoc_ai.proposals.Proposals object at 0x000001225FB6BE00&gt;, ...'item', 'defaults': {'quantity': 1, 'unitMass': 0, 'charges': 2, 'bonus': 15}, ...}}], 'sources': {}, 'data': {}, ...})
+
+    def test_real_abc_approve_stage_then_publish_once_without_self_stale(ai_case):
+&gt;       host, approval, prepared = candidate(ai_case)
+                                   ^^^^^^^^^^^^^^^^^^
+
+engineering\acceptance\engine-issue-025\work\baseline\engineering\backend\tests\test_room_state_artifacts.py:117: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ai_case = (&lt;onlinecoc.host.Host object at 0x000001225FB6A3C0&gt;, &lt;onlinecoc_ai.proposals.Proposals object at 0x000001225FB6BE00&gt;, ...'item', 'defaults': {'quantity': 1, 'unitMass': 0, 'charges': 2, 'bonus': 15}, ...}}], 'sources': {}, 'data': {}, ...})
+
+    def candidate(ai_case):
+        from onlinecoc_ai.data_queries import DataQueryService
+        host, service, _, _ = ai_case
+        state = host.state()
+        state['aiControl']['settings']['externalSources'].update(public=True, kp=True, private=True)
+        host.commit(state)
+        host.ai_room_read_authorizer = lambda account: True
+        snapshot = service.snapshot('kp')
+        snapshot[0]['facts']['aiReadScope'] = 'kp-room'
+        result = DataQueryService(host).attach('kp', 'search', {'types': ['room'], 'query': 'artifacts', 'limit': 50}, snapshot)
+        assert result['items'] and result['page']['nextCursor'] is None
+        old = snapshot[2]
+        filename = next(iter(old['sources']))
+        delta = {'schemaVersion': 1, 'configurations': [], 'sources': {filename: old['sources'][filename] + '\n-- ISSUE-025 candidate\n'},
+                 'data': {}, 'suggestions': []}
+        proposal = service.create('kp', 'Append a comment without changing behavior', delta, snapshot=snapshot)
+        validated = service.validate('kp', proposal['proposalId'], 1)
+        assert validated['proposal']['status'] == 'review_ready', validated
+        proposal = validated['proposal']
+        prepared = service.prepared('kp', proposal['proposalId'], 1)
+        assert {r['level']: r['status'] for r in prepared['reports']} == dict(A='pass', B='pass', C='pass')
+        response = host.command('kp', ai_message(host, 'ai.proposal.approve', approval_args(host, service, proposal), 'approve-comment'))
+&gt;       assert response['status'] == 'committed', response
+E       AssertionError: {'status': 'rejected', 'commandId': 'approve-comment', 'code': 'RISK_REVIEW_REQUIRED'}
+E       assert 'rejected' == 'committed'
+E         
+E         - committed
+E         + rejected
+
+engineering\acceptance\engine-issue-025\work\baseline\engineering\backend\tests\test_room_state_artifacts.py:110: AssertionError</failure></testcase></testsuite></testsuites>

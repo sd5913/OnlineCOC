@@ -1,10 +1,10 @@
 """Author-owned AI extension contract and finite B/C fixtures, copied into the companion."""
 import copy
 
-def materials(contract, configurations):
+def materials(contract, configurations, locations):
     npc=next(c for c in configurations if c['configurationId']=='sv.npc')
     bounds={'hp':(0,40),'maxHp':(1,40),'str':(1,20),'dex':(1,20),'wil':(1,20),
-        'strMax':(1,20),'dexMax':(1,20),'wilMax':(1,20),'armor':(0,3),'location':(1,10),'incapacitated':(0,1),'lastRoll':(0,20)}
+        'strMax':(1,20),'dexMax':(1,20),'wilMax':(1,20),'armor':(0,3),'location':(1, max(place['index'] for place in locations)),'incapacitated':(0,1),'lastRoll':(0,20)}
     schema={'type':'object','required':list(bounds),'maxProperties':32,
         'properties':{k:{'type':'integer','minimum':a,'maximum':b} for k,(a,b) in bounds.items()},
         'additionalProperties':{'type':'number','minimum':-100,'maximum':100}}

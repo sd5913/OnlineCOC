@@ -1,0 +1,20 @@
+{
+  "kind": "overlay",
+  "base": "engineering/acceptance/ai-staged-interface-snapshot/v2",
+  "baseFilesDigest": "a1a4cd65d54ee3009e9c00c31792f719ce3e5da921f4049b52e926d66b76ae46",
+  "files": {
+    "engineering/ai/src/onlinecoc_ai/batches.py": "6b2d84831f186609f00313b0cf4be0f86a376532c31be860e76e7cd54535fe1b",
+    "engineering/ai/src/onlinecoc_ai/coordinator.py": "f9514f42f569ed3d25d2ef47ed9131e5f73a15fe4cd5c6c61659c9a3b6cd5eb6",
+    "engineering/ai/src/onlinecoc_ai/data_edits.py": "b695d5408849dc1a5760e4958db22988d053713cdea8f43f8b3a67a8ffadf7df",
+    "engineering/ai/src/onlinecoc_ai/execution_ledger.py": "415c08e91b9f654aec03f6386654bc13533cc18c71e256c9dd880e8bb0d6cb11",
+    "engineering/ai/src/onlinecoc_ai/generation.py": "dada22c8498d4f59dd6d05fc7b283afb042efe069a00e31d6926eef0d1eb816c",
+    "engineering/ai/src/onlinecoc_ai/reliability.py": "dc02610e2bf84716802009343f9c50e913135974d982c9e64bb912386d1eb9af",
+    "engineering/ai/src/onlinecoc_ai/validation/rules.py": "d58e98d34b252b779fd7541697018e30773920bfd232458053b8918d9017f791",
+    "engineering/ai/tests/test_ambiguity_recovery.py": "ed79a97650abcac400542dc9909d736572f1d1c3912c39d7bdf969884ea3edad",
+    "engineering/ai/tests/test_data_edits.py": "cd7b11b821d94e54fba3edd0bda8a7f34fbede23a5847af5733026ccfcb34215",
+    "engineering/ai/tests/test_task_diagnostics.py": "26561e544be4432bd401cc3202d6dd13573d8fa683787e80d223ff0fac800a69"
+  },
+  "fileCount": 10,
+  "removedFiles": [],
+  "filesDigest": "47473304a9f95e6309633cac61a53b5fdc8f1d16e1d56f9334fca22a455419d0"
+}

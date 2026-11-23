@@ -82,7 +82,8 @@ class Generation:
                     review=self.app.reviews.payload(access['sessionId'])
                     if review:self.payload['reviewSource']=review
                     if self.room['aiControl']['settings']['externalSources']['kp']:
-                        self.payload['executionLedger']=[{k:i[k] for k in ('rulingId','kind','status')} for i in self.app.rulings.list(account,access['sessionId'])['items'][:8]]
+                        from .execution_ledger import capture
+                        self.payload['executionLedger']=capture(self.app,account,access['sessionId'],request,self.snapshot[0])
 
     def _freeze_adapter(self, request):
         original=getattr(self.host,'ai_data_adapter',None)

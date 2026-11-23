@@ -74,3 +74,60 @@ def test_extension_discriminator_has_exact_technical_feedback_without_changing_d
     configuration_checks(pack,state,{'sources':{}},{},{'sources':{}})
     state['configurations']['test.new.actor']['defaults']['hp']=-1
     with pytest.raises(AiError,match='EXTENSION_DEFAULTS_INVALID'):configuration_checks(pack,state,{'sources':{}},{},{'sources':{}})
+
+
+@pytest.mark.parametrize('after,touched,allowed',[
+    ({'hp':7,'location':15},{'hp'},True),
+    ({'hp':99,'location':15},{'hp'},False),
+    ({'hp':7,'location':16},{'hp','location'},False),
+    ({'hp':7,'location':15},{'hp','location'},False),
+    ({'hp':7,'location':10},{'hp','location'},True)])
+def test_existing_effect_ranges_only_ignore_unchanged_unwritten_fields(after,touched,allowed):
+    from onlinecoc_ai.pack import local_schema
+    from onlinecoc_ai.validation.extensions import validate_effect_numbers
+    validator=local_schema({'type':'object','properties':{'hp':{'type':'number','maximum':10},'location':{'type':'integer','maximum':14}}})
+    before={'hp':5,'location':15}
+    if allowed:
+        notes=validate_effect_numbers(validator,before,after,touched,existing=True)
+        assert notes==([{'path':['location'],'constraint':'maximum'}] if after['location']==15 else [])
+    else:
+        with pytest.raises(AiError,match='EXTENSION_EFFECT_RANGE'):validate_effect_numbers(validator,before,after,touched,existing=True)
+    if after['location']==15:
+        with pytest.raises(AiError,match='EXTENSION_EFFECT_RANGE'):validate_effect_numbers(validator,before,after,touched)
+
+
+def test_existing_root_constraint_is_not_assumed_unrelated():
+    from onlinecoc_ai.pack import local_schema
+    from onlinecoc_ai.validation.extensions import validate_effect_numbers
+    validator=local_schema({'not':{'properties':{'location':{'const':15}},'required':['location']}})
+    with pytest.raises(AiError,match='EXTENSION_EFFECT_RANGE'):
+        validate_effect_numbers(validator,{'hp':5,'location':15},{'hp':6,'location':15},{'hp'},existing=True)
+
+
+@pytest.mark.parametrize('write_location',[False,True])
+def test_real_healing_probe_retains_old_location_but_never_writes_out_of_range(validation_case,write_location):
+    from onlinecoc_ai.sandbox import stage
+    from onlinecoc_ai.validation.extensions import assess_extensions
+    pack,state,baseline,context,_=validation_case
+    original_json=pack.json
+    schema={'type':'object','properties':{'hp':{'type':'number','maximum':10},'location':{'type':'integer','maximum':14}}}
+    pack.json=lambda name:schema if name=='effect-schema' else original_json(name)
+    pack.extension_validation={'defaultsSchema':'effect-schema','fixtureRef':pack.scenarios[0]['fixtureRef'],
+        'baseConfiguration':'fixture.actor','namespace':'fixture.ext.','rulePrefix':'fixture.'}
+    state['entities']['actor-one']['numbers'].update(hp=5,location=15)
+    state['configurations']['fixture.actor']['defaults']['location']=1
+    source="return rule('fixture.heal', {'actor'}, function(r, actor) r.set(actor, 'hp', math.min(10, r.number(actor, 'hp') + 3)) "
+    if write_location:source+="r.set(actor, 'location', 15) "
+    source+='return {healed=true} end, {kp=true})'
+    candidate=stage({**baseline['sources'],'heal.lua':source},baseline['data'])
+    changes={'configurations':[],'sources':candidate['sources'],'data':candidate['data']}
+    before=copy.deepcopy(state)
+    if write_location:
+        with pytest.raises(AiError,match='EXTENSION_EFFECT_RANGE'):
+            assess_extensions(pack,state,baseline,candidate,changes,'kp')
+    else:
+        evidence=assess_extensions(pack,state,baseline,candidate,changes,'kp')
+        row=next(r for r in evidence['ruleProbes'] if r['target']=='existing:actor-one')
+        assert row['inheritedValidationFindings']==[{'path':['location'],'constraint':'maximum'}]
+        assert all(t['steps'][0]['ok'] for t in row['trials'])
+    assert state==before

@@ -18,7 +18,7 @@
 
 | 入口 | 内容 |
 | --- | --- |
-| [内容配置概览](docs/current/content-configuration.md) | 默认内容清单、关键数值与未填范围，含主持剧透 |
+| [内容配置概览](docs/current/content-configuration.md) | 默认内容清单、关键数值、房间增改配置的目标与校验依赖，含主持剧透 |
 | [场景预设行动](docs/current/scene-actions.md) | 18个行动、检定与实际结果、自动队列和恢复 |
 | [当前实现](docs/current/implementation.md) | 实际页面、规则、数据边界及人工裁定事项 |
 | [场景桌面与主持控制台](docs/current/interface.md) | 当前导航 Mermaid、功能组成树及反馈语义 |

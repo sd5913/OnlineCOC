@@ -197,6 +197,8 @@ class Repository:
                 record.get('digest')==digest({k:v for k,v in record.items() if k!='digest'}),'REVIEW_STATE_INVALID')
         from .review_queue import verify as verify_queue
         verify_queue(state)
+        from .continuations import verify as verify_continuations
+        verify_continuations(state)
         errors=state['settings'].get('requestErrors',{})
         require(type(errors) is dict and all(k in state['requests'] and isinstance(v,str) and re.fullmatch('[A-Z][A-Z0-9_]{0,100}',v) for k,v in errors.items()),'REQUEST_STATE_INVALID')
         linked = set()

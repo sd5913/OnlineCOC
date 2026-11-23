@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "scenarioId": "resource-exhaustion",
+  "fixtureRef": "ai/fixtures/world.json",
+  "account": "player1",
+  "steps": [
+    {
+      "rule": "fixture.check",
+      "input": {
+        "actor": "actor-one",
+        "item": "token-one"
+      }
+    },
+    {
+      "rule": "fixture.check",
+      "input": {
+        "actor": "actor-one",
+        "item": "token-one"
+      }
+    },
+    {
+      "rule": "fixture.check",
+      "input": {
+        "actor": "actor-one",
+        "item": "token-one"
+      },
+      "expectError": "RULE_FAILED"
+    }
+  ],
+  "randomPolicy": {
+    "mode": "fixed",
+    "sides": 100,
+    "samples": 100,
+    "seed": 1,
+    "values": [
+      50,
+      50
+    ]
+  },
+  "maxSteps": 3,
+  "metricIds": []
+}

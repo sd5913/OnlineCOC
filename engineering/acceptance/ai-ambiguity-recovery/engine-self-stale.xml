@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="6.498" timestamp="2026-11-23T14:50:21.756140+08:00" hostname="LAPTOP-BIFSL64A"><testcase classname="engineering.ai.tests.test_ambiguity_recovery" name="test_approval_does_not_invalidate_its_own_stable_room_query" time="4.947"><failure message="AssertionError: [{'status': 'committed', 'commandId': 'ai-ruling:41815b2d0855472c8823a018177b0eca:1:approve', 'result': {'approvalId':...'}}, {'status': 'rejected', 'commandId': 'ai-ruling:41815b2d0855472c8823a018177b0eca:1:apply', 'code': 'SOURCE_STALE'}]&#10;assert 'blocked' == 'completed'&#10;  &#10;  - completed&#10;  + blocked">application = &lt;onlinecoc_ai.api.Application object at 0x0000025602430440&gt;
+
+    def test_approval_does_not_invalidate_its_own_stable_room_query(application):
+        app=application;enable(app.host,public=True,private=True,kp=True)
+        snapshot=app.proposals.snapshot('kp');snapshot[0]['facts']['aiReadScope']='kp-room'
+        query=DataQueryService(app.host).attach('kp','search',{'types':['room'],'query':'artifacts','limit':12},snapshot)
+        assert query['items']
+        changes=delta();name=next(iter(snapshot[2]['sources']));changes['sources']={name:snapshot[2]['sources'][name]+'\n-- staging regression\n'}
+        p=app.proposals.create('kp','只调整活动数据',changes,snapshot=snapshot)
+        result=app.proposals.validate('kp',p['proposalId'],1)
+        assert result['proposal']['status']=='review_ready',[(r['level'],r['status'],r['findings']) for r in result['reports']]
+        item=app.rulings.detail('kp','proposal:'+p['proposalId'])
+        args={'rulingId':item['rulingId'],'digest':item['digest'],'decision':'approve','explicitHighRiskDigest':item['digest'],
+            'riskDecisions':{r['id']:'测试确认该项风险' for r in item['risks']}}
+        if item.get('cAssessment',{}).get('requiresAcceptance'):
+            args['cReview']={k:item['cAssessment'][k] for k in ('basisRevision','basisDigest','reportDigest')}
+        result=committed(command(app,'ai.ruling.decide',args))
+&gt;       assert result['status']=='completed',result['receipts']
+E       AssertionError: [{'status': 'committed', 'commandId': 'ai-ruling:41815b2d0855472c8823a018177b0eca:1:approve', 'result': {'approvalId':...'}}, {'status': 'rejected', 'commandId': 'ai-ruling:41815b2d0855472c8823a018177b0eca:1:apply', 'code': 'SOURCE_STALE'}]
+E       assert 'blocked' == 'completed'
+E         
+E         - completed
+E         + blocked
+
+engineering\ai\tests\test_ambiguity_recovery.py:28: AssertionError</failure></testcase></testsuite></testsuites>

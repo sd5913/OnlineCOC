@@ -80,7 +80,7 @@ return rule('sv.scene.resolve', {'actor', 'scene:actor', 'world:actor', 'action:
     say(label..'，消耗槽位 '..slot..' 的一格用量。');return true
   end
   local function discover_ground()
-    if get('cheese1')==0 then reveal={2};say('地面只剩压痕，通向主门的路清晰可见。');return end
+    if get('cheese1')==0 or get('trapState')~=0 then reveal={2};say('机关已失效，通路可见。');return end
     set('trapKnown',1,'入口机关已识别')
     clue('tunnel-trap','入口地面的压痕','地面有落石留下的压痕，奶酪连接着触发装置；直接取走会有危险。')
     reveal={2}
@@ -113,7 +113,7 @@ return rule('sv.scene.resolve', {'actor', 'scene:actor', 'world:actor', 'action:
       if get(flag)>0 then fail('已有其他安排，无需再次办理。'); return end
     end
     if step.set and get(step.set)>0 or step.start and get('stormStart')>0 or step.send and get('sent')>0 then
-      say('这项工作已经完成。'); return
+      fail('这项工作已经完成。'); return
     end
     if step.evac and (get('foot')+get('boat')==0 or get('debt')+get('fed')==0) then
       fail('先修通步道或渡舟，并备粮或向渡工赊粮。'); return
@@ -161,7 +161,7 @@ return rule('sv.scene.resolve', {'actor', 'scene:actor', 'world:actor', 'action:
     discover_ground();say('你找到了通往主门的路线。')
   elseif action=='tunnel-cheese' then
     if choice=='inspect' then
-      discover_ground();if get('cheese1')>0 then say('奶酪是机关诱饵。检查本身不会触发机关。') end
+      discover_ground();if get('cheese1')>0 and get('trapState')==0 then say('奶酪是机关诱饵。检查本身不会触发机关。') end
     elseif get('cheese1')==0 then fail('奶酪已经被取走。')
     elseif not free_slot(6) then fail('背包没有可用槽位，奶酪留在原处。')
     elseif choice=='careful' and get('trapKnown')==0 then fail('先检查奶酪周围或观察地面，确认连接后才能拆解。')
@@ -220,6 +220,7 @@ return rule('sv.scene.resolve', {'actor', 'scene:actor', 'world:actor', 'action:
     set('potsKnown',1,'器具已整理');say('现场剩余 '..get('potsRemaining')..' 件铜锅盘，每件价值 10p。')
     if choice=='take' then take(8,'potsRemaining','剩余铜锅盘') end
   elseif action=='house-painting' then
+    if get('paintingRead')==1 then say('重看画上的节庆陈设。') end
     set('paintingRead',1,'节庆画已阅读');say('旧画描绘了庭院中央的一尊金色鼠像，与池底的物件相符。')
     clue('festival','旧日节庆画','旧画记录了庭院节庆时的布置，池底鼠像原本是庭院的陈设。')
   elseif action=='web-inspect' and get('villagersFreed')==1 then say('断开的蛛网后已经没有被困村民。')
@@ -267,16 +268,17 @@ return rule('sv.scene.resolve', {'actor', 'scene:actor', 'world:actor', 'action:
     else r.set(actor,'location',3);reveal={3};say('你乘升降机返回庭院。');out.cost=1 end
   elseif action=='cage-gate' then
     set('snakeKnown',1,'守卫蛇已发现')
-    if choice=='inspect' then say('洞窟在另一道铁门后。守卫蛇盘踞在门前，接近门闩需要先安抚它或冒险绕过。')
+    if choice=='inspect' then say(get('caveOpen')==1 and '铁门敞开。' or get('snakeCalmed')==1 and '蛇已平静，可以开门。' or '守卫蛇盘踞在门闩旁。')
     elseif get('snakeCalmed')==0 then fail('守卫蛇尚未平静；可用蛇笛安抚，或从“聆听”选择潜行绕过。')
     else set('caveOpen',1,'洞窟铁门已开放');doors={{edge='9-10',status='open'}};reveal={10};say('你从平静的守卫蛇旁经过，打开了洞窟铁门。') end
   elseif action=='cage-listen' then
     set('snakeKnown',1,'守卫蛇已发现')
     if choice=='listen' then
-      say('呼吸声与鳞片摩擦声来自同一条守卫蛇。它仍在门边，没有生成新的蛇。')
-      clue('snake-rhythm','守卫蛇的动静','可以用蛇笛安抚守卫，或冒险绕过它开启洞窟铁门。')
+      say(get('caveOpen')==1 and '通路已开。' or get('snakeCalmed')==1 and '蛇的呼吸平缓。' or get('snakeAlert')==1 and '蛇正警戒。' or '门边传来鳞片摩擦声。')
+      clue('snake-rhythm','守卫蛇的动静','已辨认出门边守卫蛇的呼吸和鳞片声。')
     elseif choice=='flute' then
-      if not has(9) then fail('需要携带蛇笛；可返回大厅交涉获取。')
+      if get('snakeCalmed')==1 or get('caveOpen')==1 then fail('无须再次吹笛。')
+      elseif not has(9) then fail('需要携带蛇笛；可返回大厅交涉获取。')
       else set('snakeCalmed',1,'守卫蛇已平静');say('笛声让守卫蛇放松下来，现在可以靠近铁门。');out.cost=1 end
     else
       out.cost=1
@@ -299,7 +301,7 @@ return rule('sv.scene.resolve', {'actor', 'scene:actor', 'world:actor', 'action:
     set('ernieKnown',1,'Ernie 已被辨认')
     if choice=='observe' then say(get('ernieAwake')==1 and 'Ernie 已醒来，正看着洞中的动静。' or 'Ernie 正在熟睡。贸然搬动奶酪可能惊醒他。')
     else
-      if get('ernieSpoken')==0 then out.cost=1 end
+      if get('ernieSpoken')==0 then out.cost=1 else say('Ernie 重申先前的约定。') end
       set('ernieAwake',1,'Ernie 已醒来');set('ernieSpoken',1,'已与 Ernie 交谈');set('northKnown',1,'北方线索已取得')
       say('Ernie 允许你取用这里的奶酪，并指出失踪者的后续去向在北方。线索已加入记录。')
       clue('north','北方据点的线索','交谈得知，后续调查应前往北方的一处据点。树桩镇这一阶段的追踪线索已取得。')

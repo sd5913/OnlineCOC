@@ -4,6 +4,28 @@
 
 结果文件记录各自的执行日期、检查分组与隔离输出目录；历史阶段不能直接累加为当前完整覆盖。测试默认使用独立 `tests/output/`，不操作正式房间。阶段过程、旧格式、首次失败和历史清理依据已移至[历史记录](../docs/history/2026-11-20-development-records.md)。
 
+使用 `verify_context_autonomy.py --source . --staged` 可从一次 KP 请求验证真实浏览器裁决、配置发布、同会话续办、玩家收取装备和一次定向通知。[分步验收结果](context-autonomy-results.json)使用本地模拟服务商。 2026-11-23 联合验收覆盖普通物品、武器、占槽容器、NPC、地图、场景文案和 Lua；14 项正常流程及 7 项应拒绝输入均符合预期。旧房间另在同一测试存档复现旧伴随包的场景格式错误，重启加载新伴随包后成功提交并发布物品。
+
+[真实 DeepSeek 模糊需求实录](ambiguous-live-report.md)记录 3 个隔离房间的完整对话、工具读取、审批与生效差异。水纹盾、路费、庭院雨景分别用了 1、3、2 轮人工对话；[逐轮证据](ambiguous-live-results.json)保留失败与自动续办。
+
+## 真实模型的模糊需求对照
+
+[逐项对照和对话实录](ambiguous-suite-live-report.md)涵盖 16 项不同需求；[统计 JSON](ambiguous-suite-live-summary.json)记录每例目标、人工轮数、审批与调用量，[压缩证据](ambiguous-suite-live-traces.json.gz)保存工具参数、返回、候选和生效差异。旧的三例报告独立保留。运行下列命令会调用已配置的真实 DeepSeek 官方 API，需使用新的输出目录。每个用例随房间独立启动。
+
+```powershell
+engineering/.venv/Scripts/python.exe -B rulepacks/stumpsville/tests/verify_ambiguous_live.py all --live --output rulepacks/stumpsville/tests/output/new-comparison/after --workers 4
+```
+
+对照不同工程版本时用 `--engine-root` 指向包含 `engineering/` 的冻结根目录，保持包和模型配置来源明确。单例可将 `all` 替换为 `travel` 等用例名。对 `dinner` 或 `all` 加 `--receipt-probe`，会在饭钱目标达成后，另测原会话中说“继续”和明确要求支付一笔新饭钱。两次诊断单独计数。[用例和验收条件](ambiguous_suite.py)包含运行时、配置与只读任务。使用[汇总工具](summarize_ambiguous_matrix.py)读取包含 `before/` 和 `after/` 的目录，输出到指定报告目录。可选 `guide-only/` 用于单独记录仅修改包指南的诊断样本。
+
+完整对照的输入子目录为 `before`（优化前）、`after`（第一版）和 `after-v2`（第二版）。`guide-only`、`targeted` 分别保存两次包指南诊断。最终包指南先测 5 项并输出到 `targeted`，另外 11 项保存于 `final-rest`。汇总时核对 16 项互不重复，另保留最初五项的对照表。`drop-check` 是追加说明后的背包咨询单项复测，独立计数。只生成报告时运行 `engineering/.venv/Scripts/python.exe -B rulepacks/stumpsville/tests/summarize_ambiguous_matrix.py <各组数据的上级目录> <报告目录>`。
+
+## AI 聊天窗口滚动与输入
+
+[包侧 Edge 回归](verify_player_layout.py)通过正常页面入口验证 PL 场景、独立弹窗和 KP 裁决页。将光标放在草稿中间重绘整页，检查焦点、选区和后续输入；另用浏览器原生组字事件，在组词期间重绘并提交中文。旧的整页替换方式在同一操作下丢失输入焦点。组合验证核对宿主实际提供的三个聊天组件资源与冻结版本的 SHA-256，结果为[8 组通过](player-layout-results.json)。通用组件的空闲一秒跟随、手动翻阅、触屏和周期轮询见[组件专项](../../../engineering/acceptance/ai-chat-interaction/targeted.xml)。
+
+另一次旧版工作台套件在长裁决卡片高度断言处停止。恢复旧的整页替换方式后，同一条长申请仍为 634px，超过该套件的 125px 阈值。主持聊天输入由上述独立用例覆盖。
+
 ## 本轮专项
 
 | 入口 | 状态与范围 |
@@ -33,7 +55,7 @@
 | [指令包通知](verify_command_notifications.py) · [结果](command-notification-results.json) | 6组通过：KP发放及改值、收件人隔离、原命令重放、离线补取、确认断线与刷新去重、失败不通知、真实重启保留。首次2组后因新增JS未加入本机静态清单而无法登录，修复后全过；未抹除首次失败 |
 | [包内恢复替身](verify_ai_recovery.mjs) · [首次／修复后结果](ai-recovery-results.json) | 首次5/11；修复及补充错误形状后15/15。明确HTTP拒绝不残留unknown，网络／超时／5xx仍保留回执恢复 |
 | [真实浏览器恢复／调试](verify_ai_recovery_ui.py) · [结果](ai-recovery-ui-results.json) | 2026-11-21以引擎v3＋AI v2冻结组合再次6/6：HTTP403后继续、1440/390px顶部弹窗、正文导出、重载与网页导出组件图，无未捕获脚本错误。0外部API；保留旧夹具首失败，不代替公网WebRTC全链路 |
-| [配置矩阵](verify_ai_config_matrix.py) · [原单房间结果](ai-config-matrix-results.json) | 首轮支持6/13、预期拒绝5/6，因30秒超时及累计STORE_FULL未到达重启；分批结果不得抹除容量问题 |
+| [配置矩阵](verify_ai_config_matrix.py) · [单房间结果](ai-config-matrix-results.json) | 同一隔离存档连续检查物品、NPC、地图、场景文案、Lua 及重启。早期超时、容量不足、场景格式、C 类确认及地点范围问题保留在历史轮次。 |
 | 分批复测 | [物品](ai-config-matrix-items-results.json)：业务7/7，原重启比较因目录排序失败；[地图](ai-config-matrix-map-results.json)：5/6，场景文案缺C覆盖，重启按ID比较通过；[规则](ai-config-matrix-rules-results.json)：6/6 |
 | [同档多轮重启](ai-config-matrix-restart-results.json) | 2/2：新增物品发布并发放；配置完成后两轮固定回答，同档重启后可读并继续第三轮。3次回环替身调用、0次外部调用 |
 | [去重汇总](ai-config-matrix-summary.json) · [工程交接清单](ai-repair-handoff.json) | 最新20/21：支持目标13/14（92.86%），预期拒绝7/7（100%）。场景文案仍未支持；累计存储耗尽仍未修复，分批成功不等于长时间房间验收通过 |
@@ -56,7 +78,7 @@
 | 网页公网 | [2026-11-14强制TURN8组](web-cloud-turn-results.json)；双浏览器同一物理电脑，测试证书例外，不能等同独立家庭／移动网 |
 | 网页启动与导出缓存 | [诊断6组](web-startup-results.json)、[重启6组](web-restart-results.json) |
 | 本机与旧P2P集成 | [5组](integrations-results.json)、[脚本](verify_integrations.py) |
-| 布局与本地化 | [玩家布局5组](player-layout-results.json)、[一屏6组](screen-results.json)、[工作区6组](workspace-results.json)、[原UI](ui-results.json) |
+| 布局与本地化 | [玩家布局与 AI 输入8组](player-layout-results.json)、[一屏6组](screen-results.json)、[工作区6组](workspace-results.json)、[原UI](ui-results.json) |
 | 原业务与自动裁决 | [业务](package-results.json)、[自动裁决](automation-results.json) |
 | NPC扩展与发布 | [6组](ai-extensions-results.json)、[脚本](verify_ai_extensions.py) |
 | 高危配置与恢复 | [9组](ai-scenarios-results.json)、[脚本](verify_ai_scenarios.py) |
@@ -132,3 +154,7 @@ engineering/.venv/Scripts/python.exe -B rulepacks/stumpsville/tests/verify_web.p
 运行 `verify_drop_performance.py --pickups` 验证物资搜索前后可见性、已知地点与角色限制、双玩家竞争、手动裁决模式下自动拿取，以及玩家窄屏页面选择物资后库存耗尽。
 
 `--pickups` 同时校核全地点清单；即使已经达成协议、移除机关或取得许可，事件奖励仍只从原事件获取。`verify_storm.py home --alternate` 覆盖已完成委托和修泵旧申请、道具与回合的幂等核对，及结局的重启恢复。
+
+运行 `verify_storm.py --races` 在隔离房间以两个 PL 同时提交、两个 KP 登录会话同时结算，核对首次搜查、支付口粮换蛇笛、安抚守卫、开门、有限库存、等待援队、勘路和人工修泵申请。每组自动任务重试原编号并比对完整回执；详细结果在该次房间的 `event-races.json` 中。完整行动分类见[场景行动逐项对照](../docs/current/scene-actions.md#规则配置逐项对照)。
+
+2026-11-23 的 `verify_storm.py --catalog` 检查 40 个行动、85 个做法在满足条件时的可达性，以及各声明式步骤的完成、前置、互斥和缺货分支。最终两个独立房间的多人专项均通过，每房 10 组。两份本机记录分别在 `tests/output/event-races-9c5da529/event-races.json` 和 `tests/output/event-races-619014cf/event-races.json`。一次实际打捞失败后，另一旧请求没有再次掷骰或耗轮。两位 KP 同时批准同一项修泵工作，两人合计只消耗一个齿轮、一格密封蜡、一个回合。三种结局的主要与备用路线、恢复专项和玩家界面均另行验证。

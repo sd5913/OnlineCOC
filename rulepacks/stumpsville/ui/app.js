@@ -203,7 +203,7 @@ function openDialog(title,body,onSubmit,label=t('ui.m062'),id='S14') {
   if (!dialog.open) dialog.showModal();
 }
 
-dialog.addEventListener('close',()=>{if(!dialog.open){if(dirtyForm==='ruling-form')dirtyForm=null;dialog.replaceChildren();}});
+dialog.addEventListener('close',()=>{if(!dialog.open){if(dialog.querySelector('.embedded-ai-root'))embeddedAI.close();if(dirtyForm==='ruling-form')dirtyForm=null;dialog.replaceChildren();}});
 function closeDialog() {
   if(dialog.open&&dialog.querySelector('#player-ai-embedded'))embeddedAI.close();
   if(dirtyForm==='ruling-form')dirtyForm=null;
@@ -397,6 +397,41 @@ function renderEntry() {
   app.innerHTML = `<section class="entry"><div class="entry-card"><div class="eyebrow">${t('entry.tagline')}</div><h1>${t('app.name')}</h1><div class="subtitle">STUMPSVILLE</div><p>${t('entry.intro')}</p><div class="notice">${setup?.canSetup?t('entry.setup'):t('entry.login')}</div><form id="entry-form">${setup?.canSetup?'':field(t('ui.m157'),'loginName','kp')}${field(setup?.canSetup?t('entry.password'):t('ui.m158'),'password','','password')}${setup?.canSetup?`<p class="muted">${t('entry.accounts')}</p>`:''}<button class="primary" type="submit">${setup?.canSetup?t('entry.prepare'):t('ui.m156')}</button><div id="entry-error" role="alert"></div></form><p>${independentLogin()}</p></div></section>`;
 }
 
+// Replace surrounding game panels without disconnecting the conversation's editor.
+// Even re-inserting the same contenteditable node cancels the browser's native composition.
+function renderAround(container, markup, selector) {
+  const original = selector && container.querySelector(selector);
+  if (!original) {
+    container.innerHTML = markup;
+    return;
+  }
+  const template = document.createElement('template');
+  template.innerHTML = markup;
+  const branches = [];
+  let kept = original, fresh = template.content.querySelector(selector);
+  while (fresh && kept !== container && fresh !== template.content && kept.tagName === fresh.tagName && kept.id === fresh.id) {
+    branches.push([kept, fresh]);
+    kept = kept.parentNode;
+    fresh = fresh.parentNode;
+  }
+  if (kept !== container || fresh !== template.content) {
+    container.replaceChildren(template.content);
+    return;
+  }
+  for (const [live, replacement] of branches) {
+    for (const attr of [...live.attributes]) {
+      if (!replacement.hasAttribute(attr.name)) live.removeAttribute(attr.name);
+    }
+    for (const attr of replacement.attributes) {
+      if (live.getAttribute(attr.name) !== attr.value) live.setAttribute(attr.name, attr.value);
+    }
+    while (live.previousSibling) live.previousSibling.remove();
+    while (live.nextSibling) live.nextSibling.remove();
+    while (replacement.previousSibling) live.before(replacement.parentNode.firstChild);
+    while (replacement.nextSibling) live.parentNode.append(replacement.nextSibling);
+  }
+}
+
 function renderPage() {
   if (!state) return renderEntry();
   const logScroll=document.querySelector('#action-feedback')?.scrollTop||0;
@@ -425,7 +460,8 @@ function renderPage() {
   const pending = localStorage.getItem(pendingKey());
   const folded=localStorage.getItem('sv.desktop.topbar.'+base.pathname+'.'+state.accountId)==='1';
   document.body.classList.toggle('topbar-collapsed',folded);
-  app.innerHTML = `<header class="topbar"><div class="brand"><span class="brand-symbol">♧</span><span>${t('app.name')}<small>STUMPSVILLE</small></span></div>${!gm?`<nav class="top-nav" aria-label="${t('nav.main')}">${navigation.map(([url,label])=>`<a href="#/${url}" class="${path===url?'active':''}">${label}</a>`).join('')}</nav>`:''}<div class="toptools"><span class="identity">${gm?t('ui.m015'):t('ui.m016')} · ${escape(state.accountId)}</span><span class="tag" id="connection">${connection}</span>${state.canManage&&!webMode?`<a class="account-link" target="_blank" rel="noopener" href="${base.pathname}${gm?'?view=player#/play/scene':'#/gm/room'}">${gm?t('ui.m017'):t('ui.m018')}</a>`:''}${gm||workspace?'':button(t('ai.title'),'ai-assistant',{},'quiet')}${button(t('ui.m011'),'rules',{},'quiet')}${button(t('ui.m012'),'preferences',{},'quiet')}${button(t('ui.m013'),'logout',{},'quiet')}${select(t('ui.m014'),'locale',[['zh-CN','简体中文'],['en','English']],locale())}</div><button class="topbar-toggle quiet" data-action="topbar-toggle" aria-expanded="${!folded}" aria-label="${t(folded?'nav.expandTop':'nav.collapseTop')}" title="${t(folded?'nav.expandTop':'nav.collapseTop')}">${folded?t('nav.expandTop')+' ▾':'▴'}</button></header>${pending?`<div class="pendingbar">${t('status.pendingcommand')} ${button(t('action.recover'),'recover',{},'small')}</div>`:''}<div class="shell ${gm?'':'player-shell'}">${gm?`<nav class="sidebar" aria-label="${t('nav.main')}">${navigation.map(([url,label])=>`<a href="#/${url}" class="${path.startsWith(url)?'active':''}">${label}</a>`).join('')}</nav>`:''}<main id="main"></main></div>`;
+  const aiSlot = workspace ? '#player-ai-embedded' : gm && path === 'gm/rulings' && !webMode ? '#kp-ai-embedded' : null;
+  renderAround(app, `<header class="topbar"><div class="brand"><span class="brand-symbol">♧</span><span>${t('app.name')}<small>STUMPSVILLE</small></span></div>${!gm?`<nav class="top-nav" aria-label="${t('nav.main')}">${navigation.map(([url,label])=>`<a href="#/${url}" class="${path===url?'active':''}">${label}</a>`).join('')}</nav>`:''}<div class="toptools"><span class="identity">${gm?t('ui.m015'):t('ui.m016')} · ${escape(state.accountId)}</span><span class="tag" id="connection">${connection}</span>${state.canManage&&!webMode?`<a class="account-link" target="_blank" rel="noopener" href="${base.pathname}${gm?'?view=player#/play/scene':'#/gm/room'}">${gm?t('ui.m017'):t('ui.m018')}</a>`:''}${gm||workspace?'':button(t('ai.title'),'ai-assistant',{},'quiet')}${button(t('ui.m011'),'rules',{},'quiet')}${button(t('ui.m012'),'preferences',{},'quiet')}${button(t('ui.m013'),'logout',{},'quiet')}${select(t('ui.m014'),'locale',[['zh-CN','简体中文'],['en','English']],locale())}</div><button class="topbar-toggle quiet" data-action="topbar-toggle" aria-expanded="${!folded}" aria-label="${t(folded?'nav.expandTop':'nav.collapseTop')}" title="${t(folded?'nav.expandTop':'nav.collapseTop')}">${folded?t('nav.expandTop')+' ▾':'▴'}</button></header>${pending?`<div class="pendingbar">${t('status.pendingcommand')} ${button(t('action.recover'),'recover',{},'small')}</div>`:''}<div class="shell ${gm?'':'player-shell'}">${gm?`<nav class="sidebar" aria-label="${t('nav.main')}">${navigation.map(([url,label])=>`<a href="#/${url}" class="${path.startsWith(url)?'active':''}">${label}</a>`).join('')}</nav>`:''}<main id="main"></main></div>`, aiSlot && app.querySelector(aiSlot) ? '#main' : null);
   const main = document.querySelector('#main');
   if (!state.initialized) {
     chatUI.mount(null);main.innerHTML = gm?roomPage():empty(t('ui.m076'));
@@ -442,14 +478,17 @@ function renderPage() {
     'gm/library':libraryPage,'gm/ai-settings':()=>heading('P18','AI 设置')+'<section id="kp-ai-settings" aria-label="AI 设置"></section>','gm/session':sessionPage,'recap':recapPage
   };
   if(webMode&&gm&&['gm/library','gm/ai-settings'].includes(path)){main.innerHTML=empty('规则资料管理和 AI 设置请在房主本机打开；远程 KP 可使用房间、地图、地点、控制台和游戏裁决。');embeddedAI.close();return;}
-  main.innerHTML = (routes[path] || (()=>heading('S16',t('ui.m070'))+link(t('ui.m071'),'lobby')))();
+  renderAround(main, (routes[path] || (()=>heading('S16',t('ui.m070'))+link(t('ui.m071'),'lobby')))(), aiSlot);
   if(gm&&state.publicationSync&&state.publicationSync.status!=='completed')main.insertAdjacentHTML('afterbegin','<div class="notice error" role="status">规则发布已提交；包侧'+(state.publicationSync.status==='conflict'?'同步冲突':'等待同步')+'：'+escape(state.publicationSync.message)+'</div>');
   chatUI.update(state);
   chatUI.mount(workspace||path==='gm/rulings'?document.querySelector('#chat-column'):null);
   updateKeeperQueue();
   const renderedIdentity=noticeIdentity();
   if(webMode&&gm&&path==='gm/rulings')document.querySelector('#kp-ai-embedded').textContent='远程 KP 可处理游戏裁决。AI 管理与审核请在房主本机打开。';
-  embeddedAI.mount(webMode&&gm?null:path==='gm/ai-settings'?document.querySelector('#kp-ai-settings'):path==='gm/rulings'?document.querySelector('#kp-ai-embedded'):workspace?document.querySelector('#player-ai-embedded'):null,{base,manager:gm,account:state.accountId,scope:state.storageScope,settings:path==='gm/ai-settings',rulingsTarget:document.querySelector('#kp-ai-rulings'),statusTarget:document.querySelector('#keeper-queue-status'),timeline:document.querySelector('#keeper-ruling-timeline')?._timeline,archived:queueTab==='archived',readBundle:()=>api('package/bundle'),renderReference:renderPackageReference,onQueueCount:updateQueueCount,onNotice:value=>recordRulingNotice({...value,identity:renderedIdentity}),onSettings:()=>{location.hash='/gm/ai-settings';},onReveal:account=>actions['knowledge-ruling']({account}),onKnowledgeRequest:chooseAIKnowledge,onOpenSource:openRulingSource,onReview:()=>{location.hash='/gm/rulings';}});
+  const assistantTarget = aiSlot ? main.querySelector(aiSlot) :
+    gm && path==='gm/ai-settings' ? main.querySelector('#kp-ai-settings') :
+    !gm && dialog.open ? dialog.querySelector('#player-ai-embedded') : null;
+  embeddedAI.mount(assistantTarget,{base,manager:gm,account:state.accountId,scope:state.storageScope,settings:path==='gm/ai-settings',rulingsTarget:document.querySelector('#kp-ai-rulings'),statusTarget:document.querySelector('#keeper-queue-status'),timeline:document.querySelector('#keeper-ruling-timeline')?._timeline,archived:queueTab==='archived',readBundle:()=>api('package/bundle?form=active'),renderReference:renderPackageReference,onQueueCount:updateQueueCount,onNotice:value=>recordRulingNotice({...value,identity:renderedIdentity}),onSettings:()=>{location.hash='/gm/ai-settings';},onReveal:account=>actions['knowledge-ruling']({account}),onKnowledgeRequest:chooseAIKnowledge,onOpenSource:openRulingSource,onReview:()=>{location.hash='/gm/rulings';}});
   updateActivity();
   if(workspace){const log=document.querySelector('#action-feedback');if(log)log.scrollTop=logScroll;document.querySelector('.scene-column').scrollTop=sceneScroll;document.querySelector('.character-column').scrollTop=characterScroll;positionNotebook();}
 }
@@ -879,7 +918,7 @@ const actions = {
     openDialog('网页分享',w.running?`<div class="actions"><a href="${escape(platform+'/create')}" target="_blank" rel="noopener">${t('web.create')}</a><a href="${escape(platform+'/manage')}" target="_blank" rel="noopener">${t('web.manage')}</a><a href="${escape(platform+'/join')}" target="_blank" rel="noopener">${t('web.join')}</a></div>${field('房间代号（分享给玩家）','room-code',w.roomCode)}${setup}<p>玩家使用平台账号及游戏账号两次登录。保持本机KP管理台在线。</p>`:failure,w.running?async()=>{await api('package/web/stop',{});closeDialog();toast('网页分享已停止，游戏宿主继续运行。');}:null,'停止网页分享');
   },
   'copy-web-setup':async()=>{const input=document.querySelector('#web-setup');try{if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(input.value);return toast(t('web.copied'));}}catch{}input.focus();input.select();toast(document.execCommand('copy')?t('web.copied'):t('web.selectCopy'));},
-  'ai-assistant':()=>{if(state.role==='kp'){location.hash='/gm/rulings';return;}if(route()==='play/scene'){communicationTab('ai');actions['workspace-column']({column:'communication'});return;}openDialog(t('ai.title'),'<div id="player-ai-embedded"></div>',null,'','AI');embeddedAI.mount(document.querySelector('#player-ai-embedded'),{base,account:state.accountId,renderReference:renderPackageReference});},
+  'ai-assistant':()=>{if(state.role==='kp'){location.hash='/gm/rulings';return;}if(route()==='play/scene'){communicationTab('ai');actions['workspace-column']({column:'communication'});return;}openDialog(t('ai.title'),'<div id="player-ai-embedded"></div>',null,'','AI');embeddedAI.mount(dialog.querySelector('#player-ai-embedded'),{base,account:state.accountId,scope:state.storageScope,renderReference:renderPackageReference});},
   'open-chat':()=>chatUI.open(),
   'copy-room-address':async()=>{
     const input=document.querySelector('#room-url');
@@ -889,7 +928,10 @@ const actions = {
   },
   'scene-action':({id})=>{
     const a=state.sceneActions.find(x=>x.id===id);
-    openDialog(a.label,`<p>${escape(a.hint)}</p>${select(t('scene.choose'),'scene-choice',a.choices.map(c=>[c.id,c.label]),a.choices[0].id)}<div id="scene-process" class="notice">${escape(a.choices[0].process)}</div>${select(t('ui.m077'),'ruling',[['auto',t('scene.auto')],['manual',t('ui.m079')]],'auto')}`,data=>perform('scene.action',{action:id,choice:data.get('scene-choice'),manual:data.get('ruling')==='manual'}),t('scene.execute'),'S18');
+    openDialog(a.label,`<p>${escape(a.hint)}</p>${select(t('scene.choose'),'scene-choice',a.choices.map(c=>[c.id,c.label]),a.choices[0].id)}<div id="scene-process" class="notice">${escape(a.choices[0].process)}</div>${select(t('ui.m077'),'ruling',[['auto',t('scene.auto')],['manual',t('ui.m079')]],'auto')}`,data=>{
+      const choice=a.choices.find(c=>c.id===data.get('scene-choice'));
+      return perform('scene.action',{action:id,choice:choice.id,eventVersion:choice.eventVersion,manual:data.get('ruling')==='manual'});
+    },t('scene.execute'),'S18');
     dialog.dataset.sceneAction=id;
   },
   'events-read':()=>{markEventsRead();renderPage();},
@@ -974,7 +1016,17 @@ const actions = {
   morale:args=>perform('morale',args),
   'npc-create':()=>openDialog('新建主持生物',field('名称','name')+['str','dex','wil','hp','armor','location'].map((x,i)=>field(fieldName(x),x,[9,9,9,3,0,1][i],'number')).join('')+'<p class="muted">默认是SRD通用小鼠，专属角色请按原版输入。</p>',data=>perform('npc.create',{name:data.get('name'),numbers:Object.fromEntries(['str','dex','wil','hp','armor','location'].map(x=>[x,number(data.get(x))]))}),'创建','S10'),
   'tables':()=>openDialog('主持随机表',area('d6 遭遇内容（每行一项，共6行）','encounters',state.encounters.join('\n'))+area('d20 战利品（每行一项，共20行）','loot',state.loot.join('\n')),data=>perform('tables.save',{encounters:data.get('encounters').split('\n'),loot:data.get('loot').split('\n')}),t('ui.m063'),'S14'),
-  'stage':()=>openDialog('导入与检查','<label>选择导出的配置包 JSON<input type="file" id="bundle-file" accept=".json"></label><p>检查不会激活规则；通过后可在隔离快照预览。</p>',async()=>{const f=document.querySelector('#bundle-file').files[0];if(!f)throw new Error('请选择 JSON 文件');if(f.size>512*1024)throw new Error('配置文件超过本机接口限制');const data=JSON.parse(await f.text());const result=await perform('rules.stage',{bundle:data});lastStage=result.revision;renderPage();},'检查暂存','S14'),
+  'stage':()=>{
+    const baseRevision=state.catalog.rulesetRevision;
+    openDialog('导入与检查','<label>选择规则包 JSON、已声明的数据 JSON 或 Lua 规则<input type="file" id="bundle-file" accept=".json,.lua"></label><p>单文件按文件名合入当前活动修订，检查通过后可预览并激活。</p>',async()=>{
+      const f=document.querySelector('#bundle-file').files[0];
+      if(!f)throw new Error('请选择配置或规则文件');
+      if(f.size>512*1024)throw new Error('配置文件超过本机接口限制');
+      const lua=f.name.endsWith('.lua'),raw=await f.text(),value=lua?raw:JSON.parse(raw);
+      const args=!lua&&value?.sources&&value?.data?{bundle:value}:{baseRevision,file:(lua?'rules/':'config/')+f.name,value};
+      const result=await perform('rules.stage',args);lastStage=result.revision;renderPage();
+    },'检查暂存','S14');
+  },
   'rules-preview':({revision})=>openDialog(t('ui.m137'),select(t('ui.m011'),'rule',[['sv.layout','物品栏布局'],['sv.check',t('ui.m051')]],'sv.layout')+select('角色','actor',actorOptions()),async data=>{const rule=data.get('rule');const input={actor:data.get('actor'),...(rule==='sv.check'?{attribute:'dex',mode:'normal'}:{})};const result=await perform('rules.preview',{revision,rule,input});openDialog('预览结果','<pre>'+escape(JSON.stringify(result,null,2))+'</pre>',null,'','S14');},'运行预览','S14'),
   'rules-activate':args=>openDialog('激活 / 回退修订','<p>将使用修订 '+escape(args.revision)+'。已有角色数值不会自动迁移。</p>',()=>perform('rules.activate',args),'确认激活','S14'),
 

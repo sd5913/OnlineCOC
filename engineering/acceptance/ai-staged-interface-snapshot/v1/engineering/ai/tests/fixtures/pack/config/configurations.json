@@ -1,0 +1,29 @@
+[
+  {
+    "configurationId": "fixture.actor",
+    "revision": "1",
+    "typeRef": "actor",
+    "defaults": {
+      "hp": 10,
+      "maxHp": 10,
+      "target": 60
+    },
+    "behaviors": {}
+  },
+  {
+    "configurationId": "fixture.token",
+    "revision": "1",
+    "typeRef": "item",
+    "defaults": {
+      "quantity": 1,
+      "unitMass": 0,
+      "charges": 2,
+      "bonus": 0
+    },
+    "behaviors": {
+      "use": {
+        "ruleId": "fixture.check"
+      }
+    }
+  }
+]

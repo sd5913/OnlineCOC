@@ -1,6 +1,6 @@
 {
   "passed": true,
-  "checkedAt": "2026-11-19T12:10:38.670568+08:00",
+  "checkedAt": "2026-11-23T12:27:16.011579+08:00",
   "checks": [
     "unchanged numeric sync creates no revision; changes commit; lost step result recovers the same receipt without another write",
     "current rooms include scene rules; removed upgrade operation has no effects",

@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="5" skipped="0" tests="13" time="23.549" timestamp="2026-11-23T15:00:04.110597+08:00" hostname="LAPTOP-BIFSL64A"><testcase classname="tests.test_room_state_artifacts" name="test_state_keeps_only_active_and_executable_versions_with_usage" time="0.006" /><testcase classname="tests.test_room_state_artifacts" name="test_staging_keeps_search_page_and_exact_read_proofs_stable" time="0.005" /><testcase classname="tests.test_room_state_artifacts" name="test_actual_artifact_lifecycle_or_permission_changes_invalidate_proof[active-content]" time="0.003" /><testcase classname="tests.test_room_state_artifacts" name="test_actual_artifact_lifecycle_or_permission_changes_invalidate_proof[active-switch]" time="0.002" /><testcase classname="tests.test_room_state_artifacts" name="test_actual_artifact_lifecycle_or_permission_changes_invalidate_proof[inflight-content]" time="0.002" /><testcase classname="tests.test_room_state_artifacts" name="test_actual_artifact_lifecycle_or_permission_changes_invalidate_proof[inflight-finished]" time="0.002" /><testcase classname="tests.test_room_state_artifacts" name="test_actual_artifact_lifecycle_or_permission_changes_invalidate_proof[permission]" time="0.002" /><testcase classname="tests.test_room_state_artifacts" name="test_old_active_exact_reference_changes_when_retained_as_inflight" time="0.002" /><testcase classname="tests.test_room_state_artifacts" name="test_real_abc_approve_stage_then_publish_once_without_self_stale" time="5.219"><failure message="KeyError: 'ruleset'">ai_case = (&lt;onlinecoc.host.Host object at 0x00000125B8982660&gt;, &lt;onlinecoc_ai.proposals.Proposals object at 0x00000125B9BC01A0&gt;, ...'item', 'defaults': {'quantity': 1, 'unitMass': 0, 'charges': 2, 'bonus': 15}, ...}}], 'sources': {}, 'data': {}, ...})
+
+    def test_real_abc_approve_stage_then_publish_once_without_self_stale(ai_case):
+&gt;       host, approval, prepared = candidate(ai_case)
+                                   ^^^^^^^^^^^^^^^^^^
+
+engineering\acceptance\engine-issue-025\work\fixed\engineering\backend\tests\test_room_state_artifacts.py:120: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+engineering\acceptance\engine-issue-025\work\fixed\engineering\backend\tests\test_room_state_artifacts.py:112: in candidate
+    response = host.command('kp', ai_message(host, 'ai.proposal.approve', args, 'approve-comment'))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+engineering\acceptance\engine-issue-025\work\fixed\engineering\backend\src\onlinecoc\host.py:231: in command
+    result=self.manage(s,account,op,args,prepared=prepared,command_id=p['commandId'])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+engineering\acceptance\engine-issue-025\work\fixed\engineering\backend\src\onlinecoc\host.py:390: in manage
+    return approve(self,s,account,args,prepared)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+engineering\acceptance\engine-issue-025\work\fixed\engineering\backend\src\onlinecoc\publication.py:169: in approve
+    check_context(host, state, account, prepared["context"])
+engineering\acceptance\engine-issue-025\work\fixed\engineering\backend\src\onlinecoc\publication.py:94: in check_context
+    _check_context(host, state, account, context, history=False)
+engineering\acceptance\engine-issue-025\work\fixed\engineering\backend\src\onlinecoc\publication.py:141: in _check_context
+    host.validate_ai_sources(state, account, context)
+engineering\acceptance\engine-issue-025\work\fixed\engineering\backend\src\onlinecoc\host.py:535: in validate_ai_sources
+    recheck(self,state,account,context)
+engineering\acceptance\engine-issue-025\work\fixed\engineering\backend\src\onlinecoc\data_queries.py:271: in recheck
+    result=query(host,state,account,proof['operation'],proof['args'],initiator=proof['initiator'],external=True,player=proof.get('player'),read_scope=proof.get('readScope'))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+engineering\acceptance\engine-issue-025\work\fixed\engineering\backend\src\onlinecoc\data_queries.py:184: in query
+    values = rows(host,state,account,initiator,external,requested,read_scope=read_scope,room_mode=room_mode)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+engineering\acceptance\engine-issue-025\work\fixed\engineering\backend\src\onlinecoc\data_queries.py:122: in rows
+    revisions.update(r['ruleset'] for r in state.get('commands',{}).values() if r['status']=='pending')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+.0 = &lt;dict_valueiterator object at 0x00000125B9BE2520&gt;
+
+&gt;   revisions.update(r['ruleset'] for r in state.get('commands',{}).values() if r['status']=='pending')
+                     ^^^^^^^^^^^^
+E   KeyError: 'ruleset'
+
+engineering\acceptance\engine-issue-025\work\fixed\engineering\backend\src\onlinecoc\data_queries.py:122: KeyError</failure></testcase><testcase classname="tests.test_room_state_artifacts" name="test_real_approval_still_rejects_external_change_and_revocation[business-BASELINE_STALE]" time="4.262"><failure message="KeyError: 'ruleset'">ai_case = (&lt;onlinecoc.host.Host object at 0x00000125B9BCCCD0&gt;, &lt;onlinecoc_ai.proposals.Proposals object at 0x00000125B9BCDF90&gt;, ...'item', 'defaults': {'quantity': 1, 'unitMass': 0, 'charges': 2, 'bonus': 15}, ...}}], 'sources': {}, 'data': {}, ...})
+change = 'business', code = 'BASELINE_STALE'
+
+    @pytest.mark.parametrize('change,code', [('business', 'BASELINE_STALE'), ('active', 'BASELINE_STALE'),
+                                           ('permission', 'PERMISSION_DENIED'), ('artifact', 'SOURCE_STALE')])
+    def test_real_approval_still_rejects_external_change_and_revocation(ai_case, change, code):
+&gt;       host, approval, prepared = candidate(ai_case)
+                                   ^^^^^^^^^^^^^^^^^^
+
+engineering\acceptance\engine-issue-025\work\fixed\engineering\backend\tests\test_room_state_artifacts.py:134: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+engineering\acceptance\engine-issue-025\work\fixed\engineering\backend\tests\test_room_state_artifacts.py:112: in candidate
+    response = host.command('kp', ai_message(host, 'ai.proposal.approve', args, 'approve-comment'))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+engineering\acceptance\engine-issue-025\work\fixed\engineering\backend\src\onlinecoc\host.py:231: in command
+    result=self.manage(s,account,op,args,prepared=prepared,command_id=p['commandId'])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+engineering\acceptance\engine-issue-025\work\fixed\engineering\backend\src\onlinecoc\host.py:390: in manage
+    return approve(self,s,account,args,prepared)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+engineering\acceptance\engine-issue-025\work\fixed\engineering\backend\src\onlinecoc\publication.py:169: in approve
+    check_context(host, state, account, prepared["context"])
+engineering\acceptance\engine-issue-025\work\fixed\engineering\backend\src\onlinecoc\publication.py:94: in check_context
+    _check_context(host, state, account, context, history=False)
+engineering\acceptance\engine-issue-025\work\fixed\engineering\backend\src\onlinecoc\publication.py:141: in _check_context
+    host.validate_ai_sources(state, account, context)
+engineering\acceptance\engine-issue-025\work\fixed\engineering\backend\src\onlinecoc\host.py:535: in validate_ai_sources
+    recheck(self,state,account,context)
+engineering\acceptance\engine-issue-025\work\fixed\engineering\backend\src\onlinecoc\data_queries.py:271: in recheck
+    result=query(host,state,account,proof['operation'],proof['args'],initiator=proof['initiator'],external=True,player=proof.get('player'),read_scope=proof.get('readScope'))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+engineering\acceptance\engine-issue-025\work\fixed\engineering\backend\src\onlinecoc\data_queries.py:184: in query
+    values = rows(host,state,account,initiator,external,requested,read_scope=read_scope,room_mode=room_mode)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+engineering\acceptance\engine-issue-025\work\fixed\engineering\backend\src\onlinecoc\data_queries.py:122: in rows
+    revisions.update(r['ruleset'] for r in state.get('commands',{}).values() if r['status']=='pending')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+.0 = &lt;dict_valueiterator object at 0x00000125B9BE2520&gt;
+
+&gt;   revisions.update(r['ruleset'] for r in state.get('commands',{}).values() if r['status']=='pending')
+                     ^^^^^^^^^^^^
+E   KeyError: 'ruleset'
+
+engineering\acceptance\engine-issue-025\work\fixed\engineering\backend\src\onlinecoc\data_queries.py:122: KeyError</failure></testcase><testcase classname="tests.test_room_state_artifacts" name="test_real_approval_still_rejects_external_change_and_revocation[active-BASELINE_STALE]" time="4.285"><failure message="KeyError: 'ruleset'">ai_case = (&lt;onlinecoc.host.Host object at 0x00000125B9BCE210&gt;, &lt;onlinecoc_ai.proposals.Proposals object at 0x00000125B9BCED50&gt;, ...'item', 'defaults': {'quantity': 1, 'unitMass': 0, 'charges': 2, 'bonus': 15}, ...}}], 'sources': {}, 'data': {}, ...})
+change = 'active', code = 'BASELINE_STALE'
+
+    @pytest.mark.parametrize('change,code', [('business', 'BASELINE_STALE'), ('active', 'BASELINE_STALE'),
+                                           ('permission', 'PERMISSION_DENIED'), ('artifact', 'SOURCE_STALE')])
+    def test_real_approval_still_rejects_external_change_and_revocation(ai_case, change, code):
+&gt;       host, approval, prepared = candidate(ai_case)
+                                   ^^^^^^^^^^^^^^^^^^
+
+engineering\acceptance\engine-issue-025\work\fixed\engineering\backend\tests\test_room_state_artifacts.py:134: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+engineering\acceptance\engine-issue-025\work\fixed\engineering\backend\tests\test_room_state_artifacts.py:112: in candidate
+    response = host.command('kp', ai_message(host, 'ai.proposal.approve', args, 'approve-comment'))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+engineering\acceptance\engine-issue-025\work\fixed\engineering\backend\src\onlinecoc\host.py:231: in command
+    result=self.manage(s,account,op,args,prepared=prepared,command_id=p['commandId'])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+engineering\acceptance\engine-issue-025\work\fixed\engineering\backend\src\onlinecoc\host.py:390: in manage
+    return approve(self,s,account,args,prepared)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+engineering\acceptance\engine-issue-025\work\fixed\engineering\backend\src\onlinecoc\publication.py:169: in approve
+    check_context(host, state, account, prepared["context"])
+engineering\acceptance\engine-issue-025\work\fixed\engineering\backend\src\onlinecoc\publication.py:94: in check_context
+    _check_context(host, state, account, context, history=False)
+engineering\acceptance\engine-issue-025\work\fixed\engineering\backend\src\onlinecoc\publication.py:141: in _check_context
+    host.validate_ai_sources(state, account, context)
+engineering\acceptance\engine-issue-025\work\fixed\engineering\backend\src\onlinecoc\host.py:535: in validate_ai_sources
+    recheck(self,state,account,context)
+engineering\acceptance\engine-issue-025\work\fixed\engineering\backend\src\onlinecoc\data_queries.py:271: in recheck
+    result=query(host,state,account,proof['operation'],proof['args'],initiator=proof['initiator'],external=True,player=proof.get('player'),read_scope=proof.get('readScope'))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+engineering\acceptance\engine-issue-025\work\fixed\engineering\backend\src\onlinecoc\data_queries.py:184: in query
+    values = rows(host,state,account,initiator,external,requested,read_scope=read_scope,room_mode=room_mode)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+engineering\acceptance\engine-issue-025\work\fixed\engineering\backend\src\onlinecoc\data_queries.py:122: in rows
+    revisions.update(r['ruleset'] for r in state.get('commands',{}).values() if r['status']=='pending')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+.0 = &lt;dict_valueiterator object at 0x00000125BA075490&gt;
+
+&gt;   revisions.update(r['ruleset'] for r in state.get('commands',{}).values() if r['status']=='pending')
+                     ^^^^^^^^^^^^
+E   KeyError: 'ruleset'
+
+engineering\acceptance\engine-issue-025\work\fixed\engineering\backend\src\onlinecoc\data_queries.py:122: KeyError</failure></testcase><testcase classname="tests.test_room_state_artifacts" name="test_real_approval_still_rejects_external_change_and_revocation[permission-PERMISSION_DENIED]" time="4.671"><failure message="KeyError: 'ruleset'">ai_case = (&lt;onlinecoc.host.Host object at 0x00000125B9BF0D60&gt;, &lt;onlinecoc_ai.proposals.Proposals object at 0x00000125B9BF1480&gt;, ...'item', 'defaults': {'quantity': 1, 'unitMass': 0, 'charges': 2, 'bonus': 15}, ...}}], 'sources': {}, 'data': {}, ...})
+change = 'permission', code = 'PERMISSION_DENIED'
+
+    @pytest.mark.parametrize('change,code', [('business', 'BASELINE_STALE'), ('active', 'BASELINE_STALE'),
+                                           ('permission', 'PERMISSION_DENIED'), ('artifact', 'SOURCE_STALE')])
+    def test_real_approval_still_rejects_external_change_and_revocation(ai_case, change, code):
+&gt;       host, approval, prepared = candidate(ai_case)
+                                   ^^^^^^^^^^^^^^^^^^
+
+engineering\acceptance\engine-issue-025\work\fixed\engineering\backend\tests\test_room_state_artifacts.py:134: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+engineering\acceptance\engine-issue-025\work\fixed\engineering\backend\tests\test_room_state_artifacts.py:112: in candidate
+    response = host.command('kp', ai_message(host, 'ai.proposal.approve', args, 'approve-comment'))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+engineering\acceptance\engine-issue-025\work\fixed\engineering\backend\src\onlinecoc\host.py:231: in command
+    result=self.manage(s,account,op,args,prepared=prepared,command_id=p['commandId'])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+engineering\acceptance\engine-issue-025\work\fixed\engineering\backend\src\onlinecoc\host.py:390: in manage
+    return approve(self,s,account,args,prepared)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+engineering\acceptance\engine-issue-025\work\fixed\engineering\backend\src\onlinecoc\publication.py:169: in approve
+    check_context(host, state, account, prepared["context"])
+engineering\acceptance\engine-issue-025\work\fixed\engineering\backend\src\onlinecoc\publication.py:94: in check_context
+    _check_context(host, state, account, context, history=False)
+engineering\acceptance\engine-issue-025\work\fixed\engineering\backend\src\onlinecoc\publication.py:141: in _check_context
+    host.validate_ai_sources(state, account, context)
+engineering\acceptance\engine-issue-025\work\fixed\engineering\backend\src\onlinecoc\host.py:535: in validate_ai_sources
+    recheck(self,state,account,context)
+engineering\acceptance\engine-issue-025\work\fixed\engineering\backend\src\onlinecoc\data_queries.py:271: in recheck
+    result=query(host,state,account,proof['operation'],proof['args'],initiator=proof['initiator'],external=True,player=proof.get('player'),read_scope=proof.get('readScope'))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+engineering\acceptance\engine-issue-025\work\fixed\engineering\backend\src\onlinecoc\data_queries.py:184: in query
+    values = rows(host,state,account,initiator,external,requested,read_scope=read_scope,room_mode=room_mode)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+engineering\acceptance\engine-issue-025\work\fixed\engineering\backend\src\onlinecoc\data_queries.py:122: in rows
+    revisions.update(r['ruleset'] for r in state.get('commands',{}).values() if r['status']=='pending')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+.0 = &lt;dict_valueiterator object at 0x00000125B892B240&gt;
+
+&gt;   revisions.update(r['ruleset'] for r in state.get('commands',{}).values() if r['status']=='pending')
+                     ^^^^^^^^^^^^
+E   KeyError: 'ruleset'
+
+engineering\acceptance\engine-issue-025\work\fixed\engineering\backend\src\onlinecoc\data_queries.py:122: KeyError</failure></testcase><testcase classname="tests.test_room_state_artifacts" name="test_real_approval_still_rejects_external_change_and_revocation[artifact-SOURCE_STALE]" time="4.357"><failure message="KeyError: 'ruleset'">ai_case = (&lt;onlinecoc.host.Host object at 0x00000125B9BF1A70&gt;, &lt;onlinecoc_ai.proposals.Proposals object at 0x00000125B9BF2060&gt;, ...'item', 'defaults': {'quantity': 1, 'unitMass': 0, 'charges': 2, 'bonus': 15}, ...}}], 'sources': {}, 'data': {}, ...})
+change = 'artifact', code = 'SOURCE_STALE'
+
+    @pytest.mark.parametrize('change,code', [('business', 'BASELINE_STALE'), ('active', 'BASELINE_STALE'),
+                                           ('permission', 'PERMISSION_DENIED'), ('artifact', 'SOURCE_STALE')])
+    def test_real_approval_still_rejects_external_change_and_revocation(ai_case, change, code):
+&gt;       host, approval, prepared = candidate(ai_case)
+                                   ^^^^^^^^^^^^^^^^^^
+
+engineering\acceptance\engine-issue-025\work\fixed\engineering\backend\tests\test_room_state_artifacts.py:134: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+engineering\acceptance\engine-issue-025\work\fixed\engineering\backend\tests\test_room_state_artifacts.py:112: in candidate
+    response = host.command('kp', ai_message(host, 'ai.proposal.approve', args, 'approve-comment'))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+engineering\acceptance\engine-issue-025\work\fixed\engineering\backend\src\onlinecoc\host.py:231: in command
+    result=self.manage(s,account,op,args,prepared=prepared,command_id=p['commandId'])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+engineering\acceptance\engine-issue-025\work\fixed\engineering\backend\src\onlinecoc\host.py:390: in manage
+    return approve(self,s,account,args,prepared)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+engineering\acceptance\engine-issue-025\work\fixed\engineering\backend\src\onlinecoc\publication.py:169: in approve
+    check_context(host, state, account, prepared["context"])
+engineering\acceptance\engine-issue-025\work\fixed\engineering\backend\src\onlinecoc\publication.py:94: in check_context
+    _check_context(host, state, account, context, history=False)
+engineering\acceptance\engine-issue-025\work\fixed\engineering\backend\src\onlinecoc\publication.py:141: in _check_context
+    host.validate_ai_sources(state, account, context)
+engineering\acceptance\engine-issue-025\work\fixed\engineering\backend\src\onlinecoc\host.py:535: in validate_ai_sources
+    recheck(self,state,account,context)
+engineering\acceptance\engine-issue-025\work\fixed\engineering\backend\src\onlinecoc\data_queries.py:271: in recheck
+    result=query(host,state,account,proof['operation'],proof['args'],initiator=proof['initiator'],external=True,player=proof.get('player'),read_scope=proof.get('readScope'))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+engineering\acceptance\engine-issue-025\work\fixed\engineering\backend\src\onlinecoc\data_queries.py:184: in query
+    values = rows(host,state,account,initiator,external,requested,read_scope=read_scope,room_mode=room_mode)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+engineering\acceptance\engine-issue-025\work\fixed\engineering\backend\src\onlinecoc\data_queries.py:122: in rows
+    revisions.update(r['ruleset'] for r in state.get('commands',{}).values() if r['status']=='pending')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+.0 = &lt;dict_valueiterator object at 0x00000125B9D1CD60&gt;
+
+&gt;   revisions.update(r['ruleset'] for r in state.get('commands',{}).values() if r['status']=='pending')
+                     ^^^^^^^^^^^^
+E   KeyError: 'ruleset'
+
+engineering\acceptance\engine-issue-025\work\fixed\engineering\backend\src\onlinecoc\data_queries.py:122: KeyError</failure></testcase></testsuite></testsuites>

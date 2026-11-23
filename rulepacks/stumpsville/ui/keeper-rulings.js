@@ -28,6 +28,53 @@ function consultationHTML(item){
   const notice=assessment.notice||'方案使用了独立来源资料作为参考。请核对与当前执行目标的关系，再决定是否采用。';
   return '<section class="consultation-assessment notice" aria-label="参考资料评估"><h3>参考资料评估 · 由 KP 决定</h3><p>'+esc(notice)+'</p>'+(Number.isInteger(assessment.sourceCount)?'<small>涉及 '+esc(assessment.sourceCount)+' 项参考来源</small>':'')+(!consultationReady(item)?'<p>评估信息不完整，请重新检查方案。</p>':'')+'</section>';
 }
+function changeLocation(path){
+  const parts=String(path).split('/').slice(1).map(key=>key.replaceAll('~1','/').replaceAll('~0','~'));
+  const [group,file]=parts;
+  const folders={data:'config',sources:'rules',rules:'rules'};
+  if(group==='configurations'||group==='configuration')return 'config/configurations.json · '+parts.slice(1).join(' / ');
+  return folders[group]&&file?folders[group]+'/'+file+(parts.length>2?' · '+parts.slice(2).join(' / '):''):path;
+}
+
+function previousChangeSummary(change){
+  if(change.target==='sources')return '规则源码';
+  const value=change.after??change.before;
+  if(change.before&&change.after&&typeof value==='object'){
+    const fields=[...new Set([...Object.keys(change.before),...Object.keys(change.after)])]
+      .filter(key=>JSON.stringify(change.before[key])!==JSON.stringify(change.after[key]));
+    if(fields.length)return fields.slice(0,6).join('、')+(fields.length>6?' 等字段':'');
+  }
+  return value?.name||value?.configurationId||(change.target==='configuration'?'宿主配置定义':'配置数据');
+}
+
+function continuationHTML(item){
+  const phase=item.continuation;
+  if(!phase)return '';
+  const states={waiting_publication:'等待配置发布',ready:'已建立后续请求',queued:'等待生成',generating:'正在准备后续方案',
+    validating:'正在校验',review_ready:'已生成答复',needs_input:'需要补充决定',awaiting_runtime_approval:'运行时行动待审批',
+    executing:'执行中',unknown:'执行结果待核对',partial:'部分执行，需核对回执',rejected:'已拒绝',rolled_back:'已撤销',
+    completed:'已完成',blocked:'已阻断',failed:'失败',interrupted:'已中断',cancelled:'已取消',superseded:'已由新方案替代'};
+  return '<p class="continuation-status">发布后继续 · '+esc(states[phase.status]||phase.status)+
+    (phase.error?' · '+esc(phase.error):'')+'</p>';
+}
+
+function rulingChanges(item){
+  if(item.kind!=='configuration')return '';
+  const labels={add:'新增',create:'新增',remove:'删除',delete:'删除',replace:'修改',update:'修改',modify:'修改'};
+  const overview=item.changeOverview;
+  // Receipts written by older engines contain file-level before/after values.
+  const rows=Array.isArray(overview?.items)?overview.items:(item.diff||[]).map(d=>({
+    path:'/'+(d.target==='configuration'?'configurations':d.target)+'/'+d.id,
+    operation:d.before==null?'add':d.after==null?'remove':'replace',
+    summary:previousChangeSummary(d)
+  }));
+  if(!rows.length)return '';
+  const list=rows.map(r=>'<li><code>'+esc(changeLocation(r.path))+'</code> · '+esc(labels[r.operation]||r.operation||'修改')+
+    (r.summary?' · '+esc(r.summary):'')+'</li>').join('');
+  return '<details class="ruling-changes"><summary>拟修改路径与内容（'+esc(overview?.total??rows.length)+' 项）</summary><ul>'+list+
+    '</ul>'+(overview?.truncated?'<p>其余变更见完整修改与检查结果。</p>':'')+'</details>';
+}
+
 function recheckDelta(item,bundle){
   // Reuse only the intended changes. Never replay unchanged old files over newer work.
   const canonical=value=>JSON.stringify(value,(_,v)=>v&&typeof v==='object'&&!Array.isArray(v)?Object.fromEntries(Object.keys(v).sort().map(k=>[k,v[k]])):v);
@@ -134,13 +181,14 @@ export function mountPackageRulings(target,client,module,{command,authorized,onS
       if(dead||busy||!authorized())return;
     }
     dialog=document.createElement('dialog');dialog.className='ai-request-detail ruling-dialog';dialog.setAttribute('aria-label','裁决详情');
-    dialog.innerHTML='<header><h2>'+esc(type(item))+'</h2><button type="button" data-close>关闭详情</button></header><p>'+esc(stateLabel(item))+'</p><div data-summary></div><details><summary>完整修改与检查结果</summary><pre class="data-detail"></pre></details>';
+    dialog.innerHTML='<header><h2>'+esc(type(item))+'</h2><button type="button" data-close>关闭详情</button></header><p>'+esc(stateLabel(item))+'</p><div data-summary></div>'+continuationHTML(item)+rulingChanges(item)+'<details data-full-result><summary>完整修改与检查结果</summary><pre class="data-detail"></pre></details>';
     markdown=module.mountMarkdown(dialog.querySelector('[data-summary]'),item.summary||'',{resolveReferences:tokens=>client.aiResolve(tokens),renderReference,audience:'administrator'});
     if(item.sourceState==='stale'||item.status==='stale'){dialog.classList.add('ruling-stale');dialog.title=item.sourceNotice||'依赖资料已过时，正文保留原方案。';}
-    dialog.querySelector('pre').textContent=JSON.stringify({changeSet:item.changeSet,diff:item.diff,actions:item.actions,preflight:item.preflight,execution:item.execution,riskTags:item.riskTags,reports:item.reports,consultationAssessment:item.consultationAssessment,receipts:item.receipts,publications:item.publications},null,2);
-    dialog.querySelector('details').insertAdjacentHTML('beforebegin',batchDetailsHTML(item));
-    dialog.querySelector('details').insertAdjacentHTML('beforebegin',cReviewHTML(item));
-    dialog.querySelector('details').insertAdjacentHTML('beforebegin',consultationHTML(item));
+    const fullResult=dialog.querySelector('[data-full-result]');
+    fullResult.querySelector('pre').textContent=JSON.stringify({changeSet:item.changeSet,diff:item.diff,actions:item.actions,preflight:item.preflight,execution:item.execution,riskTags:item.riskTags,reports:item.reports,consultationAssessment:item.consultationAssessment,receipts:item.receipts,publications:item.publications},null,2);
+    fullResult.insertAdjacentHTML('beforebegin',batchDetailsHTML(item));
+    fullResult.insertAdjacentHTML('beforebegin',cReviewHTML(item));
+    fullResult.insertAdjacentHTML('beforebegin',consultationHTML(item));
     if(reasonOf(item)&&!(item.cAssessment?.requiresAcceptance&&item.cAssessment.adoptable&&!item.cAssessment.stale)){const p=document.createElement('p');p.className='notice error';p.textContent=explainAIError(reasonOf(item));dialog.append(p);}
     const controls=document.createElement('div');controls.className='ruling-decision-actions';
     if(item.status==='pending'&&item.canDecide&&consultationReady(item)&&!['blocked','unsupported'].includes(item.preflight?.status)&&!rulingIsArchived(item)&&(!item.cAssessment||item.cAssessment.adoptable&&!item.cAssessment.stale)){

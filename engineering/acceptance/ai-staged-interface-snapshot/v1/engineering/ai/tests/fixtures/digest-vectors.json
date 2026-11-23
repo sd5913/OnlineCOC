@@ -1,0 +1,21 @@
+[
+  {
+    "value": {
+      "b": 2,
+      "a": 1
+    },
+    "canonical": "{\"a\":1,\"b\":2}",
+    "digest": "43258cff783fe7036d8a43033f830adfc60ec037382473548ac742b888292777"
+  },
+  {
+    "value": {
+      "text": "规则",
+      "items": [
+        1,
+        false,
+        null
+      ]
+    },
+    "digest": "c983d0913c3bf953f4504c3249ff642037198df630e2fa09685f9448ff103b80"
+  }
+]

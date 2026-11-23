@@ -4,7 +4,7 @@
 - 文档子类：工程
 - 状态：有效
 - 创建日期：2026-10-30
-- 最后更新：2026-11-22
+- 最后更新：2026-11-23
 - 关联文档：[工程索引](README.md)、[编写 Lua](lua-authoring.md)、[验收报告](first-test-acceptance.md)、[施工计划](<../../plans/project planning/first-test-construction-plan.md>)
 
 ## 1. 实现范围
@@ -33,6 +33,8 @@ engineering/.venv/Scripts/python engineering/backend/scripts/run.py --data-dir e
 打开 `http://127.0.0.1:8765`。使用三个不同浏览器配置/隔离上下文登录三种身份；普通标签页共用 Cookie，不能视为独立身份。`--port 8766` 可变更端口。服务固定绑定 `127.0.0.1`，不默认暴露到局域网。Ctrl+C 停止服务，重开同一数据目录恢复原房间；不要加自动重载或多 worker 参数。
 
 操作台按主机动作目录生成表单，可执行检定、伤害、转移、组合值、失败问 KP 和限时选择。KP 可以导入完整 Lua/JSON 文件组，检查暂存后激活；旧流程继续使用旧修订。管理区通用命令的可用参数以 [操作契约](../../../engineering/contracts/operations.json) 为准。
+
+宿主还提供 `rule.stage.delta`，将新增/替换/删除的文件键绑定到明确的活动规则修订，在锁内重建完整工件再执行原暂存校验，避免小修改重传整个工件触及普通命令64KiB上限。成功仍只返回暂存修订ID，激活使用原 `rule.activate`。协议、错误和界限见[Lua增量暂存](lua-authoring.md#文件增量暂存)；这不表示现有操作台已增加专用增量编辑界面。
 
 需要 AI 时按[模块入口](../../../engineering/ai/README.md)附加 `--ai-config` 与 `--ai-pack`；服务商/加密凭据可用[独立 AI 管理器](ai-manager.md)设置。启用后操作台提供共用审核组件，另可在管理器中连接房间使用会话面板。
 

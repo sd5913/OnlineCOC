@@ -1,0 +1,43 @@
+{
+  "maxCommandBytes": 65536,
+  "externalCalls": 0,
+  "cases": [
+    {
+      "paddingPerCollection": 30000,
+      "fullEnvelopeBytes": 62963,
+      "deltaEnvelopeBytes": 530,
+      "fullHttpStatus": 200,
+      "deltaHttpStatus": 200,
+      "sameAsFullArtifact": true,
+      "activeUnchanged": true,
+      "sourceBytes": 32456,
+      "dataBytes": 30081
+    },
+    {
+      "paddingPerCollection": 60000,
+      "fullEnvelopeBytes": 122963,
+      "deltaEnvelopeBytes": 530,
+      "fullHttpStatus": 413,
+      "deltaHttpStatus": 200,
+      "sameAsFullArtifact": true,
+      "activeUnchanged": true,
+      "sourceBytes": 62456,
+      "dataBytes": 60081
+    },
+    {
+      "paddingPerCollection": 96000,
+      "fullEnvelopeBytes": 194963,
+      "deltaEnvelopeBytes": 530,
+      "fullHttpStatus": 413,
+      "deltaHttpStatus": 200,
+      "sameAsFullArtifact": true,
+      "activeUnchanged": true,
+      "sourceBytes": 98456,
+      "dataBytes": 96081
+    }
+  ],
+  "streamedBoundary": {
+    "at65536": 200,
+    "at65537": 413
+  }
+}

@@ -5,7 +5,7 @@
 - 状态：有效
 - 创建日期：2026-10-29
 - 最后更新：2026-11-23
-- 最近目录核对：2026-11-23（本轮远程 KP 登录及专项验收）；2026-11-22（联网离线安装器、房间保留清理；背包掉落、包侧分段存档、引擎与 AI 性能验收、树桩镇暴雨配置与隔离试玩）。本轮见[性能排查计划](../../plans/operation-performance-audit.md)；上一轮见[ISSUE-024](../../history/2026-11-21-issue-024-deepseek-official-compaction.md)。
+- 最近目录核对：2026-11-23（AI分步发布、投影兼容与专项验收）；2026-11-23（规则文件增量暂存、既有性能与远程KP验收清单）；详见[增量暂存验收](../../../engineering/acceptance/rule-stage-delta/README.md)。 2026-11-23（AI 模糊需求恢复源码、冻结差量和验收清单）。 2026-11-23（聊天交互修复、冻结组件与浏览器验收）。
 - 关联文档：[工程文档索引](README.md)、[文档维护标准](../../standards/document-maintenance.md)
 
 ## 工程实际目录
@@ -435,6 +435,7 @@
 | `tools/room-manager/README.md` | 当前使用、开发或验收说明 |
 | `tools/room-manager/build.ps1` | 构建、启动或依赖配置 |
 | `tools/room-manager/build.py` | 构建、启动或依赖配置 |
+| `tools/room-manager/dist/RoomManager/_internal/` | 独立发布程序附带的 Python 运行时与依赖；不逐文件登记 |
 | `tools/room-manager/dist/RoomManager/README.txt` | Python 独立发布程序、依赖锁或摘要 |
 | `tools/room-manager/dist/RoomManager/RoomManager.exe` | Python 独立发布程序、依赖锁或摘要 |
 | `tools/room-manager/dist/RoomManager/release.json` | Python 独立发布程序、依赖锁或摘要 |
@@ -1468,6 +1469,14 @@ AI 可选限额与用量统计（2026-11-16）：
 | `rulepacks/stumpsville/tests/verify_ai_recovery.mjs` | 包侧交付：Package transport and queue recovery regression |
 | `rulepacks/stumpsville/tests/verify_ai_recovery_ui.py` | 包侧交付：Actual package browser recovery, debug dialog and exported component validation |
 | `rulepacks/stumpsville/tests/verify_ai_config_matrix.py` | 包侧交付：Public HTTP configuration matrix and isolated restart batches |
+| `rulepacks/stumpsville/tests/verify_ambiguous_live.py` | 隔离 KP 房间真实 DeepSeek 多轮模糊需求验收入口 |
+| `rulepacks/stumpsville/tests/ambiguous_suite.py` | 复杂模糊需求用例、预设重大决策和目标达成条件 |
+| `rulepacks/stumpsville/tests/summarize_ambiguous_matrix.py` | 按人工发言、技术恢复和审批汇总真实 API 对照 |
+| `rulepacks/stumpsville/tests/ambiguous-suite-live-report.md` | 16 项模糊需求的前后对照与逐轮对话 |
+| `rulepacks/stumpsville/tests/ambiguous-suite-live-summary.json` | 逐例人工轮数、达成、审批和 API 用量 |
+| `rulepacks/stumpsville/tests/ambiguous-suite-live-traces.json.gz` | 优化前后及诊断样本的完整工具返回与状态差异 |
+| `rulepacks/stumpsville/tests/ambiguous-live-report.md` | 逐轮对话、读取、检查、目标达成和统计 |
+| `rulepacks/stumpsville/tests/ambiguous-live-results.json` | 三间隔离房的工具参数、返回、回执及实际状态差异 |
 | `rulepacks/stumpsville/tests/verify_ai_config_live.py` | 包侧交付：Opt-in bounded three-batch DeepSeek matrix |
 | `rulepacks/stumpsville/tests/ai-recovery-results.json` | 包侧交付：Initial and final 15-case recovery evidence |
 | `rulepacks/stumpsville/tests/ai-config-matrix-results.json` | 包侧交付：First cumulative room matrix, timeouts and storage exhaustion |
@@ -1704,6 +1713,7 @@ AI 可选限额与用量统计（2026-11-16）：
 | `engineering/ai/tests/test_generation_snapshot.py` | 冻结生成、历史图缓存、权限撤销与存储增量专项 |
 | `engineering/ai/tests/test_progress_ui.py` | 通用过程卡与资料变化后重新生成入口的浏览器专项 |
 
+| `docs/plans/Issues/issue-025-ai-ambiguous-goals.md` | 真实模糊需求验收中的澄清、写入对象和发布依据问题 |
 | `docs/plans/Issues/issue-020-batch-partial-slot-diagnostics.md` | 零成功批次误显部分完成及物品槽位混淆的现场、隔离修复和正式跑测边界 |
 
 | `docs/plans/ai-command-reliability.md` | 全类型指令生成样例、真实 API 测试、自动修复与整批事务实施计划 |
@@ -2374,6 +2384,137 @@ AI 可选限额与用量统计（2026-11-16）：
 | `rulepacks/stumpsville/tests/remote-kp-cloud-results.json` | 远程 KP 公网强制 TURN 登录、主持及角色切换隔离证据 |
 
 | `engineering/network-web/acceptance/2026-11-23-0.3.2.json` | 远程 KP 登录、本地及公网 TURN 主持闭环与 0.3.2 部署摘要 |
+
+| `engineering/acceptance/rule-stage-delta/.gitignore` | 活动规则修订增量暂存的专项、接口冻结、复现驱动或验收证据 |
+| `engineering/acceptance/rule-stage-delta/README.md` | 活动规则修订增量暂存的专项、接口冻结、复现驱动或验收证据 |
+| `engineering/acceptance/rule-stage-delta/delta-v1.xml` | 活动规则修订增量暂存的专项、接口冻结、复现驱动或验收证据 |
+| `engineering/acceptance/rule-stage-delta/delta-v2.xml` | 活动规则修订增量暂存的专项、接口冻结、复现驱动或验收证据 |
+| `engineering/acceptance/rule-stage-delta/delta-v3.xml` | 活动规则修订增量暂存的专项、接口冻结、复现驱动或验收证据 |
+| `engineering/acceptance/rule-stage-delta/freeze.py` | 活动规则修订增量暂存的专项、接口冻结、复现驱动或验收证据 |
+| `engineering/acceptance/rule-stage-delta/handoff.json` | 活动规则修订增量暂存的专项、接口冻结、复现驱动或验收证据 |
+| `engineering/acceptance/rule-stage-delta/interface-v1/engineering/backend/src/onlinecoc/host.py` | 活动规则修订增量暂存的专项、接口冻结、复现驱动或验收证据 |
+| `engineering/acceptance/rule-stage-delta/interface-v1/engineering/backend/src/onlinecoc/registry.py` | 活动规则修订增量暂存的专项、接口冻结、复现驱动或验收证据 |
+| `engineering/acceptance/rule-stage-delta/interface-v1/engineering/contracts/operations.json` | 活动规则修订增量暂存的专项、接口冻结、复现驱动或验收证据 |
+| `engineering/acceptance/rule-stage-delta/interface-v1/source.json` | 活动规则修订增量暂存的专项、接口冻结、复现驱动或验收证据 |
+| `engineering/acceptance/rule-stage-delta/measure.py` | 活动规则修订增量暂存的专项、接口冻结、复现驱动或验收证据 |
+| `engineering/acceptance/rule-stage-delta/measurements.json` | 活动规则修订增量暂存的专项、接口冻结、复现驱动或验收证据 |
+| `engineering/acceptance/rule-stage-delta/v1-source.json` | 活动规则修订增量暂存的专项、接口冻结、复现驱动或验收证据 |
+| `engineering/acceptance/rule-stage-delta/v2-source.json` | 活动规则修订增量暂存的专项、接口冻结、复现驱动或验收证据 |
+| `engineering/acceptance/rule-stage-delta/v3-source.json` | 活动规则修订增量暂存的专项、接口冻结、复现驱动或验收证据 |
+| `engineering/backend/tests/test_rule_stage_delta.py` | 规则增量暂存的权限、完整校验、HTTP限额与故障恢复专项 |
+| `engineering/acceptance/rule-stage-delta/work/` | Git忽略的隔离宿主、冻结运行树与pytest临时数据；不得用作正式存档 |
+
+| `engineering/ai/src/onlinecoc_ai/change_overview.py` | AI 分步发布、配置校验及复现证据 |
+| `engineering/ai/src/onlinecoc_ai/continuations.py` | AI 分步发布、配置校验及复现证据 |
+| `engineering/ai/tests/test_staged_configuration.py` | AI 分步发布、配置校验及复现证据 |
+| `engineering/acceptance/ai-staged-configuration/.gitignore` | AI 分步发布、配置校验及复现证据 |
+| `engineering/acceptance/ai-staged-configuration/README.md` | AI 分步发布、配置校验及复现证据 |
+| `engineering/acceptance/ai-staged-configuration/extension-live-final-source.json` | AI 分步发布、配置校验及复现证据 |
+| `engineering/acceptance/ai-staged-configuration/extension-live-final.xml` | AI 分步发布、配置校验及复现证据 |
+| `engineering/acceptance/ai-staged-configuration/extension-live-source.json` | AI 分步发布、配置校验及复现证据 |
+| `engineering/acceptance/ai-staged-configuration/extension-live-verified-source.json` | AI 分步发布、配置校验及复现证据 |
+| `engineering/acceptance/ai-staged-configuration/extension-live-verified.xml` | AI 分步发布、配置校验及复现证据 |
+| `engineering/acceptance/ai-staged-configuration/extension-live.xml` | AI 分步发布、配置校验及复现证据 |
+| `engineering/acceptance/ai-staged-configuration/files-manifest.json` | AI 分步发布、配置校验及复现证据 |
+| `engineering/acceptance/ai-staged-configuration/final-validation-source.json` | AI 分步发布、配置校验及复现证据 |
+| `engineering/acceptance/ai-staged-configuration/final-validation.xml` | AI 分步发布、配置校验及复现证据 |
+| `engineering/acceptance/ai-staged-configuration/freeze.py` | AI 分步发布、配置校验及复现证据 |
+| `engineering/acceptance/ai-staged-configuration/full-regression-source.json` | AI 分步发布、配置校验及复现证据 |
+| `engineering/acceptance/ai-staged-configuration/full-regression.xml` | AI 分步发布、配置校验及复现证据 |
+| `engineering/acceptance/ai-staged-configuration/idle-stage-final-source.json` | AI 分步发布、配置校验及复现证据 |
+| `engineering/acceptance/ai-staged-configuration/idle-stage-final.xml` | AI 分步发布、配置校验及复现证据 |
+| `engineering/acceptance/ai-staged-configuration/pack-matrix-final.json` | AI 分步发布、配置校验及复现证据 |
+| `engineering/acceptance/ai-staged-configuration/pack-matrix.json` | AI 分步发布、配置校验及复现证据 |
+| `engineering/acceptance/ai-staged-configuration/run_tests.py` | AI 分步发布、配置校验及复现证据 |
+| `engineering/acceptance/ai-staged-configuration/staged-final-source.json` | AI 分步发布、配置校验及复现证据 |
+| `engineering/acceptance/ai-staged-configuration/staged-final.xml` | AI 分步发布、配置校验及复现证据 |
+| `engineering/acceptance/ai-staged-configuration/staged-first-source.json` | AI 分步发布、配置校验及复现证据 |
+| `engineering/acceptance/ai-staged-configuration/staged-first.xml` | AI 分步发布、配置校验及复现证据 |
+| `engineering/acceptance/ai-staged-configuration/staged-second-source.json` | AI 分步发布、配置校验及复现证据 |
+| `engineering/acceptance/ai-staged-configuration/staged-second.xml` | AI 分步发布、配置校验及复现证据 |
+| `engineering/acceptance/ai-staged-configuration/staged-third-source.json` | AI 分步发布、配置校验及复现证据 |
+| `engineering/acceptance/ai-staged-configuration/staged-third.xml` | AI 分步发布、配置校验及复现证据 |
+| `engineering/acceptance/ai-staged-configuration/staged-ui-source.json` | AI 分步发布、配置校验及复现证据 |
+| `engineering/acceptance/ai-staged-configuration/staged-ui.xml` | AI 分步发布、配置校验及复现证据 |
+| `engineering/acceptance/ai-staged-configuration/verification.json` | AI 分步发布、配置校验及复现证据 |
+| `engineering/acceptance/ai-staged-configuration/verify_pack.py` | AI 分步发布、配置校验及复现证据 |
+| `engineering/acceptance/ai-staged-interface-snapshot/v1/source.json` | AI 分步推进冻结源码清单与逐文件摘要 |
+| `engineering/acceptance/ai-staged-interface-snapshot/v1/engineering/` | AI 分步推进冻结工程，226项详见同版source.json |
+| `engineering/acceptance/ai-staged-interface-snapshot/v2/source.json` | AI 分步推进冻结源码清单与逐文件摘要 |
+| `engineering/acceptance/ai-staged-interface-snapshot/v2/engineering/` | AI 分步推进冻结工程，226项详见同版source.json |
+| `engineering/acceptance/ai-staged-configuration/work/` | Git忽略的隔离工程、存档与浏览器临时输出，不作为正式房间 |
+
+| `engineering/acceptance/engine-issue-025/.gitignore` | ISSUE-025 稳定房间工件投影测试、差量与验收证据 |
+| `engineering/acceptance/engine-issue-025/ai-query-context.xml` | ISSUE-025 稳定房间工件投影测试、差量与验收证据 |
+| `engineering/acceptance/engine-issue-025/ai-wait-diagnostics.json` | ISSUE-025 稳定房间工件投影测试、差量与验收证据 |
+| `engineering/acceptance/engine-issue-025/backend-regression.xml` | ISSUE-025 稳定房间工件投影测试、差量与验收证据 |
+| `engineering/acceptance/engine-issue-025/baseline-source.json` | ISSUE-025 稳定房间工件投影测试、差量与验收证据 |
+| `engineering/acceptance/engine-issue-025/baseline.xml` | ISSUE-025 稳定房间工件投影测试、差量与验收证据 |
+| `engineering/acceptance/engine-issue-025/baseline2-source.json` | ISSUE-025 稳定房间工件投影测试、差量与验收证据 |
+| `engineering/acceptance/engine-issue-025/baseline2.xml` | ISSUE-025 稳定房间工件投影测试、差量与验收证据 |
+| `engineering/acceptance/engine-issue-025/fixed-source.json` | ISSUE-025 稳定房间工件投影测试、差量与验收证据 |
+| `engineering/acceptance/engine-issue-025/fixed.xml` | ISSUE-025 稳定房间工件投影测试、差量与验收证据 |
+| `engineering/acceptance/engine-issue-025/fixed2-source.json` | ISSUE-025 稳定房间工件投影测试、差量与验收证据 |
+| `engineering/acceptance/engine-issue-025/fixed2.xml` | ISSUE-025 稳定房间工件投影测试、差量与验收证据 |
+| `engineering/acceptance/engine-issue-025/freeze.py` | ISSUE-025 稳定房间工件投影测试、差量与验收证据 |
+| `engineering/acceptance/engine-issue-025/handoff.json` | ISSUE-025 稳定房间工件投影测试、差量与验收证据 |
+| `engineering/acceptance/engine-issue-025/interface-v1/engineering/backend/src/onlinecoc/data_queries.py` | ISSUE-025 稳定房间工件投影测试、差量与验收证据 |
+| `engineering/acceptance/engine-issue-025/interface-v1/source.json` | ISSUE-025 稳定房间工件投影测试、差量与验收证据 |
+| `engineering/acceptance/engine-issue-025/README.md` | ISSUE-025 稳定房间工件投影测试、差量与验收证据 |
+| `engineering/acceptance/engine-issue-025/regression-source.json` | ISSUE-025 稳定房间工件投影测试、差量与验收证据 |
+| `engineering/backend/tests/test_room_state_artifacts.py` | ISSUE-025 稳定房间工件投影测试、差量与验收证据 |
+| `engineering/acceptance/engine-issue-025/work/` | Git 忽略的基线、修复与回归隔离工程；非正式房间 |
+
+| `engineering/acceptance/ai-ambiguity-recovery/.gitignore` | AI 模糊需求技术纠错、回执防重放或确定性验收证据 |
+| `engineering/acceptance/ai-ambiguity-recovery/README.md` | AI 模糊需求技术纠错、回执防重放或确定性验收证据 |
+| `engineering/acceptance/ai-ambiguity-recovery/combined-targeted-source.json` | AI 模糊需求技术纠错、回执防重放或确定性验收证据 |
+| `engineering/acceptance/ai-ambiguity-recovery/combined-targeted.xml` | AI 模糊需求技术纠错、回执防重放或确定性验收证据 |
+| `engineering/acceptance/ai-ambiguity-recovery/edit-publication-source.json` | AI 模糊需求技术纠错、回执防重放或确定性验收证据 |
+| `engineering/acceptance/ai-ambiguity-recovery/edit-publication.xml` | AI 模糊需求技术纠错、回执防重放或确定性验收证据 |
+| `engineering/acceptance/ai-ambiguity-recovery/engine-self-stale-source.json` | AI 模糊需求技术纠错、回执防重放或确定性验收证据 |
+| `engineering/acceptance/ai-ambiguity-recovery/engine-self-stale.xml` | AI 模糊需求技术纠错、回执防重放或确定性验收证据 |
+| `engineering/acceptance/ai-ambiguity-recovery/engine-stale-confirmed-source.json` | AI 模糊需求技术纠错、回执防重放或确定性验收证据 |
+| `engineering/acceptance/ai-ambiguity-recovery/engine-stale-confirmed.xml` | AI 模糊需求技术纠错、回执防重放或确定性验收证据 |
+| `engineering/acceptance/ai-ambiguity-recovery/engine-stale-reproduction-source.json` | AI 模糊需求技术纠错、回执防重放或确定性验收证据 |
+| `engineering/acceptance/ai-ambiguity-recovery/engine-stale-reproduction.xml` | AI 模糊需求技术纠错、回执防重放或确定性验收证据 |
+| `engineering/acceptance/ai-ambiguity-recovery/files-manifest.json` | AI 模糊需求技术纠错、回执防重放或确定性验收证据 |
+| `engineering/acceptance/ai-ambiguity-recovery/freeze.py` | AI 模糊需求技术纠错、回执防重放或确定性验收证据 |
+| `engineering/acceptance/ai-ambiguity-recovery/full-regression-source.json` | AI 模糊需求技术纠错、回执防重放或确定性验收证据 |
+| `engineering/acceptance/ai-ambiguity-recovery/full-regression.xml` | AI 模糊需求技术纠错、回执防重放或确定性验收证据 |
+| `engineering/acceptance/ai-ambiguity-recovery/repairs-first-interrupted.json` | AI 模糊需求技术纠错、回执防重放或确定性验收证据 |
+| `engineering/acceptance/ai-ambiguity-recovery/repairs-first-source.json` | AI 模糊需求技术纠错、回执防重放或确定性验收证据 |
+| `engineering/acceptance/ai-ambiguity-recovery/repairs-second-source.json` | AI 模糊需求技术纠错、回执防重放或确定性验收证据 |
+| `engineering/acceptance/ai-ambiguity-recovery/repairs-second.xml` | AI 模糊需求技术纠错、回执防重放或确定性验收证据 |
+| `engineering/acceptance/ai-ambiguity-recovery/run_tests.py` | AI 模糊需求技术纠错、回执防重放或确定性验收证据 |
+| `engineering/acceptance/ai-ambiguity-recovery/v2-full-regression-source.json` | AI 模糊需求技术纠错、回执防重放或确定性验收证据 |
+| `engineering/acceptance/ai-ambiguity-recovery/v2-targeted-source.json` | AI 模糊需求技术纠错、回执防重放或确定性验收证据 |
+| `engineering/acceptance/ai-ambiguity-recovery/v2-targeted.xml` | AI 模糊需求技术纠错、回执防重放或确定性验收证据 |
+| `engineering/acceptance/ai-ambiguity-recovery/verification.json` | AI 模糊需求技术纠错、回执防重放或确定性验收证据 |
+| `engineering/acceptance/ai-ambiguity-recovery/verify.py` | AI 模糊需求技术纠错、回执防重放或确定性验收证据 |
+| `engineering/ai/src/onlinecoc_ai/execution_ledger.py` | AI 模糊需求技术纠错、回执防重放或确定性验收证据 |
+| `engineering/ai/tests/test_ambiguity_recovery.py` | AI 模糊需求技术纠错、回执防重放或确定性验收证据 |
+| `engineering/acceptance/ai-ambiguity-interface-snapshot/v1/source.json` | AI 模糊需求恢复冻结差量与逐文件摘要 |
+| `engineering/acceptance/ai-ambiguity-interface-snapshot/v1/engineering/` | AI 模糊需求恢复冻结工程差量；逐文件清单见同版source.json |
+| `engineering/acceptance/ai-ambiguity-interface-snapshot/v2/source.json` | AI 模糊需求恢复冻结差量与逐文件摘要 |
+| `engineering/acceptance/ai-ambiguity-interface-snapshot/v2/engineering/` | AI 模糊需求恢复冻结工程差量；逐文件清单见同版source.json |
+| `engineering/acceptance/ai-ambiguity-recovery/work/` | Git忽略的冻结依赖装配、合成房间和pytest输出；非正式存档 |
+
+| `engineering/acceptance/ai-ambiguity-recovery/v2-full-regression.xml` | AI v2最终800项完整非浏览器回归结果 |
+
+| `engineering/acceptance/ai-chat-interaction/baseline.xml` | AI 聊天滚动、输入与浏览器回归证据 |
+| `engineering/acceptance/ai-chat-interaction/browser.json` | AI 聊天滚动、输入与浏览器回归证据 |
+| `engineering/acceptance/ai-chat-interaction/files-manifest.json` | AI 聊天滚动、输入与浏览器回归证据 |
+| `engineering/acceptance/ai-chat-interaction/long-history-editor.png` | AI 聊天滚动、输入与浏览器回归证据 |
+| `engineering/acceptance/ai-chat-interaction/README.md` | AI 聊天滚动、输入与浏览器回归证据 |
+| `engineering/acceptance/ai-chat-interaction/related-ui-recheck.xml` | AI 聊天滚动、输入与浏览器回归证据 |
+| `engineering/acceptance/ai-chat-interaction/related-ui.xml` | AI 聊天滚动、输入与浏览器回归证据 |
+| `engineering/acceptance/ai-chat-interaction/source.json` | AI 聊天滚动、输入与浏览器回归证据 |
+| `engineering/acceptance/ai-chat-interaction/targeted.xml` | AI 聊天滚动、输入与浏览器回归证据 |
+| `engineering/acceptance/ai-chat-interaction/verification.json` | AI 聊天滚动、输入与浏览器回归证据 |
+| `engineering/acceptance/ai-chat-interaction/verify.py` | AI 聊天滚动、输入与浏览器回归证据 |
+| `engineering/ai/tests/test_chat_interaction.py` | 长会话用户活动、原生组字、触屏、轮询及会话草稿浏览器回归 |
+| `engineering/acceptance/ai-chat-ui-interface-snapshot/v1/source.json` | 聊天交互 v1 冻结差量逐文件摘要 |
+| `engineering/acceptance/ai-chat-ui-interface-snapshot/v1/engineering/` | 聊天交互 v1 的三个冻结组件文件；逐文件清单见同版 source.json |
 
 ## 施工登记
 

@@ -15,7 +15,7 @@ def parse_answer(content):
     require(output.get('kind') in ('plan','draft','clarification','batch'),'MODEL_KIND_INVALID',path='/kind')
     require(isinstance(output.get('text'),str) and 1<=len(output['text'])<=8000,'MODEL_TEXT_INVALID',path='/text')
     required={'kind','text'}|({'changeSet'} if output['kind']=='draft' else {'actions'} if output['kind']=='batch' else set())
-    require(required<=set(output)<=required|{'choices'}|({'dataEdits'} if output['kind']=='draft' else set()),'MODEL_FIELDS_INVALID',path='/')
+    require(required<=set(output)<=required|{'choices'}|({'dataEdits','afterPublish'} if output['kind']=='draft' else set()),'MODEL_FIELDS_INVALID',path='/')
     return output
 
 CHOICES = {'type':'object','additionalProperties':False,'required':['prompt','options'],'properties':{
@@ -36,6 +36,9 @@ def validate_choices(value):
 
 def validate_answer(output, issued):
     texts=[output['text']]
+    if 'afterPublish' in output:
+        from .continuations import validate_instruction
+        validate_instruction(output['afterPublish']);texts.append(output['afterPublish']['text'])
     if 'choices' in output:
         require(output['kind'] in ('plan','clarification'),'MODEL_CHOICES_INVALID')
         validate_choices(output['choices'])

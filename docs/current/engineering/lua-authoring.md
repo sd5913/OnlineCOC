@@ -4,7 +4,7 @@
 - 文档子类：工程
 - 状态：有效
 - 创建日期：2026-10-30
-- 最后更新：2026-11-12
+- 最后更新：2026-11-23
 - 关联文档：[首测运行](first-test.md)、[可执行样例](../../../engineering/rulepacks/demo/README.md)、[原简化方案](<../../plans/project planning/lua-authoring-facade.md>)、[ISSUE-001](<../../plans/project planning/Issue/lua-authoring-simplification.md>)
 
 ## 1. 一条操作写一行业务调用
@@ -79,6 +79,30 @@ KP 同意只解决待办，不把 KP 权限授予发起者。后续阶段重新�
 ## 5. 导入、预览和回退
 
 在操作台选择完整 Lua 文件组及需要的 JSON 数据文件，点击检查并暂存，得到不可变修订 ID。规则 ID 重复、输入声明错误、流程环或显式依赖环会拒绝整组。声明依赖使用 `{dependencies={'my.other'}}`；动态 `r.call` 还会做运行时环检测。内部库标记 `{public=false}`，KP 专用入口用 `{kp=true}`。
+
+### 文件增量暂存
+
+普通命令的HTTP请求上限为65,536字节，与完整工件的源码/数据各1MiB限制不同。`rule.stage` 保留完整替换语义；修改少量文件时可通过原命令入口发送 `op: "rule.stage.delta"`：
+
+```json
+{
+  "baseRevision": "当前 activeRuleset 的64位小写十六进制修订ID",
+  "sources": {"bonus.lua": "return rule('bonus', {}, function() return 2 end)"},
+  "data": {"bonus.json": {"value": 2}},
+  "removeSources": ["obsolete.lua"],
+  "removeData": ["obsolete.json"]
+}
+```
+
+以上是命令 `args` 结构示意，示例中的修订ID须替换为实际值、删除项须确实存在。只有 `baseRevision` 必填，其他四项可省略，但必须至少有一个实际增改/删除键。`sources`、`data` 按键完整新增或替换，未提及的内容保持原样；`data` 中的JSON null是值，删除须使用数组。同一键不能同时增改和删除；删除数组不得重复。
+
+仅当前KP可操作。宿主在房间锁内要求 `baseRevision == activeRuleset`，不接受其他已暂存但未激活的修订作为基线；否则持久返回 `VERSION_CONFLICT`。合并后的完整文件组仍经过语法/受限Lua装载、重复ID、模式/输入声明、流程及显式依赖图检查，并保留最多64个Lua文件、源码和数据分别1MiB、worker限额及完整房间校验。缺少删除目标为 `RULE_FILE_NOT_FOUND`；空增量或增删冲突为 `INPUT_INVALID`。动态调用仍按原规则在运行时检查，静态暂存不能推断未声明的依赖。
+
+成功回执的 `result` 与原接口相同，是完整不可变工件的修订ID字符串。暂存不激活、不覆盖旧工件、实例或进行中流程；原 `rule.activate` 仍负责显式激活。失败不会发布部分工件，拒绝回执按原事务保存。同ID重试必须保留原始封套（含authority/catalog字段），已成功回执可在活动规则变化或普通重启后重放；不能用新视图重建相同ID的命令。
+
+客户端可通过 `GET /api/v1/contracts` 的 `operations` 判断是否支持该操作。增量请求本身仍受64KiB限制，单个超大变更文件、超大数据值或过多修改仍可能413；此接口不是文本行补丁、分块上传或多次增量的暂存分支。连续构建可先按原审核流程激活明确版本后再以该活动版本发下一次增量，不能自动激活来绕过限制。[专项证据](../../../engineering/acceptance/rule-stage-delta/README.md)包含完整请求413、小增量成功、原封套恢复和事务边界。
+
+### 预览和激活
 
 `GET /api/v1/admin/artifacts/{revision}` 可查看与当前修订的源码/数据差异。KP 可调用 `/api/v1/preview`，提交 `{revision,rule,input}`；预览在隔离快照执行，固定测试骰面，不提交业务状态。随后用 `rule.activate` 激活指定修订；回退也是激活已有旧修订。激活不会自动迁移现有实体数值。
 

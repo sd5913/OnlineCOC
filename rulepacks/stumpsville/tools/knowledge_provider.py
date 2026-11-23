@@ -111,7 +111,10 @@ class Provider:
                 definitions=scene_knowledge.presentation(artifact['data'].get('scene-actions.json',{}),data.get('authoredActions'))
                 value['actions']=scene_knowledge.menu(definitions,int(index),value['clues'])
                 entities = context['state']['entities']
-                flags = entities[data['sceneId']]['numbers']
+                flags = dict(entities[data['sceneId']]['numbers'])
+                for edge, field in [('2-3','gateOpen'), ('8-9','ironOpen'), ('9-10','caveOpen')]:
+                    if edge in data.get('doors', {}):
+                        flags[field] = int(data['doors'][edge] == 'open')
                 session = next((e for e in entities.values() if e['configurationId'] == 'sv.session'), None)
                 scene_knowledge.describe_events(value, definitions, flags, session['numbers']['round'] if session else 0)
                 location = data['locations'][index]

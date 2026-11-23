@@ -1,6 +1,7 @@
 {
-  "at": "2026-11-21T15:27:22.240310+08:00",
+  "at": "2026-11-23T13:27:05.995543+08:00",
   "checks": [
+    "concrete file, target and summary for each change; collapsed by default, literal HTML text",
     "C risk is readable with basis version, evidence, limitations, three actions and optional note",
     "explicit adopt button submits exact C proof, closes immediately and reports publication separately from warning",
     "reject does not submit C acceptance",
@@ -9,7 +10,7 @@
   ],
   "realApiCalls": 0,
   "scope": "synthetic DTO, actual Edge, no server policy proof",
-  "output": "D:\\Studies\\Art Programming\\OnlineCOC\\rulepacks\\stumpsville\\tests\\output\\c-review-ui-54f7617b",
+  "output": "D:\\Studies\\Art Programming\\OnlineCOC\\rulepacks\\stumpsville\\tests\\output\\c-review-ui-8a462359",
   "passed": true,
   "previousRuns": [
     {
@@ -24,6 +25,50 @@
       "realApiCalls": 0,
       "scope": "synthetic DTO, actual Edge, no server policy proof",
       "output": "D:\\Studies\\Art Programming\\OnlineCOC\\rulepacks\\stumpsville\\tests\\output\\c-review-ui-24f43589",
+      "passed": true
+    },
+    {
+      "at": "2026-11-21T15:27:22.240310+08:00",
+      "checks": [
+        "C risk is readable with basis version, evidence, limitations, three actions and optional note",
+        "explicit adopt button submits exact C proof, closes immediately and reports publication separately from warning",
+        "reject does not submit C acceptance",
+        "stale basis disables approval and rechecks the same proposal revision",
+        "long C findings escape HTML and fit 390px without script errors"
+      ],
+      "realApiCalls": 0,
+      "scope": "synthetic DTO, actual Edge, no server policy proof",
+      "output": "D:\\Studies\\Art Programming\\OnlineCOC\\rulepacks\\stumpsville\\tests\\output\\c-review-ui-54f7617b",
+      "passed": true
+    },
+    {
+      "at": "2026-11-23T13:00:12.295416+08:00",
+      "checks": [
+        "concrete file, target and summary for each change; collapsed by default, literal HTML text",
+        "C risk is readable with basis version, evidence, limitations, three actions and optional note",
+        "explicit adopt button submits exact C proof, closes immediately and reports publication separately from warning",
+        "reject does not submit C acceptance",
+        "stale basis disables approval and rechecks the same proposal revision",
+        "long C findings escape HTML and fit 390px without script errors"
+      ],
+      "realApiCalls": 0,
+      "scope": "synthetic DTO, actual Edge, no server policy proof",
+      "output": "D:\\Studies\\Art Programming\\OnlineCOC\\rulepacks\\stumpsville\\tests\\output\\c-review-ui-e8d5eb05",
+      "passed": true
+    },
+    {
+      "at": "2026-11-23T13:11:52.525417+08:00",
+      "checks": [
+        "concrete file, target and summary for each change; collapsed by default, literal HTML text",
+        "C risk is readable with basis version, evidence, limitations, three actions and optional note",
+        "explicit adopt button submits exact C proof, closes immediately and reports publication separately from warning",
+        "reject does not submit C acceptance",
+        "stale basis disables approval and rechecks the same proposal revision",
+        "long C findings escape HTML and fit 390px without script errors"
+      ],
+      "realApiCalls": 0,
+      "scope": "synthetic DTO, actual Edge, no server policy proof",
+      "output": "D:\\Studies\\Art Programming\\OnlineCOC\\rulepacks\\stumpsville\\tests\\output\\c-review-ui-39ccce99",
       "passed": true
     }
   ]

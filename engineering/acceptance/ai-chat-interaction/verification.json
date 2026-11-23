@@ -1,0 +1,53 @@
+{
+  "sourceMismatches": [],
+  "runs": {
+    "baseline.xml": {
+      "passed": 3,
+      "total": 12,
+      "seconds": 65.74,
+      "failed": [
+        "tests.test_chat_interaction::test_idle_update_follows_latest_from_long_history[page]",
+        "tests.test_chat_interaction::test_idle_update_follows_latest_from_long_history[conversation]",
+        "tests.test_chat_interaction::test_idle_update_follows_latest_from_long_history[collapsible]",
+        "tests.test_chat_interaction::test_recent_activity_preserves_position_then_expires[wheel]",
+        "tests.test_chat_interaction::test_recent_activity_preserves_position_then_expires[keydown]",
+        "tests.test_chat_interaction::test_recent_activity_preserves_position_then_expires[pointerdown]",
+        "tests.test_chat_interaction::test_recent_activity_preserves_position_then_expires[touchstart]",
+        "tests.test_chat_interaction::test_recent_activity_preserves_position_then_expires[input]",
+        "tests.test_chat_interaction::test_reader_anchor_and_selected_answer_survive_changed_rows"
+      ]
+    },
+    "targeted.xml": {
+      "passed": 25,
+      "total": 25,
+      "seconds": 136.284,
+      "failed": []
+    },
+    "related-ui.xml": {
+      "passed": 33,
+      "total": 36,
+      "seconds": 187.199,
+      "failed": [
+        "tests.test_access_ui::test_permissions_archive_delete_batches_and_mobile",
+        "tests.test_embeds::test_real_room_page_variants[conversation]",
+        "tests.test_embeds::test_real_room_page_variants[collapsible]"
+      ]
+    },
+    "related-ui-recheck.xml": {
+      "passed": 4,
+      "total": 4,
+      "seconds": 40.116,
+      "failed": []
+    }
+  },
+  "finalDistinct": {
+    "passed": 61,
+    "total": 61
+  },
+  "packageJointCheck": {
+    "passed": 8,
+    "total": 8,
+    "source": "package chat report; separate from engineering counts"
+  },
+  "externalModelCalls": 0
+}

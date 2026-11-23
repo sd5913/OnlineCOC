@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="11" time="37.854" timestamp="2026-11-23T13:04:40.806492+08:00" hostname="LAPTOP-BIFSL64A"><testcase classname="engineering.ai.tests.test_staged_configuration" name="test_publication_gates_fresh_runtime_batch_and_notification_once" time="7.881" /><testcase classname="engineering.ai.tests.test_staged_configuration" name="test_continuation_stops_for_current_authority_or_revision[archive]" time="1.802" /><testcase classname="engineering.ai.tests.test_staged_configuration" name="test_continuation_stops_for_current_authority_or_revision[revoke]" time="2.181"><failure message="onlinecoc.errors.DomainError: INPUT_INVALID">application = &lt;onlinecoc_ai.api.Application object at 0x0000029A065CAEA0&gt;
+reason = 'revoke'
+
+    @pytest.mark.parametrize('reason',['archive','revoke','cancel','revision'])
+    def test_continuation_stops_for_current_authority_or_revision(application,reason):
+        app=application;p,s=prepare(app)
+        if reason=='archive':
+            app.repository.update(lambda state:state['settings']['sessions'][s['sessionId']].update(archived=True))
+        elif reason=='revoke':
+&gt;           room=app.host.state();room['members']['kp']['authorizationEpoch']='new-epoch';app.host.commit(room)
+                                                                                          ^^^^^^^^^^^^^^^^^^^^^
+
+engineering\ai\tests\test_staged_configuration.py:76: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+engineering\backend\src\onlinecoc\host.py:45: in commit
+    start=time.perf_counter();validate(state);validated=time.perf_counter()
+                              ^^^^^^^^^^^^^^^
+engineering\backend\src\onlinecoc\model.py:70: in validate
+    validate_world(state)
+engineering\backend\src\onlinecoc\model.py:90: in validate_world
+    for value in state.get(collection,{}).values():validate_model(kind,value)
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^
+engineering\backend\src\onlinecoc\contracts.py:144: in validate_model
+    if error is not None:_model_error(kind,error)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+kind = 'Member'
+error = &lt;ValidationError: "'new-epoch' is not of type 'integer'"&gt;, prefix = ()
+
+    def _model_error(kind,error,prefix=()):
+        path=list(prefix)+list(error.absolute_path)
+        if error.validator=='required' and isinstance(error.instance,dict):
+            path.append(next(k for k in error.validator_value if k not in error.instance))
+        pointer='/'+'/'.join(str(k).replace('~','~0').replace('/','~1') for k in path)
+&gt;       raise DomainError('INPUT_INVALID',{'model':kind,'path':pointer[:512],'constraint':error.validator})
+E       onlinecoc.errors.DomainError: INPUT_INVALID
+
+engineering\backend\src\onlinecoc\contracts.py:97: DomainError</failure></testcase><testcase classname="engineering.ai.tests.test_staged_configuration" name="test_continuation_stops_for_current_authority_or_revision[cancel]" time="2.069" /><testcase classname="engineering.ai.tests.test_staged_configuration" name="test_continuation_stops_for_current_authority_or_revision[revision]" time="2.219" /><testcase classname="engineering.ai.tests.test_staged_configuration" name="test_resume_after_request_saved_dispatch_failure_never_duplicates" time="5.034"><failure message="KeyError: 'requestIds'">application = &lt;onlinecoc_ai.api.Application object at 0x0000029A06AC85A0&gt;
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000029A065CB950&gt;
+
+    def test_resume_after_request_saved_dispatch_failure_never_duplicates(application,monkeypatch):
+        app=application;p,s=prepare(app);original=app._execute
+        def fail(*args,**kwargs):
+            if args[2]=='ai.request.dispatch':raise OSError('simulated dispatch outage')
+            return original(*args,**kwargs)
+        monkeypatch.setattr(app,'_execute',fail);approve(app,p)
+        first=copy.deepcopy(app.repository.state()['settings']['publicationContinuations'][p['proposalId']])
+        assert first['status']=='blocked' and first['nextRequestId'] and not first.get('nextTaskId')
+        monkeypatch.setattr(app,'_execute',original);app.continuations.reconcile();app.continuations.reconcile()
+        second=app.repository.state()['settings']['publicationContinuations'][p['proposalId']]
+        assert second['nextRequestId']==first['nextRequestId'] and second['nextTaskId']
+&gt;       assert len(app.sessions.get('kp',s['sessionId'])['session']['requestIds'])==2
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'requestIds'
+
+engineering\ai\tests\test_staged_configuration.py:96: KeyError</failure></testcase><testcase classname="engineering.ai.tests.test_staged_configuration" name="test_approval_without_publication_does_not_advance" time="3.106" /><testcase classname="engineering.ai.tests.test_staged_configuration" name="test_continuation_integrity_detects_modified_plan" time="1.880" /><testcase classname="engineering.ai.tests.test_staged_configuration" name="test_two_consecutive_publications_refresh_baseline_keep_external_conflict" time="9.646" /><testcase classname="engineering.ai.tests.test_staged_configuration" name="test_exact_paths_escape_and_bounded_overview" time="0.001" /><testcase classname="engineering.ai.tests.test_staged_configuration" name="test_projection_inheritance_only_selector" time="0.086" /></testsuite></testsuites>

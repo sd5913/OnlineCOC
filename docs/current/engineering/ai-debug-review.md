@@ -4,7 +4,7 @@
 - 文档子类：工程
 - 状态：有效
 - 创建日期：2026-11-19
-- 最后更新：2026-11-21
+- 最后更新：2026-11-23
 - 关联文档：[会话权限](ai-session-access.md)、[裁决](ai-rulings.md)、[嵌入接入](ai-pack-embedding.md)、[管理器](ai-manager.md)
 
 ## 来源审核
@@ -72,6 +72,9 @@ appendReviewSource(target, source, {onOpenSource, onOpenSession});
 | --- | --- | --- |
 | 明确参数／权限拒绝 | 保留错误码，修正参数或由 KP 调整合法授权；包桥清除已明确拒绝的挂起标记 | 以新请求重新提交修正内容 |
 | 模型格式或基础结构错误 | 同一任务最多两次技术修复，诊断保留错误和路径；耗尽后显示失败 | 编辑原需求后重试，不自动无限循环 |
+| MODEL_ANSWER_ENVELOPE_REPAIRED／QUERY_FIELDS_REPAIRED／ENTITY_REFERENCE_REPAIRED | 已按限定证据修正回答外壳、字段过滤或实体引用，记入 outputFailures 和共用两次额度；仍须通过正常校验 | 属于本次任务纠错，不是执行成功或额外授权 |
+| INTENT_EXECUTION_REPLAY | 简短继续试图重复最近同会话意图的已执行、待批或结果不明动作；反馈原回执状态 | 明确新一笔需求才生成新增候选，不重复扣款或通知 |
+| REQUESTED_INCREMENT_OMITTED | 将明确新增发放误述成“已有、不必再发”，在共用额度内恢复原增量意图 | 保留旧库存，不将其当作本次成功凭证 |
 | 批次预检阻塞／不支持 | 查看逐项 code、ruleCode、path；可修复技术问题自动反馈，耗尽后保留 blocked 候选 | 不批准、不拆批绕过 |
 | failed／rolled_back | 业务提交数为0；逐项区分失败、撤销和未执行，保留原批次回执 | 修正后准备新候选再审核 |
 | committed 但玩法失败／blocked | 指令确已提交，目标未达成；保留实际游戏结果 | 不自动重掷或重试 |

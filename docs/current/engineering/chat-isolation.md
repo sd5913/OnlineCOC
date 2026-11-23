@@ -4,7 +4,7 @@
 - 文档子类：工程
 - 状态：有效
 - 创建日期：2026-11-21
-- 最后更新：2026-11-22
+- 最后更新：2026-11-23
 - 关联文档：[工程索引](README.md)、[首测引擎](first-test.md)、[高风险发布](high-risk-publication.md)、[AI 数据查询](ai-data-query.md)
 
 ## 轻量频道读取
@@ -20,9 +20,13 @@
 | 模式 | 范围 | 引用 sourceId |
 | --- | --- | --- |
 | `records`（宿主默认） | 当前完整持久化房间，包括聊天、命令、审计、outbox 和 AI 审批/发布记录 | `host-room` |
-| `state`（显式选择） | 排除 `chat`、`commands`、`audit`、`outbox`；`aiControl` 仅保留 schemaVersion、scopeId、packBinding、settings、memoryFacts；其余房间字段保留 | `host-room-state` |
+| `state`（显式选择） | 排除 `chat`、`commands`、`audit`、`outbox`；`aiControl` 仅保留 schemaVersion、scopeId、packBinding、settings、memoryFacts；`artifacts` 仅保留活动规则和在途执行固定的版本；其余房间字段保留 | `host-room-state` |
 
 `roomMode` 仅用于包含 `room` 类型的全房间查询。`read` 会按引用的 `sourceId` 自动选择对应模式，同一请求不接受混合的 `host-room` 和 `host-room-state` 引用。直接调用 `rows` 的内部使用者需要传入 `room_mode='state'` 才能生成稳定状态引用。
+
+状态模式的工件集合由 `activeRuleset`、带 `ruleset` 的 `pending` 命令，以及 `running`、`waiting`、`needs_attention` 流程引用的版本确定。已完成或取消的流程、已完成命令、暂存候选和审批记录不额外固定版本；这些工件仍可通过 `records` 读取。仅批准并暂存候选不会改变该状态集合，也不会让未发布内容成为活动状态证据。
+
+工件片段的 `data.path`、`data.value` 和长文本偏移保持原义，另有 `data.artifactUsage`：当前版本为 `active`，仅由在途执行固定的旧版本为 `in-flight`。搜索标签相应以 `[active]` 或 `[in-flight]` 开头；此标记也纳入引用摘要。活动版本切换、在途版本退出或其内容改变仍使相关旧证明失效。`records` 不增加此标记，也不隐藏暂存与历史工件。
 
 查询证明仍绑定授权范围、当前外发策略、包适配器摘要、查询参数及其完整结果。实体、成员、配置、规则、知识、确认记忆和设置变化仍可能使旧证明失效。普通聊天不改变状态查询的宿主结果；明确读取的聊天记录仍保留原有消息版本和摘要依赖。包适配器返回的数据仍参与查询证明，适配器必须自行避免把无关聊天或作业总版本绑定到业务状态。
 
@@ -39,5 +43,7 @@
 ## 验证证据
 
 专项及浏览器对照位于 [chat-isolation 验收目录](../../../engineering/acceptance/chat-isolation/)。测试使用独立合成房间和账号，不读写正式存档，不调用外部模型 API。
+
+ISSUE-025 的批准暂存自失效复现、修复回归与单文件差量位于 [engine-issue-025 验收目录](../../../engineering/acceptance/engine-issue-025/README.md)。该修复只调整工件读取集合及用途标记，未放宽来源、权限或发布基线检查。
 
 三浏览器测试使用 KP、PL1、PL2 独立会话，房间预置 1200 条历史消息并增加 120 个实体；轮流发送 30 条消息，同时提交 4 次真实宿主 AI 审批。依赖隔离实验和审批均成功的性能对照分别记录，避免把旧版审批失败形成的轻负载当作性能优势。具体样本、分位数、失败率和首轮失败以该目录的 JSON/XML 为准；结果限于同机合成负载，包界面和公网延迟由对应联测单独确认。

@@ -23,6 +23,9 @@ JOB_SEGMENT_SIZE = 64
 RECENT_JOBS = 32
 RECEIPT_SEGMENT_SIZE = 128
 RECENT_RECEIPTS = 256
+CONTESTED_CHOICES = {('courtyard-pool','money'), ('courtyard-pool','idol'), ('web-call','rescue'),
+    ('cage-listen','sneak'), ('storm-ferry','wait'), ('tunnel-cheese','careful'),
+    ('tunnel-cheese','take'), ('hall-negotiate','talk'), ('hall-negotiate','food')}
 
 
 def bundle():
@@ -193,6 +196,14 @@ class Package:
                      and (enabled or t.get('pickup')) and (not t.get('executor') or t['executor'] == view['accountId'])]
             return {'jobs': [{'id': t['id'], 'commandId': t['commandId']} for t in tasks[:1]] if session and view['status'] == 'active' else []}
 
+    def attempt_stamp(self, action, choice):
+        # Only competing attempts at the same risk or shared wait invalidate one
+        # another. Independent observations and multiple available units may coexist.
+        if (action, choice) not in CONTESTED_CHOICES:
+            return {}
+        target = action + '/' + choice if action == 'courtyard-pool' else action
+        return {'eventTarget': target, 'eventVersion': self.state.get('sceneAttempts', {}).get(target, '')}
+
     def queue_scene(self, view, character, job, definition, choice):
         key = job.record['requestKey']
         require(not any(t['account'] == view['accountId'] and t['status'] in {'queued', 'running', 'finishing'}
@@ -201,6 +212,7 @@ class Package:
                 'menuVersion': scene_knowledge.VERSION,
                 'action': definition['id'], 'choice': choice, 'title': definition['label'], 'status': 'queued',
                 'time': time.time(), 'commandId': 'scene-auto-' + hashlib.sha256(key.encode()).hexdigest()[:40]}
+        task.update(self.attempt_stamp(definition['id'], choice))
         self.state['autoSceneQueue'][key] = task
         return {'status': 'processing', 'jobId': key, 'sceneAction': definition['id'], 'title': definition['label'],
                 'message': '行动已接收，等待自动执行端结算；无需主持逐项确认', 'outcome': 'queued',
@@ -226,7 +238,7 @@ class Package:
                 result = self.take_drop(job, view, {'actor': task['actor'], 'id': task['dropId'], 'slot': task['slot']})
                 result.update(title=task['title'], sceneAction='pickup', outcome='success')
             else:
-                result = self.execute_scene(job, view, actor, task['action'], task['choice'], pickup=task.get('pickup', False))
+                result = self.execute_scene(job, view, actor, task['action'], task['choice'], pickup=task.get('pickup', False), attempt=task)
         except (PackageError, HostError) as error:
             if 'result' in job.record['steps'].get('scene-act', {}):
                 raise  # Committed effects must finish publication through the same job.
@@ -249,7 +261,7 @@ class Package:
                 receipt['result'] = result
         return result
 
-    def execute_scene(self, job, view, actor, action, choice, *, pickup=False):
+    def execute_scene(self, job, view, actor, action, choice, *, pickup=False, attempt=None):
         require(self.scene_ready(), '当前规则缺少场景预设；请检查已激活的规则修订')
         definition = next((x for x in self.scene_definitions() if x['id'] == action), None)
         require(definition and choice in {x['id'] for x in definition['choices']}, '预设行动或做法不存在')
@@ -266,16 +278,23 @@ class Package:
         require(privileged['role'] == 'kp', '场景执行服务没有主持权限')
         actual = privileged['entities'].get(context['actor'])
         require(actual and (view['role'] == 'kp' or actual['owner'] == view['accountId']), '角色归属已改变')
+        # Pre-upgrade pending requests all saw the initial event version.
+        stamp = self.attempt_stamp(action, choice)
+        target = stamp.get('eventTarget')
+        expected = (attempt or {}).get('eventVersion', '')
         if 'scene-act' not in job.record['steps']:
             selected = next(c for c in definition['choices'] if c['id'] == choice)
             session = next(iter(self.entities(privileged, 'sv.session')))
-            flags = privileged['entities'][self.state['sceneId']]['numbers']
+            flags = {**privileged['entities'][self.state['sceneId']]['numbers'], **scenes.package_numbers(self.state)}
             recipe = selected.get('storm', {})
             if pickup:
                 require(scenes.direct_pickup_item(action, choice, recipe, flags) is not None,
                         '这件物资需要通过地点事件获取')
             reason = scene_knowledge.unavailable(action, choice, recipe, flags, session['numbers']['round'])
             require(not reason, reason)
+            if target:
+                require(self.state.get('sceneAttempts', {}).get(target, '') == expected,
+                        '同一现场的尝试已结算，请查看结果后再决定是否继续。')
         self.state['scenePending'] = job.record['requestKey']
         self.save()
         # Shared stock updates and character effects happen in one host transaction.
@@ -292,10 +311,20 @@ class Package:
                 self.state.pop('scenePending', None)
                 self.save()
             raise
+        if target and result['public']['outcome'] != 'blocked':
+            self.state.setdefault('sceneAttempts', {})[target] = hashlib.sha256(job.record['requestKey'].encode()).hexdigest()[:24]
         scenes.apply_numbers(self.state, result['sceneState'])
-        for door in result['doors']:
-            self.state['doors'][door['edge']] = door['status']
         public = copy.deepcopy(result['public'])
+        survey = action.startswith('storm-roads') and choice == 'survey'
+        for door in result['doors']:
+            edge = door['edge']
+            if survey and (self.state.get('keeperClosedDoors', {}).get(edge) or self.state['doors'].get(edge) == 'locked'):
+                continue
+            self.state['doors'][edge] = door['status']
+        if survey and any(self.state['doors'].get(d['edge']) != 'open' for d in result['doors']):
+            public['narrative'] = ['已确认通路的位置；仍关闭的通路不能通行。' if line == '你确认了标记的通路，可从地图前往。' else line
+                                   for line in public['narrative']]
+
         for field in ('narrative', 'checks', 'rolls', 'stateChanges', 'clues'):
             if public.get(field) == {}:
                 public[field] = []
@@ -390,6 +419,13 @@ class Package:
         numbers.update(self.public_door_numbers())
         job.command('auto-session', 'entity.update', {'id': session['instanceId'], 'numbers': numbers})
 
+    def authored_scene(self, active):
+        for revision in self.state['ruleRevisions'].values():
+            candidate = revision['data'].get('scene-actions.json')
+            if candidate and 'presentationDigest' not in candidate and scene_knowledge.execution_data(candidate) == active:
+                return candidate
+        return None
+
     def validate_bundle(self, content):
         require(isinstance(content, dict) and isinstance(content.get('sources'), dict) and
                 isinstance(content.get('data'), dict), '需要 sources 和 data 的配置文件')
@@ -407,7 +443,24 @@ class Package:
         identity=lambda item:tuple(item.get(k) for k in ('id','kind','slots','uses'))
         require([identity(x) for x in data['items'][:len(self.game['items'])]]==[identity(x) for x in self.game['items']],
                 '手动导入不能迁移既有物品槽位和用量；请使用带存量校验的高危提案')
-        return copy.deepcopy({'sources': content['sources'], 'data': content['data']})
+        validated = copy.deepcopy({'sources': content['sources'], 'data': content['data']})
+        scene_file = 'scene-actions.json'
+        actions = validated['data'].get(scene_file)
+        if scene_file not in validated['data']:
+            installed = self.state['ruleRevisions'].get(self.state.get('activeRevision'), {})
+            require(scene_file not in installed.get('data', {}), '缺少场景行动资料')
+            return validated
+        require(isinstance(actions, dict) and isinstance(actions.get('actions'), list), '缺少场景行动资料')
+        if 'presentationDigest' in actions:
+            authored = self.authored_scene(actions)
+            require(authored is not None, '场景执行摘要没有对应的作者文案，请导入完整 scene-actions.json')
+            validated['data'][scene_file] = copy.deepcopy(authored)
+        else:
+            try:
+                scene_knowledge.execution_data(actions)
+            except (AttributeError, KeyError, TypeError) as error:
+                raise PackageError('场景行动格式不正确：' + str(error)) from error
+        return validated
 
     def read_segment(self, digest):
         require(isinstance(digest, str) and re.fullmatch(r'[0-9a-f]{64}', digest), '归档编号无效')
@@ -559,9 +612,7 @@ class Package:
             data = dict(artifact['data'])
             actions = data.get('scene-actions.json', {})
             if 'presentationDigest' in actions:
-                candidates = [x['data'].get('scene-actions.json') for x in self.state['ruleRevisions'].values()]
-                authored = next((x for x in candidates if x and 'presentationDigest' not in x
-                                 and scene_knowledge.execution_data(x) == actions), None)
+                authored = self.authored_scene(actions)
                 if not authored:
                     raise publication_sync.SyncConflict('缺少与已发布规则摘要一致的场景行动文案')
                 data['scene-actions.json'] = authored
@@ -739,6 +790,11 @@ class Package:
                 current_place=next((p for p in locations if mine and p['index']==mine['numbers']['location'] and p.get('known')),None)
                 result['pickupOptions'] = scenes.pickup_options(self.state, current_place, self.scene_definitions(), self.game['items'])
                 result['sceneActions']=copy.deepcopy(current_place.get('actions',[])) if current_place else []
+                for action in result['sceneActions']:
+                    for choice in action['choices']:
+                        stamp = self.attempt_stamp(action['id'], choice['id'])
+                        if stamp:
+                            choice['eventVersion'] = stamp['eventVersion']
                 result['knowledgeRecords']=[{'label':i['label'],'mode':i['mode'],'observedAt':i['observedAt'],'ref':i['ref']}
                     for i in known_items if i['facetId']!='sheet']
             return copy.deepcopy(result)
@@ -1199,7 +1255,7 @@ class Package:
                 task.update(dropId=args['id'], slot=args['slot'])
             return result
         if op == 'scene.action':
-            require(set(args) <= {'action', 'choice', 'manual'} and {'action', 'choice'} <= set(args), '场景行动参数不正确')
+            require(set(args) <= {'action', 'choice', 'manual', 'eventVersion'} and {'action', 'choice'} <= set(args), '场景行动参数不正确')
             require(all(isinstance(args[k],str) and 0 < len(args[k]) <= 100 for k in ('action','choice')), '场景行动参数不正确')
             require(isinstance(args.get('manual', False), bool), '裁决方式无效')
             if not character: action_errors.blocked('NOT_APPROVED')
@@ -1211,11 +1267,16 @@ class Package:
             definition = next((x for x in available if x['id'] == args['action']), None)
             require(definition and args['choice'] in {c['id'] for c in definition['choices']},
                     '此做法不在本人已知行动中，请先探索或向 KP 请求说明' if not gm else '预设行动不存在')
+            if 'eventVersion' in args:
+                stamp = self.attempt_stamp(args['action'], args['choice'])
+                require(stamp and args['eventVersion'] == stamp['eventVersion'],
+                        '现场已经有新的结算，请刷新选项后再决定是否继续。')
             if character['numbers']['ready'] != 1: action_errors.blocked('NOT_READY')
             if not session or session['numbers']['phase'] != 1: action_errors.blocked('NOT_STARTED')
             require('sceneContext' in job.record or character['numbers']['location'] == definition['location'], '只能执行当前地点的预设行动')
             if args.get('manual') or session['numbers'].get('autoResolve', 1) == 0:
-                return self.queue_request(view, character, request_id, 'scene', {'action': args['action'], 'choice': args['choice'], 'menuVersion':scene_knowledge.VERSION},
+                return self.queue_request(view, character, request_id, 'scene', {'action': args['action'], 'choice': args['choice'], 'menuVersion':scene_knowledge.VERSION,
+                    **self.attempt_stamp(args['action'], args['choice'])},
                     definition['label'], '玩家主动申请' if args.get('manual') else '主持已关闭自动裁决')
             return self.queue_scene(view, character, job, definition, args['choice'])
         if op == 'automation.configure':
@@ -1365,7 +1426,7 @@ class Package:
                 if request['kind'] == 'scene':
                     require(self.current_scene_request(job,request['args'].get('menuVersion')),
                             '行动菜单已更新，请让玩家按本人已知选项重新提交')
-                    request['result'] = self.execute_scene(job, view, current_actor, request['args']['action'], request['args']['choice'])
+                    request['result'] = self.execute_scene(job, view, current_actor, request['args']['action'], request['args']['choice'], attempt=request['args'])
                 if request['kind'] in {'check', 'inventory'}:
                     params = {'attribute': 'dex', 'mode': 'normal', 'operation': 'move', 'slot': 0, 'value': 0, **request['args']}
                     request['result'] = job.invoke('ruling', 'sv.adjudicate', actor=request['actor'], kind=request['kind'], **params)
@@ -1421,6 +1482,7 @@ class Package:
                 public_open = args['status'] == 'open' and all(x in self.state['published'] for x in key.split('-'))
                 job.command('door', 'entity.update', {'id': session['instanceId'], 'numbers': {'door' + key.replace('-', '_'): int(public_open)}})
             self.state['doors'][key] = args['status']
+            self.state.setdefault('keeperClosedDoors', {})[key] = args['status'] != 'open'
             return {'message': '通路状态已更新'}
         if op == 'ground.take':
             return self.take_drop(job, view, args)
@@ -1537,8 +1599,48 @@ class Package:
             self.atomic_bytes(destination, json.dumps({'hostBackup': backup, 'package': self.state}, ensure_ascii=False, separators=(',', ':')).encode())
             return {'host': backup, 'packageFile': str(destination), 'message': '宿主备份与包侧记录均已保存'}
         if op == 'rules.stage':
-            content = self.validate_bundle(args.get('bundle'))
-            revision = job.command('stage', 'rule.stage', stage_payload(content))
+            single = 'file' in args
+            if single:
+                require(set(args) == {'baseRevision','file','value'}, '单文件暂存需提供基线修订、路径和完整文件内容')
+                base = args['baseRevision']
+                require(isinstance(base, str) and base in self.state['ruleRevisions'] and
+                        ('stage' in job.record['steps'] or base == view['catalog']['rulesetRevision']), '活动规则已变化，请重新读取并合并')
+                path = args['file']
+                require(isinstance(path, str) and re.fullmatch(r'(?:rules/[A-Za-z0-9_-]+\.lua|config/[A-Za-z0-9_-]+\.json)',path), '单文件路径无效')
+                folder, name = path.split('/')
+                group = 'sources' if folder == 'rules' else 'data'
+                baseline = self.state['ruleRevisions'][base]
+                require(group == 'sources' or name in baseline['data'], '该数据文件未在当前规则包中声明')
+                content = {**baseline,group:{**baseline[group],name:args['value']}}
+            else:
+                content = args.get('bundle')
+            content = self.validate_bundle(content)
+            if single:
+                value = content[group][name]
+                if name == 'scene-actions.json' and group == 'data':
+                    value = scene_knowledge.execution_data(value)
+                revision = job.command('stage', 'rule.stage.delta', {'baseRevision': base, group: {name: value}})
+            else:
+                # A full author import can be larger than the public command envelope.
+                # Compare against the room's author copy so unchanged presentation stays intact.
+                base = view['catalog']['rulesetRevision']
+                baseline = self.state['ruleRevisions'].get(base)
+                if baseline is None:
+                    revision = job.command('stage', 'rule.stage', stage_payload(content))
+                else:
+                    delta = {'baseRevision': base}
+                    for group, removal in (('sources', 'removeSources'), ('data', 'removeData')):
+                        changed = {k: v for k, v in content[group].items() if k not in baseline[group] or baseline[group][k] != v}
+                        if group == 'data' and 'scene-actions.json' in changed:
+                            changed['scene-actions.json'] = scene_knowledge.execution_data(changed['scene-actions.json'])
+                        if changed:
+                            delta[group] = changed
+                        missing = sorted(baseline[group].keys() - content[group].keys())
+                        if missing:
+                            delta[removal] = missing
+                    revision = job.command('stage', 'rule.stage.delta', delta) if len(delta) > 1 or 'stage' in job.record['steps'] else base
+            if single and revision != base:
+                self.state.setdefault('fileStageBases', {})[revision] = base
             self.state['ruleRevisions'][revision] = content
             return {'revision': revision, 'message': '检查通过，尚未激活'}
         if op == 'rules.preview':
@@ -1547,7 +1649,11 @@ class Package:
         if op == 'rules.activate':
             revision = args.get('revision')
             require(revision in self.state['ruleRevisions'], '修订不存在')
+            base = self.state.get('fileStageBases', {}).get(revision)
+            require(not base or 'activate' in job.record['steps'] or view['catalog']['rulesetRevision'] in (base,revision),
+                    '单文件暂存后活动规则已变化，请重新合并并暂存')
             job.command('activate', 'rule.activate', {'revision': revision})
+            self.state.get('fileStageBases', {}).pop(revision, None)
             self.sync_rules(job.client,job.client.request('/view'))
             return {'revision': revision, 'message': '规则修订已激活', 'packageSync':self.state.get('publicationSync')}
         raise PackageError('未知行动')
