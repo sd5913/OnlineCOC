@@ -1,0 +1,193 @@
+{
+  "checkedAt": "2026-11-23T09:48:39.489396+08:00",
+  "checks": [
+    "drop clears inventory and lit slot; preserves uses/ticks/location; replay creates one drop",
+    "scene visibility, role/scene guards and pickup preserve item state without relighting",
+    "committed host action with lost reply survives package reload and recovers exactly one ground record",
+    "failed pickup frees claim; duplicate pickup/replay cannot duplicate items",
+    "conditions require rule-based recovery; stale item identity is rejected",
+    "manual drop request waits for KP approval then creates one ground item",
+    "desktop and 390px player UI: item details → drop confirmation → scene ground list"
+  ],
+  "measurements": {
+    "hostViewPL": {
+      "samples": 12,
+      "p50Ms": 10.54,
+      "p95Ms": 14.76,
+      "maxMs": 14.76,
+      "workers": 1,
+      "wallSeconds": 0.131,
+      "packageSaves": 0,
+      "saveMsTotal": 0,
+      "internalHttp": {}
+    },
+    "packageStatePL": {
+      "samples": 12,
+      "p50Ms": 12.81,
+      "p95Ms": 13.33,
+      "maxMs": 13.33,
+      "workers": 1,
+      "wallSeconds": 0.154,
+      "packageSaves": 0,
+      "saveMsTotal": 0,
+      "internalHttp": {
+        "/view": 12
+      }
+    },
+    "packageStateKP": {
+      "samples": 12,
+      "p50Ms": 22.13,
+      "p95Ms": 27.51,
+      "maxMs": 27.51,
+      "workers": 1,
+      "wallSeconds": 0.275,
+      "packageSaves": 0,
+      "saveMsTotal": 0,
+      "internalHttp": {
+        "/view": 12
+      }
+    },
+    "fourReadersState": {
+      "samples": 12,
+      "p50Ms": 46.51,
+      "p95Ms": 70.13,
+      "maxMs": 70.13,
+      "workers": 4,
+      "wallSeconds": 0.149,
+      "packageSaves": 0,
+      "saveMsTotal": 0,
+      "internalHttp": {
+        "/view": 12
+      }
+    },
+    "note": {
+      "samples": 12,
+      "p50Ms": 25.86,
+      "p95Ms": 36.25,
+      "maxMs": 36.25,
+      "workers": 1,
+      "wallSeconds": 0.32,
+      "packageSaves": 12,
+      "saveMsTotal": 74.52,
+      "internalHttp": {
+        "/me": 12,
+        "/view": 12
+      }
+    },
+    "directChat": {
+      "samples": 12,
+      "p50Ms": 62.77,
+      "p95Ms": 69.36,
+      "maxMs": 69.36,
+      "workers": 1,
+      "wallSeconds": 0.761,
+      "packageSaves": 0,
+      "saveMsTotal": 0,
+      "internalHttp": {
+        "/view": 1
+      }
+    },
+    "check": {
+      "samples": 12,
+      "p50Ms": 259.99,
+      "p95Ms": 282.87,
+      "maxMs": 282.87,
+      "workers": 1,
+      "wallSeconds": 3.111,
+      "packageSaves": 48,
+      "saveMsTotal": 289.26,
+      "internalHttp": {
+        "/me": 12,
+        "/view": 24,
+        "/knowledge/read": 12,
+        "/commands": 12
+      }
+    },
+    "requestAndRuling": {
+      "samples": 6,
+      "p50Ms": 389.95,
+      "p95Ms": 396.34,
+      "maxMs": 396.34,
+      "workers": 1,
+      "wallSeconds": 2.343,
+      "packageSaves": 54,
+      "saveMsTotal": 347.99,
+      "internalHttp": {
+        "/me": 12,
+        "/view": 24,
+        "/knowledge/read": 6,
+        "/commands": 12
+      }
+    },
+    "worldRound": {
+      "samples": 6,
+      "p50Ms": 190.07,
+      "p95Ms": 592.96,
+      "maxMs": 592.96,
+      "workers": 1,
+      "wallSeconds": 1.505,
+      "packageSaves": 22,
+      "saveMsTotal": 146.13,
+      "internalHttp": {
+        "/me": 6,
+        "/view": 11,
+        "/commands": 6
+      }
+    },
+    "stateAfterHistory": {
+      "samples": 12,
+      "p50Ms": 15.54,
+      "p95Ms": 53.18,
+      "maxMs": 53.18,
+      "workers": 1,
+      "wallSeconds": 0.224,
+      "packageSaves": 0,
+      "saveMsTotal": 0,
+      "internalHttp": {
+        "/view": 12,
+        "/knowledge/read": 1
+      }
+    }
+  },
+  "externalModelCalls": 0,
+  "formalSaveChanged": false,
+  "evidenceDirectory": "tests/output/drop-performance-7e94b0d5",
+  "hostMetrics": {
+    "commits": {
+      "samples": 225,
+      "p50Ms": 25.56,
+      "p95Ms": 31.94,
+      "maxMs": 42.07
+    },
+    "workers": {
+      "samples": 46,
+      "p50Ms": 31.57,
+      "p95Ms": 288.96,
+      "maxMs": 459.99
+    },
+    "commandQueue": {
+      "samples": 130,
+      "p50Ms": 0.0,
+      "p95Ms": 0.0,
+      "maxMs": 0.0
+    },
+    "commandTotal": {
+      "samples": 130,
+      "p50Ms": 39.08,
+      "p95Ms": 181.27,
+      "maxMs": 548.93
+    }
+  },
+  "packageBytes": 419033,
+  "packageJobs": 74,
+  "passed": true,
+  "sourceHashes": {
+    "rules/inventory-core.lua": "1445a8f92ce0ae4094faea702a74fea0279b8868a4e0f0b62b91660e75a6582c",
+    "rules/ground-take.lua": "b373a9622735d2e0881b7a757f55bdd6da8d8d2fc670bde78dfbd7ec2771c502",
+    "tools/package.py": "4ac8178e893ecc40b0758949df4b6eb269517a5e8f4caa5c640e7ead9ef0dd89",
+    "tools/action_errors.py": "27216c634ad1bb9b2a7e9081ee6a0bc08018a03bb9d574e9d974b2b2201b98b6",
+    "tools/knowledge_provider.py": "0999356858c567769718cb4b3397764e422e67d363a47624de60aaee70cc60c8",
+    "ui/app.js": "c1879eb7f3ac7aa80815dd3c4b857b5496f0375390f3f0a053b3b4b1f5e68504"
+  },
+  "comparison": null
+}

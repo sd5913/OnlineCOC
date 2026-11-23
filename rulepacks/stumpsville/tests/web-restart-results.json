@@ -1,6 +1,6 @@
 {
   "passed": true,
-  "checkedAt": "2026-11-15T21:57:50.202750+08:00",
+  "checkedAt": "2026-11-23T09:51:15.200815+08:00",
   "checks": [
     "reproduced public CLI EXPORT_ALREADY_EXISTS when exporting twice into the same directory",
     "existing legacy exports reused only after complete hash comparison; repeated start leaves immutable files unchanged and cleans temporary folders",

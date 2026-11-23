@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "configurations": [
+    {
+      "kind": "replace",
+      "id": "demo.skill",
+      "expectedRevision": "1",
+      "value": {
+        "configurationId": "demo.skill",
+        "revision": "2",
+        "typeRef": "skill",
+        "defaults": {
+          "value": 15
+        },
+        "behaviors": {}
+      }
+    }
+  ],
+  "sources": {},
+  "data": {},
+  "suggestions": []
+}

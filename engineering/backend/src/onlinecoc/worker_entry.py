@@ -1,5 +1,8 @@
 """Trusted -I subprocess entry; sources arrive only after parent resource limits."""
+import time
+ENTRY_STARTED = time.perf_counter()
 import copy
+import gc
 import json
 import os
 from pathlib import Path
@@ -19,6 +22,7 @@ if os.name != "nt":
 from onlinecoc.errors import DomainError, require
 from onlinecoc.lua_runtime import worker
 from onlinecoc.worker_process import MAX_BYTES, wire
+IMPORT_MS = (time.perf_counter() - ENTRY_STARTED) * 1000
 
 
 def read():
@@ -115,14 +119,28 @@ def sequence(request):
 
 
 if __name__ == "__main__":
-    try:
-        request = read()
-        if request.get("kind") == "sequence":
-            result = sequence(request)
-        else:
-            pipe = Pipe()
-            worker(pipe, request["sources"], request["job"])
-            result = pipe.output
-        send(result)
-    except BaseException as exc:
-        send({"ok": False, "code": getattr(exc, "code", "WORKER_FAILED")})
+    first = True
+    for _ in range(64):
+        try:
+            request = read()
+            started = time.perf_counter()
+            if request.get("kind") == "sequence":
+                result = sequence(request)
+            else:
+                pipe = Pipe()
+                worker(pipe, request["sources"], request["job"])
+                result = pipe.output
+                pipe = None
+            request = None
+            # Release cyclic Lua/Python callback references before accepting the
+            # next independent job; never retain an interpreter or a room snapshot.
+            gc.collect()
+            result.setdefault('workerTimings', {}).update(importMs=IMPORT_MS if first else 0,
+                                                         requestMs=(time.perf_counter()-started)*1000)
+            send(result)
+            if not result['ok']:break
+            result = None
+            first = False
+        except BaseException as exc:
+            send({"ok": False, "code": getattr(exc, "code", "WORKER_FAILED")})
+            break

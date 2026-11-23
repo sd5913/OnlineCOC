@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "packId": "host-demo",
+  "packVersion": "1.0.0-ai.1",
+  "hostProtocolRange": {
+    "min": 1,
+    "max": 1
+  },
+  "sources": [
+    {
+      "id": "demo-rules",
+      "path": "ai/rules.md",
+      "visibility": "public"
+    }
+  ],
+  "schemas": {
+    "config/environment.json": "ai/environment.schema.json"
+  },
+  "checks": "ai/checks.json",
+  "scenarios": [
+    "ai/scenarios/new-skill.json",
+    "ai/scenarios/wrong-owner.json",
+    "ai/scenarios/existing-skill.json"
+  ],
+  "metrics": "ai/metrics.json",
+  "reviewChecklist": "ai/review-checklist.md",
+  "extensionPoints": [
+    {
+      "namespace": "demo.ext.",
+      "typeRefs": [
+        "skill"
+      ],
+      "allowedPaths": [
+        "/defaults/value"
+      ],
+      "allowExistingIds": [
+        "demo.skill"
+      ],
+      "rulePrefixes": [
+        "demo.ext."
+      ]
+    }
+  ],
+  "requiredChecks": [
+    "skill-default-range"
+  ],
+  "requiredMetrics": [
+    "new-skill-success",
+    "existing-skill-success"
+  ],
+  "reviewPolicy": {
+    "approvalTtlSeconds": 900,
+    "items": [
+      {
+        "id": "newcomer-value",
+        "question": "新建技能的初始值是否保留已有技能和成长投入的价值？",
+        "required": true
+      }
+    ],
+    "allowUnmeasuredOptional": false
+  },
+  "contextMapping": {
+    "actors": "entities",
+    "skills": "entities",
+    "ownership": "relations"
+  }
+}

@@ -176,9 +176,9 @@ def main():
             gm = login('kp'); gm.goto(runtime.origin + '/sessions/kp/#/gm/map')
             expect(gm.locator('[data-route="3-8"]')).to_have_attribute('data-status', changed)
             paths = gm.locator('.node-map path[data-route]').evaluate_all('(es)=>es.map(e=>e.dataset.route)')
-            assert len(paths) == 10 and len(paths) == len(set(paths)), paths
+            assert set(paths) == set(kp.state()['doors']) and len(paths) == len(set(paths)), paths
             gm.screenshot(path=str(screen / 'map-routes.png'))
-            checks.append('KP full map renders all 10 unique routes with current door truth')
+            checks.append('KP full map renders all configured routes with current door truth')
             presenter_lifecycle(browser, runtime.origin)
             checks.append('a queued preset does not hide direct host effects; room changes and logout clear visible notifications')
             browser.close()

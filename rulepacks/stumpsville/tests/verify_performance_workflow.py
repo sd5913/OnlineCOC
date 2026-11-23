@@ -120,7 +120,19 @@ def main(source=None):
                     assert task['dependencyCheck']['status']=='unchanged',task['dependencyCheck']
                     row=next(r for r in kp.request('/api/v1/ai/rulings')['items'] if r['rulingId']=='batch:'+task['batchId'])
                     assert row['canDecide'],row
-                    result(ai(kp,'ai.ruling.decide',{'rulingId':row['rulingId'],'digest':row['digest'],'decision':'approve'}))
+                    compact = kp.request('/api/v1/ai/rulings?compact=true&queue=active&limit=30')
+                    if 'activeCount' in compact:
+                        listed = next(card for card in compact['items'] if card['rulingId'] == row['rulingId'])
+                        assert listed['compact'] and not listed['canDecide'] and 'actions' not in listed
+                        with kp_page.expect_response(lambda r: '/api/v1/ai/rulings/' in r.url and r.ok):
+                            kp_page.locator('[data-ruling-id="'+row['rulingId']+'"] [data-open]').click(timeout=20000)
+                        dialog = kp_page.locator('dialog.ruling-dialog')
+                        with kp_page.expect_response(lambda r: '/api/v1/ai/commands' in r.url and r.ok):
+                            dialog.get_by_role('button',name='接受并执行',exact=True).click()
+                        expect(dialog).to_have_count(0)
+                        report['checks'].append('真实紧凑列表按编号读取裁决详情，KP 在详情中批准后关闭窗口')
+                    else:
+                        result(ai(kp,'ai.ruling.decide',{'rulingId':row['rulingId'],'digest':row['digest'],'decision':'approve'}))
                     assert p1.state()['character']['numbers']['pips']==target[0]['numbers']['pips']+1
                     task=next(t for t in kp.request('/api/v1/ai/sessions/'+sid)['items'] if t['requestId']==submitted['requestId'])
                     assert any(e['stage']=='command_execute' and e.get('receiptStatus')=='committed' for e in task['events']),task['events']

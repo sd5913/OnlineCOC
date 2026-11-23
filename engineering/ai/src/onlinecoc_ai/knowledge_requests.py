@@ -17,7 +17,7 @@ class KnowledgeRequests:
         require(policy(self.repository)['allowKnowledgeRequests'], 'KNOWLEDGE_REQUESTS_DISABLED')
         session=self.app.sessions._record(account,args['sessionId'])
         require(session['owner']==account and session['accessLevel']=='player' and not session['archived'], 'PERMISSION_DENIED')
-        state=self.repository.state()
+        state=self.repository.read_state()
         require(args['requestId'] in session['requestIds'], 'NOT_VISIBLE')
         request=state['requests'][args['requestId']]
         require(request['status']!='cancelled', 'REQUEST_CANCELLED')
@@ -34,10 +34,11 @@ class KnowledgeRequests:
     def public(record):
         return {k:copy.deepcopy(record[k]) for k in ('rulingId','sessionId','requestId','status','createdAt','digest')}
 
-    def list(self, account):
+    def list(self, account, *, ruling_ids=None):
         self.host.kp(account)
-        state=self.repository.state();items=[]
+        state=self.repository.read_state();items=[]
         for record in state['settings'].get('knowledgeRequests',{}).values():
+            if ruling_ids is not None and record['rulingId'] not in ruling_ids:continue
             item=copy.deepcopy(record);item.pop('authorityEpoch',None)
             session=state['settings'].get('sessions',{}).get(record['sessionId'],{})
             active=bool(session) and not session.get('deleted',False) and state['requests'].get(record['requestId'],{}).get('status')!='cancelled'

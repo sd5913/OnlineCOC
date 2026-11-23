@@ -7,6 +7,8 @@
 - 最后更新：2026-11-19
 - 关联文档：[实现](implementation.md)、[使用](usage.md)、[界面](interface.md)、[来源边界](sources.md)、[验收](../../tests/README.md)
 
+本页逐项记录原十地点的 18 个基础行动。0.10.0 默认包另有 22 个暴雨行动；路线和当前配置见[内容概览](content-configuration.md)及[玩家指南](player-guide.md)。
+
 ## 自动执行范围
 
 十个地点的18个预设均有固定做法、条件、叙述和实际状态效果；玩家只看到有效观察已披露的按钮与选项。安全观察不强行检定；执行后的风险结果展示真实宿主骰点、采用值、属性阈值、成功或失败。资源、机关、门、发现和有限库存随结果实际更新。选项由 [scene-actions.json](../../config/scene-actions.json) 定义，事务由 [scene.lua](../../rules/scene.lua) 执行。玩家措辞、个人发现条件、KP 完整机制及版本升级统一见[个人已知资料](player-knowledge.md#行动内容与个人发现)。

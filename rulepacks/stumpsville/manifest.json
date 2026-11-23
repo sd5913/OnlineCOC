@@ -1,7 +1,7 @@
 {
   "id": "stumpsville",
   "name": "树桩镇",
-  "version": "0.9.0",
+  "version": "0.10.0",
   "protocolVersion": 1,
   "status": "implementation",
   "entry": "ui/index.html",
@@ -31,7 +31,8 @@
     "adjudicate.lua",
     "check-core.lua",
     "inventory-core.lua",
-    "scene.lua"
+    "scene.lua",
+    "ground-take.lua"
   ],
   "contentLicense": "SEE docs/current/sources.md"
 }

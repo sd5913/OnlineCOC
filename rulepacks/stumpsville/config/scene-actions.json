@@ -622,6 +622,1225 @@
         "hint": "观察洞内其他动静。",
         "requiresAny": []
       }
+    },
+    {
+      "id": "storm-roads1",
+      "location": 1,
+      "label": "勘察附近通路",
+      "hint": "勘察附近通路",
+      "player": {
+        "label": "勘察附近通路",
+        "hint": "勘察附近通路",
+        "requiresAny": []
+      },
+      "choices": [
+        {
+          "id": "survey",
+          "label": "循路标寻找通路",
+          "process": "循路标寻找通路",
+          "player": {
+            "label": "循路标寻找通路",
+            "process": "按现场条件结算。",
+            "requiresAny": []
+          },
+          "storm": {
+            "reveal": [
+              14
+            ],
+            "roads": [
+              "1-14"
+            ],
+            "say": "你确认了标记的通路，可从地图前往。"
+          }
+        }
+      ]
+    },
+    {
+      "id": "storm-roads3",
+      "location": 3,
+      "label": "勘察附近通路",
+      "hint": "勘察附近通路",
+      "player": {
+        "label": "勘察附近通路",
+        "hint": "勘察附近通路",
+        "requiresAny": []
+      },
+      "choices": [
+        {
+          "id": "survey",
+          "label": "循路标寻找通路",
+          "process": "循路标寻找通路",
+          "player": {
+            "label": "循路标寻找通路",
+            "process": "按现场条件结算。",
+            "requiresAny": []
+          },
+          "storm": {
+            "reveal": [
+              11
+            ],
+            "roads": [
+              "3-11"
+            ],
+            "say": "你确认了标记的通路，可从地图前往。"
+          }
+        }
+      ]
+    },
+    {
+      "id": "storm-roads8",
+      "location": 8,
+      "label": "勘察附近通路",
+      "hint": "勘察附近通路",
+      "player": {
+        "label": "勘察附近通路",
+        "hint": "勘察附近通路",
+        "requiresAny": []
+      },
+      "choices": [
+        {
+          "id": "survey",
+          "label": "循路标寻找通路",
+          "process": "循路标寻找通路",
+          "player": {
+            "label": "循路标寻找通路",
+            "process": "按现场条件结算。",
+            "requiresAny": []
+          },
+          "storm": {
+            "reveal": [
+              12,
+              13
+            ],
+            "roads": [
+              "8-12",
+              "8-13"
+            ],
+            "say": "你确认了标记的通路，可从地图前往。"
+          }
+        }
+      ]
+    },
+    {
+      "id": "storm-roads11",
+      "location": 11,
+      "label": "勘察附近通路",
+      "hint": "勘察附近通路",
+      "player": {
+        "label": "勘察附近通路",
+        "hint": "勘察附近通路",
+        "requiresAny": []
+      },
+      "choices": [
+        {
+          "id": "survey",
+          "label": "循路标寻找通路",
+          "process": "循路标寻找通路",
+          "player": {
+            "label": "循路标寻找通路",
+            "process": "按现场条件结算。",
+            "requiresAny": []
+          },
+          "storm": {
+            "reveal": [
+              3,
+              12,
+              14
+            ],
+            "roads": [
+              "3-11",
+              "11-12",
+              "11-14"
+            ],
+            "say": "你确认了标记的通路，可从地图前往。"
+          }
+        }
+      ]
+    },
+    {
+      "id": "storm-roads12",
+      "location": 12,
+      "label": "勘察附近通路",
+      "hint": "勘察附近通路",
+      "player": {
+        "label": "勘察附近通路",
+        "hint": "勘察附近通路",
+        "requiresAny": []
+      },
+      "choices": [
+        {
+          "id": "survey",
+          "label": "循路标寻找通路",
+          "process": "循路标寻找通路",
+          "player": {
+            "label": "循路标寻找通路",
+            "process": "按现场条件结算。",
+            "requiresAny": []
+          },
+          "storm": {
+            "reveal": [
+              8,
+              11
+            ],
+            "roads": [
+              "8-12",
+              "11-12"
+            ],
+            "say": "你确认了标记的通路，可从地图前往。"
+          }
+        }
+      ]
+    },
+    {
+      "id": "storm-roads13",
+      "location": 13,
+      "label": "勘察附近通路",
+      "hint": "勘察附近通路",
+      "player": {
+        "label": "勘察附近通路",
+        "hint": "勘察附近通路",
+        "requiresAny": []
+      },
+      "choices": [
+        {
+          "id": "survey",
+          "label": "循路标寻找通路",
+          "process": "循路标寻找通路",
+          "player": {
+            "label": "循路标寻找通路",
+            "process": "按现场条件结算。",
+            "requiresAny": []
+          },
+          "storm": {
+            "reveal": [
+              8,
+              14
+            ],
+            "roads": [
+              "8-13",
+              "13-14"
+            ],
+            "say": "你确认了标记的通路，可从地图前往。"
+          }
+        }
+      ]
+    },
+    {
+      "id": "storm-roads14",
+      "location": 14,
+      "label": "勘察附近通路",
+      "hint": "勘察附近通路",
+      "player": {
+        "label": "勘察附近通路",
+        "hint": "勘察附近通路",
+        "requiresAny": []
+      },
+      "choices": [
+        {
+          "id": "survey",
+          "label": "循路标寻找通路",
+          "process": "循路标寻找通路",
+          "player": {
+            "label": "循路标寻找通路",
+            "process": "按现场条件结算。",
+            "requiresAny": []
+          },
+          "storm": {
+            "reveal": [
+              1,
+              11,
+              13
+            ],
+            "roads": [
+              "1-14",
+              "11-14",
+              "13-14"
+            ],
+            "say": "你确认了标记的通路，可从地图前往。"
+          }
+        }
+      ]
+    },
+    {
+      "id": "storm-supplies7",
+      "location": 7,
+      "label": "查看当地物资",
+      "hint": "查看当地物资",
+      "player": {
+        "label": "查看当地物资",
+        "hint": "查看当地物资",
+        "requiresAny": [
+          "hall-company"
+        ]
+      },
+      "choices": [
+        {
+          "id": "inspect",
+          "label": "检查物资和可借工具",
+          "process": "检查物资和可借工具",
+          "player": {
+            "label": "检查物资和可借工具",
+            "process": "按现场条件结算。",
+            "requiresAny": []
+          },
+          "storm": {
+            "observe": "supplies7",
+            "say": "你清点了可以取用的物资。"
+          }
+        },
+        {
+          "id": "24",
+          "label": "领取鼠帮通行牌",
+          "process": "领取鼠帮通行牌",
+          "player": {
+            "label": "领取鼠帮通行牌",
+            "process": "按现场条件结算。",
+            "requiresAny": [
+              "supplies7"
+            ]
+          },
+          "storm": {
+            "take": [
+              24,
+              "stock7x24"
+            ],
+            "need": [
+              "pact"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "storm-supplies8",
+      "location": 8,
+      "label": "查看当地物资",
+      "hint": "查看当地物资",
+      "player": {
+        "label": "查看当地物资",
+        "hint": "查看当地物资",
+        "requiresAny": [
+          "factory-tools"
+        ]
+      },
+      "choices": [
+        {
+          "id": "inspect",
+          "label": "检查物资和可借工具",
+          "process": "检查物资和可借工具",
+          "player": {
+            "label": "检查物资和可借工具",
+            "process": "按现场条件结算。",
+            "requiresAny": []
+          },
+          "storm": {
+            "observe": "supplies8",
+            "say": "你清点了可以取用的物资。"
+          }
+        },
+        {
+          "id": "23",
+          "label": "领取供粮账本",
+          "process": "领取供粮账本",
+          "player": {
+            "label": "领取供粮账本",
+            "process": "按现场条件结算。",
+            "requiresAny": [
+              "supplies8"
+            ]
+          },
+          "storm": {
+            "take": [
+              23,
+              "stock8x23"
+            ],
+            "need": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "storm-supplies11",
+      "location": 11,
+      "label": "查看当地物资",
+      "hint": "查看当地物资",
+      "player": {
+        "label": "查看当地物资",
+        "hint": "查看当地物资",
+        "requiresAny": []
+      },
+      "choices": [
+        {
+          "id": "inspect",
+          "label": "检查物资和可借工具",
+          "process": "检查物资和可借工具",
+          "player": {
+            "label": "检查物资和可借工具",
+            "process": "按现场条件结算。",
+            "requiresAny": []
+          },
+          "storm": {
+            "observe": "supplies11",
+            "say": "你清点了可以取用的物资。"
+          }
+        },
+        {
+          "id": "21",
+          "label": "领取灯油瓶",
+          "process": "领取灯油瓶",
+          "player": {
+            "label": "领取灯油瓶",
+            "process": "按现场条件结算。",
+            "requiresAny": [
+              "supplies11"
+            ]
+          },
+          "storm": {
+            "take": [
+              21,
+              "stock11x21"
+            ],
+            "need": []
+          }
+        },
+        {
+          "id": "28",
+          "label": "领取安神草",
+          "process": "领取安神草",
+          "player": {
+            "label": "领取安神草",
+            "process": "按现场条件结算。",
+            "requiresAny": [
+              "supplies11"
+            ]
+          },
+          "storm": {
+            "take": [
+              28,
+              "stock11x28"
+            ],
+            "need": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "storm-supplies12",
+      "location": 12,
+      "label": "查看当地物资",
+      "hint": "查看当地物资",
+      "player": {
+        "label": "查看当地物资",
+        "hint": "查看当地物资",
+        "requiresAny": []
+      },
+      "choices": [
+        {
+          "id": "inspect",
+          "label": "检查物资和可借工具",
+          "process": "检查物资和可借工具",
+          "player": {
+            "label": "检查物资和可借工具",
+            "process": "按现场条件结算。",
+            "requiresAny": []
+          },
+          "storm": {
+            "observe": "supplies12",
+            "say": "你清点了可以取用的物资。"
+          }
+        },
+        {
+          "id": "17",
+          "label": "领取黄铜齿轮",
+          "process": "领取黄铜齿轮",
+          "player": {
+            "label": "领取黄铜齿轮",
+            "process": "按现场条件结算。",
+            "requiresAny": [
+              "supplies12"
+            ]
+          },
+          "storm": {
+            "take": [
+              17,
+              "stock12x17"
+            ],
+            "need": []
+          }
+        },
+        {
+          "id": "18",
+          "label": "领取密封蜡",
+          "process": "领取密封蜡",
+          "player": {
+            "label": "领取密封蜡",
+            "process": "按现场条件结算。",
+            "requiresAny": [
+              "supplies12"
+            ]
+          },
+          "storm": {
+            "take": [
+              18,
+              "stock12x18"
+            ],
+            "need": []
+          }
+        },
+        {
+          "id": "19",
+          "label": "领取修理工具组",
+          "process": "领取修理工具组",
+          "player": {
+            "label": "领取修理工具组",
+            "process": "按现场条件结算。",
+            "requiresAny": [
+              "supplies12"
+            ]
+          },
+          "storm": {
+            "take": [
+              19,
+              "stock12x19"
+            ],
+            "need": []
+          }
+        },
+        {
+          "id": "20",
+          "label": "领取干净绷带",
+          "process": "领取干净绷带",
+          "player": {
+            "label": "领取干净绷带",
+            "process": "按现场条件结算。",
+            "requiresAny": [
+              "supplies12"
+            ]
+          },
+          "storm": {
+            "take": [
+              20,
+              "stock12x20"
+            ],
+            "need": []
+          }
+        },
+        {
+          "id": "27",
+          "label": "领取支撑木楔",
+          "process": "领取支撑木楔",
+          "player": {
+            "label": "领取支撑木楔",
+            "process": "按现场条件结算。",
+            "requiresAny": [
+              "supplies12"
+            ]
+          },
+          "storm": {
+            "take": [
+              27,
+              "stock12x27"
+            ],
+            "need": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "storm-supplies13",
+      "location": 13,
+      "label": "查看当地物资",
+      "hint": "查看当地物资",
+      "player": {
+        "label": "查看当地物资",
+        "hint": "查看当地物资",
+        "requiresAny": []
+      },
+      "choices": [
+        {
+          "id": "inspect",
+          "label": "检查物资和可借工具",
+          "process": "检查物资和可借工具",
+          "player": {
+            "label": "检查物资和可借工具",
+            "process": "按现场条件结算。",
+            "requiresAny": []
+          },
+          "storm": {
+            "observe": "supplies13",
+            "say": "你清点了可以取用的物资。"
+          }
+        },
+        {
+          "id": "21",
+          "label": "领取灯油瓶",
+          "process": "领取灯油瓶",
+          "player": {
+            "label": "领取灯油瓶",
+            "process": "按现场条件结算。",
+            "requiresAny": [
+              "supplies13"
+            ]
+          },
+          "storm": {
+            "take": [
+              21,
+              "stock13x21"
+            ],
+            "need": []
+          }
+        },
+        {
+          "id": "22",
+          "label": "领取信号旗布",
+          "process": "领取信号旗布",
+          "player": {
+            "label": "领取信号旗布",
+            "process": "按现场条件结算。",
+            "requiresAny": [
+              "supplies13"
+            ]
+          },
+          "storm": {
+            "take": [
+              22,
+              "stock13x22"
+            ],
+            "need": []
+          }
+        },
+        {
+          "id": "26",
+          "label": "领取攀爬钩",
+          "process": "领取攀爬钩",
+          "player": {
+            "label": "领取攀爬钩",
+            "process": "按现场条件结算。",
+            "requiresAny": [
+              "supplies13"
+            ]
+          },
+          "storm": {
+            "take": [
+              26,
+              "stock13x26"
+            ],
+            "need": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "storm-supplies14",
+      "location": 14,
+      "label": "查看当地物资",
+      "hint": "查看当地物资",
+      "player": {
+        "label": "查看当地物资",
+        "hint": "查看当地物资",
+        "requiresAny": []
+      },
+      "choices": [
+        {
+          "id": "inspect",
+          "label": "检查物资和可借工具",
+          "process": "检查物资和可借工具",
+          "player": {
+            "label": "检查物资和可借工具",
+            "process": "按现场条件结算。",
+            "requiresAny": []
+          },
+          "storm": {
+            "observe": "supplies14",
+            "say": "你清点了可以取用的物资。"
+          }
+        },
+        {
+          "id": "25",
+          "label": "领取防水行囊",
+          "process": "领取防水行囊",
+          "player": {
+            "label": "领取防水行囊",
+            "process": "按现场条件结算。",
+            "requiresAny": [
+              "supplies14"
+            ]
+          },
+          "storm": {
+            "take": [
+              25,
+              "stock14x25"
+            ],
+            "need": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "storm-brace",
+      "location": 2,
+      "label": "协力撑门",
+      "hint": "协力撑门",
+      "player": {
+        "label": "协力撑门",
+        "hint": "协力撑门",
+        "requiresAny": []
+      },
+      "choices": [
+        {
+          "id": "slow",
+          "label": "用门框卡稳石板，慢慢开门",
+          "process": "用门框卡稳石板，慢慢开门",
+          "player": {
+            "label": "用门框卡稳石板，慢慢开门",
+            "process": "按现场条件结算。",
+            "requiresAny": []
+          },
+          "storm": {
+            "set": "gateOpen",
+            "roads": [
+              "2-3"
+            ],
+            "reveal": [
+              3
+            ],
+            "say": "你用门框撑稳石板，打开庭院通路。"
+          }
+        }
+      ]
+    },
+    {
+      "id": "storm-commission",
+      "location": 3,
+      "label": "与栗婶商议避雨",
+      "hint": "与栗婶商议避雨",
+      "player": {
+        "label": "与栗婶商议避雨",
+        "hint": "先到蛛网屋寻找失联村民。签收公共补给后，可在庭院安置获救者。",
+        "requiresAny": []
+      },
+      "choices": [
+        {
+          "id": "start",
+          "label": "接受搜救与安置委托",
+          "process": "接受搜救与安置委托",
+          "player": {
+            "label": "接受搜救与安置委托",
+            "process": "先到蛛网屋寻找失联村民。签收公共补给后，可在庭院安置获救者。",
+            "requiresAny": []
+          },
+          "storm": {
+            "start": true,
+            "say": "两名村民失联于蛛网屋。请接他们回来，再修复工厂、联络外援或安排撤离。"
+          }
+        },
+        {
+          "id": "deliver",
+          "label": "签收工厂的两轮公共奶酪",
+          "process": "签收工厂的两轮公共奶酪",
+          "player": {
+            "label": "签收工厂的两轮公共奶酪",
+            "process": "先到蛛网屋寻找失联村民。签收公共补给后，可在庭院安置获救者。",
+            "requiresAny": []
+          },
+          "storm": {
+            "need": [
+              "batch"
+            ],
+            "set": "delivered",
+            "say": "栗婶签收运货筐。两轮奶酪进入公共补给点。"
+          }
+        },
+        {
+          "id": "shelter",
+          "label": "清点并安置庭院居民",
+          "process": "清点并安置庭院居民",
+          "player": {
+            "label": "清点并安置庭院居民",
+            "process": "先到蛛网屋寻找失联村民。签收公共补给后，可在庭院安置获救者。",
+            "requiresAny": []
+          },
+          "storm": {
+            "need": [
+              "villagersFreed",
+              "delivered"
+            ],
+            "set": "home",
+            "say": "两位获救村民进入干燥的庭院，家园恢复供给。请 KP 清点队员。"
+          }
+        }
+      ]
+    },
+    {
+      "id": "storm-decoy",
+      "location": 6,
+      "label": "引开蜘蛛",
+      "hint": "引开蜘蛛",
+      "player": {
+        "label": "引开蜘蛛",
+        "hint": "引开蜘蛛",
+        "requiresAny": [
+          "web-captives"
+        ]
+      },
+      "choices": [
+        {
+          "id": "lead",
+          "label": "引蜘蛛绕梁，让两名村民撤到庭院",
+          "process": "引蜘蛛绕梁，让两名村民撤到庭院",
+          "player": {
+            "label": "引蜘蛛绕梁，让两名村民撤到庭院",
+            "process": "按现场条件结算。",
+            "requiresAny": [
+              "web-captives"
+            ]
+          },
+          "storm": {
+            "need": [
+              "stormStart"
+            ],
+            "set": "villagersFreed",
+            "say": "你引开蜘蛛，Roquefort 和 Paneer 沿梯子回到庭院。"
+          }
+        }
+      ]
+    },
+    {
+      "id": "storm-pump",
+      "location": 11,
+      "label": "检修排水设施",
+      "hint": "检修排水设施",
+      "player": {
+        "label": "检修排水设施",
+        "hint": "带工坊的齿轮和密封蜡，或带木楔架起临时传动，再校准。水涨后先清淤。",
+        "requiresAny": []
+      },
+      "choices": [
+        {
+          "id": "gear",
+          "label": "安装齿轮并密封泵壳",
+          "process": "安装齿轮并密封泵壳",
+          "player": {
+            "label": "安装齿轮并密封泵壳",
+            "process": "带工坊的齿轮和密封蜡，或带木楔架起临时传动，再校准。水涨后先清淤。",
+            "requiresAny": []
+          },
+          "storm": {
+            "need": [
+              "stormStart"
+            ],
+            "pay": [
+              17,
+              18
+            ],
+            "set": "pump",
+            "say": "齿轮咬合，积水开始下降。"
+          }
+        },
+        {
+          "id": "wedge",
+          "label": "用木楔搭设临时传动",
+          "process": "用木楔搭设临时传动",
+          "player": {
+            "label": "用木楔搭设临时传动",
+            "process": "带工坊的齿轮和密封蜡，或带木楔架起临时传动，再校准。水涨后先清淤。",
+            "requiresAny": []
+          },
+          "storm": {
+            "need": [
+              "stormStart"
+            ],
+            "absent": [
+              "pump"
+            ],
+            "pay": [
+              27
+            ],
+            "set": "temporary",
+            "say": "支撑已经装好，还要校准传动。"
+          }
+        },
+        {
+          "id": "service",
+          "label": "校准临时传动",
+          "process": "校准临时传动",
+          "player": {
+            "label": "校准临时传动",
+            "process": "带工坊的齿轮和密封蜡，或带木楔架起临时传动，再校准。水涨后先清淤。",
+            "requiresAny": []
+          },
+          "storm": {
+            "need": [
+              "temporary"
+            ],
+            "set": "pump",
+            "say": "泵轮开始转动。"
+          }
+        },
+        {
+          "id": "dredge",
+          "label": "清理淤泥",
+          "process": "清开泵壳周围的水道。",
+          "player": {
+            "label": "清理淤泥",
+            "process": "带工坊的齿轮和密封蜡，或带木楔架起临时传动，再校准。水涨后先清淤。",
+            "requiresAny": []
+          },
+          "storm": {
+            "need": [
+              "stormStart"
+            ],
+            "set": "dredged",
+            "say": "泵壳旁的淤泥已经清走。"
+          }
+        }
+      ]
+    },
+    {
+      "id": "storm-mill",
+      "location": 8,
+      "label": "与 Jack 检修工厂",
+      "hint": "与 Jack 检修工厂",
+      "player": {
+        "label": "检修生产线",
+        "hint": "排水恢复后可试产。封存原料够做两轮奶酪，由公共运货筐送到庭院。",
+        "requiresAny": [
+          "factory-tools"
+        ]
+      },
+      "choices": [
+        {
+          "id": "run",
+          "label": "用封存的原料试产并装运",
+          "process": "用封存的原料试产并装运",
+          "player": {
+            "label": "用封存的原料试产并装运",
+            "process": "排水恢复后可试产。封存原料够做两轮奶酪，由公共运货筐送到庭院。",
+            "requiresAny": []
+          },
+          "storm": {
+            "need": [
+              "pump"
+            ],
+            "set": "batch",
+            "say": "第一批两轮奶酪装进公用运货筐，送往庭院等候签收。"
+          }
+        },
+        {
+          "id": "ledger",
+          "label": "将供粮账本交还 Jack",
+          "process": "将供粮账本交还 Jack",
+          "player": {
+            "label": "将供粮账本交还 Jack",
+            "process": "排水恢复后可试产。封存原料够做两轮奶酪，由公共运货筐送到庭院。",
+            "requiresAny": []
+          },
+          "storm": {
+            "pay": [
+              23
+            ],
+            "set": "ledgerDone",
+            "say": "Jack 收下账本，确认停产源于雨水和损坏的排水泵。"
+          }
+        }
+      ]
+    },
+    {
+      "id": "storm-pact",
+      "location": 7,
+      "label": "与灰穗谈供粮协议",
+      "hint": "与灰穗谈供粮协议",
+      "player": {
+        "label": "与灰穗谈供粮协议",
+        "hint": "交付两轮奶酪或修好渡口栈桥，即可和鼠帮立约。",
+        "requiresAny": [
+          "hall-company"
+        ]
+      },
+      "choices": [
+        {
+          "id": "work",
+          "label": "凭已修栈桥履约",
+          "process": "凭已修栈桥履约",
+          "player": {
+            "label": "凭已修栈桥履约",
+            "process": "交付两轮奶酪或修好渡口栈桥，即可和鼠帮立约。",
+            "requiresAny": []
+          },
+          "storm": {
+            "need": [
+              "stormStart",
+              "labour"
+            ],
+            "set": "pact",
+            "say": "灰穗验收栈桥，同意与居民共同迎接援队。"
+          }
+        },
+        {
+          "id": "food",
+          "label": "交付两轮奶酪",
+          "process": "交付两轮奶酪",
+          "player": {
+            "label": "交付两轮奶酪",
+            "process": "交付两轮奶酪或修好渡口栈桥，即可和鼠帮立约。",
+            "requiresAny": []
+          },
+          "storm": {
+            "need": [
+              "stormStart"
+            ],
+            "pay": [
+              6,
+              6
+            ],
+            "set": "pact",
+            "say": "鼠帮收到两轮奶酪，协议生效。"
+          }
+        }
+      ]
+    },
+    {
+      "id": "storm-signal",
+      "location": 13,
+      "label": "联络外援",
+      "hint": "联络外援",
+      "player": {
+        "label": "联络外援",
+        "hint": "立约后可用一瓶灯油点灯，随后去溪岸接应。",
+        "requiresAny": []
+      },
+      "choices": [
+        {
+          "id": "light",
+          "label": "用灯油发送信号",
+          "process": "用灯油发送信号",
+          "player": {
+            "label": "用灯油发送信号",
+            "process": "立约后可用一瓶灯油点灯，随后去溪岸接应。",
+            "requiresAny": []
+          },
+          "storm": {
+            "need": [
+              "pact"
+            ],
+            "pay": [
+              21
+            ],
+            "send": true,
+            "say": "山脊传来回应，援队将在两个探索轮后抵达渡口。"
+          }
+        }
+      ]
+    },
+    {
+      "id": "storm-ferry",
+      "location": 14,
+      "label": "与苇伯安排接应",
+      "hint": "与苇伯安排接应",
+      "player": {
+        "label": "与苇伯安排接应",
+        "hint": "修栈桥可向大厅交差。立约后可以护送信使，消息送达两个探索轮后再来接应。",
+        "requiresAny": []
+      },
+      "choices": [
+        {
+          "id": "labour",
+          "label": "修理栈桥完成劳务",
+          "process": "修理栈桥完成劳务",
+          "player": {
+            "label": "修理栈桥完成劳务",
+            "process": "修栈桥可向大厅交差。立约后可以护送信使，消息送达两个探索轮后再来接应。",
+            "requiresAny": []
+          },
+          "storm": {
+            "need": [
+              "stormStart"
+            ],
+            "set": "labour",
+            "say": "苇伯验收了栈桥，可向灰穗交差。"
+          }
+        },
+        {
+          "id": "runner",
+          "label": "护送信使送出消息",
+          "process": "护送信使送出消息",
+          "player": {
+            "label": "护送信使送出消息",
+            "process": "修栈桥可向大厅交差。立约后可以护送信使，消息送达两个探索轮后再来接应。",
+            "requiresAny": []
+          },
+          "storm": {
+            "need": [
+              "pact"
+            ],
+            "send": true,
+            "say": "信使返回确认送达，两轮后援队抵达。"
+          }
+        },
+        {
+          "id": "wait",
+          "label": "值守一个探索轮",
+          "process": "值守一个探索轮",
+          "player": {
+            "label": "值守一个探索轮",
+            "process": "修栈桥可向大厅交差。立约后可以护送信使，消息送达两个探索轮后再来接应。",
+            "requiresAny": []
+          },
+          "storm": {
+            "need": [
+              "sent"
+            ],
+            "say": "你在渡口守候。"
+          }
+        },
+        {
+          "id": "meet",
+          "label": "把两名村民交给到达的援队",
+          "process": "把两名村民交给到达的援队",
+          "player": {
+            "label": "查看接应情况",
+            "process": "修栈桥可向大厅交差。立约后可以护送信使，消息送达两个探索轮后再来接应。",
+            "requiresAny": []
+          },
+          "storm": {
+            "need": [
+              "villagersFreed",
+              "aid"
+            ],
+            "set": "allied",
+            "say": "援队接应了两名村民。请 KP 清点队员。"
+          }
+        }
+      ]
+    },
+    {
+      "id": "storm-escape",
+      "location": 14,
+      "label": "筹备溪岸撤离",
+      "hint": "筹备溪岸撤离",
+      "player": {
+        "label": "筹备溪岸撤离",
+        "hint": "先修渡舟或步道，再交付两轮奶酪或登记赊粮。高水位时还要加固渡口。",
+        "requiresAny": []
+      },
+      "choices": [
+        {
+          "id": "boat",
+          "label": "用蜡修补渡舟",
+          "process": "用蜡修补渡舟",
+          "player": {
+            "label": "用蜡修补渡舟",
+            "process": "先修渡舟或步道，再交付两轮奶酪或登记赊粮。高水位时还要加固渡口。",
+            "requiresAny": []
+          },
+          "storm": {
+            "need": [
+              "stormStart"
+            ],
+            "pay": [
+              18
+            ],
+            "set": "boat",
+            "say": "渡舟可以载客。"
+          }
+        },
+        {
+          "id": "path",
+          "label": "清理步道",
+          "process": "清理步道",
+          "player": {
+            "label": "清理步道",
+            "process": "先修渡舟或步道，再交付两轮奶酪或登记赊粮。高水位时还要加固渡口。",
+            "requiresAny": []
+          },
+          "storm": {
+            "need": [
+              "stormStart"
+            ],
+            "set": "foot",
+            "say": "步道已清理，可以步行。"
+          }
+        },
+        {
+          "id": "brace",
+          "label": "加固水涨后的渡口",
+          "process": "加固水涨后的渡口",
+          "player": {
+            "label": "加固水涨后的渡口",
+            "process": "先修渡舟或步道，再交付两轮奶酪或登记赊粮。高水位时还要加固渡口。",
+            "requiresAny": []
+          },
+          "storm": {
+            "need": [
+              "stormStart"
+            ],
+            "set": "braced",
+            "say": "系缆和扶手已固定。"
+          }
+        },
+        {
+          "id": "food",
+          "label": "交付两轮奶酪作行粮",
+          "process": "交付两轮奶酪作行粮",
+          "player": {
+            "label": "交付两轮奶酪作行粮",
+            "process": "先修渡舟或步道，再交付两轮奶酪或登记赊粮。高水位时还要加固渡口。",
+            "requiresAny": []
+          },
+          "storm": {
+            "need": [
+              "stormStart"
+            ],
+            "pay": [
+              6,
+              6
+            ],
+            "set": "fed",
+            "say": "渡工收下行粮。",
+            "absent": [
+              "debt"
+            ]
+          }
+        },
+        {
+          "id": "credit",
+          "label": "向渡工登记赊粮",
+          "process": "向渡工登记赊粮",
+          "player": {
+            "label": "向渡工登记赊粮",
+            "process": "先修渡舟或步道，再交付两轮奶酪或登记赊粮。高水位时还要加固渡口。",
+            "requiresAny": []
+          },
+          "storm": {
+            "need": [
+              "stormStart"
+            ],
+            "absent": [
+              "fed"
+            ],
+            "set": "debt",
+            "say": "行粮已安排。居民欠渡工一笔粮债。"
+          }
+        },
+        {
+          "id": "leave",
+          "label": "清点村民并带队离镇",
+          "process": "清点村民并带队离镇",
+          "player": {
+            "label": "清点村民并带队离镇",
+            "process": "先修渡舟或步道，再交付两轮奶酪或登记赊粮。高水位时还要加固渡口。",
+            "requiresAny": []
+          },
+          "storm": {
+            "need": [
+              "villagersFreed"
+            ],
+            "evac": true,
+            "set": "evacuated",
+            "say": "两名村民抵达溪岸集合点。请 KP 清点队员并记录债务。"
+          }
+        }
+      ]
     }
   ],
   "playerKnowledge": [
@@ -696,6 +1915,42 @@
       "location": 10,
       "title": "洞中的人物",
       "text": "你已发现洞中有一位人物，可以尝试与其交谈。"
+    },
+    {
+      "id": "supplies7",
+      "location": 7,
+      "title": "当地物资",
+      "text": "已经清点过现场物资，可重新观察余量。"
+    },
+    {
+      "id": "supplies8",
+      "location": 8,
+      "title": "当地物资",
+      "text": "已经清点过现场物资，可重新观察余量。"
+    },
+    {
+      "id": "supplies11",
+      "location": 11,
+      "title": "当地物资",
+      "text": "已经清点过现场物资，可重新观察余量。"
+    },
+    {
+      "id": "supplies12",
+      "location": 12,
+      "title": "当地物资",
+      "text": "已经清点过现场物资，可重新观察余量。"
+    },
+    {
+      "id": "supplies13",
+      "location": 13,
+      "title": "当地物资",
+      "text": "已经清点过现场物资，可重新观察余量。"
+    },
+    {
+      "id": "supplies14",
+      "location": 14,
+      "title": "当地物资",
+      "text": "已经清点过现场物资，可重新观察余量。"
     }
   ]
 }

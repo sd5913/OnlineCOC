@@ -5,6 +5,8 @@ successful host movement creates a new immutable observation in the same commit.
 """
 import copy
 import hashlib
+import os
+import threading
 import json
 from pathlib import Path
 import importlib.util
@@ -36,17 +38,55 @@ def descriptor():
 
 
 class Provider:
-    def __init__(self,path):self.path=Path(path) if path else None
+    def __init__(self, path):
+        self.path = Path(path) if path else None
+        self.file_lock = threading.Lock()
+        self.file_version = None
+        self.scene_data = None
+        self.file_digest = None
+        self.scene_revision = None
+
+    def read_scene_file(self, check_contents):
+        if self.path is None:
+            raise ValueError('PACKAGE_DATA_REQUIRED')
+        with self.file_lock, self.path.open('rb') as stream:
+            st = os.fstat(stream.fileno())
+            version = (st.st_dev, st.st_ino, st.st_size, st.st_mtime_ns)
+            if check_contents or st.st_ino == 0 or self.file_version != version:
+                raw = stream.read(8*1024*1024+1)
+                if len(raw) > 8*1024*1024:
+                    raise ValueError('PACKAGE_DATA_LIMIT')
+                digest = hashlib.sha256(raw).digest()
+                if self.file_digest != digest:
+                    # Clear the metadata fast path before parsing potentially corrupt bytes.
+                    self.file_version = None
+                    parsed = json.loads(raw)
+                    fields = ('format', 'sceneId', 'locations', 'published', 'discoveries', 'doors')
+                    source = {k: parsed[k] for k in fields if k in parsed}
+                    revision = parsed.get('activeRevision')
+                    authored = parsed.get('ruleRevisions',{}).get(revision,{}).get('data',{}).get('scene-actions.json',{})
+                    source['authoredActions'] = authored
+                    encoded = json.dumps(source, sort_keys=True, separators=(',', ':')).encode()
+                    self.scene_revision = hashlib.sha256(encoded).hexdigest()
+                    self.scene_data = source
+                    self.file_digest = digest
+                self.file_version = version
+            return self.scene_data, self.scene_revision
+
+    def projection_revision(self):
+        # Host generation covers actors, grants and rules. This token covers every
+        # external file input to pin(), even for an in-place equal-stat edit.
+        source, revision = self.read_scene_file(True)
+        if source.get('format') not in (2,3) or not source.get('sceneId'):
+            raise ValueError('PACKAGE_ROOM_MISMATCH')
+        return revision
 
     def package(self,context):
         cache=context.setdefault('cache',{})
         cache_key=('stumpsville-package',str(self.path))
         if cache_key in cache:return cache[cache_key]
-        if self.path is None:raise ValueError('PACKAGE_DATA_REQUIRED')
-        with self.path.open('rb') as stream:raw=stream.read(8*1024*1024+1)
-        if len(raw)>8*1024*1024:raise ValueError('PACKAGE_DATA_LIMIT')
-        data=json.loads(raw)
-        if data.get('format')!=2 or data.get('sceneId') not in context['state']['entities']:
+        data, _ = self.read_scene_file(False)
+        if data.get('format') not in (2,3) or data.get('sceneId') not in context['state']['entities']:
             raise ValueError('PACKAGE_ROOM_MISMATCH')
         cache[cache_key]=data
         return data
@@ -68,8 +108,13 @@ class Provider:
                 value['clues'].extend(copy.deepcopy(c) for c in data.get('discoveries',{}).get(context['accountId'],{}).values()
                     if str(c.get('location'))==index and c['id'] not in known_ids)
                 artifact=context['state']['artifacts'][context['state']['activeRuleset']]
-                definitions=artifact['data'].get('scene-actions.json',{})
+                definitions=scene_knowledge.presentation(artifact['data'].get('scene-actions.json',{}),data.get('authoredActions'))
                 value['actions']=scene_knowledge.menu(definitions,int(index),value['clues'])
+                location = data['locations'][index]
+                stock = {row['item']: row['count'] for row in location['stock']}
+                game = artifact['data'].get('game.json', {})
+                if game.get('stormStocks'):
+                    scene_knowledge.describe_stock(value, stock, location.get('pips', 0), game)
                 value['features']=[a['label'] for a in value['actions']]
                 value['entityId']=entity['instanceId']
                 value['doors']={str(target):data.get('doors',{}).get('-'.join(map(str,sorted((int(index),target)))),'unknown')
@@ -81,7 +126,7 @@ class Provider:
                 # version must describe authoritative inputs independently of
                 # their projections, including personal discoveries but not
                 # volatile job/receipt writes between preview and command.
-                versions[facet]={'place':place,'discoveries':data.get('discoveries',{}),
+                versions[facet]={'place':place,'stock':stock,'pips':location.get('pips',0),'discoveries':data.get('discoveries',{}),
                     'definitions':definitions,'presentation':scene_knowledge.POLICY_DIGEST,
                     'navigation':value['navigation'],'doors':value['doors']}
             elif facet=='identity' and (entity['configurationId'] in ('sv.character','sv.npc') or entity['configurationId'].startswith('sv.ext.npc.')):
@@ -148,7 +193,7 @@ class Provider:
         # The rules expose only the invoking player's check/status values.
         fields={'sv.create':('str','dex','wil','hp','pips'), 'sv.ready':('ready',),
             'sv.check':('first','second','rolled','target','passed','attribute','mode'),
-            'sv.inventory':('operation','slot','target','uses','overloaded'), 'sv.travel.auto':('location','automatic')}
+            'sv.inventory':('operation','slot','target','uses','overloaded','dropped'), 'sv.travel.auto':('location','automatic')}
         return {key:copy.deepcopy(result[key]) for key in fields[operation] if key in result}
 
     def project_catalog(self,actions,context):

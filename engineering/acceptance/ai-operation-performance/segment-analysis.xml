@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="4.429" timestamp="2026-11-22T13:53:36.495590+08:00" hostname="LAPTOP-BIFSL64A"><testcase classname="engineering.acceptance.ai-operation-performance.work.segments-verified-1795326787351668200.engineering.ai.tests.test_segmented_store" name="test_large_exact_roundtrip_incremental_objects_and_backup" time="1.630"><failure message="AssertionError: assert (31 &lt; 5)&#10; +  where 31 = len({WindowsPath('D:/Studies/Art Programming/OnlineCOC/engineering/acceptance/ai-operation-performance/work/segment-failur...rge_exact_roundtrip_inc0/store/objects-v2/4bc13ea44b6f2a06c442e547c0ce3372d1a1bc1ce5491827dd5027d0a424ae0e.json'), ...})">tmp_path = WindowsPath('D:/Studies/Art Programming/OnlineCOC/engineering/acceptance/ai-operation-performance/work/segment-failure-analysis/test_large_exact_roundtrip_inc0')
+
+    def test_large_exact_roundtrip_incremental_objects_and_backup(tmp_path):
+        value=large();assert len(state_bytes(value))&gt;8*1024*1024
+        with pytest.raises(AiError):canonical(value)
+        folder=tmp_path/'store';backup=tmp_path/'backup.json'
+        with SegmentedStore(folder) as store:
+            store.commit(0,value);before=set(store.objects.iterdir())
+            assert store.value['aiStorageFormat']==2 and store.snapshot()[1]==value
+            changed=copy.deepcopy(value);changed['records']['12']['text']='latest correction, not approval'
+            store.commit(1,changed);added=set(store.objects.iterdir())-before
+&gt;           assert len(added)&lt;5 and before&lt;=set(store.objects.iterdir())
+E           AssertionError: assert (31 &lt; 5)
+E            +  where 31 = len({WindowsPath('D:/Studies/Art Programming/OnlineCOC/engineering/acceptance/ai-operation-performance/work/segment-failur...rge_exact_roundtrip_inc0/store/objects-v2/4bc13ea44b6f2a06c442e547c0ce3372d1a1bc1ce5491827dd5027d0a424ae0e.json'), ...})
+
+engineering\acceptance\ai-operation-performance\work\segments-verified-1795326787351668200\engineering\ai\tests\test_segmented_store.py:28: AssertionError</failure></testcase></testsuite></testsuites>

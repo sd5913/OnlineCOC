@@ -80,6 +80,7 @@ return rule('sv.scene.resolve', {'actor', 'scene:actor', 'world:actor', 'action:
     say(label..'，消耗槽位 '..slot..' 的一格用量。');return true
   end
   local function discover_ground()
+    if get('cheese1')==0 then reveal={2};say('地面只剩压痕，通向主门的路清晰可见。');return end
     set('trapKnown',1,'入口机关已识别')
     clue('tunnel-trap','入口地面的压痕','地面有落石留下的压痕，奶酪连接着触发装置；直接取走会有危险。')
     reveal={2}
@@ -90,7 +91,7 @@ return rule('sv.scene.resolve', {'actor', 'scene:actor', 'world:actor', 'action:
       r.set(world,'rats',n);r.set(world,'generated7',1)
     end
     set('ratsObserved',1,'鼠帮已观察')
-    say('厅堂里有 '..r.number(world,'rats')..' 只鼠帮成员；桶后有一道锁门，杂物旁放着蛇笛。')
+    say('厅堂里有 '..r.number(world,'rats')..' 只鼠帮成员。杂物旁剩余蛇笛 '..get('fluteRemaining')..' 支。')
   end
   local function deal()
     set('ratsDeal',1,'已取得鼠帮通行许可');set('hallDoor',1,'大厅后门已开放')
@@ -99,11 +100,68 @@ return rule('sv.scene.resolve', {'actor', 'scene:actor', 'world:actor', 'action:
     if get('fluteRemaining')>0 then take(9,'fluteRemaining','蛇笛剩余数量') end
   end
 
-  if action=='tunnel-ground' then
-    discover_ground();say('你避开压痕，辨认出奶酪与上方落石的连接，并找到了通往主门的路线。')
+  local recipe
+  for _, option in ipairs(spec.choices) do
+    if option.id == choice then recipe = option.storm end
+  end
+  local function storm_action(step)
+    local round = r.number(session,'round')
+    for _,flag in ipairs(step.need or {}) do
+      if get(flag)==0 then fail('前提尚未满足，请先完成委托或前一步工作。'); return end
+    end
+    for _,flag in ipairs(step.absent or {}) do
+      if get(flag)>0 then fail('已有其他安排，无需再次办理。'); return end
+    end
+    if step.set and get(step.set)>0 or step.start and get('stormStart')>0 or step.send and get('sent')>0 then
+      say('这项工作已经完成。'); return
+    end
+    if step.evac and (get('foot')+get('boat')==0 or get('debt')+get('fed')==0) then
+      fail('先修通步道或渡舟，并备粮或向渡工赊粮。'); return
+    end
+    if step.evac and round-get('stormStart')+1>=18 and get('braced')==0 then
+      fail('水位已经上涨，请先加固渡口。'); return
+    end
+    if step.set=='pump' and round-get('stormStart')+1>=18 and get('dredged')==0 then
+      fail('积水漫过泵壳，先清理淤泥。');return
+    end
+    local used = {}
+    for _, item in ipairs(step.pay or {}) do
+      local found
+      for slot=1,20 do
+        if not used[slot] and r.number(actor,'item'..slot)==item and
+            (game.items[item].uses==0 or r.number(actor,'uses'..slot)>0) then found=slot;break end
+      end
+      if not found then fail('还需要'..game.items[item].name..'。');return end
+      used[found]=item
+    end
+    for slot,item in pairs(used) do
+      if game.items[item].uses>1 then
+        r.set(actor,'uses'..slot,r.number(actor,'uses'..slot)-1)
+      else r.call('sv.remove',actor,slot) end
+    end
+    if step.observe then
+      clue(step.observe,'当地物资','你清点过这里的物资，领取以现场余量为准。')
+      for _,row in ipairs(game.stormStocks) do
+        if row.location==spec.location and (row.item~=24 or get('pact')>0) then
+          say(game.items[row.item].name..'：'..get(row.key))
+        end
+      end
+    end
+    if step.take then take(step.take[1],step.take[2],'现场余量');return end
+    if step.start then set('stormStart',round+1,'接受委托') end
+    if step.send then set('sent',round+1,'外援收到消息的回合') end
+    if step.set then set(step.set,1,spec.label) end
+    for _,edge in ipairs(step.roads or {}) do doors[#doors+1]={edge=edge,status='open'} end
+    reveal=step.reveal or {}
+    if step.say then say(step.say) end
+    if not step.observe and not step.reveal then out.cost=1 end
+  end
+  if recipe then storm_action(recipe)
+  elseif action=='tunnel-ground' then
+    discover_ground();say('你找到了通往主门的路线。')
   elseif action=='tunnel-cheese' then
     if choice=='inspect' then
-      discover_ground();say('奶酪是机关诱饵。现在已经记录连接的位置，检查本身不会触发机关。')
+      discover_ground();if get('cheese1')>0 then say('奶酪是机关诱饵。检查本身不会触发机关。') end
     elseif get('cheese1')==0 then fail('奶酪已经被取走。')
     elseif not free_slot(6) then fail('背包没有可用槽位，奶酪留在原处。')
     elseif choice=='careful' and get('trapKnown')==0 then fail('先检查奶酪周围或观察地面，确认连接后才能拆解。')
@@ -140,8 +198,8 @@ return rule('sv.scene.resolve', {'actor', 'scene:actor', 'world:actor', 'action:
     end
   elseif action=='courtyard-pool' then
     if choice=='inspect' then
-      set('poolKnown',1,'池底宝物已发现');say('水下有一尊金叶鼠像和一只钱袋。鼠像占四格，钱袋内共有 140p。')
-      clue('pool-treasure','池底的宝物','池底有四格金叶鼠像与钱袋；领取以现场剩余库存为准。')
+      set('poolKnown',1,'池底宝物已发现');say('池底钱币：'..get('moneyRemaining')..'p；金叶鼠像：'..get('idolRemaining')..' 尊。')
+      clue('pool-treasure','池底的宝物','你已调查过池底，余量见现场观察。')
     elseif get('poolKnown')==0 then fail('先查看池底，确定打捞目标。')
     elseif (choice=='money' and get('moneyRemaining')==0) or (choice=='idol' and get('idolRemaining')==0) then fail('这件宝物已经被取走。')
     elseif choice=='idol' and not free_slot(7) then fail('无法安置鼠像，宝物仍在池底。')
@@ -164,14 +222,15 @@ return rule('sv.scene.resolve', {'actor', 'scene:actor', 'world:actor', 'action:
   elseif action=='house-painting' then
     set('paintingRead',1,'节庆画已阅读');say('旧画描绘了庭院中央的一尊金色鼠像，与池底的物件相符。')
     clue('festival','旧日节庆画','旧画记录了庭院节庆时的布置，池底鼠像原本是庭院的陈设。')
+  elseif action=='web-inspect' and get('villagersFreed')==1 then say('断开的蛛网后已经没有被困村民。')
   elseif action=='web-inspect' then
     set('webKnown',1,'蛛网屋危险已识别');say('两只蜘蛛在网线深处活动，网后困着两名村民。保持距离观察没有惊动它们。')
     clue('web-captives','蛛网后的村民','网线后困着 Roquefort 和 Paneer；携带可用武器可以尝试割断束缚。')
   elseif action=='web-call' then
-    if choice=='whisper' then
+    if get('villagersFreed')==1 then say('村民已从屋中脱困。')
+    elseif choice=='whisper' then
       set('villagersContacted',1,'已联系被困村民');say('Roquefort 和 Paneer 低声回应，指出可以割断的网线。')
       clue('villager-reply','被困者的回应','两名村民尚能行动，束缚他们的网线可以割断，但附近有蜘蛛。')
-    elseif get('villagersFreed')==1 then say('两名村民已经脱困，正在安全的庭院等待。')
     elseif not has(1) then fail('需要仍有用量的针剑才能执行这个固定救援做法。')
     else
       out.cost=1
@@ -251,6 +310,22 @@ return rule('sv.scene.resolve', {'actor', 'scene:actor', 'world:actor', 'action:
     out.round=next.round;out.encounterDue=next.encounterDue
     say('经过一个探索轮，现在是第 '..next.round..' 回合；光源用量按已有规则结算。')
   end
+  if game.stormStocks and get('stormStart')>0 then
+    local round=r.number(session,'round')
+    local elapsed=round-get('stormStart')+1
+    for _,event in ipairs({{6,'rain','雨势加剧，庭院的水漫过了第一级台阶。'},
+                           {12,'demand','厅堂传来催粮声，鼠帮催问栈桥劳务的进度。'},
+                           {18,'flood','排水间开始进水，修泵前需要清淤。'},
+                           {18,'tide','溪岸水涨，撤离前需要加固渡口。'}}) do
+      if elapsed>=event[1] and get(event[2])==0 and
+          (event[2]~='demand' or get('pact')==0) and (event[2]~='flood' or get('pump')==0) then
+        set(event[2],1,'暴雨事件');say(event[3])
+      end
+    end
+    if get('sent')>0 and round>=get('sent')+2 and get('aid')==0 then
+      set('aid',1,'援队已到');say('溪岸响起应答，援队已到渡口。')
+    end
+  end
   if #out.checks==0 and #out.rolls==0 then out.process='本做法不需要投骰，按现场条件直接判定。' else out.process='宿主已完成以下投骰与判定。' end
   return {public=out,reveals=reveal,doors=doors,sceneState=r.read(scene).numbers}
-end, {kp=true,dependencies={'sv.layout','sv.damage','sv.grant','sv.world'}})
+end, {kp=true,dependencies={'sv.layout','sv.damage','sv.grant','sv.world','sv.remove'}})

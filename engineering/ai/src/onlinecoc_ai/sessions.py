@@ -20,7 +20,7 @@ class Sessions:
 
     def _record(self, account, identifier, state=None):
         with self.host.lock:role = can_use(self.host, self.repository, account)
-        state = state or self.repository.state()
+        state = state or self.repository.read_state()
         record = state['settings'].get('sessions', {}).get(identifier)
         require(record and not record.get('deleted') and (record['owner'] == account or role == 'kp'), 'NOT_VISIBLE')
         require(role == 'kp' or record.get('accessLevel', 'player') == 'player', 'NOT_VISIBLE')
@@ -59,6 +59,10 @@ class Sessions:
             **{k: v for k, v in p.items() if k != 'principal'}}
 
     def get(self, account, identifier, *, delivered=False):
+        with self.host.lock,self.repository.read_scope():
+            return self._get(account,identifier,delivered=delivered)
+
+    def _get(self, account, identifier, *, delivered=False):
         record = self._record(account, identifier)
         # Reuse the existing read policy; old model output is not a bypass.
         items = [];before = None
@@ -67,7 +71,7 @@ class Sessions:
             items.extend(x for x in page['items'] if x['requestId'] in record['requestIds'])
             before = page['nextBefore']
             if not before:break
-        state = self.repository.state()
+        state = self.repository.read_state()
         for item in items:
             request = state['requests'][item['requestId']]
             if request['initiator'] == account and request['sourceKind'] == 'manual':

@@ -59,7 +59,8 @@ export class Client {
  async aiTasks({before,limit=30}={}){return this.request('ai/tasks?'+new URLSearchParams({limit,...(before?{before}:{})}));}
  async aiProposal(id){return this.request('ai/proposals/'+encodeURIComponent(id));}
  async aiAccess(){return this.request('ai/access');}
- async aiRulings(){return this.request('ai/rulings');}
+ async aiRulings(options){return this.request('ai/rulings'+(options?'?'+new URLSearchParams({compact:'true',...options}):''));}
+ async aiRuling(rulingId){return this.request('ai/rulings/'+encodeURIComponent(rulingId));}
  async aiResolve(tokens){return this.request('ai/references/resolve',{method:'POST',csrf:this.csrf,body:{tokens}});}
  async aiBatches(){return this.request('ai/batches');}
  async aiSettings(){return this.request('ai/settings');}

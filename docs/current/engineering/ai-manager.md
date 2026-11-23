@@ -4,7 +4,7 @@
 - 文档子类：工程
 - 状态：有效
 - 创建日期：2026-11-13
-- 最后更新：2026-11-21
+- 最后更新：2026-11-22
 - 关联文档：[AI 运行时](ai-runtime.md)、[会话权限与执行批次](ai-session-access.md)、[模块入口](../../../engineering/ai/README.md)、[Stumpsville 接入计划](../../plans/stumpsville-ai-integration.md)、[工程索引](README.md)
 
 ## 使用入口
@@ -114,7 +114,7 @@ function dispose() {
 | `renderReferenceText` / `hydrateReferences` | 将已提交文本呈现为标签；按当前授权解析名称，过期或不可访问时显示提示，不缓存跨身份私密名称 |
 | `mountSessions(target,client,{onReview?,onError?,t?})` | 返回 `refresh/destroy`；会话目录与连续需求；t 当前只覆盖标题，完整多语言文案尚未抽取 |
 | `mountProviders(target,adminApi,{onChange?})` | 本机管理嵌入组件；adminApi.request(path,body?) 对接下列管理 API，不能传房间客户端代替 |
-| `AiClient` | 无界面客户端；login/resume/sync/logout、subscribe、AI 命令/回执/会话/任务/设置/机器契约、aiReferences/aiResolve；普通 command/receipt 用于批准和加载 |
+| `AiClient` | 无界面客户端；login/resume/sync/logout、subscribe、AI 命令/回执/会话/任务/设置/机器契约、aiReferences/aiResolve；aiRulings(options?) 与 aiRuling(id) 提供[紧凑分页和详情](ai-rulings.md#紧凑分页与按需详情)，省略未提供的查询参数；普通 command/receipt 用于批准和加载 |
 | 自定义 `Transport.request(path,{method,body,csrf})` | 返回解析后的 JSON，非成功抛出带 code 的错误；接入方负责真实会话、CSRF、路由白名单及传输，不接受浏览器传来的账号字段作为授权 |
 
 默认 HttpTransport 只允许同源 `/api/v1/`；跨服务需受控代理或自定义 Transport。对话/审核/服务商组件用 Shadow DOM 隔离样式/ID；补全绑定复用调用方容器，独立使用时需提供候选列表样式。`mountChat` 的 listTarget 由组件管理，卸载会清空，不与其他列表共用。CSS 变量 `--ai-accent`、`--ai-surface`、`--ai-text`、`--ai-input`、`--ai-border` 用于外观调整。销毁释放订阅/轮询；退出、身份变化或权限重置清除正文，迟到的私密响应丢弃。组件不把模型文本作为 HTML 插入。

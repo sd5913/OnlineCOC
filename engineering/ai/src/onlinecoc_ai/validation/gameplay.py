@@ -60,16 +60,16 @@ def metric_value(metric, outputs):
     return value, math.sqrt(variance / len(numbers))
 
 
-def assess(pack, state, baseline, context, changes, artifact=None, *, basis=None):
+def assess(pack, state, baseline, context, changes, artifact=None, *, basis=None, _base_result=None):
     from ..c_review import DEFAULT, basis_binding
     value = copy.deepcopy(basis if basis is not None else DEFAULT)
-    result = _assess(pack, state, baseline, context, changes, artifact, basis=value)
+    result = _assess(pack, state, baseline, context, changes, artifact, basis=value, _base_result=_base_result)
     result['evidence']['reviewBasis'] = {**value, **basis_binding(value)}
     return result
 
 
-def _assess(pack, state, baseline, context, changes, artifact=None, *, basis):
-    base, artifact = check_base(pack, state, baseline, context, changes)
+def _assess(pack, state, baseline, context, changes, artifact=None, *, basis, _base_result=None):
+    base, artifact = _base_result if _base_result is not None else check_base(pack, state, baseline, context, changes)
     if base["status"] != "pass":
         return report("C", context, changes, "unknown", [finding("BASE_CHECK_REQUIRED")], risk="unknown")
     candidate = apply_configurations(state, changes)

@@ -286,7 +286,7 @@ class Modules:
         return value
 
     def start_web(self):
-        from build_web import build
+        from build_web import build_cached
         self.web_error = self.web_error_code = None
         self.web_stage = '读取联网配置'
         try:
@@ -309,7 +309,7 @@ class Modules:
             check_web_directory(config)
             self.web_stage='构建与导出玩家资源'
             root=self.runtime.data/'integrations/web'
-            build(root/'source')
+            build_cached(root/'source')
             prefix=[str(python),'-B','-m','onlinecoc_web']
             options={'cwd':ROOT/'engineering/network-web','env':self.runtime.env,'creationflags':getattr(subprocess,'CREATE_NO_WINDOW',0)}
             package=export_web_package(root,prefix,options);state=root/package.name

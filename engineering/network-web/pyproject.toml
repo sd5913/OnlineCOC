@@ -4,9 +4,9 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "onlinecoc-network-web"
-version = "0.3.0"
+version = "0.3.1"
 requires-python = ">=3.12"
-dependencies = ["onlinecoc-p2p>=0.2.2"]
+dependencies = ["onlinecoc-p2p>=0.2.3"]
 
 [project.scripts]
 onlinecoc-web = "onlinecoc_web.cli:main"

@@ -241,8 +241,16 @@ class Host:
             await check.close()
         state_file = self.state_path / "room.json"
         previous = read_json(state_file).get("roomId") if state_file.exists() else None
-        self.room = await self.control.request("POST", "/v1/rooms", self.config["publisherToken"],
-            {"hostKey": public_key(self.identity), "settings": self.settings, **({"roomId": previous} if previous else {})})
+        payload = {"hostKey": public_key(self.identity), "settings": self.settings, **({"roomId": previous} if previous else {})}
+        try:
+            self.room = await self.control.request("POST", "/v1/rooms", self.config["publisherToken"], payload)
+        except Fault as exc:
+            if not previous or exc.code != "NOT_FOUND":
+                raise
+            # Only an explicit local restart creates a new identity after expiry/removal.
+            # Background republish never recreates a dissolved room.
+            payload.pop("roomId")
+            self.room = await self.control.request("POST", "/v1/rooms", self.config["publisherToken"], payload)
         atomic_json(state_file, {"roomId": self.room_id})
         self.socket = await self.control.socket(self.lease_token, "host", self.room_id)
         self.listener, self.beater = asyncio.create_task(self.listen()), asyncio.create_task(self.heartbeat())

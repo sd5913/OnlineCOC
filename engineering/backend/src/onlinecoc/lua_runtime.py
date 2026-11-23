@@ -1,5 +1,5 @@
 """Lua 5.4 execution with a narrow JSON boundary and shared process limits."""
-import math, re
+import math, re, time
 from lupa.lua54 import LuaRuntime, lua_type
 from .errors import DomainError, require
 from .execution import Execution
@@ -43,6 +43,7 @@ def convert(value, seen=None):
 def worker(pipe, sources, job):
     ctx=None
     try:
+        started=time.perf_counter()
         def denied(*args): raise AttributeError("access denied")
         lua=LuaRuntime(register_eval=False,register_builtins=False,attribute_filter=denied,max_memory=32*1024*1024)
         load=lua.eval(BOOT)(); definitions={}
@@ -62,7 +63,9 @@ def worker(pipe, sources, job):
                 for index in range(1,len(d["nodes"])+1):
                     node=d["nodes"][index];require(node["kind"]=="wait" or lua_type(node["run"])=="function","FLOW_INVALID");nodes.append({"id":node["id"],"kind":node["kind"],"options":convert(node["options"])})
             meta[key]={"id":key,"inputs":inputs,"mode":d["mode"],"dependencies":convert(d["dependencies"]) or [],"public":bool(d["public"]),"kp":bool(d["kp"]),"nodes":nodes}
-        if job["kind"]=="inspect":pipe.send({"ok":True,"metadata":meta});return
+        loaded=time.perf_counter()
+        timings={'loadMs':(loaded-started)*1000}
+        if job["kind"]=="inspect":pipe.send({"ok":True,"metadata":meta,'workerTimings':timings});return
         def random(sides):
             pipe.send({"random":sides});answer=pipe.recv()
             if "error" in answer:raise DomainError(answer["error"])
@@ -95,7 +98,9 @@ def worker(pipe, sources, job):
             node=next(x for x in d["nodes"].values() if x["id"]==job["node"])
             result=node["run"](api,*args)
         else:result=call(job["rule"],*args)
-        output=ctx.finish(); output["result"]=convert(result);pipe.send({"ok":True,**output})
+        output=ctx.finish(); output["result"]=convert(result)
+        timings['executeMs']=(time.perf_counter()-loaded)*1000
+        pipe.send({"ok":True,**output,'workerTimings':timings})
     except BaseException as e:
         # A Lua pcall/wrapper must not replace the first host-domain failure.
         error=ctx.failure if ctx is not None and ctx.failure is not None else e

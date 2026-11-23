@@ -19,7 +19,7 @@ def basis_binding(value):
 
 def detached_resolver(repository,scope_id):
     """Reopen persisted evidence after service shutdown; never trust a cached basis."""
-    from onlinecoc_data import FileDataStore
+    from .segmented_store import SegmentedStore
     from onlinecoc.errors import DomainError
     path=getattr(repository.store,'path',None)
     def resolve():
@@ -27,7 +27,7 @@ def detached_resolver(repository,scope_id):
         try:
             if path is not None:
                 require(path.is_dir(),'C_BASIS_UNAVAILABLE')
-                store=FileDataStore(path)
+                store=SegmentedStore(path)
                 state=store.snapshot()[1]
             else:state=repository.store.snapshot()[1]
             require(state and state.get('scopeId')==scope_id,'C_BASIS_UNAVAILABLE')

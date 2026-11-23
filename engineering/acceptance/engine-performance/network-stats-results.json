@@ -1,0 +1,19 @@
+{
+  "cases": 4,
+  "passed": true,
+  "sample": {
+    "state": "connected",
+    "localType": "host",
+    "relay": null,
+    "rttMs": 12,
+    "bytesSent": 123,
+    "bytesReceived": 456,
+    "packetsSent": null,
+    "packetsReceived": null,
+    "discardedPackets": null,
+    "retransmittedPackets": null,
+    "retransmissionStatus": "not-exposed-by-candidate-pair-stats",
+    "availableOutgoingBitrate": null
+  },
+  "limitation": "Synthetic browser getStats contract verification. No live WAN/TURN or retransmission measurement."
+}

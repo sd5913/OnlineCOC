@@ -4,20 +4,28 @@
 - 文档子类：工程
 - 状态：有效
 - 创建日期：2026-11-13
-- 最后更新：2026-11-14
+- 最后更新：2026-11-22
 - 关联文档：[快速使用](../../../engineering/network-web/README.md)、[P2P 基础](network-p2p.md)、[后续验收](../../plans/browser-room-portal.md)、[域名步骤](../../plans/cloud-server-deployment-research.md#61-在腾讯云取得并接入域名)、[目录清单](hierarchy.md)
 
 ## 1. 已实现范围
 
-独立可选模块 `network-web 0.3.0`，复用 `network-p2p 0.2.2`。平台提供 **创建 `/create`、管理 `/manage`、加入 `/join`** 三页，根地址打开加入页。公开列表只含已认领、在线、可加入且设为公开的网页房间；私密、未认领、离线或已解散房间不展示。旧房间默认私密。
+独立可选模块 `network-web 0.3.1`，复用 `network-p2p 0.2.3`。平台提供 **创建 `/create`、管理 `/manage`、加入 `/join`** 三页，根地址打开加入页。公开列表只含已认领、在线、可加入且设为公开的网页房间；私密、未认领、离线或已解散房间不展示。旧房间默认私密。
 
 公开列表允许未登录浏览，仅提供房间名、包名/版本、代号、席位及密码/审批/邀请标记；规则、人员、完整包信息在准入后查看。底层仍为 `visibility=code`，旧 P2P 列表和加入接口不能绕过平台权限；网页是否公开由独立持久化字段控制。
 
-玩家流程：**平台注册/登录 → 选择公开房间或凭 8 位代号加入 → 房间信息 → 独立游戏页 → P2P 与游戏账号登录 → 按需资源**。加入后持久保存快捷入口，跨设备、服务重启仍有效；房主离线保留带时间的旧摘要，永久解散后不可重开。
+玩家流程：**平台注册/登录 → 选择公开房间或凭 8 位代号加入 → 房间信息 → 独立游戏页 → P2P 与游戏账号登录 → 按需资源**。加入后持久保存快捷入口，跨设备、服务重启仍有效；房主离线保留带时间的旧摘要，默认 24 小时后移除。
 
 房主粘贴本机开房串创建并绑定平台账号，创建时设置是否公开、是否有密码；管理页可继续调整并处理审批、黑名单和资源授权。公开与密码互相独立，私密房间仍可凭代号准入。房间密码为 1–128 个字符；改密影响首次加入，已有成员保留快捷重入。平台房主身份不等于游戏 KP；封禁撤销准入及连接，解封后须重新加入。目录不可达时，旧连接受最长约 15 秒的授权租约约束。
 
 房间页只显示信息，不连接游戏或下载运行资源。每账号每房间一席；房间页/游戏页分别每 10/8 秒心跳，35 秒超时。关闭房间页不影响游戏，刷新或崩溃后须手动重连。
+
+### 停用保留与主动移除
+
+“不使用”按停止分享、房主信令断开或租约失效计时；在线等待玩家不计入。默认 `roomRetentionSeconds=86400`，可在服务器配置为 1–2592000 秒。离线时间持久化，服务重启不会重置；在线活动每约 60 秒写检查点。首次升级无时间字段的旧房间给予完整一天宽限。
+
+一天内重新连接清除离线计时，沿用身份和成员；到期清理目录、代号、成员/黑名单/认领信息及所有快捷入口。后台每约 2 秒和网页请求前检查；公开列表仍只显示在线房间。房主“解散并移除”立即执行同样清理并撤销连接，旧版已解散记录在升级时清除。服务器备份可能保留旧记录，不等同安全擦除。
+
+删除后后台重发旧身份会失败；房主显式重启适配器时可创建新身份/代号，需要重新认领与加入。此操作不删除账号或房主本机游戏存档。
 
 ## 2. 账号与持久化
 
@@ -28,6 +36,8 @@
 `PortalStore` 通过进程锁、原子替换和 fsync 保存账号、会话、成员、黑名单及摘要，保留上一代 `.backup.json`；损坏时拒启，不自动回退。在线状态和席位不持久化。资源缓存按账号/房间隔离，退出账号或游戏时清理；已查看或另存的内容无法收回。
 
 ## 3. 配置包接入与资源协议
+
+Windows x64 的项目部署可使用[离线依赖安装器](../../../engineering/network-web/installer/README.md)，安装 Python 与联机依赖到原启动器使用的 `.venv` 路径；玩家浏览器免安装，游戏宿主依赖另行准备。
 
 声明示例见 [web.json](../../../engineering/network-web/examples/core-table/web.json)：必填 `webVersion`、`package`、`rules`、`modules`、`groups`、`routes`。版本1保持兼容；版本2必须额外提供严格的 `bridge` 声明。当前只接受 `required=["network-web"]`，`optional` 不自动启动服务。
 
@@ -73,13 +83,13 @@ setup_string = export_room_setup(state_path)
 
 | 路径 | 用途 |
 | --- | --- |
-| `GET capabilities` | 包/存储桥、`roomCreation=1`、`publicRooms=1` 能力 |
+| `GET capabilities` | 包/存储桥、开房/公开列表能力及 `roomRetentionSeconds` |
 | `POST auth/{register,login,recover,logout}`、`GET me` | 平台账号与会话 |
 | `GET public-rooms?offset=0` | 每页最多 50 个公开房间，返回 `nextOffset` |
 | `POST rooms/preview、rooms/create` | `setupString` 解析；创建另传 `public` 布尔值及 `password`（空串为无密码） |
 | `GET rooms`、`POST join、claim` | 个人快捷房间（含 owner 标记）、代号加入、旧版认领兼容 |
 | `POST rooms/{rid}/presence` | 授权摘要与人员 |
-| `POST rooms/{rid}/manage` | 审批/黑名单/资源/关闭；`action=settings` 传 `public`、`passwordMode=keep/set/clear`，set 时传 password |
+| `POST rooms/{rid}/manage` | 审批/黑名单/资源/解散移除（`action=close`）；`action=settings` 传 `public`、`passwordMode=keep/set/clear`，set 时传 password |
 | `POST host/{rid}`、`host/{rid}/guard` | 主机发布摘要与续期授权 |
 | `POST game/{session,join,ping,leave}` | 游戏席位、心跳与退出 |
 
@@ -89,13 +99,13 @@ setup_string = export_room_setup(state_path)
 
 `host --stop-file <路径>` 可选本机停止信号；文件出现时优雅撤销房间并退出适配器，保留借用宿主。版本2还需上述 `packageService` 配置；版本1不得声明该服务。
 
-服务端新增 `webStateFile`，可选 `publicOrigin/registration/maxAccounts`。示例见模块 `config/`；真实配置和证书放 `local/` 或服务器受限目录。域名接入时同步 Origin、目录地址、证书和 TURN 地址。
+服务端新增 `webStateFile`，可选 `publicOrigin/registration/maxAccounts/roomRetentionSeconds`。示例见模块 `config/`；真实配置和证书放 `local/` 或服务器受限目录。域名接入时同步 Origin、目录地址、证书和 TURN 地址。
 
 ## 5. 服务器实际部署
 
 沿用腾讯广州 CVM：Ubuntu 24.04、2 核 2 GiB、3 Mbps；未增加数据库、COS 或 CDN。
 
-2026-11-14 已部署 0.3.0，release 为 `/opt/onlinecoc-network/releases/web-20261114T063226Z`，回滚备份为同名 `rollback/` 目录；严格 CA HTTPS 与 40 个运行源码摘要核对通过。部署时 443 活跃连接为 0，沿用停服备份流程，TURN 服务保持运行。
+2026-11-22 已部署 0.3.1 / 0.2.3，release 为 `/opt/onlinecoc-network/releases/web-20261122T135106Z`，回滚备份为同名 `rollback/` 目录；严格 CA HTTPS 与 40 个运行源码摘要核对通过。部署时 443 活跃连接为 0，沿用停服备份流程，TURN 服务保持运行。原 27 个账号和 8 个有效房间设置保持，旧版 8 个已解散记录已清除。
 
 | 服务 / 目录 | 内容 |
 | --- | --- |
@@ -116,10 +126,8 @@ setup_string = export_room_setup(state_path)
 
 ## 6. 验收与边界
 
-0.3.0 本地 **34 项通过**，原 2 项云端用例未在该批执行；另有 **1 项公网创建/管理/加入浏览器测试通过**，验证公开密码房、私密切换、快捷重入、非房主管理拒绝及测试房间关闭。下列旧版结果不累加为本次重跑，具体见[0.3.0 记录](../../../engineering/network-web/acceptance/2026-11-14-0.3.0.json)。
+0.3.1：网页本地 **39 项通过、3 项云端跳过**；P2P 本地 **43 项通过、11 项环境/云端跳过**。另行执行 **1 项公网三页浏览器测试通过**，覆盖公开/密码、私密切换、权限及解散后双方快捷入口移除。一天到期使用模拟时间边界测试，覆盖 86399/86401 秒、重连清除计时、重启保留期限及旧数据宽限；不声称已实等 24 小时。严格 CA HTTPS 与 40 项部署源码一致。详见[本次记录](../../../engineering/network-web/acceptance/2026-11-22-0.3.1.json)。
 
-0.2.0本地29项通过、2项工程云端用例未在该批次执行（Edge），含新增9项契约/身份/路径/参数负例。后续经授权完成云端部署，另行通过树桩镇8组真实公网强制TURN双浏览器测试、全部18预设和恢复/权限闭环；不把两个跳过的工程用例计为重跑通过。部署及39项源码摘要见[记录](../../../engineering/network-web/acceptance/2026-11-14-0.2.0.json)，玩法见[包验收](../../../rulepacks/stumpsville/tests/README.md)。真人独立家庭/移动网仍未验收。`WEB_BROWSER_CHANNEL=msedge` 可使用已安装Edge；未设置时继续使用Playwright Chromium。
-
-[0.1.1 记录](../../../engineering/network-web/acceptance/2026-11-13-0.1.1.json)：本地 20 项通过、1 项旧公网中转用例跳过；公网账密页面另行复核，37 个部署源码文件摘要一致。初版网页 14 项及旧 P2P 54 项为历史基线，不计为 0.1.1 重跑，详见[验收入口](../../../engineering/network-web/acceptance/README.md)。
+离线 EXE 实测首次/重复安装、中文空格路径、无系统 Python 路径、运行占用拒绝、配置保留、两个 CLI 及 WebRTC 自检；未在另一台干净实体电脑人工验收。旧版与树桩镇公网 TURN 记录见[验收入口](../../../engineering/network-web/acceptance/README.md)，不计作本次重跑。`WEB_BROWSER_CHANNEL=msedge` 可使用已安装 Edge。
 
 目前使用测试 CA：云测浏览器显式允许测试证书，Python/房主仍校验 CA。正式域名/可信 HTTPS、真人独立家庭或移动网、手机/Safari、长期负载及跨设备长时恢复尚未验收，见[后续计划](../../plans/browser-room-portal.md)。不提供云端游戏托管。

@@ -1,0 +1,119 @@
+{
+  "tree": "D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\ai-operation-performance\\work\\delivery-cold-v3-recovered-1795332056075519800",
+  "work": "D:\\Studies\\Art Programming\\OnlineCOC\\engineering\\acceptance\\ai-operation-performance\\work\\large-history-1795332059426073000",
+  "realModelCalls": 0,
+  "count": 10000,
+  "checks": [
+    {
+      "name": "over_8mib_commit",
+      "status": "passed"
+    },
+    {
+      "name": "all_100_pages_no_missing_or_duplicate",
+      "status": "passed"
+    },
+    {
+      "name": "active_archived_count_and_status",
+      "status": "passed"
+    },
+    {
+      "name": "delivery_reuse_and_player_denial",
+      "status": "passed"
+    },
+    {
+      "name": "logical_backup_exact_restore",
+      "status": "passed"
+    },
+    {
+      "name": "paired_host_backup_inert_original_and_new_scope",
+      "status": "passed"
+    },
+    {
+      "name": "restart_stale_originals_and_approval_recheck",
+      "status": "passed"
+    },
+    {
+      "name": "revocation_never_restores_authority_or_body",
+      "status": "passed"
+    }
+  ],
+  "measurement": "Each delivered first call starts with empty repository read cache and ruling index; storage is already open. Then 30 repeated calls. Not process startup or HTTP latency.",
+  "stateBytes": 19176983,
+  "deliveredList": {
+    "coldMs": 320.12230000003683,
+    "p50Ms": 10.66800000000967,
+    "p95Ms": 14.980600000001232,
+    "samplesMs": [
+      24.170700000013312,
+      12.204800000006344,
+      11.755100000016228,
+      14.784000000020114,
+      12.992599999961385,
+      13.000700000020515,
+      13.955099999975573,
+      14.853300000027048,
+      10.430299999995896,
+      9.95829999999387,
+      10.029500000030112,
+      10.190700000009656,
+      10.360999999988962,
+      10.66800000000967,
+      10.679699999968761,
+      10.415399999999408,
+      14.980600000001232,
+      10.60989999996309,
+      10.58669999997619,
+      11.812899999995352,
+      11.456500000008418,
+      10.453900000015892,
+      10.880600000007234,
+      10.222300000009454,
+      10.634299999992436,
+      10.375199999998586,
+      10.269700000037574,
+      10.247499999991305,
+      10.594700000012836,
+      10.725299999990057
+    ],
+    "samples": 30
+  },
+  "archivedList": {
+    "coldMs": 368.55520000000297,
+    "p50Ms": 12.856699999986176,
+    "p95Ms": 16.725800000017443,
+    "samplesMs": [
+      25.16340000005357,
+      12.501200000031076,
+      12.565800000004401,
+      13.355399999966266,
+      14.065299999970193,
+      13.381799999990562,
+      16.52969999997822,
+      13.955899999984922,
+      12.856699999986176,
+      14.905400000031932,
+      12.98330000003034,
+      12.636700000030032,
+      12.517299999956322,
+      14.751600000010967,
+      15.039000000001579,
+      12.415200000020832,
+      14.07950000003666,
+      11.629500000026383,
+      11.082199999975728,
+      12.863600000002862,
+      12.390199999970264,
+      10.3806999999847,
+      11.790899999994053,
+      10.657699999967463,
+      10.327300000028572,
+      13.106499999992138,
+      10.728500000027452,
+      10.937500000011369,
+      11.162200000001121,
+      16.725800000017443
+    ],
+    "samples": 30
+  },
+  "status": "passed"
+}

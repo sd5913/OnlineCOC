@@ -216,8 +216,19 @@ export class WebRtcTransport {
     const report=await this.pc.getStats();let pair;
     for(const item of report.values()) if(item.type==="transport"&&item.selectedCandidatePairId)pair=report.get(item.selectedCandidatePairId);
     if(!pair)for(const item of report.values())if(item.type==="candidate-pair"&&item.nominated&&item.state==="succeeded")pair=item;
-    return {state:this.pc.connectionState,localType:pair?report.get(pair.localCandidateId)?.candidateType:null,
-      remoteType:pair?report.get(pair.remoteCandidateId)?.candidateType:null,rttMs:pair?.currentRoundTripTime?Math.round(pair.currentRoundTripTime*1000):null};
+    const localType=pair?report.get(pair.localCandidateId)?.candidateType:null;
+    const remoteType=pair?report.get(pair.remoteCandidateId)?.candidateType:null;
+    const metric=(name)=>Number.isFinite(pair?.[name])?pair[name]:null;
+    // Missing browser counters are unknown, never zero. Export no candidate
+    // addresses, SDP, room tickets, TURN credentials, or message contents.
+    return {state:this.pc.connectionState,localType,remoteType,
+      relay:localType==='relay'||remoteType==='relay'?true:localType&&remoteType?false:null,
+      rttMs:metric('currentRoundTripTime')===null?null:Math.round(pair.currentRoundTripTime*1000),
+      bytesSent:metric('bytesSent'),bytesReceived:metric('bytesReceived'),
+      packetsSent:metric('packetsSent'),packetsReceived:metric('packetsReceived'),
+      discardedPackets:metric('packetsDiscardedOnSend'),
+      retransmittedPackets:null,retransmissionStatus:'not-exposed-by-candidate-pair-stats',
+      availableOutgoingBitrate:metric('availableOutgoingBitrate')};
   }
 }
 

@@ -1,0 +1,137 @@
+{
+  "baseline": "baseline-benchmark.json",
+  "adapted": "v2-benchmark.json",
+  "note": "v2 direct Python benchmark; final v3 delivery write-set comparison separately recorded. Same fixture design; one initial and 30 subsequent calls; not HTTP/UI/model latency.",
+  "scales": [
+    {
+      "count": 100,
+      "baselineStatus": "measured",
+      "adaptedStatus": "measured",
+      "stateBytes": 193383,
+      "list": {
+        "adaptedP50Ms": 4.806,
+        "adaptedP95Ms": 7.473,
+        "adaptedFirstMs": 8.284,
+        "baselineP50Ms": 20.673,
+        "baselineP95Ms": 25.146,
+        "p95ReductionPct": 70.28
+      },
+      "detail": {
+        "adaptedP50Ms": 2.05,
+        "adaptedP95Ms": 2.181,
+        "adaptedFirstMs": 2.273,
+        "baselineP50Ms": 19.539,
+        "baselineP95Ms": 24.697,
+        "p95ReductionPct": 91.17
+      },
+      "verify": {
+        "adaptedP50Ms": 14.154,
+        "adaptedP95Ms": 19.441,
+        "adaptedFirstMs": 14.789,
+        "baselineP50Ms": 92.614,
+        "baselineP95Ms": 169.241,
+        "p95ReductionPct": 88.51
+      },
+      "transaction3Updates": {
+        "adaptedP50Ms": 44.29,
+        "adaptedP95Ms": 49.267,
+        "adaptedFirstMs": 53.622,
+        "baselineP50Ms": 114.729,
+        "baselineP95Ms": 123.143,
+        "p95ReductionPct": 59.99
+      }
+    },
+    {
+      "count": 1000,
+      "baselineStatus": "measured",
+      "adaptedStatus": "measured",
+      "stateBytes": 1916984,
+      "list": {
+        "adaptedP50Ms": 4.666,
+        "adaptedP95Ms": 6.157,
+        "adaptedFirstMs": 29.172,
+        "baselineP50Ms": 192.977,
+        "baselineP95Ms": 356.226,
+        "p95ReductionPct": 98.27
+      },
+      "detail": {
+        "adaptedP50Ms": 2.159,
+        "adaptedP95Ms": 3.133,
+        "adaptedFirstMs": 2.079,
+        "baselineP50Ms": 188.224,
+        "baselineP95Ms": 200.721,
+        "p95ReductionPct": 98.44
+      },
+      "verify": {
+        "adaptedP50Ms": 143.131,
+        "adaptedP95Ms": 151.282,
+        "adaptedFirstMs": 150.186,
+        "baselineP50Ms": 893.573,
+        "baselineP95Ms": 1038.278,
+        "p95ReductionPct": 85.43
+      },
+      "transaction3Updates": {
+        "adaptedP50Ms": 394.548,
+        "adaptedP95Ms": 429.537,
+        "adaptedFirstMs": 509.324,
+        "baselineP50Ms": 1612.316,
+        "baselineP95Ms": 2082.72,
+        "p95ReductionPct": 79.38
+      }
+    },
+    {
+      "count": 10000,
+      "baselineStatus": "capacity-rejected",
+      "adaptedStatus": "measured",
+      "stateBytes": 19161984,
+      "list": {
+        "adaptedP50Ms": 7.344,
+        "adaptedP95Ms": 10.171,
+        "adaptedFirstMs": 275.217
+      },
+      "detail": {
+        "adaptedP50Ms": 3.095,
+        "adaptedP95Ms": 3.44,
+        "adaptedFirstMs": 3.285
+      },
+      "verify": {
+        "adaptedP50Ms": 1417.911,
+        "adaptedP95Ms": 1712.232,
+        "adaptedFirstMs": 1423.544
+      },
+      "transaction3Updates": {
+        "adaptedP50Ms": 5278.542,
+        "adaptedP95Ms": 6526.248,
+        "adaptedFirstMs": 6975.343
+      }
+    }
+  ],
+  "deliveryCold": {
+    "deliveredList": {
+      "before": {
+        "coldMs": 17889.427400001296,
+        "p50Ms": 27.34989999953541,
+        "p95Ms": 44.613800000661286
+      },
+      "after": {
+        "coldMs": 320.12230000003683,
+        "p50Ms": 10.66800000000967,
+        "p95Ms": 14.980600000001232
+      },
+      "firstCallReductionPct": 98.21055032761969
+    },
+    "archivedList": {
+      "before": {
+        "coldMs": 14824.937299999874,
+        "p50Ms": 32.073800000944175,
+        "p95Ms": 61.547799999971176
+      },
+      "after": {
+        "coldMs": 368.55520000000297,
+        "p50Ms": 12.856699999986176,
+        "p95Ms": 16.725800000017443
+      },
+      "firstCallReductionPct": 97.51395103708124
+    }
+  }
+}

@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-11-20T18:13:31.846001+08:00",
+  "checkedAt": "2026-11-22T13:43:51.195205+08:00",
   "checks": [
     "timeout：保留类型、HTTP状态及查询定位，不误报恢复写行动",
     "connect：保留类型、HTTP状态及查询定位，不误报恢复写行动",
@@ -15,7 +15,7 @@
   ],
   "externalModelCalls": 0,
   "realSaveChanged": false,
-  "evidenceDirectory": "tests/output/local-errors-ee623839",
+  "evidenceDirectory": "tests/output/local-errors-d1091fb1",
   "passed": true,
   "passedCount": 11,
   "previousRuns": [
@@ -50,6 +50,24 @@
         "真实本机关闭端口连接拒绝稳定识别，无正式宿主参与"
       ],
       "evidenceDirectory": "tests/output/local-errors-068b5241"
+    },
+    {
+      "passed": true,
+      "error": null,
+      "checks": [
+        "timeout：保留类型、HTTP状态及查询定位，不误报恢复写行动",
+        "connect：保留类型、HTTP状态及查询定位，不误报恢复写行动",
+        "file：保留类型、HTTP状态及查询定位，不误报恢复写行动",
+        "protocol：保留类型、HTTP状态及查询定位，不误报恢复写行动",
+        "http：保留类型、HTTP状态及查询定位，不误报恢复写行动",
+        "写入超时显示原行动定位与核对回执要求，安全诊断落盘不含输入正文",
+        "明确HTTP权限拒绝保留403，不改判为网络未知",
+        "Python包客户端保留非JSON HTTP500，不退化成400参数错误或丢状态",
+        "真实本机关闭端口连接拒绝稳定识别，无正式宿主参与",
+        "共享同步连接池的超时、拒连和协议错误保留安全分类",
+        "共享连接显式转发本请求Cookie和CSRF、拒绝储存响应Cookie、保留非JSON HTTP500"
+      ],
+      "evidenceDirectory": "tests/output/local-errors-ee623839"
     }
   ]
 }

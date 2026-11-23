@@ -1,5 +1,6 @@
 import copy
 import json
+import math
 import threading
 from collections import OrderedDict
 from pathlib import Path
@@ -8,9 +9,10 @@ from onlinecoc_data import canonical
 from .errors import DomainError
 ROOT=Path(__file__).resolve().parents[3]
 SCHEMAS=json.loads((ROOT/"contracts/messages.json").read_text(encoding="utf-8"))
+_MESSAGE_VALIDATORS={kind:Draft202012Validator(schema) for kind,schema in SCHEMAS.items()}
 
 def check(kind,data):
-    try: Draft202012Validator(SCHEMAS[kind]).validate(data)
+    try: _MESSAGE_VALIDATORS[kind].validate(data)
     except Exception as e: raise DomainError("INPUT_INVALID",str(e)) from e
 
 def input_schema(inputs):
@@ -22,6 +24,7 @@ def input_schema(inputs):
 MODELS=json.loads((ROOT/'contracts/models.json').read_text(encoding='utf-8'))
 OPERATIONS=json.loads((ROOT/'contracts/operations.json').read_text(encoding='utf-8'))
 _MODEL_VALIDATORS={kind:Draft202012Validator(schema) for kind,schema in MODELS.items()}
+_OPERATION_VALIDATORS={kind:Draft202012Validator(schema) for kind,schema in OPERATIONS.items()}
 # Split the exact schema, caching only byte-identical messages. Cross-record
 # references and current authority are still checked in chat.validate.
 _CHAT_SHELL=copy.deepcopy(MODELS['ChatState'])
@@ -32,6 +35,28 @@ _MESSAGE_VALIDATED=OrderedDict()
 _MESSAGE_CACHE_BYTES=0
 _MESSAGE_CACHE_LOCK=threading.Lock()
 _MESSAGE_CACHE_LIMIT=8*1024*1024
+_TEXT_FIELDS=tuple(_CHAT_MESSAGE_SCHEMA['properties'])
+_TEXT_KEYS=frozenset(_TEXT_FIELDS)
+
+def _message_key(message):
+    # Common text messages have only scalar fields plus a string asset list.
+    # Capture every field and its exact type, not mutable identity or message ID.
+    # Rich cards and non-JSON inputs use the existing full canonical path.
+    if type(message) is dict and message.keys()==_TEXT_KEYS and message.get('card') is None:
+        parts=[];size=256
+        for name in _TEXT_FIELDS:
+            value=message[name]
+            if name=='assetIds' and type(value) is list and all(type(x) is str for x in value):
+                parts.append(tuple(value));size+=sum(len(x)*4+16 for x in value)
+            elif type(value) in (str,int,bool,type(None)):
+                parts.append((type(value),value));size+=len(value)*4 if type(value) is str else 32
+            elif type(value) is float and math.isfinite(value):
+                parts.append((float,value));size+=32
+            else:break
+        else:return tuple(parts),size
+    try:key=canonical(message) if _json_tree(message) else None
+    except (ValueError,TypeError,RecursionError):key=None
+    return key,len(key) if key is not None else 0
 
 # Split, without weakening, the exact persisted approval schema. The model's
 # cross-record checks and publication's current authority checks still run.
@@ -77,20 +102,19 @@ def _chat_schema(value):
     if error is not None:_model_error('ChatState',error)
     for channel,messages in value['messages'].items():
         for index,message in enumerate(messages):
-            try:key=canonical(message) if _json_tree(message) else None
-            except (ValueError,TypeError,RecursionError):key=None
+            key,size=_message_key(message)
             if key is not None:
                 with _MESSAGE_CACHE_LOCK:
                     if key in _MESSAGE_VALIDATED:
                         _MESSAGE_VALIDATED.move_to_end(key);continue
             error=next(_CHAT_MESSAGE_VALIDATOR.iter_errors(message),None)
             if error is not None:_model_error('ChatState',error,('messages',channel,index))
-            if key is not None and len(key)<=16384:
+            if key is not None and size<=16384:
                 with _MESSAGE_CACHE_LOCK:
                     if key not in _MESSAGE_VALIDATED:
-                        _MESSAGE_VALIDATED[key]=None;_MESSAGE_CACHE_BYTES+=len(key)
+                        _MESSAGE_VALIDATED[key]=size;_MESSAGE_CACHE_BYTES+=size
                     while _MESSAGE_CACHE_BYTES>_MESSAGE_CACHE_LIMIT or len(_MESSAGE_VALIDATED)>10000:
-                        old,_=_MESSAGE_VALIDATED.popitem(last=False);_MESSAGE_CACHE_BYTES-=len(old)
+                        _,weight=_MESSAGE_VALIDATED.popitem(last=False);_MESSAGE_CACHE_BYTES-=weight
 
 def _ai_schema(value):
     global _APPROVAL_CACHE_BYTES
@@ -120,5 +144,5 @@ def validate_model(kind,value):
     if error is not None:_model_error(kind,error)
 def validate_operation(op,args):
     if op not in OPERATIONS:raise DomainError('UNKNOWN_OPERATION')
-    error=next(Draft202012Validator(OPERATIONS[op]).iter_errors(args),None)
+    error=next(_OPERATION_VALIDATORS[op].iter_errors(args),None)
     if error is not None:_model_error(op,error)

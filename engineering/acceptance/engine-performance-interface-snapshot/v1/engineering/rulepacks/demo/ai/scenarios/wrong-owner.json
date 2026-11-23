@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "scenarioId": "wrong-owner",
+  "fixtureRef": "ai/fixtures/new-world.json",
+  "account": "player2",
+  "steps": [
+    {
+      "rule": "demo.check",
+      "input": {
+        "actor": "actor-player1",
+        "skill": "skill-player1"
+      },
+      "expectError": "PERMISSION_DENIED"
+    }
+  ],
+  "randomPolicy": {
+    "mode": "fixed",
+    "sides": 100,
+    "samples": 100,
+    "seed": 1,
+    "values": [
+      50
+    ]
+  },
+  "maxSteps": 1,
+  "metricIds": []
+}

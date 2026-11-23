@@ -22,7 +22,7 @@
 
 公网开房、短房间码加入和本机宿主识别从[快速使用](../engineering/network-p2p/README.md)开始；配置、玩家包生成、云端运维和验收见[公网联机工程说明](current/engineering/network-p2p.md)。
 
-免安装玩家入口 [network-web](current/engineering/network-web.md) 0.3.0 已部署测试版：开房串导入，创建/管理/加入三页，可选公开列表与房间密码，以及快捷重入、黑名单和独立按需游戏页；平台密码最低 6 位，支持可选在访问者本机记住账密。首测规则桌面已适配；公网暂用测试 CA，正式域名、可信证书及独立网络验收见[后续计划](plans/browser-room-portal.md)，腾讯域名操作见[接入步骤](plans/cloud-server-deployment-research.md#61-在腾讯云取得并接入域名)。
+免安装玩家入口 [network-web](current/engineering/network-web.md) 0.3.1 已部署测试版：开房串导入，创建/管理/加入三页，可选公开列表与房间密码，以及快捷重入、黑名单和独立按需游戏页；离线房间默认保留一天、房主可立即移除，Windows 房主可用[离线安装器](../engineering/network-web/installer/README.md)；平台密码最低 6 位，支持可选在访问者本机记住账密。首测规则桌面已适配；公网暂用测试 CA，正式域名、可信证书及独立网络验收见[后续计划](plans/browser-room-portal.md)，腾讯域名操作见[接入步骤](plans/cloud-server-deployment-research.md#61-在腾讯云取得并接入域名)。
 
 配置包可用 [AI 底层工具与三种嵌入视图](current/engineering/ai-pack-embedding.md) 自行装配，或选择单独页面、对话页面、可折叠面板；提供同源 HTML 入口与资源/路由清单。
 

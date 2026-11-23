@@ -42,7 +42,7 @@ class Reviews:
                 context={'response':item.get('response')},verification='authorized-snapshot',visibility='private' if session.get('accessLevel')=='player' else 'kp')
             material['digest']=digest(material)
             return material
-        item=next((i for i in self.app.rulings.list(account)['items'] if i['rulingId']==source['rulingId']),None)
+        item=self.app.rulings.detail(account,source['rulingId'])
         require(item and item.get('summary') and not item.get('sourceUnavailable'),'NOT_VISIBLE')
         require(not source.get('digest') or source['digest']==item.get('digest'),'RULING_STALE')
         material={k:copy.deepcopy(item[k]) for k in ('rulingId','sessionId','requestId','digest','status','summary') if item.get(k) is not None}

@@ -13,7 +13,11 @@ def dist(values):
     return {'samples':len(values),'p50Ms':round(statistics.median(values),2),'p95Ms':round(values[min(len(values)-1,int(len(values)*.95))],2),'maxMs':round(max(values),2)}
 
 def main():
-    parser=argparse.ArgumentParser();parser.add_argument('--label',default='optimized');parser.add_argument('--source',type=Path,required=True);args=parser.parse_args()
+    parser=argparse.ArgumentParser();parser.add_argument('--label',default='optimized');parser.add_argument('--source',type=Path,required=True)
+    parser.add_argument('--samples', type=int, default=6)
+    parser.add_argument('--latency-ms', type=float, default=0)
+    parser.add_argument('--output-only', action='store_true')
+    args=parser.parse_args()
     output=PACK/'tests/output'/('chat-delivery-'+args.label+'-'+secrets.token_hex(4));output.mkdir(parents=True)
     report={'at':datetime.now().astimezone().isoformat(),'label':args.label,'source':str(args.source),'output':str(output),'externalApiCalls':0,'checks':[],'measurements':{}};errors=[]
     original=harness.Runtime;original_root=launch.ROOT;launch.ROOT=args.source.resolve()
@@ -32,17 +36,35 @@ def main():
             page.goto(runtime.origin+'/sessions/delivery-'+str(i)+'/#/'+where);pages.append(page)
           sender,receiver=pages[1:3]
           report['fixture']={'chatHistory':16,'pages':4,'visibility':[p.evaluate('document.visibilityState') for p in pages]}
-          send_times=[];delivery_times=[];failures=[]
-          for i in range(6):
+          send_times=[];delivery_times=[];paint_times=[];failures=[]
+          report['fixture']['emulatedLatencyMs']=args.latency_ms
+          if args.latency_ms:
+            for page in (sender,receiver):
+              session=page.context.new_cdp_session(page)
+              session.send('Network.enable')
+              session.send('Network.emulateNetworkConditions',{'offline':False,'latency':args.latency_ms,'downloadThroughput':1250000,'uploadThroughput':1250000})
+          for i in range(args.samples):
             marker='CHAT-BENCH-'+args.label+'-'+str(i);field=sender.locator('[data-chat-form=general] textarea');field.fill(marker);start=time.perf_counter()
+            receiver.evaluate('''marker=>{
+              const watcher=new MutationObserver(()=>{
+                if(document.querySelector('.chat-history')?.textContent.includes(marker)){
+                  window.chatPaintTime=performance.timeOrigin+performance.now();watcher.disconnect();
+                }
+              });
+              window.chatPaintTime=null;watcher.observe(document.body,{subtree:true,childList:true,characterData:true});
+            }''',marker)
+            sender.evaluate('''()=>document.addEventListener('submit',()=>{window.chatSendTime=performance.timeOrigin+performance.now()},{once:true,capture:true})''')
             field.locator('..').locator('[type=submit]').click()
             try:
               expect(field).to_have_value('');send_times.append((time.perf_counter()-start)*1000)
               expect(receiver.locator('.chat-history').first).to_contain_text(marker);delivery_times.append((time.perf_counter()-start)*1000)
+              paint_times.append(receiver.evaluate('window.chatPaintTime')-sender.evaluate('window.chatSendTime'))
             except Exception as e:failures.append({'sample':i,'error':str(e)[:600]})
-          report['measurements']={'sendComposerReady':dist(send_times) if send_times else {},'receiverVisible':dist(delivery_times) if delivery_times else {},'failures':failures}
+          report['measurements']={'sendComposerReady':dist(send_times) if send_times else {},'receiverVisible':dist(delivery_times) if delivery_times else {},'submitToReceiverDom':dist(paint_times) if paint_times else {},'failures':failures}
+          transfers=receiver.evaluate('''()=>performance.getEntriesByType('resource').filter(r=>r.name.includes('/package/')).map(r=>({bytes:r.transferSize,ttfb:r.responseStart-r.requestStart}))''')
+          report['measurements']['receiverHttp']={'samples':len(transfers),'transferBytes':sum(r['bytes'] for r in transfers),'ttfbMs':dist([r['ttfb'] for r in transfers]) if transfers else {}}
           assert not failures,failures
-          report['checks'].append('four real pages deliver six distinct chat messages without transport failure')
+          report['checks'].append('four real pages deliver distinct chat messages without transport failure')
           request=p1.action('request',{'kind':'free','manual':True,'text':'CHAT-CONCURRENCY-RULING'})['requestId'];page=pages[0]
           card=page.locator('[data-request-id="'+request+'"]');expect(card).to_be_visible();held=[];chat_requests=[]
           def gate(route):
@@ -114,6 +136,7 @@ def main():
     finally:
       harness.Runtime=original;launch.ROOT=original_root;report['pageErrors']=errors
       path=PACK/'tests'/('chat-delivery-'+args.label+'-results.json')
+      if args.output_only:path=output/'results.json'
       if path.exists():
         old=json.loads(path.read_text(encoding='utf-8'));report['previousRuns']=old.get('previousRuns',[])+[{k:v for k,v in old.items() if k!='previousRuns'}]
       path.write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n',encoding='utf-8');(output/'results.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')

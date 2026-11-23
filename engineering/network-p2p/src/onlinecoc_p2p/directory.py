@@ -24,7 +24,8 @@ def bearer(request):
 class Directory:
     def __init__(self, config: dict, state_path: Path | None = None):
         self.config = config
-        self.store = Rooms(state_path, lease_seconds=config.get("leaseSeconds", 60))
+        self.store = Rooms(state_path, lease_seconds=config.get("leaseSeconds", 60),
+                           retention_seconds=config.get("roomRetentionSeconds", 86400))
         self.hosts, self.clients, self.sockets = {}, {}, set()
         self.rate = RateLimit(maximum=120)
         self.join_rate, self.password_slots = RateLimit(maximum=12), asyncio.Semaphore(2)
@@ -100,15 +101,19 @@ class Directory:
         app.cleanup_ctx.append(self.lifecycle)
         return app
 
+    async def sweep_hosts(self):
+        self.store.purge()
+        # A request can already have purged a lease before this sweep runs.
+        for rid in list(self.hosts):
+            if rid not in self.store.leases:
+                socket = self.hosts.pop(rid)
+                await socket.close(code=1008, message=b"lease expired")
+
     async def lifecycle(self, app):
         async def sweep():
             while True:
                 await asyncio.sleep(2)
-                dead = self.store.purge()
-                for rid in dead:
-                    socket = self.hosts.pop(rid, None)
-                    if socket is not None:
-                        await socket.close(code=1008, message=b"lease expired")
+                await self.sweep_hosts()
         task = asyncio.create_task(sweep())
         yield
         task.cancel()
@@ -242,7 +247,7 @@ class Directory:
                 lease = self.store.lease(identity, lease_token)
                 old = self.hosts.get(identity)
                 self.hosts[identity] = socket
-                lease["connected"] = True
+                self.store.connected(identity, True)
             else:
                 require(role == "client")
                 client = self.store.client(hello["token"])
@@ -296,5 +301,5 @@ class Directory:
             if identity and mapping.get(identity) is socket:
                 mapping.pop(identity, None)
                 if role == "host" and identity in self.store.leases:
-                    self.store.leases[identity]["connected"] = False
+                    self.store.connected(identity, False)
         return socket

@@ -64,19 +64,19 @@ def ask(account):
 
 def pure(checks):
     original = copy.deepcopy(scene_knowledge.BASELINE)
-    initial = [a for index in range(1, 11) for a in scene_knowledge.menu(original, index, [])]
-    text = json.dumps(initial, ensure_ascii=False)
+    initial = [a for index in range(1, 15) for a in scene_knowledge.menu(original, index, [])]
+    text = json.dumps([a for a in initial if not a['id'].startswith('storm-')], ensure_ascii=False)
     for hidden in ('钱袋', '鼠像', 'Jack', '蛇笛', '北方', 'd12', 'd20', '毒咬', 'Ernie', '蜘蛛', '村民', '搅拌桨', '滤布', '屋顶货口', '睡者'):
         assert hidden not in text, hidden
     assert choices(initial, 'courtyard-pool') == ['inspect']
     assert choices(initial, 'factory-exits') == ['survey']
     assert choices(initial, 'cave-sleeper') == ['observe']
-    expanded = [a for index in range(1, 11) for a in scene_knowledge.menu(original,index,original['playerKnowledge'])]
-    assert len(expanded) == 18
+    expanded = [a for index in range(1, 15) for a in scene_knowledge.menu(original,index,original['playerKnowledge'])]
+    assert len(expanded) == len(original['actions'])
     for action in original['actions']:
         assert set(choices(expanded,action['id'])) == {c['id'] for c in action['choices']}
     assert original == scene_knowledge.BASELINE
-    checks.append('18 definitions: initial menus omit hidden names/outcomes; explicit discoveries unlock every declared choice without mutating sources')
+    checks.append('Scene definitions: initial menus omit hidden names/outcomes; explicit discoveries unlock every declared choice without mutating sources')
     legacy = {'actions':[scene_knowledge.plain_definition(a) for a in original['actions']]}
     assert scene_knowledge.menu(legacy,3,[]) == scene_knowledge.menu(original,3,[])
     legacy['actions'][4]['hint'] = 'CUSTOM_UNREVIEWED_MECHANISM'

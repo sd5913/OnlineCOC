@@ -1,0 +1,2029 @@
+{
+  "method": "Three successive isolated rooms; 30 samples per operation per version. Baseline, reduced saves/reads, then bounded authorized projection cache and local ruling request optimization. Four readers for the mixed-read group. Reported latency includes adapter and loopback host.",
+  "runs": [
+    {
+      "checkedAt": "2026-11-22T12:52:12.843738+08:00",
+      "checks": [
+        "drop clears inventory and lit slot; preserves uses/ticks/location; replay creates one drop",
+        "scene visibility, role/scene guards and pickup preserve item state without relighting",
+        "committed host action with lost reply survives package reload and recovers exactly one ground record",
+        "failed pickup frees claim; duplicate pickup/replay cannot duplicate items",
+        "conditions require rule-based recovery; stale item identity is rejected",
+        "manual drop request waits for KP approval then creates one ground item",
+        "desktop and 390px player UI: item details → drop confirmation → scene ground list"
+      ],
+      "measurements": {
+        "hostViewPL": {
+          "samples": 30,
+          "p50Ms": 15.94,
+          "p95Ms": 16.56,
+          "maxMs": 35.67,
+          "workers": 1,
+          "wallSeconds": 0.498,
+          "packageSaves": 0,
+          "saveMsTotal": 0,
+          "internalHttp": {}
+        },
+        "packageStatePL": {
+          "samples": 30,
+          "p50Ms": 38.66,
+          "p95Ms": 46.52,
+          "maxMs": 49.07,
+          "workers": 1,
+          "wallSeconds": 1.181,
+          "packageSaves": 0,
+          "saveMsTotal": 0,
+          "internalHttp": {
+            "/me": 30,
+            "/view": 30,
+            "/knowledge/capabilities": 30,
+            "/knowledge/search": 30,
+            "/knowledge/read": 30,
+            "/notifications": 30
+          }
+        },
+        "packageStateKP": {
+          "samples": 30,
+          "p50Ms": 33.68,
+          "p95Ms": 48.03,
+          "maxMs": 65.35,
+          "workers": 1,
+          "wallSeconds": 1.076,
+          "packageSaves": 0,
+          "saveMsTotal": 0,
+          "internalHttp": {
+            "/me": 30,
+            "/view": 30,
+            "/knowledge/capabilities": 30,
+            "/knowledge/grants/query": 30,
+            "/chat/members": 30
+          }
+        },
+        "fourReadersState": {
+          "samples": 30,
+          "p50Ms": 131.21,
+          "p95Ms": 138.32,
+          "maxMs": 138.54,
+          "workers": 4,
+          "wallSeconds": 0.99,
+          "packageSaves": 0,
+          "saveMsTotal": 0,
+          "internalHttp": {
+            "/me": 30,
+            "/view": 30,
+            "/knowledge/capabilities": 30,
+            "/knowledge/grants/query": 15,
+            "/chat/members": 15,
+            "/knowledge/search": 15,
+            "/knowledge/read": 15,
+            "/notifications": 15
+          }
+        },
+        "note": {
+          "samples": 30,
+          "p50Ms": 44.77,
+          "p95Ms": 50.87,
+          "maxMs": 52.54,
+          "workers": 1,
+          "wallSeconds": 1.353,
+          "packageSaves": 90,
+          "saveMsTotal": 495.46,
+          "internalHttp": {
+            "/me": 30,
+            "/view": 30,
+            "/knowledge/search": 30,
+            "/knowledge/read": 30
+          }
+        },
+        "directChat": {
+          "samples": 30,
+          "p50Ms": 55.26,
+          "p95Ms": 62.46,
+          "maxMs": 63.35,
+          "workers": 1,
+          "wallSeconds": 1.677,
+          "packageSaves": 0,
+          "saveMsTotal": 0,
+          "internalHttp": {}
+        },
+        "check": {
+          "samples": 30,
+          "p50Ms": 834.19,
+          "p95Ms": 866.21,
+          "maxMs": 866.84,
+          "workers": 1,
+          "wallSeconds": 24.361,
+          "packageSaves": 180,
+          "saveMsTotal": 1530.32,
+          "internalHttp": {
+            "/me": 30,
+            "/view": 90,
+            "/knowledge/search": 30,
+            "/knowledge/read": 30,
+            "/commands": 30
+          }
+        },
+        "requestAndRuling": {
+          "samples": 30,
+          "p50Ms": 1124.34,
+          "p95Ms": 1224.2,
+          "maxMs": 1239.12,
+          "workers": 1,
+          "wallSeconds": 33.954,
+          "packageSaves": 420,
+          "saveMsTotal": 6092.69,
+          "internalHttp": {
+            "/me": 60,
+            "/view": 180,
+            "/knowledge/search": 30,
+            "/knowledge/read": 30,
+            "/commands": 60
+          }
+        },
+        "worldRound": {
+          "samples": 30,
+          "p50Ms": 809.63,
+          "p95Ms": 871.9,
+          "maxMs": 874.34,
+          "workers": 1,
+          "wallSeconds": 24.369,
+          "packageSaves": 178,
+          "saveMsTotal": 2586.02,
+          "internalHttp": {
+            "/me": 30,
+            "/view": 89,
+            "/commands": 30
+          }
+        },
+        "stateAfterHistory": {
+          "samples": 30,
+          "p50Ms": 78.81,
+          "p95Ms": 105.0,
+          "maxMs": 107.62,
+          "workers": 1,
+          "wallSeconds": 2.456,
+          "packageSaves": 0,
+          "saveMsTotal": 0,
+          "internalHttp": {
+            "/me": 30,
+            "/view": 30,
+            "/knowledge/capabilities": 30,
+            "/knowledge/search": 30,
+            "/knowledge/read": 30,
+            "/notifications": 30
+          }
+        }
+      },
+      "externalModelCalls": 0,
+      "formalSaveChanged": false,
+      "evidenceDirectory": "tests/output/drop-performance-ca3bf00a",
+      "hostMetrics": {
+        "commits": {
+          "samples": 474,
+          "p50Ms": 31.21,
+          "p95Ms": 43.77,
+          "maxMs": 56.94
+        },
+        "workers": {
+          "samples": 112,
+          "p50Ms": 588.97,
+          "p95Ms": 644.34,
+          "maxMs": 770.8
+        },
+        "commandQueue": {
+          "samples": 229,
+          "p50Ms": 0.0,
+          "p95Ms": 0.0,
+          "maxMs": 0.0
+        },
+        "commandTotal": {
+          "samples": 229,
+          "p50Ms": 567.06,
+          "p95Ms": 749.94,
+          "maxMs": 826.74
+        }
+      },
+      "packageBytes": 816144,
+      "packageJobs": 182,
+      "passed": true,
+      "sourceHashes": {
+        "rules/inventory-core.lua": "1445a8f92ce0ae4094faea702a74fea0279b8868a4e0f0b62b91660e75a6582c",
+        "rules/ground-take.lua": "b373a9622735d2e0881b7a757f55bdd6da8d8d2fc670bde78dfbd7ec2771c502",
+        "tools/package.py": "e4c7be2ad575d141223201689a37eee6f9c0e5ebca9872b754b76bcaf377d6cc",
+        "tools/action_errors.py": "27216c634ad1bb9b2a7e9081ee6a0bc08018a03bb9d574e9d974b2b2201b98b6",
+        "tools/knowledge_provider.py": "8546dff2dee3951225b78c7874be1f512f750ba12f8d1f0255856cdeee5a9d10",
+        "ui/app.js": "aa5c3ff244dcff09b37a9ffc5f9f9e192d91cb29c3420214172118de912fbe06"
+      },
+      "comparison": "before"
+    },
+    {
+      "checkedAt": "2026-11-22T12:55:28.540833+08:00",
+      "checks": [
+        "drop clears inventory and lit slot; preserves uses/ticks/location; replay creates one drop",
+        "scene visibility, role/scene guards and pickup preserve item state without relighting",
+        "committed host action with lost reply survives package reload and recovers exactly one ground record",
+        "failed pickup frees claim; duplicate pickup/replay cannot duplicate items",
+        "conditions require rule-based recovery; stale item identity is rejected",
+        "manual drop request waits for KP approval then creates one ground item",
+        "desktop and 390px player UI: item details → drop confirmation → scene ground list"
+      ],
+      "measurements": {
+        "hostViewPL": {
+          "samples": 30,
+          "p50Ms": 20.63,
+          "p95Ms": 25.6,
+          "maxMs": 28.07,
+          "workers": 1,
+          "wallSeconds": 0.63,
+          "packageSaves": 0,
+          "saveMsTotal": 0,
+          "internalHttp": {}
+        },
+        "packageStatePL": {
+          "samples": 30,
+          "p50Ms": 39.38,
+          "p95Ms": 47.14,
+          "maxMs": 49.18,
+          "workers": 1,
+          "wallSeconds": 1.197,
+          "packageSaves": 0,
+          "saveMsTotal": 0,
+          "internalHttp": {
+            "/me": 30,
+            "/view": 30,
+            "/knowledge/capabilities": 30,
+            "/knowledge/read": 30,
+            "/notifications": 30
+          }
+        },
+        "packageStateKP": {
+          "samples": 30,
+          "p50Ms": 41.91,
+          "p95Ms": 64.75,
+          "maxMs": 71.32,
+          "workers": 1,
+          "wallSeconds": 1.326,
+          "packageSaves": 0,
+          "saveMsTotal": 0,
+          "internalHttp": {
+            "/me": 30,
+            "/view": 30,
+            "/knowledge/capabilities": 30,
+            "/knowledge/grants/query": 30,
+            "/chat/members": 30
+          }
+        },
+        "fourReadersState": {
+          "samples": 30,
+          "p50Ms": 142.31,
+          "p95Ms": 157.63,
+          "maxMs": 168.41,
+          "workers": 4,
+          "wallSeconds": 1.088,
+          "packageSaves": 0,
+          "saveMsTotal": 0,
+          "internalHttp": {
+            "/me": 30,
+            "/view": 30,
+            "/knowledge/capabilities": 30,
+            "/knowledge/grants/query": 15,
+            "/chat/members": 15,
+            "/knowledge/read": 15,
+            "/notifications": 15
+          }
+        },
+        "note": {
+          "samples": 30,
+          "p50Ms": 23.24,
+          "p95Ms": 30.99,
+          "maxMs": 32.42,
+          "workers": 1,
+          "wallSeconds": 0.725,
+          "packageSaves": 30,
+          "saveMsTotal": 193.61,
+          "internalHttp": {
+            "/me": 30,
+            "/view": 30
+          }
+        },
+        "directChat": {
+          "samples": 30,
+          "p50Ms": 70.76,
+          "p95Ms": 77.3,
+          "maxMs": 87.72,
+          "workers": 1,
+          "wallSeconds": 2.143,
+          "packageSaves": 0,
+          "saveMsTotal": 0,
+          "internalHttp": {}
+        },
+        "check": {
+          "samples": 30,
+          "p50Ms": 798.89,
+          "p95Ms": 838.45,
+          "maxMs": 845.01,
+          "workers": 1,
+          "wallSeconds": 23.975,
+          "packageSaves": 120,
+          "saveMsTotal": 1062.52,
+          "internalHttp": {
+            "/me": 30,
+            "/view": 60,
+            "/knowledge/read": 30,
+            "/commands": 30
+          }
+        },
+        "requestAndRuling": {
+          "samples": 30,
+          "p50Ms": 1066.86,
+          "p95Ms": 1190.83,
+          "maxMs": 1223.76,
+          "workers": 1,
+          "wallSeconds": 31.457,
+          "packageSaves": 360,
+          "saveMsTotal": 5045.8,
+          "internalHttp": {
+            "/me": 60,
+            "/view": 150,
+            "/knowledge/read": 30,
+            "/commands": 60
+          }
+        },
+        "worldRound": {
+          "samples": 30,
+          "p50Ms": 772.51,
+          "p95Ms": 820.15,
+          "maxMs": 842.62,
+          "workers": 1,
+          "wallSeconds": 23.328,
+          "packageSaves": 118,
+          "saveMsTotal": 1762.35,
+          "internalHttp": {
+            "/me": 30,
+            "/view": 59,
+            "/commands": 30
+          }
+        },
+        "stateAfterHistory": {
+          "samples": 30,
+          "p50Ms": 63.77,
+          "p95Ms": 79.97,
+          "maxMs": 89.61,
+          "workers": 1,
+          "wallSeconds": 1.986,
+          "packageSaves": 0,
+          "saveMsTotal": 0,
+          "internalHttp": {
+            "/me": 30,
+            "/view": 30,
+            "/knowledge/capabilities": 30,
+            "/knowledge/read": 30,
+            "/notifications": 30
+          }
+        }
+      },
+      "externalModelCalls": 0,
+      "formalSaveChanged": false,
+      "evidenceDirectory": "tests/output/drop-performance-3eb83bca",
+      "hostMetrics": {
+        "commits": {
+          "samples": 474,
+          "p50Ms": 32.26,
+          "p95Ms": 43.08,
+          "maxMs": 55.85
+        },
+        "workers": {
+          "samples": 112,
+          "p50Ms": 605.98,
+          "p95Ms": 650.9,
+          "maxMs": 786.77
+        },
+        "commandQueue": {
+          "samples": 229,
+          "p50Ms": 0.0,
+          "p95Ms": 0.0,
+          "maxMs": 0.0
+        },
+        "commandTotal": {
+          "samples": 229,
+          "p50Ms": 549.43,
+          "p95Ms": 743.21,
+          "maxMs": 844.27
+        }
+      },
+      "packageBytes": 816260,
+      "packageJobs": 182,
+      "passed": true,
+      "sourceHashes": {
+        "rules/inventory-core.lua": "1445a8f92ce0ae4094faea702a74fea0279b8868a4e0f0b62b91660e75a6582c",
+        "rules/ground-take.lua": "b373a9622735d2e0881b7a757f55bdd6da8d8d2fc670bde78dfbd7ec2771c502",
+        "tools/package.py": "e6b2bf1a9437b95cd42b627b766072357523df140dc475ca161d773a9d008e3c",
+        "tools/action_errors.py": "27216c634ad1bb9b2a7e9081ee6a0bc08018a03bb9d574e9d974b2b2201b98b6",
+        "tools/knowledge_provider.py": "ba7a0bc467122ca78dec41b52bd44700cc18290021514c6e36fcf2bd66483f1e",
+        "ui/app.js": "aa5c3ff244dcff09b37a9ffc5f9f9e192d91cb29c3420214172118de912fbe06"
+      },
+      "comparison": "after"
+    },
+    {
+      "checkedAt": "2026-11-22T12:58:08.094364+08:00",
+      "checks": [
+        "drop clears inventory and lit slot; preserves uses/ticks/location; replay creates one drop",
+        "scene visibility, role/scene guards and pickup preserve item state without relighting",
+        "committed host action with lost reply survives package reload and recovers exactly one ground record",
+        "failed pickup frees claim; duplicate pickup/replay cannot duplicate items",
+        "conditions require rule-based recovery; stale item identity is rejected",
+        "manual drop request waits for KP approval then creates one ground item",
+        "desktop and 390px player UI: item details → drop confirmation → scene ground list"
+      ],
+      "measurements": {
+        "hostViewPL": {
+          "samples": 30,
+          "p50Ms": 19.86,
+          "p95Ms": 27.0,
+          "maxMs": 30.52,
+          "workers": 1,
+          "wallSeconds": 0.615,
+          "packageSaves": 0,
+          "saveMsTotal": 0,
+          "internalHttp": {}
+        },
+        "packageStatePL": {
+          "samples": 30,
+          "p50Ms": 30.59,
+          "p95Ms": 32.83,
+          "maxMs": 37.87,
+          "workers": 1,
+          "wallSeconds": 0.923,
+          "packageSaves": 0,
+          "saveMsTotal": 0,
+          "internalHttp": {
+            "/me": 30,
+            "/view": 30,
+            "/knowledge/capabilities": 30,
+            "/notifications": 30
+          }
+        },
+        "packageStateKP": {
+          "samples": 30,
+          "p50Ms": 40.73,
+          "p95Ms": 51.64,
+          "maxMs": 66.66,
+          "workers": 1,
+          "wallSeconds": 1.273,
+          "packageSaves": 0,
+          "saveMsTotal": 0,
+          "internalHttp": {
+            "/me": 30,
+            "/view": 30,
+            "/knowledge/capabilities": 30,
+            "/knowledge/grants/query": 30,
+            "/chat/members": 30
+          }
+        },
+        "fourReadersState": {
+          "samples": 30,
+          "p50Ms": 112.76,
+          "p95Ms": 130.47,
+          "maxMs": 170.16,
+          "workers": 4,
+          "wallSeconds": 0.895,
+          "packageSaves": 0,
+          "saveMsTotal": 0,
+          "internalHttp": {
+            "/me": 30,
+            "/view": 30,
+            "/knowledge/capabilities": 30,
+            "/notifications": 15,
+            "/knowledge/grants/query": 15,
+            "/chat/members": 15
+          }
+        },
+        "note": {
+          "samples": 30,
+          "p50Ms": 22.8,
+          "p95Ms": 25.7,
+          "maxMs": 26.09,
+          "workers": 1,
+          "wallSeconds": 0.693,
+          "packageSaves": 30,
+          "saveMsTotal": 200.81,
+          "internalHttp": {
+            "/me": 30,
+            "/view": 30
+          }
+        },
+        "directChat": {
+          "samples": 30,
+          "p50Ms": 69.43,
+          "p95Ms": 84.49,
+          "maxMs": 84.87,
+          "workers": 1,
+          "wallSeconds": 2.123,
+          "packageSaves": 0,
+          "saveMsTotal": 0,
+          "internalHttp": {}
+        },
+        "check": {
+          "samples": 30,
+          "p50Ms": 792.32,
+          "p95Ms": 828.45,
+          "maxMs": 840.82,
+          "workers": 1,
+          "wallSeconds": 23.826,
+          "packageSaves": 120,
+          "saveMsTotal": 978.62,
+          "internalHttp": {
+            "/me": 30,
+            "/view": 60,
+            "/knowledge/read": 30,
+            "/commands": 30
+          }
+        },
+        "requestAndRuling": {
+          "samples": 30,
+          "p50Ms": 966.29,
+          "p95Ms": 1057.44,
+          "maxMs": 1074.69,
+          "workers": 1,
+          "wallSeconds": 28.625,
+          "packageSaves": 270,
+          "saveMsTotal": 3324.76,
+          "internalHttp": {
+            "/me": 60,
+            "/view": 120,
+            "/knowledge/read": 30,
+            "/commands": 60
+          }
+        },
+        "worldRound": {
+          "samples": 30,
+          "p50Ms": 775.1,
+          "p95Ms": 798.92,
+          "maxMs": 856.86,
+          "workers": 1,
+          "wallSeconds": 23.213,
+          "packageSaves": 118,
+          "saveMsTotal": 1684.35,
+          "internalHttp": {
+            "/me": 30,
+            "/view": 59,
+            "/commands": 30
+          }
+        },
+        "stateAfterHistory": {
+          "samples": 30,
+          "p50Ms": 50.92,
+          "p95Ms": 70.38,
+          "maxMs": 71.17,
+          "workers": 1,
+          "wallSeconds": 1.582,
+          "packageSaves": 0,
+          "saveMsTotal": 0,
+          "internalHttp": {
+            "/me": 30,
+            "/view": 30,
+            "/knowledge/capabilities": 30,
+            "/knowledge/read": 1,
+            "/notifications": 30
+          }
+        }
+      },
+      "externalModelCalls": 0,
+      "formalSaveChanged": false,
+      "evidenceDirectory": "tests/output/drop-performance-544309e9",
+      "hostMetrics": {
+        "commits": {
+          "samples": 474,
+          "p50Ms": 31.41,
+          "p95Ms": 43.85,
+          "maxMs": 59.48
+        },
+        "workers": {
+          "samples": 112,
+          "p50Ms": 567.63,
+          "p95Ms": 639.52,
+          "maxMs": 794.05
+        },
+        "commandQueue": {
+          "samples": 229,
+          "p50Ms": 0.0,
+          "p95Ms": 0.0,
+          "maxMs": 0.0
+        },
+        "commandTotal": {
+          "samples": 229,
+          "p50Ms": 559.83,
+          "p95Ms": 739.95,
+          "maxMs": 851.28
+        }
+      },
+      "packageBytes": 816180,
+      "packageJobs": 182,
+      "passed": true,
+      "sourceHashes": {
+        "rules/inventory-core.lua": "1445a8f92ce0ae4094faea702a74fea0279b8868a4e0f0b62b91660e75a6582c",
+        "rules/ground-take.lua": "b373a9622735d2e0881b7a757f55bdd6da8d8d2fc670bde78dfbd7ec2771c502",
+        "tools/package.py": "38b2a2f775b22d6955e11dcab3b1d4fbab274fee0c2f648303775e916bc9f98e",
+        "tools/action_errors.py": "27216c634ad1bb9b2a7e9081ee6a0bc08018a03bb9d574e9d974b2b2201b98b6",
+        "tools/knowledge_provider.py": "ba7a0bc467122ca78dec41b52bd44700cc18290021514c6e36fcf2bd66483f1e",
+        "ui/app.js": "aa5c3ff244dcff09b37a9ffc5f9f9e192d91cb29c3420214172118de912fbe06"
+      },
+      "comparison": "after"
+    }
+  ],
+  "checks": [
+    "same-sized atomic replacement at same mtime invalidates parsed scene data",
+    "100 reads of one file produced one parse",
+    "deleted file / wrong room rejected",
+    "separate accounts, authorizationEpoch, room, run, authority, revocation, pagination fallback",
+    "real warmed PL scene disappears immediately after KP revokes it",
+    "injected note final-save error returned HTTP 500; retry, reload and replay leave one durable receipt"
+  ],
+  "finalSources": {
+    "tools/package.py": "38b2a2f775b22d6955e11dcab3b1d4fbab274fee0c2f648303775e916bc9f98e",
+    "tools/client.py": "a5d1328b04c7e1ae3c669cbc2fb9a97da2ae862898a40ca28f1a4855c079cdbb",
+    "tools/knowledge_client.py": "d3b5409d60de03e51446b2bfb8313ad9ea466512fca68f18be876986352cb70a",
+    "tools/knowledge_provider.py": "ba7a0bc467122ca78dec41b52bd44700cc18290021514c6e36fcf2bd66483f1e",
+    "tools/localization.py": "c2bcf065d1a9420de12f857be54eccfde99ef1ba1fc4eeee28957860aa9ee496"
+  },
+  "fourPageValidation": {
+    "checkedAt": "2026-11-22T13:01:05.940086+08:00",
+    "evidenceDirectory": "tests/output/performance-workflow-108ef5e5",
+    "passedCount": 6,
+    "pageErrors": [],
+    "externalModelCalls": 0,
+    "loopbackCalls": 18,
+    "realSaveChanged": false,
+    "fixture": {
+      "seedChat": 32,
+      "seedAiTasks": 8,
+      "browserPages": 4,
+      "packageBytes": 243689
+    },
+    "measurements": {
+      "packageStateWithFourPages": {
+        "samples": 8,
+        "p50Ms": 26.47,
+        "p95Ms": 28.36,
+        "maxMs": 28.36
+      },
+      "chatSendWithFourPages": {
+        "samples": 8,
+        "p50Ms": 90.07,
+        "p95Ms": 128.2,
+        "maxMs": 128.2
+      },
+      "actionCheckWithFourPages": {
+        "samples": 8,
+        "p50Ms": 790.52,
+        "p95Ms": 958.04,
+        "maxMs": 958.04
+      },
+      "rulingWithFourPages": {
+        "samples": 8,
+        "p50Ms": 53.67,
+        "p95Ms": 100.35,
+        "maxMs": 100.35
+      },
+      "aiTasksWithFourPages": {
+        "samples": 8,
+        "p50Ms": 93.56,
+        "p95Ms": 105.27,
+        "maxMs": 105.27
+      },
+      "aiSubmitAndDispatchAcceptance": {
+        "samples": 4,
+        "p50Ms": 1094.56,
+        "p95Ms": 1194.3,
+        "maxMs": 1194.3
+      },
+      "privateChatDuringAiGeneration": {
+        "samples": 3,
+        "p50Ms": 103.02,
+        "p95Ms": 197.8,
+        "maxMs": 197.8
+      },
+      "packageStateAfterDependencyChange": {
+        "samples": 3,
+        "p50Ms": 100.66,
+        "p95Ms": 487.57,
+        "maxMs": 487.57
+      },
+      "aiTasksAfterDependencyChange": {
+        "samples": 3,
+        "p50Ms": 217.76,
+        "p95Ms": 220.98,
+        "maxMs": 220.98
+      },
+      "aiRulingsAfterDependencyChange": {
+        "samples": 3,
+        "p50Ms": 233.6,
+        "p95Ms": 265.71,
+        "maxMs": 265.71
+      },
+      "aiSessionAfterDependencyChange": {
+        "samples": 3,
+        "p50Ms": 212.13,
+        "p95Ms": 224.11,
+        "maxMs": 224.11
+      }
+    }
+  },
+  "followup": {
+    "scale": {
+      "source": "output/package-scale-671020b5/report.json",
+      "fixture": "synthetic completed jobs, 30 synchronous saves per size",
+      "measurements": {
+        "100": {
+          "save": {
+            "samples": 30,
+            "p50Ms": 3.68,
+            "p95Ms": 6.4,
+            "maxMs": 6.63
+          },
+          "flatSave": {
+            "samples": 30,
+            "p50Ms": 3.44,
+            "p95Ms": 6.66,
+            "maxMs": 7.21
+          },
+          "liveBytes": 94053,
+          "flatBytes": 96779,
+          "jobSegments": 0,
+          "reloadPeakPythonBytes": 657817
+        },
+        "1000": {
+          "save": {
+            "samples": 30,
+            "p50Ms": 3.8,
+            "p95Ms": 6.93,
+            "maxMs": 6.96
+          },
+          "flatSave": {
+            "samples": 30,
+            "p50Ms": 8.99,
+            "p95Ms": 10.58,
+            "maxMs": 10.74
+          },
+          "liveBytes": 134277,
+          "flatBytes": 922980,
+          "jobSegments": 15,
+          "reloadPeakPythonBytes": 2452842
+        },
+        "10000": {
+          "save": {
+            "samples": 30,
+            "p50Ms": 5.09,
+            "p95Ms": 7.58,
+            "maxMs": 7.89
+          },
+          "flatSave": {
+            "samples": 30,
+            "p50Ms": 73.18,
+            "p95Ms": 90.16,
+            "maxMs": 92.19
+          },
+          "liveBytes": 148431,
+          "flatBytes": 9238981,
+          "jobSegments": 155,
+          "reloadPeakPythonBytes": 23004779
+        }
+      },
+      "checks": [
+        "archive reload equality at three sizes",
+        "pending scene kept live",
+        "orphan segment retry",
+        "receipt order after recovery",
+        "corrupt segment rejected",
+        "delta removal on identity change",
+        "10000-message unread/edit/retract and history cursor"
+      ],
+      "passed": true
+    },
+    "frozenPackage": {
+      "source": "output/drop-performance-67f32105/report.json",
+      "measurements": {
+        "hostViewPL": {
+          "samples": 30,
+          "p50Ms": 20.05,
+          "p95Ms": 25.14,
+          "maxMs": 29.99,
+          "workers": 1,
+          "wallSeconds": 0.627,
+          "packageSaves": 0,
+          "saveMsTotal": 0,
+          "internalHttp": {}
+        },
+        "packageStatePL": {
+          "samples": 30,
+          "p50Ms": 32.52,
+          "p95Ms": 46.52,
+          "maxMs": 47.93,
+          "workers": 1,
+          "wallSeconds": 1.051,
+          "packageSaves": 0,
+          "saveMsTotal": 0,
+          "internalHttp": {
+            "/me": 30,
+            "/view": 31,
+            "/knowledge/capabilities": 30,
+            "/notifications": 30
+          }
+        },
+        "packageStateKP": {
+          "samples": 30,
+          "p50Ms": 47.8,
+          "p95Ms": 60.86,
+          "maxMs": 86.95,
+          "workers": 1,
+          "wallSeconds": 1.45,
+          "packageSaves": 0,
+          "saveMsTotal": 0,
+          "internalHttp": {
+            "/me": 30,
+            "/view": 30,
+            "/knowledge/capabilities": 30,
+            "/knowledge/grants/query": 30,
+            "/chat/members": 30
+          }
+        },
+        "fourReadersState": {
+          "samples": 30,
+          "p50Ms": 130.24,
+          "p95Ms": 169.12,
+          "maxMs": 169.4,
+          "workers": 4,
+          "wallSeconds": 0.998,
+          "packageSaves": 0,
+          "saveMsTotal": 0,
+          "internalHttp": {
+            "/me": 30,
+            "/view": 30,
+            "/knowledge/capabilities": 30,
+            "/knowledge/grants/query": 15,
+            "/notifications": 15,
+            "/chat/members": 15
+          }
+        },
+        "note": {
+          "samples": 30,
+          "p50Ms": 23.16,
+          "p95Ms": 35.61,
+          "maxMs": 49.74,
+          "workers": 1,
+          "wallSeconds": 0.784,
+          "packageSaves": 30,
+          "saveMsTotal": 207.42,
+          "internalHttp": {
+            "/me": 30,
+            "/view": 30
+          }
+        },
+        "directChat": {
+          "samples": 30,
+          "p50Ms": 85.33,
+          "p95Ms": 131.93,
+          "maxMs": 132.99,
+          "workers": 1,
+          "wallSeconds": 2.731,
+          "packageSaves": 0,
+          "saveMsTotal": 0,
+          "internalHttp": {}
+        },
+        "check": {
+          "samples": 30,
+          "p50Ms": 870.22,
+          "p95Ms": 1211.0,
+          "maxMs": 1226.36,
+          "workers": 1,
+          "wallSeconds": 27.592,
+          "packageSaves": 120,
+          "saveMsTotal": 1024.06,
+          "internalHttp": {
+            "/me": 30,
+            "/view": 60,
+            "/knowledge/read": 30,
+            "/commands": 30
+          }
+        },
+        "requestAndRuling": {
+          "samples": 30,
+          "p50Ms": 1048.81,
+          "p95Ms": 1359.94,
+          "maxMs": 1546.31,
+          "workers": 1,
+          "wallSeconds": 32.849,
+          "packageSaves": 270,
+          "saveMsTotal": 2771.32,
+          "internalHttp": {
+            "/me": 60,
+            "/view": 120,
+            "/knowledge/read": 30,
+            "/commands": 60
+          }
+        },
+        "worldRound": {
+          "samples": 30,
+          "p50Ms": 911.25,
+          "p95Ms": 1003.14,
+          "maxMs": 1007.48,
+          "workers": 1,
+          "wallSeconds": 27.069,
+          "packageSaves": 118,
+          "saveMsTotal": 1498.0,
+          "internalHttp": {
+            "/me": 30,
+            "/view": 59,
+            "/commands": 30
+          }
+        },
+        "stateAfterHistory": {
+          "samples": 30,
+          "p50Ms": 70.22,
+          "p95Ms": 118.68,
+          "maxMs": 157.76,
+          "workers": 1,
+          "wallSeconds": 2.181,
+          "packageSaves": 0,
+          "saveMsTotal": 0,
+          "internalHttp": {
+            "/me": 30,
+            "/view": 30,
+            "/knowledge/capabilities": 30,
+            "/notifications": 30,
+            "/knowledge/read": 1
+          }
+        }
+      },
+      "passed": true,
+      "checks": [
+        "drop clears inventory and lit slot; preserves uses/ticks/location; replay creates one drop",
+        "scene visibility, role/scene guards and pickup preserve item state without relighting",
+        "committed host action with lost reply survives package reload and recovers exactly one ground record",
+        "failed pickup frees claim; duplicate pickup/replay cannot duplicate items",
+        "conditions require rule-based recovery; stale item identity is rejected",
+        "manual drop request waits for KP approval then creates one ground item",
+        "desktop and 390px player UI: item details → drop confirmation → scene ground list"
+      ],
+      "hostMetrics": {
+        "commits": {
+          "samples": 474,
+          "p50Ms": 37.0,
+          "p95Ms": 63.03,
+          "maxMs": 80.99
+        },
+        "workers": {
+          "samples": 112,
+          "p50Ms": 647.28,
+          "p95Ms": 886.13,
+          "maxMs": 975.52
+        },
+        "commandQueue": {
+          "samples": 229,
+          "p50Ms": 0.0,
+          "p95Ms": 0.0,
+          "maxMs": 0.0
+        },
+        "commandTotal": {
+          "samples": 229,
+          "p50Ms": 571.19,
+          "p95Ms": 981.07,
+          "maxMs": 1150.11
+        }
+      },
+      "packageBytes": 570511,
+      "packageJobs": 182,
+      "externalModelCalls": 0
+    },
+    "jointV1": {
+      "source": "output/drop-performance-0b27b17d/report.json",
+      "measurements": {
+        "hostViewPL": {
+          "samples": 30,
+          "p50Ms": 15.26,
+          "p95Ms": 21.12,
+          "maxMs": 21.72,
+          "workers": 1,
+          "wallSeconds": 0.47,
+          "packageSaves": 0,
+          "saveMsTotal": 0,
+          "internalHttp": {}
+        },
+        "packageStatePL": {
+          "samples": 30,
+          "p50Ms": 30.36,
+          "p95Ms": 48.44,
+          "maxMs": 57.35,
+          "workers": 1,
+          "wallSeconds": 0.943,
+          "packageSaves": 0,
+          "saveMsTotal": 0,
+          "internalHttp": {
+            "/view": 31,
+            "/knowledge/capabilities": 30,
+            "/notifications": 30
+          }
+        },
+        "packageStateKP": {
+          "samples": 30,
+          "p50Ms": 58.88,
+          "p95Ms": 79.92,
+          "maxMs": 105.66,
+          "workers": 1,
+          "wallSeconds": 1.76,
+          "packageSaves": 0,
+          "saveMsTotal": 0,
+          "internalHttp": {
+            "/view": 30,
+            "/knowledge/capabilities": 30,
+            "/me": 30,
+            "/knowledge/grants/query": 30,
+            "/chat/members": 30
+          }
+        },
+        "fourReadersState": {
+          "samples": 30,
+          "p50Ms": 154.24,
+          "p95Ms": 231.73,
+          "maxMs": 250.46,
+          "workers": 4,
+          "wallSeconds": 1.217,
+          "packageSaves": 0,
+          "saveMsTotal": 0,
+          "internalHttp": {
+            "/view": 30,
+            "/knowledge/capabilities": 30,
+            "/notifications": 15,
+            "/me": 15,
+            "/knowledge/grants/query": 15,
+            "/chat/members": 15
+          }
+        },
+        "note": {
+          "samples": 30,
+          "p50Ms": 36.68,
+          "p95Ms": 50.36,
+          "maxMs": 56.17,
+          "workers": 1,
+          "wallSeconds": 1.156,
+          "packageSaves": 30,
+          "saveMsTotal": 235.02,
+          "internalHttp": {
+            "/me": 30,
+            "/view": 30
+          }
+        },
+        "directChat": {
+          "samples": 30,
+          "p50Ms": 109.02,
+          "p95Ms": 145.27,
+          "maxMs": 153.21,
+          "workers": 1,
+          "wallSeconds": 3.362,
+          "packageSaves": 0,
+          "saveMsTotal": 0,
+          "internalHttp": {}
+        },
+        "check": {
+          "samples": 30,
+          "p50Ms": 403.51,
+          "p95Ms": 508.2,
+          "maxMs": 535.53,
+          "workers": 1,
+          "wallSeconds": 12.205,
+          "packageSaves": 120,
+          "saveMsTotal": 1062.25,
+          "internalHttp": {
+            "/me": 30,
+            "/view": 60,
+            "/knowledge/read": 30,
+            "/commands": 30
+          }
+        },
+        "requestAndRuling": {
+          "samples": 30,
+          "p50Ms": 708.95,
+          "p95Ms": 818.51,
+          "maxMs": 854.48,
+          "workers": 1,
+          "wallSeconds": 20.768,
+          "packageSaves": 270,
+          "saveMsTotal": 3048.33,
+          "internalHttp": {
+            "/me": 60,
+            "/view": 120,
+            "/knowledge/read": 30,
+            "/commands": 60
+          }
+        },
+        "worldRound": {
+          "samples": 30,
+          "p50Ms": 379.8,
+          "p95Ms": 891.09,
+          "maxMs": 915.79,
+          "workers": 1,
+          "wallSeconds": 12.366,
+          "packageSaves": 118,
+          "saveMsTotal": 1650.42,
+          "internalHttp": {
+            "/me": 30,
+            "/view": 59,
+            "/commands": 30
+          }
+        },
+        "stateAfterHistory": {
+          "samples": 30,
+          "p50Ms": 51.94,
+          "p95Ms": 82.65,
+          "maxMs": 121.04,
+          "workers": 1,
+          "wallSeconds": 1.641,
+          "packageSaves": 0,
+          "saveMsTotal": 0,
+          "internalHttp": {
+            "/view": 30,
+            "/knowledge/capabilities": 30,
+            "/notifications": 30,
+            "/me": 1,
+            "/knowledge/read": 1
+          }
+        }
+      },
+      "passed": true,
+      "checks": [
+        "drop clears inventory and lit slot; preserves uses/ticks/location; replay creates one drop",
+        "scene visibility, role/scene guards and pickup preserve item state without relighting",
+        "committed host action with lost reply survives package reload and recovers exactly one ground record",
+        "failed pickup frees claim; duplicate pickup/replay cannot duplicate items",
+        "conditions require rule-based recovery; stale item identity is rejected",
+        "manual drop request waits for KP approval then creates one ground item",
+        "desktop and 390px player UI: item details → drop confirmation → scene ground list"
+      ],
+      "hostMetrics": {
+        "commits": {
+          "samples": 474,
+          "p50Ms": 42.87,
+          "p95Ms": 65.26,
+          "maxMs": 92.6
+        },
+        "workers": {
+          "samples": 112,
+          "p50Ms": 116.87,
+          "p95Ms": 200.15,
+          "maxMs": 601.9
+        },
+        "commandQueue": {
+          "samples": 229,
+          "p50Ms": 0.0,
+          "p95Ms": 0.0,
+          "maxMs": 0.0
+        },
+        "commandTotal": {
+          "samples": 229,
+          "p50Ms": 104.01,
+          "p95Ms": 343.43,
+          "maxMs": 805.89
+        }
+      },
+      "packageBytes": 570518,
+      "packageJobs": 182,
+      "externalModelCalls": 0
+    },
+    "loopbackEmulated40": {
+      "source": "output/chat-delivery-latency40-528c2a70/results.json",
+      "measurements": {
+        "sendComposerReady": {
+          "samples": 12,
+          "p50Ms": 234.51,
+          "p95Ms": 1055.41,
+          "maxMs": 1055.41
+        },
+        "receiverVisible": {
+          "samples": 12,
+          "p50Ms": 449.71,
+          "p95Ms": 1101.41,
+          "maxMs": 1101.41
+        },
+        "submitToReceiverDom": {
+          "samples": 12,
+          "p50Ms": 337.4,
+          "p95Ms": 506.8,
+          "maxMs": 506.8
+        },
+        "failures": [],
+        "receiverHttp": {
+          "samples": 30,
+          "transferBytes": 145500,
+          "ttfbMs": {
+            "samples": 30,
+            "p50Ms": 49.85,
+            "p95Ms": 198.4,
+            "maxMs": 1361.1
+          }
+        }
+      },
+      "passed": true,
+      "checks": [
+        "four real pages deliver distinct chat messages without transport failure",
+        "chat submits while an unrelated ruling response is held, with no shared busy rejection",
+        "newly typed draft survives completion of an earlier message",
+        "lost success response blocks new sends and recovers original ID exactly once, preserving the new draft",
+        "host history bypasses package write lock; metadata/history isolate private and inaccessible scene channels; edit/retract and party delivery work"
+      ],
+      "fixture": {
+        "chatHistory": 16,
+        "pages": 4,
+        "visibility": [
+          "visible",
+          "visible",
+          "visible",
+          "visible"
+        ],
+        "emulatedLatencyMs": 40.0
+      },
+      "pageErrors": []
+    },
+    "fourPageEngine1AI2": {
+      "source": "output/performance-workflow-3f570e08/report.json",
+      "measurements": {
+        "packageStateWithFourPages": {
+          "samples": 8,
+          "p50Ms": 19.2,
+          "p95Ms": 22.37,
+          "maxMs": 22.37
+        },
+        "chatSendWithFourPages": {
+          "samples": 8,
+          "p50Ms": 106.73,
+          "p95Ms": 193.61,
+          "maxMs": 193.61
+        },
+        "actionCheckWithFourPages": {
+          "samples": 8,
+          "p50Ms": 290.56,
+          "p95Ms": 388.41,
+          "maxMs": 388.41
+        },
+        "rulingWithFourPages": {
+          "samples": 8,
+          "p50Ms": 60.46,
+          "p95Ms": 104.83,
+          "maxMs": 104.83
+        },
+        "aiTasksWithFourPages": {
+          "samples": 8,
+          "p50Ms": 66.17,
+          "p95Ms": 75.4,
+          "maxMs": 75.4
+        },
+        "aiSubmitAndDispatchAcceptance": {
+          "samples": 4,
+          "p50Ms": 972.57,
+          "p95Ms": 1223.24,
+          "maxMs": 1223.24
+        },
+        "privateChatDuringAiGeneration": {
+          "samples": 3,
+          "p50Ms": 168.17,
+          "p95Ms": 228.75,
+          "maxMs": 228.75
+        },
+        "packageStateAfterDependencyChange": {
+          "samples": 3,
+          "p50Ms": 30.43,
+          "p95Ms": 106.91,
+          "maxMs": 106.91
+        },
+        "aiTasksAfterDependencyChange": {
+          "samples": 3,
+          "p50Ms": 197.88,
+          "p95Ms": 199.66,
+          "maxMs": 199.66
+        },
+        "aiRulingsAfterDependencyChange": {
+          "samples": 3,
+          "p50Ms": 234.11,
+          "p95Ms": 241.5,
+          "maxMs": 241.5
+        },
+        "aiSessionAfterDependencyChange": {
+          "samples": 3,
+          "p50Ms": 224.15,
+          "p95Ms": 517.97,
+          "maxMs": 517.97
+        }
+      },
+      "passed": true,
+      "checks": [
+        "四个真实页面带聊天与AI历史并发，状态、聊天、行动、裁决、AI读取及发送接受均完成",
+        "AI生成期间向申请玩家私聊，生成保留正文和候选；原候选可批准且实际只增加一次钱币",
+        "窗口显示运行中进度；返回有序带时间的模型、工具、校验与完成事件，审批后含实际命令回执",
+        "相关角色值改变后保留原生成正文并列出变化；KP可准备按最新资料重新生成，未点击发送不擅自调用模型或覆盖实际数值",
+        "状态查询503不销毁既有AI窗口和消息；恢复后继续复用同组件",
+        "完成过程可展开回看，390px进度卡可读且不越出视口"
+      ],
+      "externalModelCalls": 0,
+      "realSaveChanged": false,
+      "fixture": {
+        "seedChat": 32,
+        "seedAiTasks": 8,
+        "browserPages": 4,
+        "packageBytes": 232845
+      },
+      "pageErrors": []
+    },
+    "staticBuild": {
+      "source": "output/perf-all-static-639c.json",
+      "coldBuild": {
+        "n": 10,
+        "median": 64.799,
+        "max": 121.542
+      },
+      "warmBuild": {
+        "n": 10,
+        "median": 44.304,
+        "max": 49.991
+      },
+      "outputTamperRebuilt": true,
+      "fullBundleValidation": {
+        "n": 30,
+        "median": 0.5674999999999999,
+        "max": 0.872
+      },
+      "validationCacheKey": {
+        "n": 30,
+        "median": 0.704,
+        "max": 1.094
+      }
+    },
+    "tabs": {
+      "source": "output/perf-tabs-011db786",
+      "freshDeltaBytes": 12212,
+      "idleDeltaBytes": 369,
+      "leaderTakeoverSeconds": 3.471
+    },
+    "pairedBackup": {
+      "source": "output/perf-paired-357a3c31",
+      "portableJobs": 1111,
+      "sameNoteReplayReceiptCount": 1
+    },
+    "olderAcceptance": {
+      "script": "verify_package.py",
+      "legacyAssertion": "len(PL.locations)==1",
+      "baselineAt": "653dd842348c389543a46c3a469ac643e379ff92",
+      "observedBoth": [
+        [
+          1,
+          true
+        ],
+        [
+          2,
+          false
+        ]
+      ],
+      "newBackupCase": "verify_drop_performance.py --archive-backup",
+      "isolatedProbe": "Using the current map contract in memory advances the legacy test to its cross-player ownership check. Host now rejects with HTTP 403 PERMISSION_DENIED; the fixture expects a result with status=rejected."
+    },
+    "jointBothV2": {
+      "evidenceDirectory": "tests/output/drop-performance-85923aa9",
+      "checkedAt": "2026-11-22T14:10:43.020007+08:00",
+      "measurements": {
+        "hostViewPL": {
+          "samples": 30,
+          "p50Ms": 17.12,
+          "p95Ms": 20.58,
+          "maxMs": 23.66,
+          "workers": 1,
+          "wallSeconds": 0.525,
+          "packageSaves": 0,
+          "saveMsTotal": 0,
+          "internalHttp": {}
+        },
+        "packageStatePL": {
+          "samples": 30,
+          "p50Ms": 13.58,
+          "p95Ms": 20.42,
+          "maxMs": 36.01,
+          "workers": 1,
+          "wallSeconds": 0.465,
+          "packageSaves": 0,
+          "saveMsTotal": 0,
+          "internalHttp": {
+            "/view": 30
+          }
+        },
+        "packageStateKP": {
+          "samples": 30,
+          "p50Ms": 22.19,
+          "p95Ms": 38.58,
+          "maxMs": 44.78,
+          "workers": 1,
+          "wallSeconds": 0.711,
+          "packageSaves": 0,
+          "saveMsTotal": 0,
+          "internalHttp": {
+            "/view": 30
+          }
+        },
+        "fourReadersState": {
+          "samples": 30,
+          "p50Ms": 38.09,
+          "p95Ms": 55.21,
+          "maxMs": 61.31,
+          "workers": 4,
+          "wallSeconds": 0.311,
+          "packageSaves": 0,
+          "saveMsTotal": 0,
+          "internalHttp": {
+            "/view": 30
+          }
+        },
+        "note": {
+          "samples": 30,
+          "p50Ms": 29.51,
+          "p95Ms": 32.79,
+          "maxMs": 36.2,
+          "workers": 1,
+          "wallSeconds": 0.883,
+          "packageSaves": 30,
+          "saveMsTotal": 193.87,
+          "internalHttp": {
+            "/me": 30,
+            "/view": 30
+          }
+        },
+        "directChat": {
+          "samples": 30,
+          "p50Ms": 76.17,
+          "p95Ms": 87.54,
+          "maxMs": 88.93,
+          "workers": 1,
+          "wallSeconds": 2.315,
+          "packageSaves": 0,
+          "saveMsTotal": 0,
+          "internalHttp": {}
+        },
+        "check": {
+          "samples": 30,
+          "p50Ms": 283.72,
+          "p95Ms": 312.18,
+          "maxMs": 321.6,
+          "workers": 1,
+          "wallSeconds": 8.344,
+          "packageSaves": 120,
+          "saveMsTotal": 894.24,
+          "internalHttp": {
+            "/me": 30,
+            "/view": 60,
+            "/knowledge/read": 30,
+            "/commands": 30
+          }
+        },
+        "requestAndRuling": {
+          "samples": 30,
+          "p50Ms": 410.8,
+          "p95Ms": 470.49,
+          "maxMs": 484.68,
+          "workers": 1,
+          "wallSeconds": 12.563,
+          "packageSaves": 270,
+          "saveMsTotal": 2134.55,
+          "internalHttp": {
+            "/me": 60,
+            "/view": 120,
+            "/knowledge/read": 30,
+            "/commands": 60
+          }
+        },
+        "worldRound": {
+          "samples": 30,
+          "p50Ms": 222.13,
+          "p95Ms": 558.43,
+          "maxMs": 617.05,
+          "workers": 1,
+          "wallSeconds": 7.429,
+          "packageSaves": 118,
+          "saveMsTotal": 1116.14,
+          "internalHttp": {
+            "/me": 30,
+            "/view": 59,
+            "/commands": 30
+          }
+        },
+        "stateAfterHistory": {
+          "samples": 30,
+          "p50Ms": 22.66,
+          "p95Ms": 53.57,
+          "maxMs": 62.65,
+          "workers": 1,
+          "wallSeconds": 0.763,
+          "packageSaves": 0,
+          "saveMsTotal": 0,
+          "internalHttp": {
+            "/view": 30,
+            "/knowledge/read": 1
+          }
+        }
+      },
+      "checks": [
+        "drop clears inventory and lit slot; preserves uses/ticks/location; replay creates one drop",
+        "scene visibility, role/scene guards and pickup preserve item state without relighting",
+        "committed host action with lost reply survives package reload and recovers exactly one ground record",
+        "failed pickup frees claim; duplicate pickup/replay cannot duplicate items",
+        "conditions require rule-based recovery; stale item identity is rejected",
+        "manual drop request waits for KP approval then creates one ground item",
+        "desktop and 390px player UI: item details → drop confirmation → scene ground list"
+      ],
+      "packageBytes": 570499,
+      "externalModelCalls": 0,
+      "hostMetrics": {
+        "commits": {
+          "samples": 474,
+          "p50Ms": 27.69,
+          "p95Ms": 35.41,
+          "maxMs": 43.91
+        },
+        "workers": {
+          "samples": 112,
+          "p50Ms": 75.75,
+          "p95Ms": 102.8,
+          "maxMs": 412.16
+        },
+        "commandQueue": {
+          "samples": 229,
+          "p50Ms": 0.0,
+          "p95Ms": 0.0,
+          "maxMs": 0.0
+        },
+        "commandTotal": {
+          "samples": 229,
+          "p50Ms": 70.15,
+          "p95Ms": 194.41,
+          "maxMs": 504.88
+        }
+      },
+      "passed": true
+    },
+    "finalFourPageDuringLoad": {
+      "evidenceDirectory": "tests/output/performance-workflow-7db82e94",
+      "checkedAt": "2026-11-22T14:18:12.501169+08:00",
+      "measurements": {
+        "packageStateWithFourPages": {
+          "samples": 8,
+          "p50Ms": 36.34,
+          "p95Ms": 49.77,
+          "maxMs": 49.77
+        },
+        "chatSendWithFourPages": {
+          "samples": 8,
+          "p50Ms": 469.63,
+          "p95Ms": 790.73,
+          "maxMs": 790.73
+        },
+        "actionCheckWithFourPages": {
+          "samples": 8,
+          "p50Ms": 796.87,
+          "p95Ms": 1201.72,
+          "maxMs": 1201.72
+        },
+        "rulingWithFourPages": {
+          "samples": 8,
+          "p50Ms": 185.91,
+          "p95Ms": 608.63,
+          "maxMs": 608.63
+        },
+        "aiTasksWithFourPages": {
+          "samples": 8,
+          "p50Ms": 259.98,
+          "p95Ms": 342.31,
+          "maxMs": 342.31
+        },
+        "aiSubmitAndDispatchAcceptance": {
+          "samples": 4,
+          "p50Ms": 3115.44,
+          "p95Ms": 3475.09,
+          "maxMs": 3475.09
+        },
+        "privateChatDuringAiGeneration": {
+          "samples": 3,
+          "p50Ms": 433.51,
+          "p95Ms": 1215.24,
+          "maxMs": 1215.24
+        },
+        "packageStateAfterDependencyChange": {
+          "samples": 3,
+          "p50Ms": 85.19,
+          "p95Ms": 1150.7,
+          "maxMs": 1150.7
+        },
+        "aiTasksAfterDependencyChange": {
+          "samples": 3,
+          "p50Ms": 877.14,
+          "p95Ms": 1445.76,
+          "maxMs": 1445.76
+        },
+        "aiRulingsAfterDependencyChange": {
+          "samples": 3,
+          "p50Ms": 841.93,
+          "p95Ms": 1223.72,
+          "maxMs": 1223.72
+        },
+        "aiSessionAfterDependencyChange": {
+          "samples": 3,
+          "p50Ms": 545.75,
+          "p95Ms": 626.21,
+          "maxMs": 626.21
+        }
+      },
+      "checks": [
+        "四个真实页面带聊天与AI历史并发，状态、聊天、行动、裁决、AI读取及发送接受均完成",
+        "真实紧凑列表按编号读取裁决详情，KP 在详情中批准后关闭窗口",
+        "AI生成期间向申请玩家私聊，生成保留正文和候选；原候选可批准且实际只增加一次钱币",
+        "窗口显示运行中进度；返回有序带时间的模型、工具、校验与完成事件，审批后含实际命令回执",
+        "相关角色值改变后保留原生成正文并列出变化；KP可准备按最新资料重新生成，未点击发送不擅自调用模型或覆盖实际数值",
+        "状态查询503不销毁既有AI窗口和消息；恢复后继续复用同组件",
+        "完成过程可展开回看，390px进度卡可读且不越出视口"
+      ],
+      "pageErrors": [],
+      "externalModelCalls": 0,
+      "loopbackCalls": 18,
+      "passed": true
+    },
+    "handoffs": {
+      "engine": "engine-performance-interface-snapshot/v2",
+      "ai": "ai-performance-interface-snapshot/v3"
+    },
+    "finalBuild": {
+      "coldBuild": {
+        "n": 10,
+        "median": 146.53699999999998,
+        "max": 598.431
+      },
+      "warmBuild": {
+        "n": 10,
+        "median": 75.59049999999999,
+        "max": 97.949
+      },
+      "outputTamperRebuilt": true,
+      "bytes": 729459
+    },
+    "finalSequentialJoint": {
+      "checkedAt": "2026-11-22T15:19:54.240875+08:00",
+      "checks": [
+        "drop clears inventory and lit slot; preserves uses/ticks/location; replay creates one drop",
+        "scene visibility, role/scene guards and pickup preserve item state without relighting",
+        "committed host action with lost reply survives package reload and recovers exactly one ground record",
+        "failed pickup frees claim; duplicate pickup/replay cannot duplicate items",
+        "conditions require rule-based recovery; stale item identity is rejected",
+        "manual drop request waits for KP approval then creates one ground item",
+        "desktop and 390px player UI: item details → drop confirmation → scene ground list"
+      ],
+      "measurements": {
+        "hostViewPL": {
+          "samples": 30,
+          "p50Ms": 11.04,
+          "p95Ms": 12.01,
+          "maxMs": 16.25,
+          "workers": 1,
+          "wallSeconds": 0.338,
+          "packageSaves": 0,
+          "saveMsTotal": 0,
+          "internalHttp": {}
+        },
+        "packageStatePL": {
+          "samples": 30,
+          "p50Ms": 11.19,
+          "p95Ms": 13.88,
+          "maxMs": 19.07,
+          "workers": 1,
+          "wallSeconds": 0.347,
+          "packageSaves": 0,
+          "saveMsTotal": 0,
+          "internalHttp": {
+            "/view": 30
+          }
+        },
+        "packageStateKP": {
+          "samples": 30,
+          "p50Ms": 17.97,
+          "p95Ms": 18.94,
+          "maxMs": 20.43,
+          "workers": 1,
+          "wallSeconds": 0.541,
+          "packageSaves": 0,
+          "saveMsTotal": 0,
+          "internalHttp": {
+            "/view": 30
+          }
+        },
+        "fourReadersState": {
+          "samples": 30,
+          "p50Ms": 34.81,
+          "p95Ms": 76.5,
+          "maxMs": 78.58,
+          "workers": 4,
+          "wallSeconds": 0.297,
+          "packageSaves": 0,
+          "saveMsTotal": 0,
+          "internalHttp": {
+            "/view": 30
+          }
+        },
+        "note": {
+          "samples": 30,
+          "p50Ms": 24.79,
+          "p95Ms": 27.09,
+          "maxMs": 28.93,
+          "workers": 1,
+          "wallSeconds": 0.744,
+          "packageSaves": 30,
+          "saveMsTotal": 164.42,
+          "internalHttp": {
+            "/me": 30,
+            "/view": 30
+          }
+        },
+        "directChat": {
+          "samples": 30,
+          "p50Ms": 61.49,
+          "p95Ms": 68.25,
+          "maxMs": 72.15,
+          "workers": 1,
+          "wallSeconds": 1.849,
+          "packageSaves": 0,
+          "saveMsTotal": 0,
+          "internalHttp": {}
+        },
+        "check": {
+          "samples": 30,
+          "p50Ms": 223.11,
+          "p95Ms": 237.01,
+          "maxMs": 257.57,
+          "workers": 1,
+          "wallSeconds": 6.726,
+          "packageSaves": 120,
+          "saveMsTotal": 685.29,
+          "internalHttp": {
+            "/me": 30,
+            "/view": 60,
+            "/knowledge/read": 30,
+            "/commands": 30
+          }
+        },
+        "requestAndRuling": {
+          "samples": 30,
+          "p50Ms": 437.91,
+          "p95Ms": 547.62,
+          "maxMs": 558.2,
+          "workers": 1,
+          "wallSeconds": 13.232,
+          "packageSaves": 270,
+          "saveMsTotal": 2325.67,
+          "internalHttp": {
+            "/me": 60,
+            "/view": 120,
+            "/knowledge/read": 30,
+            "/commands": 60
+          }
+        },
+        "worldRound": {
+          "samples": 30,
+          "p50Ms": 211.26,
+          "p95Ms": 533.05,
+          "maxMs": 583.55,
+          "workers": 1,
+          "wallSeconds": 7.086,
+          "packageSaves": 118,
+          "saveMsTotal": 1145.54,
+          "internalHttp": {
+            "/me": 30,
+            "/view": 59,
+            "/commands": 30
+          }
+        },
+        "stateAfterHistory": {
+          "samples": 30,
+          "p50Ms": 21.18,
+          "p95Ms": 30.81,
+          "maxMs": 54.65,
+          "workers": 1,
+          "wallSeconds": 0.695,
+          "packageSaves": 0,
+          "saveMsTotal": 0,
+          "internalHttp": {
+            "/view": 30,
+            "/knowledge/read": 1
+          }
+        }
+      },
+      "externalModelCalls": 0,
+      "formalSaveChanged": false,
+      "evidenceDirectory": "tests/output/drop-performance-27e8a076",
+      "hostMetrics": {
+        "commits": {
+          "samples": 474,
+          "p50Ms": 24.57,
+          "p95Ms": 33.95,
+          "maxMs": 71.93
+        },
+        "workers": {
+          "samples": 112,
+          "p50Ms": 70.33,
+          "p95Ms": 113.09,
+          "maxMs": 395.8
+        },
+        "commandQueue": {
+          "samples": 229,
+          "p50Ms": 0.0,
+          "p95Ms": 0.0,
+          "maxMs": 0.0
+        },
+        "commandTotal": {
+          "samples": 229,
+          "p50Ms": 63.92,
+          "p95Ms": 201.2,
+          "maxMs": 486.4
+        }
+      },
+      "packageBytes": 570320,
+      "packageJobs": 182,
+      "passed": true,
+      "sourceHashes": {
+        "rules/inventory-core.lua": "1445a8f92ce0ae4094faea702a74fea0279b8868a4e0f0b62b91660e75a6582c",
+        "rules/ground-take.lua": "b373a9622735d2e0881b7a757f55bdd6da8d8d2fc670bde78dfbd7ec2771c502",
+        "tools/package.py": "123fd4626ed33cd5abb797b74c9cd6be3d73f3bd83db579082af056a5b81497d",
+        "tools/action_errors.py": "27216c634ad1bb9b2a7e9081ee6a0bc08018a03bb9d574e9d974b2b2201b98b6",
+        "tools/knowledge_provider.py": "281e445e04ef61e5d039d0a4dbeff59b535151155123686a4962a3077c0cdb7c",
+        "ui/app.js": "5c12c90e9651d81dfa7aef2bd961aa82cbb683b4ac2a68e60aaaff737c5eccf8"
+      },
+      "comparison": "after"
+    },
+    "finalSequentialChat": {
+      "at": "2026-11-22T15:19:19.011528+08:00",
+      "label": "solo",
+      "source": "perf-joint-final-639c",
+      "output": "chat-delivery-solo-a126c5cc",
+      "externalApiCalls": 0,
+      "checks": [
+        "four real pages deliver distinct chat messages without transport failure",
+        "chat submits while an unrelated ruling response is held, with no shared busy rejection",
+        "newly typed draft survives completion of an earlier message",
+        "lost success response blocks new sends and recovers original ID exactly once, preserving the new draft",
+        "host history bypasses package write lock; metadata/history isolate private and inaccessible scene channels; edit/retract and party delivery work"
+      ],
+      "measurements": {
+        "sendComposerReady": {
+          "samples": 20,
+          "p50Ms": 110.98,
+          "p95Ms": 1945.76,
+          "maxMs": 1945.76
+        },
+        "receiverVisible": {
+          "samples": 20,
+          "p50Ms": 408.97,
+          "p95Ms": 1986.39,
+          "maxMs": 1986.39
+        },
+        "submitToReceiverDom": {
+          "samples": 20,
+          "p50Ms": 290.6,
+          "p95Ms": 370.6,
+          "maxMs": 370.6
+        },
+        "failures": [],
+        "receiverHttp": {
+          "samples": 45,
+          "transferBytes": 235828,
+          "ttfbMs": {
+            "samples": 45,
+            "p50Ms": 16.1,
+            "p95Ms": 69.1,
+            "maxMs": 1731.5
+          }
+        }
+      },
+      "fixture": {
+        "chatHistory": 16,
+        "pages": 4,
+        "visibility": [
+          "visible",
+          "visible",
+          "visible",
+          "visible"
+        ],
+        "emulatedLatencyMs": 0
+      },
+      "chatWhileRulingPending": true,
+      "concurrentToast": "正在提交行动，等待服务器确认…",
+      "passed": true,
+      "pageErrors": []
+    },
+    "finalScale": {
+      "fixture": "synthetic completed jobs, 30 synchronous saves per size",
+      "measurements": {
+        "100": {
+          "save": {
+            "samples": 30,
+            "p50Ms": 2.92,
+            "p95Ms": 3.33,
+            "maxMs": 3.56
+          },
+          "flatSave": {
+            "samples": 30,
+            "p50Ms": 2.66,
+            "p95Ms": 2.88,
+            "maxMs": 3.16
+          },
+          "liveBytes": 94053,
+          "flatBytes": 96779,
+          "jobSegments": 0,
+          "reloadPeakPythonBytes": 657758
+        },
+        "1000": {
+          "save": {
+            "samples": 30,
+            "p50Ms": 3.26,
+            "p95Ms": 3.62,
+            "maxMs": 6.68
+          },
+          "flatSave": {
+            "samples": 30,
+            "p50Ms": 6.85,
+            "p95Ms": 8.05,
+            "maxMs": 9.28
+          },
+          "liveBytes": 134277,
+          "flatBytes": 922980,
+          "jobSegments": 15,
+          "reloadPeakPythonBytes": 2452901
+        },
+        "10000": {
+          "save": {
+            "samples": 30,
+            "p50Ms": 4.64,
+            "p95Ms": 6.02,
+            "maxMs": 37.75
+          },
+          "flatSave": {
+            "samples": 30,
+            "p50Ms": 60.4,
+            "p95Ms": 70.07,
+            "maxMs": 72.7
+          },
+          "liveBytes": 148431,
+          "flatBytes": 9238981,
+          "jobSegments": 155,
+          "reloadPeakPythonBytes": 23004779
+        }
+      },
+      "checks": [
+        "archive reload equality at three sizes",
+        "pending scene kept live",
+        "orphan segment retry",
+        "failed command checkpoint retry",
+        "receipt order after recovery",
+        "corrupt segment rejected",
+        "delta removal on identity change",
+        "10000-message unread/retract and history cursor",
+        "knowledge token: unrelated write, same-stat change, corruption, deletion"
+      ],
+      "passed": true
+    },
+    "aiColdRead": {
+      "evidence": "engineering/acceptance/ai-operation-performance/delivery-cold-v3.json",
+      "rows": 10000,
+      "pageSize": 30,
+      "preconditions": "running host, cleared read cache and ruling index, no existing proof for page",
+      "activeFirstMs": 320.122,
+      "archivedFirstMs": 368.555,
+      "activeNextP95Ms": 14.981,
+      "archivedNextP95Ms": 16.726
+    },
+    "finalPageScale": {
+      "fixture": "1, 4, 8 fresh Edge pages in one room; package PL full state HTTP read while logged-in pages continue normal polling",
+      "source": "engine v2 + AI v3",
+      "results": {
+        "1": {
+          "samples": 30,
+          "p50Ms": 16.57,
+          "p95Ms": 77.79,
+          "maxMs": 80.58
+        },
+        "4": {
+          "samples": 30,
+          "p50Ms": 16.52,
+          "p95Ms": 28.69,
+          "maxMs": 37.42
+        },
+        "8": {
+          "samples": 30,
+          "p50Ms": 13.15,
+          "p95Ms": 47.82,
+          "maxMs": 47.92
+        }
+      },
+      "externalModelCalls": 0,
+      "pageErrors": []
+    }
+  }
+}

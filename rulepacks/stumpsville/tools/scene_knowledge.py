@@ -10,6 +10,25 @@ STOCK_SOURCE = (Path(__file__).resolve().parents[1] / 'rules/scene.lua').read_te
 POLICY_DIGEST = hashlib.sha256(json.dumps(BASELINE, ensure_ascii=False, sort_keys=True).encode()).hexdigest()[:16]
 
 
+def execution_data(content):
+    """Keep the signed recipe and the exact identity of its installed player text."""
+    if 'presentationDigest' in content or not any('storm' in c for a in content.get('actions', []) for c in a['choices']):
+        return content
+    return {'presentationDigest': hashlib.sha256(json.dumps(content, ensure_ascii=False, sort_keys=True).encode()).hexdigest(), 'actions': [
+        {'id': a['id'], 'location': a['location'], 'label': a['label'],
+         'choices': [{k:v for k,v in choice.items() if k in ('id','storm')} for choice in a['choices']]}
+        for a in content['actions']]}
+
+
+def presentation(content, authored=None):
+    if 'presentationDigest' not in content:
+        return content
+    for candidate in (authored, BASELINE):
+        if candidate and 'presentationDigest' not in candidate and content == execution_data(candidate):
+            return candidate
+    return {'actions': [], 'playerKnowledge': []}
+
+
 def plain_definition(action):
     value = copy.deepcopy(action)
     value.pop('player', None)
@@ -66,9 +85,44 @@ def menu(content, location, clues):
     return result
 
 
+def describe_stock(view, stock, pips, game):
+    """Compose a fresh observation from visible stock; historical snapshots stay intact."""
+    index = view['index']
+    known = {c['id'] for c in view['clues']}
+    entries = []
+    if index == 1:
+        entries.append('前方放着一轮奶酪。' if stock.get(6) else '石块旁只剩一圈压痕。')
+    by_location = {3: ('pool-treasure', [7]), 4: ('pots-observed',[8]),
+                   7: ('hall-company',[9]), 8: ('factory-tools',[10,11]), 10: ('cave-stock',[6])}
+    clue, visible = by_location.get(index, ('', []))
+    items = list(visible) if clue in known else []
+    if index == 3 and clue in known:
+        entries.append(f'池底剩余钱币 {pips}p。')
+    if f'supplies{index}' in known:
+        items.extend(r['item'] for r in game['stormStocks'] if r['location']==index and r['item'] != 24)
+    for item in items:
+        entries.append(f"{game['items'][item-1]['name']}剩余 {stock.get(item,0)}。")
+    if entries:
+        view['description'] += ' ' + ' '.join(entries)
+    old = {('tunnel-cheese','take'):6, ('tunnel-cheese','careful'):6,
+           ('courtyard-pool','idol'):7, ('house-pots','take'):8, ('factory-equipment','paddle'):10,
+           ('factory-equipment','cloth'):11, ('cave-cheese','take'):6}
+    for action in view['actions']:
+        def available(choice):
+            key = (action['id'],choice['id'])
+            if key == ('courtyard-pool','money'):
+                return pips > 0
+            item = old.get(key)
+            if action['id'] == f'storm-supplies{index}' and choice['id'].isdigit():
+                item = int(choice['id'])
+            return item is None or stock.get(item,0)>0
+        action['choices'] = [c for c in action['choices'] if available(c)]
+    view['actions'] = [a for a in view['actions'] if a['choices']]
+
+
 def outcome_clues(content, action, choice, result, source):
     """Facts already disclosed by a committed outcome, including stock Lua artifacts."""
-    if source != STOCK_SOURCE or result.get('outcome') == 'blocked':
+    if (source != STOCK_SOURCE and hashlib.sha256((source or '').encode()).hexdigest() != '70b60d8a55804c753ec56a476d27393cff2a7466a8b83693db30fafa67e5897d') or result.get('outcome') == 'blocked':
         return []
     key = {('house-pots', 'search'): 'pots-observed', ('house-pots', 'take'): 'pots-observed',
            ('hall-observe', 'inspect'): 'hall-company', ('hall-negotiate', 'talk'): 'hall-company',

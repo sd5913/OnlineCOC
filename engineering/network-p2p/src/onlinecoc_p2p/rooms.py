@@ -63,8 +63,10 @@ def settings(value):
 
 class Rooms:
     """Single-event-loop state machine. Persistence excludes leases, online flags and tickets."""
-    def __init__(self, path: Path | None = None, clock=time.time, lease_seconds=60):
+    def __init__(self, path: Path | None = None, clock=time.time, lease_seconds=60, retention_seconds=86400):
         self.path, self.clock, self.lease_seconds = path, clock, lease_seconds
+        require(type(retention_seconds) is int and 1 <= retention_seconds <= 2592000, "RETENTION_INVALID")
+        self.retention_seconds = retention_seconds
         self.rooms = read_json(path).get("rooms", {}) if path and path.exists() else {}
         self.leases, self.clients, self.intents, self.tickets = {}, {}, {}, {}
         self.codes = {}
@@ -77,6 +79,10 @@ class Rooms:
                 self.codes[code] = rid
         migrated = False
         for rid, room in self.rooms.items():
+            if "inactiveSince" not in room:
+                # Old data gets a full grace period; new data resumes its last checkpoint.
+                room["inactiveSince"] = room.get("lastActive", self.clock())
+                migrated = True
             if not room.get("roomCode"):
                 room["roomCode"] = self.assign_code(rid)
                 migrated = True
@@ -92,6 +98,7 @@ class Rooms:
         raise Fault("ROOM_CODE_CAPACITY", 503)
 
     def resolve_code(self, value):
+        self.purge()
         rid = self.codes.get(normalize_room_code(value))
         require(rid, "ROOM_UNAVAILABLE", 404)
         return rid
@@ -104,14 +111,45 @@ class Rooms:
         now = self.clock()
         dead_leases = [rid for rid, item in self.leases.items() if item["expires"] <= now]
         for rid in dead_leases:
+            self.rooms[rid].setdefault("inactiveSince", self.leases[rid]["expires"])
             del self.leases[rid]
+        changed = bool(dead_leases)
+        for rid, room in list(self.rooms.items()):
+            if self.leases.get(rid, {}).get("connected"):
+                continue
+            if now - room.get("inactiveSince", now) >= self.retention_seconds:
+                self.remove(rid)
+                changed = True
         for iid, item in list(self.intents.items()):
             if item["roomId"] not in self.leases or item["expires"] <= now:
                 self.drop_intent(iid)
         for cid, client in list(self.clients.items()):
             if client["expires"] <= now:
                 del self.clients[cid]
+        if changed:
+            self.save()
         return dead_leases
+
+    def connected(self, rid, value):
+        if rid not in self.leases or rid not in self.rooms:
+            return
+        self.leases[rid]["connected"] = value
+        room = self.rooms[rid]
+        if value:
+            room.pop("inactiveSince", None)
+            room["lastActive"] = self.clock()
+        else:
+            room.setdefault("inactiveSince", self.clock())
+        self.save()
+
+    def remove(self, rid):
+        self.leases.pop(rid, None)
+        items = [self.drop_intent(iid) for iid, item in list(self.intents.items()) if item["roomId"] == rid]
+        room = self.rooms.pop(rid, None)
+        if room:
+            self.codes.pop(room["roomCode"], None)
+            self.save()
+        return items
 
     def new_client(self, public_key):
         self.purge()
@@ -150,6 +188,7 @@ class Rooms:
         lease = {"leaseId": token(), "leaseToken": token(), "expires": self.clock() + self.lease_seconds,
                  "connected": False}
         self.leases[room_id] = lease
+        room.update(lastActive=self.clock(), inactiveSince=self.clock())
         self.save()
         return self.host_view(room_id)
 
@@ -168,6 +207,10 @@ class Rooms:
     def heartbeat(self, rid, credential):
         lease = self.lease(rid, credential)
         lease["expires"] = self.clock() + self.lease_seconds
+        room = self.rooms[rid]
+        if lease["connected"] and self.clock() - room.get("lastActive", 0) >= 60:
+            room["lastActive"] = self.clock()
+            self.save()
         return {"expires": lease["expires"], "connectionEpoch": self.rooms[rid]["epoch"]}
 
     def count(self, rid):
@@ -287,5 +330,8 @@ class Rooms:
 
     def close(self, rid):
         self.leases.pop(rid, None)
+        if rid in self.rooms:
+            self.rooms[rid].setdefault("inactiveSince", self.clock())
+            self.save()
         items = [self.drop_intent(iid) for iid, item in list(self.intents.items()) if item["roomId"] == rid]
         return items

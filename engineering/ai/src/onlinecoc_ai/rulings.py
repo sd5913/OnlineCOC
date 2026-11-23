@@ -81,26 +81,31 @@ class Rulings:
             return decision if same_digest or decision.get('status') in ('unknown','executing') else {}
         return decision if revision==proposal['revision'] and same_digest else {}
 
-    def list(self, account, session_id=None, *, delivered=False):
+    def list(self, account, session_id=None, *, delivered=False, ruling_ids=None, compact=False):
         with self.host.lock,self.repository.read_scope():
             self.host.kp(account)
             room=self.host.state();state=self.repository.read_state();items=[];history_shared={};contexts={}
             for batch in state['settings'].get('batches',{}).values():
-                item={k:copy.deepcopy(batch[k]) for k in ('sessionId','requestId','summary','status','createdAt','digest','actions','receipts')}
+                if ruling_ids is not None and 'batch:'+batch['batchId'] not in ruling_ids:continue
+                if session_id is not None and batch['sessionId']!=session_id:continue
+                item={k:copy.deepcopy(batch[k]) for k in (('sessionId','requestId','summary','status','createdAt','digest') if compact else ('sessionId','requestId','summary','status','createdAt','digest','actions','receipts'))}
                 item.update(rulingId='batch:'+batch['batchId'],kind='runtime',canDecide=batch['status']=='pending' and batch.get('preflight',{}).get('status') in ('passed','runtime_required'),risks=[])
                 from .consultation import assessment
                 item['consultationAssessment']=assessment(batch['context'])
                 if item['consultationAssessment']['requiresAcceptance']:item['risks'].append({'id':'consultation-source','question':item['consultationAssessment']['notice'],'required':True})
                 for key in ('preflight','execution'):
-                    if key in batch:item[key]=copy.deepcopy(batch[key])
+                    if not compact and key in batch:item[key]=copy.deepcopy(batch[key])
                 request=state['requests'][batch['requestId']]
                 item['initiator']=request['initiator']
                 if request['status']=='cancelled' and item['status']=='pending':item['status']='cancelled'
                 contexts[item['rulingId']]=batch['context']
                 items.append(self.redact_stale(account,room,item,batch['context'],history_shared))
-            for record in state['proposals'].values():
+            for pid,record in state['proposals'].items():
+                if ruling_ids is not None and 'proposal:'+pid not in ruling_ids:continue
                 proposal=record['revisions'][str(record['currentRevision'])];request=state['requests'][proposal['requestId']]
-                session=request_session(self.repository,request);context=state['contexts'][proposal['contextRef']]
+                session=request_session(self.repository,request)
+                if session_id is not None and (session or {}).get('sessionId')!=session_id:continue
+                context=state['contexts'][proposal['contextRef']]
                 reports=[state['reports'][r] for r in proposal['reportRefs']]
                 rid='proposal:'+proposal['proposalId'];decision=self.decision_for_revision(state['settings'].get('rulingDecisions',{}).get(rid,{}),proposal)
                 status='pending' if proposal['status']=='review_ready' else proposal['status']
@@ -114,11 +119,11 @@ class Rulings:
                 item={'rulingId':rid,'kind':'configuration','sessionId':session['sessionId'] if session else None,
                     'requestId':proposal['requestId'],'initiator':request['initiator'],'summary':proposal['summary'],'status':status,'createdAt':proposal['createdAt'],
                     'digest':proposal['candidateDigest'],'revision':proposal['revision'],'canDecide':context['reviewPrincipal']==account and not context['facts'].get('strictPlayer'),
-                    'changeSet':copy.deepcopy(proposal['changeSet']),'reports':copy.deepcopy(reports),'risks':risks,
+                    'changeSet':{} if compact else copy.deepcopy(proposal['changeSet']),'reports':[] if compact else copy.deepcopy(reports),'risks':risks,
                     'receipts':copy.deepcopy(decision.get('receipts',[])), 'publications':copy.deepcopy(publications)}
                 from .change_policy import describe
                 snapshot=state['snapshots'][proposal['contextRef']]
-                item.update(describe(self.app.proposals.pack.contract,snapshot['state'],snapshot['artifact'],proposal['changeSet']))
+                item.update(describe(self.app.proposals.pack.contract,snapshot['state'],snapshot['artifact'],proposal['changeSet'],include_diff=not compact))
                 if item['highRisk']:item['risks'].append({'id':'high-risk','question':'高危修改必须人工确认：请核对完整指令包和差异，填写接受理由','required':True})
                 c_report = next((r for r in reports if r['level'] == 'C'), None)
                 if c_report and c_report.get('evidence', {}).get('reviewBasis'):
@@ -137,14 +142,54 @@ class Rulings:
                 if item['consultationAssessment']['requiresAcceptance']:item['risks'].append({'id':'consultation-source','question':item['consultationAssessment']['notice'],'required':True})
                 contexts[item['rulingId']]=context
                 items.append(self.redact_stale(account,room,item,context,history_shared))
-            items.extend(self.app.knowledge_requests.list(account))
-            items.extend(self.app.player_requests.list(account))
+            items.extend(self.app.knowledge_requests.list(account,ruling_ids=ruling_ids))
+            items.extend(self.app.player_requests.list(account,ruling_ids=ruling_ids))
             for item in items:self.app.queue.decorate(item,state=state,room=room)
             visible=sorted([i for i in items if session_id is None or i['sessionId']==session_id],key=lambda i:i['createdAt'],reverse=True)
             if delivered:
                 from .ruling_history import remember
                 remember(self.repository,room,account,visible,contexts)
+            if compact:
+                keys={'rulingId','kind','sessionId','requestId','initiator','summary','status','createdAt','digest','revision','sourceState','sourceError','sourceNotice','sourceUnavailable','sourceDetailsUnavailable','historicalReadOnly','queueTargetId','queueDigest','correlationId','queueStatus','archived','canArchive','canRestore','supersededBy','supersedes','archiveReason','resolution','highRisk','riskTags','reviewSessionId','generationError','blockingReason','consultationAssessment'}
+                visible=[{**{k:v for k,v in i.items() if k in keys},'compact':True,'canDecide':False} for i in visible]
             return {'items':visible}
+
+    def detail(self, account, ruling_id, *, delivered=False):
+        require(isinstance(ruling_id,str) and re.fullmatch(r'(batch|proposal|knowledge|player):[a-f0-9]{32}',ruling_id),'INPUT_INVALID')
+        items=self.list(account,delivered=delivered,ruling_ids={ruling_id})['items']
+        require(bool(items),'NOT_VISIBLE')
+        return items[0]
+
+    def page(self, account, *, queue='active', before=None, limit=30, session_id=None, delivered=False):
+        require(queue in ('active','archived','all') and type(limit) is int and 1<=limit<=100,'INPUT_INVALID')
+        require(session_id is None or isinstance(session_id,str) and re.fullmatch('[a-f0-9]{32}',session_id),'INPUT_INVALID')
+        with self.host.lock,self.repository.read_scope():
+            self.host.kp(account);state=self.repository.read_state()
+            room=self.host.state()
+            published={(p['candidateDigest'],room['aiControl']['approvals'][p['approvalId']]['proposalId']) for p in room['aiControl']['publications'].values()}
+            key=(self.repository.store.generation,id(state),frozenset(published))
+            if getattr(self,'_page_index',None) is None or self._page_index[0]!=key:
+                rows=[];meta=state['settings'].get('reviewQueue',{})
+                for group,prefix in (('batches','batch:'),('knowledgeRequests',''),('playerRequests','')):
+                    for k,v in state['settings'].get(group,{}).items():
+                        status=v['status']
+                        if status=='pending' and state['requests'].get(v['requestId'],{}).get('status')=='cancelled':status='cancelled'
+                        rows.append((v['createdAt'],prefix+k,v.get('sessionId'),status))
+                for k,v in state['proposals'].items():
+                    p=v['revisions'][str(v['currentRevision'])];request=state['requests'][p['requestId']]
+                    session=request_session(self.repository,request)
+                    status=self.decision_for_revision(state['settings'].get('rulingDecisions',{}).get('proposal:'+k,{}),p).get('status',p['status'])
+                    if state['requests'][p['requestId']]['status']=='cancelled':status='rejected'
+                    if (p['candidateDigest'],k) in published:status='completed'
+                    rows.append((p['createdAt'],'proposal:'+k,session['sessionId'] if session else None,status))
+                rows.sort(key=lambda r:(r[0],r[1]),reverse=True)
+                self._page_index=(key,[(rid,sid,bool(meta.get(rid,{}).get('archived') or meta.get(rid,{}).get('supersededBy') or status in ('completed','published','accepted','rejected','cancelled','failed','rolled_back'))) for _,rid,sid,status in rows],state)
+            active_count=sum(not archived for rid,sid,archived in self._page_index[1] if session_id is None or sid==session_id)
+            ids=[rid for rid,sid,archived in self._page_index[1] if (session_id is None or sid==session_id) and (queue=='all' or archived==(queue=='archived'))]
+            if before is not None:
+                require(before in ids,'CURSOR_INVALID');ids=ids[ids.index(before)+1:]
+            chosen=ids[:limit];items=self.list(account,ruling_ids=set(chosen),compact=True,delivered=delivered)['items'];by_id={i['rulingId']:i for i in items}
+            return {'items':[by_id[i] for i in chosen if i in by_id],'nextBefore':chosen[-1] if len(ids)>limit else None,'activeCount':active_count}
 
     def host_command(self, account, identifier, op, args):
         existing=self.host.receipt(account,identifier)
@@ -164,7 +209,7 @@ class Rulings:
             if args['rulingId'].startswith('knowledge:'):
                 require(not automatic,'PERMISSION_DENIED')
                 return self.app.knowledge_requests.decide(account,args)
-            item=next((i for i in self.list(account)['items'] if i['rulingId']==args['rulingId']),None)
+            item=self.detail(account,args['rulingId'])
             require(item and item['digest']==args['digest'],'RULING_STALE')
             if item['status'] in ('completed','rejected'):return item
             require(not item.get('cAssessment', {}).get('stale'), 'C_BASIS_STALE')
@@ -205,10 +250,10 @@ class Rulings:
                         record['receipts'].append(receipt)
                         if receipt['status']!='committed':
                             record['status']='unknown' if receipt['status'] in ('pending','unknown') else 'blocked';save()
-                            return next(i for i in self.list(account)['items'] if i['rulingId']==item['rulingId'])
+                            return self.detail(account,item['rulingId'])
                         save()
                     record['status']='completed';save();self.app.proposals.reconcile()
-            return next(i for i in self.list(account)['items'] if i['rulingId']==item['rulingId'])
+            return self.detail(account,item['rulingId'])
 
     def confirm_session(self, account, session):
         require(session['accessLevel']=='administrator','PERMISSION_DENIED')
@@ -228,7 +273,7 @@ class Rulings:
     def auto_configuration(self, account, proposal_id):
         p=policy(self.repository)
         if not p.get('autoApproveConfigurations') or p['principal']!=account:return
-        item=next(i for i in self.list(account)['items'] if i['rulingId']=='proposal:'+proposal_id)
+        item=self.detail(account,'proposal:'+proposal_id)
         if item['status']!='pending' or item.get('highRisk') or item.get('consultationAssessment',{}).get('requiresAcceptance') or item.get('cAssessment', {}).get('requiresAcceptance') or self.app.player_requests.review_required(item.get('sessionId')):return
         self.decide(account,{'rulingId':item['rulingId'],'digest':item['digest'],'decision':'approve',
             'riskDecisions':{r['id']:'KP 已开启通过三检后的普通配置自动批准' for r in item['risks']}},automatic=True)

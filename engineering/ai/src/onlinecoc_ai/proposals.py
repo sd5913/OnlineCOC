@@ -146,11 +146,11 @@ class Proposals:
         if progress:progress('validation_a')
         a, artifact = check_base(*args)
         if progress:progress('validation_b')
-        b=check_rules(*args)
+        b=check_rules(*args,_base_result=(a,artifact))
         if progress:progress('validation_c')
         from .c_review import basis, assessment
         review_basis = basis(self.repository)
-        reports = [a, b, assess(*args, basis=review_basis)]
+        reports = [a, b, assess(*args, basis=review_basis,_base_result=(a,artifact))]
         c_assessment = assessment(reports, review_basis)
         passed = c_assessment['adoptable']
         bundle = None

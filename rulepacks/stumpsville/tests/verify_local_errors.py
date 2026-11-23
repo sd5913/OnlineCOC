@@ -21,7 +21,7 @@ async def main():
     report={'checkedAt':datetime.now().astimezone().isoformat(),'checks':[],'externalModelCalls':0,'realSaveChanged':False,'evidenceDirectory':output.relative_to(PACK).as_posix()}
     try:
         failure=[None]
-        def client(cookie):raise failure[0]
+        def client(cookie, *, defer_csrf=False):raise failure[0]
         runtime=SimpleNamespace(origin='http://testserver',backend='http://127.0.0.1:1',data=output,client=client,observe_request=lambda *a:None)
         app=create_app(runtime)
         async with httpx.AsyncClient(transport=httpx.ASGITransport(app=app),base_url=runtime.origin) as browser:

@@ -4,7 +4,7 @@
 - 文档子类：工程
 - 状态：有效
 - 创建日期：2026-11-16
-- 最后更新：2026-11-21
+- 最后更新：2026-11-22
 - 关联文档：[会话权限](ai-session-access.md)、[回答约定](ai-responses.md)、[嵌入组件](ai-pack-embedding.md)、[数据查询](ai-data-query.md)
 
 ## 一次提交，一次裁决
@@ -21,6 +21,16 @@
 运行时单批动作数量及存量批次数量不设业务上限；配置变更数组也不设数量上限。仍有明确的传输和存储容量约束：运行时动作参数总量 32 KiB、初始组装 2 MiB、累计传输最多 768 KiB（模型窗口可能进一步降低）、模型输出预算、JSON 文档 8 MiB。超限明确拒绝，不截断动作、不另设隐藏的条数上限。宿主批次、AI 单库事务及单条记忆转换有不同边界，见下节；模板发布与随后创建实例仍是两次裁决。
 
 管理员短句“批准／批准执行／确认执行／同意执行／approve”只绑定当前会话最新需求的唯一裁决，不另发模型请求。高危或有风险项时转到队列填写决定，不能凭一句确认省略风险审核。重复完成项返回原结果。
+
+## 紧凑分页与按需详情
+
+Python `Rulings.page(account, queue="active", before=None, limit=30, session_id=None, delivered=False)` 返回 `{items,nextBefore,activeCount}`；limit 为 1—100，before 为上一页最后一个 rulingId。active 排除显式归档、已替代和 completed/published/accepted/rejected/cancelled/failed/rolled_back；archived 包含这些记录，all 不筛选。activeCount 按会话范围统计、与游标无关。排序按创建时间与 ID 倒序，游标不再属于当前范围时返回 CURSOR_INVALID，调用方应重新取第一页。
+
+卡片保留摘要、来源状态、业务状态、高危标识与 riskTags、审核会话及经当前授权复验的 resolution、归档定位，不返回完整动作、候选差异、报告或回执；`compact=true`、`canDecide=false` 表示需先加载详情。`Rulings.detail(account,ruling_id,delivered=False)` 只读取目标项并按当前身份、来源和权限复验。旧 `list` 接口保持兼容；审批、自动批准和拒绝也按单项读取，仍执行现有审批与发布检查。面向用户的读取应传 delivered=True 保存本次交付的摘要证明，来源变化后可继续灰显已交付原文，撤权后不恢复。
+
+HTTP：`GET /api/v1/ai/rulings?compact=true&queue=active&limit=30&before=<rulingId>&sessionId=<id>` 返回上述分页；可选字段应省略而非序列化为 undefined。`GET /api/v1/ai/rulings/{rulingId}` 直接返回单个裁决对象，支持 URL 编码 ID。无查询参数的旧列表保持完整返回。AI Web `AiClient.aiRulings({compact:true,queue,before,limit,sessionId})` 与 `aiRuling(rulingId)` 对应这两个接口，服务端记录实际交付证明；调用方先加载详情再展示批准控件。
+
+列表索引按 AI 仓库版本和已发布候选更新；不缓存来源授权或“可执行”判断。每页仅核验所选记录，详情和审批再次核验。历史会话读取复用同一请求的只读快照，不把旧正文当成当前执行依据。
 
 ## 运行时预检与原子边界
 

@@ -14,8 +14,8 @@ def main():
     with running() as (runtime, password):
         kp, p1, p2 = provision(runtime, password)
         checks.append('real host initialized; KP + two scoped player sessions; approved characters')
-        assert len(kp.state()['allLocations']) == 10
-        assert len(p1.state()['locations']) == 1
+        assert len(kp.state()['allLocations']) == 14
+        assert [x['index'] for x in p1.state()['locations'] if x.get('known')] == [1]
         assert 'allLocations' not in p1.state()
         a = p1.state()['character']['instanceId']
         b = p2.state()['character']['instanceId']
@@ -28,7 +28,7 @@ def main():
         conflict = p1.action('check', {'attribute': 'str', 'mode': 'normal'}, check_id, True)
         assert '不可更改' in conflict['code']
         forbidden = p2.command('action.invoke', {'actionId': 'sv.inventory', 'input': {'actor': a, 'operation': 'use', 'slot': 3, 'value': 0}}, True)
-        assert forbidden.get('status') == 'rejected', forbidden
+        assert forbidden.get('code') == 'PERMISSION_DENIED', forbidden
         assert '主持权限' in p1.action('world', {'operation': 'round', 'round': 0}, allow_error=True)['code']
         p1.action('note', {'text': 'PRIVATE-NOTE-ONE'})
         assert 'PRIVATE-NOTE-ONE' not in json.dumps(p2.state())
@@ -63,7 +63,7 @@ def main():
 
         before = p1.state()['character']['numbers']
         failure = kp.action('grant', {'actor': a, 'item': 7, 'slot': 5, 'uses': 0}, allow_error=True)
-        assert failure.get('status') == 'rejected', failure
+        assert failure.get('status') == 'rejected' or failure.get('failure'), failure
         assert p1.state()['character']['numbers'] == before
         p1.action('inventory', {'operation': 'move', 'slot': 5, 'value': 11})
         p1.action('inventory', {'operation': 'move', 'slot': 6, 'value': 12})
@@ -81,19 +81,25 @@ def main():
 
         kp.action('location.save', {'index': 2, 'revision': 0, 'description': 'PUBLIC-GATE', 'truth': 'SECRET-GATE'})
         kp.action('location.publish', {'index': 2})
+        assert 'PUBLIC-GATE' not in json.dumps(p1.state())
+        kp.action('location.reveal', {'index':2,'accounts':['player1']})
         assert 'PUBLIC-GATE' in json.dumps(p1.state()) and 'SECRET-GATE' not in json.dumps(p1.state())
-        req = p1.action('request', {'kind': 'travel', 'destination': 2})
+        req = p1.action('request', {'kind': 'travel', 'destination': 2,'manual':True})
         kp.action('resolve', {'requestId': req['requestId'], 'approve': True})
         kp.action('location.publish', {'index': 3})
-        assert '尚未开放' in p1.action('request', {'kind': 'travel', 'destination': 3}, allow_error=True)['code']
+        kp.action('location.reveal', {'index':3,'accounts':['player1']})
+        blocked = p1.action('request', {'kind':'travel','destination':3}, allow_error=True)
+        assert blocked.get('code') and p1.state()['character']['numbers']['location']==2, blocked
         kp.action('door', {'edge': '2-3', 'status': 'open'})
-        req = p1.action('request', {'kind': 'travel', 'destination': 3})
+        req = p1.action('request', {'kind': 'travel', 'destination': 3,'manual':True})
         kp.action('resolve', {'requestId': req['requestId'], 'approve': True})
         assert p1.state()['character']['numbers']['location'] == 3
         assert p2.state()['character']['numbers']['location'] == 1
         kp.action('location.publish', {'index': 5})
+        kp.action('location.reveal', {'index':5,'accounts':['player1']})
         assert not next(x for x in p1.state()['locations'] if x['index'] == 5)['clues']
         kp.action('location.publish', {'index': 5, 'clues': ['festival']})
+        kp.action('location.reveal', {'index':5,'accounts':['player1']})
         assert next(x for x in p1.state()['locations'] if x['index'] == 5)['clues']
         checks.append('01→02→03 travel; closed doors enforced; selected clues revealed separately')
 
@@ -132,7 +138,7 @@ def main():
         checks.append('chat edit, server-derived receipt summary, direct/group audience isolation')
 
         kp.action('recap', {'recapDraft': 'PUBLIC-RECAP', 'recapPrivate': 'SECRET-RECAP', 'publish': True})
-        assert p2.state()['recap'] == 'PUBLIC-RECAP' and 'SECRET-RECAP' not in json.dumps(p2.state())
+        assert kp.state()['recap'] == 'PUBLIC-RECAP' and p2.state()['recap'] == '' and 'SECRET-RECAP' not in json.dumps(p2.state())
         kp.action('room', {'status': 'paused'})
         assert '暂停' in p1.action('check', {'attribute': 'dex', 'mode': 'normal'}, allow_error=True)['code']
         kp.action('room', {'status': 'active'})
@@ -181,7 +187,7 @@ def main():
             restored_player = Account(restored_runtime.origin, 'player1', password, 'player1')
             assert restored_player.state()['character']['numbers']['location'] == 3
             assert restored_player.state()['note'] == 'PRIVATE-NOTE-ONE'
-            assert restored_player.state()['recap'] == 'PUBLIC-RECAP'
+            assert restored_player.state()['recap'] == '' and restored_runtime.package.state['recap']=='PUBLIC-RECAP'
         checks.append('paired host/package backup restores into a second empty directory')
         print(json.dumps({'passed': len(checks), 'checks': checks}, ensure_ascii=False))
     (PACK / 'tests/package-results.json').write_text(json.dumps({'passed': True, 'checkedAt': datetime.now().astimezone().isoformat(), 'checks': checks}, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')

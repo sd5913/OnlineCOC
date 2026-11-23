@@ -72,6 +72,7 @@
       "ai/access",
       "ai/batches",
       "ai/rulings",
+      "ai/rulings/{rulingId}",
       "ai/debug"
     ],
     "post": [

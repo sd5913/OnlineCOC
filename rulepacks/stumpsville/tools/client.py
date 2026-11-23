@@ -35,6 +35,8 @@ class Client:
         self.csrf = self.request('/login', {'loginName': name, 'password': password})['csrf']
 
     def request(self, path, body=None):
+        if body is not None and not self.csrf and getattr(self, 'defer_csrf', False):
+            self.csrf = self.request('/me')['csrf']
         headers = {'Origin': self.base, 'Content-Type': 'application/json'}
         if self.csrf:
             headers['X-CSRF-Token'] = self.csrf
@@ -46,7 +48,7 @@ class Client:
             try:
                 response = transport.request('GET' if body is None else 'POST',
                     self.base + '/api/v1' + path, headers=headers,
-                    content=None if body is None else json.dumps(body, ensure_ascii=False).encode('utf-8'))
+                    content=None if body is None else json.dumps(body, ensure_ascii=False, separators=(',', ':')).encode('utf-8'))
                 try:
                     value = response.json()
                 except (ValueError, UnicodeError) as error:
@@ -68,7 +70,7 @@ class Client:
                     'message':'等待主机响应超时' if timeout else '无法连接本机主机服务' if network else '主机连接协议异常',
                     'operation':path,'errorKind':type(error).__name__}) from error
         req = urllib.request.Request(self.base + '/api/v1' + path,
-                                     data=None if body is None else json.dumps(body, ensure_ascii=False).encode('utf-8'),
+                                     data=None if body is None else json.dumps(body, ensure_ascii=False, separators=(',', ':')).encode('utf-8'),
                                      headers=headers)
         try:
             with self.opener.open(req, timeout=25) as r:
@@ -93,8 +95,9 @@ class Client:
                 'message':'等待主机响应超时' if timeout else '无法连接本机主机服务', 'operation':path,
                 'errorKind':type(getattr(e,'reason',e)).__name__, 'osError':getattr(getattr(e,'reason',e),'errno',None)}) from e
 
-    def envelope(self, op, args):
-        view = self.request('/view')
+    def envelope(self, op, args, *, view=None):
+        if view is None:
+            view = self.request('/view')
         return {'protocolVersion': 1, 'type': 'command', 'requestId': str(uuid.uuid4()),
                 'roomId': view['roomId'], 'payload': {
                     'commandId': str(uuid.uuid4()), 'authorityEpoch': view['authorityEpoch'],

@@ -340,6 +340,9 @@ class Coordinator:
             if task["status"] in ("cancelled", "interrupted"):
                 return
             task.update(status=status, **values)
+            trace=self.traces.get(task_id)
+            if trace and status not in ('queued','generating','validating'):
+                task.update(diagnostics=trace.snapshot(),events=trace.events())
             if isinstance(values.get('text'), str):
                 from .messages import publication
                 task['responseAt'] = self.host.clock()

@@ -1,0 +1,519 @@
+import copy, hashlib, json, secrets, threading, time
+from pathlib import Path
+from jsonschema import Draft202012Validator
+from onlinecoc_data import FileDataStore, StoreError, canonical
+from .model import demo_state, validate, member, visible, writable, uid, entity, execution_snapshot
+from .errors import DomainError, require
+from .identity import Identity
+from .registry import stage
+from .lua_runtime import execute
+from .contracts import check, validate_operation
+from . import chat
+
+class Host:
+    def __init__(self,directory,*,bootstrap=None,fault=None,clock=time.time,store_factory=FileDataStore):
+        self.path=Path(directory);self.path.mkdir(parents=True,exist_ok=True)
+        self.lock=threading.RLock();self.capacity=threading.BoundedSemaphore(128)
+        from .knowledge import KnowledgeService
+        self.knowledge=KnowledgeService(self)
+        self.ai_prepared_resolver=None
+        self.ai_c_basis_resolver=None
+        self._projection_generation=None;self._projection_cache={};self._projection_policies=None;self._idle_tick_generation=None
+        self.metrics={'commands':[],'commits':[],'workers':[]};self.clock=clock;self.fault=fault;self.epoch=uid();self.views={}
+        self.identity=Identity(self.path/'identity',store_factory)
+        try:self.store=store_factory(self.path/'rooms/demo')
+        except Exception:self.identity.close();raise
+        try:
+            if self.store.snapshot()[1] is None:
+                require(bootstrap is not None,"INITIALIZATION_REQUIRED")
+                accounts=[('kp','kp'),('player1','player'),('player2','player')]
+                for account,_ in accounts:
+                    if account not in self.identity.store.snapshot()[1]['accounts']:self.identity.create(account,bootstrap)
+                state=demo_state(accounts)
+                folder=Path(__file__).resolve().parents[3]/'rulepacks/demo'
+                artifact=stage({p.name:p.read_text(encoding='utf-8') for p in folder.glob('*.lua')},{p.name:json.loads(p.read_text(encoding='utf-8')) for p in folder.glob('*.json')})
+                state['artifacts'][artifact['revision']]=artifact;state['activeRuleset']=artifact['revision']
+                validate(state);self.store.commit(0,state)
+            validate(self.state())
+            self.recover()
+        except BaseException:
+            self.close();raise
+    def state(self):return self.store.snapshot()[1]
+    def register_knowledge_provider(self, descriptor, provider):
+        return self.knowledge.register(descriptor, provider)
+    def commit(self,state,*,expected_generation=None):
+        start=time.perf_counter();validate(state);validated=time.perf_counter()
+        self.store.commit(self.store.generation if expected_generation is None else expected_generation,state)
+        phases=self.metrics.setdefault('commitPhases',[])
+        phases.append({'validateMs':(validated-start)*1000,'storeMs':(time.perf_counter()-validated)*1000})
+        del phases[:-1000]
+        self.metrics['commits'].append((time.perf_counter()-start)*1000);self.metrics['commits']=self.metrics['commits'][-1000:]
+    def hit(self,stage):
+        if self.fault:self.fault(stage)
+    def kp(self,account):require(member(self.state(),account)['role']=='kp','PERMISSION_DENIED')
+    def auth(self,token):
+        with self.lock:return self.identity.authenticate(token)
+    def local_account_change(self,data):
+        from .local_accounts import change
+        return change(self,data)
+    def local_account_receipt(self,request_id):
+        from .local_accounts import receipt
+        return receipt(self,request_id)
+    def catalog(self,account,*,state=None):
+        s=self.state() if state is None else state;m=member(s,account);a=s['artifacts'][s['activeRuleset']]
+        return {'revision':s['activeRuleset']+':'+str(m['authorizationEpoch']),'rulesetRevision':s['activeRuleset'],
+                'actions':self.knowledge.project_catalog(s,account,[v for v in a['metadata'].values() if v['public'] and (not v['kp'] or m['role']=='kp')])}
+    def project(self,account):
+        with self.lock:
+            generation=self.store.generation
+            if self._projection_generation!=generation:
+                self._projection_generation=generation;self._projection_cache={};self._projection_policies=None
+            source_revision=self.knowledge.projection_revision(self._projection_policies) if self._projection_policies is not None else None
+            cache_key=(account,source_revision)
+            if source_revision is not None and cache_key in self._projection_cache:return copy.deepcopy(self._projection_cache[cache_key])
+            s=self.state();m=member(s,account);entities={}
+            self._projection_policies=copy.deepcopy(s['knowledge']['policies'])
+            source_revision=self.knowledge.projection_revision(self._projection_policies)
+            full={};knowledge_summary=None
+            if s['knowledge']['policies']:
+                try:full,knowledge_summary=self.knowledge.projection(s,account)
+                except DomainError:
+                    knowledge_summary={'schemaVersion':1,'status':'blocked','items':[]};source_revision=None
+            for id,e in s['entities'].items():
+                if e['lifecycle']=='active' and visible(s,account,e):
+                    protected=m['role']!='kp' and self.knowledge.managed(s,'entity',id,e)
+                    if protected and id not in full:continue
+                    out=copy.deepcopy(full[id][0] if protected else e)
+                    if m['role']!='kp':out['metadata'].pop('secret',None)
+                    # Tokens are random and stable only for this visible object version and principal.
+                    key=(account,m['authorizationEpoch'],id,e['revision'])
+                    if protected:key=(*key,hashlib.sha256(canonical(full[id][1])).hexdigest())
+                    if key not in self.views:self.views[key]=secrets.token_urlsafe(18)
+                    out['viewToken']=self.views[key];entities[id]=out
+            relations={k:v for k,v in s['relations'].items() if v['sourceId'] in entities and v['targetId'] in entities}
+            waits={k:v for k,v in s['waits'].items() if v['status']=='waiting' and (m['role']=='kp' or (v['role']=='initiator' and v['account']==account))}
+            progress={k:v for k,v in s['progress'].items() if m['role']=='kp' or (v['ownerKind']=='member' and v['ownerId']==m['memberId']) or (v['ownerKind']=='entity' and v['ownerId'] in entities and entities[v['ownerId']]['owner']==account)}
+            flows={k:{x:v[x] for x in ('id','rule','status','cursor','error') if x in v} for k,v in s['flows'].items() if m['role']=='kp' or v['account']==account}
+            if self.knowledge.strict(s,account):relations={};waits={};progress={};flows={}
+            result = {'roomId':s['roomId'],'name':s['name'],'runId':s['runId'],'status':s['status'],'authorityEpoch':self.epoch,'authorizationEpoch':m['authorizationEpoch'],
+                    'accountId':account,'role':m['role'],'entities':entities,'relations':relations,'progress':progress,'waits':waits,'flows':flows,'catalog':self.catalog(account,state=s),'chatChannels':chat.project(s,account)}
+            if s['knowledge']['policies']:
+                result['knowledge']=knowledge_summary
+            # Providers must explicitly prove external source freshness. Check
+            # both sides of construction, and never return a mutable cache entry.
+            if source_revision is not None and source_revision==self.knowledge.projection_revision(self._projection_policies):
+                if len(self._projection_cache)>=128:self._projection_cache.pop(next(iter(self._projection_cache)))
+                self._projection_cache[(account,source_revision)]=copy.deepcopy(result)
+            return result
+    def receipt(self,account,id):
+        with self.lock:return self._receipt(self.state(),account,id)
+    def _receipt(self,s,account,id):
+        member(s,account);rec=s['commands'].get(account+':'+id)
+        if not rec:return {'status':'unknown','commandId':id}
+        if rec['status']=='pending':return {'status':'pending','commandId':id}
+        if rec.get('op')=='batch.execute':
+            from .atomic_batches import project_receipt
+            return project_receipt(self,s,account,rec)
+        result=copy.deepcopy(rec['receipt'])
+        if rec.get('op')=='notification.ack':return result
+        if (rec.get('op') or '').startswith('chat.'):
+            cid=result.get('result',{}).get('channelId')
+            if cid and not chat.can_read(s,account,s['chat']['channels'].get(cid)):result.pop('result',None)
+            return result
+        if member(s,account)['role']!='kp' and rec.get('op') not in ('action.invoke','behavior.invoke','entity.patch','flow.respond',None):result.pop('result',None)
+        if any(k!='@relations' and (k not in s['entities'] or not visible(s,account,s['entities'][k])) for k in rec.get('reads',{})):
+            result.pop('result',None)
+        if 'result' in result and self.knowledge.strict(s,account):
+            projected=self.knowledge.project_result(s,account,rec.get('rule',rec.get('op')),result['result'],rec.get('reads',{}))
+            if projected is None:result.pop('result',None)
+            else:result['result']=projected
+        return result
+    def preflight_batch(self,account,actions):
+        from .atomic_batches import preflight
+        return preflight(self,account,actions)
+    def execute_batch(self,account,actions,*,command_id):
+        from .atomic_batches import submit
+        return submit(self,account,actions,command_id)
+    def commit_memory_fact(self,account,fact,*,command_id,expected_revision):
+        from .atomic_batches import commit_memory_fact
+        return commit_memory_fact(self,account,fact,command_id,expected_revision)
+    def snapshot_for_execution(self,s):
+        return execution_snapshot(s)
+    def dispatch(self,token,csrf,message):
+        require(self.capacity.acquire(blocking=False),'LIMIT_EXCEEDED')
+        start=time.perf_counter()
+        try:
+            with self.lock:
+                wait=(time.perf_counter()-start)*1000;session=self.identity.authenticate(token)
+                require(session['csrf']==csrf,'PERMISSION_DENIED')
+            result=self.command(session['accountId'],message)
+            self.metrics['commands'].append({'queueMs':wait,'totalMs':(time.perf_counter()-start)*1000})
+            self.metrics['commands']=self.metrics['commands'][-1000:]
+            return result
+        finally:self.capacity.release()
+    def command(self,account,message):
+        require(self.capacity.acquire(blocking=False),'LIMIT_EXCEEDED')
+        try:
+            prepared=None
+            # Resolve only a server-registered proposal ID, outside the room lock.
+            # Duplicate receipts remain available without the independent AI store.
+            with self.lock:
+                check('command',message);payload=message['payload'];needs_prepare=False
+                if payload['op']=='ai.proposal.approve':
+                    pre=self.state();member(pre,account)
+                    needs_prepare=not pre['commands'].get(account+':'+payload['commandId'])
+                    if needs_prepare:
+                        require(member(pre,account)['role']=='kp','PERMISSION_DENIED')
+                        validate_operation(payload['op'],payload['args'])
+                        resolver=self.ai_prepared_resolver
+                        require(resolver is not None,'AI_SERVICE_UNAVAILABLE')
+            if needs_prepare:prepared=resolver(account,payload['args']['proposalId'],payload['args']['proposalRevision'])
+            with self.lock:
+                check('command',message);s=self.state();m=member(s,account)
+                require(message['roomId']==s['roomId'],'NOT_VISIBLE')
+                p=message['payload'];key=account+':'+p['commandId'];signature=hashlib.sha256(canonical(p)).hexdigest()
+                if key in s['commands']:
+                    require(s['commands'][key]['signature']==signature,'COMMAND_ID_CONFLICT')
+                    if s['commands'][key]['status']=='pending':self.run_attempt(key)
+                    return self.receipt(account,p['commandId'])
+                require(p['authorityEpoch']==self.epoch,'STALE_AUTHORITY')
+                if p.get('expectedViews'):
+                    current_view=self.project(account)
+                    for id,token in p['expectedViews'].items():
+                        require(current_view['entities'].get(id,{}).get('viewToken')==token,'VERSION_CONFLICT')
+                op,args=p['op'],p['args']
+                rec={'signature':signature,'status':'pending','account':account,'id':p['commandId'],'op':op,'args':copy.deepcopy(args),'random':[]}
+                validate_operation(op,args)
+                if op=='behavior.invoke':
+                    if m['role']!='kp' and self.knowledge.managed(s,'entity',args['entityId'],s['entities'].get(args['entityId'])):
+                        require(args['entityId'] in self.knowledge.full_entities(s,account),'NOT_VISIBLE')
+                    e=s['entities'].get(args['entityId']);require(e and visible(s,account,e),'NOT_VISIBLE')
+                    binding=e['rules'].get(args['event']) or s['configurations'][e['configurationId']].get('behaviors',{}).get(args['event'])
+                    require(binding,'NOT_VISIBLE');args={'actionId':binding['ruleId'],'input':args['input']}
+                if op in ('action.invoke','behavior.invoke'):
+                    self.knowledge.authorize_operation(s,account,args['actionId'],args['input'])
+                    require(s['status']=='active','ROOM_PAUSED')
+                    cat=self.catalog(account,state=s);require(p.get('catalogRevision')==cat['revision'] and p.get('rulesetRevision')==s['activeRuleset'],'STALE_CATALOG')
+                    require(p.get('runId')==s['runId'],'STALE_AUTHORITY')
+                    require(set(args)=={'actionId','input'})
+                    metadata=s['artifacts'][s['activeRuleset']]['metadata'].get(args['actionId'])
+                    require(metadata and metadata['public'] and (not metadata['kp'] or m['role']=='kp'),'PERMISSION_DENIED')
+                    try:Draft202012Validator(metadata['schema']).validate(args['input'])
+                    except Exception:raise DomainError('INPUT_INVALID')
+                    require(metadata['mode']!='calculation','READ_ONLY_QUERY_REQUIRED')
+                    rec.update(rule=args['actionId'],input=args['input'],ruleset=s['activeRuleset'],snapshot=self.snapshot_for_execution(s))
+                    if metadata['mode']=='flow':
+                        flowid=uid();flow={'id':flowid,'account':account,'rule':rec['rule'],'input':rec['input'],'ruleset':rec['ruleset'],'cursor':metadata['nodes'][0]['id'],'status':'running','results':{}}
+                        s['flows'][flowid]=flow;rec['status']='committed';rec['receipt']={'status':'committed','commandId':rec['id'],'result':{'flowId':flowid}}
+                        s['commands'][key]=rec;self.commit(s);self.advance(flowid);return self.receipt(account,rec['id'])
+                    s['commands'][key]=rec;self.hit('before_t1');self.commit(s);self.hit('after_t1');self.run_attempt(key)
+                else:
+                    s['commands'][key]=rec
+                    try:
+                        before_manage=self.snapshot_for_execution(s) if op in ('entity.create','entity.update','entity.patch') else None
+                        result=self.manage(s,account,op,args,prepared=prepared,command_id=p['commandId'])
+                        if op in ('entity.create','entity.update','entity.patch'):
+                            self.knowledge.derive(s,account,p['commandId'],{'commandId':p['commandId'],'operation':op,'input':args,'result':result,'effects':[]},previous=before_manage)
+                        rec['status']='committed';rec['receipt']={'status':'committed','commandId':rec['id'],'result':result}
+                        s['audit'].append({'commandId':rec['id'],'account':account,'op':op,'at':self.clock()})
+                        if op.startswith('chat.'):self.hit('before_chat_commit')
+                        if op in ('ai.proposal.approve','publication.apply'):self.hit('before_'+op+'_commit')
+                        if op.startswith('knowledge.'):self.hit('before_knowledge_commit')
+                        if op.startswith('notification.'):self.hit('before_notification_commit')
+                        self.commit(s)
+                        if op.startswith('notification.'):self.hit('after_notification_commit')
+                        if op.startswith('knowledge.'):self.hit('after_knowledge_commit')
+                        if op.startswith('chat.'):self.hit('after_chat_commit')
+                        if op in ('ai.proposal.approve','publication.apply'):self.hit('after_'+op+'_commit')
+                    except DomainError as e:
+                        committed=self.state()['commands'].get(key)
+                        if committed and committed.get('status')=='committed' and committed['signature']==signature:
+                            return self.receipt(account,p['commandId'])
+                        s=self.state();rec['status']='rejected';rec['receipt']={'status':'rejected','commandId':rec['id'],'code':e.code};s['commands'][key]=rec;self.commit(s)
+                    except Exception:
+                        committed=self.state()['commands'].get(key)
+                        if committed and committed.get('status')=='committed' and committed['signature']==signature:
+                            return self.receipt(account,p['commandId'])
+                        raise
+                    if op.startswith('chat.') and not s['flows'] and not s['waits']:
+                        return self._receipt(s,account,p['commandId'])
+                    self.tick()
+                return self.receipt(account,p['commandId'])
+        finally:self.capacity.release()
+    def run_attempt(self,key):
+        if self.state()['commands'][key].get('op')=='batch.execute':
+            from .atomic_batches import resume
+            return resume(self,key)
+        s=self.state();rec=s['commands'][key];account=rec['account'];artifact=s['artifacts'][rec['ruleset']];ordinal=0
+        if s['knowledge']['policies']:self.knowledge.ready(s)
+        def random(sides):
+            nonlocal ordinal
+            current=self.state();r=current['commands'][key];i=ordinal;ordinal+=1
+            if i<len(r['random']):require(r['random'][i]['sides']==sides,'RANDOM_TRACE_CONFLICT');return r['random'][i]['value']
+            value=secrets.randbelow(sides)+1;r['random'].append({'sides':sides,'value':value});self.commit(current);self.hit('after_random');return value
+        try:
+            member(s,account)
+            out=execute(artifact['sources'],{'kind':'run','rule':rec['rule'],'input':rec['input'],'mode':'action','state':rec['snapshot'],'account':account,'node':rec.get('node'),'data':artifact['data'],'results':rec.get('results',{})},random)
+            self.metrics['workers'].append(out['workerMs']);self.metrics['workers']=self.metrics['workers'][-1000:]
+            current=self.state();member(current,account)
+            require(current['members'][account]['authorizationEpoch']==rec['snapshot']['members'][account]['authorizationEpoch'],'PERMISSION_DENIED')
+            for id,revision in out['reads'].items():
+                actual=current['collectionRevision'] if id=='@relations' else current['entities'].get(id,{}).get('revision')
+                require(actual==revision,'VERSION_CONFLICT')
+            for id,e in out['entities'].items():
+                if e!=rec['snapshot']['entities'].get(id):e['revision']=current['entities'].get(id,{}).get('revision',0)+1;current['entities'][id]=e
+            if out['relations']!=rec['snapshot']['relations']:
+                current['relations']=out['relations'];current['collectionRevision']+=1
+            r=current['commands'][key];r['status']='committed';r['reads']=out['reads'];r.pop('snapshot',None)
+            r['receipt']={'status':'committed','commandId':r['id'],'result':out['result']}
+            current['audit'].append({'commandId':r['id'],'account':account,'rule':r['rule'],'ruleset':r['ruleset'],'random':r['random'],'effects':out['effects'],'at':self.clock()})
+            current['outbox'].append({'id':uid(),'commandId':r['id']})
+            self.knowledge.derive(current,account,r['id'],{'commandId':r['id'],'operation':r['rule'],'input':r['input'],'result':out['result'],'effects':out['effects']},previous=rec.get('snapshot'))
+            if rec.get('flowId'):self.finish_node(current,rec['flowId'],rec['node'],out['result'])
+            self.hit('before_t2');self.commit(current);self.hit('after_t2')
+        except DomainError as e:
+            current=self.state();r=current['commands'][key];r['status']='rejected';r.pop('snapshot',None);r['receipt']={'status':'rejected','commandId':r['id'],'code':e.code}
+            if rec.get('flowId'):current['flows'][rec['flowId']].update(status='needs_attention',error=e.code)
+            self.commit(current)
+    def nodes(self,s,flow):return s['artifacts'][flow['ruleset']]['metadata'][flow['rule']]['nodes']
+    def move_flow(self,s,flow,nextid):
+        flow['cursor']=nextid
+        if nextid=='end':flow['status']='completed';return
+        node=next(n for n in self.nodes(s,flow) if n['id']==nextid)
+        if node['kind']=='wait':
+            waitid=flow['id']+':'+nextid;opts=node['options']
+            s['waits'].setdefault(waitid,{'id':waitid,'flowId':flow['id'],'node':nextid,'account':flow['account'],'role':opts['role'],'deadline':self.clock()+opts['seconds'],'status':'waiting','revision':1,'options':opts})
+            flow['status']='waiting'
+        else:flow['status']='running'
+    def finish_node(self,s,flowid,nodeid,result):
+        flow=s['flows'][flowid];nodes=self.nodes(s,flow);node=next(n for n in nodes if n['id']==nodeid);index=nodes.index(node)
+        if 'yes' in node['options']:require(type(result) is bool,'FLOW_BRANCH_NOT_BOOLEAN')
+        flow['results'][nodeid]=result;default=nodes[index+1]['id'] if index+1<len(nodes) else 'end'
+        nextid=node['options'].get('yes' if result else 'no',default)
+        self.move_flow(s,flow,nextid)
+    def advance(self,flowid):
+        for _ in range(32):
+            s=self.state();flow=s['flows'][flowid]
+            if flow['status']!='running' or s['status']!='active':return
+            node=next(n for n in self.nodes(s,flow) if n['id']==flow['cursor'])
+            if node['kind']=='wait':self.move_flow(s,flow,node['id']);self.commit(s);return
+            id='flow:'+flowid+':'+node['id']+':'+str(flow.get('attempt',0));key=flow['account']+':'+id
+            if key not in s['commands']:
+                s['commands'][key]={'id':id,'account':flow['account'],'signature':id,'status':'pending','rule':flow['rule'],'input':flow['input'],'ruleset':flow['ruleset'],'snapshot':self.snapshot_for_execution(s),'random':[],'flowId':flowid,'node':node['id'],'results':copy.deepcopy(flow['results'])}
+                self.commit(s)
+            if self.state()['commands'][key]['status']=='pending':self.run_attempt(key)
+            else:return
+    def tick(self):
+        with self.lock:
+            if self._idle_tick_generation==self.store.generation:return
+            s=self.state()
+            if not s['flows'] and not s['waits']:
+                self._idle_tick_generation=self.store.generation;return
+            if s['status']!='active':return
+            if s['knowledge']['policies']:
+                try:self.knowledge.ready(s)
+                except DomainError:return
+            changed=False
+            for w in s['waits'].values():
+                if w['status']=='waiting' and w['deadline']<=self.clock():
+                    w.update(status='timeout',resolvedAt=self.clock(),revision=w['revision']+1);self.move_flow(s,s['flows'][w['flowId']],w['options']['timeout']);changed=True
+            if changed:self.commit(s)
+            for f in list(s['flows']):self.advance(f)
+    def recover(self):
+        with self.lock:
+            validate(self.state())
+            from .local_accounts import recover
+            recover(self)
+            if self.state()['knowledge']['policies']:
+                try:self.knowledge.ready(self.state())
+                except DomainError:return  # Trusted providers are installed by composition after opening.
+            for key,r in list(self.state()['commands'].items()):
+                if r['status']=='pending':self.run_attempt(key)
+            self.tick()
+    def calculate(self,account,rule,input):
+        with self.lock:
+            s=self.state();member(s,account);artifact=s['artifacts'][s['activeRuleset']];m=artifact['metadata'].get(rule)
+            self.knowledge.authorize_operation(s,account,rule,input)
+            require(m and m['public'] and m['mode']=='calculation' and (not m['kp'] or member(s,account)['role']=='kp'),'NOT_VISIBLE')
+            try:Draft202012Validator(m['schema']).validate(input)
+            except Exception:raise DomainError('INPUT_INVALID')
+            out=execute(artifact['sources'],{'kind':'run','rule':rule,'input':input,'mode':'calculation','state':self.snapshot_for_execution(s),'account':account,'data':artifact['data']})
+            return self.knowledge.project_result(s,account,rule,out['result'],out['reads'],egress='rules')
+    def manage(self,s,account,op,args,*,prepared=None,command_id=None):
+        m=member(s,account)
+        if op.startswith('notification.'):
+            from .notifications import apply
+            return apply(s,account,op,args,self.clock())
+        if op.startswith('knowledge.'):return self.knowledge.apply(s,account,op,args,command_id)
+        if op.startswith('chat.'):
+            if s['knowledge']['policies']:
+                if op=='chat.message.share':require(False,'PERMISSION_DENIED')
+                if op=='chat.message.send':
+                    speaker=args.get('speakerId')
+                    require(not speaker or not self.knowledge.managed(s,'entity',speaker,s['entities'].get(speaker)),'NOT_VISIBLE')
+                    require(not any(self.knowledge.protected_asset(s,key) for key in args.get('assetIds',[])),'NOT_VISIBLE')
+            return chat.apply(s,account,op,args,self.clock())
+        if op=='flow.respond':
+            self.knowledge.authorize_operation(s,account,op,args)
+            require(s['status']=='active','ROOM_PAUSED')
+            require(set(args)=={'waitId','revision','answer'} and type(args['answer']) is bool)
+            w=s['waits'].get(args['waitId']);require(w and w['status']=='waiting' and w['revision']==args['revision'],'FLOW_ALREADY_RESOLVED')
+            require((w['role']=='kp' and m['role']=='kp') or (w['role']=='initiator' and w['account']==account),'PERMISSION_DENIED')
+            require(self.clock()<w['deadline'],'FLOW_ALREADY_RESOLVED')
+            w.update(status='answered',answer=args['answer'],resolvedAt=self.clock(),revision=w['revision']+1)
+            self.move_flow(s,s['flows'][w['flowId']],w['options']['yes' if args['answer'] else 'no']);return True
+        if op=='entity.patch':
+            if m['role']!='kp' and self.knowledge.managed(s,'entity',args['id'],s['entities'].get(args['id'])):
+                require(args['id'] in self.knowledge.full_entities(s,account),'NOT_VISIBLE')
+            require(set(args)=={'id','name'} and isinstance(args['name'],str))
+            e=s['entities'].get(args['id']);require(e and writable(s,account,e),'NOT_VISIBLE');e['name']=args['name'];e['revision']+=1;return e['instanceId']
+        require(m['role']=='kp','PERMISSION_DENIED')
+        if op=='ai.proposal.approve':
+            from .publication import approve
+            return approve(self,s,account,args,prepared)
+        if op=='ai.proposal.revoke':
+            from .publication import revoke
+            return revoke(s,account,args)
+        if op=='publication.apply':
+            from .publication import apply
+            return apply(self,s,account,args,command_id)
+        if op=='room.status':
+            require(set(args)=={'status'} and args['status'] in ('active','paused','archived'));s['status']=args['status'];return True
+        if op=='member.update':
+            require(set(args)<={'accountId','active','role'} and args['accountId'] in s['members'])
+            from .local_accounts import usable,viable_kp
+            identities=self.identity.store.snapshot()[1]['accounts']
+            require(usable(identities.get(args['accountId'])),'ACCOUNT_UNAVAILABLE')
+            target=s['members'][args['accountId']]
+            if 'active' in args:require(type(args['active']) is bool);target['active']=args['active']
+            if 'role' in args:require(args['role'] in ('kp','player'));target['role']=args['role']
+            require(viable_kp(s,identities),'LAST_KP_REQUIRED')
+            target['authorizationEpoch']+=1;return True
+        if op=='rule.stage':
+            require(set(args)<={'sources','data'} and 'sources' in args);artifact=stage(args['sources'],args.get('data'));s['artifacts'][artifact['revision']]=artifact;return artifact['revision']
+        if op=='rule.activate':
+            require(set(args)=={'revision'} and args['revision'] in s['artifacts']);s['activeRuleset']=args['revision'];return args['revision']
+        if op=='member.add':
+            from .local_accounts import usable
+            require(usable(self.identity.store.snapshot()[1]['accounts'].get(args['accountId'])),'NOT_VISIBLE')
+            require(args['accountId'] not in s['members'],'MEMBER_EXISTS')
+            s['members'][args['accountId']]={'memberId':uid(),'accountId':args['accountId'],'role':args['role'],'active':True,'authorizationEpoch':1,'metadata':{}};return True
+        if op=='configuration.put':
+            old=s['configurations'].get(args['configurationId'])
+            require(not old or old==args or old['revision']!=args['revision'],'VERSION_CONFLICT')
+            require(not old or old['typeRef']==args['typeRef'],'REFERENCE_CONFLICT')
+            for binding in args.get('behaviors',{}).values():require(binding['ruleId'] in s['artifacts'][s['activeRuleset']]['metadata'],'REFERENCE_CONFLICT')
+            s['configurations'][args['configurationId']]=copy.deepcopy(args);return args['configurationId']
+        if op=='configuration.remove':
+            require(args['id'] in s['configurations'],'NOT_VISIBLE')
+            require(not any(e['configurationId']==args['id'] for e in s['entities'].values()),'REFERENCE_CONFLICT')
+            del s['configurations'][args['id']];return True
+        if op=='entity.update':
+            e=s['entities'].get(args['id']);require(e,'NOT_VISIBLE')
+            for binding in args.get('rules',{}).values():require(binding['ruleId'] in s['artifacts'][s['activeRuleset']]['metadata'],'REFERENCE_CONFLICT')
+            for field in ('numbers','tags','owner','visibility','rules'):
+                if field in args:
+                    if field=='numbers':e[field].update(args[field])
+                    else:e[field]=copy.deepcopy(args[field])
+            e['revision']+=1;return e['instanceId']
+        if op=='asset.attach':
+            e=s['entities'].get(args['entityId']);require(e and args['assetId'] in s['assets'],'REFERENCE_CONFLICT')
+            refs=e['components'].setdefault('core.assets',[])
+            if args['assetId'] not in refs:refs.append(args['assetId'])
+            e['revision']+=1;return True
+        if op=='asset.remove':
+            require(args['assetId'] in s['assets'],'NOT_VISIBLE')
+            require(not any(args['assetId'] in e['components'].get('core.assets',[]) for e in s['entities'].values()),'REFERENCE_CONFLICT')
+            require(not any(args['assetId'] in msg['assetIds'] for ms in s['chat']['messages'].values() for msg in ms),'REFERENCE_CONFLICT')
+            del s['assets'][args['assetId']];return True
+        if op=='flow.retry':
+            f=s['flows'].get(args['flowId']);require(f and f['status']=='needs_attention','FLOW_NOT_RETRYABLE')
+            f.update(status='running',attempt=f.get('attempt',0)+1);f.pop('error',None);return True
+        if op=='entity.create':
+            require(set(args)<={'configurationId','name','numbers','owner','visibility'} and args['configurationId'] in s['configurations'])
+            config=s['configurations'][args['configurationId']];id=uid();e=entity(id,config['typeRef'],args.get('name','新对象'),args.get('owner'),**{**config['defaults'],**args.get('numbers',{})});e['configurationId']=args['configurationId'];e['configurationRevision']=config['revision'];e['visibility']=args.get('visibility','public')
+            if e['typeRef']=='bag':e['components']={'core.container':{'allowed':['item','weapon']}}
+            s['entities'][id]=e;return id
+        if op=='entity.archive':
+            require(set(args)=={'id'});e=s['entities'].get(args['id']);require(e,'NOT_VISIBLE');require(not any(args['id'] in (r['sourceId'],r['targetId']) for r in s['relations'].values()),'REFERENCE_CONFLICT');e['lifecycle']='archived';e['revision']+=1;return True
+        if op=='relation.set':
+            id=uid();s['relations'][id]={'relationId':id,'revision':1,'tags':[],'metadata':{},**args};s['collectionRevision']+=1;return id
+        if op=='relation.remove':
+            require(set(args)=={'id'} and args['id'] in s['relations']);del s['relations'][args['id']];s['collectionRevision']+=1;return True
+        if op=='progress.set':
+            require(set(args)=={'ownerKind','ownerId','eventKey','value'} and args['ownerKind'] in ('member','entity'))
+            key=args['ownerKind']+':'+args['ownerId']+':'+args['eventKey'];s['progress'][key]={**args,'revision':s['progress'].get(key,{}).get('revision',0)+1};return key
+        if op=='flow.cancel':
+            require(set(args)=={'flowId'} and args['flowId'] in s['flows']);f=s['flows'][args['flowId']];f['status']='cancelled'
+            for w in s['waits'].values():
+                if w['flowId']==f['id'] and w['status']=='waiting':w['status']='cancelled';w['revision']+=1
+            return True
+        raise DomainError('UNKNOWN_OPERATION')
+    def notifications(self,account,after=0,limit=50):
+        from .notifications import page
+        with self.lock:return page(self.state(),account,after,limit)
+    def chat_members(self,account):
+        with self.lock:
+            s=self.state();member(s,account);accounts=self.identity.store.snapshot()[1]['accounts']
+            return [{'accountId':a,'memberId':m['memberId'],'nickname':accounts[a]['nickname'],'role':m['role']}
+                    for a,m in s['members'].items() if m['active'] and a in accounts and not accounts[a]['disabled']]
+    def chat_channels(self,account):
+        with self.lock:
+            s=self.state();m=member(s,account)
+            return {'roomId':s['roomId'],'authorityEpoch':self.epoch,'authorizationEpoch':m['authorizationEpoch'],
+                    'accountId':account,'channels':chat.project(s,account)}
+    def chat_history(self,account,channel_id,before=None,limit=50):
+        with self.lock:
+            s=self.state();member(s,account)
+            page=chat.history(s,account,channel_id,before,limit)
+            if self.knowledge.strict(s,account):
+                for item in page['items']:
+                    speaker=item.get('speakerId')
+                    if speaker and self.knowledge.managed(s,'entity',speaker,s['entities'].get(speaker)):
+                        item['speakerId']=None;item['speakerName']=None
+                    item['assetIds']=[key for key in item['assetIds'] if not self.knowledge.protected_asset(s,key)]
+                    if item.get('card'):
+                        item.update(card=None,kind='text',text=item['text'] or '行动记录（结果未公开）')
+            return page
+    def query(self,account,collection,equals=None):
+        with self.lock:
+            view=self.project(account);require(collection in ('entities','relations','progress','waits','flows'),'PERMISSION_DENIED')
+            if collection=='entities' and view['role']!='kp':
+                state=self.state()
+                view['entities']={key:e for key,e in view['entities'].items() if self.knowledge.entity_query_allowed(state,key,state['entities'][key])}
+            equals=equals or {};require(isinstance(equals,dict) and len(equals)<=8)
+            return [x for x in view[collection].values() if all(x.get(k)==v for k,v in equals.items())][:1000]
+    def register_ai(self,resolver,pack_binding):
+        """Local composition port; never exposed as an HTTP operation."""
+        from .ai_contracts import validate_ai,validator_digest
+        validate_ai('PackContract',pack_binding['contract'])
+        require(pack_binding['validatorSetDigest']==validator_digest(),'VALIDATOR_STALE')
+        with self.lock:
+            s=self.state()
+            if s['aiControl']['packBinding']!=pack_binding:
+                s['aiControl']['packBinding']=copy.deepcopy(pack_binding);self.commit(s)
+            self.ai_prepared_resolver=resolver
+    def ai_proposal_head(self,account,proposal_id,revision):
+        with self.lock:
+            self.kp(account);s=self.state();control=s['aiControl']
+            require(revision>=control['proposalHeads'].get(proposal_id,0),'PROPOSAL_STALE')
+            control['proposalHeads'][proposal_id]=revision
+            for approval in control['approvals'].values():
+                if approval['proposalId']==proposal_id and approval['proposalRevision']!=revision and approval['status']=='approved':approval['status']='revoked'
+            self.commit(s)
+    def validate_ai_sources(self,state,account,context):
+        validator = getattr(self, 'ai_access_validator', None)
+        if validator:validator(state,context)
+        from .ai_sources import check_sources
+        read_scope=context.get('facts',{}).get('aiReadScope')
+        if read_scope=='kp-room':
+            require(not context['facts'].get('strictPlayer') and context['facts'].get('sessionAccess',{}).get('level')!='player','PERMISSION_DENIED')
+        check_sources(self,state,account,context['sourceRefs'],context['memoryRefs'],read_scope=read_scope)
+        from .data_queries import recheck
+        recheck(self,state,account,context)
+        if 'externalPolicyDigest' in context['facts']:
+            from .ai_contracts import digest
+            require(context['facts']['externalPolicyDigest']==digest(state['aiControl']['settings']['externalSources']),'EXTERNAL_SCOPE_CHANGED')
+        if 'profileId' in context['facts']:
+            require(context['facts']['profileId']==state['aiControl']['settings']['profileId'],'PROFILE_CHANGED')
+    def close(self):self.store.close();self.identity.close()

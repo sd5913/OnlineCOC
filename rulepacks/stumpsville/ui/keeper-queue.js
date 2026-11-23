@@ -34,9 +34,8 @@ export function mountKeeperAIQueue(target,client,module,{scope,account,archived=
     if(!authorized())throw Error('当前账户或房间权限已变化，请刷新');
     const stamp=epoch;
     if(source.rulingId){
-      const data=await client.aiRulings();
+      const item=client.aiRuling ? await client.aiRuling(source.rulingId) : (await client.aiRulings()).items.find(row=>row.rulingId===source.rulingId);
       if(!authorized()||stamp!==epoch)throw Error('当前账户或房间权限已变化，请刷新');
-      const item=data.items.find(row=>row.rulingId===source.rulingId);
       if(!item)throw Error('原裁决不存在或当前不可读');
       closeDetail();detail=document.createElement('dialog');detail.className='ai-request-detail';
       detail.innerHTML='<header><h2>原 AI 裁决</h2><button type="button" data-close>'+esc(t('ui.m058'))+'</button></header><p>'+esc(item.initiator)+' · '+esc(label(item.status))+'</p>';
@@ -56,6 +55,7 @@ export function mountKeeperAIQueue(target,client,module,{scope,account,archived=
     throw Error('来源缺少有效定位');
   }
   const rows=new Map(),pendingKey='sv.desktop.aiQueue.'+scope+'.'+account;
+  let activeRulings=null;
   let dead=false,busy=false,reading=false,readFailed=false,epoch=0,showHistory=archived,historyBeforeDialog=false,tasks=[],rulings=[],uncertain=localStorage.getItem(pendingKey);
   const authority=client.view?.authorityEpoch;
   const authorized=()=>!dead&&client.connected&&client.view?.role==='kp'&&client.view?.accountId===account&&client.view?.authorityEpoch===authority;
@@ -64,7 +64,7 @@ export function mountKeeperAIQueue(target,client,module,{scope,account,archived=
   const needsTask=item=>!queuedHistory(item)&&!item.playerRequest&&['received','needs_input','blocked','failed','interrupted','stale'].includes(item.status)&&!item.proposalId&&!item.batchId;
   const archivedTask=item=>!item.playerRequest&&!item.proposalId&&!item.batchId&&(queuedHistory(item)||terminal.has(item.status)||item.status==='review_ready');
   const needsRuling=item=>!rulingIsArchived(item);
-  const count=()=>onCount(tasks.filter(needsTask).length+rulings.filter(needsRuling).length);
+  const count=()=>onCount(tasks.filter(needsTask).length+(activeRulings??rulings.filter(needsRuling).length));
   const label=value=>t((['completed','rejected','partial','unknown'].includes(value)?'queue.':'ai.')+value,{},value);
   find('[data-refresh]').textContent=t('ai.refresh');find('[data-settings]').textContent=t('queue.aiSettings');
   find('[data-history]+span').textContent=t('queue.aiHistory');
@@ -141,7 +141,7 @@ export function mountKeeperAIQueue(target,client,module,{scope,account,archived=
     finally{reading=false;}
   }
   const facade=new Proxy(client,{get(object,key){
-    if(key==='aiRulings')return async()=>{if(!authorized())return {items:[]};const generation=epoch;let data;try{data=await client.aiRulings();}catch(e){if(!dead){rulings=[];count();}throw e;}if(!authorized()||generation!==epoch)return {items:[]};rulings=data.items;count();return {items:rulings};};
+    if(key==='aiRulings')return async options=>{if(!authorized())return {items:[]};const generation=epoch;let data;try{data=await client.aiRulings(options);}catch(e){if(!dead){rulings=[];activeRulings=null;count();}throw e;}if(!authorized()||generation!==epoch)return {items:[]};rulings=data.items;activeRulings=data.activeCount??null;count();return data;};
     const value=object[key];return typeof value==='function'?value.bind(object):value;
   }});
   const modifications=mountPackageRulings(find('.ai-modifications-list'),facade,module,{command,authorized,onNotice,onSession,onOpenSource,onKnowledgeRequest,readBundle,renderReference,timeline,onChange:item=>{refresh();if(item.kind==='player_request'&&item.status==='accepted'&&item.reviewSessionId)Promise.resolve(onSession(item.reviewSessionId)).catch(error=>onNotice({title:'打开审核会话',status:'failed',reason:error.message,locator:{rulingId:item.rulingId}}));}});
@@ -157,7 +157,7 @@ export function mountKeeperAIQueue(target,client,module,{scope,account,archived=
   find('[data-settings]').onclick=onSettings;
   find('[data-history]').onchange=event=>{showHistory=event.target.checked;modifications.setHistory(showHistory);paint();modifications.refresh();};
   let identity=JSON.stringify([client.connected,client.view?.accountId,client.view?.authorityEpoch,client.view?.role]);
-  const unsubscribe=client.subscribe(()=>{const next=JSON.stringify([client.connected,client.view?.accountId,client.view?.authorityEpoch,client.view?.role]);if(next!==identity){identity=next;epoch++;closeHistory();closeDetail();tasks=[];rulings=[];paint();}});
+  const unsubscribe=client.subscribe(()=>{const next=JSON.stringify([client.connected,client.view?.accountId,client.view?.authorityEpoch,client.view?.role]);if(next!==identity){identity=next;epoch++;closeHistory();closeDetail();tasks=[];rulings=[];activeRulings=null;paint();}});
   const timer=setInterval(()=>{if(!busy&&!document.hidden&&root.isConnected)refresh();},4000);
   refresh();recoverState();
   return {setStatusTarget,setTimeline(value){timeline?.remove('tasks');timeline=value;modifications.setTimeline(historyDialog?null:value);paint();},setArchived,openHistory,openSource,relocalize(){find('[data-refresh]').textContent=t('ai.refresh');find('[data-settings]').textContent=t('queue.aiSettings');find('[data-history]+span').textContent=t('queue.aiHistory');paint();},remember(id){uncertain=id;localStorage.setItem(pendingKey,id);recoverState();},refresh:async()=>{await refresh();await modifications.refresh();},focus(){root.tabIndex=-1;root.focus({preventScroll:true});root.scrollIntoView({block:'nearest'});},destroy(){closeHistory();dead=true;epoch++;closeDetail();clearInterval(timer);unsubscribe();modifications.destroy();timeline?.remove('tasks');rows.clear();statusLine.remove();root.remove();onCount(0);}};

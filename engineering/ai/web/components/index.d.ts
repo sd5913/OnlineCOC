@@ -85,6 +85,8 @@ export class AiClient {
   aiSettings(): Promise<any>;
   aiAccess(): Promise<SessionAccess>;
   aiRulings(): Promise<{items: AIRuling[]}>;
+  aiRulings(options: {compact: true; queue?: 'active'|'archived'|'all'; before?: string; limit?: number; sessionId?: string}): Promise<{items: AICompactRuling[]; nextBefore: string|null; activeCount: number}>;
+  aiRuling(rulingId: string): Promise<AIRuling>;
   aiBatches(): Promise<{items: ExecutionBatch[]}>;
   aiDebug(options: DebugQuery): Promise<Json>;
   aiReview(source: ReviewSource, instruction?: string): Promise<AiReceipt>;
@@ -195,7 +197,7 @@ export interface AITools {
   playerRequests: {submit(value: {sessionId: string} & ({text: string; submissionKey?: string; requestId?: never} | {requestId: string; text?: never}), commandId?: string): Promise<AiReceipt<KnowledgeRequest>>};
   knowledgeRequests: {submit(sessionId: string, requestId: string, commandId?: string): Promise<AiReceipt<KnowledgeRequest>>; reconcile(value: {rulingId: string; digest: string}, commandId?: string): Promise<AiReceipt<KnowledgeRequest>>};
   queue: {archive(value: {targetId: string; digest: string; archived: boolean; reason?: string}, commandId?: string): Promise<AiReceipt<QueueItem>>};
-  rulings: {list(): ReturnType<AiClient["aiRulings"]>; decide(value: RulingDecision, commandId?: string): Promise<AiReceipt<AIRuling>>};
+  rulings: {list(): Promise<{items: AIRuling[]}>; decide(value: RulingDecision, commandId?: string): Promise<AiReceipt<AIRuling>>};
   batches: {list(): Promise<{items: ExecutionBatch[]}>; approve(batchId: string, digest: string, commandId?: string): Promise<AiReceipt>; reject(batchId: string, digest: string, commandId?: string): Promise<AiReceipt>; reconcile(batchId: string, digest: string, commandId?: string): Promise<AiReceipt>};
   usage(options?: UsageQuery): Promise<UsageReport>;
   contracts(): ReturnType<AiClient['aiContracts']>; destroy(): void;
@@ -229,3 +231,5 @@ export function mountAISettings(target: HTMLElement, client: AiClient, options?:
 
 export function appendDebugTools(target: HTMLElement, client: AiClient, locator: DebugQuery | (() => DebugQuery), options?: {valid?: () => boolean}): HTMLDetailsElement;
 export function appendReviewSource(target: HTMLElement, source: ReviewSource, options?: {onOpenSource?: ((source: ReviewSource) => void | Promise<void>) | null; onOpenSession?: ((sessionId: string) => void | Promise<void>) | null}): HTMLDetailsElement;
+
+export type AICompactRuling = Pick<AIRuling, "rulingId"|"kind"|"sessionId"|"requestId"|"summary"|"status"|"digest"|"createdAt"|"sourceState"|"sourceError"|"sourceNotice"|"highRisk"|"riskTags"|"reviewSessionId"|"generationError"|"blockingReason"|"consultationAssessment"|"sourceDetailsUnavailable"|"sourceUnavailable"|"historicalReadOnly"> & Partial<QueueItem> & {compact:true;canDecide:false};

@@ -106,3 +106,21 @@ engineering/.venv/Scripts/python.exe -B rulepacks/stumpsville/tests/verify_web.p
 支持操作、预期拒绝、模型首次成功、修复后最终成功分别统计。HTTP成功、候选可解析、检查通过、KP批准与实际生效是不同阶段。截图和原始报告位于各结果指向的独立目录；首次失败不能被后续成功覆盖抹除。
 
 仍未完整验收：真人独立家庭／移动网、Safari与手机、长时间多人压力、原版冒险全部资料、自然语言歧义与复杂剧情联锁。现行能力见[实现](../docs/current/implementation.md)。
+
+## 2026-11-22 丢弃与性能排查
+
+[验证脚本](verify_drop_performance.py)、[结果](drop-performance-results.json)：7组通过，包含真实宿主、恢复和Edge桌面/390px；本轮无外部API。10组操作计时与保存/内部HTTP计数见结果。早期两次测试设置错误、一次产品反馈标题缺失均已定位，详见[性能计划](../../../docs/plans/operation-performance-audit.md)。后续改进截图等待完成并关闭历史通知，不改变产品行为。
+
+[四页脚本](verify_performance_workflow.py)最新使用当前工作源码，6组通过、18次本机回环模型调用、0外部API；状态/聊天/检定p50为44.87/94.48/670.63ms。此前冻结版测量保留在previousRuns与旧隔离目录，不能当作同负载A/B提升率。
+
+补拍无遮挡界面见结果中的visualSupplement；先前截图等待错误保留在initialFailures。网页导出及脚本语法检查通过，260个受影响文档本地链接均可解析。
+
+[包侧性能优化三轮对照](operation-optimization-results.json)记录三个独立房间、每轮十类各30样本的时延和调用计数。脚本参数 `--comparison before` 和 `--comparison after` 分别在对应源码运行，保留原丢弃基准报告。
+
+运行 `verify_drop_performance.py --scale` 可复现 100、1,000 和 10,000 条行动的存档对照及中断恢复。使用 `--archive-backup` 可将分段存档的配对备份恢复到第二个空房间并核对同编号重试。聊天投递脚本 `verify_chat_delivery.py` 支持 `--samples`、`--latency-ms` 和 `--output-only`，额外记录提交到接收页出现正文的时间及 HTTP 传输量。
+
+## 暴雨主线（0.10.0）
+
+在仓库根目录运行 `engineering/.venv/Scripts/python.exe -B rulepacks/stumpsville/tests/verify_storm.py home`。路线参数为 `home`、`allied`、`evacuated`；追加 `--alternate` 切换替代做法。撤离主路线通过无头 Edge 确认结局。脚本使用独立的 `tests/output/storm-*/` 房间，并在同一测试数据目录重启验证。推演和覆盖范围见[故事计划](../docs/plans/story-content-expansion.md)。
+
+本轮隔离回归还覆盖原十地点 18 个预设、最后一件库存的并发领取、浏览器手动／自动裁决，以及配置导入、预览、备份和恢复。结果分别见[场景验收](scene-results.json)、[浏览器验收](scene-ui-results.json)及[基础包验收](package-results.json)。

@@ -140,7 +140,11 @@ def create_app(host,port=8765,host_control=None,*,ai_runtime=None):
         with host.lock:host.identity.logout(request.cookies.get('onlinecoc',''))
         response=JSONResponse({'ok':True});response.delete_cookie('onlinecoc');return response
     @app.get('/api/v1/view')
-    def view(request:Request):return host.project(auth(request))
+    def view(request:Request):
+        with host.lock:
+            account=auth(request)
+            require(set(request.query_params)<={'extras'} and len(request.query_params.multi_items())==len(request.query_params),'INPUT_INVALID')
+            return host.project(account,extras=request.query_params.get('extras'))
     @app.get('/api/v1/notifications')
     def notifications(request:Request):
         require(set(request.query_params)<= {'after','limit'}, 'INPUT_INVALID')
@@ -241,7 +245,8 @@ def create_app(host,port=8765,host_control=None,*,ai_runtime=None):
         from .model import uid
         account=auth(request,True);target=host.path/'backups'/uid()
         def dispatch():
-            with host.lock:return assets.backup(auth(request,True),target)
+            with host.lock:snapshot=assets.prepare_backup(auth(request,True))
+            return assets.write_backup(snapshot,target)
         await asyncio.to_thread(dispatch);return {'backupId':target.name}
     @app.websocket('/api/v1/connect')
     async def connect(ws:WebSocket):

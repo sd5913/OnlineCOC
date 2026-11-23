@@ -24,7 +24,7 @@ class PlayerRequests:
             rid=self.app._execute(account,'player-intent:'+identifier,'ai.request.create',
                 {'sourceKind':'manual','text':args['text']},session_id=session['sessionId'],dispatch=False)['requestId']
         self.app.queue.save_submission(token,rid)
-        state=self.repository.state()
+        state=self.repository.read_state()
         require(rid in state['settings']['sessions'][session['sessionId']]['requestIds'],'NOT_VISIBLE')
         request=state['requests'][rid]
         require(request['status']!='cancelled','REQUEST_CANCELLED')
@@ -39,14 +39,15 @@ class PlayerRequests:
 
     def public(self, record):
         result={k:copy.deepcopy(record[k]) for k in ('rulingId','sessionId','requestId','status','createdAt','digest')}
-        state=self.repository.state();session=state['settings'].get('sessions',{}).get(record['sessionId'],{})
+        state=self.repository.read_state();session=state['settings'].get('sessions',{}).get(record['sessionId'],{})
         if result['status']=='pending' and (not session or session.get('deleted') or state['requests'].get(record['requestId'],{}).get('status')=='cancelled'):
             result['status']='cancelled'
         return result
 
-    def list(self, account):
+    def list(self, account, *, ruling_ids=None):
         self.host.kp(account);items=[]
-        for record in self.repository.state()['settings'].get('playerRequests',{}).values():
+        for record in self.repository.read_state()['settings'].get('playerRequests',{}).values():
+            if ruling_ids is not None and record['rulingId'] not in ruling_ids:continue
             item=copy.deepcopy(record);item.pop('authorityEpoch',None);item.update(self.public(record))
             item.update(canDecide=item['status']=='pending' and policy(self.repository)['allowPlayerRequests'] and policy(self.repository)['allowPlayerChat'],risks=[],receipts=[])
             items.append(item)

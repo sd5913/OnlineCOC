@@ -3,6 +3,7 @@
 The security boundary is the restricted Lua environment, backed by an isolated
 interpreter process. This is not a container for arbitrary native executables.
 """
+import atexit
 import ctypes
 import json
 import math
@@ -17,7 +18,7 @@ import time
 
 from .errors import DomainError, require
 
-POLICY_VERSION = "lua-process-1"
+POLICY_VERSION = "lua-process-2-fresh-runtime"
 MAX_BYTES = 8 * 1024 * 1024
 MEMORY_BYTES = 512 * 1024 * 1024
 
@@ -89,11 +90,7 @@ def _reader(stream, messages):
         messages.put(None)
 
 
-def execute_request(request, random=None, timeout=10):
-    require(type(timeout) in (int, float) and math.isfinite(timeout) and 0 < timeout <= 120, "INPUT_INVALID")
-    payload = wire(request)
-    started = time.perf_counter()
-    deadline = time.monotonic() + timeout
+def _start():
     # Do not inherit credentials, PYTHONPATH, proxies, or the host save directory.
     env = {key: os.environ[key] for key in ("SYSTEMROOT", "WINDIR") if key in os.environ}
     env.update(PYTHONIOENCODING="utf-8", PYTHONDONTWRITEBYTECODE="1")
@@ -106,13 +103,92 @@ def execute_request(request, random=None, timeout=10):
                                cwd=entry.parent, env=env,
                                creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
                                start_new_session=os.name != "nt")
-    job = None
-    messages = queue.Queue(maxsize=4)
-    reader = threading.Thread(target=_reader, args=(process.stdout, messages), daemon=True)
+    return process
+
+
+class _Worker:
+    def __init__(self):
+        self.process = _start()
+        self.job = None
+        self.born = time.monotonic()
+        self.uses = 0
+        self.messages = queue.Queue(maxsize=4)
+        self.reader = threading.Thread(target=_reader, args=(self.process.stdout, self.messages), daemon=True)
+        try:
+            if os.name == 'nt':
+                self.job = WindowsJob(self.process)
+            self.reader.start()
+        except BaseException:
+            self.close()
+            raise
+
+    def close(self):
+        if self.job:
+            self.job.close()
+        if self.process.poll() is None:
+            self.process.kill()
+        self.process.wait(timeout=3)
+        for stream in (self.process.stdin, self.process.stdout):
+            stream.close()
+        if self.reader.is_alive():
+            self.reader.join(.2)
+
+    def reusable(self):
+        # Bound retained native allocations and cumulative POSIX CPU consumption.
+        return self.process.poll() is None and self.uses < 64 and time.monotonic() - self.born < 90
+
+
+class _Pool:
+    def __init__(self):
+        self.slots = threading.BoundedSemaphore(2)
+        self.lock = threading.Lock()
+        self.idle = []
+
+    def take(self, timeout):
+        require(self.slots.acquire(timeout=max(0, timeout)), 'RULE_TIMEOUT')
+        try:
+            with self.lock:
+                worker = self.idle.pop() if self.idle else None
+            if worker and not worker.reusable():
+                worker.close(); worker = None
+            return worker or _Worker()
+        except BaseException:
+            self.slots.release()
+            raise
+
+    def put(self, worker, healthy):
+        try:
+            if healthy and worker.reusable():
+                with self.lock:self.idle.append(worker)
+            else:worker.close()
+        finally:self.slots.release()
+
+    def close(self):
+        with self.lock:
+            idle, self.idle = self.idle, []
+        for worker in idle:worker.close()
+
+
+_POOL = _Pool()
+atexit.register(_POOL.close)
+
+
+def execute_request(request, random=None, timeout=10, *, reuse=True):
+    """Reuse only the restricted Python process; each job constructs a new Lua VM.
+
+    The request always includes its complete source version. No Lua definitions,
+    globals, Execution, random callback, or room state survive between jobs.
+    Failed/expired workers are destroyed, never returned to the bounded pool.
+    """
+    require(type(timeout) in (int, float) and math.isfinite(timeout) and 0 < timeout <= 120, "INPUT_INVALID")
+    payload = wire(request)
+    started = time.perf_counter()
+    deadline = time.monotonic() + timeout
+    worker = _POOL.take(timeout) if reuse else _Worker()
+    acquired = time.perf_counter()
+    process, messages = worker.process, worker.messages
+    healthy = False
     try:
-        if os.name == "nt":
-            job = WindowsJob(process)
-        reader.start()
         # Writing can block for a large input or an unresponsive child; include it
         # in the same wall-clock deadline rather than blocking the host forever.
         def send_input():
@@ -153,16 +229,13 @@ def execute_request(request, random=None, timeout=10):
             if not message["ok"]:
                 raise DomainError(message.get("code", "RULE_FAILED"), message.get("diagnostic", ""))
             message["workerMs"] = (time.perf_counter() - started) * 1000
+            message['workerAcquireMs'] = (acquired - started) * 1000
+            message['workerReused'] = worker.uses > 0
+            worker.uses += 1
+            healthy = True
             return message
         raise DomainError("RULE_TIMEOUT")
     finally:
-        if job:
-            job.close()
-        if process.poll() is None:
-            process.kill()
-        process.wait(timeout=3)
-        for stream in (process.stdin, process.stdout):
-            stream.close()
-        if reader.is_alive():
-            reader.join(.2)
+        if reuse:_POOL.put(worker, healthy)
+        else:worker.close()
 

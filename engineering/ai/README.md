@@ -11,9 +11,10 @@
 - 用量统计：新配置默认关闭每日累计限额（`dailyTokenBudget: null`），仍记录确认消耗和预留；本机管理器与嵌入对话提供“用量统计”。KP可查本房间，PL仅本人；开发者可用 `mountUsage` / `AiClient.aiUsage` / `createAITools.usage`。从旧版升级需重启宿主和管理器以加载新Schema，详情见[额度与统计](../../docs/current/engineering/ai-manager.md#每日限额与用量统计)。
 - 会话管理：本机管理器和三种嵌入对话均提供入口；可用 `mountSessionManager` 独立挂载，支持搜索、置顶、归档恢复、0—4 轮历史携带和格式化/原始文本切换。回答支持安全 Markdown 子集及语义引用，低层可用 `mountMarkdown` / `renderMarkdown`。
 - 数据引用：输入 `/` 或 `/en` 等前缀先补全指令，再搜索 `/config`（配置）、`/entity`（活动实体）或 `/data`（KP 的活动工件 JSON 数据）。方向键及 Enter/Tab 选择后显示“旅行提灯”等语义标签，整体增删；底层保留带修订的引用标记。引用只读，发送前可查看实际值，生成仍需外发授权。
+- 裁决大历史：AiClient 支持紧凑分页与单条详情；独立 AI 历史使用有版本分片和交付证明窄写，权限及批准仍实时复验。接口见[裁决](../../docs/current/engineering/ai-rulings.md#紧凑分页与按需详情)，配额与恢复见[运行说明](../../docs/current/engineering/ai-runtime.md#升级与备份恢复)。
 - 最小技术包：[fixtures/pack](tests/fixtures/pack/docs/rules.md)，不得当作具体游戏规则。
 - 来源审核与调试：KP 审核通过来源卡引用玩家申请／裁决，所有转交会话的修改另行人工批准；对话和裁决支持复制定位、授权 JSON 导出。服务商版本备注与实际响应标识分开记录，详见[接口与边界](../../docs/current/engineering/ai-debug-review.md)。
-- 任务诊断：KP原生对话显示资料工具执行次数、稳定错误码和可展开的失败阶段；日志不含完整对话、密钥或异常消息。按需空上下文、查询修正与诊断边界见[运行说明](../../docs/current/engineering/ai-runtime.md#任务诊断与查询恢复2026-11-15)。
+- 任务诊断：KP原生对话显示资料工具执行次数、稳定错误码和可展开的失败阶段；日志不含完整对话、密钥或异常消息。按需空上下文、查询修正与诊断边界见[运行说明](../../docs/current/engineering/ai-runtime.md#任务诊断与查询恢复)。
 
 在项目根目录使用现有开发环境执行测试：
 

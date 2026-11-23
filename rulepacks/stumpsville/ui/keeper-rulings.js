@@ -51,6 +51,13 @@ export function mountPackageRulings(target,client,module,{command,authorized,onS
   const labels={pending:'等待 KP 裁决',completed:'已执行',published:'已发布',accepted:'已接收，方案另行审核',rejected:'已拒绝',cancelled:'已取消',blocked:'检查未通过',draft:'尚未检查',executing:'执行中／待核对',unknown:'结果待核对',partial:'部分完成（请核对逐项结果）',failed:'执行失败',rolled_back:'整批已撤销，未生效'};
   let dead=false,busy=false,seq=0,items=[],dialog=null,markdown=null,history=false,reading=null,readAgain=false;
   const root=document.createElement('div');root.className='package-rulings';target.append(root);
+  const cursors=[null];
+  let nextBefore=null,openSequence=0;
+  const pager=document.createElement('div');
+  pager.className='actions';
+  pager.dataset.queueTime='0';
+  function pageButton(label,fn){const b=document.createElement('button');b.type='button';b.textContent=label;b.onclick=fn;pager.append(b);}
+  const detailFor=id=>client.aiRuling ? client.aiRuling(id) : client.aiRulings().then(page=>page.items.find(i=>i.rulingId===id));
   const type=i=>i.kind==='player_request'?'玩家创作申请':i.kind==='knowledge_request'?'玩家资料申请':i.kind==='configuration'?(i.highRisk?'AI 高危配置':'AI 配置'):'AI 行动';
   function close(){const old=dialog;dialog=null;markdown?.destroy();markdown=null;old?.close();old?.remove();}
   function notice(item,status,reason,extra={},result=item){if(!authorized())return;const outcome={...item,...result,status},failedReceipt=outcome.receipts?.find(r=>(r.receipt||r).status==='rejected');onNotice({title:type(item),status,reason:explainAIError(reason),batch:batchNoticeSnapshot(outcome),locator:{rulingId:item.rulingId,sessionId:item.sessionId,digest:item.digest,proposalRevision:item.revision,hostCommandId:outcome.execution?.items?.find(r=>r.status==='failed')?.commandId||failedReceipt?.commandId||failedReceipt?.id,...extra}});}
@@ -65,7 +72,7 @@ export function mountPackageRulings(target,client,module,{command,authorized,onS
         value=await command('ai.queue.archive',{targetId:item.queueTargetId,digest:item.queueDigest,archived:decision==='archive',...(decision==='archive'?{reason:'KP 将无需继续处理的中间方案归档'}:{})});
         notice(item,'completed',decision==='archive'?'已归档，可在已归档标签查看或恢复':value.supersededBy?'已取消手动归档，原方案仍由后续方案替代':rulingIsArchived({...item,...value})?'已取消手动归档，可在已归档标签查看':'已恢复到裁决队列');onChange(value);
       }else if(decision==='recheck'){
-        const latest=(await client.aiRulings()).items.find(i=>i.rulingId===item.rulingId);
+        const latest=await detailFor(item.rulingId);
         if(!authorized()||!latest||latest.digest!==item.digest||latest.revision!==item.revision)throw Error('RULING_STALE');
         const proposalId=item.rulingId.slice('proposal:'.length);let revision=item.revision;
         if(staleApproval(latest)){
@@ -76,7 +83,7 @@ export function mountPackageRulings(target,client,module,{command,authorized,onS
         }else if(!(latest.kind==='configuration'&&(latest.canRevalidate||latest.highRisk&&latest.canDecide&&latest.status==='draft')))throw Error('RULING_STALE');
         if(!authorized())return;
         value=await command('ai.proposal.validate',{proposalId,revision});
-        const current=(await client.aiRulings()).items.find(i=>i.rulingId===item.rulingId);
+        const current=await detailFor(item.rulingId);
         const ready=value.proposal?.status==='review_ready'&&current?.status==='pending'&&current.revision===revision;
         notice(item,ready?'pending':'blocked',ready?'重新检查完成，尚未执行。请重新打开详情核对方案与评估，再作裁决。':reasonOf(value)||(value.proposal?.status==='review_ready'?'RECHECK_STATE_BLOCKED':'重新检查未通过，请查看检查结果'),{digest:value.proposal?.candidateDigest,proposalRevision:revision});
       }else if(decision==='forward'){
@@ -105,8 +112,28 @@ export function mountPackageRulings(target,client,module,{command,authorized,onS
     }catch(error){notice(item,error.aiOutcome||'failed',error.code||error.message,{commandRequestId:error.aiRequestId||error.requestId});await refresh();}
     finally{busy=false;if(!dead)paint();}
   }
-  function open(item){
-    if(dead||busy||!authorized())return;close();dialog=document.createElement('dialog');dialog.className='ai-request-detail ruling-dialog';dialog.setAttribute('aria-label','裁决详情');
+  async function open(item){
+    if(dead||busy||!authorized())return;
+    close();
+    const ticket=++openSequence;
+    if(item.compact){
+      dialog=document.createElement('dialog');
+      dialog.className='ai-request-detail';
+      dialog.innerHTML='<header><h2>裁决详情</h2><button type="button">关闭详情</button></header><p role="status">正在读取裁决详情…</p>';
+      const cancelRead=()=>{openSequence++;close();};
+      dialog.querySelector('button').onclick=cancelRead;
+      dialog.addEventListener('cancel',e=>{e.preventDefault();cancelRead();});
+      document.body.append(dialog);dialog.showModal();
+      try{item=await detailFor(item.rulingId);if(!item)throw Error('原裁决不存在或当前不可读');}
+      catch(e){
+        if(ticket===openSequence){close();if(authorized())onNotice({title:'读取裁决',status:'failed',reason:e.message});}
+        return;
+      }
+      if(ticket!==openSequence)return;
+      close();
+      if(dead||busy||!authorized())return;
+    }
+    dialog=document.createElement('dialog');dialog.className='ai-request-detail ruling-dialog';dialog.setAttribute('aria-label','裁决详情');
     dialog.innerHTML='<header><h2>'+esc(type(item))+'</h2><button type="button" data-close>关闭详情</button></header><p>'+esc(stateLabel(item))+'</p><div data-summary></div><details><summary>完整修改与检查结果</summary><pre class="data-detail"></pre></details>';
     markdown=module.mountMarkdown(dialog.querySelector('[data-summary]'),item.summary||'',{resolveReferences:tokens=>client.aiResolve(tokens),renderReference,audience:'administrator'});
     if(item.sourceState==='stale'||item.status==='stale'){dialog.classList.add('ruling-stale');dialog.title=item.sourceNotice||'依赖资料已过时，正文保留原方案。';}
@@ -137,20 +164,34 @@ export function mountPackageRulings(target,client,module,{command,authorized,onS
   function paint(){
     root.innerHTML=items.filter(i=>history?rulingIsArchived(i):!rulingIsArchived(i)).map(i=>rulingCard({stale:i.sourceState==='stale'||i.status==='stale',timestamp:i.createdAt,key:i.rulingId,time:new Date(i.createdAt*1000).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}),type:type(i),source:i.initiator||'KP',summary:esc((i.summary||'修改提案').replace(/\s+/g,' ')),state:stateLabel(i),attrs:'data-ruling-id="'+esc(i.rulingId)+'"',actions:'<button type="button" data-open>查看并裁决</button><button type="button" data-session '+(!(i.reviewSessionId||i.sessionId)?'disabled':'')+'>查看对话</button><button type="button" data-forward>转 AI 处理</button>'})).join('');
     for(const card of root.children){const item=items.find(i=>i.rulingId===card.dataset.rulingId);card.querySelector('[data-open]').onclick=()=>open(item);card.querySelector('[data-forward]').onclick=()=>act(item,'forward');card.querySelector('[data-session]').onclick=()=>Promise.resolve(onSession?.(item.reviewSessionId||item.sessionId)).catch(e=>notice(item,'failed',e.message));if(busy)for(const button of card.querySelectorAll('button'))button.disabled=true;}
+    pager.replaceChildren();
+    if(cursors.length>1)pageButton('返回较新裁决',()=>{cursors.pop();seq++;refresh();});
+    if(nextBefore)pageButton('查看较早裁决',()=>{cursors.push(nextBefore);seq++;refresh();});
+    if(pager.childElementCount)root.prepend(pager);
     timeline?.set('rulings',[...root.children]);
   }
   async function refresh(){
     if(dead||!authorized())return;
     if(reading){readAgain=true;return reading;}
+    root.setAttribute('aria-busy','true');
+    if(!items.length)root.textContent='正在读取裁决…';
     reading=(async()=>{
       do{
         readAgain=false;const ticket=++seq;
-        try{const data=await client.aiRulings();if(dead||ticket!==seq||!authorized())return;items=data.items;paint();}
-        catch(e){if(!dead){timeline?.remove('rulings');root.textContent=e.message||e.code;}}
+        try{const data=await client.aiRulings(client.aiRuling?{compact:true,queue:history?'archived':'active',before:cursors.at(-1)??undefined,limit:30}:undefined);
+          if(dead||!authorized())return;
+          if(ticket!==seq)continue;
+          items=data.items;nextBefore=data.nextBefore;paint();}
+        catch(e){
+          if(dead||!authorized())return;
+          if(ticket!==seq)continue;
+          if(cursors.length>1&&e.code==='CURSOR_INVALID'){cursors.splice(1);readAgain=true;continue;}
+          timeline?.remove('rulings');root.textContent=e.message||e.code;
+        }
       }while(readAgain&&!dead&&authorized());
     })();
-    try{return await reading;}finally{reading=null;}
+    try{return await reading;}finally{reading=null;root.removeAttribute('aria-busy');}
   }
   const timer=setInterval(()=>{if(!busy&&!document.hidden&&root.isConnected)refresh();},4000);refresh();
-  return {refresh,setTimeline(value){timeline?.remove('rulings');timeline=value;paint();},setHistory(value){history=value;paint();},destroy(){dead=true;seq++;close();clearInterval(timer);timeline?.remove('rulings');root.remove();}};
+  return {refresh,setTimeline(value){timeline?.remove('rulings');timeline=value;paint();},setHistory(value){if(history!==value){history=value;cursors.splice(1);nextBefore=null;items=[];seq++;openSequence++;close();}paint();},destroy(){dead=true;seq++;close();clearInterval(timer);timeline?.remove('rulings');root.remove();}};
 }

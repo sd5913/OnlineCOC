@@ -1,0 +1,186 @@
+{
+  "date": "2026-11-22",
+  "recordedAt": "2026-11-22T21:53:47+08:00",
+  "version": "0.3.1",
+  "p2pVersion": "0.2.3",
+  "changes": [
+    "Offline Windows x64 networking dependency installer",
+    "Default 86400-second room retention after host disconnect or sharing stop",
+    "Owner dissolution removes room, code, membership and shortcuts immediately",
+    "Expired host signals are closed even if another request already purged their leases"
+  ],
+  "localTests": {
+    "web": {
+      "passed": 39,
+      "skipped": 3,
+      "failed": 0,
+      "junitSHA256": "2205160a7eecdbccf398b90b9ac9252a9365dd1e4c47031bf7c7c663dde8dfea"
+    },
+    "p2p": {
+      "passed": 43,
+      "skipped": 11,
+      "failed": 0,
+      "junitSHA256": "769fc835e7464d29c513ae077c70fea957386e62fae778a2346de45f2d9f59e4"
+    },
+    "browser": "Microsoft Edge",
+    "pythonUTF8": true,
+    "repeatRunsCountedAgain": false
+  },
+  "cloudTests": {
+    "passed": 1,
+    "skipped": 0,
+    "failed": 0,
+    "junitSHA256": "afb723a6380ad19381ecf9bb3f1b6939657336aadd2289e4b01d25486ba85084"
+  },
+  "cloudCreation": {
+    "version": "0.3.1",
+    "defaultRetentionSeconds": 86400,
+    "closedShortcutsRemoved": true,
+    "publicCreate": true,
+    "passwordJoin": true,
+    "privateHidden": true,
+    "shortcutRetained": true,
+    "nonOwnerDenied": true,
+    "roomClosed": true,
+    "browserPrivateCAException": true,
+    "hostAndAPITrustedCA": true,
+    "roomPagesNoGameConnection": true
+  },
+  "installer": {
+    "release": {
+      "installerVersion": "1.0.0",
+      "platform": "Windows x64",
+      "python": "3.14.2",
+      "pythonSource": "https://www.python.org/ftp/python/3.14.2/python-3.14.2-embed-amd64.zip",
+      "pythonSHA256": "f05e28d161c6b15af64a7cb7f08b4a22b3a6b03eee71baee24ea557b3bdd5798",
+      "payloadSHA256": "fbef6cc47e22a926e8f905a85f01397ff65a3301be5946514b5994292a3addc5",
+      "exeSHA256": "2b77a65fbe1cf843e155db43c2d3336510b72339ee90ada32d4640caa89cdb65",
+      "exeBytes": 48329728,
+      "dependencies": {
+        "aiohappyeyeballs": "2.7.1",
+        "aiohttp": "3.14.5",
+        "aioice": "0.13.0",
+        "aiortc": "1.16.0",
+        "aiosignal": "1.4.0",
+        "argon2-cffi": "25.1.0",
+        "argon2-cffi-bindings": "26.1.0",
+        "attrs": "26.1.0",
+        "av": "19.0.2",
+        "cffi": "2.1.1",
+        "cryptography": "50.0.2",
+        "dnspython": "2.9.2",
+        "frozenlist": "1.8.0",
+        "google-crc32c": "1.9.0",
+        "idna": "3.20",
+        "ifaddr": "0.2.0",
+        "multidict": "7.2.1",
+        "propcache": "0.5.4",
+        "pycparser": "3.12",
+        "pyee": "16.0.2",
+        "pylibsrtp": "1.0.0",
+        "pyOpenSSL": "26.4.0",
+        "typing_extensions": "4.16.0",
+        "yarl": "1.25.1"
+      }
+    },
+    "verification": {
+      "freshInstall": true,
+      "repeatInstallAndBackup": true,
+      "unicodeAndSpaces": true,
+      "systemPythonAbsentFromPATH": true,
+      "invalidPythonEnvironmentIgnored": true,
+      "inUseRuntimeRejected": true,
+      "configurationPreserved": true,
+      "invalidTargetRejected": true,
+      "bothCLIHelp": true,
+      "dependenciesAndWebRTCProbe": true,
+      "exeSHA256": "2b77a65fbe1cf843e155db43c2d3336510b72339ee90ada32d4640caa89cdb65"
+    },
+    "projectSourceRequired": true,
+    "browserPlayersNeedInstaller": false,
+    "includesGameBackendDependencies": false,
+    "testedOnIndependentCleanComputer": false
+  },
+  "roomRetention": {
+    "defaultSeconds": 86400,
+    "boundarySecondsTested": [
+      86399,
+      86401
+    ],
+    "reconnectClearsInactivity": true,
+    "serverRestartPreservesInactivity": true,
+    "legacyRecordsGetOneDayGrace": true,
+    "onlineEmptyRoomsRetained": true,
+    "real24HourWait": false
+  },
+  "deployed": {
+    "release": "/opt/onlinecoc-network/releases/web-20261122T135106Z",
+    "webVersion": "0.3.1",
+    "p2pVersion": "0.2.3",
+    "services": {
+      "onlinecoc-directory": "active",
+      "onlinecoc-turn": "active"
+    }
+  },
+  "rollback": "/opt/onlinecoc-network/rollback/web-20261122T135106Z",
+  "initialMigrationRollback": "/opt/onlinecoc-network/rollback/web-20261122T134217Z",
+  "preservationAtInitialUpgrade": {
+    "preexistingAccounts": 27,
+    "preexistingOpenRooms": 8,
+    "previouslyClosedRooms": 8,
+    "accountsPreserved": true,
+    "openRoomsAndPoliciesPreserved": true,
+    "previouslyClosedRoomsRemoved": true
+  },
+  "installedSourcesMatched": 40,
+  "strictCAHTTPS": true,
+  "connectionsOn443BeforeEachDeployment": 0,
+  "limitations": [
+    "Installer shared CLI/GUI installation logic verified through real EXE CLI; GUI and a second physical computer not manually accepted",
+    "24-hour expiry verified by controlled timestamps, not a 24-hour soak",
+    "Existing game TURN and cloud restart suites not rerun in this update; cloud creation/removal separately tested",
+    "Browser accepts test CA exception; host and Python verify trusted test CA"
+  ],
+  "runtimeSourcesSHA256": {
+    "network-web/src/onlinecoc_web/__init__.py": "b0d5085d8e23fae056d14349d5406593bd6342d3becaaf8d116148fe939070a6",
+    "network-web/src/onlinecoc_web/__main__.py": "6d8b7d7846a845059d7a3107143f11131f63c5511d669b44085b15ec5e3d2279",
+    "network-web/src/onlinecoc_web/bridge.py": "2000e9a79d5348b825433dce3d935376adfd75fb4554cda0be670ee1e2dda5ce",
+    "network-web/src/onlinecoc_web/cli.py": "fb9cd876eb7702f23e9059933a56284f05cdc00175e52fe05170129182910841",
+    "network-web/src/onlinecoc_web/creation.py": "da0c9da1c3116652c14c97747e2589b33411d680412da0b5acb2571f51bd82ce",
+    "network-web/src/onlinecoc_web/host.py": "14645f0777eb9d54add1f31a0752813ab9f69cf1b5f2a4ebfe028db004d3049b",
+    "network-web/src/onlinecoc_web/portal.py": "81759acfd55ecc97856e983402822f78c3774eeeaa87b6338e4f5f9a38534c71",
+    "network-web/src/onlinecoc_web/resources.py": "07ec75a015be56f73f5a3cfc3830cb6c20540f1ddf5e850608b1354453968c1d",
+    "network-web/src/onlinecoc_web/store.py": "61e3c90eb1358af11c959a85972b4b938c026005045b807fda0a72d85a58f4f5",
+    "network-web/src/onlinecoc_web/web/app.js": "3dfc76d7b872aa35535f3a191bc2024cd1833d89ae093e579e44b16690c44396",
+    "network-web/src/onlinecoc_web/web/game.js": "32fc9dac60925971a02e69daa27be7c4e855921c2970319c53af2bb1797b6bfc",
+    "network-web/src/onlinecoc_web/web/index.html": "360cc8c30e4efa9974fc8735c4682ace4aa33063e4134b2fdc5e6582395d5754",
+    "network-web/src/onlinecoc_web/web/remember.js": "64b83e3a0819da41c55a3da506edce9a63021f85a03146a98aaa152b29e6148f",
+    "network-web/src/onlinecoc_web/web/resources.js": "39cb324dead37beb87a44a385f17c8918cc4e5a68fc9dae0b5e23c79f9af0cb4",
+    "network-web/src/onlinecoc_web/web/sandbox-boot.js": "5b8b81392120545fcfcfbb29e79ccb703c95a4a0b99fe81dbed94b5b5de19355",
+    "network-web/src/onlinecoc_web/web/sandbox.js": "4e7dc9c5ddddc55bcabc48d34eb5fa12802dc3557cd48a907face0ac321acfe4",
+    "network-web/src/onlinecoc_web/web/storage.js": "ff78ed7ce455394c7c82afec8b89117d9b40e083cc5ea452c9ad344e115ec71e",
+    "network-web/src/onlinecoc_web/web/style.css": "6297a7f3e81cc4672c71f75cd170c4dc57c47ae66573d1655470264f2ab3bc3e",
+    "network-p2p/src/onlinecoc_p2p/__init__.py": "79b3f4f144776c1c0a25f330e42caeb14bb70281e2add83a49d71207ee0e916b",
+    "network-p2p/src/onlinecoc_p2p/__main__.py": "cf7390a2508a0fcad4777a4a629fc5212ab655cb45845975995f835676a834e3",
+    "network-p2p/src/onlinecoc_p2p/cli.py": "c1857d2bd731d7aed17e62f0cc244b6f8d376b47d0a69d862834952deee65a92",
+    "network-p2p/src/onlinecoc_p2p/client.py": "8757ad8eef7bfa1e918e6050e012531f405adf156260663bfb8f6423747811ff",
+    "network-p2p/src/onlinecoc_p2p/common.py": "d85702c7f5a0c82f9f3f5bc9fc31215e2ce771d94e347a2abb6bb077a4823d53",
+    "network-p2p/src/onlinecoc_p2p/control.py": "ba24f4b9a5c0393ac798c1b7805a957cf5c3b4862f97707f151e9fde3d9c1303",
+    "network-p2p/src/onlinecoc_p2p/directory.py": "ad9bc187139ae65329b4f58207f5ecd39a991ecc6068e2dcd3246190e89d82a2",
+    "network-p2p/src/onlinecoc_p2p/discovery.py": "30d6391d650dda90c0d6135c07e1cc5e45c82a1581fdb41d2221a060c3f12f05",
+    "network-p2p/src/onlinecoc_p2p/host.py": "91c7f6dbcc699597a2a7dfc643967acfc64a44ca6ba48ec098619e9c13bbe5e7",
+    "network-p2p/src/onlinecoc_p2p/local_app.py": "12a41d9b9b9a1e9dab9c3d1769201e639e2f9af2f08ab5bcd236f50994106bc1",
+    "network-p2p/src/onlinecoc_p2p/ownership.py": "a5e08aa4caff65e828a84627010b69cc69c0f5ba4e42222feb2f82051386def1",
+    "network-p2p/src/onlinecoc_p2p/packages.py": "cecbb4805f6f54244ab2622c7a11ab99e7378757ee905d8b3135994d64894f6e",
+    "network-p2p/src/onlinecoc_p2p/rooms.py": "4dd0dbe76505df9e2d8c52efb39544a72ca342b6323162cc15b435fb61523c73",
+    "network-p2p/src/onlinecoc_p2p/rtc.py": "ae4dfb142ace462253550a799ab2c698af12094dc7b2e8381823289b30b1e3a6",
+    "network-p2p/src/onlinecoc_p2p/upstream.py": "41a92dc9c018fb30d58bf89be1bcce9ff4af95c23f5fcf013773061e43ff184b",
+    "network-p2p/src/onlinecoc_p2p/web/app.js": "1f4b75f58327208198609703473b4da675cf1ba621015b2d060a5f3dc47adf0b",
+    "network-p2p/src/onlinecoc_p2p/web/bridge.js": "fe6a3c708be9eaee0fda7b3817af367d2249c4e003e71d78c3dfac68370d1cfa",
+    "network-p2p/src/onlinecoc_p2p/web/index.html": "08b130995a7eb45e27457de77931127d0993f869b79a1fd91b20b744a8ce3a95",
+    "network-p2p/src/onlinecoc_p2p/web/join.js": "b14c3c20e35b6ee626ac46af44dab8a3dd36038957709d8b08b7f3715bfd51b5",
+    "network-p2p/src/onlinecoc_p2p/web/style.css": "508e7b80555993090c1b933b9b9c1319e9b492c1512abe233ffa43b52ead15b6",
+    "network-p2p/src/onlinecoc_p2p/web/transport.js": "553855a0fab64352e3a944af0cfe3aec6a3253bb5a30a1729111565b261eeb5e",
+    "network-p2p/src/onlinecoc_p2p/wire.py": "5ca8b46118e903ec1dd212ff32afd040c8f48d18861f571c0bdf1ddc2a09bb72"
+  }
+}

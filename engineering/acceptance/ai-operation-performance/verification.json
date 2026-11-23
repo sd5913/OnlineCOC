@@ -1,0 +1,259 @@
+{
+  "rounds": [
+    {
+      "file": "compact-metadata.xml",
+      "tests": 55,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 55,
+      "passRate": 1.0,
+      "failuresDetail": []
+    },
+    {
+      "file": "core-v2.xml",
+      "tests": 739,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 738,
+      "passRate": 0.9986468200270636,
+      "failuresDetail": [
+        {
+          "name": "engineering.ai.tests.test_segmented_store::test_large_exact_roundtrip_incremental_objects_and_backup",
+          "message": "AssertionError: assert (31 < 5)\n +  where 31 = len({WindowsPath('D:/Studies/Art Programming/OnlineCOC/engineering/acceptance/ai-operation-performance/work/core-v2-179532...rge_exact_roundtrip_inc0/store/objects-v2/4bc13ea44b6f2a06c442e547c0ce3372d1a1bc1ce5491827dd5027d0a424ae0e.json'), ...})"
+        }
+      ]
+    },
+    {
+      "file": "core.xml",
+      "tests": 725,
+      "failures": 2,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 723,
+      "passRate": 0.9972413793103448,
+      "failuresDetail": [
+        {
+          "name": "engineering.ai.tests.test_memory::test_context_approval_binding_tracks_memory_revision",
+          "message": "KeyError: 'sourceId'"
+        },
+        {
+          "name": "engineering.ai.tests.test_task_diagnostics::test_model_page_counts_do_not_change_proofs_or_reveal_hidden_totals",
+          "message": "KeyError: 'sourceId'"
+        }
+      ]
+    },
+    {
+      "file": "delivery-crash.xml",
+      "tests": 27,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 27,
+      "passRate": 1.0,
+      "failuresDetail": []
+    },
+    {
+      "file": "delivery-write-sets.xml",
+      "tests": 54,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 54,
+      "passRate": 1.0,
+      "failuresDetail": []
+    },
+    {
+      "file": "first.xml",
+      "tests": 0,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 0,
+      "passRate": null,
+      "failuresDetail": []
+    },
+    {
+      "file": "history-readonly.xml",
+      "tests": 46,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 46,
+      "passRate": 1.0,
+      "failuresDetail": []
+    },
+    {
+      "file": "integration.xml",
+      "tests": 139,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 139,
+      "passRate": 1.0,
+      "failuresDetail": []
+    },
+    {
+      "file": "memory-check.xml",
+      "tests": 8,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 7,
+      "passRate": 0.875,
+      "failuresDetail": [
+        {
+          "name": "engineering.ai.tests.test_memory::test_context_approval_binding_tracks_memory_revision",
+          "message": "KeyError: 'sourceId'"
+        }
+      ]
+    },
+    {
+      "file": "memory-fixed.xml",
+      "tests": 14,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 14,
+      "passRate": 1.0,
+      "failuresDetail": []
+    },
+    {
+      "file": "performance-regression.xml",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 6,
+      "passRate": 1.0,
+      "failuresDetail": []
+    },
+    {
+      "file": "release-core.xml",
+      "tests": 740,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 740,
+      "passRate": 1.0,
+      "failuresDetail": []
+    },
+    {
+      "file": "release-v3-recovered.xml",
+      "tests": 753,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 753,
+      "passRate": 1.0,
+      "failuresDetail": []
+    },
+    {
+      "file": "segment-analysis.xml",
+      "tests": 1,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 0,
+      "passRate": 0.0,
+      "failuresDetail": [
+        {
+          "name": "engineering.acceptance.ai-operation-performance.work.segments-verified-1795326787351668200.engineering.ai.tests.test_segmented_store::test_large_exact_roundtrip_incremental_objects_and_backup",
+          "message": "AssertionError: assert (31 < 5)\n +  where 31 = len({WindowsPath('D:/Studies/Art Programming/OnlineCOC/engineering/acceptance/ai-operation-performance/work/segment-failur...rge_exact_roundtrip_inc0/store/objects-v2/4bc13ea44b6f2a06c442e547c0ce3372d1a1bc1ce5491827dd5027d0a424ae0e.json'), ...})"
+        }
+      ]
+    },
+    {
+      "file": "segments-optimized.xml",
+      "tests": 0,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 0,
+      "passRate": null,
+      "failuresDetail": []
+    },
+    {
+      "file": "segments-partitioned.xml",
+      "tests": 20,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 20,
+      "passRate": 1.0,
+      "failuresDetail": []
+    },
+    {
+      "file": "segments-verified.xml",
+      "tests": 121,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 120,
+      "passRate": 0.9917355371900827,
+      "failuresDetail": [
+        {
+          "name": "engineering.ai.tests.test_segmented_store::test_large_exact_roundtrip_incremental_objects_and_backup",
+          "message": "AssertionError: assert (31 < 5)\n +  where 31 = len({WindowsPath('D:/Studies/Art Programming/OnlineCOC/engineering/acceptance/ai-operation-performance/work/segments-verif...rge_exact_roundtrip_inc0/store/objects-v2/4bc13ea44b6f2a06c442e547c0ce3372d1a1bc1ce5491827dd5027d0a424ae0e.json'), ...})"
+        }
+      ]
+    },
+    {
+      "file": "segments.xml",
+      "tests": 41,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 41,
+      "passRate": 1.0,
+      "failuresDetail": []
+    }
+  ],
+  "frozenVersion": "v3",
+  "sourceManifestSha256": "3130b6d4175d0082ee5988dec1fc7b2167e76e92e804507297cfcbb90b10b239",
+  "frozenFiles": 223,
+  "frozenHashMismatches": [],
+  "currentSourceMismatches": [],
+  "realModelCalls": 0,
+  "largeHistory": [
+    {
+      "file": "delivery-cold-v2.json",
+      "status": "passed",
+      "count": 10000,
+      "stateBytes": 19176984,
+      "passedScenarios": 8
+    },
+    {
+      "file": "delivery-cold-v3.json",
+      "status": "passed",
+      "count": 10000,
+      "stateBytes": 19176983,
+      "passedScenarios": 8
+    },
+    {
+      "file": "delivery-large-history.json",
+      "status": "passed",
+      "count": 10000,
+      "stateBytes": 19166985,
+      "passedScenarios": 8
+    },
+    {
+      "file": "large-history.json",
+      "status": "passed",
+      "count": 10000,
+      "stateBytes": 19166984,
+      "passedScenarios": 8
+    }
+  ],
+  "finalCore": {
+    "file": "release-v3-recovered.xml",
+    "tests": 753,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 753,
+    "passRate": 1.0,
+    "failuresDetail": []
+  }
+}

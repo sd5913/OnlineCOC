@@ -1,0 +1,18 @@
+{
+  "description": "Pre-change files sufficient to overlay on engine interface v1 for paired engine benchmarks; AI baseline dependency is engine-kp-policy-interface-snapshot/v1",
+  "files": {
+    "engineering/backend/src/onlinecoc/ai_api.py": "e0ab371541d65c50187bf9a241969225edda9440ebc629ae932508c4ff17f27b",
+    "engineering/backend/src/onlinecoc/assets.py": "e3b1c6fe8df0da49aa6fe6d023dc87e3cf6f6f34771afc222dde066e829838c2",
+    "engineering/backend/src/onlinecoc/contracts.py": "37a965819c6b86c7613ff07faceda9e5b751a4bd484677715332d302e950c7cf",
+    "engineering/backend/src/onlinecoc/host.py": "8a6fc6fce951d50e22ab7737b4b18efc660a176a74b806a761b1db3f4feb4ce8",
+    "engineering/backend/src/onlinecoc/lua_runtime.py": "7bc72d2f7e957f5a2b1f4a28e3e44fcb4d207b46d8c94719ce0f4af6ac67517b",
+    "engineering/backend/src/onlinecoc/registry.py": "7cd791c4fedc2f10cf7426646bc3abd18e26f5cb0bbabc86bbc4bf719a180b4a",
+    "engineering/backend/src/onlinecoc/server.py": "2cb4bcc880004470559c57466249275fbd76fc6cc2804fa08360f2de3c6d2544",
+    "engineering/backend/src/onlinecoc/worker_entry.py": "686f0f86e5c523edcb25ca69cae78e3264e6778accf197aa11aa92300373635e",
+    "engineering/backend/src/onlinecoc/worker_process.py": "dc451662822013ec99ac2d1c3902d73876cef4e9decdbeedc282cebc74906fea",
+    "engineering/backend/src/onlinecoc/knowledge/provider.py": "292e689f12edf258b52c53368a870e30980fe510155ff9d803726a23b5018924",
+    "engineering/backend/src/onlinecoc/knowledge/service.py": "6d606d227583559abd19d548e03422dd64f3e2964ab657b51858ab5b76909ac5",
+    "engineering/data-management/onlinecoc_data/store.py": "19b7caaf48d4e1e1852f59bb49eb1a2d3dd63a37cf4f02093c37e5c55cb509a1",
+    "engineering/client-sdk/client.js": "627526d925a77344315c323c4ebd3700f4f5d6efea145a0177287f4daee87b14"
+  }
+}

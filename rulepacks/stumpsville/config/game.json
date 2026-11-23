@@ -140,16 +140,113 @@
       "uses": 6,
       "light": true,
       "description": "六格用量的照明工具。"
+    },
+    {
+      "id": "gear",
+      "name": "黄铜齿轮",
+      "slots": 2,
+      "uses": 0,
+      "kind": "item",
+      "description": "用于排水泵的主传动。"
+    },
+    {
+      "id": "wax",
+      "name": "密封蜡",
+      "slots": 1,
+      "uses": 3,
+      "kind": "item",
+      "description": "每次修补消耗一格。"
+    },
+    {
+      "id": "tools",
+      "name": "修理工具组",
+      "slots": 2,
+      "uses": 3,
+      "kind": "item",
+      "description": "铆须用来检修工厂设备。"
+    },
+    {
+      "id": "bandage",
+      "name": "干净绷带",
+      "slots": 1,
+      "uses": 3,
+      "kind": "item",
+      "description": "可交给主持用于照料伤者。"
+    },
+    {
+      "id": "oil",
+      "name": "灯油瓶",
+      "slots": 1,
+      "uses": 1,
+      "kind": "item",
+      "description": "可以点亮信号灯。"
+    },
+    {
+      "id": "flag",
+      "name": "信号旗布",
+      "slots": 1,
+      "uses": 0,
+      "kind": "item",
+      "description": "露哨留下的联络旗。"
+    },
+    {
+      "id": "ledger",
+      "name": "供粮账本",
+      "slots": 1,
+      "uses": 0,
+      "kind": "item",
+      "description": "记着工厂停产前的供粮记录。"
+    },
+    {
+      "id": "pass",
+      "name": "鼠帮通行牌",
+      "slots": 1,
+      "uses": 0,
+      "kind": "item",
+      "description": "灰穗用它见证劳务或供粮协议。"
+    },
+    {
+      "id": "bag",
+      "name": "防水行囊",
+      "slots": 2,
+      "uses": 3,
+      "kind": "item",
+      "description": "渡口用来防潮的行李。"
+    },
+    {
+      "id": "hook",
+      "name": "攀爬钩",
+      "slots": 1,
+      "uses": 3,
+      "kind": "item",
+      "description": "可挂上绳梯。"
+    },
+    {
+      "id": "wedge",
+      "name": "支撑木楔",
+      "slots": 1,
+      "uses": 1,
+      "kind": "item",
+      "description": "可制作临时传动或加固船只。"
+    },
+    {
+      "id": "herb",
+      "name": "安神草",
+      "slots": 1,
+      "uses": 1,
+      "kind": "item",
+      "description": "照料受惊的村民时可用。"
     }
   ],
   "locations": [
     {
       "index": 1,
       "name": "入口隧道",
-      "description": "一条狭窄隧道通向树桩深处，前方可见一轮奶酪。",
+      "description": "入口的地面留着车辙。路碑写着：暴雨将至，进镇者请到庭院找栗婶。",
       "truth": "大石机关的诱饵为一轮奶酪，价值100p。触发伤害d12。先询问调查方法，再裁定触发。",
       "exits": [
-        2
+        2,
+        14
       ],
       "features": [
         "观察地面",
@@ -182,7 +279,7 @@
     {
       "index": 3,
       "name": "庭院",
-      "description": "庭院中央有池塘，梯子通往树桩上的房屋。",
+      "description": "庭院中央有池塘，梯子通往树桩上的房屋。 栗婶正清点避雨的居民。",
       "truth": "池底有金叶鼠像600p，占4槽，另有140p钱袋。Jack位于08奶酪工厂。",
       "exits": [
         2,
@@ -190,7 +287,8 @@
         5,
         6,
         7,
-        8
+        8,
+        11
       ],
       "features": [
         "调查池塘",
@@ -271,6 +369,10 @@
         {
           "item": 9,
           "count": 1
+        },
+        {
+          "item": 24,
+          "count": 1
         }
       ],
       "clues": []
@@ -283,7 +385,9 @@
       "exits": [
         3,
         7,
-        9
+        9,
+        12,
+        13
       ],
       "features": [
         "检查设备",
@@ -296,6 +400,10 @@
         },
         {
           "item": 11,
+          "count": 1
+        },
+        {
+          "item": 23,
           "count": 1
         }
       ],
@@ -320,7 +428,7 @@
     {
       "index": 10,
       "name": "熟成洞",
-      "description": "洞窟里堆着熟成的奶酪，空气中满是浓郁气味。",
+      "description": "洞里有一排存放奶酪的木架。",
       "truth": "Ernie在此熟睡，库存八轮奶酪，每轮100p。宝箱抽战利品两次。Ernie数值与出口线索正文待原版终校。",
       "exits": [
         9
@@ -342,6 +450,108 @@
           "text": "进一步调查指向北方的一处据点。主持在确认获取条件后补充详情，树桩镇首轮在此收束。"
         }
       ]
+    },
+    {
+      "index": 11,
+      "name": "树根排水间",
+      "description": "水正从破裂的泵壳渗进低处。",
+      "truth": "暴雨扩展原创地点。",
+      "exits": [
+        3,
+        12,
+        14
+      ],
+      "features": [],
+      "stock": [
+        {
+          "item": 21,
+          "count": 1
+        },
+        {
+          "item": 28,
+          "count": 2
+        }
+      ],
+      "clues": []
+    },
+    {
+      "index": 12,
+      "name": "旧工坊",
+      "description": "铆须守着工作台，墙上钉着检修图。",
+      "truth": "暴雨扩展原创地点。",
+      "exits": [
+        8,
+        11
+      ],
+      "features": [],
+      "stock": [
+        {
+          "item": 17,
+          "count": 1
+        },
+        {
+          "item": 18,
+          "count": 2
+        },
+        {
+          "item": 19,
+          "count": 1
+        },
+        {
+          "item": 20,
+          "count": 2
+        },
+        {
+          "item": 27,
+          "count": 2
+        }
+      ],
+      "clues": []
+    },
+    {
+      "index": 13,
+      "name": "树冠信号台",
+      "description": "露哨朝溪岸张望，灯架在风里摇晃。",
+      "truth": "暴雨扩展原创地点。",
+      "exits": [
+        8,
+        14
+      ],
+      "features": [],
+      "stock": [
+        {
+          "item": 21,
+          "count": 1
+        },
+        {
+          "item": 22,
+          "count": 1
+        },
+        {
+          "item": 26,
+          "count": 1
+        }
+      ],
+      "clues": []
+    },
+    {
+      "index": 14,
+      "name": "溪岸渡口",
+      "description": "苇伯在栈桥旁整备小舟，岸边还有一条步道。",
+      "truth": "暴雨扩展原创地点。",
+      "exits": [
+        1,
+        11,
+        13
+      ],
+      "features": [],
+      "stock": [
+        {
+          "item": 25,
+          "count": 1
+        }
+      ],
+      "clues": []
     }
   ],
   "presets": [
@@ -398,6 +608,130 @@
         {
           "item": 4,
           "slot": 6
+        }
+      ]
+    },
+    {
+      "id": "rivet",
+      "name": "榛钉",
+      "description": "想重启工厂的学徒",
+      "str": 12,
+      "dex": 10,
+      "wil": 9,
+      "hp": 4,
+      "pips": 3,
+      "items": [
+        {
+          "slot": 1,
+          "item": 1
+        },
+        {
+          "slot": 2,
+          "item": 2
+        },
+        {
+          "slot": 5,
+          "item": 3
+        },
+        {
+          "slot": 8,
+          "item": 19
+        }
+      ]
+    },
+    {
+      "id": "moss",
+      "name": "苔枝",
+      "description": "寻找村民的照料者",
+      "str": 9,
+      "dex": 10,
+      "wil": 12,
+      "hp": 5,
+      "pips": 2,
+      "items": [
+        {
+          "slot": 1,
+          "item": 1
+        },
+        {
+          "slot": 2,
+          "item": 2
+        },
+        {
+          "slot": 5,
+          "item": 3
+        },
+        {
+          "slot": 8,
+          "item": 20
+        },
+        {
+          "slot": 6,
+          "item": 28
+        }
+      ]
+    },
+    {
+      "id": "swift",
+      "name": "风尾",
+      "description": "熟悉旗语的信使",
+      "str": 9,
+      "dex": 12,
+      "wil": 10,
+      "hp": 4,
+      "pips": 3,
+      "items": [
+        {
+          "slot": 1,
+          "item": 1
+        },
+        {
+          "slot": 2,
+          "item": 2
+        },
+        {
+          "slot": 5,
+          "item": 3
+        },
+        {
+          "slot": 8,
+          "item": 4
+        },
+        {
+          "slot": 6,
+          "item": 26
+        }
+      ]
+    },
+    {
+      "id": "reed",
+      "name": "芦舟",
+      "description": "来自溪岸的搬运者",
+      "str": 11,
+      "dex": 11,
+      "wil": 9,
+      "hp": 5,
+      "pips": 2,
+      "items": [
+        {
+          "slot": 1,
+          "item": 1
+        },
+        {
+          "slot": 2,
+          "item": 2
+        },
+        {
+          "slot": 5,
+          "item": 3
+        },
+        {
+          "slot": 8,
+          "item": 4
+        },
+        {
+          "slot": 6,
+          "item": 10
         }
       ]
     }
@@ -489,6 +823,71 @@
       "wil": 10,
       "armor": 0,
       "verified": false
+    },
+    {
+      "key": "chestnut",
+      "name": "栗婶",
+      "location": 3,
+      "kind": "管理员",
+      "str": 10,
+      "dex": 10,
+      "wil": 11,
+      "hp": 4,
+      "armor": 0,
+      "verified": true,
+      "source": "本包原创暴雨扩展"
+    },
+    {
+      "key": "smith",
+      "name": "铆须",
+      "location": 12,
+      "kind": "修理匠",
+      "str": 10,
+      "dex": 10,
+      "wil": 11,
+      "hp": 4,
+      "armor": 0,
+      "verified": true,
+      "source": "本包原创暴雨扩展"
+    },
+    {
+      "key": "ash",
+      "name": "灰穗",
+      "location": 7,
+      "kind": "鼠帮代表",
+      "str": 10,
+      "dex": 10,
+      "wil": 11,
+      "hp": 4,
+      "armor": 0,
+      "verified": true,
+      "source": "本包原创暴雨扩展"
+    },
+    {
+      "key": "watch",
+      "name": "露哨",
+      "location": 13,
+      "kind": "信号员",
+      "str": 10,
+      "dex": 10,
+      "wil": 11,
+      "hp": 4,
+      "armor": 0,
+      "verified": true,
+      "source": "本包原创暴雨扩展"
+    },
+    {
+      "key": "ferry",
+      "name": "苇伯",
+      "location": 14,
+      "kind": "渡工",
+      "str": 10,
+      "dex": 10,
+      "wil": 11,
+      "hp": 4,
+      "armor": 0,
+      "verified": true,
+      "source": "本包原创暴雨扩展"
     }
   ],
   "encounters": [
@@ -516,5 +915,72 @@
       "source": "https://mausritter.com/srd/inventory/"
     }
   ],
-  "sourceStatus": "场景拓扑按现有计划，部分NPC及冒险随机表待正版原页终校；预设为自制测试角色"
+  "sourceStatus": "场景拓扑按现有计划，部分NPC及冒险随机表待正版原页终校；预设为自制测试角色",
+  "stormStocks": [
+    {
+      "location": 12,
+      "item": 17,
+      "key": "stock12x17"
+    },
+    {
+      "location": 12,
+      "item": 18,
+      "key": "stock12x18"
+    },
+    {
+      "location": 12,
+      "item": 19,
+      "key": "stock12x19"
+    },
+    {
+      "location": 12,
+      "item": 20,
+      "key": "stock12x20"
+    },
+    {
+      "location": 11,
+      "item": 21,
+      "key": "stock11x21"
+    },
+    {
+      "location": 13,
+      "item": 21,
+      "key": "stock13x21"
+    },
+    {
+      "location": 13,
+      "item": 22,
+      "key": "stock13x22"
+    },
+    {
+      "location": 8,
+      "item": 23,
+      "key": "stock8x23"
+    },
+    {
+      "location": 7,
+      "item": 24,
+      "key": "stock7x24"
+    },
+    {
+      "location": 14,
+      "item": 25,
+      "key": "stock14x25"
+    },
+    {
+      "location": 13,
+      "item": 26,
+      "key": "stock13x26"
+    },
+    {
+      "location": 12,
+      "item": 27,
+      "key": "stock12x27"
+    },
+    {
+      "location": 11,
+      "item": 28,
+      "key": "stock11x28"
+    }
+  ]
 }

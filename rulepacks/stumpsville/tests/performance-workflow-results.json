@@ -1,7 +1,8 @@
 {
-  "checkedAt": "2026-11-21T09:27:58.556685+08:00",
+  "checkedAt": "2026-11-22T14:18:12.501169+08:00",
   "checks": [
     "四个真实页面带聊天与AI历史并发，状态、聊天、行动、裁决、AI读取及发送接受均完成",
+    "真实紧凑列表按编号读取裁决详情，KP 在详情中批准后关闭窗口",
     "AI生成期间向申请玩家私聊，生成保留正文和候选；原候选可批准且实际只增加一次钱币",
     "窗口显示运行中进度；返回有序带时间的模型、工具、校验与完成事件，审批后含实际命令回执",
     "相关角色值改变后保留原生成正文并列出变化；KP可准备按最新资料重新生成，未点击发送不擅自调用模型或覆盖实际数值",
@@ -11,80 +12,80 @@
   "measurements": {
     "packageStateWithFourPages": {
       "samples": 8,
-      "p50Ms": 53.5,
-      "p95Ms": 89.99,
-      "maxMs": 89.99
+      "p50Ms": 36.34,
+      "p95Ms": 49.77,
+      "maxMs": 49.77
     },
     "chatSendWithFourPages": {
       "samples": 8,
-      "p50Ms": 109.28,
-      "p95Ms": 125.16,
-      "maxMs": 125.16
+      "p50Ms": 469.63,
+      "p95Ms": 790.73,
+      "maxMs": 790.73
     },
     "actionCheckWithFourPages": {
       "samples": 8,
-      "p50Ms": 683.13,
-      "p95Ms": 783.78,
-      "maxMs": 783.78
+      "p50Ms": 796.87,
+      "p95Ms": 1201.72,
+      "maxMs": 1201.72
     },
     "rulingWithFourPages": {
       "samples": 8,
-      "p50Ms": 54.57,
-      "p95Ms": 89.61,
-      "maxMs": 89.61
+      "p50Ms": 185.91,
+      "p95Ms": 608.63,
+      "maxMs": 608.63
     },
     "aiTasksWithFourPages": {
       "samples": 8,
-      "p50Ms": 78.39,
-      "p95Ms": 86.07,
-      "maxMs": 86.07
+      "p50Ms": 259.98,
+      "p95Ms": 342.31,
+      "maxMs": 342.31
     },
     "aiSubmitAndDispatchAcceptance": {
       "samples": 4,
-      "p50Ms": 942.74,
-      "p95Ms": 970.33,
-      "maxMs": 970.33
+      "p50Ms": 3115.44,
+      "p95Ms": 3475.09,
+      "maxMs": 3475.09
     },
     "privateChatDuringAiGeneration": {
       "samples": 3,
-      "p50Ms": 110.47,
-      "p95Ms": 167.76,
-      "maxMs": 167.76
+      "p50Ms": 433.51,
+      "p95Ms": 1215.24,
+      "maxMs": 1215.24
     },
     "packageStateAfterDependencyChange": {
       "samples": 3,
-      "p50Ms": 57.87,
-      "p95Ms": 202.47,
-      "maxMs": 202.47
+      "p50Ms": 85.19,
+      "p95Ms": 1150.7,
+      "maxMs": 1150.7
     },
     "aiTasksAfterDependencyChange": {
       "samples": 3,
-      "p50Ms": 212.75,
-      "p95Ms": 227.39,
-      "maxMs": 227.39
+      "p50Ms": 877.14,
+      "p95Ms": 1445.76,
+      "maxMs": 1445.76
     },
     "aiRulingsAfterDependencyChange": {
       "samples": 3,
-      "p50Ms": 260.41,
-      "p95Ms": 267.76,
-      "maxMs": 267.76
+      "p50Ms": 841.93,
+      "p95Ms": 1223.72,
+      "maxMs": 1223.72
     },
     "aiSessionAfterDependencyChange": {
       "samples": 3,
-      "p50Ms": 239.58,
-      "p95Ms": 637.22,
-      "maxMs": 637.22
+      "p50Ms": 545.75,
+      "p95Ms": 626.21,
+      "maxMs": 626.21
     }
   },
   "realSaveChanged": false,
   "externalModelCalls": 0,
-  "evidenceDirectory": "tests/output/performance-workflow-3c05f3aa",
-  "source": "D:\\Studies\\Art Programming\\OnlineCOC\\rulepacks\\stumpsville\\tests\\output\\chat-combined-f36b4169\\source",
+  "evidenceDirectory": "tests/output/performance-workflow-7db82e94",
+  "source": "D:\\Studies\\Art Programming\\OnlineCOC\\rulepacks\\stumpsville\\tests\\output\\perf-joint-final-639c",
   "fixture": {
     "seedChat": 32,
     "seedAiTasks": 8,
     "browserPages": 4,
-    "packageBytes": 241422
+    "packageBytes": 232847
   },
   "workspaceGeometry": {
     "#main": {
@@ -159,27 +160,27 @@
     }
   },
   "httpSummary": {
-    "count": 389,
+    "count": 622,
     "failedStatuses": [
       {
         "route": "me",
         "status": 401,
-        "serverTiming": "package;dur=13.43"
+        "serverTiming": "package;dur=39.18"
       },
       {
         "route": "me",
         "status": 401,
-        "serverTiming": "package;dur=67.22"
+        "serverTiming": "package;dur=278.88"
       },
       {
         "route": "me",
         "status": 401,
-        "serverTiming": "package;dur=36.8"
+        "serverTiming": "package;dur=101.71"
       },
       {
         "route": "me",
         "status": 401,
-        "serverTiming": "package;dur=71.45"
+        "serverTiming": "package;dur=49.03"
       },
       {
         "route": "state",
@@ -187,10 +188,10 @@
         "serverTiming": null
       }
     ],
-    "withServerTiming": 388
+    "withServerTiming": 621
   },
   "passed": true,
-  "passedCount": 6,
+  "passedCount": 7,
   "loopbackCalls": 18,
   "pageErrors": [],
   "previousRuns": [
@@ -275,6 +276,85 @@
         "窗口显示运行中进度；返回有序带时间的模型、工具、校验与完成事件，审批后含实际命令回执"
       ],
       "evidenceDirectory": "tests/output/performance-workflow-59ff3969"
+    },
+    {
+      "passed": true,
+      "error": null,
+      "checks": [
+        "四个真实页面带聊天与AI历史并发，状态、聊天、行动、裁决、AI读取及发送接受均完成",
+        "AI生成期间向申请玩家私聊，生成保留正文和候选；原候选可批准且实际只增加一次钱币",
+        "窗口显示运行中进度；返回有序带时间的模型、工具、校验与完成事件，审批后含实际命令回执",
+        "相关角色值改变后保留原生成正文并列出变化；KP可准备按最新资料重新生成，未点击发送不擅自调用模型或覆盖实际数值",
+        "状态查询503不销毁既有AI窗口和消息；恢复后继续复用同组件",
+        "完成过程可展开回看，390px进度卡可读且不越出视口"
+      ],
+      "evidenceDirectory": "tests/output/performance-workflow-3c05f3aa"
+    },
+    {
+      "passed": true,
+      "error": null,
+      "checks": [
+        "四个真实页面带聊天与AI历史并发，状态、聊天、行动、裁决、AI读取及发送接受均完成",
+        "AI生成期间向申请玩家私聊，生成保留正文和候选；原候选可批准且实际只增加一次钱币",
+        "窗口显示运行中进度；返回有序带时间的模型、工具、校验与完成事件，审批后含实际命令回执",
+        "相关角色值改变后保留原生成正文并列出变化；KP可准备按最新资料重新生成，未点击发送不擅自调用模型或覆盖实际数值",
+        "状态查询503不销毁既有AI窗口和消息；恢复后继续复用同组件",
+        "完成过程可展开回看，390px进度卡可读且不越出视口"
+      ],
+      "evidenceDirectory": "tests/output/performance-workflow-e73cf287"
+    },
+    {
+      "passed": true,
+      "error": null,
+      "checks": [
+        "四个真实页面带聊天与AI历史并发，状态、聊天、行动、裁决、AI读取及发送接受均完成",
+        "AI生成期间向申请玩家私聊，生成保留正文和候选；原候选可批准且实际只增加一次钱币",
+        "窗口显示运行中进度；返回有序带时间的模型、工具、校验与完成事件，审批后含实际命令回执",
+        "相关角色值改变后保留原生成正文并列出变化；KP可准备按最新资料重新生成，未点击发送不擅自调用模型或覆盖实际数值",
+        "状态查询503不销毁既有AI窗口和消息；恢复后继续复用同组件",
+        "完成过程可展开回看，390px进度卡可读且不越出视口"
+      ],
+      "evidenceDirectory": "tests/output/performance-workflow-108ef5e5"
+    },
+    {
+      "passed": true,
+      "error": null,
+      "checks": [
+        "四个真实页面带聊天与AI历史并发，状态、聊天、行动、裁决、AI读取及发送接受均完成",
+        "AI生成期间向申请玩家私聊，生成保留正文和候选；原候选可批准且实际只增加一次钱币",
+        "窗口显示运行中进度；返回有序带时间的模型、工具、校验与完成事件，审批后含实际命令回执",
+        "相关角色值改变后保留原生成正文并列出变化；KP可准备按最新资料重新生成，未点击发送不擅自调用模型或覆盖实际数值",
+        "状态查询503不销毁既有AI窗口和消息；恢复后继续复用同组件",
+        "完成过程可展开回看，390px进度卡可读且不越出视口"
+      ],
+      "evidenceDirectory": "tests/output/performance-workflow-d83d127e"
+    },
+    {
+      "passed": true,
+      "error": null,
+      "checks": [
+        "四个真实页面带聊天与AI历史并发，状态、聊天、行动、裁决、AI读取及发送接受均完成",
+        "AI生成期间向申请玩家私聊，生成保留正文和候选；原候选可批准且实际只增加一次钱币",
+        "窗口显示运行中进度；返回有序带时间的模型、工具、校验与完成事件，审批后含实际命令回执",
+        "相关角色值改变后保留原生成正文并列出变化；KP可准备按最新资料重新生成，未点击发送不擅自调用模型或覆盖实际数值",
+        "状态查询503不销毁既有AI窗口和消息；恢复后继续复用同组件",
+        "完成过程可展开回看，390px进度卡可读且不越出视口"
+      ],
+      "evidenceDirectory": "tests/output/performance-workflow-3f570e08"
+    },
+    {
+      "passed": true,
+      "error": null,
+      "checks": [
+        "四个真实页面带聊天与AI历史并发，状态、聊天、行动、裁决、AI读取及发送接受均完成",
+        "真实紧凑列表按编号读取裁决详情，KP 在详情中批准后关闭窗口",
+        "AI生成期间向申请玩家私聊，生成保留正文和候选；原候选可批准且实际只增加一次钱币",
+        "窗口显示运行中进度；返回有序带时间的模型、工具、校验与完成事件，审批后含实际命令回执",
+        "相关角色值改变后保留原生成正文并列出变化；KP可准备按最新资料重新生成，未点击发送不擅自调用模型或覆盖实际数值",
+        "状态查询503不销毁既有AI窗口和消息；恢复后继续复用同组件",
+        "完成过程可展开回看，390px进度卡可读且不越出视口"
+      ],
+      "evidenceDirectory": "tests/output/performance-workflow-32edb28a"
     }
   ]
 }

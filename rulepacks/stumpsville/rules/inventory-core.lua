@@ -5,7 +5,17 @@ return rule('sv.inventory.core', {'actor', 'operation:text', 'slot:amount', 'val
   local index = r.number(actor, 'item' .. slot)
   assert(index > 0 and data.items[index], 'SV_EMPTY_SLOT')
   local def = data.items[index]
-  if operation == 'move' then
+  if operation == 'drop' then
+    assert(def.kind ~= 'condition', 'SV_CONDITION_NOT_DROPPABLE')
+    assert(value == index, 'SV_ITEM_CHANGED')
+    local location = r.number(actor, 'location')
+    assert(location > 0, 'SV_SCENE_LOCATION')
+    local dropped = {item=index, uses=r.number(actor, 'uses' .. slot), ticks=r.number(actor, 'ticks' .. slot), location=location}
+    for _, prefix in ipairs({'item', 'uses', 'ticks'}) do r.set(actor, prefix .. slot, 0) end
+    if r.number(actor, 'litSlot') == slot then r.set(actor, 'litSlot', 0) end
+    local layout = r.call('sv.layout', actor)
+    return {operation=operation, slot=slot, target=value, dropped=dropped, overloaded=layout.overloaded}
+  elseif operation == 'move' then
     assert(value >= 1 and value <= 20 and value ~= slot, 'SV_TARGET_SLOT')
     assert(r.number(actor, 'item' .. value) == 0, 'SV_SLOT_OCCUPIED')
     local uses = r.number(actor, 'uses' .. slot)

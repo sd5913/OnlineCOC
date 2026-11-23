@@ -14,9 +14,17 @@ STOCKS = [(1, 6, 'cheese1'), (3, 7, 'idolRemaining'), (4, 8, 'potsRemaining'),
 DOORS = {'2-3': 'gateOpen', '7-8': 'hallDoor', '8-9': 'ironOpen', '9-10': 'caveOpen'}
 
 
+def stock_rows(state):
+    yield from STOCKS
+    revision = state.get('ruleRevisions', {}).get(state.get('activeRevision'), {})
+    for row in revision.get('data', {}).get('game.json', {}).get('stormStocks', []):
+        if str(row['location']) in state['locations']:
+            yield row['location'], row['item'], row['key']
+
+
 def package_numbers(state):
     values = {}
-    for location, item, key in STOCKS:
+    for location, item, key in stock_rows(state):
         values[key] = next((x['count'] for x in state['locations'][str(location)]['stock'] if x['item'] == item), 0)
     values['moneyRemaining'] = state['locations']['3'].get('pips', 0)
     values.update({key: int(state['doors'][edge] == 'open') for edge, key in DOORS.items()})
@@ -25,7 +33,9 @@ def package_numbers(state):
 
 def apply_numbers(state, numbers):
     state['sceneState'] = copy.deepcopy(numbers)
-    for location, item, key in STOCKS:
+    for location, item, key in stock_rows(state):
+        if key not in numbers:
+            continue
         stock = state['locations'][str(location)]['stock']
         row = next((x for x in stock if x['item'] == item), None)
         if row is None:

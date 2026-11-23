@@ -1,5 +1,7 @@
 # 树桩镇 Stumpsville
 
+0.10.0 新房间可游玩原创主线「暴雨前的树桩镇」。从庭院接委托，救援居民后选择修复、求援或撤离。沿用既有槽位时以房间已激活修订为准。
+
 首次游玩请先阅读[玩家简明指南](docs/current/player-guide.md)，按“探路取物”推荐目标开始：记录两条新发现、带回一件新物品、全员返回入口。
 
 0.9.0提供 [网页联机双击入口](start-web.cmd)：本机 KP、浏览器 PL、完整场景行动与聊天、隔离存储和按需资源，本轮验证本地WebRTC；原0.8.0阶段已通过两名真实网页玩家及全部18个预设的公网强制TURN联测，本轮未重做公网验收。**云端桥已更新；真人独立家庭/移动网仍待验收**；操作与边界见[网页联机](docs/current/web.md)。
@@ -16,6 +18,7 @@
 
 | 入口 | 内容 |
 | --- | --- |
+| [内容配置概览](docs/current/content-configuration.md) | 默认内容清单、关键数值与未填范围，含主持剧透 |
 | [场景预设行动](docs/current/scene-actions.md) | 18个行动、检定与实际结果、自动队列和恢复 |
 | [当前实现](docs/current/implementation.md) | 实际页面、规则、数据边界及人工裁定事项 |
 | [场景桌面与主持控制台](docs/current/interface.md) | 当前导航 Mermaid、功能组成树及反馈语义 |
@@ -25,6 +28,7 @@
 | [本地化接入](docs/current/localization.md) | 语言资源、切换、缺译回退及当前覆盖边界 |
 | [来源与许可](docs/current/sources.md) | SRD、冒险资料的核对范围、原创资源 |
 | [验证记录](tests/README.md) | 真实宿主与浏览器验收、可重跑脚本 |
+| [故事与内容扩展计划](docs/plans/story-content-expansion.md) | 推演记录、三条已实现路线与后续验证范围 |
 | [设计计划](docs/plans/README.md) | 页面、导航、界面组成与验收范围 |
 | [网页联机调整规划](../../docs/plans/stumpsville-web-integration.md) | S0–S2、云端部署和S3强制TURN联测已落地，真人独立网络验收待完成 |
 | [界面图集](assets/ui-design/README.md) | 页面效果图、子 UI、状态与组件图 |

@@ -4,11 +4,15 @@ Each module retains its lexical scope. This is deliberately not a general JS bun
 Only explicitly listed public UI/resources enter the export source.
 """
 import argparse
+import hashlib
 import json
 from pathlib import Path
 import re
 import shutil
-from integrations import PACK, ROOT, write_json
+from integrations import PACK, ROOT, export_tree, write_json
+
+
+UI_MODULES = ('messageformat.js','i18n.js','reference-view.js','chat.js','dice.js','effects.js','map.js','ai-recovery.js','ruling-card.js','batch-details.js','keeper-rulings.js','keeper-queue.js','ai.js','ai-embedded.js','app.js')
 
 
 def ai_modules():
@@ -36,10 +40,36 @@ def ai_modules():
     return output+'web.aiModules=Object.assign({},...Object.values(aiModules));\n'
 
 
+_last_build = None
+
+
+def build_cached(output):
+    """Reuse only a verified build of the current UI, AI components and compiler."""
+    global _last_build
+    inputs = [Path(__file__), PACK/'manifest.json', PACK/'web/bridge.js', PACK/'assets/runtime/mouse.png']
+    inputs.extend(PACK/'ui'/name for name in (*UI_MODULES, 'styles.css', 'index.html'))
+    inputs.extend(PACK/'locales'/name/'ui.json' for name in ('zh-CN', 'en', 'meta/catalog'))
+    base = ROOT/'engineering/ai/web/components'
+    manifest = base/'pack-manifest.json'
+    inputs.append(manifest)
+    inputs.extend(base/name for name in json.loads(manifest.read_text(encoding='utf8'))['runtimeFiles'])
+    digest = hashlib.sha256()
+    for path in inputs:
+        digest.update(str(path).encode())
+        digest.update(hashlib.sha256(path.read_bytes()).digest())
+    key = (str(Path(output).resolve()), digest.digest())
+    if _last_build and _last_build[0] == key and Path(output).is_dir():
+        if export_tree(Path(output)) == _last_build[1]:
+            return Path(output)
+    result = build(output)
+    _last_build = key, export_tree(result)
+    return result
+
+
 def build(output):
     output=Path(output).resolve();output.mkdir(parents=True,exist_ok=True)
     manifest=json.loads((PACK/'manifest.json').read_text(encoding='utf-8'))
-    sources={name:(PACK/'ui'/name).read_text(encoding='utf-8') for name in ('messageformat.js','i18n.js','reference-view.js','chat.js','dice.js','effects.js','map.js','ai-recovery.js','ruling-card.js','batch-details.js','keeper-rulings.js','keeper-queue.js','ai.js','ai-embedded.js','app.js')}
+    sources={name:(PACK/'ui'/name).read_text(encoding='utf-8') for name in UI_MODULES}
     sources['ai-client.js']=(ROOT/'engineering/ai/web/components/client.js').read_text(encoding='utf-8')
     public={name:json.loads((PACK/name).read_text(encoding='utf-8')) for name in ('locales/zh-CN/ui.json','locales/meta/catalog/ui.json')}
     script='const STUMPSVILLE_STARTUP='+json.dumps(public,ensure_ascii=False)+';\n'+(PACK/'web/bridge.js').read_text(encoding='utf-8')

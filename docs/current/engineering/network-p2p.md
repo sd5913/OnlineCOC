@@ -4,12 +4,12 @@
 - 文档子类：工程
 - 状态：有效
 - 创建日期：2026-11-13
-- 最后更新：2026-11-14
+- 最后更新：2026-11-22
 - 关联文档：[快速使用](../../../engineering/network-p2p/README.md)、[目录清单](hierarchy.md)、[房间发现与同步计划](../../plans/room-discovery-p2p-package-sync.md)、[启动编排计划](../../plans/room-launch-orchestration.md)、[云部署调研](../../plans/cloud-server-deployment-research.md)
 
 ## 1. 当前实现
 
-独立模块 `engineering/network-p2p`，本机及腾讯CVM当前均为0.2.2，2026-11-13随network-web 0.2.0经用户授权部署；TURN未重启。开房与加入步骤见[快速使用](../../../engineering/network-p2p/README.md)。0.2.1 增加不可枚举的 `code` 房间、可替换主机 Peer 和浏览器信令入口扩展；平台账号、成员和分组资源由可选 [network-web](network-web.md) 提供，旧 public/private 与整包同步协议保持兼容。
+独立模块 `engineering/network-p2p`，本机及腾讯CVM当前均为0.2.3，2026-11-22随network-web 0.3.1部署；TURN未重启。开房与加入步骤见[快速使用](../../../engineering/network-p2p/README.md)。0.2.1 增加不可枚举的 `code` 房间、可替换主机 Peer 和浏览器信令入口扩展；平台账号、成员和分组资源由可选 [network-web](network-web.md) 提供，旧 public/private 与整包同步协议保持兼容。
 
 0.2.2增加供可信网页主机适配器调用的 `Upstream.service_request`：显式回环服务、逐玩家Cookie/CSRF、GET/POST、大小与超时限制、拒绝重定向。只有network-web版本2按声明校验后调用；没有把包路径加入旧P2P的通用 `request` 白名单。树桩镇旧P2P入口仍仅基础状态/聊天，完整玩家模式见[包网页说明](../../../rulepacks/stumpsville/docs/current/web.md)。
 
@@ -24,7 +24,9 @@
 
 ## 2. 配置与分发
 
-Windows 可双击模块 `play.cmd`，缺少独立运行时时自动调用 `setup.ps1`，随后打开联网页面；需要预先安装 Python 3.14 x64（含 `py` 启动器）。升级后需重开联网进程。Ubuntu 24.04 云端使用 Python 3.12；依赖版本见[requirements.lock](../../../engineering/network-p2p/requirements.lock)。新检出先运行模块 `setup.ps1`，再按[示例](../../../engineering/network-p2p/config/client.example.json)准备 `local/client-config.json`；`start.ps1 -Config 路径` 可选其他配置。
+源码中的浏览器 `WebRtcTransport.stats()` 读取所选候选对，返回候选类型、中转判断、RTT、收发字节/包数、发送丢弃数及可用出站比特率。浏览器未提供的字段返回 `null`，零 RTT 保留为零；只知道一端且不能确认中转时也返回未知。候选对接口不提供 SCTP 重传次数，因此 `retransmittedPackets` 为 `null` 并附 `retransmissionStatus`。不导出 IP、SDP、票据或 TURN 凭据。该源码已随0.3.1/0.2.3部署；原专项证据仍只有指标契约与本机 TCP 测量，不构成公网/中转时延验收，见[引擎性能](engine-performance.md)。
+
+完整项目可先使用[离线依赖安装 EXE](../../../engineering/network-web/installer/README.md)，无需系统预装 Python。原开发安装流程仍可用：Windows 可双击模块 `play.cmd`，缺少独立运行时时自动调用 `setup.ps1`，随后打开联网页面；需要预先安装 Python 3.14 x64（含 `py` 启动器）。升级后需重开联网进程。Ubuntu 24.04 云端使用 Python 3.12；依赖版本见[requirements.lock](../../../engineering/network-p2p/requirements.lock)。新检出先运行模块 `setup.ps1`，再按[示例](../../../engineering/network-p2p/config/client.example.json)准备 `local/client-config.json`；`start.ps1 -Config 路径` 可选其他配置。
 
 | 字段 | 用途 |
 | --- | --- |
@@ -59,7 +61,7 @@ Windows 可双击模块 `play.cmd`，缺少独立运行时时自动调用 `setup
 
 ## 3. 准入与协议
 
-房间元数据持久化，租约、会话、申请及票据仅在云端单进程内存中。重启不恢复虚假在线状态；房主每约 15 秒续租，租约 60 秒，重新发布推进 `connectionEpoch`。本机 `statePath` 文件锁阻止同一房间身份被重复占用，崩溃后由操作系统释放；停止联机仅撤下连接，不停止借用的宿主。
+房间元数据及活动检查点持久化，默认离线/停止分享 24 小时后移除（`roomRetentionSeconds=86400`）；在线待客不回收。旧数据升级给予一天宽限。网页房主还可主动立即解散移除，详见[生命周期](network-web.md#停用保留与主动移除)。租约、会话、申请及票据仅在云端单进程内存中。重启不恢复虚假在线状态；房主每约 15 秒续租，租约 60 秒，重新发布推进 `connectionEpoch`。本机 `statePath` 文件锁阻止同一房间身份被重复占用，崩溃后由操作系统释放；停止联机仅撤下连接，不停止借用的宿主。
 
 云目录为每个 roomId 分配唯一的 8 位 `roomCode`，字符集排除 0、1、I、O；显示为 `ABCD-EFGH`，输入忽略大小写、空白和连字符。短码持久绑定 roomId，重启/撤下后不转分给其他房间；旧目录状态自动补码，在线租约仍不恢复。
 
@@ -117,6 +119,8 @@ coturn 使用短期 HMAC 凭据，用户/总 allocation 配额为 4/64，单 all
 SSH/SCP 继续使用 [server.ps1](../../../engineering/network-p2p/scripts/server.ps1)。当前云端已合并网页模块，更新与回滚须使用 [network-web 部署流程](network-web.md#5-服务器实际部署)。旧 `prepare_deploy.py/install-remote.sh` 仍供纯 P2P 首装，重跑会覆盖当前网页入口；其私密部署包含服务端私钥，禁止分发。部署会重启测试服务，应在无玩家时执行。
 
 ## 6. 验收及实用边界
+
+2026-11-22：0.2.3 本地 **43 项通过、11 项环境/云端跳过**，另有网页模块 39 项本地及 1 项公网测试通过，详见[0.3.1 联合记录](../../../engineering/network-web/acceptance/2026-11-22-0.3.1.json)。以下为历史基线，不计入本次重跑。
 
 [0.2.0 验收记录](../../../engineering/network-p2p/acceptance/2026-11-13-0.2.0.json)为 54 项基线，原[0.1 的 46 项记录](../../../engineering/network-p2p/acceptance/2026-11-13.json)保留追溯。2026-11-13 增加网页扩展后，**54 项全部再次通过，零跳过**；本次摘要与网页专项证据见 [network-web 验收](../../../engineering/network-web/acceptance/2026-11-13.json)。
 

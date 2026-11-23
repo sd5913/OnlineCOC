@@ -197,10 +197,13 @@ async def test_cloud_creation_browser(upstream, resources, tmp_path):
         await player.register("flowplayer" + suffix)
         await browser_workflow(host, None, owner, player, entry["creationString"], "flowowner" + suffix, "flowplayer" + suffix, True)
         await owner.call("/v1/web/rooms/" + host.room_id + "/manage", {"action": "close"})
+        assert (await owner.call("/v1/web/capabilities"))["roomRetentionSeconds"] == 86400
+        assert not (await owner.call("/v1/web/rooms"))["items"]
+        assert not (await player.call("/v1/web/rooms"))["items"]
         result = await owner.call("/v1/web/public-rooms")
         assert host.room["roomCode"] not in [x["roomCode"] for x in result["items"]]
         (module / "local/acceptance/creation-cloud.json").write_text(json.dumps({
-            "version":"0.3.0", "publicCreate":True, "passwordJoin":True, "privateHidden":True,
+            "version":__import__("onlinecoc_web").__version__, "defaultRetentionSeconds":86400, "closedShortcutsRemoved":True, "publicCreate":True, "passwordJoin":True, "privateHidden":True,
             "shortcutRetained":True, "nonOwnerDenied":True, "roomClosed":True,
             "browserPrivateCAException":True, "hostAndAPITrustedCA":True,
             "roomPagesNoGameConnection":True}, indent=2), encoding="utf-8")

@@ -42,6 +42,7 @@ let desktop = null, desktopAccount = '', consoleTab = 'control', selectedRequest
 let executorBusy = false, aiQueuePending=0, rulingPane='queue', queueTab='rulings';
 let statePollRunning=false,lastStatePoll=0,stateGeneration=0;
 let chatPollRunning=null,chatPollAgain=false,lastChatPoll=0,chatGeneration=0;
+let chatCursor=null,channelSnapshot=0;
 const chatSending=new Set();
 const replyOpen=new Set();
 let libraryCache=null,libraryLoading=false,libraryError='',libraryTab='configurations',libraryQuery='',libraryType='';
@@ -79,9 +80,9 @@ function myRulings(){
 
 function actionError(data){return Object.assign(new Error(data.failure.reason+' '+data.failure.nextStep),{status:409,failure:data.failure});}
 function failurePanel(f){return `<div class="notice error action-failure"><strong>${t('failure.reason')}</strong><p>${escape(f.reason)}</p><strong>${t('failure.next')}</strong><p>${escape(f.nextStep)}</p>${f.actionId?`<small>${t('failure.id')} ${escape(f.actionId)}</small>`:''}</div>`;}
-async function api(path, body) {
+async function api(path, body, extraHeaders = {}) {
   if(webMode){const data=await webMode.api(path==='package/action'?path+'?locale='+encodeURIComponent(locale()):path,body);if(data.failure)throw actionError(data);if(data.status==='rejected'&&data.commandId)throw Object.assign(Error(data.code),{status:409});return data;}
-  const headers = {};
+  const headers = {...extraHeaders};
   if (body !== undefined) headers['Content-Type'] = 'application/json';
   if (csrf) headers['X-CSRF-Token'] = csrf;
   const response = await fetch(new URL(path==='package/action'?path+'?locale='+encodeURIComponent(locale()):path,base), {method:body===undefined?'GET':'POST',headers,body:body===undefined?undefined:JSON.stringify(body),credentials:'same-origin'});
@@ -110,6 +111,7 @@ function toast(message) {
 
 function resultText(result){
   if(!result||typeof result!=='object')return typeof result==='string'&&!/^[a-f0-9-]{24,}$/.test(result)?result:t('result.done');
+  if(result.dropped)return `已丢弃到地点 ${result.dropped.location}，剩余用量 ${result.dropped.uses}。`;
   if(result.sceneAction)return [result.message,...(result.narrative||[])].filter(Boolean).join('\n');
   if(result.message)return result.message;
   if('channelId' in result)return t('result.chat');
@@ -127,10 +129,24 @@ function resultText(result){
   return t('result.done');
 }
 
+let projectionCache = null;
+async function nextProjection(){
+  if(webMode)return {value:await api(statePath()), changed:null, cache:null};
+  const prior=state ? projectionCache : null;
+  const packet=await api(statePath(),undefined,{'X-Projection-Versions':prior?.versions.join(',') || 'initial'});
+  if(!Array.isArray(packet.versions))return {value:packet,changed:null,cache:null};
+  const domains=packet.versions.map((_,i)=>packet.domains[i] ?? prior?.domains[i]);
+  if(domains.some(domain=>!domain))throw Error('状态分区不完整，请刷新');
+  return {value:Object.assign({},...domains),changed:!prior || packet.versions.slice(0,3).some((v,i)=>v!==prior.versions[i]),
+          cache:{versions:packet.versions,domains}};
+}
+
 async function refresh(render = true) {
   const generation=++stateGeneration,chats=chatGeneration;
-  const next=await api(statePath());
+  const packet=await nextProjection(),next=packet.value;
   if(generation!==stateGeneration)return;
+  projectionCache=packet.cache;
+  channelSnapshot++;
   if(chats!==chatGeneration&&next.accountId===state?.accountId&&next.storageScope===state?.storageScope)next.channels=state.channels;
   state = next;
   connection = t('ui.m065');
@@ -253,10 +269,23 @@ function discoveryControls(index){
   return `<section class="discovery-controls"><h3>${t('map.revealTitle')}</h3><p>${t('map.revealHint')}</p>${actors.map(a=>`<div class="row"><span>${escape(a.name)}</span>${button(t('map.reveal'),'actor-reveal',{id:a.id},'small')}</div>`).join('')}</section>`;
 }
 
+function stormOverview(story) {
+  if (!story) return '';
+  const names = {home:'守住家园', allied:'共同渡险', evacuated:'溪岸撤离', withdrawn:'记录损失并撤退'};
+  const status = story.ending ? '已结局 · ' + names[story.ending.route]
+    : story.rescued ? '两名村民已获救' : story.started ? '搜救中' : '等待接取委托';
+  const tasks = Object.entries(story.tasks).map(([name, done]) =>
+    `<li>${escape(name)} · ${done ? '已完成' : '待完成'}</li>`).join('');
+  const choices = story.started ? [...story.routes, 'withdrawn'] : [];
+  const finish = story.ending ? `<p>队员去向 · ${escape(story.ending.roster)}</p>`
+    : choices.map(route => button('确认结局 · ' + names[route], 'storm-finish', {route})).join('');
+  return `<p>暴雨前的树桩镇 · ${escape(status)}</p><ul>${tasks}</ul>${story.debt ? '<p>居民仍欠渡工一笔行粮。</p>' : ''}${finish}`;
+}
+
 function roomOverview(){
   const characters=state.characters||[],phase=state.session?.numbers.phase||0,active=phase===1&&state.roomStatus==='active';
   const stats=[['状态',state.roomStatus==='paused'?'暂停':phase===1?'进行中':phase===2?'已结束':'待开场'],['回合',state.session?.numbers.round||0],['在线玩家',state.network?.players.filter(p=>p.role==='player'&&p.status==='online').length??'—'],['已准备角色',characters.filter(c=>c.numbers.ready).length+' / '+characters.length],['游戏待办',keeperLocalPending()],['已发布地点',Object.keys(state.published||{}).length]];
-  return `<section class="panel" id="room-overview"><h2>房间总览</h2><div class="room-stats">${stats.map(([label,value])=>`<div><span>${label}</span><strong>${value}</strong></div>`).join('')}</div><div class="actions"><button type="button" class="primary" data-action="start" ${active||phase===2?'disabled':''}>${active?'已开场':state.roomStatus==='paused'?'恢复开场':'一键开场'}</button>${state.initialized?`${button(t('ui.m026'),'round')}${button(state.roomStatus==='paused'?t('ui.m028'):t('ui.m027'),'room',{status:state.roomStatus==='paused'?'active':'paused'})}${button(state.automation.enabled?t('ui.m029'):t('ui.m030'),'automation-console')}${button(t('ui.m143'),'backup')}`:''}${button('处理裁决','navigate',{path:'gm/rulings'})}</div><p class="room-readiness">规则 ${state.initialized?'已安装':'待初始化'} · 个人资料 ${state.knowledge?.status==='ready'?'已就绪':'待启用'} · 自动裁决 ${state.automation.enabled?'开启':'关闭'}</p></section>`;
+  return `<section class="panel" id="room-overview"><h2>房间总览</h2>${stormOverview(state.storm)}<div class="room-stats">${stats.map(([label,value])=>`<div><span>${label}</span><strong>${value}</strong></div>`).join('')}</div><div class="actions"><button type="button" class="primary" data-action="start" ${active||phase===2?'disabled':''}>${active?'已开场':state.roomStatus==='paused'?'恢复开场':'一键开场'}</button>${state.initialized?`${button(t('ui.m026'),'round')}${button(state.roomStatus==='paused'?t('ui.m028'):t('ui.m027'),'room',{status:state.roomStatus==='paused'?'active':'paused'})}${button(state.automation.enabled?t('ui.m029'):t('ui.m030'),'automation-console')}${button(t('ui.m143'),'backup')}`:''}${button('处理裁决','navigate',{path:'gm/rulings'})}</div><p class="room-readiness">规则 ${state.initialized?'已安装':'待初始化'} · 个人资料 ${state.knowledge?.status==='ready'?'已就绪':'待启用'} · 自动裁决 ${state.automation.enabled?'开启':'关闭'}</p></section>`;
 }
 function roomPage(){
   const grants=state.knowledgeGrants?.items||[];
@@ -455,7 +484,13 @@ function scenePage(){
   const place=state.locations.find(x=>x.index===c.numbers.location);
   if(!place)return empty(t('scene.unpublished'));
   const observation=place.observedAt?`观察记录 · ${new Date(place.observedAt*1000).toLocaleString()}（非实时场景）`:t('scene.current');
-  return `<header class="scene-heading"><div><small>${escape(observation)}</small><h1>${String(place.index).padStart(2,'0')} ${escape(place.name)}</h1></div><span class="tag">${t('scene.round',{count:state.session?.numbers.round||0})}</span></header><p class="scene-description">${escape(place.description)}</p><div class="scene-map-area">${mapView(state.locations,place.index,'player')}${playerContacts()}</div><div class="available-actions"><header><h2>${t('scene.actions')}</h2><span class="tag scene-settlement" role="status">${settlementStatus()}</span></header><div class="preset-actions">${sceneButtons(place)}</div><div class="travel-actions">${place.exits.map(index=>button(t('scene.go',{place:escape(state.locations.find(x=>x.index===index)?.name||String(index))}),'travel',{destination:index},'small')).join('')}</div><div class="generic-actions">${button(t('ui.m051'),'check',{},'primary')}${button(t('ui.m049'),'request',{kind:'free'})}${button(t('ui.m050'),'review')}</div></div>${sceneStatusPanel()}`;
+  return `<header class="scene-heading"><div><small>${escape(observation)}</small><h1>${String(place.index).padStart(2,'0')} ${escape(place.name)}</h1></div><span class="tag">${t('scene.round',{count:state.session?.numbers.round||0})}</span></header><p class="scene-description">${escape(place.description)}</p><div class="scene-map-area">${mapView(state.locations,place.index,'player')}${playerContacts()}</div><div class="available-actions"><header><h2>${t('scene.actions')}</h2><span class="tag scene-settlement" role="status">${settlementStatus()}</span></header><div class="preset-actions">${sceneButtons(place)}</div><div class="travel-actions">${place.exits.map(index=>button(t('scene.go',{place:escape(state.locations.find(x=>x.index===index)?.name||String(index))}),'travel',{destination:index},'small')).join('')}</div><div class="generic-actions">${button(t('ui.m051'),'check',{},'primary')}${button(t('ui.m049'),'request',{kind:'free'})}${button(t('ui.m050'),'review')}</div></div>${sceneStatusPanel()}${groundItems(place.index)}`;
+}
+
+function groundItems(location,keeper=false){
+  const rows=(state.groundItems||[]).filter(x=>x.location===location);
+  if(!rows.length)return '';
+  return `<section class="ground-items"><h3>地面物品</h3>${rows.map(x=>`<div class="row"><span>${escape(state.items[String(x.item)]?.name||'物品')} · 剩余用量 ${x.uses}${x.claim?' · 领取待恢复':''}</span>${keeper&&!x.claim?button('领取','take-ground',{id:x.id,index:location},'small'):''}</div>`).join('')}${keeper?'':'<small>需要拾取时可申请 KP 裁决。</small>'}</section>`;
 }
 
 function inventoryCards(c) {
@@ -493,7 +528,7 @@ function locationsPage() {
   const place=state.allLocations[String(selectedLocation)]||Object.values(state.allLocations)[0];
   const doors=place.exits.map(x=>{const edge=[place.index,x].sort((a,b)=>a-b).join('-');return button(`通往 ${x} · ${{open:'开启',closed:t('ui.m058'),locked:'锁住'}[state.doors[edge]]}`,'door',{edge});}).join('');
   const stock=place.stock.map(x=>`<div class="row"><span>${escape(state.items[String(x.item)]?.name)} × ${x.count}</span>${x.count?button('领取','take-stock',{index:place.index,item:x.item},'small'):''}</div>`).join('');
-  return heading('P10',t('ui.m128'),button(t('ui.m127'),'preview',{index:place.index}))+`<div class="layout-aside"><div>${panel(`${place.index} ${escape(place.name)}`,`<form id="location-form"><input type="hidden" name="index" value="${place.index}"><input type="hidden" name="revision" value="${place.revision||0}"><div class="grid2"><div>${area('公开描述','description',place.description)}</div><div>${area('KP 主持真相','truth',place.truth)}</div></div><div class="actions"><button class="primary">保存草稿</button>${button(t('ui.m126'),'publish',{index:place.index})}${state.published[String(place.index)]?button('向玩家揭示','location-reveal',{index:place.index}):''}</div></form><h3>通路与门</h3><div class="actions">${doors}</div><h3>库存</h3>${stock||'<p class="muted">无固定物品</p>'}${place.index===4?button('首次生成铜锅盘','generate',{kind:'pots'}):''}${place.index===7?button('首次生成鼠帮人数','generate',{kind:'rats'}):''}${roomRoster(place.index,true)}${discoveryControls(place.index)}${keeperSceneMenu(place.index)}`,'private')}</div><aside>${panel('地点索引',`<div class="stack">${Object.values(state.allLocations).map(x=>button(`${String(x.index).padStart(2,'0')} ${escape(x.name)}`,'select-location',{index:x.index},x.index===place.index?'primary':'')).join('')}</div>`)}</aside></div>`;
+  return heading('P10',t('ui.m128'),button(t('ui.m127'),'preview',{index:place.index}))+`<div class="layout-aside"><div>${panel(`${place.index} ${escape(place.name)}`,`<form id="location-form"><input type="hidden" name="index" value="${place.index}"><input type="hidden" name="revision" value="${place.revision||0}"><div class="grid2"><div>${area('公开描述','description',place.description)}</div><div>${area('KP 主持真相','truth',place.truth)}</div></div><div class="actions"><button class="primary">保存草稿</button>${button(t('ui.m126'),'publish',{index:place.index})}${state.published[String(place.index)]?button('向玩家揭示','location-reveal',{index:place.index}):''}</div></form><h3>通路与门</h3><div class="actions">${doors}</div>${groundItems(place.index,true)}<h3>库存</h3>${stock||'<p class="muted">无固定物品</p>'}${place.index===4?button('首次生成铜锅盘','generate',{kind:'pots'}):''}${place.index===7?button('首次生成鼠帮人数','generate',{kind:'rats'}):''}${roomRoster(place.index,true)}${discoveryControls(place.index)}${keeperSceneMenu(place.index)}`,'private')}</div><aside>${panel('地点索引',`<div class="stack">${Object.values(state.allLocations).map(x=>button(`${String(x.index).padStart(2,'0')} ${escape(x.name)}`,'select-location',{index:x.index},x.index===place.index?'primary':'')).join('')}</div>`)}</aside></div>`;
 }
 
 function libraryGroups(){
@@ -582,16 +617,24 @@ async function recoverChat(){
 function pollChat(){
   if(!state||state.preview)return Promise.resolve();
   if(chatPollRunning){chatPollAgain=true;return chatPollRunning;}
-  const who=chatIdentity();
+  const who=chatIdentity(),snapshot=channelSnapshot;
   chatPollRunning=(async()=>{
     try{
-      const next=await api('package/chat/state'+(playerWindow?'?player=1':''));
+      const wait=!webMode&&!document.hidden&&leaderPoll(performance.now());
+      const previous=chatCursor?.who===who ? chatCursor.version : null;
+      const next=await api('package/chat/state'+(playerWindow?'?player=1':''),undefined,
+        wait?{'X-Chat-Version':previous||'initial'}:{});
       if(who!==chatIdentity()||next.accountId!==state?.accountId)return;
+      if(snapshot!==channelSnapshot&&next.channels){chatCursor=null;chatPollAgain=true;return;}
+      chatCursor=next.version?{who,version:next.version}:null;
+      if(!next.channels)return;
+      if(actionWake&&leaderPoll(performance.now())&&JSON.stringify(next.channels)!==JSON.stringify(state.channels))
+        actionWake.postMessage({group:pollScope(),projectionChanged:true});
       chatGeneration++;state={...state,channels:next.channels};chatUI.update(state);await chatUI.poll();
     }catch(error){
       if(who===chatIdentity()&&[401,403].includes(error.status)){
         // Remove previously authorized channel content immediately on revocation.
-        chatGeneration++;state={...state,channels:{}};chatUI.update(state);
+        chatCursor=null;chatGeneration++;state={...state,channels:{}};chatUI.update(state);
       }
     }finally{
       chatPollRunning=null;lastChatPoll=performance.now();
@@ -748,7 +791,7 @@ window.addEventListener('resize',positionNotebook);
 function requestDescription(r){
   const a=r.args.input||r.args;
   const kind={scene:'场景预设',travel:'移动',check:'检定',inventory:t('request.item'),transfer:'转交',review:'复核',free:t('ui.m049'),interact:'场景互动'}[r.kind]||r.kind;
-  const detail=r.kind==='scene'?((state.sceneDefinitions||[]).find(x=>x.id===a.action)?.choices.find(c=>c.id===a.choice)?.label||a.choice):r.kind==='check'?`${fieldName(a.attribute)} · ${{normal:t('ui.m082'),advantage:t('ui.m083'),disadvantage:t('ui.m084')}[a.mode]||''}`:r.kind==='inventory'?`${{move:'移动',use:'使用',light:t('ui.m121'),extinguish:t('ui.m122')}[a.operation]||a.operation} · 槽位 ${a.slot}${a.operation==='move'?' → '+a.value:''}`:r.kind==='travel'?'前往 '+(state.allLocations?.[String(a.destination)]?.name||a.destination):r.kind==='transfer'?`槽位 ${a.slot} → ${state.team.find(t=>t.account===a.targetAccount)?.name||a.targetAccount} 的槽位 ${a.destination}`:'';
+  const detail=r.kind==='scene'?((state.sceneDefinitions||[]).find(x=>x.id===a.action)?.choices.find(c=>c.id===a.choice)?.label||a.choice):r.kind==='check'?`${fieldName(a.attribute)} · ${{normal:t('ui.m082'),advantage:t('ui.m083'),disadvantage:t('ui.m084')}[a.mode]||''}`:r.kind==='inventory'?`${{move:'移动',use:'使用',drop:'丢弃',light:t('ui.m121'),extinguish:t('ui.m122')}[a.operation]||a.operation} · 槽位 ${a.slot}${a.operation==='move'?' → '+a.value:''}`:r.kind==='travel'?'前往 '+(state.allLocations?.[String(a.destination)]?.name||a.destination):r.kind==='transfer'?`槽位 ${a.slot} → ${state.team.find(t=>t.account===a.targetAccount)?.name||a.targetAccount} 的槽位 ${a.destination}`:'';
   return `${kind}${detail?' · '+detail:''}`;
 }
 function rulingQueue(){
@@ -870,7 +913,7 @@ const actions = {
   navigate:({path})=>{location.hash='/'+path;},
   initialize:()=>perform('initialize',{}),
   recover:()=>{const body=JSON.parse(localStorage.getItem(pendingKey())); return perform(body.operation,body.args,body);},
-  logout:async()=>{await api('api/v1/logout',{});embeddedAI.close();libraryCache=null;state=null;chatUI.update(null);csrf='';history=[];closeDialog();location.hash='/entry';renderEntry();},
+  logout:async()=>{await api('api/v1/logout',{});embeddedAI.close();libraryCache=null;projectionCache=null;chatCursor=null;state=null;chatUI.update(null);csrf='';history=[];closeDialog();location.hash='/entry';renderEntry();},
   draft:args=>openDialog('为小鼠取个名字',field('名字','name',args.name),data=>perform('draft',{preset:args.preset,name:data.get('name')}),t('create.submit'),'P03'),
   'choose-preset':args=>{creation={...args,step:1,swap:''};renderPage();},
   'create-roll':async()=>{await perform('draft.roll',{});creation={step:1,preset:'random',name:'',swap:''};renderPage();},
@@ -886,6 +929,8 @@ const actions = {
   'map-room':args=>{selectedLocation=args.index;renderPage();},
   location:args=>{if(state.role==='kp'){selectedLocation=args.index;location.hash='/gm/locations/'+args.index;renderPage();}else{const p=state.locations.find(x=>x.index===args.index);openDialog(p.name,'<p>'+escape(p.description)+'</p>',null,'','S07');}},
   'select-location':args=>{selectedLocation=args.index;location.hash='/gm/locations/'+args.index;renderPage();},
+  'storm-finish':({route})=>openDialog('确认暴雨结局',area('清点队员并记录每人的去向','roster'),
+    data=>perform('storm.finish',{route,roster:data.get('roster')}),'记录结局'),
   start:()=>perform('session.start',{}),
   round:()=>openDialog('推进一个探索回合',`<p>当前为第 ${state.session.numbers.round} 回合。确认后同步更新所有角色的燃烧计时。</p>`,()=>perform('world',{operation:'round',round:state.session.numbers.round}),'推进一次','S12'),
   generate:args=>perform('generate',args),
@@ -908,9 +953,11 @@ const actions = {
   rules:()=>openDialog(t('rules.title'),state.rules.map(x=>`<h3>${escape(x.title)}</h3><p>${escape(x.text)}</p><a href="${escape(x.source)}" target="_blank" rel="noreferrer">${t('rules.source')}</a>`).join('<hr>'),null,'','S13'),
   preferences:()=>openDialog(t('ui.m146'),select(t('ui.m147'),'font',[['16',t('ui.m148')],['18',t('ui.m149')],['20',t('ui.m150')]],localStorage.getItem('sv.font')||'16')+`<label><input type="checkbox" name="reduce" ${diceUI.reduced?'checked':''}>${t('preferences.reduce')}</label><label><input type="checkbox" name="dice" ${diceUI.enabled?'checked':''}>${t('dice.preference')}</label><p>${independentLogin()}</p>`,data=>{localStorage.setItem('sv.font',data.get('font'));document.documentElement.style.fontSize=data.get('font')+'px';diceUI.setReduced(data.has('reduce'));diceUI.setEnabled(data.has('dice'));closeDialog();},t('ui.m063'),'S17'),
   export:async()=>{const data=await api('package/bundle');const url=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download='stumpsville-bundle.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);},
-  item:({slot})=>{const n=state.character.numbers;const def=state.items[String(n['item'+slot])];openDialog(def.name,`${itemDetailsHTML(def,{uses:n['uses'+slot],maxUses:def.uses})}<div class="actions">${def.uses&&def.kind!=='spell'?button(t('ui.m120'),'use',{slot}):''}${def.kind==='spell'?button(t('spell.request'),'request',{kind:'free',text:t('spell.text',{name:def.name})}):''}${def.light?button(n.litSlot===slot?t('ui.m122'):t('ui.m121'),'light',{slot,operation:n.litSlot===slot?'extinguish':'light'}):''}${button(t('ui.m123'),'move-item',{slot})}${button(t('ui.m124'),'transfer',{slot})}</div>`,null,'','S01');},
+  item:({slot})=>{const n=state.character.numbers;const def=state.items[String(n['item'+slot])];openDialog(def.name,`${itemDetailsHTML(def,{uses:n['uses'+slot],maxUses:def.uses})}<div class="actions">${def.uses&&def.kind!=='spell'?button(t('ui.m120'),'use',{slot}):''}${def.kind==='spell'?button(t('spell.request'),'request',{kind:'free',text:t('spell.text',{name:def.name})}):''}${def.light?button(n.litSlot===slot?t('ui.m122'):t('ui.m121'),'light',{slot,operation:n.litSlot===slot?'extinguish':'light'}):''}${button(t('ui.m123'),'move-item',{slot})}${button(t('ui.m124'),'transfer',{slot})}${def.kind!=='condition'?button('丢弃','drop-item',{slot,item:n['item'+slot]}):''}</div>`,null,'','S01');},
   use:({slot})=>openDialog(t('inventory.use'),`<p>${t('inventory.usehelp')}</p>`+rulingMode(),data=>submitAction('inventory',{operation:'use',slot,value:0},data),t('inventory.confirmuse'),'S03'),
   light:({slot,operation})=>perform('inventory',{operation,slot,value:0}),
+  'drop-item':({slot,item})=>openDialog('丢弃物品','<p>物品会落在执行时所在场景，保留剩余用量。点燃的光源会熄灭。</p>'+rulingMode(),data=>submitAction('inventory',{operation:'drop',slot,value:item},data),'确认丢弃'),
+  'take-ground':args=>openDialog('领取地面物品',select('接收角色','actor',state.characters.filter(x=>x.numbers.location===args.index).map(x=>[x.instanceId,x.name]))+field('放入槽位','slot',7,'number'),data=>perform('ground.take',{id:args.id,actor:data.get('actor'),slot:number(data.get('slot'))}),'确认领取'),
   'move-item':({slot})=>openDialog(t('inventory.move'),field(t('inventory.destination'),'value',5,'number')+rulingMode(),data=>submitAction('inventory',{operation:'move',slot,value:number(data.get('value'))},data),'移动','S04'),
   transfer:({slot})=>openDialog(t('inventory.transfer'),select(t('inventory.receiver'),'targetAccount',state.team.filter(x=>x.account!==state.accountId).map(x=>[x.account,x.name]))+field(t('inventory.receiverslot'),'destination',5,'number'),data=>perform('request',{kind:'transfer',slot,targetAccount:data.get('targetAccount'),destination:number(data.get('destination')),text:t('transfer.text',{count:slot})}),t('inventory.submit'),'S05'),
   share:({id})=>{const receipt=state.receipts.find(x=>x.id===id);openDialog(t('share.title'),`<p>${escape(resultText(receipt.result))}</p>`+select(t('share.channel'),'channelId',Object.values(state.channels).filter(x=>x.canPost).map(x=>[x.channelId,x.name]),currentChannel)+``,data=>perform('share.receipt',{receiptId:id,channelId:data.get('channelId')}),t('share.submit'),'S06');},
@@ -920,7 +967,7 @@ const actions = {
   morale:args=>perform('morale',args),
   'npc-create':()=>openDialog('新建主持生物',field('名称','name')+['str','dex','wil','hp','armor','location'].map((x,i)=>field(fieldName(x),x,[9,9,9,3,0,1][i],'number')).join('')+'<p class="muted">默认是SRD通用小鼠，专属角色请按原版输入。</p>',data=>perform('npc.create',{name:data.get('name'),numbers:Object.fromEntries(['str','dex','wil','hp','armor','location'].map(x=>[x,number(data.get(x))]))}),'创建','S10'),
   'tables':()=>openDialog('主持随机表',area('d6 遭遇内容（每行一项，共6行）','encounters',state.encounters.join('\n'))+area('d20 战利品（每行一项，共20行）','loot',state.loot.join('\n')),data=>perform('tables.save',{encounters:data.get('encounters').split('\n'),loot:data.get('loot').split('\n')}),t('ui.m063'),'S14'),
-  'stage':()=>openDialog('导入与检查','<label>选择导出的配置包 JSON<input type="file" id="bundle-file" accept=".json"></label><p>检查不会激活规则；通过后可在隔离快照预览。</p>',async()=>{const f=document.querySelector('#bundle-file').files[0];if(!f)throw new Error('请选择 JSON 文件');if(f.size>131072)throw new Error('配置文件超过本机接口限制');const data=JSON.parse(await f.text());const result=await perform('rules.stage',{bundle:data});lastStage=result.revision;renderPage();},'检查暂存','S14'),
+  'stage':()=>openDialog('导入与检查','<label>选择导出的配置包 JSON<input type="file" id="bundle-file" accept=".json"></label><p>检查不会激活规则；通过后可在隔离快照预览。</p>',async()=>{const f=document.querySelector('#bundle-file').files[0];if(!f)throw new Error('请选择 JSON 文件');if(f.size>512*1024)throw new Error('配置文件超过本机接口限制');const data=JSON.parse(await f.text());const result=await perform('rules.stage',{bundle:data});lastStage=result.revision;renderPage();},'检查暂存','S14'),
   'rules-preview':({revision})=>openDialog(t('ui.m137'),select(t('ui.m011'),'rule',[['sv.layout','物品栏布局'],['sv.check',t('ui.m051')]],'sv.layout')+select('角色','actor',actorOptions()),async data=>{const rule=data.get('rule');const input={actor:data.get('actor'),...(rule==='sv.check'?{attribute:'dex',mode:'normal'}:{})};const result=await perform('rules.preview',{revision,rule,input});openDialog('预览结果','<pre>'+escape(JSON.stringify(result,null,2))+'</pre>',null,'','S14');},'运行预览','S14'),
   'rules-activate':args=>openDialog('激活 / 回退修订','<p>将使用修订 '+escape(args.revision)+'。已有角色数值不会自动迁移。</p>',()=>perform('rules.activate',args),'确认激活','S14'),
 
@@ -1025,8 +1072,36 @@ effectsUI.configure(t,changeList,()=>diceUI.presenting,(pane='records')=>{
   await api('package/action',{id:'notice-ack-'+notificationId,operation:'notification.ack',args:{notificationId}});
 });
 let actionWake=null;
+const pollingPeers=new Map();
+let nextBeacon=0;
+const pollScope=()=>state && JSON.stringify([base.pathname,state.storageScope,state.accountId,state.role,locale()]);
+function leaderPoll(now){
+  if(!state||!actionWake||document.hidden)return true;
+  const scope=pollScope();
+  if(now>=nextBeacon){
+    actionWake.postMessage({pollPeer:pageId,group:scope});
+    nextBeacon=now+1000;
+  }
+  let leader=pageId;
+  for(const [id,peer] of pollingPeers){
+    if(now-peer.seen>3000)pollingPeers.delete(id);
+    else if(peer.scope===scope&&id<leader)leader=id;
+  }
+  return leader===pageId;
+}
 if(!webMode&&typeof BroadcastChannel!=='undefined'){
-  try{actionWake=new BroadcastChannel('stumpsville-action-wake');actionWake.onmessage=event=>{if(event.data?.scope===state?.storageScope){if(event.data.chat)pollChat();else if(event.data.completed)pollState();else runAutoScenes();}};}catch{}
+  try{
+    actionWake=new BroadcastChannel('stumpsville-action-wake');
+    actionWake.onmessage=({data})=>{
+      if(data?.pollPeer){
+        if(data.group===pollScope()&&pollingPeers.size<256)
+          pollingPeers.set(data.pollPeer,{scope:data.group,seen:performance.now()});
+      }else if(data?.group && data.group===pollScope() && data.projectionChanged)pollState();
+      else if(data?.scope===state?.storageScope){
+        if(data.chat)pollChat();else if(data.completed)pollState();else runAutoScenes();
+      }
+    };
+  }catch{}
 }
 chatUI.configure({api,send:rawCommand,pending:chatPending,recover:recoverChat,toast,t});
 if(!webMode&&base.pathname==='/'){
@@ -1039,20 +1114,30 @@ async function pollState(){
   statePollRunning=true;
   try{
     const generation=stateGeneration,chats=chatGeneration;
-    const next=await api(statePath());
+    const packet=await nextProjection(),next=packet.value;
     if(busy||!state||generation!==stateGeneration)return;
+    const priorVersions=projectionCache?.versions;
+    if(!priorVersions||priorVersions[3]!==packet.cache?.versions[3])channelSnapshot++;
+    projectionCache=packet.cache;
+    if(priorVersions&&packet.cache&&leaderPoll(performance.now())&&packet.cache.versions.slice(0,4).some((v,i)=>v!==priorVersions[i]))
+      actionWake?.postMessage({group:pollScope(),projectionChanged:true});
     const visual=value=>{const {network,channels,...rest}=value;return JSON.stringify(rest);};
-    const changed=visual(next)!==visual(state);
+    const changed=packet.changed ?? (visual(next)!==visual(state));
     if(chats!==chatGeneration&&next.accountId===state.accountId&&next.storageScope===state.storageScope)next.channels=state.channels;
     state=next;chatUI.update(state);diceUI.observe(state);effectsUI.observe(state);connection=t('ui.m065');
     const editing=['INPUT','TEXTAREA','SELECT'].includes(document.activeElement?.tagName)&&!document.activeElement?.readOnly;
-    if(changed)renderDeferred=true;
+    const activityOnly=priorVersions&&packet.cache&&[0,1].every(i=>priorVersions[i]===packet.cache.versions[i])
+      &&['gm/rulings','play/scene'].includes(route());
+    if(changed&&!activityOnly)renderDeferred=true;
     if(renderDeferred&&!editing&&!dialog.open&&!dirtyForm&&!notebookDrag){renderDeferred=false;renderPage();}
     else if(changed){updateActivity();}
-    updateRoomNetwork();updateKeeperQueue();
-    const queue=document.querySelector('#message-queue-list');if(queue)queue.innerHTML=messageQueue();
+    if(!priorVersions||!packet.cache||priorVersions[4]!==packet.cache.versions[4])updateRoomNetwork();
+    if(changed)updateKeeperQueue();
+    const queue=document.querySelector('#message-queue-list');
+    if(queue){const markup=messageQueue();if(queue._markup!==markup){queue.innerHTML=markup;queue._markup=markup;}}
     const chatBadge=document.querySelector('.chat-badge');if(chatBadge)chatBadge.textContent=unreadMessages()||'';
     await chatUI.poll();
+    if(chats===chatGeneration&&!chatCursor)lastChatPoll=performance.now();
 
     const label=document.querySelector('#connection');if(label)label.textContent=t('ui.m065');
   }catch(error){
@@ -1060,7 +1145,7 @@ async function pollState(){
     const label=document.querySelector('#connection');if(label)label.textContent=connection;
     // A failed refresh does not revoke a conversation or erase an in-flight
     // response. Actual authorization failures still clear the previous view.
-    if(error.status===401||error.status===403){embeddedAI.close();aiUI.update(null);libraryCache=null;state=null;chatUI.update(null);csrf='';history=[];closeDialog();renderEntry();}
+    if(error.status===401||error.status===403){embeddedAI.close();aiUI.update(null);libraryCache=null;projectionCache=null;chatCursor=null;state=null;chatUI.update(null);csrf='';history=[];closeDialog();renderEntry();}
   }
   finally{statePollRunning=false;lastStatePoll=performance.now();}
 }
@@ -1069,6 +1154,7 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden){pollState
 setInterval(runAutoScenes,500);
 setInterval(()=>{
   const settling=state?.autoSceneTasks?.some(task=>['queued','running','finishing'].includes(task.status));
-  if(performance.now()-lastStatePoll>=(settling?400:document.hidden?10000:2500))pollState();
-  if(performance.now()-lastChatPoll>=(document.hidden?5000:1000)&&!chatPollRunning)pollChat();
+  const leader=leaderPoll(performance.now());
+  if(performance.now()-lastStatePoll>=(settling?400:document.hidden?10000:leader?2500:5000))pollState();
+  else if(performance.now()-lastChatPoll>=(document.hidden?5000:leader?(chatCursor?200:1000):2500)&&!chatPollRunning)pollChat();
 },200);

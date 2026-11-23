@@ -20,6 +20,7 @@ class KnowledgeService:
         self.providers = {}
         self.descriptors = {}
         self.cursors = {}
+        self.registration_revision = 0
 
     def register(self, descriptor, provider):
         with self.host.lock:
@@ -35,7 +36,28 @@ class KnowledgeService:
             require(all(self._valid_selector(s) for s in value['selectors']), 'INPUT_INVALID')
             self.descriptors[value['policyId']] = value
             self.providers[value['providerId']] = provider
+            self.registration_revision += 1
             return copy.deepcopy(value)
+
+    def projection_revision(self, policies):
+        """Opt-in external invalidation; unknown providers keep the uncached path.
+
+        A trusted provider's zero-argument projection_revision() must return a
+        nonempty string changing whenever ANY external data/eligibility changes.
+        It must check its source on each call, including replacement/deletion.
+        Room-owned changes are separately bound to the store generation.
+        """
+        revisions=[self.registration_revision]
+        try:
+            for key,policy in sorted(policies.items()):
+                provider=self._provider(policy)
+                revision=getattr(provider,'projection_revision',None)
+                if not callable(revision):return None
+                token=self._invoke(provider,'projection_revision')
+                if type(token) is not str or not 0<len(token)<=4096:return None
+                revisions.append((key,token))
+        except DomainError:return None
+        return tuple(revisions)
 
     @staticmethod
     def _valid_selector(s):
@@ -349,10 +371,10 @@ class KnowledgeService:
                 selected.append(row)
             return self._page(selected, {'limit': 50}, account, s['knowledge']['scopeId'], include_data=True)
 
-    def grants(self, account, args):
+    def grants(self, account, args, *, state=None):
         with self.host.lock:
             check('queries', 'grants', args)
-            s = self.host.state(); require(member(s, account)['role'] == 'kp', 'PERMISSION_DENIED')
+            s = self.host.state() if state is None else state; require(member(s, account)['role'] == 'kp', 'PERMISSION_DENIED')
             rows = [g for g in s['knowledge']['grants'].values() if (not args.get('subjectMemberId') or g['subject']['memberId'] == args['subjectMemberId'])
                     and (not args.get('policyId') or g['policyId'] == args['policyId']) and (not args.get('status') or g['status'] == args['status'])]
             rows.sort(key=lambda g: g['grantId'])

@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-11-21T00:37:21.869491+08:00",
+  "checkedAt": "2026-11-22T13:51:10.745060+08:00",
   "checks": [
     "ordered-actions-and-non-guaranteed-preflight",
     "dialog-closes-before-command-result",
@@ -9,14 +9,15 @@
     "unknown-is-not-guessed-as-failure-or-success",
     "business-outcome-is-distinct-from-transaction-commit",
     "diagnostic-escaping-and-mobile-layout",
-    "terminal-archive-and-no-browser-errors"
+    "terminal-archive-and-no-browser-errors",
+    "compact-pages-navigate-and-fetch-exact-detail-before-approval"
   ],
   "realProviderCalls": 0,
   "realSaveChanged": false,
   "scope": "synthetic DTO browser presentation; does not prove engine atomicity",
-  "evidenceDirectory": "tests/output/batch-details-3b5ab836",
+  "evidenceDirectory": "tests/output/batch-details-8b5945df",
   "passed": true,
-  "passedCount": 9,
+  "passedCount": 10,
   "pageErrors": [],
   "previousRuns": [
     {
@@ -140,6 +141,22 @@
       ],
       "error": null,
       "evidenceDirectory": "tests/output/batch-details-1ef98cb9"
+    },
+    {
+      "passed": true,
+      "checks": [
+        "ordered-actions-and-non-guaranteed-preflight",
+        "dialog-closes-before-command-result",
+        "notification-retains-per-action-outcome-and-locator",
+        "blocked-preflight-cannot-be-approved-in-package-ui",
+        "legacy-first-rejection-is-zero-success-without-invented-rollback",
+        "unknown-is-not-guessed-as-failure-or-success",
+        "business-outcome-is-distinct-from-transaction-commit",
+        "diagnostic-escaping-and-mobile-layout",
+        "terminal-archive-and-no-browser-errors"
+      ],
+      "error": null,
+      "evidenceDirectory": "tests/output/batch-details-3b5ab836"
     }
   ]
 }

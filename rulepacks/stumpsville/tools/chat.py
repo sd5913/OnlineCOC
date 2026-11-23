@@ -1,4 +1,5 @@
 """Package-scoped scene/team chat. Host still owns global and direct channels."""
+from bisect import bisect_left, bisect_right
 import time
 import copy
 
@@ -7,6 +8,21 @@ class ScopedChat:
     def __init__(self, package):
         self.package = package
         self.data = package.state['scopedChat']
+
+    def index(self, key, messages):
+        index = self.package.chat_indexes.get(key)
+        if index is not None and index['messages'] is messages and index['length'] == len(messages):
+            return index
+        index = {'messages': messages, 'length': len(messages), 'revision': 0,
+                 'visible': [], 'bySender': {}, 'byId': {}}
+        for m in messages:
+            index['revision'] += m['revision']
+            index['byId'][m['messageId']] = m
+            if not m['deleted']:
+                index['visible'].append(m['sequence'])
+                index['bySender'].setdefault(m['senderAccountId'], []).append(m['sequence'])
+        self.package.chat_indexes[key] = index
+        return index
 
     def channels(self, view):
         p = self.package
@@ -21,10 +37,14 @@ class ScopedChat:
         for key, name in ids.items():
             messages = self.data['messages'].get(key, [])
             read = self.data['reads'].get(account, {}).get(key, 0)
+            index = self.index(key, messages)
+            visible = index['visible']
+            own = index['bySender'].get(account, [])
+            unread = len(visible) - bisect_right(visible, read) - len(own) + bisect_right(own, read)
             result[key] = {'channelId': key, 'kind': 'scene' if key.startswith('sv-scene-') else 'party',
-                'name': name, 'canPost': view['status'] != 'archived', 'revision': sum(m['revision'] for m in messages),
+                'name': name, 'canPost': view['status'] != 'archived', 'revision': index['revision'],
                 'lastSequence': messages[-1]['sequence'] if messages else 0, 'readSequence': read,
-                'unreadCount': sum(m['sequence'] > read and m['senderAccountId'] != account and not m['deleted'] for m in messages)}
+                'unreadCount': unread}
         return result
 
     def projection(self, client, player_mode=False):
@@ -53,10 +73,11 @@ class ScopedChat:
         limit = args.get('limit', 50)
         if type(before) is not int or type(limit) is not int or not 1 <= limit <= 100:
             raise ValueError('INVALID_CHAT_PAGE')
-        messages = [m for m in self.data['messages'].get(channel, []) if m['sequence'] < before]
-        items = messages[-limit:]
+        messages = self.data['messages'].get(channel, [])
+        end = bisect_left(messages, before, key=lambda m: m['sequence'])
+        items = messages[max(0, end-limit):end]
         return {'items': copy.deepcopy(items), 'channelRevision': channels[channel]['revision'],
-                'lastSequence': channels[channel]['lastSequence'], 'nextBefore': items[0]['sequence'] if len(messages) > limit else None}
+                'lastSequence': channels[channel]['lastSequence'], 'nextBefore': items[0]['sequence'] if end > limit else None}
 
     def action(self, view, operation, args, action_id):
         channel = args.get('channelId')
@@ -79,7 +100,8 @@ class ScopedChat:
             if not isinstance(text, str) or not text.strip() or len(text) > 4000:
                 raise ValueError('消息应为1–4000个字符')
         if operation == 'chat.message.send':
-            prior = next((m for m in messages if m['messageId'] == action_id), None)
+            index = self.index(channel, messages)
+            prior = index['byId'].get(action_id)
             if prior:
                 return {'channelId': channel, 'messageId': action_id, 'sequence': prior['sequence']}
             if len(messages) >= 10000:
@@ -87,14 +109,24 @@ class ScopedChat:
             message = {'messageId': action_id, 'channelId': channel, 'sequence': len(messages)+1, 'revision': 1,
                        'senderAccountId': account, 'speakerName': None, 'createdAt': time.time(), 'text': text, 'deleted': False}
             messages.append(message)
+            index['length'] += 1
+            index['revision'] += 1
+            index['byId'][action_id] = message
+            index['visible'].append(message['sequence'])
+            index['bySender'].setdefault(account, []).append(message['sequence'])
             return {'channelId': channel, 'messageId': action_id, 'sequence': message['sequence']}
-        message = next((m for m in messages if m['messageId'] == args.get('messageId')), None)
+        index = self.index(channel, messages)
+        message = index['byId'].get(args.get('messageId'))
         if not message or (message['senderAccountId'] != account and not (view['role'] == 'kp' and operation == 'chat.message.retract')):
             raise ValueError('NOT_VISIBLE')
         if message['revision'] != args.get('revision') or message['deleted']:
             raise ValueError('VERSION_CONFLICT')
         if operation not in {'chat.message.edit', 'chat.message.retract'}:
             raise ValueError('聊天操作不支持')
+        index['revision'] += 1
+        if operation == 'chat.message.retract':
+            for sequences in (index['visible'], index['bySender'][message['senderAccountId']]):
+                sequences.pop(bisect_left(sequences, message['sequence']))
         message.update(text=text if operation == 'chat.message.edit' else '', deleted=operation == 'chat.message.retract',
                        revision=message['revision']+1, updatedAt=time.time())
         return {'channelId': channel, 'messageId': message['messageId'], 'revision': message['revision']}

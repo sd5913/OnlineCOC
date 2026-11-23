@@ -1,0 +1,13 @@
+import assert from 'node:assert/strict';
+import {readFile,writeFile} from 'node:fs/promises';
+import {AiClient} from '../ai-performance-interface-snapshot/v3/engineering/ai/web/components/client.js';
+const paths=[];const expected={rulingId:'batch:'+'a'.repeat(32)};
+const client=new AiClient({request:async path=>{paths.push(path);return expected;}});
+await client.aiRulings();
+await client.aiRulings({compact:true,queue:'archived',before:undefined,limit:30,sessionId:null});
+assert.equal(await client.aiRuling(expected.rulingId),expected);
+assert.deepEqual(paths,['ai/rulings','ai/rulings?compact=true&queue=archived&limit=30','ai/rulings/batch%3A'+'a'.repeat(32)]);
+const manifest=JSON.parse(await readFile(new URL('../ai-performance-interface-snapshot/v3/engineering/ai/web/components/pack-manifest.json',import.meta.url)));
+assert.ok(manifest.routes.get.includes('ai/rulings/{rulingId}'));
+await writeFile(new URL('web-client-proof.json',import.meta.url),JSON.stringify({passed:4,frozenVersion:'v3',paths,directDetail:true,undefinedOmitted:true},null,2)+'\n');
+console.log('4 AiClient route, return-shape and manifest checks passed');

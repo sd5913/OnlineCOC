@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="8" time="16.770" timestamp="2026-11-22T13:43:23.155587+08:00" hostname="LAPTOP-BIFSL64A"><testcase classname="engineering.ai.tests.test_memory" name="test_draft_is_not_fact_and_confirmed_memory_survives_restart" time="3.228" /><testcase classname="engineering.ai.tests.test_memory" name="test_source_change_invalidates_memory_and_descendants" time="1.835" /><testcase classname="engineering.ai.tests.test_memory" name="test_stale_ai_store_draft_cannot_reconfirm_revoked_room_memory" time="1.601" /><testcase classname="engineering.ai.tests.test_memory" name="test_revoke_and_expiry_never_leave_usable_summary" time="1.710" /><testcase classname="engineering.ai.tests.test_memory" name="test_secret_summary_cannot_be_downgraded_to_public" time="1.598" /><testcase classname="engineering.ai.tests.test_memory" name="test_player_cannot_confirm_and_private_memory_is_not_shared" time="1.554" /><testcase classname="engineering.ai.tests.test_memory" name="test_scope_fork_does_not_reuse_old_memory" time="1.904" /><testcase classname="engineering.ai.tests.test_memory" name="test_context_approval_binding_tracks_memory_revision" time="1.632"><failure message="KeyError: 'sourceId'">setup = (&lt;onlinecoc.host.Host object at 0x00000246F50AFBD0&gt;, &lt;onlinecoc_ai.proposals.Proposals object at 0x00000246F506EC50&gt;, {'schemaVersion': 1, 'profileId': 'deepseek-main', 'revision': 1, 'adapter': 'deepseek-chat', ...})
+
+    def test_context_approval_binding_tracks_memory_revision(setup):
+        host,service,_=setup;memory=Memory(service);entry=create(memory,host);entry=memory.confirm('kp',entry['memoryId'],1)
+        state=host.state();state['aiControl']['settings']['externalSources']['kp']=True;host.commit(state)
+&gt;       context=Context(service);snapshot,payload=context.capture('kp',{'sourceKind':'manual','text':'request'})
+                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+engineering\ai\tests\test_memory.py:76: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+engineering\ai\src\onlinecoc_ai\context.py:29: in capture
+    access = binding(self.host, self.proposals.repository, request)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+engineering\ai\src\onlinecoc_ai\access.py:39: in binding
+    session = request_session(repository, request)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+repository = &lt;onlinecoc_ai.repository.Repository object at 0x00000246F506F350&gt;
+request = {'sourceKind': 'manual', 'text': 'request'}
+
+    def request_session(repository, request):
+        if hasattr(repository,'read_index'):
+            def build(state):
+                first={}
+                for row in state['requests'].values():first.setdefault((row['sourceId'],row['sourceRevision'],row['initiator']),row['requestId'])
+                sessions={rid:session for session in state['settings'].get('sessions',{}).values() for rid in session['requestIds']}
+                return first,sessions
+            first,sessions=repository.read_index('request-sessions',build)
+&gt;           return sessions.get(first.get((request['sourceId'],request['sourceRevision'],request.get('initiator')),request.get('requestId')))
+                                           ^^^^^^^^^^^^^^^^^^^
+E           KeyError: 'sourceId'
+
+engineering\ai\src\onlinecoc_ai\access.py:31: KeyError</failure></testcase></testsuite></testsuites>

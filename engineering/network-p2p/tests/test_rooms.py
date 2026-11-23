@@ -21,7 +21,7 @@ def setup_room(tmp_path, **config):
 def test_restart_removes_online_leases(tmp_path):
     rooms, lease, client, now = setup_room(tmp_path)
     assert len(rooms.listing()["items"]) == 1
-    restarted = Rooms(tmp_path / "rooms.json")
+    restarted = Rooms(tmp_path / "rooms.json", clock=lambda: now[0])
     assert restarted.listing()["items"] == []
     assert len(restarted.rooms) == 1
 

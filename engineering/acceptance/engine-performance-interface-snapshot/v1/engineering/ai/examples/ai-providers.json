@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "profiles": [
+    {
+      "schemaVersion": 1,
+      "profileId": "deepseek-main",
+      "revision": 1,
+      "adapter": "deepseek-chat",
+      "baseUrl": "https://api.deepseek.com",
+      "model": "deepseek-flash",
+      "credentialRef": "env:ONLINECOC_DEEPSEEK_API_KEY",
+      "request": {
+        "connectTimeoutMs": 10000,
+        "totalTimeoutMs": 120000,
+        "maxOutputTokens": 8192,
+        "thinking": "disabled",
+        "contextWindowTokens": 1048576
+      },
+      "limits": {
+        "maxConcurrentPerRoom": 1,
+        "maxQueuedPerRoom": 5,
+        "maxToolRounds": 12,
+        "maxRepairAttempts": 5,
+        "maxTransportRetries": 2,
+        "taskTimeoutMs": 600000,
+        "dailyTokenBudget": null
+      },
+      "allowPrivateEndpoint": false,
+      "enabled": false
+    }
+  ]
+}

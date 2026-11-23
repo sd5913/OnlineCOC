@@ -1,14 +1,30 @@
+import copy
 import hashlib
+import threading
+from collections import OrderedDict
 from onlinecoc_data import canonical
 from .lua_runtime import execute
 from .errors import require
-from .contracts import input_schema
+from .contracts import input_schema, _json_tree
+from .worker_process import POLICY_VERSION
+
+_STAGED=OrderedDict()
+_STAGED_LOCK=threading.Lock()
+_STAGED_BYTES=0
+STATIC_VALIDATION_VERSION='stage-1:'+POLICY_VERSION
 
 def stage(sources,data=None):
+    global _STAGED_BYTES
     require(isinstance(sources,dict) and 0<len(sources)<=64)
     require(len(canonical(sources))<=1024*1024,"LIMIT_EXCEEDED")
     require(all(isinstance(k,str) and k.endswith('.lua') and '/' not in k and '\\' not in k and isinstance(v,str) for k,v in sources.items()))
     require(data is None or isinstance(data,dict));require(len(canonical(data or {}))<=1024*1024,"LIMIT_EXCEEDED")
+    cache_key=hashlib.sha256(canonical([STATIC_VALIDATION_VERSION,sources,data or {}])).digest() if _json_tree([sources,data],65536) else None
+    if cache_key is not None:
+        with _STAGED_LOCK:
+            if cache_key in _STAGED:
+                _STAGED.move_to_end(cache_key)
+                return copy.deepcopy(_STAGED[cache_key][0])
     metadata=execute(sources,{"kind":"inspect"})["metadata"]
     for key,m in metadata.items():
         require(m["mode"] in ("action","calculation","flow"),"RULE_INVALID")
@@ -31,6 +47,13 @@ def stage(sources,data=None):
     check_graph({k:list(m["dependencies"]) for k,m in metadata.items()})
     artifact={"sources":sources,"data":data or {},"metadata":metadata,"apiVersion":1}
     artifact["revision"]=hashlib.sha256(canonical(artifact)).hexdigest()
+    if cache_key is not None:
+        size=len(canonical(artifact))
+        with _STAGED_LOCK:
+            if cache_key not in _STAGED:
+                _STAGED[cache_key]=(copy.deepcopy(artifact),size);_STAGED_BYTES+=size
+            while len(_STAGED)>16 or _STAGED_BYTES>8*1024*1024:
+                _,(_,old_size)=_STAGED.popitem(last=False);_STAGED_BYTES-=old_size
     return artifact
 
 def check_graph(graph):

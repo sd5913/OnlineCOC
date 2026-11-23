@@ -6,6 +6,9 @@ from .errors import require
 class Assets:
     def __init__(self,host):
         self.host=host;self.path=host.path/'rooms/demo/assets';self.path.mkdir(exist_ok=True)
+        with host.lock:
+            if not hasattr(host,'_asset_backup_pins'):host._asset_backup_pins={}
+            self._backup_pins=host._asset_backup_pins
     def upload(self,account,name,data,visibility='public'):
         require(len(data)<=10*1024*1024,'LIMIT_EXCEEDED');require(visibility in ('public','kp'))
         with self.host.lock:
@@ -30,26 +33,55 @@ class Assets:
             raw=(self.path/asset['digest']).read_bytes();require(hashlib.sha256(raw).hexdigest()==asset['digest'],'ASSET_CORRUPT')
             return raw,asset
     def backup(self,account,target,include_identity=False,*,ai_snapshot=None):
+        return self.write_backup(self.prepare_backup(account,include_identity,ai_snapshot=ai_snapshot),target)
+
+    def prepare_backup(self,account,include_identity=False,*,ai_snapshot=None):
+        """Capture one consistent generation and pin immutable asset blobs."""
+        started=time.perf_counter()
         with self.host.lock:
-            self.host.kp(account);target=Path(target);require(not target.exists(),'TARGET_EXISTS');target.mkdir(parents=True)
-            self.host.store.export_snapshot(target/'room.json')
-            assets=self.host.state()['assets'];(target/'assets').mkdir()
-            for a in assets.values():
-                raw=(self.path/a['digest']).read_bytes();require(hashlib.sha256(raw).hexdigest()==a['digest'],'ASSET_CORRUPT')
-                durable_write(target/'assets'/a['digest'],raw)
-            manifest={'format':1,'roomDigest':hashlib.sha256((target/'room.json').read_bytes()).hexdigest(),'assets':assets}
+            self.host.kp(account)
+            generation,state=self.host.store.snapshot()
             identity=self.host.identity.store.snapshot()[1]
-            manifest['identityBindings']={k:binding(identity['accounts'][k]) for k in self.host.state()['members']}
-            if include_identity:
-                identity=copy.deepcopy(identity);identity['sessions']={}
-                durable_write(target/'identity.json',canonical(identity));manifest['identityDigest']=hashlib.sha256(canonical(identity)).hexdigest()
+            bindings={k:binding(identity['accounts'][k]) for k in state['members']}
+            if include_identity:identity['sessions']={}
             if ai_snapshot is not None:
-                require(ai_snapshot.get('schemaVersion')==1 and ai_snapshot.get('scopeId')==self.host.state()['aiControl']['scopeId'],'SCOPE_MISMATCH')
-                durable_write(target/'ai.json',canonical(ai_snapshot));manifest['aiDigest']=hashlib.sha256(canonical(ai_snapshot)).hexdigest()
-            durable_write(target/'manifest.json',canonical(manifest));return str(target)
+                require(ai_snapshot.get('schemaVersion')==1 and ai_snapshot.get('scopeId')==state['aiControl']['scopeId'],'SCOPE_MISMATCH')
+                ai_snapshot=copy.deepcopy(ai_snapshot)
+            pins={a['digest'] for a in state['assets'].values()}
+            for key in pins:self._backup_pins[key]=self._backup_pins.get(key,0)+1
+            return dict(generation=generation,state=state,bindings=bindings,identity=identity if include_identity else None,
+                        ai=ai_snapshot,pins=pins,captureMs=(time.perf_counter()-started)*1000)
+
+    def write_backup(self,snapshot,target):
+        """Write/fsync outside the room lock; publish the manifest only on success."""
+        started=time.perf_counter();written=0;complete=False
+        try:
+            target=Path(target);require(not target.exists(),'TARGET_EXISTS');target.mkdir(parents=True)
+            state=snapshot['state'];assets=state['assets'];data=canonical(state)
+            raw=canonical({'format':1,'sourceGeneration':snapshot['generation'],'payload':state,'digest':hashlib.sha256(data).hexdigest()})
+            durable_write(target/'room.json',raw);written+=len(raw)
+            manifest={'format':1,'roomDigest':hashlib.sha256(raw).hexdigest(),'assets':assets,'identityBindings':snapshot['bindings']}
+            (target/'assets').mkdir()
+            for key in snapshot['pins']:
+                raw=(self.path/key).read_bytes();require(hashlib.sha256(raw).hexdigest()==key,'ASSET_CORRUPT')
+                durable_write(target/'assets'/key,raw);written+=len(raw)
+            for field,manifest_key in (('identity','identityDigest'),('ai','aiDigest')):
+                if snapshot[field] is not None:
+                    raw=canonical(snapshot[field]);durable_write(target/(field+'.json'),raw)
+                    manifest[manifest_key]=hashlib.sha256(raw).hexdigest();written+=len(raw)
+            durable_write(target/'manifest.json',canonical(manifest));complete=True;return str(target)
+        finally:
+            with self.host.lock:
+                for key in snapshot['pins']:
+                    self._backup_pins[key]-=1
+                    if not self._backup_pins[key]:del self._backup_pins[key]
+                metrics=self.host.metrics.setdefault('backups',[])
+                metrics.append({'captureMs':snapshot['captureMs'],'writeMs':(time.perf_counter()-started)*1000,'bytes':written,
+                                'complete':complete})
+                del metrics[:-100]
     def collect_orphans(self,account,older_than=86400):
         with self.host.lock:
-            self.host.kp(account);used={a['digest'] for a in self.host.state()['assets'].values()};removed=[]
+            self.host.kp(account);used={a['digest'] for a in self.host.state()['assets'].values()}|self._backup_pins.keys();removed=[]
             for p in self.path.iterdir():
                 if p.is_file() and p.name not in used and time.time()-p.stat().st_mtime>older_than:
                     p.unlink();removed.append(p.name)

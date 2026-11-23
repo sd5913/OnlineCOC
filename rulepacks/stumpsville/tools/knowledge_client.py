@@ -33,7 +33,16 @@ def disclose(job,account,entity,facet,*,live=False,key='disclose',reason='KP 明
     return job.command(key,'knowledge.subscribe' if live else 'knowledge.observe',args)
 
 
-def records(client):
+def records(client, view=None, *, facet=None):
+    # A complete authorized view already contains the first search page.
+    # Read still verifies each ref. Fall back to normal pagination on overflow.
+    summary = (view or {}).get('knowledge') or {}
+    if summary.get('hasMore') is False and isinstance(summary.get('items'), list):
+        refs = [row['ref'] for row in summary['items'] if facet is None or row['facetId'] == facet]
+        items = []
+        for offset in range(0, len(refs), 12):
+            items.extend(client.request('/knowledge/read', {'refs': refs[offset:offset+12]})['items'])
+        return items
     items=[];cursor=None
     for _ in range(8):
         page=client.request('/knowledge/search',{'limit':50,**({'cursor':cursor} if cursor else {})})

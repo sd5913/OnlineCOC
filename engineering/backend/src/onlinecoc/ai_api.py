@@ -89,9 +89,31 @@ def install(app, runtime, auth):
     @app.get('/api/v1/ai/rulings')
     def rulings(request: Request):
         import inspect
+        from .errors import require
+        account=auth(request)
+        options=dict(request.query_params)
+        require(len(request.query_params.multi_items())==len(options),'INPUT_INVALID')
+        require(set(options)<={'compact','queue','before','limit','sessionId'},'INPUT_INVALID')
+        if options:
+            require(options.get('compact')=='true','INPUT_INVALID')
+            queue=options.get('queue','active');require(queue in ('active','archived','all'),'INPUT_INVALID')
+            raw=options.get('limit','30');require(raw.isascii() and raw.isdecimal() and len(raw)<=3,'INPUT_INVALID')
+            limit=int(raw);require(1<=limit<=100,'INPUT_INVALID')
+            for key in ('before','sessionId'):
+                require(key not in options or 1<=len(options[key])<=200,'INPUT_INVALID')
+            require(callable(getattr(service.rulings,'page',None)),'AI_CAPABILITY_UNAVAILABLE')
+            return service.rulings.page(account,queue=queue,before=options.get('before'),limit=limit,session_id=options.get('sessionId'),delivered=True)
         listing=service.rulings.list
         # Older separately deployed AI modules do not yet accept delivery proofs.
-        return listing(auth(request),delivered=True) if 'delivered' in inspect.signature(listing).parameters else listing(auth(request))
+        return listing(account,delivered=True) if 'delivered' in inspect.signature(listing).parameters else listing(account)
+
+    @app.get('/api/v1/ai/rulings/{ruling_id}')
+    def ruling(ruling_id: str, request: Request):
+        from .errors import require
+        account=auth(request)
+        require(not request.query_params and 1<=len(ruling_id)<=200,'INPUT_INVALID')
+        require(callable(getattr(service.rulings,'detail',None)),'AI_CAPABILITY_UNAVAILABLE')
+        return service.rulings.detail(account,ruling_id,delivered=True)
 
     @app.get('/api/v1/ai/batches')
     def batches(request: Request):return service.batches.list(auth(request))

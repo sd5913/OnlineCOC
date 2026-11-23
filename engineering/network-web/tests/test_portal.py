@@ -84,7 +84,7 @@ async def test_approval_ban_unban_and_permanent_close(room):
     await player.call("/v1/web/rooms/" + host.room_id + "/presence", {}, expected=403)
     await owner.call(manage, {"action": "close"})
     await owner.call("/v1/web/rooms/" + host.room_id + "/presence", {}, expected=404)
-    with pytest.raises(Fault, match="ROOM_CLOSED"):
+    with pytest.raises(Fault, match="LEASE_INVALID"):
         await host.configure()
 
 

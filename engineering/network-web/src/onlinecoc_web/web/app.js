@@ -20,7 +20,7 @@ async function identity(){
 }
 async function lobby(){
   $("#lobby").hidden=false;const result=await api("rooms");$("#recent").replaceChildren();
-  for(const room of result.items){const link=text($("#recent"),"a",room.title+" · "+(room.closed?"已解散":room.online?"在线":"房主离线"));if(!room.closed)link.href="/room/"+encodeURIComponent(room.roomId);}
+  for(const room of result.items){const link=text($("#recent"),"a",room.title+" · "+(room.closed?"已解散":room.online?"在线":"房主离线"+(room.expiresAt?" · 保留至 "+new Date(room.expiresAt*1000).toLocaleString():"")));if(!room.closed)link.href="/room/"+encodeURIComponent(room.roomId);}
   if(!result.items.length)text($("#recent"),"p","成功加入后，房间会保存在这里。");
 }
 async function room(rid){
@@ -60,7 +60,7 @@ async function management(rid){
   $("#management").hidden=false;
   const mine=await api("rooms");const box=$("#owned-rooms");box.replaceChildren();
   const owned=mine.items.filter(r=>r.owner);
-  for(const r of owned){const link=text(box,"a",r.title+" · "+(r.closed?"已解散":r.online?"在线":"离线"));if(!r.closed)link.href="/manage/"+encodeURIComponent(r.roomId);}
+  for(const r of owned){const link=text(box,"a",r.title+" · "+(r.closed?"已解散":r.online?"在线":"离线"+(r.expiresAt?" · 保留至 "+new Date(r.expiresAt*1000).toLocaleString():"")));if(!r.closed)link.href="/manage/"+encodeURIComponent(r.roomId);}
   if(!owned.length)text(box,"p","还没有创建房间，请从创建页粘贴配置包提供的开房串。");
   if(!rid)return;
   let settingsLoaded=false;
@@ -85,7 +85,7 @@ async function management(rid){
       await api("rooms/"+rid+"/manage",{action:"settings",public:$("#manage-public").checked,passwordMode:$("#password-mode").value,password:$("#manage-password").value});
       settingsLoaded=false;await refresh();$("#notice").textContent="房间设置已保存；密码变更影响首次加入，已有成员仍可快捷重入。";
     });
-    $("#close-room").onclick=run(async()=>{if(confirm("永久解散后此代号将失效，无法重新开放。继续？")){await api("rooms/"+rid+"/manage",{action:"close"});location.assign("/manage");}});
+    $("#close-room").onclick=run(async()=>{if(confirm("解散并移除房间后，代号、成员和快捷入口立即失效。本机存档保留。继续？")){await api("rooms/"+rid+"/manage",{action:"close"});location.assign("/manage");}});
   }
   await refresh();poll=setInterval(()=>refresh().catch(error=>{clearInterval(poll);$("#owner").hidden=true;showError(error);}),10000);
 }

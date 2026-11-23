@@ -106,6 +106,9 @@ def test_room_bridge_never_exposes_host_control_or_shares_sessions(manager):
             assert await manager.room_request('one','room',{'path':'ai/commands','method':'POST','body':{'op':'test'}})=={'ok':True}
             assert seen[0].headers['x-csrf-token']=='room-csrf'
             assert 'onlinecoc-ai-manager' not in str(seen[0].headers)
+            for path in ('ai/rulings?compact=true&queue=archived&limit=30', 'ai/rulings/batch%3A'+'a'*32):
+                assert await manager.room_request('one','room',{'path':path})=={'ok':True}
+            assert seen[-1].url.path.endswith('/batch:'+'a'*32)
         finally:await client.aclose();manager.clients.clear()
     asyncio.run(run())
 

@@ -32,6 +32,8 @@ def translator(language):
             return value
         if not english:
             # Only called for generated display strings, never player-authored text.
+            if not re.search(r'\b(?:STR|DEX|WIL|HP|XP|Grit)\b', value):
+                return value
             if value not in exact and not any(pattern.fullmatch(value) for pattern, _ in patterns) and not re.fullmatch(r'(STR|DEX|WIL|HP|XP|Grit)( 上限)?', value):
                 return value
             return re.sub(r'\b(STR|DEX|WIL|HP|XP|Grit)\b',
@@ -85,8 +87,8 @@ def localize_result(value, language='zh-CN'):
     return value
 
 
-def localize_projection(value, language='zh-CN'):
-    data = deepcopy(value)
+def localize_projection(value, language='zh-CN', *, detached=False):
+    data = value if detached else deepcopy(value)
     text = translator(language)
     def fields(row, keys):
         for key in keys:

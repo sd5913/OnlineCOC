@@ -1,6 +1,6 @@
 {
   "passed": true,
-  "checkedAt": "2026-11-16T09:34:42.288741+08:00",
+  "checkedAt": "2026-11-23T09:48:37.945332+08:00",
   "checks": [
     "real host initialized; KP + two scoped player sessions; approved characters",
     "check receipt replay does not reroll",

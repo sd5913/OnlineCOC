@@ -46,7 +46,7 @@ def main():
         assert safe['checks'][0]['passed'] and p1.state()['character']['numbers']['checks'] == 1
         assert any(c['title'] == '入口地面的压痕' for place in p1.state()['locations'] for c in place['clues'])
         assert all(c['id'] != 'tunnel-trap' for place in p2.state()['locations'] for c in place['clues'])
-        assert act('tunnel-cheese', 'take')['outcome'] == 'blocked'
+        assert 'take' not in [c['id'] for place in p1.state()['locations'] if place['index']==1 for a in place['actions'] if a['id']=='tunnel-cheese' for c in a['choices']]
         move(2)
         act('gate-handle', 'inspect')
         opened = act('gate-open', 'brace')
@@ -58,7 +58,7 @@ def main():
         money = act('courtyard-pool', 'money')
         assert money['checks'][0]['passed']
         assert p1.state()['character']['numbers']['pips'] == old_money + 140
-        assert act('courtyard-pool', 'money')['outcome'] == 'blocked'
+        assert kp.state()['allLocations']['3']['pips'] == 0
         act('courtyard-ladders', 'inspect')
         assert {4, 5, 6, 7, 8} <= {x['index'] for x in p1.state()['locations']}
         checks.append('entry-to-courtyard loop reveals routes, resolves a real save, disables a trap, consumes rope and grants finite money without per-action KP intervention')
@@ -151,7 +151,8 @@ def main():
         runtime.package = Package(runtime.package.path)
         assert runtime.package.state['sceneState'] == saved
         assert p1.action('scene.action', {'action':'tunnel-ground','choice':'inspect'}, key) == first
-        assert act('cave-cheese', 'take')['outcome'] == 'blocked'
+        empty = act('cave-cheese','inspect')
+        assert '剩 0 ' in ''.join(empty['narrative'])
         checks.append('scene flags, depleted stock and original action receipts survive package reload')
     report = {'passed': True, 'checkedAt': datetime.now().astimezone().isoformat(),
               'authority': 'existing authenticated KP-page executor; no service identity or stored KP credential',

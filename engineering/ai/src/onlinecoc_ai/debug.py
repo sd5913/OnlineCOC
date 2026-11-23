@@ -23,7 +23,7 @@ def export(app, account, options):
         ruling=None
         if ids.get('rulingId'):
             app.host.kp(account)
-            ruling=next((r for r in app.rulings.list(account)['items'] if r['rulingId']==ids['rulingId']),None)
+            ruling=app.rulings.detail(account,ids['rulingId'])
             require(ruling,'NOT_VISIBLE')
         session=None
         if ids.get('sessionId'):

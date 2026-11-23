@@ -33,8 +33,12 @@ def main():
                 player.wait_for_timeout(250)
             assert kp.state()['sceneAutomation']['executorOnline']
             player.goto(runtime.origin + '/sessions/player1/#/play/scene')
-            player.get_by_role('button', name='行动日志', exact=False).click()
+            log_button=player.locator('[data-action=notebook-toggle]').filter(has_text='行动日志')
+            def log_open(show):
+                if (log_button.get_attribute('aria-expanded')=='true') != show:
+                    log_button.click()
             def action(label, choice=None, manual=False):
+                log_open(False)
                 player.get_by_role('button', name=label, exact=True).click()
                 if choice:
                     player.locator('dialog select[name=scene-choice]').select_option(choice)
@@ -42,6 +46,7 @@ def main():
                     player.locator('dialog select[name=ruling]').select_option('manual')
                 player.get_by_role('button', name='执行行动', exact=True).click()
                 player.locator('dialog').wait_for(state='hidden')
+                log_open(True)
             action('观察地面')
             expect(player.locator('#action-feedback .log-entry').first.locator('.scene-narrative')).to_contain_text('找到了通往主门的路线', timeout=20000)
             assert not any(r['status'] == 'pending' for r in kp.state()['requests'])
@@ -52,6 +57,7 @@ def main():
             expect(player.locator('#action-feedback .log-entry').first.locator('.change-list').last).to_contain_text('整轮奶酪')
             player.screenshot(path=str(screenshots/'scene-action-check.png'), full_page=True)
             checks.append('PL preset automatically runs through idle authenticated KP page, displaying real save, narrative, inventory and trap changes')
+            log_open(False)
             player.get_by_role('button', name='前往 主门', exact=True).click()
             player.get_by_role('button', name='确认移动', exact=True).click()
             player.locator('dialog').wait_for(state='hidden')
@@ -64,11 +70,12 @@ def main():
             player.screenshot(path=str(screenshots/'scene-action-result.png'), full_page=True)
             checks.append('inspection plus prepared opening consumes rope, reveals courtyard and updates live scene facts')
 
+            log_open(False)
             player.get_by_role('button', name='前往 庭院', exact=True).click()
             player.get_by_role('button', name='确认移动', exact=True).click()
             player.locator('dialog').wait_for(state='hidden')
             gm.close()
-            expect(player.get_by_text('主持执行器暂时离线，行动会排队等待结算。', exact=True)).to_be_visible(timeout=30000)
+            expect(player.get_by_role('status').filter(has_text='离线待结算')).to_be_visible(timeout=30000)
             action('观察梯子')
             expect(player.locator('#action-feedback')).to_contain_text('等待自动结算')
             assert not any(r['status'] == 'pending' for r in kp.state()['requests'])
@@ -85,17 +92,19 @@ def main():
             player.wait_for_timeout(3000)
             assert any(r['kind'] == 'scene' and r['status'] == 'pending' for r in kp.state()['requests'])
             gm.goto(runtime.origin + '/sessions/kp/#/gm/rulings')
-            gm.get_by_role('button', name='查看并裁决', exact=True).first.click()
+            request = next(r for r in kp.state()['requests'] if r['kind']=='scene' and r['status']=='pending')
+            gm.locator('[data-request-id="'+request['id']+'"] [data-action=console-request]').last.click()
             try:
                 gm.locator('#ruling-form').wait_for(timeout=8000)
             except Exception:
                 gm.screenshot(path=str(screenshots/'scene-kp-failure.png'), full_page=True)
                 (screenshots/'scene-kp-failure.txt').write_text(gm.locator('body').inner_text()+'\nToast: '+gm.locator('#toast').text_content()+'\nErrors: '+repr(errors), encoding='utf-8')
                 raise
-            gm.locator('#ruling-form textarea').fill('按你选择的预设做法执行')
+            gm.locator('#ruling-form [data-ruling-reply] > summary').click()
+            gm.locator('#ruling-form [name=reason]').fill('按你选择的预设做法执行')
             gm.screenshot(path=str(screenshots/'scene-kp-console.png'), full_page=True)
-            gm.get_by_role('button', name='保存裁决并通知玩家', exact=True).click()
-            expect(player.locator('#action-feedback .log-entry').first.locator('.scene-narrative')).to_contain_text('水下有一尊金叶鼠像', timeout=20000)
+            gm.locator('#ruling-form button[type=submit]').click()
+            expect(player.locator('#action-feedback .log-entry').first.locator('.scene-narrative')).to_contain_text('金叶鼠像：1 尊', timeout=20000)
             checks.append('explicit manual choice stays in KP queue; approval executes recipe and delivers its actual discoveries')
             player.set_viewport_size({'width': 390, 'height': 844})
             player.evaluate('window.scrollTo(0, 0)')

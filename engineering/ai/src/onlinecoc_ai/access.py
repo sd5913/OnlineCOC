@@ -21,6 +21,16 @@ def can_use(host, repository, account):
 
 
 def request_session(repository, request):
+    # Standalone/manual Context callers predate persisted request/session IDs.
+    if 'sourceId' not in request or 'sourceRevision' not in request:return None
+    if hasattr(repository,'read_index'):
+        def build(state):
+            first={}
+            for row in state['requests'].values():first.setdefault((row['sourceId'],row['sourceRevision'],row['initiator']),row['requestId'])
+            sessions={rid:session for session in state['settings'].get('sessions',{}).values() for rid in session['requestIds']}
+            return first,sessions
+        first,sessions=repository.read_index('request-sessions',build)
+        return sessions.get(first.get((request['sourceId'],request['sourceRevision'],request.get('initiator')),request.get('requestId')))
     state = repository.read_state()
     original = next((r for r in state['requests'].values() if r['sourceId'] == request['sourceId'] and
         r['sourceRevision'] == request['sourceRevision'] and r['initiator'] == request.get('initiator')), request)

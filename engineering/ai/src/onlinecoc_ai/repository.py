@@ -2,9 +2,11 @@
 import copy
 import threading
 import re
+from collections import OrderedDict
 from contextlib import contextmanager
 
 from onlinecoc_data import FileDataStore
+from .segmented_store import SegmentedStore, state_bytes
 from .contracts import canonical, validate, digest
 from .errors import require
 
@@ -21,8 +23,12 @@ class Repository:
         self.directory=Path(directory)
         self.lock = threading.RLock()
         self.pending = None
+        self._read_cache = None
+        self._indexes = {}
+        self._validation_cache = OrderedDict()
+        self._validated_generation = None
         self.read_local = threading.local()
-        self.store = store_factory(directory, auto_compress=True) if store_factory is FileDataStore else store_factory(directory)
+        self.store = SegmentedStore(directory, auto_compress=True) if store_factory is FileDataStore else store_factory(directory)
         try:
             if self.store.snapshot()[1] is None:
                 self.store.commit(0, initial(scope_id))
@@ -32,6 +38,7 @@ class Repository:
                 self.store.commit(self.store.generation, state)
             require(state["schemaVersion"] == 1 and state["scopeId"] == scope_id, "SCOPE_MISMATCH")
             self.verify(state)
+            self._validated_generation = self.store.generation
             interrupted = False
             for key, command in state['commands'].items():
                 if key.startswith('api:') and command.get('receipt', {}).get('status') == 'pending':
@@ -75,8 +82,20 @@ class Repository:
     def read_state(self):
         """Internal read-only view; callers must copy before changing values."""
         if not hasattr(self.read_local,'snapshot'):return self.state()
-        if self.read_local.snapshot is None:self.read_local.snapshot=self.state()
+        if self.read_local.snapshot is None:
+            if self.pending is not None:self.read_local.snapshot=copy.deepcopy(self.pending)
+            else:
+                if self._read_cache is None or self._read_cache[0]!=self.store.generation:
+                    self._read_cache=(self.store.generation,self.store.snapshot()[1])
+                self.read_local.snapshot=self._read_cache[1]
         return self.read_local.snapshot
+
+    def read_index(self, name, builder):
+        state=self.read_state();key=(self.store.generation,id(state))
+        prior=self._indexes.get(name)
+        if prior is None or prior[0]!=key:
+            prior=(key,builder(state),state);self._indexes[name]=prior
+        return prior[1]
 
     def validation_state(self):
         """Host callbacks remain valid after AI shutdown, using current disk evidence."""
@@ -86,7 +105,7 @@ class Repository:
             store=None
             try:
                 require(self.store.path.is_dir(),'AI_SERVICE_UNAVAILABLE')
-                store=FileDataStore(self.store.path)
+                store=SegmentedStore(self.store.path)
                 state=store.snapshot()[1]
                 require(state is not None,'AI_SERVICE_UNAVAILABLE')
                 self.verify(state)
@@ -106,13 +125,26 @@ class Repository:
                 yield
                 if self.pending != initial:
                     self.verify(self.pending)
-                    self.store.commit(self.store.generation, self.pending)
+                    generation=self.store.generation
+                    try:self.store.commit(generation, self.pending)
+                    finally:
+                        if self.store.generation==generation+1:self._validated_generation=self.store.generation
             finally:
                 self.pending = None
                 if hasattr(self.read_local,'snapshot'):self.read_local.snapshot=None
 
+    def _validate_cached(self, kind, value):
+        # Digest immutable JSON, not object identity; edits and schema replacement
+        # cannot hit a successful validation of earlier content. Failures uncached.
+        from .contracts import VALIDATORS
+        key=(kind,id(VALIDATORS[kind]),digest(value))
+        if key in self._validation_cache:
+            self._validation_cache.move_to_end(key);return
+        validate(kind,value);self._validation_cache[key]=True
+        if len(self._validation_cache)>2048:self._validation_cache.popitem(last=False)
+
     def verify(self, state):
-        canonical(state)
+        state_bytes(state)
         require(set(state) == set(initial(state["scopeId"])) and state["schemaVersion"] == 1, "SCHEMA_UNSUPPORTED")
         sessions = state['settings'].get('sessions', {})
         from .answers import validate_choices
@@ -124,7 +156,7 @@ class Repository:
         require(type(access) is dict and not set(access)-set(DEFAULT_POLICY), 'SESSION_STATE_INVALID')
         require(type(access.get('revision',1)) is int and access.get('revision',1)>0 and all(type(access.get(k,v)) is bool for k,v in DEFAULT_POLICY.items() if type(v) is bool), 'SESSION_STATE_INVALID')
         require(access.get('principal') is None or type(access['principal']) is str, 'SESSION_STATE_INVALID')
-        if 'cReviewBasis' in state['settings']:validate('CReviewBasis', state['settings']['cReviewBasis'])
+        if 'cReviewBasis' in state['settings']:self._validate_cached('CReviewBasis', state['settings']['cReviewBasis'])
         batches=state['settings'].get('batches',{})
         require(type(batches) is dict,'BATCH_STATE_INVALID')
         for key,batch in batches.items():
@@ -133,7 +165,7 @@ class Repository:
                 type(batch.get('actions')) is list and 1<=len(batch['actions']) and type(batch.get('receipts')) is list and
                 len(batch['receipts'])<=len(batch['actions']),'BATCH_STATE_INVALID')
             require(batch['digest']==digest({k:batch[k] for k in ('batchId','sessionId','requestId','creator','actions','context','baseline','authorityEpoch')}),'BATCH_STATE_INVALID')
-            validate('ContextSnapshot',batch['context'])
+            self._validate_cached('ContextSnapshot',batch['context'])
         for key,request in state['settings'].get('knowledgeRequests',{}).items():
             require(type(request) is dict and request.get('rulingId')==key and re.fullmatch('knowledge:[a-f0-9]{32}',key) and
                 request.get('kind')=='knowledge_request' and request.get('status') in ('pending','executing','completed','rejected','partial','unknown') and
@@ -187,13 +219,13 @@ class Repository:
         for group, kind in (("requests", "Request"), ("contexts", "ContextSnapshot"), ("reports", "ValidationReport"), ("prepared", "PreparedBundle"), ("memory", "MemoryEntry")):
             require(type(state[group]) is dict and len(state[group]) <= 5000, "LIMIT_EXCEEDED")
             for value in state[group].values():
-                validate(kind, value)
+                self._validate_cached(kind, value)
                 if "scopeId" in value:
                     require(value["scopeId"] == state["scopeId"], "SCOPE_MISMATCH")
         for record in state["proposals"].values():
             require(str(record["currentRevision"]) in record["revisions"], "PROPOSAL_STALE")
             for proposal in record["revisions"].values():
-                validate("Proposal", proposal)
+                self._validate_cached("Proposal", proposal)
                 require(proposal["scopeId"] == state["scopeId"] and proposal["contextRef"] in state["contexts"] and proposal["contextRef"] in state["snapshots"] and proposal["requestId"] in state["requests"], "REFERENCE_CONFLICT")
                 require(set(proposal["reportRefs"]) <= set(state["reports"]), "REFERENCE_CONFLICT")
         for key, bundle in state["prepared"].items():
@@ -206,18 +238,58 @@ class Repository:
     def commit(self, state):
         with self.lock:
             if hasattr(self.read_local,'snapshot'):self.read_local.snapshot=None
+            self._read_cache=None
             if self.pending is not None:
                 self.pending = copy.deepcopy(state)
                 return self.store.generation
             self.verify(state)
-            return self.store.commit(self.store.generation, state)
+            generation=self.store.generation
+            try:return self.store.commit(generation, state)
+            finally:
+                if self.store.generation==generation+1:self._validated_generation=self.store.generation
 
     def update(self, mutation):
         with self.lock:
             state = self.state()
             result = mutation(state)
-            self.commit(state)
+            if self.pending is not None:
+                self.pending=state
+                if hasattr(self.read_local,'snapshot'):self.read_local.snapshot=None
+            else:self.commit(state)
             return copy.deepcopy(result)
+
+    def update_delivery_receipts(self, updates):
+        """Atomic, explicit metadata write set. Never a generic mutation bypass.
+
+        Neither collection participates in verify's business relationships; the
+        immutable generation was fully checked and all new JSON is checked.
+        Current access/source checks remain in the delivery services and readers.
+        Multiple delivery collections can share one commit. Existing arbitrary
+        transactions retain their full validation and rollback boundary.
+        """
+        require(type(updates) is dict and not set(updates)-{'rulingDeliveries','messageDeliveries'},'INPUT_INVALID')
+        canonical({'settings':updates})  # Validate at the real aggregate depth.
+        require(all(type(rows) is dict and all(re.fullmatch('[a-f0-9]{64}',key) and type(value) is dict for key,value in rows.items()) for rows in updates.values()),'INPUT_INVALID')
+        with self.lock:
+            def save(state):
+                for name,rows in updates.items():state['settings'].setdefault(name,{}).update(copy.deepcopy(rows))
+            if self.pending is not None or not hasattr(self.store,'merge_settings_maps'):
+                return self.update(save)
+            with self.read_scope():current=self.read_state()
+            if self._validated_generation!=self.store.generation:
+                self.verify(current);self._validated_generation=self.store.generation
+            changed={name:{key:copy.deepcopy(value) for key,value in rows.items() if current['settings'].get(name,{}).get(key)!=value} for name,rows in updates.items()}
+            changed={name:rows for name,rows in changed.items() if rows}
+            if not changed:return self.store.generation
+            settings=dict(current['settings'])
+            for name,rows in changed.items():settings[name]={**settings.get(name,{}),**rows}
+            updated={**current,'settings':settings};generation=self.store.generation
+            try:return self.store.merge_settings_maps(generation,changed)
+            finally:
+                if self.store.generation==generation+1:
+                    self._validated_generation=self.store.generation
+                    self._read_cache=(self.store.generation,updated)
+                    if hasattr(self.read_local,'snapshot'):self.read_local.snapshot=updated
 
     def close(self):
         self.store.close()

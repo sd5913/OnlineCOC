@@ -94,6 +94,9 @@ def test_explicit_completed_followup_archives_predecessors_with_proof(applicatio
     old=row(app,'batch:'+first['batchId']);done=row(app,'batch:'+second['batchId'])
     assert old['queueStatus']=='archived' and not old['canRestore'] and not old['canDecide']
     assert old['resolution']==done['resolution'] and old['resolution']['goalDigest']
+    compact={i['rulingId']:i for i in app.rulings.page('kp',queue='archived')['items']}
+    assert compact[old['rulingId']]['resolution']==old['resolution']
+    assert compact[done['rulingId']]['resolution']==done['resolution']
     assert old['resolution']['receiptRefs'][0]['commandId']==app.repository.state()['settings']['batches'][second['batchId']]['execution']['items'][0]['commandId']
     assert row(app,'batch:'+other['batchId'])['queueStatus']=='active'
     generation=app.repository.store.generation;app.queue.reconcile_completed()

@@ -35,4 +35,4 @@ def remember(repository,room,account,items,contexts):
         value={'summary':item['summary'],'audience':account,'scopeId':state['scopeId'],'authorizationEpoch':room['members'][account]['authorizationEpoch'],'contextDigest':digest(context)}
         value['digest']=digest(value);identifier=key(state,account,item)
         if state['settings'].get('rulingDeliveries',{}).get(identifier)!=value:updates[identifier]=value
-    if updates:repository.update(lambda s:s['settings'].setdefault('rulingDeliveries',{}).update(updates))
+    if updates:repository.update_delivery_receipts({'rulingDeliveries':updates})

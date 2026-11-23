@@ -1,0 +1,529 @@
+{
+  "transport": "TCP over 127.0.0.1; no actual LAN/WAN/TURN",
+  "samplesPerFlow": 30,
+  "flows": {
+    "view.1": {
+      "p50Ms": 3.6506499991446617,
+      "p95Ms": 6.1383999982354,
+      "requestsPerSecond": 238.51585891960474,
+      "failures": 0,
+      "responseBodyBytes": 234930,
+      "samples": [
+        {
+          "ms": 6.1383999982354,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 3.828699998848606,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 3.7752999996882863,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 3.6707999988720985,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 3.541299998687464,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 3.589500000089174,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 4.388400000607362,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 3.7106999989191536,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 3.570999999283231,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 3.6177000001771376,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 3.5354999999981374,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 3.557899999577785,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 3.606400001444854,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 3.6165000001346925,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 3.4831000011763535,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 3.501400000459398,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 4.432200001247111,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 3.630499999417225,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 3.4779999987222254,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 3.3206000007339753,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 3.464400000666501,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 3.4077999989676755,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 4.407700000228942,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 5.980099998851074,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 5.800900000394904,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 6.194899999172776,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 5.455299999084673,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 4.126899999391753,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 5.0820999986171955,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 4.7260999999707565,
+          "responseBodyBytes": 7831
+        }
+      ]
+    },
+    "view.4": {
+      "p50Ms": 16.70659999945201,
+      "p95Ms": 21.711199999117525,
+      "requestsPerSecond": 234.09920187578842,
+      "failures": 0,
+      "responseBodyBytes": 234930,
+      "samples": [
+        {
+          "ms": 13.632700000016484,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 19.59530000021914,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 19.68510000006063,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 21.774599999844213,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 20.866099999693688,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 10.01650000034715,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 18.35670000036771,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 11.965199999394827,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 16.969399999652524,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 11.72220000080415,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 16.010600000299746,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 16.49089999955322,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 14.779500001168344,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 17.443299999285955,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 16.581899999437155,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 16.66029999978491,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 15.45579999947222,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 17.571800000951043,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 19.015600000784616,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 16.75289999911911,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 18.541999999797554,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 21.711199999117525,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 14.176700000462006,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 20.499199999903794,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 17.06930000000284,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 15.245500000673928,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 17.06710000144085,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 16.004000000975793,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 11.094499999671825,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 9.25950000055309,
+          "responseBodyBytes": 7831
+        }
+      ]
+    },
+    "view.8": {
+      "p50Ms": 27.810000000499713,
+      "p95Ms": 36.13450000011653,
+      "requestsPerSecond": 253.42289861892252,
+      "failures": 0,
+      "responseBodyBytes": 234930,
+      "samples": [
+        {
+          "ms": 15.49920000070415,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 13.57579999967129,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 23.207199999887962,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 22.296999999525724,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 31.938199999785866,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 36.13450000011653,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 34.26039999976638,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 44.73180000059074,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 23.034100000586477,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 26.818399999683606,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 34.076899999490706,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 35.67979999934323,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 28.57389999917359,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 27.361100001144223,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 28.258899999855203,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 32.85189999951399,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 28.26930000082939,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 33.237800000279094,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 22.62940000036906,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 34.002000000327826,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 26.97720000105619,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 26.836300001377822,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 29.80759999991278,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 34.079400000337046,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 24.774299999990035,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 29.31890000036219,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 21.082100000057835,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 21.502999999938766,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 20.07960000082676,
+          "responseBodyBytes": 7831
+        },
+        {
+          "ms": 20.980899998903624,
+          "responseBodyBytes": 7831
+        }
+      ]
+    },
+    "action.check": {
+      "p50Ms": 575.4936500006806,
+      "p95Ms": 729.8031999998784,
+      "requestsPerSecond": 1.690094874489827,
+      "failures": 0,
+      "responseBodyBytes": 1746,
+      "samples": [
+        {
+          "ms": 547.6656000009825,
+          "responseBodyBytes": 57
+        },
+        {
+          "ms": 538.368100000298,
+          "responseBodyBytes": 57
+        },
+        {
+          "ms": 559.2306999988068,
+          "responseBodyBytes": 58
+        },
+        {
+          "ms": 534.4013000012637,
+          "responseBodyBytes": 58
+        },
+        {
+          "ms": 559.4639999999345,
+          "responseBodyBytes": 58
+        },
+        {
+          "ms": 534.9332999994658,
+          "responseBodyBytes": 58
+        },
+        {
+          "ms": 524.9227000003884,
+          "responseBodyBytes": 57
+        },
+        {
+          "ms": 501.2633000005735,
+          "responseBodyBytes": 58
+        },
+        {
+          "ms": 539.5042000000103,
+          "responseBodyBytes": 58
+        },
+        {
+          "ms": 549.5510999990074,
+          "responseBodyBytes": 57
+        },
+        {
+          "ms": 625.8550000002288,
+          "responseBodyBytes": 58
+        },
+        {
+          "ms": 600.3717000003235,
+          "responseBodyBytes": 59
+        },
+        {
+          "ms": 551.8899999988207,
+          "responseBodyBytes": 59
+        },
+        {
+          "ms": 568.1838000000425,
+          "responseBodyBytes": 59
+        },
+        {
+          "ms": 603.7546000006841,
+          "responseBodyBytes": 58
+        },
+        {
+          "ms": 609.5581000008679,
+          "responseBodyBytes": 59
+        },
+        {
+          "ms": 570.1181000003999,
+          "responseBodyBytes": 59
+        },
+        {
+          "ms": 580.8692000009614,
+          "responseBodyBytes": 58
+        },
+        {
+          "ms": 638.0873999987671,
+          "responseBodyBytes": 59
+        },
+        {
+          "ms": 623.9748999996664,
+          "responseBodyBytes": 58
+        },
+        {
+          "ms": 623.4411999994336,
+          "responseBodyBytes": 58
+        },
+        {
+          "ms": 768.1711000004725,
+          "responseBodyBytes": 58
+        },
+        {
+          "ms": 671.9534999992902,
+          "responseBodyBytes": 58
+        },
+        {
+          "ms": 589.1322999996191,
+          "responseBodyBytes": 58
+        },
+        {
+          "ms": 729.8031999998784,
+          "responseBodyBytes": 58
+        },
+        {
+          "ms": 631.120899999587,
+          "responseBodyBytes": 59
+        },
+        {
+          "ms": 641.1327000005258,
+          "responseBodyBytes": 59
+        },
+        {
+          "ms": 554.1305000006105,
+          "responseBodyBytes": 58
+        },
+        {
+          "ms": 550.0353000006726,
+          "responseBodyBytes": 59
+        },
+        {
+          "ms": 588.3221000003687,
+          "responseBodyBytes": 59
+        }
+      ]
+    }
+  },
+  "hostColdBootstrapMs": 953.6067999997613,
+  "memory": {
+    "pid": 21636,
+    "workingSetBytes": 81969152,
+    "peakWorkingSetBytes": 144592896
+  },
+  "commitPhases": []
+}

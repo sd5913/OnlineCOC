@@ -251,7 +251,7 @@ class Runtime:
             self.bootstrap_ai = {'serviceStatus': 'initialization_failed',
                 'code': getattr(error, 'response', {}).get('code', 'AI_INITIALIZATION_INCOMPLETE')}
 
-    def client(self, cookie):
+    def client(self, cookie, *, defer_csrf=False):
         client = Client.__new__(Client)
         client.base = self.backend
         client.csrf = None
@@ -260,8 +260,26 @@ class Runtime:
         if client.transport is None:
             client.opener = urllib.request.build_opener()
             client.opener.addheaders = [('Cookie', cookie)]
-        client.csrf = client.request('/me')['csrf']
+        client.defer_csrf = defer_csrf
+        if not defer_csrf:
+            client.csrf = client.request('/me')['csrf']
         return client
+
+
+def projection_delta(value, previous):
+    # Compare authorized, localized domains. An empty domain removes old fields.
+    catalog = {'items', 'presets', 'rules', 'locations', 'sourceStatus', 'allLocations',
+               'npcTemplates', 'sceneDefinitions', 'catalog', 'published'}
+    activity = {'events', 'receipts', 'requests', 'notifications', 'keeperWaits'}
+    domains = [{}, {}, {}, {}, {}]
+    for key, item in value.items():
+        index = 1 if key in catalog else 2 if key in activity else 3 if key == 'channels' else 4 if key in ('network', 'revision') else 0
+        domains[index][key] = item
+    versions = [hashlib.sha256(json.dumps(domain, ensure_ascii=False, separators=(',', ':')).encode()).hexdigest()
+                for domain in domains]
+    prior = previous.split(',') if len(previous) <= 324 else []
+    return {'versions': versions, 'domains': {str(i): domain for i, domain in enumerate(domains)
+            if len(prior) != len(domains) or prior[i] != versions[i]}}
 
 
 def create_app(runtime):
@@ -299,6 +317,16 @@ def create_app(runtime):
             'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff',
             'Content-Security-Policy': "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; object-src 'none'; frame-ancestors 'none'; base-uri 'none'"})
 
+    def static_response(file, mime, request):
+        # Browser storage is limited to public assets. Compare the actual bytes
+        # so replacing a same-sized file with an unchanged timestamp is detected.
+        raw = file.read_bytes()
+        etag = '"' + hashlib.sha256(raw).hexdigest() + '"'
+        match = request.headers.get('if-none-match') == etag
+        result = response(b'' if match else raw, 304 if match else 200, mime)
+        result.headers.update({'ETag': etag, 'Cache-Control': 'private, no-cache'})
+        return result
+
     def check_origin(headers, write=False):
         if headers.get('host') != runtime.origin.split('//')[1]:
             raise PackageError('HOST_REJECTED')
@@ -306,8 +334,11 @@ def create_app(runtime):
         if (origin and origin != runtime.origin) or (write and origin != runtime.origin):
             raise PackageError('ORIGIN_REJECTED')
 
+    chat_change = asyncio.Event()
+
     @app.api_route('/{path:path}', methods=['GET', 'POST'])
     async def handle(path, request: Request):
+        nonlocal chat_change
         trace_id = uuid.uuid4().hex
         body = b''
         def error_response(data, status):
@@ -398,7 +429,11 @@ def create_app(runtime):
                         output.headers.append('set-cookie', target.OutputString())
                 return output
             if path.startswith('package/'):
-                client = await asyncio.to_thread(runtime.client, cookie)
+                client = await asyncio.to_thread(runtime.client, cookie, defer_csrf=request.method == 'GET' and path in {'package/state', 'package/chat/state'})
+                # Authenticated host reads always verify the session. A token
+                # supplied on a GET can be forwarded for nested host queries.
+                if getattr(client, 'defer_csrf', False):
+                    client.csrf = request.headers.get('x-csrf-token')
                 if request.method == 'POST' and request.headers.get('x-csrf-token') != client.csrf:
                     return response({'code': 'CSRF_REQUIRED'}, 403)
                 if path in {'package/web/status','package/web/stop'}:
@@ -415,14 +450,32 @@ def create_app(runtime):
                         runtime.heartbeat(result, cookie, request.query_params.get('page'), request.client.host)
                         if result['role'] == 'kp':
                             result['network'] = runtime.network_snapshot(result['members'], result['characters'])
-                    return response(localize_projection(result, request.query_params.get('locale', 'zh-CN')))
+                    localized = localize_projection(result, request.query_params.get('locale', 'zh-CN'), detached=True)
+                    previous = request.headers.get('x-projection-versions')
+                    return response(projection_delta(localized, previous) if previous is not None else localized)
                 if path == 'package/integrations' and request.method == 'GET':
                     view = await asyncio.to_thread(client.request, '/view')
                     if view['role'] != 'kp':
                         return response({'code': 'KP_REQUIRED'}, 403)
                     return response(runtime.modules.status())
                 if path == 'package/chat/state' and request.method == 'GET':
-                    return response(await asyncio.to_thread(ScopedChat(runtime.package).projection, client, request.query_params.get('player') == '1'))
+                    previous = request.headers.get('x-chat-version')
+                    deadline = time.monotonic() + 2
+                    while True:
+                        signal = chat_change
+                        chat = await asyncio.to_thread(ScopedChat(runtime.package).projection, client, request.query_params.get('player') == '1')
+                        if previous is None:
+                            return response(chat)
+                        version = hashlib.sha256(json.dumps(chat, separators=(',', ':')).encode()).hexdigest()
+                        if version != previous:
+                            return response({**chat, 'version': version})
+                        remaining = deadline - time.monotonic()
+                        if remaining <= 0:
+                            return response({'accountId': chat['accountId'], 'version': version})
+                        try:
+                            await asyncio.wait_for(signal.wait(), remaining)
+                        except asyncio.TimeoutError:
+                            pass
                 if path == 'package/chat/history' and request.method == 'POST':
                     return response(await asyncio.to_thread(ScopedChat(runtime.package).history, client, json.loads(body)))
                 if path == 'package/ai-source' and request.method == 'POST':
@@ -434,9 +487,19 @@ def create_app(runtime):
                 if path == 'package/scene-executor' and request.method == 'POST':
                     return response(await asyncio.to_thread(runtime.package.scene_executor, client))
                 if path == 'package/action' and request.method == 'POST':
-                    if len(body) > 65536:
+                    if len(body) > 512 * 1024:
                         return response({'code': 'REQUEST_TOO_LARGE'}, 413)
-                    result = await asyncio.to_thread(runtime.package.action, client, json.loads(body))
+                    submitted = json.loads(body)
+                    if len(body) > 65536:
+                        if not isinstance(submitted, dict) or submitted.get('operation') != 'rules.stage':
+                            return response({'code': 'REQUEST_TOO_LARGE'}, 413)
+                        view = await asyncio.to_thread(client.request, '/view')
+                        if view.get('role') != 'kp':
+                            return response({'code': 'KP_REQUIRED'}, 403)
+                    result = await asyncio.to_thread(runtime.package.action, client, submitted)
+                    if submitted['operation'] == 'chat':
+                        signal, chat_change = chat_change, asyncio.Event()
+                        signal.set()
                     return response(localize_result(result, request.query_params.get('locale', 'zh-CN')))
                 if path == 'package/bundle' and request.method == 'GET':
                     view = await asyncio.to_thread(client.request, '/view')
@@ -459,11 +522,11 @@ def create_app(runtime):
                     return response(result.content, result.status_code, 'text/css; charset=utf-8' if path.endswith('.css') else 'text/javascript; charset=utf-8')
             if path in STATIC:
                 filename, mime = STATIC[path]
-                return response((PACK / filename).read_bytes(), mime=mime)
+                return static_response(PACK / filename, mime, request)
             if path.startswith('art/') and path[4:] in {'welcome.png', 'courtyard.png', 'mouse.png'}:
                 file = PACK / 'assets/runtime' / path[4:]
                 if file.is_file():
-                    return response(file.read_bytes(), mime='image/png')
+                    return static_response(file, 'image/png', request)
             return response({'code': 'NOT_FOUND'}, 404)
         except urllib.error.HTTPError as error:
             return error_response({'code':'HOST_HTTP_ERROR','message':'主机返回 HTTP '+str(error.code)}, error.code)

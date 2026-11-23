@@ -154,8 +154,8 @@ def extension_check(pack, state, baseline, artifact, changes):
             require(all(meta[k] == old[k] for k in ("inputs", "mode", "public", "kp")), "RULE_INTERFACE_CHANGE")
 
 
-def check_rules(pack, state, baseline, context, changes, artifact=None):
-    base, checked_artifact = check_base(pack, state, baseline, context, changes)
+def check_rules(pack, state, baseline, context, changes, artifact=None, *, _base_result=None):
+    base, checked_artifact = _base_result if _base_result is not None else check_base(pack, state, baseline, context, changes)
     if base["status"] != "pass":
         return report("B", context, changes, "unknown", [finding("BASE_CHECK_REQUIRED")], risk="unknown")
     artifact = checked_artifact

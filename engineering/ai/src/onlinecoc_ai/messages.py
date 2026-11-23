@@ -80,7 +80,7 @@ def legacy_publication(state, task, session):
 
 
 def project(app, account, page, *, delivered=False):
-    state = app.repository.state()
+    state = app.repository.read_state()
     updates = {};migrations={}
     for item in page['items']:
         rid = item['requestId']; session = state['settings'].get('sessions', {}).get(item.get('sessionId'))
@@ -99,7 +99,7 @@ def project(app, account, page, *, delivered=False):
         if not task.get('messagePublication'):
             proof=legacy_publication(state,task,session)
             if proof:
-                task['messagePublication']=proof;migrations[task['taskId']]=proof
+                task={**task,'messagePublication':proof};migrations[task['taskId']]=proof
         published = _published(state, task, session, account)
         context=state['contexts'].get(task.get('contextRef'))
         if not audience_valid(app.host.state(),context,session,account):published=None;receipt=None
@@ -134,5 +134,6 @@ def project(app, account, page, *, delivered=False):
         def save(s):
             if updates:s['settings'].setdefault('messageDeliveries', {}).update(updates)
             for tid,proof in migrations.items():s['tasks'][tid]['messagePublication']=proof
-        app.repository.update(save)
+        if migrations:app.repository.update(save)
+        else:app.repository.update_delivery_receipts({'messageDeliveries':updates})
     return page

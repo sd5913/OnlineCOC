@@ -4,8 +4,8 @@
 - 文档子类：工程
 - 状态：有效
 - 创建日期：2026-10-29
-- 最后更新：2026-11-21
-- 最近目录核对：2026-11-21（本轮核对ISSUE-024官方压缩适配、36份精选验收文件、三版AI冻结源码及包侧独立验证，不含临时存档；另核对树桩镇新增玩家玩法说明与包内索引）。本轮见[ISSUE-024](../../history/2026-11-21-issue-024-deepseek-official-compaction.md)，前轮见[ISSUE-023](../../history/2026-11-21-issue-023-context-compression-kp-autonomy.md)。
+- 最后更新：2026-11-22
+- 最近目录核对：2026-11-22（联网离线安装器、房间保留清理；背包掉落、包侧分段存档、引擎与 AI 性能验收、树桩镇暴雨配置与隔离试玩）。本轮见[性能排查计划](../../plans/operation-performance-audit.md)；上一轮见[ISSUE-024](../../history/2026-11-21-issue-024-deepseek-official-compaction.md)。
 - 关联文档：[工程文档索引](README.md)、[文档维护标准](../../standards/document-maintenance.md)
 
 ## 工程实际目录
@@ -552,6 +552,7 @@
 | `rulepacks/stumpsville/assets/ui-design/10-system-states.png` | 树桩镇页面、子 UI 或组件美术设计板 |
 | `rulepacks/stumpsville/assets/ui-design/prompts.json` | 内置 image_gen 提示词与图稿修订记录 |
 | `rulepacks/stumpsville/assets/ui-design/README.md` | 树桩镇界面设计、导航、组成树、来源或索引 |
+| `rulepacks/stumpsville/docs/plans/story-content-expansion.md` | 树桩镇故事、多路线目标、共享物品与动态描述及内容扩展计划 |
 | `rulepacks/stumpsville/docs/plans/interface-design.md` | 树桩镇界面设计、导航、组成树、来源或索引 |
 | `rulepacks/stumpsville/docs/plans/README.md` | 树桩镇界面设计、导航、组成树、来源或索引 |
 | `rulepacks/stumpsville/README.md` | 树桩镇界面设计、导航、组成树、来源或索引 |
@@ -563,6 +564,7 @@
 | `rulepacks/stumpsville/assets/runtime/welcome.png` | 树桩镇原创运行插画与生成记录 |
 | `rulepacks/stumpsville/config/configurations.json` | 树桩镇配置与场景资料 |
 | `rulepacks/stumpsville/config/game.json` | 树桩镇配置与场景资料 |
+| `rulepacks/stumpsville/docs/current/content-configuration.md` | 树桩镇随包默认地点、角色、物品、行动与未填内容的精简概览 |
 | `rulepacks/stumpsville/docs/current/implementation.md` | 树桩镇当前使用、实现与来源文档 |
 | `rulepacks/stumpsville/docs/current/README.md` | 树桩镇当前使用、实现与来源文档 |
 | `rulepacks/stumpsville/docs/current/sources.md` | 树桩镇当前使用、实现与来源文档 |
@@ -623,6 +625,7 @@
 | `rulepacks/stumpsville/rules/scene.lua` | 树桩镇场景原子检定、资源与机关结算 |
 | `rulepacks/stumpsville/tools/scenes.py` | 树桩镇有限库存映射及玩家可见场景事实 |
 | `rulepacks/stumpsville/docs/current/scene-actions.md` | 树桩镇18个行动结果、自动队列导航及功能树 |
+| `rulepacks/stumpsville/tests/verify_storm.py` | 暴雨三路线、替代做法、共享库存观察及重启验证 |
 | `rulepacks/stumpsville/tests/verify_scenes.py` | 树桩镇全部预设、有限奖励和权限验收 |
 | `rulepacks/stumpsville/tests/verify_scene_ui.py` | 树桩镇已有KP页面自动执行及玩家可见结果验收 |
 | `rulepacks/stumpsville/tests/verify_scene_recovery.py` | 树桩镇场景升级、恢复与容量边界验收 |
@@ -913,8 +916,16 @@ engineering/ai/.test-output/ 和 __pycache__/ 为隔离测试/缓存，不逐文
 | `engineering/network-p2p/acceptance/2026-11-13-0.2.0.json` | 0.2 短房间码、本机发现、54 项回归和玩家包的精选证据 |
 | `engineering/network-web/.gitignore` | 排除本机凭据、运行时与生成产物 |
 | `engineering/network-web/README.md` | 模块快速使用与验收说明 |
+| `engineering/network-web/installer/README.md` | Windows 离线联机依赖安装、分发和构建说明 |
+| `engineering/network-web/installer/Setup.cs` | Windows 一键 EXE、依赖自检、运行占用拒绝与备份回滚 |
+| `engineering/network-web/installer/build.py` | 按锁定依赖与官方校验值构建离线 EXE |
+| `engineering/network-web/installer/verify.py` | 隔离项目实际安装、重复安装、中文路径及配置保留验收 |
+| `engineering/network-web/tests/test_retention.py` | 房间一天保留、重连、重启、旧数据迁移和主动移除验收 |
+| `engineering/network-web/dist/` | Git 忽略的离线依赖安装 EXE 与 release.json 摘要 |
+| `engineering/network-web/build/` | Git 忽略的安装器构建中间文件与 Python 官方嵌入包 |
 | `engineering/network-web/acceptance/2026-11-13.json` | 14 项网页专项、54 项旧协议回归及部署摘要 |
 | `engineering/network-web/acceptance/README.md` | 模块快速使用与验收说明 |
+| `engineering/network-web/acceptance/2026-11-22-0.3.1.json` | 0.3.1 离线安装器、一天保留/移除、82项本地与1项公网测试及部署摘要 |
 | `engineering/network-web/config/host.example.json` | 不含秘密的房主配置示例 |
 | `engineering/network-web/config/server.example.json` | 不含秘密的服务端配置示例 |
 | `engineering/network-web/deploy/install-remote.sh` | 独立 release、停服备份、服务切换与失败回滚 |
@@ -2200,6 +2211,162 @@ AI 可选限额与用量统计（2026-11-16）：
 | `engineering/acceptance/ai-official-compaction-interface-snapshot/v3/source.json` | ISSUE-024本版冻结清单与逐文件SHA256 |
 | `engineering/acceptance/ai-official-compaction-interface-snapshot/v3/engineering/` | ISSUE-024不可变冻结源码，具体219项路径和哈希见同版source.json |
 | `engineering/acceptance/ai-official-compaction/work/` | Git忽略的隔离运行树、生成档案与测试证据临时目录；禁止用作正式存档 |
+
+| `docs/plans/operation-performance-audit.md` | 2026-11-22本机操作性能采样、原因、候选缓存/校验优化与验收计划 |
+| `rulepacks/stumpsville/rules/ground-take.lua` | KP同场景领取掉落物，保留用量及光源计时 |
+| `rulepacks/stumpsville/tests/verify_drop_performance.py` | 隔离宿主丢弃/领取/丢回复恢复、浏览器及性能测量 |
+| `rulepacks/stumpsville/tests/drop-performance-results.json` | 丢弃7组验收与操作时延、保存次数、来源哈希 |
+
+| `rulepacks/stumpsville/tests/operation-optimization-results.json` | 包侧保存、状态读取及缓存优化的三轮30样本对照 |
+
+| `engineering/acceptance/engine-performance/.gitignore` | 引擎性能验收目录约定 |
+| `engineering/acceptance/engine-performance/README.md` | 引擎性能验收说明 |
+| `engineering/acceptance/engine-performance/backup_probe.py` | 引擎性能隔离驱动、边界或联测 |
+| `engineering/acceptance/engine-performance/baseline-code/engineering/backend/src/onlinecoc/ai_api.py` | 引擎性能隔离驱动、边界或联测 |
+| `engineering/acceptance/engine-performance/baseline-code/engineering/backend/src/onlinecoc/assets.py` | 引擎性能隔离驱动、边界或联测 |
+| `engineering/acceptance/engine-performance/baseline-code/engineering/backend/src/onlinecoc/contracts.py` | 引擎性能隔离驱动、边界或联测 |
+| `engineering/acceptance/engine-performance/baseline-code/engineering/backend/src/onlinecoc/host.py` | 引擎性能隔离驱动、边界或联测 |
+| `engineering/acceptance/engine-performance/baseline-code/engineering/backend/src/onlinecoc/knowledge/provider.py` | 引擎性能隔离驱动、边界或联测 |
+| `engineering/acceptance/engine-performance/baseline-code/engineering/backend/src/onlinecoc/knowledge/service.py` | 引擎性能隔离驱动、边界或联测 |
+| `engineering/acceptance/engine-performance/baseline-code/engineering/backend/src/onlinecoc/lua_runtime.py` | 引擎性能隔离驱动、边界或联测 |
+| `engineering/acceptance/engine-performance/baseline-code/engineering/backend/src/onlinecoc/registry.py` | 引擎性能隔离驱动、边界或联测 |
+| `engineering/acceptance/engine-performance/baseline-code/engineering/backend/src/onlinecoc/server.py` | 引擎性能隔离驱动、边界或联测 |
+| `engineering/acceptance/engine-performance/baseline-code/engineering/backend/src/onlinecoc/worker_entry.py` | 引擎性能隔离驱动、边界或联测 |
+| `engineering/acceptance/engine-performance/baseline-code/engineering/backend/src/onlinecoc/worker_process.py` | 引擎性能隔离驱动、边界或联测 |
+| `engineering/acceptance/engine-performance/baseline-code/engineering/client-sdk/client.js` | 引擎性能验收目录约定 |
+| `engineering/acceptance/engine-performance/baseline-code/engineering/data-management/onlinecoc_data/store.py` | 引擎性能隔离驱动、边界或联测 |
+| `engineering/acceptance/engine-performance/baseline-code/source.json` | 引擎性能基线、复测或交接证据 |
+| `engineering/acceptance/engine-performance/baseline-v1-backup.json` | 引擎性能基线、复测或交接证据 |
+| `engineering/acceptance/engine-performance/baseline-v1-http-repeat1.json` | 引擎性能基线、复测或交接证据 |
+| `engineering/acceptance/engine-performance/baseline-v1-http-repeat2.json` | 引擎性能基线、复测或交接证据 |
+| `engineering/acceptance/engine-performance/baseline-v1-http-repeat3.json` | 引擎性能基线、复测或交接证据 |
+| `engineering/acceptance/engine-performance/baseline-v1-http.json` | 引擎性能基线、复测或交接证据 |
+| `engineering/acceptance/engine-performance/baseline-v1-results.json` | 引擎性能基线、复测或交接证据 |
+| `engineering/acceptance/engine-performance/baseline-v1-source.json` | 引擎性能基线、复测或交接证据 |
+| `engineering/acceptance/engine-performance/benchmark.py` | 引擎性能隔离驱动、边界或联测 |
+| `engineering/acceptance/engine-performance/boundaries-v2.xml` | 引擎回归结果 |
+| `engineering/acceptance/engine-performance/candidate-v1-results.json` | 引擎性能基线、复测或交接证据 |
+| `engineering/acceptance/engine-performance/candidate-v1-source.json` | 引擎性能基线、复测或交接证据 |
+| `engineering/acceptance/engine-performance/candidate-v2-results.json` | 引擎性能基线、复测或交接证据 |
+| `engineering/acceptance/engine-performance/candidate-v2-source.json` | 引擎性能基线、复测或交接证据 |
+| `engineering/acceptance/engine-performance/candidate-v3-backup.json` | 引擎性能基线、复测或交接证据 |
+| `engineering/acceptance/engine-performance/candidate-v3-http-repeat1.json` | 引擎性能基线、复测或交接证据 |
+| `engineering/acceptance/engine-performance/candidate-v3-http-repeat2.json` | 引擎性能基线、复测或交接证据 |
+| `engineering/acceptance/engine-performance/candidate-v3-http-repeat3.json` | 引擎性能基线、复测或交接证据 |
+| `engineering/acceptance/engine-performance/candidate-v3-http.json` | 引擎性能基线、复测或交接证据 |
+| `engineering/acceptance/engine-performance/candidate-v3-profile.json` | 引擎性能基线、复测或交接证据 |
+| `engineering/acceptance/engine-performance/candidate-v3-source.json` | 引擎性能基线、复测或交接证据 |
+| `engineering/acceptance/engine-performance/candidate-v4-source.json` | 引擎性能基线、复测或交接证据 |
+| `engineering/acceptance/engine-performance/candidate-v5-extras.json` | 引擎性能基线、复测或交接证据 |
+| `engineering/acceptance/engine-performance/candidate-v5-source.json` | 引擎性能基线、复测或交接证据 |
+| `engineering/acceptance/engine-performance/core-v3.xml` | 引擎回归结果 |
+| `engineering/acceptance/engine-performance/core-v4.xml` | 引擎回归结果 |
+| `engineering/acceptance/engine-performance/extras-v5.xml` | 引擎回归结果 |
+| `engineering/acceptance/engine-performance/extras_probe.py` | 引擎性能隔离驱动、边界或联测 |
+| `engineering/acceptance/engine-performance/freeze.py` | 引擎性能隔离驱动、边界或联测 |
+| `engineering/acceptance/engine-performance/http_probe.py` | 引擎性能隔离驱动、边界或联测 |
+| `engineering/acceptance/engine-performance/joint-v1.xml` | 引擎回归结果 |
+| `engineering/acceptance/engine-performance/network-stats-results.json` | 引擎性能基线、复测或交接证据 |
+| `engineering/acceptance/engine-performance/network_stats.mjs` | 网络指标验证驱动 |
+| `engineering/acceptance/engine-performance/phase_profile.py` | 引擎性能隔离驱动、边界或联测 |
+| `engineering/acceptance/engine-performance/run_joint.py` | 引擎性能隔离驱动、边界或联测 |
+| `engineering/acceptance/engine-performance/run_remaining.py` | 引擎性能隔离驱动、边界或联测 |
+| `engineering/acceptance/engine-performance/summary.json` | 引擎性能基线、复测或交接证据 |
+| `engineering/acceptance/engine-performance/test_joint_page.py` | 引擎性能隔离驱动、边界或联测 |
+| `engineering/backend/tests/test_engine_performance.py` | 引擎权限、回归与性能边界测试 |
+| `engineering/backend/tests/test_ruling_page_route.py` | 引擎权限、回归与性能边界测试 |
+| `engineering/backend/tests/test_view_extras.py` | 引擎权限、回归与性能边界测试 |
+| `engineering/acceptance/engine-performance/handoff-files.json` | 引擎性能基线、复测或交接证据 |
+| `engineering/acceptance/engine-performance-interface-snapshot/v1/source.json` | 冻结引擎源码清单与逐文件摘要 |
+| `engineering/acceptance/engine-performance-interface-snapshot/v1/engineering/` | 不可变联合验收源码，共 332 项，路径见同版 source.json |
+| `engineering/acceptance/engine-performance-interface-snapshot/v2/source.json` | 冻结引擎源码清单与逐文件摘要 |
+| `engineering/acceptance/engine-performance-interface-snapshot/v2/engineering/` | 不可变联合验收源码，共 338 项，路径见同版 source.json |
+
+### AI 操作性能与冻结验收
+
+| 路径 | 内容 |
+| --- | --- |
+| `engineering/ai/src/onlinecoc_ai/segmented_store.py` | 按内容摘要提交 AI 分段存储 |
+| `engineering/ai/tests/test_operation_performance.py` | 裁决性能、存储恢复或交付凭证回归 |
+| `engineering/ai/tests/test_segmented_store.py` | 裁决性能、存储恢复或交付凭证回归 |
+| `engineering/ai/tests/test_delivery_write_sets.py` | 裁决性能、存储恢复或交付凭证回归 |
+| `engineering/acceptance/ai-operation-performance/.gitignore` | 隔离工作区忽略规则 |
+| `engineering/acceptance/ai-operation-performance/adapted-benchmark.json` | AI 性能采样、回归或验收记录 |
+| `engineering/acceptance/ai-operation-performance/baseline-benchmark.json` | AI 性能采样、回归或验收记录 |
+| `engineering/acceptance/ai-operation-performance/baseline-source.json` | AI 性能采样、回归或验收记录 |
+| `engineering/acceptance/ai-operation-performance/benchmark.py` | AI 性能基准或验收驱动 |
+| `engineering/acceptance/ai-operation-performance/compact-metadata-source.json` | AI 性能采样、回归或验收记录 |
+| `engineering/acceptance/ai-operation-performance/compact-metadata.xml` | AI 性能采样、回归或验收记录 |
+| `engineering/acceptance/ai-operation-performance/comparison.json` | AI 性能采样、回归或验收记录 |
+| `engineering/acceptance/ai-operation-performance/core-source.json` | AI 性能采样、回归或验收记录 |
+| `engineering/acceptance/ai-operation-performance/core-v2-source.json` | AI 性能采样、回归或验收记录 |
+| `engineering/acceptance/ai-operation-performance/core-v2.xml` | AI 性能采样、回归或验收记录 |
+| `engineering/acceptance/ai-operation-performance/core.xml` | AI 性能采样、回归或验收记录 |
+| `engineering/acceptance/ai-operation-performance/delivery-cold-v2-source.json` | AI 性能采样、回归或验收记录 |
+| `engineering/acceptance/ai-operation-performance/delivery-cold-v2.json` | AI 性能采样、回归或验收记录 |
+| `engineering/acceptance/ai-operation-performance/delivery-cold-v3-recovered-source.json` | AI 性能采样、回归或验收记录 |
+| `engineering/acceptance/ai-operation-performance/delivery-cold-v3-recovered.log` | AI 性能采样、回归或验收记录 |
+| `engineering/acceptance/ai-operation-performance/delivery-cold-v3-source.json` | AI 性能采样、回归或验收记录 |
+| `engineering/acceptance/ai-operation-performance/delivery-cold-v3.json` | AI 性能采样、回归或验收记录 |
+| `engineering/acceptance/ai-operation-performance/delivery-crash-source.json` | AI 性能采样、回归或验收记录 |
+| `engineering/acceptance/ai-operation-performance/delivery-crash.xml` | AI 性能采样、回归或验收记录 |
+| `engineering/acceptance/ai-operation-performance/delivery-large-history-source.json` | AI 性能采样、回归或验收记录 |
+| `engineering/acceptance/ai-operation-performance/delivery-large-history.json` | AI 性能采样、回归或验收记录 |
+| `engineering/acceptance/ai-operation-performance/delivery-write-sets-source.json` | AI 性能采样、回归或验收记录 |
+| `engineering/acceptance/ai-operation-performance/delivery-write-sets.xml` | AI 性能采样、回归或验收记录 |
+| `engineering/acceptance/ai-operation-performance/first-source.json` | AI 性能采样、回归或验收记录 |
+| `engineering/acceptance/ai-operation-performance/first.xml` | AI 性能采样、回归或验收记录 |
+| `engineering/acceptance/ai-operation-performance/handoff-files.json` | AI 性能采样、回归或验收记录 |
+| `engineering/acceptance/ai-operation-performance/history-readonly-source.json` | AI 性能采样、回归或验收记录 |
+| `engineering/acceptance/ai-operation-performance/history-readonly.xml` | AI 性能采样、回归或验收记录 |
+| `engineering/acceptance/ai-operation-performance/integration-source.json` | AI 性能采样、回归或验收记录 |
+| `engineering/acceptance/ai-operation-performance/integration.xml` | AI 性能采样、回归或验收记录 |
+| `engineering/acceptance/ai-operation-performance/interrupted-runs.json` | AI 性能采样、回归或验收记录 |
+| `engineering/acceptance/ai-operation-performance/large-history-source.json` | AI 性能采样、回归或验收记录 |
+| `engineering/acceptance/ai-operation-performance/large-history.json` | AI 性能采样、回归或验收记录 |
+| `engineering/acceptance/ai-operation-performance/large_history.py` | AI 性能基准或验收驱动 |
+| `engineering/acceptance/ai-operation-performance/memory-check-source.json` | AI 性能采样、回归或验收记录 |
+| `engineering/acceptance/ai-operation-performance/memory-check.xml` | AI 性能采样、回归或验收记录 |
+| `engineering/acceptance/ai-operation-performance/memory-fixed-source.json` | AI 性能采样、回归或验收记录 |
+| `engineering/acceptance/ai-operation-performance/memory-fixed.xml` | AI 性能采样、回归或验收记录 |
+| `engineering/acceptance/ai-operation-performance/optimized-benchmark-source.json` | AI 性能采样、回归或验收记录 |
+| `engineering/acceptance/ai-operation-performance/optimized-benchmark.json` | AI 性能采样、回归或验收记录 |
+| `engineering/acceptance/ai-operation-performance/performance-regression-source.json` | AI 性能采样、回归或验收记录 |
+| `engineering/acceptance/ai-operation-performance/performance-regression.xml` | AI 性能采样、回归或验收记录 |
+| `engineering/acceptance/ai-operation-performance/README.md` | AI 操作性能验收报告 |
+| `engineering/acceptance/ai-operation-performance/release-core-source.json` | AI 性能采样、回归或验收记录 |
+| `engineering/acceptance/ai-operation-performance/release-core.xml` | AI 性能采样、回归或验收记录 |
+| `engineering/acceptance/ai-operation-performance/release-v3-core-source.json` | AI 性能采样、回归或验收记录 |
+| `engineering/acceptance/ai-operation-performance/release-v3-recovered-source.json` | AI 性能采样、回归或验收记录 |
+| `engineering/acceptance/ai-operation-performance/release-v3-recovered.log` | AI 性能采样、回归或验收记录 |
+| `engineering/acceptance/ai-operation-performance/release-v3-recovered.xml` | AI 性能采样、回归或验收记录 |
+| `engineering/acceptance/ai-operation-performance/run_tests.py` | AI 性能基准或验收驱动 |
+| `engineering/acceptance/ai-operation-performance/segment-analysis.xml` | AI 性能采样、回归或验收记录 |
+| `engineering/acceptance/ai-operation-performance/segmented-benchmark-source.json` | AI 性能采样、回归或验收记录 |
+| `engineering/acceptance/ai-operation-performance/segmented-benchmark.json` | AI 性能采样、回归或验收记录 |
+| `engineering/acceptance/ai-operation-performance/segments-optimized-source.json` | AI 性能采样、回归或验收记录 |
+| `engineering/acceptance/ai-operation-performance/segments-optimized.xml` | AI 性能采样、回归或验收记录 |
+| `engineering/acceptance/ai-operation-performance/segments-partitioned-source.json` | AI 性能采样、回归或验收记录 |
+| `engineering/acceptance/ai-operation-performance/segments-partitioned.xml` | AI 性能采样、回归或验收记录 |
+| `engineering/acceptance/ai-operation-performance/segments-source.json` | AI 性能采样、回归或验收记录 |
+| `engineering/acceptance/ai-operation-performance/segments-verified-source.json` | AI 性能采样、回归或验收记录 |
+| `engineering/acceptance/ai-operation-performance/segments-verified.xml` | AI 性能采样、回归或验收记录 |
+| `engineering/acceptance/ai-operation-performance/segments.xml` | AI 性能采样、回归或验收记录 |
+| `engineering/acceptance/ai-operation-performance/summarize.py` | AI 性能基准或验收驱动 |
+| `engineering/acceptance/ai-operation-performance/v2-benchmark-source.json` | AI 性能采样、回归或验收记录 |
+| `engineering/acceptance/ai-operation-performance/v2-benchmark.json` | AI 性能采样、回归或验收记录 |
+| `engineering/acceptance/ai-operation-performance/verification.json` | AI 性能采样、回归或验收记录 |
+| `engineering/acceptance/ai-operation-performance/verify-client.mjs` | AI 性能基准或验收驱动 |
+| `engineering/acceptance/ai-operation-performance/web-client-proof.json` | AI 性能采样、回归或验收记录 |
+| `engineering/acceptance/ai-operation-performance/web-client-v2-proof.json` | AI 性能采样、回归或验收记录 |
+| `engineering/acceptance/ai-performance-interface-snapshot/v1/source.json` | 冻结 AI 源码清单与逐文件摘要 |
+| `engineering/acceptance/ai-performance-interface-snapshot/v1/engineering/` | 冻结 AI 源码，共 220 项，路径见同版 source.json |
+| `engineering/acceptance/ai-performance-interface-snapshot/v2/source.json` | 冻结 AI 源码清单与逐文件摘要 |
+| `engineering/acceptance/ai-performance-interface-snapshot/v2/engineering/` | 冻结 AI 源码，共 222 项，路径见同版 source.json |
+| `engineering/acceptance/ai-performance-interface-snapshot/v3/source.json` | 冻结 AI 源码清单与逐文件摘要 |
+| `engineering/acceptance/ai-performance-interface-snapshot/v3/engineering/` | 冻结 AI 源码，共 223 项，路径见同版 source.json |
+
+| `docs/current/engineering/engine-performance.md` | 当前引擎性能机制、接口与验收边界 |
 
 ## 施工登记
 

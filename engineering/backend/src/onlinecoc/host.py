@@ -18,7 +18,7 @@ class Host:
         self.knowledge=KnowledgeService(self)
         self.ai_prepared_resolver=None
         self.ai_c_basis_resolver=None
-        self._projection_generation=None;self._projection_cache={};self._idle_tick_generation=None
+        self._projection_generation=None;self._projection_cache={};self._projection_policies=None;self._idle_tick_generation=None
         self.metrics={'commands':[],'commits':[],'workers':[]};self.clock=clock;self.fault=fault;self.epoch=uid();self.views={}
         self.identity=Identity(self.path/'identity',store_factory)
         try:self.store=store_factory(self.path/'rooms/demo')
@@ -42,7 +42,11 @@ class Host:
     def register_knowledge_provider(self, descriptor, provider):
         return self.knowledge.register(descriptor, provider)
     def commit(self,state,*,expected_generation=None):
-        start=time.perf_counter();validate(state);self.store.commit(self.store.generation if expected_generation is None else expected_generation,state)
+        start=time.perf_counter();validate(state);validated=time.perf_counter()
+        self.store.commit(self.store.generation if expected_generation is None else expected_generation,state)
+        phases=self.metrics.setdefault('commitPhases',[])
+        phases.append({'validateMs':(validated-start)*1000,'storeMs':(time.perf_counter()-validated)*1000})
+        del phases[:-1000]
         self.metrics['commits'].append((time.perf_counter()-start)*1000);self.metrics['commits']=self.metrics['commits'][-1000:]
     def hit(self,stage):
         if self.fault:self.fault(stage)
@@ -59,17 +63,24 @@ class Host:
         s=self.state() if state is None else state;m=member(s,account);a=s['artifacts'][s['activeRuleset']]
         return {'revision':s['activeRuleset']+':'+str(m['authorizationEpoch']),'rulesetRevision':s['activeRuleset'],
                 'actions':self.knowledge.project_catalog(s,account,[v for v in a['metadata'].values() if v['public'] and (not v['kp'] or m['role']=='kp')])}
-    def project(self,account):
+    def project(self,account,*,extras=None):
         with self.lock:
+            require(extras in (None,'auto','player','keeper'),'INPUT_INVALID')
             generation=self.store.generation
             if self._projection_generation!=generation:
-                self._projection_generation=generation;self._projection_cache={}
-            if account in self._projection_cache:return copy.deepcopy(self._projection_cache[account])
+                self._projection_generation=generation;self._projection_cache={};self._projection_policies=None
+            source_revision=self.knowledge.projection_revision(self._projection_policies) if self._projection_policies is not None else None
+            cache_key=(account,source_revision)
+            if source_revision is not None and cache_key in self._projection_cache:
+                return self._project_extras(copy.deepcopy(self._projection_cache[cache_key]),account,extras)
             s=self.state();m=member(s,account);entities={}
+            self._projection_policies=copy.deepcopy(s['knowledge']['policies'])
+            source_revision=self.knowledge.projection_revision(self._projection_policies)
             full={};knowledge_summary=None
             if s['knowledge']['policies']:
                 try:full,knowledge_summary=self.knowledge.projection(s,account)
-                except DomainError:knowledge_summary={'schemaVersion':1,'status':'blocked','items':[]}
+                except DomainError:
+                    knowledge_summary={'schemaVersion':1,'status':'blocked','items':[]};source_revision=None
             for id,e in s['entities'].items():
                 if e['lifecycle']=='active' and visible(s,account,e):
                     protected=m['role']!='kp' and self.knowledge.managed(s,'entity',id,e)
@@ -90,11 +101,27 @@ class Host:
                     'accountId':account,'role':m['role'],'entities':entities,'relations':relations,'progress':progress,'waits':waits,'flows':flows,'catalog':self.catalog(account,state=s),'chatChannels':chat.project(s,account)}
             if s['knowledge']['policies']:
                 result['knowledge']=knowledge_summary
-            # External disclosure providers can change without a room commit.
-            # Cache only room-owned projections, and never expose the cached object.
-            if not s['knowledge']['policies'] and len(self._projection_cache)<128:
-                self._projection_cache[account]=copy.deepcopy(result)
-            return result
+            # Providers must explicitly prove external source freshness. Check
+            # both sides of construction, and never return a mutable cache entry.
+            if source_revision is not None and source_revision==self.knowledge.projection_revision(self._projection_policies):
+                if len(self._projection_cache)>=128:self._projection_cache.pop(next(iter(self._projection_cache)))
+                self._projection_cache[(account,source_revision)]=copy.deepcopy(result)
+            return self._project_extras(result,account,extras,state=s)
+    def _project_extras(self,result,account,mode,*,state=None):
+        if mode is None:return result
+        s=self.state() if state is None else state;m=member(s,account)
+        if mode=='auto':mode='keeper' if m['role']=='kp' else 'player'
+        require(mode!='keeper' or m['role']=='kp','PERMISSION_DENIED')
+        capabilities=self.knowledge.capabilities(account,state=s,player=mode=='player')
+        extra={'mode':mode,'knowledgeStatus':capabilities['status']}
+        if mode=='keeper':
+            extra['knowledgeGrants']=self.knowledge.grants(account,{'limit':50},state=s)
+            extra['members']={'items':self.chat_members(account,state=s)}
+        else:
+            from .notifications import page
+            extra['notifications']=page(s,account,0,50)
+        result['viewExtras']=extra
+        return result
     def receipt(self,account,id):
         with self.lock:return self._receipt(self.state(),account,id)
     def _receipt(self,s,account,id):
@@ -442,9 +469,9 @@ class Host:
     def notifications(self,account,after=0,limit=50):
         from .notifications import page
         with self.lock:return page(self.state(),account,after,limit)
-    def chat_members(self,account):
+    def chat_members(self,account,*,state=None):
         with self.lock:
-            s=self.state();member(s,account);accounts=self.identity.store.snapshot()[1]['accounts']
+            s=self.state() if state is None else state;member(s,account);accounts=self.identity.store.snapshot()[1]['accounts']
             return [{'accountId':a,'memberId':m['memberId'],'nickname':accounts[a]['nickname'],'role':m['role']}
                     for a,m in s['members'].items() if m['active'] and a in accounts and not accounts[a]['disabled']]
     def chat_channels(self,account):

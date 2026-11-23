@@ -4,7 +4,7 @@
 - 文档子类：工程
 - 状态：有效
 - 创建日期：2026-11-12
-- 最后更新：2026-11-21
+- 最后更新：2026-11-22
 - 关联文档：[工程索引](README.md)、[模块入口](../../../engineering/ai/README.md)、[设计](../../plans/ai-runtime-design.md)、[施工计划](../../plans/ai-runtime-construction-plan.md)
 
 ## 当前阶段
@@ -58,7 +58,7 @@ Windows 上已验证顶层死循环、内存/输出膨胀、文件/网络与 Pyt
 
 ## 人工提案、审批与加载
 
-[Proposals](../../../engineering/ai/src/onlinecoc_ai/proposals.py) 提供 `create/revise/validate/prepared/get/reconcile`；[Repository](../../../engineering/ai/src/onlinecoc_ai/repository.py) 使用独立 FileDataStore，默认在主机数据目录的 `ai/`。草稿保存完整候选、不可变内容修订、上下文和检查报告；修改产生新修订，并先在主机撤销旧批准。外部草稿不能携带“通过”报告代替实际检查。
+[Proposals](../../../engineering/ai/src/onlinecoc_ai/proposals.py) 提供 `create/revise/validate/prepared/get/reconcile`；[Repository](../../../engineering/ai/src/onlinecoc_ai/repository.py) 使用基于 FileDataStore 的独立 SegmentedStore，默认在主机数据目录的 `ai/`。草稿保存完整候选、不可变内容修订、上下文和检查报告；修改产生新修订，并先在主机撤销旧批准。外部草稿不能携带“通过”报告代替实际检查。
 
 服务通过本机组合端口 `Host.register_ai` 登记受信提案解析器和包契约。解析 PreparedBundle 在房间锁外完成；主机在锁内重新验证 KP、作用域、基线、来源、条款/检查器版本和风险理由。人工入口包括 Python 服务、HTTP 草稿上传和操作台，不依赖模型调用。
 
@@ -79,6 +79,10 @@ Windows 上已验证顶层死循环、内存/输出膨胀、文件/网络与 Pyt
 后端 0.3.0 只接受 Room schemaVersion=4，chat、aiControl 与 knowledge 均必需；文件数据管理格式仍为 1。加载时拒绝其他版本，不自动补齐或改档。v3 可通过独立离线转换器生成新副本；格式、命令及回滚步骤见[房间格式](room-format.md)。新建房间直接使用 v4。同一存档重启保留 AI 与知识 scopeId，主机 authorityEpoch 会改变，因此未消费的旧批准需要重新检查和审核；已消费命令回执仍可查询。
 
 AI Repository 在默认文件存储即将超过累计配额时无损压缩较早快照，保留每代原字节、完整链、审计和回执；不裁剪业务历史。压缩后的目录需新版读取器，仍受 512 MiB 和临时空间约束，不能视为无限容量。接口与隔离大样本验证见[存储运维](first-test.md#5-管理和恢复)及[压缩验收](../../../engineering/acceptance/store-compaction/README.md)。
+
+AI 大历史使用内部 `aiStorageFormat=2` 清单与 `objects-v2/<SHA256>.json` 不可变分片，先写入并同步分片，再原子发布新一代清单。较大的字典按键摘要分桶，单条历史修改不会顺移其后所有分片。读取兼容旧的完整快照；旧版本程序不能读取新清单，升级前应保存原目录备份。内部聚合上限 128 MiB，单份 API/模型文档和分片仍为 8 MiB，默认累计存储配额仍为 512 MiB；不是无限容量。
+
+`snapshot()` 和 `export_snapshot()` 返回/导出完整逻辑数据，`SegmentedStore.restore()` 校验备份后在新目录重建分片。宿主 `Assets.backup(ai_snapshot=...)` 应传逻辑快照。直接复制目录必须包含全部 generations、objects-v2，不能只复制清单或通过普通 FileDataStore 导出物理清单。分片摘要、格式或引用缺失时拒绝打开；发布前故障保持旧代，发布后丢失应答按已提交代恢复。当前保留旧代和故障遗留的完整分片，不自动清理；目录配额包含这些文件。进程内复用已验证逻辑快照，重启仍重建当前完整数据，未实现磁盘按页读取。
 
 恢复到新目录会生成新 scopeId、撤销未消费批准、关闭自动需求；已发布配置和工件保留。备份验证工件引用、批准证据摘要及可选 AI 快照引用。`Assets.backup(..., ai_snapshot=...)` 可携带独立历史；恢复为 `ai-history-before-restore.json` 附件，不自动把旧作用域历史当作新房间有效记忆。没有 AI 附件也能恢复已发布游戏。
 
@@ -161,3 +165,17 @@ engineering/.venv/Scripts/python -m pytest engineering/backend/tests engineering
 测试使用公开的固定夹具，不读取真实游戏存档。服务商模板不是密钥存储，不能把实际密钥写入仓库。显式真实联调命令与不回显输入说明见[模块入口](../../../engineering/ai/README.md)；真实服务结果与本地模拟结果分别记录。
 
 会话级权限、玩家直接转交、管理员执行批次、自动批准和删除行为见[会话权限与执行批次](ai-session-access.md)。配置发布仍使用既有三检与独立风险批准。
+
+## AI 本地读取与校验复用
+
+Repository 的请求内只读视图可复用同一存储 generation 的私有快照；普通 state() 仍返回隔离副本。写入、事务变化或存储版本变化后重新读取。只读索引保留其对应快照，防止对象标识重用。成功的 Schema 校验按模型类型、校验器实例和完整内容摘要复用，最多 2048 项；错误不缓存，关系、来源作用域、会话归属、批准绑定等不变量每次 verify 仍检查，加载时仍全量审计。事务中的 update 少一次中间深拷贝，提交边界和回滚语义不变。
+
+交付证明使用 `Repository.update_delivery_receipts({rulingDeliveries?,messageDeliveries?})` 的明确写集合快路：只允许这两个无业务交叉关系的元数据集合，新增 JSON 在实际聚合深度及体积限制下验证；原 generation 必须已通过完整验证，未知版本先全量复验。复制变动的集合及祖先节点，保留其余历史和不可变分片引用，多个交付集合可共享一次原子提交。重复证明不产生新代。现有通用事务内调用会回到原事务，仍在最终提交时完整验证和回滚；任意 `update`、业务变更、旧消息发布时间迁移仍走全校验，不能用这条快路绕过它们。
+
+分段清单为 settings 各集合保留独立引用，快路不复制或重新序列化完整裁决历史；旧清单在首次窄写时转换节点布局，格式版本仍为 2、旧读取器解码语义不变。交付前当前权限、来源和受众检查，以及读取和审批时的再次验证均不变；原文、凭证摘要和故障后已发布代仍可恢复。
+
+同一次配置三检复用 A 检查及其已解析工件，B/C 的独立调用仍执行 A，动态场景、当前依据和最终批准发布继续检查。该复用不跨用户任务，也不复用旧动态评估。
+
+过程 timeline 原本就在内存聚合、最终统一持久化；本轮在任务终态提交时同时保存当时的轨迹和诊断，finally 仍保存最后完成事件或关闭错误。未落盘的过程事件在硬退出后仍可能缺失；重启标记 interrupted，不捏造完整轨迹。原文、来源证明和调用计费仍按原持久化边界保留。
+
+性能采样、万条历史、备份恢复、强退及失败复测记录见[AI 操作性能验收](../../../engineering/acceptance/ai-operation-performance/README.md)。

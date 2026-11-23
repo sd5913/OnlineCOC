@@ -33,6 +33,7 @@ class WebDirectory(Directory):
     async def boundary(self, request, handler):
         try:
             self.web_rate.check(request.remote or "unknown")
+            await self.cleanup_rooms()
             origin = request.headers.get("Origin")
             expected = self.config.get("publicOrigin") or str(request.url.origin())
             require(not origin or origin == expected or origin in self.config.get("allowedOrigins", []), "ORIGIN_DENIED", 403)
@@ -85,7 +86,8 @@ class WebDirectory(Directory):
         return web.Response(text=(ASSETS / "index.html").read_text(encoding="utf-8"), content_type="text/html")
 
     async def capabilities(self, request):
-        return web.json_response({'webVersion':2, 'packageBridge':1, 'storageBridge':1, 'roomCreation':1, 'publicRooms':1})
+        return web.json_response({'webVersion':2, 'packageBridge':1, 'storageBridge':1, 'roomCreation':1, 'publicRooms':1,
+            'roomRetentionSeconds': self.store.retention_seconds})
 
     async def sandbox(self, request):
         return web.Response(text='<!doctype html><html><head><meta charset="utf-8"></head><body><script src="/assets/sandbox-boot.js"></script></body></html>', content_type="text/html")
@@ -101,7 +103,24 @@ class WebDirectory(Directory):
         return web.Response(body=file.read_bytes(), content_type="text/css" if name.endswith(".css") else "text/javascript")
 
     async def web_start(self, app):
+        await self.cleanup_rooms()
         self.web_task = asyncio.create_task(self.web_sweep())
+
+    async def remove_room(self, rid):
+        items = self.store.remove(rid)
+        self.portal.data["rooms"].pop(rid, None)
+        self.portal.save()
+        self.presence = {k: v for k, v in self.presence.items() if k[0] != rid}
+        await self.cancel(items, "ROOM_CLOSED")
+        socket = self.hosts.pop(rid, None)
+        if socket is not None:
+            await socket.close(code=1000, message=b"room removed")
+
+    async def cleanup_rooms(self):
+        await self.sweep_hosts()
+        for rid, room in list(self.portal.data["rooms"].items()):
+            if room["closed"] or rid not in self.store.rooms:
+                await self.remove_room(rid)
 
     async def web_close(self, app):
         if self.web_task:
@@ -112,6 +131,7 @@ class WebDirectory(Directory):
     async def web_sweep(self):
         while True:
             await asyncio.sleep(2)
+            await self.cleanup_rooms()
             for iid, item in list(self.store.intents.items()):
                 if "webAccountId" in item:
                     try:
@@ -197,7 +217,9 @@ class WebDirectory(Directory):
         items = []
         for rid, room in self.portal.data["rooms"].items():
             if aid in room["members"] and aid not in room["banned"]:
-                items.append({"roomId": rid, "title": room["metadata"]["title"], "closed": room["closed"], "online": self.online(rid), "updated": room["updated"], "owner": room["owner"] == aid})
+                inactive = self.store.rooms[rid].get("inactiveSince")
+                items.append({"roomId": rid, "title": room["metadata"]["title"], "closed": room["closed"], "online": self.online(rid), "updated": room["updated"], "owner": room["owner"] == aid,
+                    "expiresAt": inactive + self.store.retention_seconds if inactive is not None else None})
         return web.json_response({"items": items})
 
     async def public_rooms(self, request):
@@ -406,7 +428,8 @@ class WebDirectory(Directory):
             self.portal.save()
             return web.json_response({"ok": True})
         if action == "close":
-            room["closed"] = True
+            await self.remove_room(rid)
+            return web.json_response({"ok": True, "removed": True, "connectionRevocationDeadlineSeconds": 15})
         else:
             require(target in self.portal.data["accounts"] and target != aid, "MEMBER_INVALID")
             if action == "approve":

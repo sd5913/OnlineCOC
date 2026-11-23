@@ -9,3 +9,5 @@
 __pycache__/
 *.pyc
 /build/
+.network-setup-*/
+.network-setup.lock

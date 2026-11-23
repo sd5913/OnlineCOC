@@ -161,6 +161,34 @@ def main():
             assert not page_errors, page_errors
             report['checks'].append('terminal-archive-and-no-browser-errors')
             page.evaluate('window.view.destroy()')
+            page.evaluate("""async full=>{
+                window.view.destroy();
+                window.detailsFetched=0;
+                window.pageCalls=[];
+                const client={
+                  aiRulings:async options=>{
+                    window.pageCalls.push(options);
+                    const first=!options.before;
+                    const id=first?'batch:current':'batch:earlier';
+                    return {items:[{...full,rulingId:id,summary:id,compact:true,canDecide:false,actions:[]}],
+                            activeCount:2,nextBefore:first?'batch:current':null};
+                  },
+                  aiRuling:async id=>{window.detailsFetched++;return {...full,rulingId:id};}
+                };
+                const module={mountMarkdown:(target,text)=>{target.textContent=text;return{destroy(){}}}};
+                window.view=window.rulingsUI.mountPackageRulings(document.querySelector('#fixture'),client,module,
+                    {authorized:()=>true,onNotice:()=>{}});
+            }""", fixture)
+            page.get_by_role('button',name='查看较早裁决').click()
+            expect(page.locator('[data-ruling-id="batch:earlier"]')).to_have_count(1)
+            assert page.evaluate('window.detailsFetched') == 0
+            page.locator('[data-open]').click()
+            expect(page.locator('dialog ol>li')).to_have_count(3)
+            assert page.evaluate('window.detailsFetched') == 1
+            page.locator('dialog [data-close]').click()
+            page.get_by_role('button',name='返回较新裁决').click()
+            expect(page.locator('[data-ruling-id="batch:current"]')).to_have_count(1)
+            report['checks'].append('compact-pages-navigate-and-fetch-exact-detail-before-approval')
             browser.close()
         report['passed'] = True
     except Exception as exc:

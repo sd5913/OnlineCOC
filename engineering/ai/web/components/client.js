@@ -43,7 +43,8 @@ export class AiClient{
  aiDebug(options){return this.transport.request('ai/debug?'+new URLSearchParams(options));}
  aiReview(source,instruction){return this.aiCommand('ai.review.create',{source,...(instruction?{instruction}:{})});}
  aiAccess(){return this.transport.request('ai/access');}
- aiRulings(){return this.transport.request('ai/rulings');}
+ aiRulings(options){const query=new URLSearchParams(Object.entries(options||{}).filter(([,value])=>value!==undefined&&value!==null)).toString();return this.transport.request('ai/rulings'+(query?'?'+query:''));}
+ aiRuling(rulingId){return this.transport.request('ai/rulings/'+encodeURIComponent(rulingId));}
  aiBatches(){return this.transport.request('ai/batches');}
  aiSettings(){return this.transport.request('ai/settings');}
  aiContracts(){return this.transport.request('ai/contracts');}

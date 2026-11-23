@@ -1,0 +1,16 @@
+{
+  "interruptedRuns": [
+    {
+      "label": "release-v3-core",
+      "evidence": "release-v3-core-source.json",
+      "observed": "No final XML; process absent after session resumed; cause not determined",
+      "replacement": "release-v3-recovered"
+    },
+    {
+      "label": "delivery-cold-v3",
+      "observed": "No final report at session resume; process absent",
+      "replacement": "delivery-cold-v3-recovered"
+    }
+  ],
+  "rule": "Interrupted runs are neither passed nor product-test failures. Frozen source was not changed for recovery."
+}

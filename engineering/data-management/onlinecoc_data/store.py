@@ -6,6 +6,7 @@ import hashlib
 import json
 import os
 import threading
+import time
 import uuid
 from pathlib import Path
 
@@ -50,6 +51,7 @@ class FileDataStore:
             raise StoreError("STORE_LOCKED") from e
         self.generation, self.head, self.value = 0, None, None
         self.closed = False
+        self.last_commit_metrics = None
         try:
             self.generation, self.head, self.value = self._load_chain()
         except Exception as e:
@@ -171,6 +173,7 @@ class FileDataStore:
             return self.generation, copy.deepcopy(self.value)
 
     def commit(self, expected_generation, value):
+        started=time.perf_counter()
         with self.mutex:
             if self.closed: raise StoreError("STORE_CLOSED")
             if expected_generation != self.generation: raise StoreError("VERSION_CONFLICT")
@@ -180,21 +183,24 @@ class FileDataStore:
             # payload sorts last: preserve the original canonical envelope bytes
             # without serializing the complete payload twice.
             raw = canonical(env)[:-1]+b',"payload":'+data+b'}'
+            serialized=time.perf_counter()
             used = self._disk_bytes()
             if used + len(raw)*2 > self.max_bytes and self.auto_compress:
                 self.compress_history(expected_generation)
                 used = self._disk_bytes()
             if used + len(raw)*2 > self.max_bytes: raise StoreError("STORE_FULL")
+            budgeted=time.perf_counter()
             tmp = self.staging / (uuid.uuid4().hex + ".tmp")
             self._fault("before_write")
             try:
                 with open(tmp,"xb") as f:
                     f.write(raw[:len(raw)//2]); self._fault("half_write")
                     f.write(raw[len(raw)//2:]); f.flush(); self._fault("before_sync")
-                    os.fsync(f.fileno()); self._fault("before_publish")
+                    sync_started=time.perf_counter();os.fsync(f.fileno());synced=time.perf_counter(); self._fault("before_publish")
                 target = self.generations / f"{self.generation+1:012d}.json"
                 if target.exists(): raise StoreError("GENERATION_EXISTS")
                 os.replace(tmp,target)
+                published=time.perf_counter()
                 # Publication is visible. Preserve in-memory consistency even if the caller loses its reply.
                 self.generation += 1
                 self.head, self.value = digest(raw), copy.deepcopy(value)
@@ -203,6 +209,11 @@ class FileDataStore:
                     try: os.fsync(fd)
                     finally: os.close(fd)
                 self._fault("after_publish")
+                self.last_commit_metrics={'generation':self.generation,'bytes':len(raw),
+                    'serializeMs':(serialized-started)*1000,'budgetMs':(budgeted-serialized)*1000,
+                    'writeMs':(sync_started-budgeted)*1000,'syncMs':(synced-sync_started)*1000,
+                    'publishMs':(published-synced)*1000,'copyAndDirectorySyncMs':(time.perf_counter()-published)*1000,
+                    'totalMs':(time.perf_counter()-started)*1000}
                 return self.generation
             finally:
                 if tmp.exists(): tmp.unlink()

@@ -12,7 +12,6 @@ from client import HostError
 import scenes
 from chat import ScopedChat
 from visibility import MapVisibility
-from ai_data import known_locations
 import knowledge_client
 import action_errors
 import scene_knowledge
@@ -20,6 +19,10 @@ import publication_sync
 import ai_review
 
 PACK = Path(__file__).resolve().parents[1]
+JOB_SEGMENT_SIZE = 64
+RECENT_JOBS = 32
+RECEIPT_SEGMENT_SIZE = 128
+RECENT_RECEIPTS = 256
 
 
 def bundle():
@@ -28,6 +31,13 @@ def bundle():
             'sources': {name: (PACK / 'rules' / name).read_text(encoding='utf-8') for name in manifest['rules']},
             'data': {name: json.loads((PACK / 'config' / name).read_text(encoding='utf-8')) for name in manifest['data']},
             'configurations': json.loads((PACK / manifest['configurations']).read_text(encoding='utf-8'))}
+
+
+def stage_payload(content):
+    data = dict(content['data'])
+    if 'scene-actions.json' in data:
+        data['scene-actions.json'] = scene_knowledge.execution_data(data['scene-actions.json'])
+    return {'sources': content['sources'], 'data': data}
 
 
 class PackageError(ValueError):
@@ -43,13 +53,23 @@ class Job:
     def __init__(self, store, client, record):
         self.store, self.client, self.record = store, client, record
 
-    def command(self, key, op, args):
+    def command(self, key, op, args, *, save_result=True):
         step = self.record['steps'].get(key)
         fresh = step is None
         if step is None:
-            step = {'envelope': self.client.envelope(op, args)}
+            if not self.record['steps'] and getattr(self, 'view', None) is not None:
+                envelope = self.client.envelope(op, args, view=self.view)
+            else:
+                envelope = self.client.envelope(op, args)
+            step = {'envelope': envelope}
             self.record['steps'][key] = step
-            self.store.save()
+            try:
+                self.store.save()
+            except OSError:
+                # This envelope was never dispatched. A live retry must first
+                # establish a durable checkpoint, just like a process restart.
+                del self.record['steps'][key]
+                raise
         if 'result' not in step:
             command_id = step['envelope']['payload']['commandId']
             # A just-created envelope has never been dispatched. Recovery still
@@ -67,7 +87,8 @@ class Job:
             if receipt['status'] != 'committed':
                 raise HostError(receipt)
             step['result'] = receipt.get('result')
-            self.store.save()
+            if save_result:
+                self.store.save()
         return step['result']
 
     def invoke(self, key, rule, **inputs):
@@ -85,15 +106,27 @@ class Job:
 class Package:
     def __init__(self, path):
         self.path = Path(path)
+        self.storage_scope = hashlib.sha256(os.path.normcase(str(self.path.resolve())).encode('utf8')).hexdigest()
         self.lock = threading.RLock()
         # Heartbeats contain account IDs and times only, never KP credentials.
         self.executor_seen = {}
+        # At most one bounded read result per recent authenticated player.
+        self.knowledge_pages = {}
+        self.chat_indexes = {}
+        self.job_segments = []
+        self.archived_jobs = set()
+        self.receipt_segments = []
+        self.archived_receipts = {}
+        self.receipt_index = {}
+        self.segment_scan_at = 128
         baseline = bundle()
         self.game = baseline['data']['game.json']
         self.diagnostic_sources = baseline['sources']
         if self.path.exists():
             self.state = json.loads(self.path.read_text(encoding='utf-8'))
-            require(self.state.get('format') == 2, '包侧存档格式不支持；当前仅接受格式 2')
+            if self.state.get('format') == 3:
+                self.load_job_segments()
+            require(self.state.get('format') == 2, '包侧存档格式不支持')
             require(all(k in self.state for k in ('doors', 'roster', 'generatedCharacters', 'events', 'discoveries', 'sceneState', 'autoSceneQueue', 'ruleRevisions', 'encounters', 'loot', 'scopedChat', 'actorDiscoveries', 'mapPlayerActors', 'mapNpcActors', 'mapRatCount')), '包侧存档字段不完整')
         else:
             self.state = {'format': 2, 'revision': 0, 'jobs': {}, 'drafts': {}, 'requests': {},
@@ -105,6 +138,10 @@ class Package:
                               roster={}, generatedCharacters={}, events={}, discoveries={}, sceneState={}, autoSceneQueue={},
                               ruleRevisions={}, encounters=copy.deepcopy(self.game['encounters']), loot=['待主持依原版战利品表裁定'] * 20,
                               scopedChat={'messages': {}, 'reads': {}}, actorDiscoveries={}, mapPlayerActors={}, mapNpcActors={}, mapRatCount=0)
+        if not self.path.exists():
+            for place in self.game['locations']:
+                for other in place['exits']:
+                    self.state['doors'].setdefault(self.edge(place['index'], other), 'closed')
         active = self.state.get('activeRevision')
         if active in self.state['ruleRevisions']:
             self.game = self.state['ruleRevisions'][active]['data']['game.json']
@@ -125,7 +162,7 @@ class Package:
 
     def scene_content(self):
         content = self.state['ruleRevisions'].get(self.state.get('activeRevision'), {})
-        return content.get('data', {}).get('scene-actions.json', {})
+        return scene_knowledge.presentation(content.get('data', {}).get('scene-actions.json', {}))
 
     def scene_ready(self):
         content = self.state['ruleRevisions'].get(self.state.get('activeRevision'), {})
@@ -252,7 +289,7 @@ class Package:
         executed_revision = job.record['steps']['scene-act']['envelope']['payload']['rulesetRevision']
         executed = self.state['ruleRevisions'].get(executed_revision, {})
         public['clues'].extend(c for c in scene_knowledge.outcome_clues(
-                               executed.get('data', {}).get('scene-actions.json', {}), action, choice, public,
+                               scene_knowledge.presentation(executed.get('data', {}).get('scene-actions.json', {})), action, choice, public,
                                executed.get('sources', {}).get('scene.lua'))
                                if c['id'] not in existing)
         owner = actual['owner']
@@ -281,9 +318,35 @@ class Package:
         for index in revealed:
             entity=next(x for x in self.entities(privileged,'sv.location') if x['numbers']['index']==index)
             knowledge_client.disclose(work,owner,entity['instanceId'],'scene',key='scene-knowledge-'+str(index),reason='已执行场景行动向本人披露结果')
+        changed_keys = {s.get('key') for s in public['stateChanges']}
+        location = context['location']
+        for stock_loc, item, counter in scenes.stock_rows(self.state):
+            if stock_loc == location and counter in changed_keys:
+                self.observe_stock(work, after_scene, location, item, exclude=owner)
         public['status'] = 'completed'
         public['message'] = public['title'] + '：' + {'success': '已完成', 'failure': '已结算后果', 'blocked': '条件不满足'}[public['outcome']]
         return public
+
+    def observe_stock(self, job, view, location, item, exclude=None):
+        # Only disclose a change that this present character can actually see.
+        if not self.game.get('stormStocks'):
+            return
+        required = {3:'pool-treasure',4:'pots-observed',7:'hall-company',
+                    8:'factory-tools',10:'cave-stock'}.get(location)
+        if item >= 17:
+            required = 'supplies' + str(location)
+        if item == 24:
+            return
+        entity = next(e for e in self.entities(view,'sv.location') if e['numbers']['index']==location)
+        for actor in self.entities(view,'sv.character'):
+            who = actor['owner']
+            if who == exclude or actor['numbers']['location'] != location or not actor['numbers']['approved']:
+                continue
+            if required and required not in self.state['discoveries'].get(who,{}):
+                continue
+            knowledge_client.disclose(job, who, entity['instanceId'], 'scene',
+                                      key='stock-observe-'+str(item)+'-'+who,
+                                      reason='在场角色看到物资余量改变')
 
     def public_door_numbers(self, extra=None):
         visible = set(self.state['published'])
@@ -332,24 +395,121 @@ class Package:
                 '手动导入不能迁移既有物品槽位和用量；请使用带存量校验的高危提案')
         return copy.deepcopy({'sources': content['sources'], 'data': content['data']})
 
-    def save(self):
-        self.path.parent.mkdir(parents=True, exist_ok=True)
-        self.state['revision'] += 1
-        temporary = self.path.with_suffix('.writing')
-        with temporary.open('w', encoding='utf-8') as stream:
-            stream.write(json.dumps(self.state, ensure_ascii=False, allow_nan=False))
+    def read_segment(self, digest):
+        require(isinstance(digest, str) and re.fullmatch(r'[0-9a-f]{64}', digest), '归档编号无效')
+        raw = (self.path.with_suffix('.jobs') / (digest + '.json')).read_bytes()
+        require(hashlib.sha256(raw).hexdigest() == digest, '归档校验失败')
+        return json.loads(raw)
+
+    def write_segment(self, group):
+        raw = json.dumps(group, ensure_ascii=False, allow_nan=False, separators=(',', ':')).encode()
+        digest = hashlib.sha256(raw).hexdigest()
+        folder = self.path.with_suffix('.jobs')
+        folder.mkdir(exist_ok=True)
+        self.atomic_bytes(folder / (digest + '.json'), raw)
+        return digest
+
+    def load_job_segments(self):
+        segments = self.state.pop('jobSegments')
+        require(isinstance(segments, list) and segments, '行动归档索引无效')
+        for digest in segments:
+            records = self.read_segment(digest)
+            require(isinstance(records, dict) and not (records.keys() & self.state['jobs'].keys()), '行动归档重叠')
+            self.state['jobs'].update(records)
+            self.archived_jobs.update(records)
+        self.job_segments = segments
+        self.state.pop('eventReceipts', None)
+        prior = {}
+        for digest in self.state.pop('receiptSegments', []):
+            block = self.read_segment(digest)
+            rows = prior.setdefault(block['account'], [])
+            require(block['offset'] == len(rows), '回执归档顺序无效')
+            rows.extend(block['receipts'])
+            self.receipt_segments.append(digest)
+        for account, rows in prior.items():
+            self.archived_receipts[account] = len(rows)
+            self.receipt_index[account] = {r['id']: r for r in rows}
+            self.state['receipts'][account] = rows + self.state['receipts'].get(account, [])
+        # Portable paired backups contain the complete format-2 state.
+        self.state['format'] = 2
+        self.segment_scan_at = len(self.state['jobs']) + JOB_SEGMENT_SIZE
+
+    @staticmethod
+    def atomic_bytes(path, raw):
+        temporary = path.with_suffix('.writing')
+        with temporary.open('wb') as stream:
+            stream.write(raw)
             stream.flush()
             os.fsync(stream.fileno())
-        # Windows indexers can briefly hold the destination without delete sharing.
-        # Retry the same already-fsynced bytes; never fall back to a partial overwrite.
         for attempt in range(20):
             try:
-                os.replace(temporary, self.path)
+                os.replace(temporary, path)
                 break
             except PermissionError:
                 if attempt == 19:
                     raise
                 time.sleep(.05)
+        if os.name == 'posix':
+            directory = os.open(path.parent, os.O_RDONLY)
+            try:
+                os.fsync(directory)
+            finally:
+                os.close(directory)
+
+    def save(self):
+        self.path.parent.mkdir(parents=True, exist_ok=True)
+        jobs = self.state['jobs']
+        segments = self.job_segments.copy()
+        sealed = set()
+        if len(jobs) >= self.segment_scan_at:
+            # A queued scene can finish later and replace its original result.
+            pending = {k for k, task in self.state['autoSceneQueue'].items() if task['status'] != 'completed'}
+            candidates = [k for k, r in jobs.items() if k not in self.archived_jobs and k not in pending
+                          and (r.get('done') or r.get('failureResponse'))]
+            group_count = max(0, len(candidates) - RECENT_JOBS) // JOB_SEGMENT_SIZE
+            for index in range(group_count):
+                start = index * JOB_SEGMENT_SIZE
+                group = {key: jobs[key] for key in candidates[start:start+JOB_SEGMENT_SIZE]}
+                segments.append(self.write_segment(group))
+                sealed.update(group)
+        receipt_segments = self.receipt_segments.copy()
+        receipt_offsets = self.archived_receipts.copy()
+        new_receipts = {}
+        if segments:
+            for account, rows in self.state['receipts'].items():
+                offset = receipt_offsets.get(account, 0)
+                while len(rows) - offset >= RECENT_RECEIPTS + RECEIPT_SEGMENT_SIZE:
+                    block = rows[offset:offset+RECEIPT_SEGMENT_SIZE]
+                    if any((account + ':' + r['id'] not in self.archived_jobs and account + ':' + r['id'] not in sealed)
+                           for r in block):
+                        break
+                    receipt_segments.append(self.write_segment({'account': account, 'offset': offset, 'receipts': block}))
+                    new_receipts.setdefault(account, {}).update((r['id'], r) for r in block)
+                    offset += len(block)
+                receipt_offsets[account] = offset
+        revision = self.state['revision'] + 1
+        snapshot = {**self.state, 'revision': revision}
+        if segments:
+            evidence = {}
+            for owner, events in self.state['events'].items():
+                previous = self.receipt_index.get(owner, {})
+                staged = new_receipts.get(owner, {})
+                refs = dict.fromkeys(e.get('receiptId') for e in events)
+                evidence[owner] = [staged.get(ref) or previous[ref] for ref in refs if ref in staged or ref in previous]
+            snapshot.update(eventReceipts=evidence, format=3, jobSegments=segments, receiptSegments=receipt_segments,
+                            receipts={a: rows[receipt_offsets.get(a, 0):] for a, rows in self.state['receipts'].items()}, jobs={
+                k: v for k, v in jobs.items() if k not in self.archived_jobs and k not in sealed})
+        raw = json.dumps(snapshot, ensure_ascii=False, allow_nan=False, separators=(',', ':')).encode()
+        self.atomic_bytes(self.path, raw)
+        self.state['revision'] = revision
+        if len(jobs) >= self.segment_scan_at:
+            self.segment_scan_at = len(jobs) + JOB_SEGMENT_SIZE
+        self.job_segments = segments
+        self.archived_jobs.update(sealed)
+        self.receipt_segments = receipt_segments
+        self.archived_receipts = receipt_offsets
+        for owner, group in new_receipts.items():
+            self.receipt_index.setdefault(owner, {}).update(group)
 
     def entities(self, view, configuration):
         return [x for x in view['entities'].values() if (x['configurationId'] == configuration or configuration=='sv.npc' and x['configurationId'].startswith('sv.ext.npc.')) and x['lifecycle'] == 'active']
@@ -382,9 +542,18 @@ class Package:
                 if step in record['steps'] or place['index'] not in existing:
                     work.command(step,'entity.create',{'configurationId':'sv.location',
                         'name':place['name'],'owner':view['accountId'],'visibility':'kp','numbers':{'index':place['index']}})
-            self.state.update(merged)
-            self.state['ruleRevisions'][revision]={'sources':artifact['sources'],'data':artifact['data']}
+            data = dict(artifact['data'])
+            actions = data.get('scene-actions.json', {})
+            if 'presentationDigest' in actions:
+                candidates = [x['data'].get('scene-actions.json') for x in self.state['ruleRevisions'].values()]
+                authored = next((x for x in candidates if x and 'presentationDigest' not in x
+                                 and scene_knowledge.execution_data(x) == actions), None)
+                if not authored:
+                    raise publication_sync.SyncConflict('缺少与已发布规则摘要一致的场景行动文案')
+                data['scene-actions.json'] = authored
+            self.state['ruleRevisions'][revision]={'sources':artifact['sources'],'data':data}
             self.state['activeRevision']=revision
+            self.state.update(merged)
             self.game=candidate
             self.state['publicationSync']={'status':'completed','revision':revision}
             self.save()
@@ -399,61 +568,111 @@ class Package:
                 self.state['publicationSync']=pending
                 self.save()
 
+    def player_records(self, client, view):
+        summary = view.get('knowledge') or {}
+        account = view['accountId']
+        if summary.get('hasMore') is not False or not summary.get('viewRevision'):
+            self.knowledge_pages.pop(account, None)
+            return knowledge_client.records(client, view)
+        # The host has just re-evaluated all grants, guards and source digests.
+        # viewRevision hashes the authorized rows, including live facet data.
+        key = (view['roomId'], view['runId'], view['authorityEpoch'], view['authorizationEpoch'],
+               summary['scopeId'], summary['viewRevision'])
+        cached = self.knowledge_pages.get(account)
+        if cached and cached[0] == key:
+            return cached[1]
+        self.knowledge_pages.pop(account, None)
+        rows = knowledge_client.records(client, view)
+        if len(json.dumps(rows, ensure_ascii=False).encode('utf-8')) <= 256 * 1024:
+            if len(self.knowledge_pages) >= 8:
+                del self.knowledge_pages[next(iter(self.knowledge_pages))]
+            self.knowledge_pages[account] = (key, rows)
+        return rows
+
+    @staticmethod
+    def projection_inputs(client, preview, player_mode):
+        mode = 'player' if preview or player_mode else 'auto'
+        view = client.request('/view?extras=' + mode)
+        is_kp = view['role'] == 'kp'
+        require(not preview or is_kp, '需要主持权限')
+        gm = is_kp and not preview and not player_mode
+        extras = view.get('viewExtras')
+        if extras is not None:
+            grants = extras['knowledgeGrants'] if gm else None
+            # The generic host page can include other policies or revoked grants.
+            # Filter at the authority before pagination whenever scopes differ.
+            if gm and (grants.get('nextCursor') or any(
+                    row['policyId'] != knowledge_client.POLICY or row['status'] != 'active' for row in grants['items'])):
+                grants = client.request('/knowledge/grants/query', {'policyId': knowledge_client.POLICY,
+                                       'status': 'active', 'limit': 50})
+            return (view, gm, extras['knowledgeStatus'], [] if gm or preview else extras['notifications']['items'],
+                    grants, extras['members']['items'] if gm else None)
+        # Earlier hosts return their normal authorized view for the same query.
+        status = client.request('/knowledge/capabilities')['status']
+        notices = client.request('/notifications?after=0&limit=50')['items'] if not gm and not preview else []
+        grants = client.request('/knowledge/grants/query', {'policyId': knowledge_client.POLICY,
+                               'status': 'active', 'limit': 50}) if gm else None
+        members = client.request('/chat/members')['items'] if gm else None
+        return view, gm, status, notices, grants, members
+
     def projection(self, client, preview=None, player_mode=False):
         with self.lock:
-            view = client.request('/view')
+            revision = self.state['revision']
+        inputs = self.projection_inputs(client, preview, player_mode)
+        with self.lock:
+            if self.state['revision'] != revision:
+                inputs = self.projection_inputs(client, preview, player_mode)
+            if inputs[0]['role'] == 'kp' and self.sync_rules(client, inputs[0]):
+                inputs = self.projection_inputs(client, preview, player_mode)
+            view, gm, knowledge_status, notifications, grants, members = inputs
             is_kp = view['role'] == 'kp'
-            if is_kp:
-                if self.sync_rules(client,view):view=client.request('/view')
-            if preview:
-                require(is_kp, '需要主持权限')
             account = preview or view['accountId']
-            gm = is_kp and not preview and not player_mode
             characters = self.entities(view, 'sv.character')
             sight = MapVisibility(self)
             sight.sync(view)
             mine = next((x for x in characters if x['owner'] == account), None)
-            visible = [x for x in self.entities(view, 'sv.location') if x['visibility'] == 'public']
-            locations = [self.public_location(x) for x in visible]
-            locations = [x for x in locations if x]
-            ids = {x['index'] for x in locations}
-            known_places=known_locations(self.state,view['entities'],account)
-            for location in locations:
-                location['exits'] = [x for x in location['exits'] if x in ids]
-                location['doors'] = {str(x): self.state['doors'].get(self.edge(location['index'], x), 'closed') for x in location['exits']}
-                known = {c['id'] for c in location['clues']}
-                location['clues'].extend(copy.deepcopy(c) for c in self.state['discoveries'].get(account, {}).values()
-                                        if c['location'] == location['index'] and c['id'] not in known)
-                if not gm and str(location['index']) not in known_places:
-                    # Navigation topology remains usable; undiscovered scene contents do not.
-                    location.update(name='未探索地点',description='进入或由 KP 揭示后可查看。',features=[],clues=[])
+            if gm:
+                visible = [x for x in self.entities(view, 'sv.location') if x['visibility'] == 'public']
+                locations = [self.public_location(x) for x in visible]
+                locations = [x for x in locations if x]
+                ids = {x['index'] for x in locations}
+                for location in locations:
+                    location['exits'] = [x for x in location['exits'] if x in ids]
+                    location['doors'] = {str(x): self.state['doors'].get(self.edge(location['index'], x), 'closed') for x in location['exits']}
+                    known = {c['id'] for c in location['clues']}
+                    location['clues'].extend(copy.deepcopy(c) for c in self.state['discoveries'].get(account, {}).values()
+                                            if c['location'] == location['index'] and c['id'] not in known)
             known_items=[]
-            knowledge_status=client.request('/knowledge/capabilities')['status']
             if not gm:
                 # A KP preview cannot impersonate another account's knowledge.
-                if not is_kp and knowledge_status=='ready':known_items=knowledge_client.records(client)
+                if not is_kp and knowledge_status == 'ready':
+                    known_items = self.player_records(client, view)
+                else:
+                    self.knowledge_pages.pop(account, None)
                 locations=knowledge_client.locations(known_items)
             session = next(iter(self.entities(view, 'sv.session')), None)
             if not gm:
                 play=next((i['data'] for i in known_items if i['facetId']=='play'),None)
                 session={'instanceId':play['entityId'],'numbers':play['numbers']} if play else None
-            item_ids = set()
+            ground = [copy.deepcopy(x) for x in self.state.get('groundItems', {}).values()
+                      if x.get('status') != 'taken' and (gm or (mine and x['location'] == mine['numbers']['location']))]
+            item_ids = {x['item'] for x in ground}
             for character in characters if gm else ([mine] if mine else []):
                 item_ids.update(character['numbers'].get('item' + str(i), 0) for i in range(1, 21))
             # Item names and scenario secrets are not supplied as a full player catalog.
             items = {str(i): definition for i, definition in enumerate(self.game['items'], 1) if gm or i in item_ids}
             result = {'accountId': account, 'role': 'kp' if gm else 'player', 'roomStatus': view['status'],
-                      'storageScope': hashlib.sha256(os.path.normcase(str(self.path.resolve())).encode('utf-8')).hexdigest(),
+                      'storageScope': self.storage_scope,
                       'knowledge':{'status':knowledge_status,'mode':'required-personal'},
                       'revision': self.state['revision'], 'initialized': self.state['initialized'],
                       'automation': {'enabled': bool(session and session['numbers'].get('autoResolve', 1)), 'ready': self.automation_ready(session)},
                       'sceneAutomation': {'ready': self.scene_ready(), 'executorOnline': any(time.time()-t < 20 for t in self.executor_seen.values())},
                       'autoSceneTasks': [{k: t[k] for k in ('id', 'title', 'status', 'time')} for t in self.state['autoSceneQueue'].values()
                                          if t['status'] != 'completed' and (gm or t['account'] == account)],
-                      'sceneActions': [copy.deepcopy(x) for x in self.scene_definitions() if mine and x['location'] == mine['numbers']['location']],
-                      'sceneStatus': scenes.public_state(self.state, mine['numbers']['location'], self.game['items']) if mine else {},
-                      'character': mine, 'session': session, 'locations': locations, 'items': items,
-                      'mapContacts': sight.contacts(account, mine, characters) if not gm else [],
+                      'sceneActions': [copy.deepcopy(x) for x in self.scene_definitions() if gm and mine and x['location'] == mine['numbers']['location']],
+                      'sceneStatus': scenes.public_state(self.state, mine['numbers']['location'], self.game['items']) if gm and mine else {},
+                      'character': mine, 'session': session, 'locations': locations, 'items': items, 'groundItems': ground,
+                      'mapContacts': [],
                       'presets': self.game['presets'], 'rules': self.game['rules'],
                       'team': list(self.state['roster'].values()),
                       'generatedCharacter': self.state['generatedCharacters'].get(account),
@@ -465,16 +684,25 @@ class Package:
                       'channels': {} if preview else {**view['chatChannels'], **ScopedChat(self).channels(view if gm else {**view, 'role': 'player'})},
                       'canManage': is_kp and not preview,
                       'preview': bool(preview), 'previewKind': '包侧公开投影' if preview else None}
-            result['notifications'] = client.request('/notifications?after=0&limit=50')['items'] if not gm and not preview else []
+            result['notifications'] = notifications
             if gm:
-                result['knowledgeGrants']=client.request('/knowledge/grants/query',{'policyId':knowledge_client.POLICY,'status':'active','limit':50})
+                story = self.state.get('sceneState', {})
+                if 'stormStart' in story:
+                    result['storm'] = {'routes': [code for code in ('home','allied','evacuated') if story.get(code)],
+                                       'rescued': bool(story.get('villagersFreed')), 'ending': self.state.get('stormEnding'),
+                                       'debt': bool(story.get('debt')), 'started':bool(story.get('stormStart')),
+                                       'tasks': {label:bool(story.get(key)) for key,label in (
+                                           ('stormStart','接取栗婶的委托'),('villagersFreed','救出村民'),
+                                           ('delivered','恢复工厂供粮'),('pact','鼠帮立约'),('aid','援队抵达'),
+                                           ('evacuated','溪岸撤离'),('ledgerDone','归还账本'))}}
+                result['knowledgeGrants']=grants
                 for grant in result['knowledgeGrants']['items']:
                     grant['label']=view['entities'].get(grant['resource']['id'],{}).get('name','已授权资料')
                 result['legacyKnowledge']=copy.deepcopy(self.state.get('locationKnowledge',{}))
                 result.update(roomId=view['roomId'], characters=characters, drafts=self.state['drafts'],
                               allLocations=self.state['locations'], npcs=self.entities(view, 'sv.npc'),
                               world=next(iter(self.entities(view, 'sv.world')), None),
-                              members=client.request('/chat/members')['items'],
+                              members=members,
                               recapDraft=self.state['recapDraft'], recapPrivate=self.state['recapPrivate'],
                               sourceStatus=self.game['sourceStatus'], encounters=self.state['encounters'], loot=self.state['loot'],
                               npcTemplates=self.game['npcs'], doors=self.state['doors'], catalog=view['catalog'],
@@ -493,14 +721,12 @@ class Package:
             if not gm:
                 # Package shared current lore cannot bypass the same personal
                 # disclosure boundary used by the AI and normal known-data UI.
-                result['mapContacts']=[]
                 result['recap']=''
-                result['sceneStatus']={}
                 current_place=next((p for p in locations if mine and p['index']==mine['numbers']['location'] and p.get('known')),None)
                 result['sceneActions']=copy.deepcopy(current_place.get('actions',[])) if current_place else []
                 result['knowledgeRecords']=[{'label':i['label'],'mode':i['mode'],'observedAt':i['observedAt'],'ref':i['ref']}
                     for i in known_items if i['facetId']!='sheet']
-            return result
+            return copy.deepcopy(result)
 
     def review_source(self, client, args):
         with self.lock:
@@ -523,6 +749,12 @@ class Package:
                     '有场景结算尚待恢复，请发起者恢复原行动后再继续')
             fingerprint = hashlib.sha256(json.dumps(body, sort_keys=True, ensure_ascii=False).encode()).hexdigest()
             record = self.state['jobs'].get(key)
+            # An ordinary note has no host side effect. Its text and receipt
+            # can share a single durable commit. For mechanical jobs the first
+            # envelope (or refusal) also persists the fingerprint and before image.
+            compact_start = body['operation'] in {'note', 'chat', 'check', 'inventory', 'resolve', 'world'} and 'sourceMessages' not in body['args']
+            local_request = body['operation'] == 'request' and body['args'].get('kind') in ('check', 'inventory') and 'sourceMessages' not in body['args']
+            compact_start = compact_start or local_request
             if record:
                 require(record['fingerprint'] == fingerprint, '同一行动编号不可更改内容')
                 if record.get('failureResponse'):
@@ -532,7 +764,8 @@ class Package:
             else:
                 record = {'fingerprint': fingerprint, 'steps': {}, 'created': time.time()}
                 self.state['jobs'][key] = record
-                self.save()
+                if not compact_start:
+                    self.save()
             job = Job(self, client, record)
             record['requestKey'] = key
             if 'sourceMessages' in body['args'] and 'sourceMessages' not in record:
@@ -548,13 +781,14 @@ class Package:
                     checked.append(copy.deepcopy(ref))
                 record['sourceMessages']=checked
             feedback_ops = {'session.start', 'ready', 'check', 'inventory', 'request', 'resolve', 'world', 'actor.update', 'scene.action', 'scene.autorun',
-                            'rest', 'grant', 'damage', 'remove', 'stock.take', 'approve',
+                            'rest', 'grant', 'damage', 'remove', 'stock.take', 'ground.take', 'approve',
                             'automation.configure', 'room', 'location.publish'}
             feedback = body['operation'] in feedback_ops
             if feedback and 'before' not in record:
                 record['before'] = {x['owner']: {'name': x['name'], 'numbers': x['numbers']}
                                     for x in self.entities(view, 'sv.character')}
-                self.save()
+                if not compact_start:
+                    self.save()
             # Once a command reaches the host its envelope remains durable. Pure package
             # changes are only exposed after their action completes under this lock.
             if 'executed' not in record:
@@ -584,9 +818,27 @@ class Package:
                 result=record['executed']
                 if isinstance(result,dict) and result.get('requestId') in self.state['requests'] and record.get('sourceMessages'):
                     self.state['requests'][result['requestId']]['sourceMessageRefs']=record['sourceMessages']
-                self.save()
+                if body['operation'] not in ('note', 'chat') and not local_request:
+                    self.save()
             result = record['executed']
-            after_view = client.request('/view') if feedback or view['role'] == 'kp' else None
+            outcome = result.get('result', result) if isinstance(result, dict) else {}
+            request = self.state['requests'].get(body['args'].get('requestId'), {}) if body['operation'] == 'resolve' else {}
+            is_drop = (body['operation'] == 'inventory' and body['args'].get('operation') == 'drop') or (
+                body['operation'] == 'resolve' and request.get('kind') == 'inventory' and
+                request.get('status') == 'approved' and request.get('args', {}).get('operation') == 'drop')
+            if is_drop and isinstance(outcome, dict) and outcome.get('dropped'):
+                # The host receipt is authoritative; retrying the durable action
+                # materializes the same drop exactly once, even after a lost reply.
+                dropped = {k: outcome['dropped'][k] for k in ('item', 'uses', 'ticks', 'location')}
+                drop_id = body['args'].get('requestId') if body['operation'] == 'resolve' else key
+                self.state.setdefault('groundItems', {}).setdefault(drop_id, {
+                    **copy.deepcopy(dropped), 'id': drop_id, 'status': 'available', 'time': record['created']})
+            if local_request and not record['steps']:
+                after_view = view
+            elif feedback or (view['role'] == 'kp' and body['operation'] not in ('note', 'chat')):
+                after_view = client.request('/view')
+            else:
+                after_view = None
             if after_view is not None:
                 MapVisibility(self).sync(after_view)
             if feedback:
@@ -600,7 +852,12 @@ class Package:
             command_ids = [step['envelope']['payload']['commandId'] for step in record['steps'].values()]
             self.state['receipts'].setdefault(account, []).append({'id': body['id'], 'operation': body['operation'], 'result': result,
                                                                  'commandIds': command_ids, 'time': time.time()})
-            self.save()
+            try:
+                self.save()
+            except OSError:
+                record.pop('done', None)
+                self.state['receipts'][account].pop()
+                raise
             return result
 
     def notify_character_changes(self, job, before_view, after_view, body, record):
@@ -681,7 +938,7 @@ class Package:
                   'scene.action': '场景行动',
                   'scene.autorun': '场景行动自动结果',
                   'resolve': 'KP 裁决回复', 'world': '探索进度', 'actor.update': '主持调整数值', 'rest': '休息恢复',
-                  'grant': '获得物品', 'damage': '伤害结算', 'remove': '移除物品', 'stock.take': '领取物品',
+                  'grant': '获得物品', 'damage': '伤害结算', 'remove': '移除物品', 'stock.take': '领取物品', 'ground.take': '领取地面物品',
                   'approve': '角色审核', 'automation.configure': '自动裁决设置', 'room': '房间状态', 'location.publish': '地点与线索发布'}
         kind = request.get('kind', op)
         title = titles.get(kind, {'travel': '地点移动', 'transfer': '物品转交', 'review': '事件复核',
@@ -779,8 +1036,8 @@ class Package:
         gm = view['role'] == 'kp'
         character = self.own_character(view)
         session = next(iter(self.entities(view, 'sv.session')), None)
-        if not gm and session is None:
-            play=next((i['data'] for i in knowledge_client.records(job.client) if i['facetId']=='play'),None)
+        if not gm and session is None and op in {'check', 'inventory', 'ready', 'request', 'scene.action'}:
+            play=next((i['data'] for i in knowledge_client.records(job.client, view, facet='play') if i['facetId']=='play'),None)
             session={'instanceId':play['entityId'],'numbers':play['numbers']} if play else None
         world = next(iter(self.entities(view, 'sv.world')), None)
         job.view, job.session = view, session
@@ -907,7 +1164,9 @@ class Package:
                 'chat.message.share', 'chat.message.edit', 'chat.message.retract', 'chat.read'}, '聊天操作不支持')
             if str(args.get('input', {}).get('channelId', '')).startswith('sv-'):
                 return ScopedChat(self).action(view, args['operation'], args.get('input', {}), account+'-'+request_id)
-            return job.command('chat', args['operation'], args.get('input', {}))
+            # The final package commit includes this result and the same receipt.
+            # A crash in between recovers the host's durable envelope by ID.
+            return job.command('chat', args['operation'], args.get('input', {}), save_result=False)
         if op == 'share.receipt':
             receipt = next((x for x in self.state['receipts'].get(account, []) if x['id'] == args.get('receiptId')), None)
             require(receipt and receipt['operation'] in {'check', 'inventory', 'ready'}, '这项回执不可分享')
@@ -1099,16 +1358,71 @@ class Package:
                 job.command('door', 'entity.update', {'id': session['instanceId'], 'numbers': {'door' + key.replace('-', '_'): int(public_open)}})
             self.state['doors'][key] = args['status']
             return {'message': '通路状态已更新'}
+        if op == 'ground.take':
+            require(set(args) == {'id', 'actor', 'slot'}, '掉落物领取参数无效')
+            dropped = self.state.get('groundItems', {}).get(args['id'])
+            require(dropped and dropped.get('status') != 'taken', '此物品已经被领取或不存在')
+            claim = job.record['requestKey']
+            require(not dropped.get('claim') or dropped['claim'] == claim, '此物品领取尚待恢复，请恢复原行动')
+            actor = view['entities'].get(args['actor'])
+            if 'take-ground' not in job.record['steps']:
+                require(actor and actor['numbers'].get('location') == dropped['location'], '角色必须与掉落物处于同一地点')
+            dropped['claim'] = claim
+            self.save()
+            try:
+                result = job.invoke('take-ground', 'sv.ground.take', actor=args['actor'], slot=args['slot'],
+                                    item=dropped['item'], uses=dropped['uses'], ticks=dropped['ticks'], location=dropped['location'])
+            except HostError as error:
+                if error.response.get('status') == 'rejected':
+                    dropped.pop('claim', None)
+                    self.save()
+                raise
+            dropped.update(status='taken', recipient=args['actor'])
+            return {'message': '已领取地面物品', **result}
+        if op == 'storm.finish':
+            story = self.state.get('sceneState', {})
+            route = args.get('route')
+            require(view['role']=='kp' and story.get('stormStart') and (route=='withdrawn' or
+                    (route in ('home','allied','evacuated') and story.get(route) and story.get('villagersFreed'))), '所选结局尚未满足')
+            require(not self.state.get('stormEnding'), '本场已经记录结局')
+            record = {'route': route, 'keeper': account, 'round': session['numbers']['round'],
+                      'debt': bool(story.get('debt')), 'roster': str(args.get('roster','')).strip()[:500]}
+            require(record['roster'], '请记录队员去向')
+            job.invoke('finish', 'sv.world', actor=session['instanceId'], operation='finish', value=0)
+            self.state['stormEnding'] = record
+            summary = {'home':'修复树桩镇，居民安置在庭院。','allied':'援队抵达，居民在溪岸获救。',
+                       'evacuated':'居民撤至溪岸，撤离完成。','withdrawn':'队伍结束救援，撤出树桩镇。'}[route]
+            for character in self.entities(view,'sv.character'):
+                owner = character['owner']
+                events = self.state['events'].setdefault(owner, [])
+                events.append({'id':job.record['requestKey'],'account':owner,'operation':'storm.finish',
+                               'title':'暴雨前的树桩镇 · 结局','status':'completed','mode':'kp','time':time.time(),
+                               'result':{'message':summary},'changes':[],'mechanical':False,'receiptId':None})
+                del events[:-200]
+            return {'message':'暴雨结局已确认', **record}
         if op == 'stock.take':
             location = self.state['locations'].get(str(args.get('index')))
             actor = view['entities'].get(args.get('actor'))
             require(location and actor and actor['configurationId'] == 'sv.character' and actor['numbers']['location'] == location['index'], '角色不在此地点')
             stock = next((x for x in location['stock'] if x['item'] == args.get('item')), None)
-            require(stock and stock['count'] > 0, '库存不足')
-            definition = self.game['items'][stock['item'] - 1]
-            job.invoke('grant', 'sv.grant', actor=actor['instanceId'], item=stock['item'], slot=args['slot'], uses=definition['uses'])
-            stock['count'] -= 1
-            return {'message': '物品已领取，地点库存已扣减', 'remaining': stock['count']}
+            if 'stockRemaining' not in job.record:
+                require(stock and stock['count'] > 0, '库存不足')
+                self.state['scenePending'] = job.record['requestKey']
+                definition = self.game['items'][stock['item'] - 1]
+                try:
+                    job.invoke('grant', 'sv.grant', actor=actor['instanceId'], item=stock['item'],
+                               slot=args['slot'], uses=definition['uses'])
+                except (HostError, PackageError) as error:
+                    if isinstance(error, PackageError) or error.response.get('status') == 'rejected':
+                        self.state.pop('scenePending', None)
+                        self.save()
+                    raise
+                stock['count'] -= 1
+                job.record['stockRemaining'] = stock['count']
+                self.save()
+            self.observe_stock(job, view, location['index'], stock['item'])
+            self.state.pop('scenePending', None)
+            return {'message': '物品已领取，地点库存已扣减', 'remaining': job.record['stockRemaining']}
         if op == 'world':
             operation = args.get('operation')
             return job.invoke('world', 'sv.world', actor=session['instanceId'], operation=operation, value=args.get('round', 0))
@@ -1175,11 +1489,11 @@ class Package:
             folder = self.path.parent / 'package-backups'
             folder.mkdir(exist_ok=True)
             destination = folder / (request_id + '.json')
-            destination.write_text(json.dumps({'hostBackup': backup, 'package': self.state}, ensure_ascii=False), encoding='utf-8')
+            self.atomic_bytes(destination, json.dumps({'hostBackup': backup, 'package': self.state}, ensure_ascii=False, separators=(',', ':')).encode())
             return {'host': backup, 'packageFile': str(destination), 'message': '宿主备份与包侧记录均已保存'}
         if op == 'rules.stage':
             content = self.validate_bundle(args.get('bundle'))
-            revision = job.command('stage', 'rule.stage', content)
+            revision = job.command('stage', 'rule.stage', stage_payload(content))
             self.state['ruleRevisions'][revision] = content
             return {'revision': revision, 'message': '检查通过，尚未激活'}
         if op == 'rules.preview':
@@ -1198,7 +1512,7 @@ class Package:
         if self.state['initialized']:
             return {'message': '配置包已安装'}
         content = bundle()
-        revision = job.command('stage', 'rule.stage', {'sources': content['sources'], 'data': content['data']})
+        revision = job.command('stage', 'rule.stage', stage_payload(content))
         job.command('activate', 'rule.activate', {'revision': revision})
         self.state['ruleRevisions'][revision] = {'sources': content['sources'], 'data': content['data']}
         self.state['activeRevision'] = revision
@@ -1229,7 +1543,7 @@ class Package:
                     'owner': member['accountId'], 'visibility': 'owner'})
                 knowledge_client.disclose(job,member['accountId'],draft_id,'sheet',live=True,key='draft-knowledge-'+member['accountId'])
         self.state['initialized'] = True
-        return {'message': '十地点与规则已安装', 'revision': revision}
+        return {'message': '地点与规则已安装', 'revision': revision}
 
     def approve(self, job, view, args):
         account = args.get('account')

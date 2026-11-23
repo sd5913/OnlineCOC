@@ -95,6 +95,10 @@ def check(rule, args, view, game, session=None):
                 if type(dest) is not int or dest not in range(1, 21) or dest == slot: blocked('TARGET_SLOT')
                 if n.get('item'+str(dest)): blocked('SLOT_OCCUPIED', slot=dest)
                 n['item'+str(dest)], n['item'+str(slot)] = n['item'+str(slot)], 0
+            elif operation == 'drop':
+                if item['kind'] == 'condition': blocked('MANUAL_ITEM')
+                if args.get('value') != n.get('item'+str(slot)): blocked('INVALID_INPUT')
+                n['item'+str(slot)] = 0
             elif operation == 'use':
                 if item['uses'] <= 0 or item['kind'] in {'condition','spell'}: blocked('MANUAL_ITEM')
                 if n.get('uses'+str(slot), 0) <= 0: blocked('ITEM_EXHAUSTED', slot=slot)

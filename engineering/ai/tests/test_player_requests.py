@@ -63,6 +63,8 @@ def test_cancelled_and_deleted_intents_cannot_be_accepted(application):
 def test_kp_accept_creates_private_review_once_without_state_changes(application):
     app=application;s,r=create(app);before=copy.deepcopy(app.host.state()['entities'])
     item=committed(decide(app,r));assert item['status']=='accepted' and item['reviewSessionId']!=s['sessionId']
+    compact=next(i for i in app.rulings.page('kp',queue='archived')['items'] if i['rulingId']==r['rulingId'])
+    assert compact['reviewSessionId']==item['reviewSessionId'] and compact['status']=='accepted'
     assert committed(decide(app,r))['reviewSessionId']==item['reviewSessionId']
     assert app.host.state()['entities']==before
     review=app.sessions.get('kp',item['reviewSessionId']);assert review['session']['owner']=='kp' and review['session']['accessLevel']=='administrator'

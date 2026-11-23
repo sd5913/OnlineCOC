@@ -53,7 +53,7 @@ class Adapter:
                     loaded=signature(os.fstat(stream.fileno()))
                 if len(raw)>8*1024*1024:raise ValueError('PACKAGE_DATA_LIMIT')
                 state=json.loads(raw);labels={}
-                if state.get('format')==2:
+                if state.get('format') in (2,3):
                     for account,actor in state.get('bindings',{}).items():labels.setdefault(actor,account)
                 self._binding_labels=labels;self._label_signature=loaded
             return self._binding_labels
@@ -76,7 +76,7 @@ class Adapter:
         raw=self.path.read_bytes()
         if len(raw)>8*1024*1024:raise ValueError('PACKAGE_DATA_LIMIT')
         state=json.loads(raw)
-        if state.get('format')!=2 or state.get('sceneId') not in room['entities']:return {}
+        if state.get('format') not in (2,3) or state.get('sceneId') not in room['entities']:return {}
         all_entities=room['entities'];mine=[v for v in all_entities.values() if v['configurationId']=='sv.character' and v['owner']==account and v['lifecycle']=='active']
         locations={v['numbers']['location'] for v in mine};seen=state.get('actorDiscoveries',{}).get(account,{})
         known=known_locations(state,all_entities,account)
@@ -106,7 +106,7 @@ class Adapter:
         with self.path.open('rb') as stream:raw=stream.read(8*1024*1024+1)
         if len(raw)>8*1024*1024:raise ValueError('PACKAGE_DATA_LIMIT')
         state=json.loads(raw)
-        if state.get('format')!=2:raise ValueError('PACKAGE_FORMAT_UNSUPPORTED')
+        if state.get('format') not in (2,3):raise ValueError('PACKAGE_FORMAT_UNSUPPORTED')
         # Bind the package to this room through its actual scene entity, not a caller-supplied ID.
         if state.get('sceneId') not in room['entities']:return []
         member=room['members'].get(account,{})
@@ -148,6 +148,8 @@ class Adapter:
                 if not message['deleted']:add('chat',message['messageId'],message['text'][:80],message)
         # Use the package's existing per-recipient feedback. Never export the complete KP view.
         events=[(owner,e) for owner,items in state.get('events',{}).items() if kp or owner==account for e in items]
+        receipts = {owner: {r['id']: r for r in (*state.get('eventReceipts', {}).get(owner, []), *state.get('receipts', {}).get(owner, []))}
+                    for owner in {owner for owner, _ in events}}
         for owner,event in events:
             request=state.get('requests',{}).get(event.get('requestId'),{})
             request_visible=request and (kp or request.get('account')==account)
@@ -157,7 +159,7 @@ class Adapter:
                       'outcome':'deny' if status=='rejected' else 'allow' if decided else None,
                       'reason':event.get('reason',''),'actor':event.get('decider'),'decidedAt':event.get('decidedAt'),'authority':'package-record'}
             execution='none' if decided and (status=='rejected' or not event.get('mechanical')) else 'unknown'
-            receipt=next((r for r in state.get('receipts',{}).get(owner,[]) if r['id']==event.get('receiptId')),None)
+            receipt=receipts[owner].get(event.get('receiptId'))
             if receipt and event.get('mechanical'):
                 records=[room['commands'].get(owner+':'+cid) for cid in receipt.get('commandIds',[])]
                 if records and all(r and r['status']=='committed' for r in records):execution='completed'

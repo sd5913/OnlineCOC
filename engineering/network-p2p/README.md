@@ -1,5 +1,7 @@
 # 公网联机快速使用
 
+完整项目部署到 Windows x64 设备，可先用[联机依赖安装 EXE](../network-web/dist/OnlineCOC-Network-Setup.exe)离线安装运行时，详见[安装说明](../network-web/installer/README.md)。仅用浏览器加入网页房间无需安装。
+
 云端负责房间发现与中转，房主运行游戏并保存存档。当前 0.2.1 保留短房间码、本机宿主识别和双击启动；[验证范围](../../docs/current/engineering/network-p2p.md#6-验收及实用边界)。需要玩家仅使用浏览器时，选择独立的 [network-web 网页入口](../network-web/README.md)。
 
 ## 房主开房

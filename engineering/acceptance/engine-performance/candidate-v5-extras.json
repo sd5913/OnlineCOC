@@ -1,0 +1,1914 @@
+{
+  "transport": "local loopback TCP",
+  "samples": 30,
+  "flows": {
+    "kp.1.separate": {
+      "p50Ms": 10.965450000185228,
+      "p95Ms": 12.154500000178814,
+      "httpRequests": 120,
+      "bodyBytes": 330300,
+      "failures": 0,
+      "samples": [
+        {
+          "ms": 10.748499998953776,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 10.838500000318163,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 10.852700001123594,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 10.942799999611452,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 10.227800001302967,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 10.30920000084734,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 10.802799999510171,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 10.999699999956647,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 11.045299999750569,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 11.41259999894828,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 10.502600000108941,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 9.914399999615853,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 10.747599999376689,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 10.283300000082818,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 10.221000000456115,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 10.988100000759005,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 10.338899999624118,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 11.700099999870872,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 10.535700001128134,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 11.126699999294942,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 11.35229999999865,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 11.560599999938859,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 11.606900001424947,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 10.760500001197215,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 11.94000000032247,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 12.154500000178814,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 11.259200000495184,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 11.34230000025127,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 12.449600000763894,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 12.139399999796296,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        }
+      ]
+    },
+    "kp.1.aggregate": {
+      "p50Ms": 4.52084999960789,
+      "p95Ms": 4.990100000213715,
+      "httpRequests": 30,
+      "bodyBytes": 282270,
+      "failures": 0,
+      "samples": [
+        {
+          "ms": 4.86310000087542,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 4.949400001351023,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 4.839600000195787,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 4.653800000596675,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 4.870200000368641,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 5.173899999135756,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 4.990100000213715,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 4.814900001292699,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 4.503999998632935,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 4.704200000560377,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 4.937499999869033,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 4.426899999089073,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 4.625699999451172,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 4.317099999752827,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 4.416499999933876,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 4.274200000509154,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 4.339200000686105,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 4.530099999101367,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 4.332000000431435,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 4.346199999417877,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 4.267599999366212,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 4.162600000199745,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 4.1376000008312985,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 3.9864999998826534,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 4.511600000114413,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 4.8557999998593,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 4.334899998866604,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 4.928899999868008,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 4.662699999244069,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 4.243499999574851,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        }
+      ]
+    },
+    "kp.4.separate": {
+      "p50Ms": 48.262350000186416,
+      "p95Ms": 55.559399999765446,
+      "httpRequests": 120,
+      "bodyBytes": 330300,
+      "failures": 0,
+      "samples": [
+        {
+          "ms": 49.641800000244984,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 51.05809999986377,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 50.292500000068685,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 43.74340000140364,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 46.88030000033905,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 48.92610000024433,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 45.17979999945965,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 42.9788000001281,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 46.70110000006389,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 45.96520000086457,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 53.24840000139375,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 41.48170000007667,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 45.840599999792175,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 53.40219999925466,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 55.559399999765446,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 59.69600000025821,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 52.941800000553485,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 52.07909999990079,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 51.171099999919534,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 41.95360000085202,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 42.4566000001505,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 47.5986000001285,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 49.460000000181026,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 53.54290000104811,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 45.35950000172306,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 37.77500000069267,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 49.26239999986137,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 49.62059999888879,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 33.37199999987206,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 27.540400000361842,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        }
+      ]
+    },
+    "kp.4.aggregate": {
+      "p50Ms": 15.807150000000547,
+      "p95Ms": 22.34850000058941,
+      "httpRequests": 30,
+      "bodyBytes": 282270,
+      "failures": 0,
+      "samples": [
+        {
+          "ms": 13.790700000754441,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 9.994099998948514,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 22.34850000058941,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 22.93869999994058,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 15.47019999998156,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 15.921199999866076,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 13.117799999236013,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 14.466600001469487,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 15.280400000847294,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 15.662300000258256,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 13.330800000403542,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 13.33350000095379,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 16.414899999290355,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 13.29029999942577,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 19.121900000754977,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 13.238399998954264,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 16.53729999998177,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 19.553099999029655,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 15.420000001540757,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 17.19779999984894,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 15.693100000135018,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 16.52280000052997,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 16.25199999944016,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 18.350300000747666,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 19.947000000684056,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 17.72999999957392,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 17.639199999393895,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 19.32669999951031,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 13.727699999435572,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 9.470899998632376,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        }
+      ]
+    },
+    "kp.8.separate": {
+      "p50Ms": 83.60324999921431,
+      "p95Ms": 97.59860000121989,
+      "httpRequests": 120,
+      "bodyBytes": 330300,
+      "failures": 0,
+      "samples": [
+        {
+          "ms": 75.06970000031288,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 82.79360000051383,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 87.15739999934158,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 97.59860000121989,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 89.74879999914265,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 97.71469999941473,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 91.5461000004143,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 93.61010000066017,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 85.90120000008028,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 88.7375999991491,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 90.97680000013497,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 86.94239999931597,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 82.20599999913247,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 87.04410000063945,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 80.60889999978826,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 78.95339999959106,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 91.49679999973159,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 83.22829999997339,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 82.9823000003671,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 83.97819999845524,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 85.1161000009597,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 85.08579999943322,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 82.64680000138469,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 73.45669999995152,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 72.27860000057262,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 66.96820000070147,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 68.05089999943448,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 69.45870000163268,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 66.3855999991938,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        },
+        {
+          "ms": 67.67760000002454,
+          "httpRequests": 4,
+          "bodyBytes": 11010
+        }
+      ]
+    },
+    "kp.8.aggregate": {
+      "p50Ms": 30.97185000024183,
+      "p95Ms": 49.51950000031502,
+      "httpRequests": 30,
+      "bodyBytes": 282270,
+      "failures": 0,
+      "samples": [
+        {
+          "ms": 21.212399999058107,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 19.253600001320592,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 28.422400000636117,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 29.11129999847617,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 36.622100000386126,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 21.701300000131596,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 45.89520000081393,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 26.93829999952868,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 29.129000000466476,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 44.89269999976386,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 30.404499999349355,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 40.97410000031232,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 44.08820000026026,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 30.962800001361757,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 44.072200000300654,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 29.194900000220514,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 49.51950000031502,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 30.980899999121903,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 30.244599998695776,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 30.428599999140715,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 31.80430000065826,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 50.46059999949648,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 34.2555999995966,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 34.32969999994384,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 39.11989999869547,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 40.73969999990368,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 30.11000000151398,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 31.20169999965583,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 29.89039999920351,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        },
+        {
+          "ms": 26.772400000481866,
+          "httpRequests": 1,
+          "bodyBytes": 9409
+        }
+      ]
+    },
+    "player1.1.separate": {
+      "p50Ms": 8.135150000271096,
+      "p95Ms": 9.218400000463589,
+      "httpRequests": 90,
+      "bodyBytes": 112380,
+      "failures": 0,
+      "samples": [
+        {
+          "ms": 8.944200000769342,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 8.154000001013628,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 7.9117999994196,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 8.033399999476387,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 7.871900001191534,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 8.20910000038566,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 7.5123999995412305,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 7.602800000313437,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 7.56310000178928,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 7.834000000002561,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 8.767500001340522,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 9.218400000463589,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 8.008099999642582,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 8.421099999395665,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 8.205000000089058,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 9.29309999992256,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 8.237699999881443,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 7.920000000012806,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 7.770700000037323,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 8.449899998595356,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 8.141800000885269,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 8.128499999656924,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 7.449900000210619,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 7.692900000620284,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 7.904800000687828,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 9.107899999435176,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 8.489300000292133,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 8.11250000151631,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 8.199300000342191,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 8.823099999062833,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        }
+      ]
+    },
+    "player1.1.aggregate": {
+      "p50Ms": 3.525650000483438,
+      "p95Ms": 4.331199999796809,
+      "httpRequests": 30,
+      "bodyBytes": 111420,
+      "failures": 0,
+      "samples": [
+        {
+          "ms": 3.71140000061132,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 3.387099999599741,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 3.5148000006302027,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 3.536500000336673,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 3.595800000766758,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 3.336600000693579,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 3.3952999983739574,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 3.414599999814527,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 3.35090000044147,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 3.657799999928102,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 3.3499999990453944,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 3.2744999989517964,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 3.432599998632213,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 3.49120000100811,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 3.2814000005600974,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 3.435900000113179,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 3.1299999991460936,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 3.195500001311302,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 3.6053999992873287,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 3.7043000011180993,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 3.8074000003689434,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 3.757100001166691,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 3.5652000005939044,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 3.3905000000231666,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 4.331199999796809,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 4.194499999357504,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 4.452999999557505,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 4.145099999732338,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 4.233200001181103,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 3.8263000005827053,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        }
+      ]
+    },
+    "player1.4.separate": {
+      "p50Ms": 32.36745000049268,
+      "p95Ms": 41.48499999973865,
+      "httpRequests": 90,
+      "bodyBytes": 112380,
+      "failures": 0,
+      "samples": [
+        {
+          "ms": 44.04739999881713,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 39.538200000606594,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 41.48499999973865,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 30.304899999464396,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 38.35330000038084,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 36.37269999853743,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 31.392000000778353,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 24.543900000935537,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 31.25489999911224,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 32.05829999933485,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 32.67660000165051,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 37.817399999767076,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 28.56179999980668,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 28.681699999651755,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 29.76219999982277,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 33.273600000029546,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 36.76110000014887,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 38.75999999945634,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 36.55669999898237,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 28.53089999916847,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 34.565900001325645,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 31.58169999915117,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 28.164699999251752,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 32.98249999897962,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 33.799299999373034,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 26.61890000126732,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 33.62299999935203,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 26.076500000272063,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 19.14290000058827,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 14.368799998919712,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        }
+      ]
+    },
+    "player1.4.aggregate": {
+      "p50Ms": 12.226999999256805,
+      "p95Ms": 15.763600000354927,
+      "httpRequests": 30,
+      "bodyBytes": 111420,
+      "failures": 0,
+      "samples": [
+        {
+          "ms": 6.793700000343961,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 11.780799999542069,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 12.054900000293856,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 14.757299999473616,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 14.388199999302742,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 15.243600000758306,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 9.867500000837026,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 14.230400000087684,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 10.556499999438529,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 16.31190000080096,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 9.381800000483054,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 11.463299999377341,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 13.38199999918288,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 14.955199998439639,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 8.633699999336386,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 12.741599999571918,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 13.666299999385956,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 12.345099999947706,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 12.652899999011424,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 12.475100000301609,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 11.36910000059288,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 15.763600000354927,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 9.828600001128507,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 14.490700001260848,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 9.19179999982589,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 12.50849999996717,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 7.920500000182074,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 12.108899998565903,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 10.378499999205815,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 8.405799999309238,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        }
+      ]
+    },
+    "player1.8.separate": {
+      "p50Ms": 58.65505000019766,
+      "p95Ms": 73.75769999998738,
+      "httpRequests": 90,
+      "bodyBytes": 112380,
+      "failures": 0,
+      "samples": [
+        {
+          "ms": 49.680100000841776,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 50.133099999584374,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 56.42210000041814,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 61.89479999920877,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 60.17570000039996,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 58.42300000040268,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 59.970199999952456,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 71.26040000002831,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 68.7777000002825,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 44.94399999930465,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 49.95570000028238,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 59.80880000061006,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 59.537299999647075,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 76.8807000004017,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 54.29969999931927,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 36.73209999942628,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 60.32459999914863,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 56.12730000029842,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 57.8016999988904,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 63.16770000012184,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 73.75769999998738,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 61.69630000113102,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 64.29639999987558,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 55.109799999627285,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 58.88709999999264,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 60.3157999994437,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 54.558100000576815,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 46.30679999900167,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 46.3954000006197,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        },
+        {
+          "ms": 40.87760000038543,
+          "httpRequests": 3,
+          "bodyBytes": 3746
+        }
+      ]
+    },
+    "player1.8.aggregate": {
+      "p50Ms": 23.9855500003614,
+      "p95Ms": 34.561000000394415,
+      "httpRequests": 30,
+      "bodyBytes": 111420,
+      "failures": 0,
+      "samples": [
+        {
+          "ms": 12.776699999449193,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 14.879199999995762,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 21.2429000002885,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 24.157500000001164,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 15.931699999782722,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 25.90029999919352,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 22.86679999997432,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 34.561000000394415,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 25.386999999682303,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 33.718899998348206,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 22.538700000950485,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 24.210300000049756,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 27.27980000054231,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 23.51979999912146,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 53.277900000466616,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 21.944199999779812,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 31.926999999996042,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 20.37229999950796,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 21.16540000133682,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 21.580900000117254,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 27.122800000142888,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 23.813600000721635,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 27.294999999867287,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 26.79360000001907,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 25.98990000115009,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 25.031499999386142,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 24.967600000309176,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 22.932400001081987,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 22.97530000032566,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        },
+        {
+          "ms": 19.25400000072841,
+          "httpRequests": 1,
+          "bodyBytes": 3714
+        }
+      ]
+    }
+  }
+}

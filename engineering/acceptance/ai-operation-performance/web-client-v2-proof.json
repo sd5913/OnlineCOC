@@ -1,0 +1,10 @@
+{
+  "passed": 3,
+  "paths": [
+    "ai/rulings",
+    "ai/rulings?compact=true&queue=archived&limit=30",
+    "ai/rulings/batch%3Aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  ],
+  "directDetail": true,
+  "undefinedOmitted": true
+}

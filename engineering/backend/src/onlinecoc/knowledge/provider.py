@@ -12,6 +12,12 @@ class HostStateProvider:
         self.live_facets = frozenset(live_facets)
         self.live_public = live_public
 
+    def projection_revision(self):
+        # Subclasses may read additional sources; they must opt in explicitly.
+        if type(self) is not HostStateProvider:return None
+        from .models import digest
+        return digest([self.facets,sorted(self.live_facets),self.live_public])
+
     def _entity(self, resource, context):
         value = context['state']['entities'].get(resource['id'])
         require(value is not None, 'NOT_VISIBLE')

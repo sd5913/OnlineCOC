@@ -35,7 +35,7 @@ def main():
     source=root/'source/index.html';source.write_text(source.read_text(encoding='utf-8')+'\n<!-- revised UI -->',encoding='utf-8')
     revised=export_web_package(root,prefix,options)
     assert revised!=original and export_tree(original)==snapshot
-    old=json.loads((original/'web.json').read_text());new=json.loads((revised/'web.json').read_text())
+    old=json.loads((original/'web.json').read_text(encoding='utf-8'));new=json.loads((revised/'web.json').read_text(encoding='utf-8'))
     assert [g['digest'] for g in old['groups'][1:]]==[g['digest'] for g in new['groups'][1:]]
     assert export_web_package(root,prefix,options)==revised
     checks.append('changed startup UI produces a new version despite unchanged language/portrait groups; old export preserved')
