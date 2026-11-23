@@ -1,5 +1,7 @@
 # 配置包验收
 
+2026-11-23：[远程 KP 专项](verify_remote_kp.py) · [本地结果](remote-kp-results.json)。真实双浏览器验证非平台房主登录预设 KP、错误密码、PL 权限拒绝、审批/开场、远程自动执行以及同平台账号切换为玩家后的隔离；未使用本机 KP 浏览器。原双玩家 18 预设 [网页回归](web-results.json) 同轮通过。
+
 结果文件记录各自的执行日期、检查分组与隔离输出目录；历史阶段不能直接累加为当前完整覆盖。测试默认使用独立 `tests/output/`，不操作正式房间。阶段过程、旧格式、首次失败和历史清理依据已移至[历史记录](../docs/history/2026-11-20-development-records.md)。
 
 ## 本轮专项
@@ -124,3 +126,9 @@ engineering/.venv/Scripts/python.exe -B rulepacks/stumpsville/tests/verify_web.p
 在仓库根目录运行 `engineering/.venv/Scripts/python.exe -B rulepacks/stumpsville/tests/verify_storm.py home`。路线参数为 `home`、`allied`、`evacuated`；追加 `--alternate` 切换替代做法。撤离主路线通过无头 Edge 确认结局。脚本使用独立的 `tests/output/storm-*/` 房间，并在同一测试数据目录重启验证。推演和覆盖范围见[故事计划](../docs/plans/story-content-expansion.md)。
 
 本轮隔离回归还覆盖原十地点 18 个预设、最后一件库存的并发领取、浏览器手动／自动裁决，以及配置导入、预览、备份和恢复。结果分别见[场景验收](scene-results.json)、[浏览器验收](scene-ui-results.json)及[基础包验收](package-results.json)。
+
+2026-11-23：[远程 KP 公网强制 TURN 结果](remote-kp-cloud-results.json)通过同一主持闭环及角色切换隔离；两个浏览器在同一物理电脑，实际流量经过公网 TURN，不代替真人独立网络验收。首次 60 秒页面加载等待超时，扩大有界等待后通过，未作为性能承诺。
+
+运行 `verify_drop_performance.py --pickups` 验证物资搜索前后可见性、已知地点与角色限制、双玩家竞争、手动裁决模式下自动拿取，以及玩家窄屏页面选择物资后库存耗尽。
+
+`--pickups` 同时校核全地点清单；即使已经达成协议、移除机关或取得许可，事件奖励仍只从原事件获取。`verify_storm.py home --alternate` 覆盖已完成委托和修泵旧申请、道具与回合的幂等核对，及结局的重启恢复。

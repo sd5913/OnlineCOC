@@ -153,7 +153,7 @@ def main(comparison=None):
             page.locator('[data-action=item]').first.click()
             page.get_by_role('button', name='丢弃', exact=True).click()
             page.get_by_role('button', name='确认丢弃', exact=True).click()
-            expect(page.locator('.ground-items .row')).to_have_count(2)
+            expect(page.locator('[data-action=pickup-drop]')).to_have_count(2)
             expect(page.locator('#toast')).to_be_hidden(timeout=15000)
             page.wait_for_timeout(4000)
             expect(page.locator('.effects-popup')).to_be_hidden(timeout=15000)
@@ -448,6 +448,94 @@ def verify_polling():
                           'takeoverSeconds': round(takeover, 3), 'output': runtime.data.name}))
 
 
+def verify_pickups():
+    from scenes import pickup_options
+    from scene_knowledge import menu
+    game = json.loads((PACK/'config/game.json').read_bytes())
+    content = json.loads((PACK/'config/scene-actions.json').read_bytes())
+    flags = {'pact': 1, 'ernieSpoken': 1, 'trapState': 1, 'ratsDeal': 1, 'potsKnown': 1, 'factoryKnown': 1}
+    model = {'locations': {str(p['index']):p for p in game['locations']}, 'sceneState':flags}
+    public_stock = set()
+    for index in range(1, len(game['locations'])+1):
+        clues = [c for c in content['playerKnowledge'] if c['location']==index]
+        place = {'known':True, 'index':index, 'actions':menu(content,index,clues)}
+        options = pickup_options(model,place,content['actions'],game['items'])
+        public_stock.update((index, int(x['choice'])) for x in options if x['choice'].isdigit())
+        for option in options:
+            assert (option['action'], option['choice']) == ('house-pots','take') or (
+                option['action'].startswith('storm-supplies') and option['choice'] != '24'), option
+    assert public_stock == {(r['location'], r['item']) for r in game['stormStocks'] if r['item'] != 24}
+    with running('personal-pickups', no_browser=True) as (runtime, password):
+        kp, first, second = provision(runtime, password)
+        def settle():
+            job, = kp.request('/package/scene-executor', {})['jobs']
+            return kp.action('scene.autorun', {'jobId': job['id']}, job['commandId'])
+
+        assert all(x['action'] != 'tunnel-cheese' for x in first.state()['pickupOptions'])
+        assert first.action('pickup', {'action':'tunnel-cheese','choice':'take'}, allow_error=True).get('code')
+        item = first.state()['character']['numbers']['item2']
+        first.action('inventory', {'operation': 'drop', 'slot': 2, 'value': item})
+        drop, = first.state()['groundItems']
+        kp.action('automation.configure', {'enabled': False})
+        key = str(uuid.uuid4())
+        take = {'id': drop['id'], 'slot': 2}
+        assert first.action('pickup', take, key)['status'] == 'processing'
+        second.action('pickup', {'id': drop['id'], 'slot': 7})
+        assert settle()['outcome'] == 'success'
+        assert settle()['outcome'] == 'blocked'
+        assert first.action('pickup', take, key)['outcome'] == 'success'
+        assert first.state()['character']['numbers']['item2'] == item
+        assert not second.state()['groundItems']
+        kp.action('automation.configure', {'enabled': True})
+
+        def scene(action, choice):
+            first.action('scene.action', {'action': action, 'choice': choice})
+            assert settle()['outcome'] == 'success'
+        def move(index):
+            assert first.action('request', {'kind': 'travel', 'destination': index})['location'] == index
+
+        scene('tunnel-ground', 'inspect')
+        move(2)
+        scene('storm-brace', 'slow')
+        move(3)
+        scene('storm-roads3', 'survey')
+        move(11)
+        scene('storm-roads11', 'survey')
+        move(12)
+        args = {'action': 'storm-supplies12', 'choice': '17'}
+        assert not first.state()['pickupOptions']
+        assert first.action('pickup', args, allow_error=True).get('code')
+        scene('storm-supplies12', 'inspect')
+        available = first.state()['pickupOptions']
+        assert {x['choice'] for x in available} == {'17', '18', '19', '20', '27'}
+        assert second.action('pickup', args, allow_error=True).get('code')
+        kp.action('automation.configure', {'enabled': False})
+        with sync_playwright() as pw:
+            browser = pw.chromium.launch(channel='msedge', headless=True)
+            page = browser.new_page(viewport={'width':390, 'height':844})
+            page.goto(runtime.origin + '/sessions/pickup-browser/')
+            page.locator('[name=loginName]').fill('player1')
+            page.locator('[name=password]').fill(password)
+            page.get_by_role('button', name='进入冒险', exact=True).click()
+            page.locator('.identity').wait_for(state='attached')
+            page.goto(runtime.origin + '/sessions/pickup-browser/#/play/scene')
+            panel = page.locator('.ground-items')
+            expect(panel.get_by_role('heading', name='可拿取物品')).to_be_visible()
+            name = next(x['name'] for x in available if x['choice'] == '17')
+            row = panel.locator('.row').filter(has_text=name)
+            with page.expect_response(lambda r: '/package/action' in r.url and r.request.method == 'POST'
+                                      and r.request.post_data_json.get('operation') == 'pickup') as pending:
+                row.get_by_role('button', name='拿取', exact=True).click()
+            assert pending.value.json().get('status') == 'processing', pending.value.json()
+            assert settle()['outcome'] == 'success'
+            page.reload()
+            expect(panel.locator('.row').filter(has_text=name)).to_have_count(0)
+            browser.close()
+        assert args['choice'] not in {x['choice'] for x in first.state()['pickupOptions']}
+        assert not kp.request('/package/scene-executor', {})['jobs']
+        print('PASS: discovery, remaining stock, personal pickup, competing players, manual mode and replay')
+
+
 if __name__ == '__main__':
     import argparse
     parser = argparse.ArgumentParser()
@@ -455,8 +543,10 @@ if __name__ == '__main__':
     parser.add_argument('--scale', action='store_true')
     parser.add_argument('--archive-backup', action='store_true')
     parser.add_argument('--polling', action='store_true')
+    parser.add_argument('--pickups', action='store_true')
     args=parser.parse_args()
-    if args.scale: verify_scale()
+    if args.pickups: verify_pickups()
+    elif args.scale: verify_scale()
     elif args.archive_backup: verify_archive_backup()
     elif args.polling: verify_polling()
     else: main(args.comparison)

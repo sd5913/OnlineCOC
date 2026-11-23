@@ -17,10 +17,10 @@ class WebPeer(HostPeer):
 
     async def handle(self, method, params, channel):
         lease = await self.host.authorization(self.intent["intentId"])
-        # Version 2 is PL-only. A platform owner is never implicitly a game KP.
+        # Game authority comes only from the authenticated upstream account, never platform ownership.
         if self.account and self.host.service_url:
             view = await self.upstream.request('view')
-            require(view.get('role') == 'player' and view.get('accountId') == self.account, 'REMOTE_PLAYER_REQUIRED', 403)
+            require(view.get('role') in {'player', 'kp'} and view.get('accountId') == self.account, 'GAME_IDENTITY_INVALID', 403)
         if method == 'service.request':
             require(self.host.service_url and self.proved and self.account and self.ready, 'CONTENT_NOT_READY', 409)
             require(channel == 'control', 'CHANNEL_INVALID')
@@ -68,10 +68,10 @@ class WebPeer(HostPeer):
         result = await super().handle(method, params, channel)
         if method == 'request' and params.get('path') == 'login' and self.host.service_url:
             view = await self.upstream.request('view')
-            if view.get('role') != 'player':
+            if view.get('role') not in {'player', 'kp'} or view.get('accountId') != self.account:
                 await self.upstream.request('logout', {'method':'POST', 'body':{}})
                 self.account, self.ready = None, False
-                raise Fault('REMOTE_PLAYER_REQUIRED', 403)
+                raise Fault('GAME_IDENTITY_INVALID', 403)
         if method == "admit":
             return {**result, "resourceProtocol": 2, "resourceVersion": self.host.resources.version}
         return result

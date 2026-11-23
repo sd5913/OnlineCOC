@@ -19,4 +19,4 @@
 
 - [个人已知资料接入](player-knowledge.md)：个人行动菜单、KP 机制与定向揭示、固定观察、作者声明、v2 旧证据升级及验收。
 
-背包丢弃、地面物品和旧房间规则更新见[使用说明](usage.md#丢弃和领取地面物品)；本轮深度性能排查及候选优化见[性能计划](../../../../docs/plans/operation-performance-audit.md)。
+背包丢弃、可拿取物品和旧房间规则更新见[使用说明](usage.md#丢弃和领取可拿取物品)；本轮深度性能排查及候选优化见[性能计划](../../../../docs/plans/operation-performance-audit.md)。

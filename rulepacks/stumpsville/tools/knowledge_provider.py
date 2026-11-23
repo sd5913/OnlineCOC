@@ -110,6 +110,10 @@ class Provider:
                 artifact=context['state']['artifacts'][context['state']['activeRuleset']]
                 definitions=scene_knowledge.presentation(artifact['data'].get('scene-actions.json',{}),data.get('authoredActions'))
                 value['actions']=scene_knowledge.menu(definitions,int(index),value['clues'])
+                entities = context['state']['entities']
+                flags = entities[data['sceneId']]['numbers']
+                session = next((e for e in entities.values() if e['configurationId'] == 'sv.session'), None)
+                scene_knowledge.describe_events(value, definitions, flags, session['numbers']['round'] if session else 0)
                 location = data['locations'][index]
                 stock = {row['item']: row['count'] for row in location['stock']}
                 game = artifact['data'].get('game.json', {})

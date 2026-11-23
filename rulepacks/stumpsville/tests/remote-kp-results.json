@@ -1,0 +1,14 @@
+{
+  "passed": true,
+  "checkedAt": "2026-11-23T11:21:55.712023+08:00",
+  "cloud": false,
+  "forcedTurn": false,
+  "checks": [
+    "non-owner platform member logs into configured KP; wrong password denied; player cannot obtain KP projection/actions; local host controls unexposed",
+    "remote KP approves character and starts session; remote KP page alone executes automatic scene action",
+    "reconnect as player on same platform account drops KP projection and privileges"
+  ],
+  "samePhysicalComputer": true,
+  "noLocalKPBrowser": true,
+  "temporaryRoomRemoved": true
+}

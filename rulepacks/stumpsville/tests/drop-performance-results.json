@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-11-23T09:48:39.489396+08:00",
+  "checkedAt": "2026-11-23T11:21:54.124236+08:00",
   "checks": [
     "drop clears inventory and lit slot; preserves uses/ticks/location; replay creates one drop",
     "scene visibility, role/scene guards and pickup preserve item state without relighting",
@@ -12,22 +12,22 @@
   "measurements": {
     "hostViewPL": {
       "samples": 12,
-      "p50Ms": 10.54,
-      "p95Ms": 14.76,
-      "maxMs": 14.76,
+      "p50Ms": 14.47,
+      "p95Ms": 19.27,
+      "maxMs": 19.27,
       "workers": 1,
-      "wallSeconds": 0.131,
+      "wallSeconds": 0.174,
       "packageSaves": 0,
       "saveMsTotal": 0,
       "internalHttp": {}
     },
     "packageStatePL": {
       "samples": 12,
-      "p50Ms": 12.81,
-      "p95Ms": 13.33,
-      "maxMs": 13.33,
+      "p50Ms": 16.07,
+      "p95Ms": 17.03,
+      "maxMs": 17.03,
       "workers": 1,
-      "wallSeconds": 0.154,
+      "wallSeconds": 0.192,
       "packageSaves": 0,
       "saveMsTotal": 0,
       "internalHttp": {
@@ -36,11 +36,11 @@
     },
     "packageStateKP": {
       "samples": 12,
-      "p50Ms": 22.13,
-      "p95Ms": 27.51,
-      "maxMs": 27.51,
+      "p50Ms": 27.18,
+      "p95Ms": 48.67,
+      "maxMs": 48.67,
       "workers": 1,
-      "wallSeconds": 0.275,
+      "wallSeconds": 0.349,
       "packageSaves": 0,
       "saveMsTotal": 0,
       "internalHttp": {
@@ -49,11 +49,11 @@
     },
     "fourReadersState": {
       "samples": 12,
-      "p50Ms": 46.51,
-      "p95Ms": 70.13,
-      "maxMs": 70.13,
+      "p50Ms": 58.1,
+      "p95Ms": 85.18,
+      "maxMs": 85.18,
       "workers": 4,
-      "wallSeconds": 0.149,
+      "wallSeconds": 0.179,
       "packageSaves": 0,
       "saveMsTotal": 0,
       "internalHttp": {
@@ -62,13 +62,13 @@
     },
     "note": {
       "samples": 12,
-      "p50Ms": 25.86,
-      "p95Ms": 36.25,
-      "maxMs": 36.25,
+      "p50Ms": 31.5,
+      "p95Ms": 40.43,
+      "maxMs": 40.43,
       "workers": 1,
-      "wallSeconds": 0.32,
+      "wallSeconds": 0.381,
       "packageSaves": 12,
-      "saveMsTotal": 74.52,
+      "saveMsTotal": 87.46,
       "internalHttp": {
         "/me": 12,
         "/view": 12
@@ -76,11 +76,11 @@
     },
     "directChat": {
       "samples": 12,
-      "p50Ms": 62.77,
-      "p95Ms": 69.36,
-      "maxMs": 69.36,
+      "p50Ms": 85.17,
+      "p95Ms": 95.27,
+      "maxMs": 95.27,
       "workers": 1,
-      "wallSeconds": 0.761,
+      "wallSeconds": 1.023,
       "packageSaves": 0,
       "saveMsTotal": 0,
       "internalHttp": {
@@ -89,13 +89,13 @@
     },
     "check": {
       "samples": 12,
-      "p50Ms": 259.99,
-      "p95Ms": 282.87,
-      "maxMs": 282.87,
+      "p50Ms": 298.1,
+      "p95Ms": 377.66,
+      "maxMs": 377.66,
       "workers": 1,
-      "wallSeconds": 3.111,
+      "wallSeconds": 3.696,
       "packageSaves": 48,
-      "saveMsTotal": 289.26,
+      "saveMsTotal": 325.16,
       "internalHttp": {
         "/me": 12,
         "/view": 24,
@@ -105,13 +105,13 @@
     },
     "requestAndRuling": {
       "samples": 6,
-      "p50Ms": 389.95,
-      "p95Ms": 396.34,
-      "maxMs": 396.34,
+      "p50Ms": 424.64,
+      "p95Ms": 514.47,
+      "maxMs": 514.47,
       "workers": 1,
-      "wallSeconds": 2.343,
+      "wallSeconds": 2.64,
       "packageSaves": 54,
-      "saveMsTotal": 347.99,
+      "saveMsTotal": 376.17,
       "internalHttp": {
         "/me": 12,
         "/view": 24,
@@ -121,13 +121,13 @@
     },
     "worldRound": {
       "samples": 6,
-      "p50Ms": 190.07,
-      "p95Ms": 592.96,
-      "maxMs": 592.96,
+      "p50Ms": 208.31,
+      "p95Ms": 598.02,
+      "maxMs": 598.02,
       "workers": 1,
-      "wallSeconds": 1.505,
+      "wallSeconds": 1.589,
       "packageSaves": 22,
-      "saveMsTotal": 146.13,
+      "saveMsTotal": 167.02,
       "internalHttp": {
         "/me": 6,
         "/view": 11,
@@ -136,11 +136,11 @@
     },
     "stateAfterHistory": {
       "samples": 12,
-      "p50Ms": 15.54,
-      "p95Ms": 53.18,
-      "maxMs": 53.18,
+      "p50Ms": 16.24,
+      "p95Ms": 45.27,
+      "maxMs": 45.27,
       "workers": 1,
-      "wallSeconds": 0.224,
+      "wallSeconds": 0.231,
       "packageSaves": 0,
       "saveMsTotal": 0,
       "internalHttp": {
@@ -151,19 +151,19 @@
   },
   "externalModelCalls": 0,
   "formalSaveChanged": false,
-  "evidenceDirectory": "tests/output/drop-performance-7e94b0d5",
+  "evidenceDirectory": "tests/output/drop-performance-5eb25d80",
   "hostMetrics": {
     "commits": {
       "samples": 225,
-      "p50Ms": 25.56,
-      "p95Ms": 31.94,
-      "maxMs": 42.07
+      "p50Ms": 26.44,
+      "p95Ms": 44.69,
+      "maxMs": 129.08
     },
     "workers": {
       "samples": 46,
-      "p50Ms": 31.57,
-      "p95Ms": 288.96,
-      "maxMs": 459.99
+      "p50Ms": 32.34,
+      "p95Ms": 264.08,
+      "maxMs": 416.33
     },
     "commandQueue": {
       "samples": 130,
@@ -173,21 +173,21 @@
     },
     "commandTotal": {
       "samples": 130,
-      "p50Ms": 39.08,
-      "p95Ms": 181.27,
-      "maxMs": 548.93
+      "p50Ms": 43.36,
+      "p95Ms": 240.81,
+      "maxMs": 502.73
     }
   },
-  "packageBytes": 419033,
+  "packageBytes": 418965,
   "packageJobs": 74,
   "passed": true,
   "sourceHashes": {
     "rules/inventory-core.lua": "1445a8f92ce0ae4094faea702a74fea0279b8868a4e0f0b62b91660e75a6582c",
     "rules/ground-take.lua": "b373a9622735d2e0881b7a757f55bdd6da8d8d2fc670bde78dfbd7ec2771c502",
-    "tools/package.py": "4ac8178e893ecc40b0758949df4b6eb269517a5e8f4caa5c640e7ead9ef0dd89",
+    "tools/package.py": "1ec29d1b70fc7190a31bfa59f90814862895db129dc30ab3cff76bc0cd23315f",
     "tools/action_errors.py": "27216c634ad1bb9b2a7e9081ee6a0bc08018a03bb9d574e9d974b2b2201b98b6",
-    "tools/knowledge_provider.py": "0999356858c567769718cb4b3397764e422e67d363a47624de60aaee70cc60c8",
-    "ui/app.js": "c1879eb7f3ac7aa80815dd3c4b857b5496f0375390f3f0a053b3b4b1f5e68504"
+    "tools/knowledge_provider.py": "f7d468fc7f9c8d9dfc81b79fdd198ac04916a7b45fce5eecfaea63d605342478",
+    "ui/app.js": "c9bb462689f5fc0c0de6a2eae120c1d15e9401a7b9d11dff441b7928359a25a4"
   },
   "comparison": null
 }

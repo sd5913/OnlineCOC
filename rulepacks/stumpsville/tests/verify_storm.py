@@ -61,7 +61,19 @@ def play(route, alternate=False):
         move(2)
         storm('brace','slow')
         move(3)
+        def current_choices(action):
+            return {c['id'] for a in player.state()['sceneActions'] if a['id']==action for c in a['choices']}
+        assert current_choices('storm-commission') == {'start'}
+        delayed = player.action('scene.action', {'action':'storm-commission','choice':'start','manual':True})
         storm('commission','start')
+        turn = keeper.state()['session']['numbers']['round']
+        stale = keeper.action('resolve', {'requestId':delayed['requestId'],'approve':True}, allow_error=True)
+        assert '等候搜救' in str(stale), stale
+        assert keeper.state()['session']['numbers']['round'] == turn
+        assert not current_choices('storm-commission')
+        place = next(p for p in player.state()['locations'] if p['index']==3)
+        assert '等候搜救和补给' in place['description']
+        assert player.action('scene.action', {'action':'storm-commission','choice':'start'}, allow_error=True).get('code')
         if route == 'evacuated':
             premature = keeper.action('storm.finish', {'route':route, 'roster':'仍在搜救'}, allow_error=True)
             assert premature.get('code') == '所选结局尚未满足', premature
@@ -89,7 +101,15 @@ def play(route, alternate=False):
                 while turn-start+1 < 18:
                     turn = keeper.action('world',{'operation':'round','round':turn})['round']
                 storm('pump','dredge')
+                wedge = player.action('scene.action', {'action':'storm-pump','choice':'wedge','manual':True})
                 storm('pump','wedge')
+                before = player.state()
+                duplicate = keeper.action('resolve', {'requestId':wedge['requestId'],'approve':True}, allow_error=True)
+                assert '木楔已经撑住' in str(duplicate), duplicate
+                after = player.state()
+                assert before['character']['numbers'] == after['character']['numbers']
+                assert before['session']['numbers']['round'] == after['session']['numbers']['round']
+                assert 'wedge' not in current_choices('storm-pump') and 'service' in current_choices('storm-pump')
                 storm('pump','service')
             else:
                 storm('pump','gear')
@@ -99,7 +119,9 @@ def play(route, alternate=False):
             act('factory-equipment','inspect')
             storm('mill','run')
             move(3)
+            assert current_choices('storm-commission') == {'deliver'}
             storm('commission','deliver')
+            assert current_choices('storm-commission') == {'shelter'}
             storm('commission','shelter')
         else:
             storm('roads3','survey')
@@ -152,8 +174,10 @@ def play(route, alternate=False):
                     move(14)
                 else:
                     storm('ferry','runner')
-                storm('ferry','wait')
-                storm('ferry','wait')
+                for _ in range(2):
+                    if 'wait' in current_choices('storm-ferry'):
+                        storm('ferry','wait')
+                assert 'wait' not in current_choices('storm-ferry')
                 storm('ferry','meet')
             else:
                 if alternate:

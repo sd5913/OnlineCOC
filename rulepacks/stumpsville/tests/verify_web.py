@@ -78,10 +78,7 @@ def main(cloud=False,relay=False):
                     game=popup.value;games.append(game);game.on('pageerror',lambda e:errors.append(str(e)));game.wait_for_load_state();page.close()
                     if relay:game.locator('#relay').check()
                     game.locator('#connect').click();game.locator('#game-login').wait_for(timeout=45000)
-                    game.locator('#game-name').fill('kp' if i==1 else 'player2');game.locator('#game-password').fill(password);game.locator('#game-login button[type=submit]').click()
-                    if i==1:
-                        expect(game.locator('#error')).to_contain_text('REMOTE_PLAYER_REQUIRED');assert game.locator('#package-frame iframe').count()==0
-                        game.locator('#game-name').fill('player1');game.locator('#game-password').fill(password);game.locator('#game-login button[type=submit]').click()
+                    game.locator('#game-name').fill('player'+str(i));game.locator('#game-password').fill(password);game.locator('#game-login button[type=submit]').click()
                     frame=game.frame_locator('#package-frame iframe');frame.locator('.identity').wait_for(timeout=40000)
                     if relay:expect(game.locator('#network')).to_contain_text('TURN 中继',timeout=15000)
                     assert not frame.locator('[data-action=web-room],[name=loginName]').count()
@@ -90,7 +87,7 @@ def main(cloud=False,relay=False):
                     players.append(WebPlayer(frame))
                 p1,p2=players
                 if cloud:checks.append('public HTTPS directory and two real browser players; '+('both connections verified as TURN relay' if relay else 'public signaling with negotiated ICE route'))
-                checks.append('platform code admission and independent game pages; six-character passwords; two game identities; KP remote login rejected; opaque sandbox')
+                checks.append('platform code admission and independent game pages; six-character passwords; two game identities; player identities stay unprivileged; opaque sandbox')
                 for i,p in enumerate(players,1):
                     p.action('draft',{'preset':'mul' if i==1 else 'dou','name':'网页鼠'+str(i)});kp.action('approve',{'account':'player'+str(i)});p.action('ready',{'ready':True})
                 kp.action('world',{'operation':'start'})

@@ -190,8 +190,8 @@ class Package:
             session = next(iter(self.entities(view, 'sv.session')), None)
             enabled = session and session['numbers'].get('autoResolve', 1) and view['status'] == 'active'
             tasks = [t for t in self.state['autoSceneQueue'].values() if t['status'] in {'queued', 'running', 'finishing'}
-                     and (not t.get('executor') or t['executor'] == view['accountId'])]
-            return {'jobs': [{'id': t['id'], 'commandId': t['commandId']} for t in tasks[:1]] if enabled else []}
+                     and (enabled or t.get('pickup')) and (not t.get('executor') or t['executor'] == view['accountId'])]
+            return {'jobs': [{'id': t['id'], 'commandId': t['commandId']} for t in tasks[:1]] if session and view['status'] == 'active' else []}
 
     def queue_scene(self, view, character, job, definition, choice):
         key = job.record['requestKey']
@@ -214,7 +214,7 @@ class Package:
             return task['result']
         require(not task.get('executor') or task['executor'] == view['accountId'], '请由原自动执行端恢复此行动')
         session = next(iter(self.entities(view, 'sv.session')))
-        require(session['numbers'].get('autoResolve', 1) == 1, '自动裁决已关闭，自动队列暂缓执行')
+        require((session['numbers'].get('autoResolve', 1) == 1 or task.get('pickup')), '自动裁决已关闭，自动队列暂缓执行')
         actor = view['entities'].get(task['actor'])
         task.update(status='running', executor=view['accountId'])
         self.save()
@@ -222,7 +222,11 @@ class Package:
             require(self.current_scene_request(job,task.get('menuVersion')),
                     '行动菜单已更新，请按本人已知选项重新提交')
             require(actor and actor['owner'] == task['account'] and actor['lifecycle'] == 'active', '角色归属或状态已改变')
-            result = self.execute_scene(job, view, actor, task['action'], task['choice'])
+            if task.get('dropId'):
+                result = self.take_drop(job, view, {'actor': task['actor'], 'id': task['dropId'], 'slot': task['slot']})
+                result.update(title=task['title'], sceneAction='pickup', outcome='success')
+            else:
+                result = self.execute_scene(job, view, actor, task['action'], task['choice'], pickup=task.get('pickup', False))
         except (PackageError, HostError) as error:
             if 'result' in job.record['steps'].get('scene-act', {}):
                 raise  # Committed effects must finish publication through the same job.
@@ -245,7 +249,7 @@ class Package:
                 receipt['result'] = result
         return result
 
-    def execute_scene(self, job, view, actor, action, choice):
+    def execute_scene(self, job, view, actor, action, choice, *, pickup=False):
         require(self.scene_ready(), '当前规则缺少场景预设；请检查已激活的规则修订')
         definition = next((x for x in self.scene_definitions() if x['id'] == action), None)
         require(definition and choice in {x['id'] for x in definition['choices']}, '预设行动或做法不存在')
@@ -262,6 +266,16 @@ class Package:
         require(privileged['role'] == 'kp', '场景执行服务没有主持权限')
         actual = privileged['entities'].get(context['actor'])
         require(actual and (view['role'] == 'kp' or actual['owner'] == view['accountId']), '角色归属已改变')
+        if 'scene-act' not in job.record['steps']:
+            selected = next(c for c in definition['choices'] if c['id'] == choice)
+            session = next(iter(self.entities(privileged, 'sv.session')))
+            flags = privileged['entities'][self.state['sceneId']]['numbers']
+            recipe = selected.get('storm', {})
+            if pickup:
+                require(scenes.direct_pickup_item(action, choice, recipe, flags) is not None,
+                        '这件物资需要通过地点事件获取')
+            reason = scene_knowledge.unavailable(action, choice, recipe, flags, session['numbers']['round'])
+            require(not reason, reason)
         self.state['scenePending'] = job.record['requestKey']
         self.save()
         # Shared stock updates and character effects happen in one host transaction.
@@ -716,13 +730,14 @@ class Package:
                 result['mapNpcCatalog'] = list(sight.catalog().values())
                 result['actorDiscoveries'] = copy.deepcopy(self.state.get('actorDiscoveries', {}))
             elif player_mode:
-                personal_ops = {'draft', 'draft.roll', 'note', 'request', 'ready', 'check', 'inventory', 'chat', 'share.receipt', 'scene.action'}
+                personal_ops = {'draft', 'draft.roll', 'note', 'request', 'ready', 'check', 'inventory', 'chat', 'share.receipt', 'scene.action', 'pickup'}
                 result['receipts'] = [r for r in result['receipts'] if r['operation'] in personal_ops]
             if not gm:
                 # Package shared current lore cannot bypass the same personal
                 # disclosure boundary used by the AI and normal known-data UI.
                 result['recap']=''
                 current_place=next((p for p in locations if mine and p['index']==mine['numbers']['location'] and p.get('known')),None)
+                result['pickupOptions'] = scenes.pickup_options(self.state, current_place, self.scene_definitions(), self.game['items'])
                 result['sceneActions']=copy.deepcopy(current_place.get('actions',[])) if current_place else []
                 result['knowledgeRecords']=[{'label':i['label'],'mode':i['mode'],'observedAt':i['observedAt'],'ref':i['ref']}
                     for i in known_items if i['facetId']!='sheet']
@@ -938,7 +953,7 @@ class Package:
                   'scene.action': '场景行动',
                   'scene.autorun': '场景行动自动结果',
                   'resolve': 'KP 裁决回复', 'world': '探索进度', 'actor.update': '主持调整数值', 'rest': '休息恢复',
-                  'grant': '获得物品', 'damage': '伤害结算', 'remove': '移除物品', 'stock.take': '领取物品', 'ground.take': '领取地面物品',
+                  'grant': '获得物品', 'damage': '伤害结算', 'remove': '移除物品', 'stock.take': '领取物品', 'ground.take': '拿取物品',
                   'approve': '角色审核', 'automation.configure': '自动裁决设置', 'room': '房间状态', 'location.publish': '地点与线索发布'}
         kind = request.get('kind', op)
         title = titles.get(kind, {'travel': '地点移动', 'transfer': '物品转交', 'review': '事件复核',
@@ -1028,6 +1043,28 @@ class Package:
             add('ticks' + str(slot), '槽位 ' + str(slot) + '燃烧进度', before.get('ticks' + str(slot), 0), after.get('ticks' + str(slot), 0))
         return changes
 
+    def take_drop(self, job, view, args):
+        require(set(args) == {'id', 'actor', 'slot'}, '掉落物领取参数无效')
+        dropped = self.state.get('groundItems', {}).get(args['id'])
+        require(dropped and (dropped.get('status') != 'taken' or dropped.get('claim') == job.record['requestKey']), '此物品已经被领取或不存在')
+        claim = job.record['requestKey']
+        require(not dropped.get('claim') or dropped['claim'] == claim, '此物品领取尚待恢复，请恢复原行动')
+        actor = view['entities'].get(args['actor'])
+        if 'take-ground' not in job.record['steps']:
+            require(actor and actor['numbers'].get('location') == dropped['location'], '角色必须与掉落物处于同一地点')
+        dropped['claim'] = claim
+        self.save()
+        try:
+            result = job.invoke('take-ground', 'sv.ground.take', actor=args['actor'], slot=args['slot'],
+                                item=dropped['item'], uses=dropped['uses'], ticks=dropped['ticks'], location=dropped['location'])
+        except HostError as error:
+            if error.response.get('status') == 'rejected':
+                dropped.pop('claim', None)
+                self.save()
+            raise
+        dropped.update(status='taken', recipient=args['actor'])
+        return {'message': '已拿取物品', **result}
+
     def execute(self, job, view, op, args, request_id):
         account = view['accountId']
         if op == 'notification.ack':
@@ -1036,12 +1073,12 @@ class Package:
         gm = view['role'] == 'kp'
         character = self.own_character(view)
         session = next(iter(self.entities(view, 'sv.session')), None)
-        if not gm and session is None and op in {'check', 'inventory', 'ready', 'request', 'scene.action'}:
+        if not gm and session is None and op in {'check', 'inventory', 'ready', 'request', 'scene.action', 'pickup'}:
             play=next((i['data'] for i in knowledge_client.records(job.client, view, facet='play') if i['facetId']=='play'),None)
             session={'instanceId':play['entityId'],'numbers':play['numbers']} if play else None
         world = next(iter(self.entities(view, 'sv.world')), None)
         job.view, job.session = view, session
-        player_ops = {'draft', 'draft.roll', 'note', 'request', 'ready', 'check', 'inventory', 'chat', 'share.receipt', 'scene.action'}
+        player_ops = {'draft', 'draft.roll', 'note', 'request', 'ready', 'check', 'inventory', 'chat', 'share.receipt', 'scene.action', 'pickup'}
         require(op in player_ops or gm, '需要主持权限')
         if op == 'ai.review':
             # Keep the original immutable source when recovering an already-sent envelope.
@@ -1134,6 +1171,33 @@ class Package:
             task = self.state['autoSceneQueue'].get(args['jobId'])
             require(task and request_id == task['commandId'], '自动行动编号不正确')
             return self.run_scene_queue(job, view, args['jobId'])
+        if op == 'pickup':
+            require(character and character['numbers']['ready'] and session and session['numbers']['phase'] == 1,
+                    '请使用已就绪且正在探索的角色')
+            index = character['numbers']['location']
+            if set(args) == {'id', 'slot'}:
+                require(isinstance(args['id'], str), '物品编号无效')
+                drop = self.state.get('groundItems', {}).get(args['id'])
+                require(drop and drop['location'] == index and drop.get('status') == 'available' and not drop.get('claim'),
+                        '当前地点没有这件可拿取物品')
+                require(type(args['slot']) is int and 1 <= args['slot'] <= 20, '槽位无效')
+                definition = {'id': 'pickup', 'label': '拿取' + self.game['items'][drop['item']-1]['name']}
+                choice = 'take'
+            else:
+                require(set(args) == {'action', 'choice'}, '拿取参数无效')
+                places = knowledge_client.locations(knowledge_client.records(job.client))
+                place = next((p for p in places if p['index'] == index), None)
+                options = scenes.pickup_options(self.state, place, self.scene_definitions(), self.game['items'])
+                option = next((x for x in options if x['action'] == args['action'] and x['choice'] == args['choice']), None)
+                require(option, '请先查看本人在当前地点发现的可拿取物品')
+                definition = {'id': option['action'], 'label': '拿取' + option['name']}
+                choice = option['choice']
+            result = self.queue_scene(view, character, job, definition, choice)
+            task = self.state['autoSceneQueue'][result['jobId']]
+            task['pickup'] = True
+            if 'id' in args:
+                task.update(dropId=args['id'], slot=args['slot'])
+            return result
         if op == 'scene.action':
             require(set(args) <= {'action', 'choice', 'manual'} and {'action', 'choice'} <= set(args), '场景行动参数不正确')
             require(all(isinstance(args[k],str) and 0 < len(args[k]) <= 100 for k in ('action','choice')), '场景行动参数不正确')
@@ -1359,26 +1423,7 @@ class Package:
             self.state['doors'][key] = args['status']
             return {'message': '通路状态已更新'}
         if op == 'ground.take':
-            require(set(args) == {'id', 'actor', 'slot'}, '掉落物领取参数无效')
-            dropped = self.state.get('groundItems', {}).get(args['id'])
-            require(dropped and dropped.get('status') != 'taken', '此物品已经被领取或不存在')
-            claim = job.record['requestKey']
-            require(not dropped.get('claim') or dropped['claim'] == claim, '此物品领取尚待恢复，请恢复原行动')
-            actor = view['entities'].get(args['actor'])
-            if 'take-ground' not in job.record['steps']:
-                require(actor and actor['numbers'].get('location') == dropped['location'], '角色必须与掉落物处于同一地点')
-            dropped['claim'] = claim
-            self.save()
-            try:
-                result = job.invoke('take-ground', 'sv.ground.take', actor=args['actor'], slot=args['slot'],
-                                    item=dropped['item'], uses=dropped['uses'], ticks=dropped['ticks'], location=dropped['location'])
-            except HostError as error:
-                if error.response.get('status') == 'rejected':
-                    dropped.pop('claim', None)
-                    self.save()
-                raise
-            dropped.update(status='taken', recipient=args['actor'])
-            return {'message': '已领取地面物品', **result}
+            return self.take_drop(job, view, args)
         if op == 'storm.finish':
             story = self.state.get('sceneState', {})
             route = args.get('route')

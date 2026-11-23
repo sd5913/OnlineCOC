@@ -95,3 +95,35 @@ def public_state(state, location, items):
         for row in state['locations'][str(location)]['stock']:
             supplies.append({'name': items[row['item']-1]['name'], 'count': row['count']})
     return {'facts': facts, 'supplies': supplies}
+
+
+def direct_pickup_item(action, choice, recipe, flags):
+    if (action, choice) == ('house-pots', 'take') and flags.get('potsKnown'):
+        return 8
+    if recipe.get('take') and not any(v for k, v in recipe.items() if k not in ('take', 'say')):
+        return recipe['take'][0]
+    return None
+
+
+def pickup_options(state, place, definitions, items):
+    if not place or not place.get('known'):
+        return []
+    location = state['locations'][str(place['index'])]
+    stock = {row['item']: row['count'] for row in location['stock']}
+    story = state.get('sceneState', {})
+    specs = {(a['id'], c['id']): c for a in definitions if a['location'] == place['index']
+             for c in a['choices']}
+    result = []
+    for action in place.get('actions', []):
+        for choice in action['choices']:
+            key = (action['id'], choice['id'])
+            if key not in specs:
+                continue
+            recipe = specs[key].get('storm', {})
+            item = direct_pickup_item(*key, recipe, story)
+            if item is None or not 1 <= item <= len(items):
+                continue
+            count, name = stock.get(item, 0), items[item-1]['name']
+            if count > 0:
+                result.append({'action': key[0], 'choice': key[1], 'name': name, 'count': count})
+    return result

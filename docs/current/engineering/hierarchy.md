@@ -4,8 +4,8 @@
 - 文档子类：工程
 - 状态：有效
 - 创建日期：2026-10-29
-- 最后更新：2026-11-22
-- 最近目录核对：2026-11-22（联网离线安装器、房间保留清理；背包掉落、包侧分段存档、引擎与 AI 性能验收、树桩镇暴雨配置与隔离试玩）。本轮见[性能排查计划](../../plans/operation-performance-audit.md)；上一轮见[ISSUE-024](../../history/2026-11-21-issue-024-deepseek-official-compaction.md)。
+- 最后更新：2026-11-23
+- 最近目录核对：2026-11-23（本轮远程 KP 登录及专项验收）；2026-11-22（联网离线安装器、房间保留清理；背包掉落、包侧分段存档、引擎与 AI 性能验收、树桩镇暴雨配置与隔离试玩）。本轮见[性能排查计划](../../plans/operation-performance-audit.md)；上一轮见[ISSUE-024](../../history/2026-11-21-issue-024-deepseek-official-compaction.md)。
 - 关联文档：[工程文档索引](README.md)、[文档维护标准](../../standards/document-maintenance.md)
 
 ## 工程实际目录
@@ -2367,6 +2367,13 @@ AI 可选限额与用量统计（2026-11-16）：
 | `engineering/acceptance/ai-performance-interface-snapshot/v3/engineering/` | 冻结 AI 源码，共 223 项，路径见同版 source.json |
 
 | `docs/current/engineering/engine-performance.md` | 当前引擎性能机制、接口与验收边界 |
+
+| `rulepacks/stumpsville/tests/verify_remote_kp.py` | 远程 KP 双浏览器登录、主持、自动裁决及角色切换验收 |
+| `rulepacks/stumpsville/tests/remote-kp-results.json` | 远程 KP 本地真实 WebRTC 验收结果 |
+
+| `rulepacks/stumpsville/tests/remote-kp-cloud-results.json` | 远程 KP 公网强制 TURN 登录、主持及角色切换隔离证据 |
+
+| `engineering/network-web/acceptance/2026-11-23-0.3.2.json` | 远程 KP 登录、本地及公网 TURN 主持闭环与 0.3.2 部署摘要 |
 
 ## 施工登记
 

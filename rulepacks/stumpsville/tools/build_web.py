@@ -88,12 +88,12 @@ def build(output):
     for name in ('locales/en/ui.json','art/mouse.png'):
         target=output/name;target.parent.mkdir(parents=True,exist_ok=True)
         shutil.copyfile(PACK/('assets/runtime/mouse.png' if name.startswith('art/') else name),target)
-    descriptor={'webVersion':2,'package':{'id':'stumpsville','name':'树桩镇','version':manifest['version'],'source':'Mausritter / Stumpsville；包侧适配详见来源说明','description':'两次登录；房主本机KP在线运行自动裁决，玩家在浏览器探索树桩镇。'},
-        'rules':'仅玩家网页接入；使用房主提供的游戏账号。场景行动、资源与线索由房主宿主裁决。KP管理台离线时预设行动等待恢复。AI咨询由玩家提交，KP明确转交与审阅，不自动修改游戏。',
+    descriptor={'webVersion':2,'package':{'id':'stumpsville','name':'树桩镇','version':manifest['version'],'source':'Mausritter / Stumpsville；包侧适配详见来源说明','description':'两次登录；按游戏账号进入玩家或KP界面，已登录的KP页面执行自动裁决。'},
+        'rules':'网页支持玩家与KP账号；权限由宿主预设账号决定。场景行动、资源与线索由房主宿主裁决。至少一个KP页面需在线执行预设行动，支持远程KP。AI咨询由玩家提交，KP明确转交与审阅，不自动修改游戏。',
         'modules':{'required':['network-web'],'optional':[]},
         'groups':[{'id':'startup','access':'members','entry':'index.html','files':['index.html']},{'id':'locale-en','access':'members','entry':None,'files':['locales/en/ui.json']},{'id':'portraits','access':'members','entry':None,'files':['art/mouse.png']}],
         'routes':[{'method':'GET','path':p} for p in ('view','chat/members')]+[{'method':'POST','path':'chat/history'}],
-        'bridge':{'version':1,'service':[{'method':'GET','path':'package/state','query':{'locale':['zh-CN','en']}},{'method':'GET','path':'package/chat/state','query':{}},{'method':'POST','path':'package/action','query':{'locale':['zh-CN','en']}},{'method':'POST','path':'package/chat/history','query':{}},{'method':'POST','path':'package/ai','query':{}}],
+        'bridge':{'version':1,'service':[{'method':'GET','path':'package/state','query':{'locale':['zh-CN','en']}},{'method':'GET','path':'package/chat/state','query':{}},{'method':'POST','path':'package/action','query':{'locale':['zh-CN','en']}},{'method':'POST','path':'package/chat/history','query':{}},{'method':'POST','path':'package/ai','query':{}},{'method':'POST','path':'package/scene-executor','query':{}}],
                   'storage':['sv.locale','sv.font','sv.desktop.*','stumpsville.pending.*']}}
     write_json(output/'web.json',descriptor)
     return output

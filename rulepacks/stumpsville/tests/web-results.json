@@ -1,6 +1,6 @@
 {
   "passed": true,
-  "checkedAt": "2026-11-19T11:16:44.676097+08:00",
+  "checkedAt": "2026-11-23T11:25:26.789680+08:00",
   "presets": [
     "cage-gate",
     "cage-listen",
@@ -22,7 +22,7 @@
     "web-inspect"
   ],
   "checks": [
-    "platform code admission and independent game pages; six-character passwords; two game identities; KP remote login rejected; opaque sandbox",
+    "platform code admission and independent game pages; six-character passwords; two game identities; player identities stay unprivileged; opaque sandbox",
     "two PL characters/readiness; KP browser resumes queued action; all 18 presets over actual WebRTC with dice/narrative/resources/clues and same-ID idempotence",
     "remote management/AI/setup and query injection denied; game-side permission guards remain active; scene and personal clue isolation",
     "real UI lost-response recovery persists original command ID; stale rules stop replay; recovery does not reroll; private and party chats cross browsers",

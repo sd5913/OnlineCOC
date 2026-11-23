@@ -85,6 +85,74 @@ def menu(content, location, clues):
     return result
 
 
+# These are observable changes at the event location, in latest-stage-first order.
+EVENT_STAGES = {
+    'storm-commission': [('home','获救的居民已在庭院安顿下来。'), ('delivered','栗婶已签收奶酪，正在安排住处。'),
+                         ('batch','运货筐已经送到，栗婶等候签收。'), ('stormStart','栗婶在庭院等候搜救和补给的消息。')],
+    'storm-pump': [('pump','泵轮已经转动，积水开始退去。'), ('temporary','木楔已经撑住传动装置，还需校准。'),
+                   ('dredged','泵壳旁的淤泥已经清走，可以继续检修。')],
+    'storm-brace': [('gateOpen','石板门已开，通路可以通行。')],
+    'web-inspect': [('villagersFreed','蛛网后只剩断开的束缚，两名村民已经离开。'),
+                    ('villagersContacted','蛛网后的两名村民已作出回应，仍在等待救援。')],
+    'storm-mill': [('batch','第一批奶酪已经装筐运走。')],
+    'storm-pact': [('pact','鼠帮协议已经生效。')],
+    'storm-signal': [('sent','消息已经送出，灯架无需再次点燃。')],
+    'storm-ferry': [('allied','援队已经接走获救的村民。'), ('aid','援队已在渡口靠岸。'),
+                    ('sent','信已送达，渡口正在等候援队。'), ('labour','栈桥已经修好。')],
+    'storm-escape': [('evacuated','两名村民已抵达溪岸集合点。'), ('debt','渡工已赊出行粮，粮债已经记下。'),
+                     ('fed','撤离用的行粮已经备妥。'), ('boat','渡舟已经修好。'), ('foot','步道已经清理。')],
+}
+
+
+def unavailable(action, choice, step, flags, turn):
+    completed = step.get('set') or ('stormStart' if step.get('start') else 'sent' if step.get('send') else None)
+    if completed and flags.get(completed):
+        return next((text for flag, text in EVENT_STAGES.get(action, ()) if flag == completed),
+                    '这一步已经完成，无需再次办理。')
+    if action in ('gate-open', 'gate-handle') and flags.get('gateOpen'):
+        return '石板门已经打开。'
+    if action == 'web-call' and flags.get('villagersFreed'):
+        return '村民已经脱困。'
+    if action == 'web-call' and choice == 'whisper' and flags.get('villagersContacted'):
+        return '村民已经回应，可尝试救援。'
+    if action == 'storm-pump' and flags.get('pump'):
+        return '排水泵已经恢复运转。'
+    if action == 'storm-ferry' and choice == 'wait' and flags.get('aid'):
+        return '援队已经抵达渡口。'
+    if action == 'storm-escape' and flags.get('evacuated'):
+        return '撤离已经完成。'
+    if any(not flags.get(f) for f in step.get('need', [])):
+        return '当前阶段尚未满足这项行动的前提。'
+    if any(flags.get(f) for f in step.get('absent', [])):
+        return '此前的选择已经确定，无法再办理这个选项。'
+    late = turn - flags.get('stormStart', 0) + 1 >= 18
+    if step.get('set') == 'pump' and late and not flags.get('dredged'):
+        return '水位上涨，请先清理泵壳旁的淤泥。'
+    if step.get('evac') and (not (flags.get('foot') or flags.get('boat')) or
+                             not (flags.get('debt') or flags.get('fed')) or (late and not flags.get('braced'))):
+        return '还需准备通路和行粮，涨水后还需加固渡口。'
+    return ''
+
+
+def describe_events(view, content, flags, turn):
+    recipes = {(a['id'], c['id']): c.get('storm', {}) for a in content.get('actions', [])
+               if a['location'] == view['index'] for c in a['choices']}
+    for action in view['actions']:
+        key = action['id']
+        status = next((text for flag, text in EVENT_STAGES.get(key, []) if flags.get(flag)), '')
+        if status:
+            initial = {'storm-brace': '石板门阻挡着前进的道路，门上留有可转动的把手。',
+                       'storm-pump': '水正从破裂的泵壳渗进低处。'}
+            if view['description'] == initial.get(key):
+                view['description'] = status
+            else:
+                view['description'] += ' ' + status
+            action['hint'] = status
+        action['choices'] = [c for c in action['choices']
+                             if not unavailable(key, c['id'], recipes.get((key, c['id']), {}), flags, turn)]
+    view['actions'] = [a for a in view['actions'] if a['choices']]
+
+
 def describe_stock(view, stock, pips, game):
     """Compose a fresh observation from visible stock; historical snapshots stay intact."""
     index = view['index']

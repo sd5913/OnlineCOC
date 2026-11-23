@@ -4,12 +4,12 @@
 - 文档子类：工程
 - 状态：有效
 - 创建日期：2026-11-13
-- 最后更新：2026-11-22
+- 最后更新：2026-11-23
 - 关联文档：[快速使用](../../../engineering/network-p2p/README.md)、[目录清单](hierarchy.md)、[房间发现与同步计划](../../plans/room-discovery-p2p-package-sync.md)、[启动编排计划](../../plans/room-launch-orchestration.md)、[云部署调研](../../plans/cloud-server-deployment-research.md)
 
 ## 1. 当前实现
 
-独立模块 `engineering/network-p2p`，本机及腾讯CVM当前均为0.2.3，2026-11-22随network-web 0.3.1部署；TURN未重启。开房与加入步骤见[快速使用](../../../engineering/network-p2p/README.md)。0.2.1 增加不可枚举的 `code` 房间、可替换主机 Peer 和浏览器信令入口扩展；平台账号、成员和分组资源由可选 [network-web](network-web.md) 提供，旧 public/private 与整包同步协议保持兼容。
+独立模块 `engineering/network-p2p`，本机及腾讯CVM当前均为0.2.3，2026-11-23随network-web 0.3.2部署；TURN未重启。开房与加入步骤见[快速使用](../../../engineering/network-p2p/README.md)。0.2.1 增加不可枚举的 `code` 房间、可替换主机 Peer 和浏览器信令入口扩展；平台账号、成员和分组资源由可选 [network-web](network-web.md) 提供，旧 public/private 与整包同步协议保持兼容。
 
 0.2.2增加供可信网页主机适配器调用的 `Upstream.service_request`：显式回环服务、逐玩家Cookie/CSRF、GET/POST、大小与超时限制、拒绝重定向。只有network-web版本2按声明校验后调用；没有把包路径加入旧P2P的通用 `request` 白名单。树桩镇旧P2P入口仍仅基础状态/聊天，完整玩家模式见[包网页说明](../../../rulepacks/stumpsville/docs/current/web.md)。
 
