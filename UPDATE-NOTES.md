@@ -2,9 +2,9 @@
 
 [User guide](README.md) · [Development process](PROCESS.md) · [Issue register](docs/plans/Issues/README.md)
 
-## 26 November 2026 · Windows x64 preview
+## 26 November 2026 · Windows x64 v0.1.0-preview.1
 
-- Added a downloadable offline build of Stumpsville from `e5b3244`, with a unified launcher, networking setup and a single-key DeepSeek preset. The bilingual guides include the trailer and first-session video. [Release notes and downloads](https://github.com/sd5913/OnlineCOC/releases/tag/win64-preview-e5b3244)
+- Added a downloadable offline build of Stumpsville from `e5b3244`, with a unified launcher, networking setup and a single-key DeepSeek preset. The bilingual guides include the trailer and first-session video. [Release notes and downloads](https://github.com/sd5913/OnlineCOC/releases/tag/v0.1.0-preview.1)
 - On `main`, Stumpsville adds shared combat, escape and incapacitation, plus map zoom and reset controls on desktop and mobile. The downloadable preview predates these changes. [Player guide](rulepacks/stumpsville/docs/current/player-guide.md)
 
 ## 26 November 2026 · Documentation and desktop tools
