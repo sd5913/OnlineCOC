@@ -4,7 +4,6 @@
 
 | 案例 | 状态 | 内容 |
 | --- | --- | --- |
-| [Lasers & Feelings《激光与情感》](../../../rulepacks/lasers-and-feelings/README.md) | 当前实现入口 | 1.0.0 规则包、独立跑团桌面、完整官方规则与使用文档；52 项接口检查、16 项浏览器检查通过 |
 | [铃蔓回转录](../../../rulepacks/mini-detective-pack/README.md) | 0.1.0 本机人工主持实现，后续计划继续 | 13条Lua、配置与桌面前端；25项HTTP／17项浏览器检查通过；在线恢复与部分自动流程待实施 |
 
 返回[计划索引](../README.md)。

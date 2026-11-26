@@ -28,7 +28,6 @@ ISSUE-011首版与AI消费接入已完成，见[现行知识服务](../current/e
 | [独立本地化工具施工与验收](localization-construction-plan.md) | 进行中 | L10N-0 已实施骨架并通过 3/4 条件；原生目录确认待验收，后续阶段未开始 |
 | [房间管理器后续设计](room-manager-design.md) | 进行中 | Python 与 LAN 已实施；权威历史、完整存档及网络扩展待设计 |
 | [房间管理器施工状态](room-manager-construction-plan.md) | 进行中 | 首版与 Python/LAN 迁移验收，后续 H/S 工作包 |
-| [轻量跑团规则与前端](../../rulepacks/lasers-and-feelings/README.md) | 当前实现入口 | Lasers & Feelings 规则包与独立桌面已实现；包内使用和设计为现行正文，早期验证已归档 |
 | [更新问题 Issues](Issues/README.md) | 进行中 | 后续问题统一索引、模板，并链接已有设计议题 |
 | [已授权资料的语义展示契约](Issues/issue-012-authorized-data-presentation.md) | 草案 | 引擎展示元信息评估；AI 排版与 Stumpsville 安全菜单已修复，不依赖该增强 |
 | [首测版工程设计](<project planning/first-test-engineering-design.md>) | 进行中 | 首测技术基线、独立文件数据管理模块、房间与实例结构、事务/恢复、动态 Lua 及本机 HTTP/WS；已有本机首测实现，实际状态见当前工程 |

@@ -3,7 +3,7 @@
 - 文档类型：计划
 - 状态：草案
 - 创建日期：2026-11-14
-- 最后更新：2026-11-14
+- 最后更新：2026-11-26
 - 关联文档：[问题索引](README.md)、[AI 数据查询与聊天裁决草稿](../ai-data-query-adjudication.md)、[既有包侧协作议题 ISSUE-003](issue-003-rulepack-cooperative-ruling.md)、[房间版本策略 ISSUE-007](../../history/2026-11-14-issue-007-room-version-policy.md)、[AI 运行时](../../current/engineering/ai-runtime.md)
 - 问题状态：已完成工程评估；推荐双模型与先读取试点，宿主接线待实施
 - 提交对象：通用引擎开发方；配置包开发者参与场景及接口评审
@@ -31,7 +31,7 @@
 | [树桩镇 package.py](../../../rulepacks/stumpsville/tools/package.py) 的 `queue_request/resolve` 维护请求字典，receipts/events 保存执行关联和玩家反馈 | 可以作为首个适配案例；请求自身目前没有统一的裁决者、决定版本及原始聊天引用，不能为旧数据伪造补全 |
 | [聊天领域](../../../engineering/backend/src/onlinecoc/chat.py) 有 replyTo 和主机验证的行动卡 | 消息可成为依据，行动卡可提供关联；能看卡片不等于能看完整原始回执，也不能把文本直接视为授权 |
 | AI 的 MemoryEntry 可标为 ruling，但仍是有来源的记忆 | 记忆可以引用正式决定，不能充当正式决定的唯一权威存储 |
-| [ISSUE-003](issue-003-rulepack-cooperative-ruling.md) 已记录 Lasers & Feelings 通过现有实体、关系和 action 完成包侧协作及结构化玩法 | 不以“无法实现”为新增核心模型的理由；本次评估重点是跨包格式、可追溯查询与开发成本，原 ISSUE 的验收状态保持不变 |
+| [ISSUE-003](issue-003-rulepack-cooperative-ruling.md) 记录了已移除的 Lasers & Feelings 配置包如何通过当时的实体、关系和 action 完成包侧协作及结构化玩法 | 不以“无法实现”为新增核心模型的理由；本次评估重点是跨包格式、可追溯查询与开发成本，原 ISSUE 的验收状态保持不变 |
 
 ## 原因与候选处理
 

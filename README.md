@@ -10,7 +10,7 @@ OnlineCOC is a prototype engine for running multiplayer tabletop RPGs. The host'
 | --- | --- |
 | Engine | The Python host checks permissions, runs Lua rules and records the results in the room's save. Players share one campaign, even when they have discovered different things. [Engine architecture](docs/current/engineering/first-test.md) |
 | Extension modules | The LAN gateway and web module connect players to the host. The optional room AI can propose rule changes for the game master (GM) to review during play. [Module directory](engineering/README.md) |
-| Rulepacks | A pack supplies a particular game's rules, content and player interface. Stumpsville and Lasers & Feelings use the same host for different games. [Rulepack directory](rulepacks/README.md) |
+| Rulepacks | A pack supplies a particular game's rules, content and player interface. Stumpsville is one example. [Rulepack directory](rulepacks/README.md) |
 
 **For GMs and players**, the engine supports local playtests, LAN tables and remote browser sessions that can resume from the same save. **For rule authors**, a pack is a place to try a new mechanic: write the action in Lua, run it in a test room and inspect the result. [Lua authoring guide](docs/current/engineering/lua-authoring.md)
 

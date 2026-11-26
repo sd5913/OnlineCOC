@@ -3,11 +3,13 @@
 - 文档类型：计划
 - 状态：待确认
 - 创建日期：2026-10-31
-- 最后更新：2026-10-31
-- 关联文档：[问题索引](README.md)、[配置包准备](../../../rulepacks/lasers-and-feelings/docs/package-preparation.md)、[现行流程接口](../../current/engineering/lua-authoring.md)、[聊天室接口](../../current/engineering/chat-backend.md)
+- 最后更新：2026-11-26
+- 关联文档：[问题索引](README.md)、[配置包准备](https://github.com/sd5913/OnlineCOC/blob/c2a93cafd30db0672184fa48fd01ee924dd55d8d/rulepacks/lasers-and-feelings/docs/package-preparation.md)、[现行流程接口](../../current/engineering/lua-authoring.md)、[聊天室接口](../../current/engineering/chat-backend.md)
 - 问题状态：包侧方案已实现并验证，待工程责任者复核记录
 - 影响版本：2026-10-31 首测工程与 Lasers & Feelings 配置包 1.0.0
 - 优先级：完整多人协作接入前优先验证；不阻塞静态资料及基础规则制作
+
+配置包已于 2026-11-26 移除。下文保留当时的工程评估与验收结果，包内资料链接指向移除前的版本。
 
 ## 现象与预期
 
@@ -65,7 +67,7 @@
 
 ### 2026-10-31：配置包侧最小验证反馈
 
-已按上述工程回复继续，用独立存档和真实宿主 HTTP 完成 27 项检查，全部通过。见[验证说明](../../../rulepacks/lasers-and-feelings/docs/history/2026-10-31-cooperation-validation.md)、[可复跑驱动](../../../rulepacks/lasers-and-feelings/tests/verify_cooperation.py)及[机器摘要](../../../rulepacks/lasers-and-feelings/tests/cooperation-results.json)。工程实现与其运行存档未修改。
+已按上述工程回复继续，用独立存档和真实宿主 HTTP 完成 27 项检查，全部通过。见[验证说明](https://github.com/sd5913/OnlineCOC/blob/c2a93cafd30db0672184fa48fd01ee924dd55d8d/rulepacks/lasers-and-feelings/docs/history/2026-10-31-cooperation-validation.md)、[可复跑驱动](https://github.com/sd5913/OnlineCOC/blob/c2a93cafd30db0672184fa48fd01ee924dd55d8d/rulepacks/lasers-and-feelings/tests/verify_cooperation.py)及[机器摘要](https://github.com/sd5913/OnlineCOC/blob/c2a93cafd30db0672184fa48fd01ee924dd55d8d/rulepacks/lasers-and-feelings/tests/cooperation-results.json)。工程实现与其运行存档未修改。
 
 验证覆盖：相同 ID 重试、不同 ID 重复协助、关闭与迟到、并发主检定唯一提交、消费防重复、分享失败与重复分享不影响业务、重启保留回执与骰值、撤权后拒绝已排队命令，以及文字回复和私聊受众。KP 在实验中兼任第二协助者，未验收三个普通玩家独立操作；洞察问答只有文字关联，没有结构化待办状态。
 
@@ -77,6 +79,6 @@ Issue 保持开放，状态更新为“最小样例 27 项通过，待复用性�
 
 用户授权继续实现后，已将固定 ID 修订数据替换为现有 source / references 关系绑定。KP 通过前端创建草稿、参与记录与关系，再开放行动；同一规则修订连续执行多个行动。无需每次发布源码或手写绑定数据。
 
-当前规则接口 52 项、三隔离浏览器账号 16 项检查通过。浏览器验证包括建卡申请与审核、KP 私密冒险与玩家隔离、建船、公开场景、主协助检定、可信卡片、丢失已提交响应后的刷新恢复、私密洞察回答与状态、移动布局。见[使用说明](../../../rulepacks/lasers-and-feelings/docs/usage.md)、[当前规则设计](../../../rulepacks/lasers-and-feelings/docs/package-preparation.md)和[测试结果](../../../rulepacks/lasers-and-feelings/tests/README.md)。早期固定名单试验已归档，当前不再受其按行动发布修订的限制。
+当前规则接口 52 项、三隔离浏览器账号 16 项检查通过。浏览器验证包括建卡申请与审核、KP 私密冒险与玩家隔离、建船、公开场景、主协助检定、可信卡片、丢失已提交响应后的刷新恢复、私密洞察回答与状态、移动布局。见[使用说明](https://github.com/sd5913/OnlineCOC/blob/c2a93cafd30db0672184fa48fd01ee924dd55d8d/rulepacks/lasers-and-feelings/docs/usage.md)、[当前规则设计](https://github.com/sd5913/OnlineCOC/blob/c2a93cafd30db0672184fa48fd01ee924dd55d8d/rulepacks/lasers-and-feelings/docs/package-preparation.md)和[测试结果](https://github.com/sd5913/OnlineCOC/blob/c2a93cafd30db0672184fa48fd01ee924dd55d8d/rulepacks/lasers-and-feelings/tests/README.md)。早期固定名单试验已归档，当前不再受其按行动发布修订的限制。
 
 本轮没有修改工程，也没有确认必须由工程新增能力才能继续的阻塞。状态记录为“包侧方案已实现并验证，待工程责任者复核记录”，不要求工程为本包增加通用协作接口。独立制作者试用、长期规模和远程部署不以本轮自动验收代替；本反馈不声称完成这些工程层面的验收。

@@ -5,7 +5,7 @@
 - 状态：有效
 - 创建日期：2026-10-29
 - 最后更新：2026-11-26
-- 最近目录核对：2026-11-26（树桩镇战斗与地图验收、课程预览和双语下载入口、默认英文首页、更新日志、反馈目录、QuickStart 桌面工具和双语安装指南）。2026-11-23（AI分步发布、投影兼容与专项验收）；2026-11-23（规则文件增量暂存、既有性能与远程KP验收清单）；详见[增量暂存验收](../../../engineering/acceptance/rule-stage-delta/README.md)。 2026-11-23（AI 模糊需求恢复源码、冻结差量和验收清单）。 2026-11-23（聊天交互修复、冻结组件与浏览器验收）。
+- 最近目录核对：2026-11-26（核对配置包清单、树桩镇战斗与地图验收、课程预览和双语下载入口、默认英文首页、更新日志、反馈目录、QuickStart 桌面工具和双语安装指南）。2026-11-23（AI分步发布、投影兼容与专项验收）；2026-11-23（规则文件增量暂存、既有性能与远程KP验收清单）；详见[增量暂存验收](../../../engineering/acceptance/rule-stage-delta/README.md)。 2026-11-23（AI 模糊需求恢复源码、冻结差量和验收清单）。 2026-11-23（聊天交互修复、冻结组件与浏览器验收）。
 - 关联文档：[工程文档索引](README.md)、[文档维护标准](../../standards/document-maintenance.md)
 
 ## 工程实际目录
@@ -152,66 +152,6 @@
 | `docs/plans/localization-engineering-design.md` | 独立本地化工具的目录、文件契约、GUI/CLI、恢复与发布工程设计 |
 | `docs/plans/localization-construction-plan.md` | 独立本地化工具 L10N-0—L10N-6 施工、证据及阶段验收计划 |
 | `rulepacks/AGENTS.md` | 配置包作者只使用工程、不修改工程的施工边界 |
-| `rulepacks/lasers-and-feelings/.gitignore` | 独立 L&F 配置包文件 |
-| `rulepacks/lasers-and-feelings/assets/README.md` | 独立 L&F 配置包文件 |
-| `rulepacks/lasers-and-feelings/config/configurations.json` | 对象配置或原规则静态资料 |
-| `rulepacks/lasers-and-feelings/config/lf.json` | 对象配置或原规则静态资料 |
-| `rulepacks/lasers-and-feelings/config/README.md` | 对象配置或原规则静态资料 |
-| `rulepacks/lasers-and-feelings/docs/history/2026-10-31-cooperation-validation.md` | 当前包文档或历史验证记录 |
-| `rulepacks/lasers-and-feelings/docs/history/README.md` | 当前包文档或历史验证记录 |
-| `rulepacks/lasers-and-feelings/docs/package-preparation.md` | 当前包文档或历史验证记录 |
-| `rulepacks/lasers-and-feelings/docs/README.md` | 当前包文档或历史验证记录 |
-| `rulepacks/lasers-and-feelings/docs/rules.md` | 当前包文档或历史验证记录 |
-| `rulepacks/lasers-and-feelings/docs/usage.md` | 当前包文档或历史验证记录 |
-| `rulepacks/lasers-and-feelings/flows/README.md` | 独立 L&F 配置包文件 |
-| `rulepacks/lasers-and-feelings/LICENSE.md` | 独立 L&F 配置包文件 |
-| `rulepacks/lasers-and-feelings/manifest.json` | 独立 L&F 配置包文件 |
-| `rulepacks/lasers-and-feelings/README.md` | 独立 L&F 配置包文件 |
-| `rulepacks/lasers-and-feelings/rules/adventure.lua` | 当前可复用 Lua 规则或规则索引 |
-| `rulepacks/lasers-and-feelings/rules/answer.lua` | 当前可复用 Lua 规则或规则索引 |
-| `rulepacks/lasers-and-feelings/rules/cancel.lua` | 当前可复用 Lua 规则或规则索引 |
-| `rulepacks/lasers-and-feelings/rules/close.lua` | 当前可复用 Lua 规则或规则索引 |
-| `rulepacks/lasers-and-feelings/rules/help.lua` | 当前可复用 Lua 规则或规则索引 |
-| `rulepacks/lasers-and-feelings/rules/library.lua` | 当前可复用 Lua 规则或规则索引 |
-| `rulepacks/lasers-and-feelings/rules/main.lua` | 当前可复用 Lua 规则或规则索引 |
-| `rulepacks/lasers-and-feelings/rules/open.lua` | 当前可复用 Lua 规则或规则索引 |
-| `rulepacks/lasers-and-feelings/rules/profile.lua` | 当前可复用 Lua 规则或规则索引 |
-| `rulepacks/lasers-and-feelings/rules/question.lua` | 当前可复用 Lua 规则或规则索引 |
-| `rulepacks/lasers-and-feelings/rules/README.md` | 当前可复用 Lua 规则或规则索引 |
-| `rulepacks/lasers-and-feelings/rules/ship.lua` | 当前可复用 Lua 规则或规则索引 |
-| `rulepacks/lasers-and-feelings/sources/lasers-and-feelings-original.pdf` | 完整原始规则、来源、许可与摘要 |
-| `rulepacks/lasers-and-feelings/sources/lasers-and-feelings-original.txt` | 完整原始规则、来源、许可与摘要 |
-| `rulepacks/lasers-and-feelings/sources/README.md` | 完整原始规则、来源、许可与摘要 |
-| `rulepacks/lasers-and-feelings/sources/source-checksums.txt` | 完整原始规则、来源、许可与摘要 |
-| `rulepacks/lasers-and-feelings/start.ps1` | 独立 L&F 配置包文件 |
-| `rulepacks/lasers-and-feelings/启动激光与情感.exe` | Windows 原生控制台启动入口 |
-| `rulepacks/lasers-and-feelings/tools/PackLauncher.cs` | 配置包 exe 源码及退出进程清理 |
-| `rulepacks/lasers-and-feelings/tools/build-launcher.ps1` | 仅在包内生成 exe 与摘要的编译脚本 |
-| `rulepacks/lasers-and-feelings/tools/launcher-build.json` | 源码、exe 摘要和编译环境记录 |
-| `rulepacks/lasers-and-feelings/tools/README.md` | 包工具、exe 构建和启动清理说明 |
-| `rulepacks/lasers-and-feelings/tests/verify_launcher.py` | 原生 exe 的真实启动、退出清理及重启验证 |
-| `rulepacks/lasers-and-feelings/tests/launcher-results.json` | 10 项原生启动验证机器结果 |
-| `rulepacks/lasers-and-feelings/tests/.gitignore` | 包级验证、浏览器验证、机器证据或历史夹具 |
-| `rulepacks/lasers-and-feelings/tests/cooperation-results.json` | 包级验证、浏览器验证、机器证据或历史夹具 |
-| `rulepacks/lasers-and-feelings/tests/fixtures/close.lua` | 包级验证、浏览器验证、机器证据或历史夹具 |
-| `rulepacks/lasers-and-feelings/tests/fixtures/help.lua` | 包级验证、浏览器验证、机器证据或历史夹具 |
-| `rulepacks/lasers-and-feelings/tests/fixtures/main.lua` | 包级验证、浏览器验证、机器证据或历史夹具 |
-| `rulepacks/lasers-and-feelings/tests/fixtures/roll.lua` | 包级验证、浏览器验证、机器证据或历史夹具 |
-| `rulepacks/lasers-and-feelings/tests/package-results.json` | 包级验证、浏览器验证、机器证据或历史夹具 |
-| `rulepacks/lasers-and-feelings/tests/README.md` | 包级验证、浏览器验证、机器证据或历史夹具 |
-| `rulepacks/lasers-and-feelings/tests/ui-results.json` | 包级验证、浏览器验证、机器证据或历史夹具 |
-| `rulepacks/lasers-and-feelings/tests/verify_cooperation.py` | 包级验证、浏览器验证、机器证据或历史夹具 |
-| `rulepacks/lasers-and-feelings/tests/verify_package.py` | 包级验证、浏览器验证、机器证据或历史夹具 |
-| `rulepacks/lasers-and-feelings/tests/verify_ui.py` | 包级验证、浏览器验证、机器证据或历史夹具 |
-| `rulepacks/lasers-and-feelings/tools/client.py` | 仅使用现有 CLI/HTTP 的独立启动、导出或包工具 |
-| `rulepacks/lasers-and-feelings/tools/export.py` | 仅使用现有 CLI/HTTP 的独立启动、导出或包工具 |
-| `rulepacks/lasers-and-feelings/tools/launch.py` | 独立启动、同源适配及同机多账号会话槽位 |
-| `rulepacks/lasers-and-feelings/tools/package.py` | 仅使用现有 CLI/HTTP 的独立启动、导出或包工具 |
-| `rulepacks/lasers-and-feelings/ui/app.js` | 跑团桌面界面、样式或设计 |
-| `rulepacks/lasers-and-feelings/ui/frontend-design.md` | 跑团桌面界面、样式或设计 |
-| `rulepacks/lasers-and-feelings/ui/index.html` | 跑团桌面界面、样式或设计 |
-| `rulepacks/lasers-and-feelings/ui/README.md` | 跑团桌面界面、样式或设计 |
-| `rulepacks/lasers-and-feelings/ui/styles.css` | 跑团桌面界面、样式或设计 |
 | `rulepacks/README.md` | 配置包开发指南、工程接入与支持工具入口 |
 | `rulepacks/catalog.md` | 具体配置包实例、版本、状态统计与登记管理 |
 | `rulepacks/investigation-vtt-reference/README.md` | 调查型线上跑团对照配置包入口 |
@@ -275,7 +215,6 @@
 | `rulepacks/mini-detective-pack/assets/placeholders/textures/parchment.png` | 网络占位素材：Parchment，Mattias Lejbrink，CC0-1.0 |
 | `docs/plans/Issues/issue-003-rulepack-cooperative-ruling.md` | 配置包协作问题：包侧已解决并验证，待工程责任者复核记录 |
 | `docs/plans/games/README.md` | 轻量跑团资料与适配计划索引 |
-| `docs/plans/games/lasers-and-feelings/README.md` | 已迁入独立配置包的兼容入口 |
 | `docs/plans/project planning/first-test-engineering-design.md` | 首测工程设计与实施对照，保留设计基线 |
 | `docs/plans/project planning/first-test-construction-plan.md` | 首测 E0—E6 任务与验收基线，独立作者试写待验收 |
 | `docs/plans/project planning/Issue/README.md` | 工程规划待解决问题索引 |
@@ -434,7 +373,7 @@
 | `rulepacks/mini-detective-pack/tools/launcher-build.json` | 账号启动器源码、构建、说明或验收 |
 | `rulepacks/mini-detective-pack/tools/README.md` | 账号启动器源码、构建、说明或验收 |
 
-生成目录：`rulepacks/mini-detective-pack/runtime/` 为独立游玩数据，含 `room/` 宿主存档、`room-automation/` 自动化队列与凭据及停服备份，`rulepacks/mini-detective-pack/tests/output/` 为隔离测试存档、日志和截图，均忽略且不逐文件登记，仍受对应施工范围约束。`rulepacks/lasers-and-feelings/runtime/` 为独立游玩存档，`rulepacks/lasers-and-feelings/exports/` 为导出 ZIP；均不入库且不逐文件登记。`rulepacks/lasers-and-feelings/tests/output/` 存放配置包的独立实验存档、日志与接口发现结果，不入库、不逐文件登记，仍受对应施工范围约束。`engineering/.venv/` 是依赖环境；`engineering/.runtime/` 存放游玩数据、桌面工具的独立 Python/环境、缓存及日志；`engineering/.test-output/` 存放隔离测试、离线 wheel、截图与报告；Python/pytest 缓存不登记逐文件清单。生成目录仍受其父目录施工占用约束。
+生成目录：`rulepacks/mini-detective-pack/runtime/` 为独立游玩数据，含 `room/` 宿主存档、`room-automation/` 自动化队列与凭据及停服备份，`rulepacks/mini-detective-pack/tests/output/` 为隔离测试存档、日志和截图，均忽略且不逐文件登记，仍受对应施工范围约束。`engineering/.venv/` 是依赖环境；`engineering/.runtime/` 存放游玩数据、桌面工具的独立 Python/环境、缓存及日志；`engineering/.test-output/` 存放隔离测试、离线 wheel、截图与报告；Python/pytest 缓存不登记逐文件清单。生成目录仍受其父目录施工占用约束。
 
 本次自动化与界面新增文件：
 

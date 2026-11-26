@@ -3,7 +3,7 @@
 - 文档类型：计划
 - 状态：进行中
 - 创建日期：2026-11-12
-- 最后更新：2026-11-13
+- 最后更新：2026-11-26
 - 关联文档：[计划索引](README.md)、[房间发现与 P2P 同步](room-discovery-p2p-package-sync.md)、[云部署调研](cloud-server-deployment-research.md)、[公网大厅草稿](browser-room-portal.md)、[桌面启动工具](../current/engineering/desktop-tools.md)、[LAN 模块](../current/engineering/network-lan.md)、[房间管理器](../current/engineering/room-manager.md)
 
 ## 1. 结论与讨论范围
@@ -34,10 +34,9 @@
 | 独立 RoomManager | 通过现有 API 管理已运行宿主，可启停 LAN 网关 | 房间管理、启动主机与进入游戏是不同动作 |
 | engineering/network-lan | 独立 HTTP/WS 白名单网关，不读存档、不执行规则 | 当前只接通用宿主 API/操作台，不代理游戏包自有服务 |
 | 树桩镇 launch.py / lan.py | 包侧 Runtime 启动宿主、保存 package.json、提供包接口；LAN 窗口启动该包服务 | 网络界面、业务服务与宿主生命周期存在耦合，不能直接再套一个会启动宿主的控制器 |
-| 激光与情感 launch.py | 可启动新宿主，也可用 --backend 连接已有回环宿主 | 已有“自己创建 / 连接已有”区别，可作为迁移切口 |
 | 各包 manifest | 标识规则、数据、UI 与版本 | 尚未形成通用运行能力、服务适配及联机兼容契约 |
 
-依据：[启动配置](../../launcher-config.json)、[桌面监督入口](../../engineering/desktop/desktop_host.py)、[树桩镇启动](../../rulepacks/stumpsville/tools/launch.py)、[树桩镇 LAN](../../rulepacks/stumpsville/tools/lan.py)、[激光与情感启动](../../rulepacks/lasers-and-feelings/tools/launch.py)、[树桩镇 manifest](../../rulepacks/stumpsville/manifest.json)。
+依据：[启动配置](../../launcher-config.json)、[桌面监督入口](../../engineering/desktop/desktop_host.py)、[树桩镇启动](../../rulepacks/stumpsville/tools/launch.py)、[树桩镇 LAN](../../rulepacks/stumpsville/tools/lan.py)、[树桩镇 manifest](../../rulepacks/stumpsville/manifest.json)。
 
 现有根启动工具关闭窗口会停止其子进程，浏览器关闭不会停止；LAN 网关停止不会停止上游宿主。后文拟议的关闭行为需通过迁移实现，不能当作现有行为。配置包施工仍遵循 [rulepacks 协作要求](../../rulepacks/AGENTS.md)：包作者使用公开工具和 API，工程责任者维护通用实现。
 
