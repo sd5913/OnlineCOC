@@ -1,6 +1,6 @@
 # OnlineCOC · 线上跑团
 
-[English](README.md) · [下载 Windows x64 体验包](https://github.com/sd5913/OnlineCOC/releases/download/v0.1.0-preview.1/OnlineCOC-Win64-v0.1.0-preview.1.zip) · [v0.1.0-preview.1 版本说明](https://github.com/sd5913/OnlineCOC/releases/tag/v0.1.0-preview.1)
+[English](README.md) · [下载 Windows x64 体验包](https://github.com/sd5913/OnlineCOC/releases/download/v0.1.0-preview.2/OnlineCOC-Win64-v0.1.0-preview.2.zip) · [v0.1.0-preview.2 版本说明](https://github.com/sd5913/OnlineCOC/releases/tag/v0.1.0-preview.2)
 
 房主在 Windows 电脑上开桌，朋友用浏览器入座。推荐从 **《树桩镇》** 开始，带一队小鼠走进入口隧道，寻找线索，一起揭开地图。
 
@@ -40,6 +40,6 @@ https://github.com/user-attachments/assets/b236b238-37fa-4cf6-8eb6-e6061aa46a11
 
 ## 从源码运行
 
-在完整仓库中运行 [setup-game.cmd](engineering/setup-game.cmd)，首次安装需联网。看到 `GAME_RUNTIME_READY` 后运行 [start-panel.cmd](rulepacks/stumpsville/start-panel.cmd)。最新战斗与地图功能在 `main`；Windows 体验包基于 [e5b3244](https://github.com/sd5913/OnlineCOC/commit/e5b3244aaa30ba7905bcf8f4bf57b28c7a76a652) 构建。[基础引擎 QuickStart](docs/current/engineering/desktop-tools.md)
+在完整仓库中运行 [setup-game.cmd](engineering/setup-game.cmd)，首次安装需联网。看到 `GAME_RUNTIME_READY` 后运行 [start-panel.cmd](rulepacks/stumpsville/start-panel.cmd)。Windows 体验包已包含多人战斗与地图缩放、复位，基于 [217039b](https://github.com/sd5913/OnlineCOC/commit/217039bc179246c1eb2b0bd6156cd153176ccb20) 构建。[基础引擎 QuickStart](docs/current/engineering/desktop-tools.md)
 
 [玩家指南](rulepacks/stumpsville/docs/current/player-guide.md) · [来源与许可](rulepacks/stumpsville/docs/current/sources.md) · [开发与 AI 协作记录](PROCESS.md) · [更新日志](UPDATE-NOTES.md) · [玩家反馈](feedback/README.md)

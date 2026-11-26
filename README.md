@@ -1,6 +1,6 @@
 # OnlineCOC
 
-[简体中文](README.zh-CN.md) · [Download for Windows x64](https://github.com/sd5913/OnlineCOC/releases/download/v0.1.0-preview.1/OnlineCOC-Win64-v0.1.0-preview.1.zip) · [Release v0.1.0-preview.1](https://github.com/sd5913/OnlineCOC/releases/tag/v0.1.0-preview.1)
+[简体中文](README.zh-CN.md) · [Download for Windows x64](https://github.com/sd5913/OnlineCOC/releases/download/v0.1.0-preview.2/OnlineCOC-Win64-v0.1.0-preview.2.zip) · [Release v0.1.0-preview.2](https://github.com/sd5913/OnlineCOC/releases/tag/v0.1.0-preview.2)
 
 Host a tabletop RPG on Windows and let friends join in their browsers. Start with **Stumpsville**: lead a party of mice into the entrance tunnel, follow clues and uncover the map together.
 
@@ -40,6 +40,6 @@ https://github.com/user-attachments/assets/b236b238-37fa-4cf6-8eb6-e6061aa46a11
 
 ## From source
 
-Run [setup-game.cmd](engineering/setup-game.cmd) from a full checkout. First-time setup needs internet. After `GAME_RUNTIME_READY`, run [start-panel.cmd](rulepacks/stumpsville/start-panel.cmd). The latest combat and map controls are on `main`; the Windows preview uses [e5b3244](https://github.com/sd5913/OnlineCOC/commit/e5b3244aaa30ba7905bcf8f4bf57b28c7a76a652). [Base engine QuickStart](docs/current/engineering/desktop-tools.md)
+Run [setup-game.cmd](engineering/setup-game.cmd) from a full checkout. First-time setup needs internet. After `GAME_RUNTIME_READY`, run [start-panel.cmd](rulepacks/stumpsville/start-panel.cmd). The Windows preview includes shared combat and map zoom/reset from [217039b](https://github.com/sd5913/OnlineCOC/commit/217039bc179246c1eb2b0bd6156cd153176ccb20). [Base engine QuickStart](docs/current/engineering/desktop-tools.md)
 
 [Player guide](rulepacks/stumpsville/docs/current/player-guide.md) · [Credits & licensing](rulepacks/stumpsville/docs/current/sources.md) · [Development process](PROCESS.md) · [Update notes](UPDATE-NOTES.md) · [Feedback](feedback/README.md)

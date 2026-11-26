@@ -2,6 +2,10 @@
 
 [User guide](README.md) · [Development process](PROCESS.md) · [Issue register](docs/plans/Issues/README.md)
 
+## 26 November 2026 · Windows x64 v0.1.0-preview.2
+
+- Packaged the Stumpsville combat rules and map controls from [217039b](https://github.com/sd5913/OnlineCOC/commit/217039bc179246c1eb2b0bd6156cd153176ccb20). Players can fight the same enemy and flee, and can zoom or reset the map on desktop and mobile layouts. [Download and release notes](https://github.com/sd5913/OnlineCOC/releases/tag/v0.1.0-preview.2)
+
 ## 26 November 2026 · Windows x64 v0.1.0-preview.1
 
 - Added a downloadable offline build of Stumpsville from `e5b3244`, with a unified launcher, networking setup and a single-key DeepSeek preset. The bilingual guides include the trailer and first-session video. [Release notes and downloads](https://github.com/sd5913/OnlineCOC/releases/tag/v0.1.0-preview.1)
