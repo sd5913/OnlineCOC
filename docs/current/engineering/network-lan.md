@@ -4,7 +4,7 @@
 - 文档子类：工程
 - 状态：有效
 - 创建日期：2026-11-09
-- 最后更新：2026-11-19
+- 最后更新：2026-11-26
 - 关联文档：[模块入口](../../../engineering/network-lan/README.md)、[Python 管理器](room-manager.md)、[验收](../../../tools/room-manager/docs/acceptance.md)
 
 ## 目标与模块边界
@@ -39,10 +39,14 @@ Python 管理器的“局域网联机”页和 `RoomManager.exe --lan` 使用同
 
 启动后，同网段成员打开共享地址即可访问通用操作台；管理者也可将该地址填入 Python 管理器。WebSocket 和 HTTP 使用同一对外端口，避免旧配置包网页代理“HTTP 登录成功但实时连接失败”的问题。网关不代理配置包自己的页面或自动化服务，这些仍使用配置包原入口。
 
+发布包须保留整个 `tools/room-manager/dist/RoomManager/` 目录，使用其中自带的 Python/Tk 运行时；玩家浏览器不需安装 LAN 模块。源码安装及首次交互、端口占用/登录失败后的重试见[模块教程](../../../engineering/network-lan/README.md)。LAN 网关没有独立的房间目录、房间密码/审批或配置包同步流程，不能沿用 P2P 的下载教学；它只借用宿主账号并转发已列入白名单的接口。
+
 本版 HTTP 不加密，只适用于可信局域网；不默认开放公网，不自动配置防火墙、端口映射或穿透。若需要固定地址，应由操作者配置本机网络和固定网关端口。UDP 自动发现、TLS/公网部署及游戏包网页接入仍需单独设计，不视为已实现能力。
 
 ## 验证范围
 
-已在本机真实 WLAN IPv4 上验证两会话、身份隔离、HTTP/WS、业务命令、权限约束、网关启停与重连；已验证实际 Tk 面板与独立发布窗口。测试客户端仍运行在同一物理电脑上，不能据此宣称跨设备、防火墙穿越或不可信网络已验收。详细结果与截图见[验收报告](../../../tools/room-manager/docs/acceptance.md)。
+2026-11-26 新增[本地首次交互脚本](../../../engineering/network-p2p/acceptance/test_firstplay.py)的 LAN 用例通过：真实宿主、两个独立玩家 Cookie、错误密码后重试、端口占用后释放并重试、HTTP 聊天和另一玩家读取、WS 快照、命令幂等、host-control 拒绝、网关停止保留宿主以及重启后原登录仍可用。[本轮摘要](../../../engineering/network-p2p/acceptance/2026-11-26-firstplay.json)保留结果与源码摘要。本轮使用回环地址 `127.0.0.1`，没有重新测试原生 Tk 面板、发布包安装或跨设备连接。
+
+历史记录已在本机真实 WLAN IPv4 上验证两会话、身份隔离、HTTP/WS、业务命令、权限约束、网关启停与重连；已验证实际 Tk 面板与独立发布窗口。测试客户端仍运行在同一物理电脑上，不能据此宣称跨设备、防火墙穿越或不可信网络已验收。详细结果与截图见[验收报告](../../../tools/room-manager/docs/acceptance.md)。
 
 2026-11-19 的 AI 调试增量通过本机回环 HTTP 转发验收，验证 GET、原账号 Cookie、查询参数和 no-store，以及拒绝 POST／额外 AI／host-control 路径；路由、SDK 和环境边界见[本轮验收](../../../engineering/acceptance/ai-debug-route/README.md)。它不替代独立 AI 模块的正文授权与脱敏测试。

@@ -1,0 +1,9 @@
+配置：C:\Users\26077\AppData\Local\Temp\oc-install-c4b4-1126\audit-config.json
+日志：C:\Users\26077\AppData\Local\Temp\oc-install-c4b4-1126\engineering\.runtime\launcher-logs\20261126-101531-28576.log
+PYTHON_OK
+DEPENDENCIES_OK 29
+No broken requirements found.
+启动房间，等待本机服务就绪……
+服务已就绪：http://127.0.0.1:62291；关闭此窗口会停止本次服务。
+正在保存状态并停止服务……
+服务已停止。

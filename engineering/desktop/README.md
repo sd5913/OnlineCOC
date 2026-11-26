@@ -2,6 +2,8 @@
 
 根目录的 `安装依赖.exe` 和 `启动OnlineCOC.exe` 是由 `DesktopTools.cs` 编译的 Windows x64 WinForms 程序，共用根目录 `launcher-config.json`。使用及配置维护见 [桌面工具说明](../../docs/current/engineering/desktop-tools.md)。
 
+它们启动的是 `http://127.0.0.1:8765` 上的本机基础操作台，默认不挂载 AI runtime 或配置包界面。运行环境装在 `engineering/.runtime/environments/`，不会生成开发和部分包脚本使用的 `engineering/.venv`。完整项目必须保留；两个 exe 不能单独分发为可用应用。
+
 | 文件 | 职责 |
 | --- | --- |
 | `DesktopTools.cs` | 配置读取、下载摘要、Python 展开、独立依赖环境、窗口、服务监督 |
@@ -24,3 +26,5 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File engineering/desktop/buil
 ```powershell
 engineering/.venv/Scripts/python -m pytest engineering/desktop/tests -q
 ```
+
+2026-11-26 的隔离安装、真实 exe 8 项回归、首次启动限制及页面验收见 [验收记录](acceptance-install-audit/README.md)。测试会解压新的 Python 并创建独立环境；路径过深可能触及 .NET 260 字符限制，临时目录使用缩短的随机后缀。依赖数量由共享锁文件计算，避免依赖升级后旧断言失效。

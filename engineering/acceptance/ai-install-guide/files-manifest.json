@@ -1,0 +1,69 @@
+{
+  "format": 1,
+  "inventory": [
+    "engineering/setup-game.cmd",
+    "engineering/setup-game.ps1",
+    "engineering/acceptance/ai-install-guide/.gitignore",
+    "engineering/acceptance/ai-install-guide/onboarding.png",
+    "engineering/acceptance/ai-install-guide/online-install.json",
+    "engineering/acceptance/ai-install-guide/provider-manager.xml",
+    "engineering/acceptance/ai-install-guide/README.md",
+    "engineering/acceptance/ai-install-guide/results.json",
+    "engineering/acceptance/ai-install-guide/source.json",
+    "engineering/acceptance/ai-install-guide/verify.py",
+    "engineering/acceptance/ai-install-guide/files-manifest.json"
+  ],
+  "files": [
+    {
+      "path": "engineering/setup-game.cmd",
+      "bytes": 190,
+      "sha256": "7ad0a155938696791ba71c27ed5bd383af0414495c83bef9b08d24dbc4dd8457"
+    },
+    {
+      "path": "engineering/setup-game.ps1",
+      "bytes": 7482,
+      "sha256": "2e094f29548f1f57a45947694c3c869ec6cd16f6fd0da96fa5692ee3f8b419fc"
+    },
+    {
+      "path": "engineering/acceptance/ai-install-guide/.gitignore",
+      "bytes": 19,
+      "sha256": "7c0e3807a109f275f04fa607825e26c8d69f2e23f684cf4ca68e03df1173780a"
+    },
+    {
+      "path": "engineering/acceptance/ai-install-guide/onboarding.png",
+      "bytes": 57175,
+      "sha256": "6e9075f8c03e7716e2a96679e1f7f411b45c0b4819b7fd98a43dcf32ebaa8190"
+    },
+    {
+      "path": "engineering/acceptance/ai-install-guide/online-install.json",
+      "bytes": 389,
+      "sha256": "d928b9c30f16556d1021590df428444d3a5f12971f8a4fea12979de0a5d0efd0"
+    },
+    {
+      "path": "engineering/acceptance/ai-install-guide/provider-manager.xml",
+      "bytes": 7297,
+      "sha256": "1f24bd8404faece7d0a8d344d98cada049065b1608b69e5742ea89fafbc5f06f"
+    },
+    {
+      "path": "engineering/acceptance/ai-install-guide/README.md",
+      "bytes": 9061,
+      "sha256": "76676bb597cc1b0548f74db3315e47ee9fe45830eff8bb5202591ccda823242d"
+    },
+    {
+      "path": "engineering/acceptance/ai-install-guide/results.json",
+      "bytes": 1380,
+      "sha256": "b1a303ae76b16f661cb9b671cd167c93825ba26c0c36a9724ab8765bcdab40e1"
+    },
+    {
+      "path": "engineering/acceptance/ai-install-guide/source.json",
+      "bytes": 1240,
+      "sha256": "55847012c8eeb5b214a76a8c404943eac10135dd4f7bb63c2e138eb287d549f8"
+    },
+    {
+      "path": "engineering/acceptance/ai-install-guide/verify.py",
+      "bytes": 9374,
+      "sha256": "cf0db00e64c39b455fa57174dfbba5e16dd7ac361c5e038665d8cde5bdce21dc"
+    }
+  ],
+  "ignoredDirectory": "engineering/acceptance/ai-install-guide/work/"
+}

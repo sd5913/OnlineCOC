@@ -4,8 +4,8 @@
 - 文档子类：工程
 - 状态：有效
 - 创建日期：2026-10-29
-- 最后更新：2026-11-23
-- 最近目录核对：2026-11-23（AI分步发布、投影兼容与专项验收）；2026-11-23（规则文件增量暂存、既有性能与远程KP验收清单）；详见[增量暂存验收](../../../engineering/acceptance/rule-stage-delta/README.md)。 2026-11-23（AI 模糊需求恢复源码、冻结差量和验收清单）。 2026-11-23（聊天交互修复、冻结组件与浏览器验收）。
+- 最后更新：2026-11-26
+- 最近目录核对：2026-11-26（双语游玩指南、英文开发记录、共用安装器及引擎、AI、联机验收文件）。2026-11-23（AI分步发布、投影兼容与专项验收）；2026-11-23（规则文件增量暂存、既有性能与远程KP验收清单）；详见[增量暂存验收](../../../engineering/acceptance/rule-stage-delta/README.md)。 2026-11-23（AI 模糊需求恢复源码、冻结差量和验收清单）。 2026-11-23（聊天交互修复、冻结组件与浏览器验收）。
 - 关联文档：[工程文档索引](README.md)、[文档维护标准](../../standards/document-maintenance.md)
 
 ## 工程实际目录
@@ -22,7 +22,40 @@
 | --- | --- |
 | `AGENTS.md` | Agent 协作与施工要求 |
 | `.gitattributes` | 保留ISSUE-024验收及依赖冻结版本的原始字节，避免跨系统换行改变证据哈希 |
-| `README.md` | 项目入口 |
+| `README.md` | 中文安装与游玩指南，含树桩镇、联机、AI 和开发入口 |
+| `README.en.md` | 英文安装与游玩指南 |
+| `PROCESS.md` | 英文课程开发记录、AI 协作案例、提交与验收依据 |
+| `engineering/setup-game.cmd` | 树桩镇与 AI 共用的一键安装入口 |
+| `engineering/setup-game.ps1` | 准备项目 Python、Tk 和运行依赖，支持环境复查 |
+| `engineering/acceptance/ai-install-guide/.gitignore` | 排除隔离验收工作目录 |
+| `engineering/acceptance/ai-install-guide/README.md` | AI 安装与请求的双语步骤及验收范围 |
+| `engineering/acceptance/ai-install-guide/files-manifest.json` | 安装验收文件清单与摘要 |
+| `engineering/acceptance/ai-install-guide/onboarding.png` | 本机管理器与模拟请求验收截图 |
+| `engineering/acceptance/ai-install-guide/online-install.json` | 无缓存在线安装与环境复查结果 |
+| `engineering/acceptance/ai-install-guide/provider-manager.xml` | 服务商和管理器回归结果 |
+| `engineering/acceptance/ai-install-guide/results.json` | 隔离安装、重试、模拟 AI 请求结果 |
+| `engineering/acceptance/ai-install-guide/source.json` | 安装与请求验收输入摘要 |
+| `engineering/acceptance/ai-install-guide/verify.py` | AI 首次安装和管理器入门验证脚本 |
+| `engineering/network-p2p/acceptance/test_firstplay.py` | 真实宿主 P2P 与 LAN 首次加入验收脚本 |
+| `engineering/network-p2p/acceptance/2026-11-26-firstplay.json` | P2P、LAN、双玩家聊天及重试验收结果 |
+| `engineering/desktop/acceptance-install-audit/README.md` | 基础引擎安装与浏览器验收说明 |
+| `engineering/desktop/acceptance-install-audit/browser-launch.log` | 启动日志 |
+| `engineering/desktop/acceptance-install-audit/console-kp.png` | 主持视图验收截图 |
+| `engineering/desktop/acceptance-install-audit/console-player.png` | 玩家视图验收截图 |
+| `engineering/desktop/acceptance-install-audit/desktop-tests-short-path.xml` | 短路径夹具回归结果 |
+| `engineering/desktop/acceptance-install-audit/desktop-tests.xml` | 初次回归及路径限制记录 |
+| `engineering/desktop/acceptance-install-audit/index-paths.json` | 本次验收文件清单 |
+| `engineering/desktop/acceptance-install-audit/online-browser.json` | 在线安装与浏览器联验结果 |
+| `engineering/desktop/acceptance-install-audit/online-install.log` | 首次在线安装日志 |
+| `engineering/desktop/acceptance-install-audit/prepare.py` | 准备隔离工程的脚本 |
+| `engineering/desktop/acceptance-install-audit/restart.log` | 恢复同一房间的启动日志 |
+| `engineering/desktop/acceptance-install-audit/source-short-path.json` | 短路径复验的输入摘要 |
+| `engineering/desktop/acceptance-install-audit/source.json` | 验收输入摘要 |
+| `engineering/desktop/acceptance-install-audit/verification.json` | 验收结论与覆盖边界 |
+| `engineering/desktop/acceptance-install-audit/verify_online.py` | 执行在线安装和浏览器验证 |
+| `engineering/network-web/acceptance/2026-11-26-firstplay.json` | 联网安装器首次安装、占用重试与本机网页验收 |
+| `engineering/network-web/acceptance/2026-11-26-player.png` | 本轮网页玩家已结算检定与桌面截图 |
+| `docs/plans/local-coursework/` | 本地课程待办目录，含 `TODO.md`，整个目录由 Git 忽略 |
 | `engineering/README.md` | 工程代码目录用途与相关入口 |
 | `docs/current/engineering/network-p2p.md` | 公网模块配置、玩家包/内容导出、协议、云端运维与验收 |
 | `engineering/network-p2p/.gitattributes` | 固定 Linux 脚本及 Windows PowerShell 的行尾 |

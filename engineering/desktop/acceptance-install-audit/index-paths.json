@@ -1,0 +1,17 @@
+[
+  "engineering/desktop/acceptance-install-audit/README.md",
+  "engineering/desktop/acceptance-install-audit/browser-launch.log",
+  "engineering/desktop/acceptance-install-audit/console-kp.png",
+  "engineering/desktop/acceptance-install-audit/console-player.png",
+  "engineering/desktop/acceptance-install-audit/desktop-tests-short-path.xml",
+  "engineering/desktop/acceptance-install-audit/desktop-tests.xml",
+  "engineering/desktop/acceptance-install-audit/index-paths.json",
+  "engineering/desktop/acceptance-install-audit/online-browser.json",
+  "engineering/desktop/acceptance-install-audit/online-install.log",
+  "engineering/desktop/acceptance-install-audit/prepare.py",
+  "engineering/desktop/acceptance-install-audit/restart.log",
+  "engineering/desktop/acceptance-install-audit/source-short-path.json",
+  "engineering/desktop/acceptance-install-audit/source.json",
+  "engineering/desktop/acceptance-install-audit/verification.json",
+  "engineering/desktop/acceptance-install-audit/verify_online.py"
+]

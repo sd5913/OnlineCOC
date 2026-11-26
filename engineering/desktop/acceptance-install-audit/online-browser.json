@@ -1,0 +1,59 @@
+{
+  "platform": "Windows-10-10.0.19045-SP0",
+  "pythonRemovedFromChildPath": true,
+  "defaultCacheAbsentBefore": true,
+  "port": 62291,
+  "onlineInstall": {
+    "exitCode": 0,
+    "seconds": 72.99,
+    "dependencies29": true
+  },
+  "tkImportAndTcl": {
+    "exitCode": 0,
+    "output": "8.6.15\n8.6"
+  },
+  "firstStartRequiresPassword": true,
+  "capabilities": {
+    "engineVersion": "0.3.0",
+    "roomSchemaVersion": 4,
+    "protocolVersion": 1,
+    "transports": [
+      "http",
+      "websocket"
+    ],
+    "resumeWindow": 0,
+    "storage": "files",
+    "maxCommandBytes": 65536,
+    "ai": {
+      "version": 1,
+      "available": false,
+      "enabled": false,
+      "maxCommandBytes": 65536,
+      "maxDraftBytes": 8388608,
+      "maxPage": 100
+    },
+    "chat": {
+      "version": 1,
+      "maxTextLength": 4000,
+      "maxHistoryPage": 100,
+      "maxChannels": 128,
+      "maxMessages": 10000,
+      "privateAssetAttachments": false
+    }
+  },
+  "browserVersion": "158.0.4370.33",
+  "browser": {
+    "accounts": [
+      "kp",
+      "player1",
+      "player2"
+    ],
+    "separateContexts": true,
+    "websocketConnected": true,
+    "kpManagementOnly": true,
+    "damageHp": 4,
+    "pageErrors": []
+  },
+  "restartHp": 4,
+  "passed": true
+}

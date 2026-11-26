@@ -1,0 +1,159 @@
+{
+  "date": "2026-11-26",
+  "recordedAt": "2026-11-26T10:15:13+08:00",
+  "scope": "Local onboarding verification only; no public service or production credential access",
+  "installer": {
+    "freshInstall": true,
+    "repeatInstallAndBackup": true,
+    "unicodeAndSpaces": true,
+    "systemPythonAbsentFromPATH": true,
+    "invalidPythonEnvironmentIgnored": true,
+    "inUseRuntimeRejected": true,
+    "retryAfterRuntimeStopped": true,
+    "configurationPreserved": true,
+    "invalidTargetRejected": true,
+    "bothCLIHelp": true,
+    "dependenciesAndWebRTCProbe": true,
+    "exeSHA256": "2b77a65fbe1cf843e155db43c2d3336510b72339ee90ada32d4640caa89cdb65",
+    "checkedAt": "2026-11-26T02:10:53.897139+00:00",
+    "samePhysicalComputer": true,
+    "guiClicked": false,
+    "steps": [
+      {
+        "operation": "--install",
+        "exitCode": 0,
+        "expectedExitCode": 0,
+        "seconds": 8.072
+      },
+      {
+        "operation": "--verify",
+        "exitCode": 0,
+        "expectedExitCode": 0,
+        "seconds": 2.272
+      },
+      {
+        "operation": "--install",
+        "exitCode": 1,
+        "expectedExitCode": 1,
+        "seconds": 6.085
+      },
+      {
+        "operation": "--install",
+        "exitCode": 0,
+        "expectedExitCode": 0,
+        "seconds": 12.033
+      },
+      {
+        "operation": "--verify",
+        "exitCode": 0,
+        "expectedExitCode": 0,
+        "seconds": 2.042
+      },
+      {
+        "operation": "--install",
+        "exitCode": 1,
+        "expectedExitCode": 1,
+        "seconds": 0.058
+      }
+    ]
+  },
+  "installerArtifact": {
+    "file": "engineering/network-web/dist/OnlineCOC-Network-Setup.exe",
+    "bytes": 48329728,
+    "trackedInGit": false,
+    "requiresSeparateDistribution": true,
+    "installsGameBackend": false,
+    "playersNeedInstaller": false
+  },
+  "webModuleTests": {
+    "passed": 39,
+    "cloudSkipped": 3,
+    "failed": 0,
+    "seconds": 29.742,
+    "browser": "Microsoft Edge",
+    "runner": "engineering/network-p2p/.venv/Scripts/python.exe",
+    "junitSHA256": "3f411f0b737e2c9cbb442f5e234a26bea8be4e94f919d969a1344f259f135f16"
+  },
+  "sharedStumpsvilleEvidence": {
+    "providerThread": "Stumpsville配置包bro",
+    "executedInThisThread": false,
+    "webResultPath": "rulepacks/stumpsville/tests/web-results.json",
+    "webResultSHA256": "c14611f2b017bdf77f80a99eb4f04a9934348c68e198c92b1a01716a29e3d00d",
+    "webResult": {
+      "passed": true,
+      "checkedAt": "2026-11-26T10:08:09.283465+08:00",
+      "presets": [
+        "cage-gate",
+        "cage-listen",
+        "cave-cheese",
+        "cave-sleeper",
+        "courtyard-ladders",
+        "courtyard-pool",
+        "factory-equipment",
+        "factory-exits",
+        "gate-handle",
+        "gate-open",
+        "hall-negotiate",
+        "hall-observe",
+        "house-painting",
+        "house-pots",
+        "tunnel-cheese",
+        "tunnel-ground",
+        "web-call",
+        "web-inspect"
+      ],
+      "checks": [
+        "platform code admission and independent game pages; six-character passwords; two game identities; player identities stay unprivileged; opaque sandbox",
+        "two PL characters/readiness; KP browser resumes queued action; all 18 presets over actual WebRTC with dice/narrative/resources/clues and same-ID idempotence",
+        "remote management/AI/setup and query injection denied; game-side permission guards remain active; scene and personal clue isolation",
+        "real UI lost-response recovery persists original command ID; stale rules stop replay; recovery does not reroll; private and party chats cross browsers",
+        "on-demand English and portraits; declared storage only; platform/room/game scoping; reconnect restores preferences; one viewport",
+        "blacklist tears down old peer/frame without affecting another player; unban; no browser JavaScript errors",
+        "stop-file graceful web shutdown preserves borrowed host and game archive"
+      ],
+      "cloud": false,
+      "forcedTurn": false,
+      "browserTestCAException": false,
+      "samePhysicalComputer": true,
+      "temporaryRoomClosed": true
+    },
+    "creationFlow": "Host returns creationString; owner posts setupString to /v1/web/rooms/create; two players register, join by code, open game page and authenticate to game host",
+    "firstLocalInteraction": {
+      "phase": 1,
+      "queued": "processing",
+      "status": "completed",
+      "outcome": "success",
+      "clues": [
+        "入口地面的压痕"
+      ],
+      "knownLocations": [
+        1,
+        2,
+        3,
+        14
+      ],
+      "narrative": [
+        "你找到了通往主门的路线。"
+      ]
+    },
+    "firstInteractionPath": "rulepacks/stumpsville/tests/output/firstplay-2af9a55e/firstplay.json",
+    "firstInteractionSHA256": "bcbd71eed23412a3346e5f8387a840a8ba1d1f6f54a76c2d1d9d4ffb93d9fa37",
+    "playerScreenshot": "2026-11-26-player.png",
+    "screenshotSHA256": "4275809effac4d5922b5f4dee85398443503f719f701a217ecf035ed3d0f194f",
+    "visuallyCheckedInThisThread": "Screenshot shows P2P direct connected, player1 synced, game map/inventory and committed attribute roll 9 <= 20, success; it is a later game interaction, not the first-scene screenshot"
+  },
+  "limitations": [
+    "Same physical computer, isolated data; no separate clean PC or external network acceptance",
+    "Actual EXE CLI exercises shared GUI install logic; GUI was not clicked",
+    "No public server reachability, billing or certificate status rechecked",
+    "Offline EXE is a generated artifact omitted from Git; source clone alone does not provide the EXE",
+    "Host needs a separate game/Tk runtime and authorized directory/publisher configuration; browser users need a reachable platform and trusted HTTPS",
+    "Historical 2026-11-23 public TURN KP evidence is not counted as a rerun"
+  ],
+  "changes": [
+    "Document exact project root selection and recoverable retry steps",
+    "Remove pip requirement from offline-EXE user path and retain it only for developer venv path",
+    "Separate dependency installation from platform setup and game hosting",
+    "Document scenario-based Stumpsville sharing, joining and visible interaction"
+  ]
+}

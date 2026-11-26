@@ -2,6 +2,40 @@
 
 独立 Python 包，当前交付与验收状态见[工程说明](../../docs/current/engineering/ai-runtime.md)；待办见[实施计划](../../docs/plans/ai-runtime-construction-plan.md)。
 
+## 首次安装与第一次请求（Windows x64）
+
+1. 将**完整工程**放在可写目录，关闭正在运行的本工程房间、管理器和安装窗口，双击 [engineering/setup-game.cmd](../setup-game.cmd)。它从 `launcher-config.json` 指定地址取得完整 CPython 3.14.2，校验 SHA256，检查 Tk，并按 [requirements-runtime.lock](../requirements-runtime.lock) 的版本及 wheel 摘要创建 `engineering/.venv`。不要求预先安装 Python，也不修改系统 PATH。看到 `GAME_RUNTIME_READY` 后才继续。
+2. 通过配置包的 AI 入口启动房间，例如树桩镇的 `start-ai.cmd`；保持房间运行。另双击 [start-manager.cmd](start-manager.cmd)，浏览器将打开本机管理器。**根目录的“安装依赖.exe”用于旧 Desktop 首测环境，写入 `.runtime/environments`；它不能替代上一步的共享 `.venv` 安装。**
+3. 在“服务商”中编辑配置，核对服务类型、服务地址、模型与 `credentialRef`，启用该配置。仅在密钥输入框保存真实密钥；配置 JSON、聊天、截图和提交仓库中不要填写密钥。“测试连接（产生用量）”成功后再继续；真实服务测试会计费。
+4. 添加运行中的本机房间地址，以该房间 KP 账号登录。在“KP 审核与设置 → 服务与外发范围”选择同一服务配置，开启调用，按本次任务需要明确选择外发范围并保存。服务配置与房间开关是两层设置；本机管理器登录不自动授予房间 KP 权限。
+5. 新建会话，先发送讨论型需求，如“请概述当前公开资料，不执行修改”。需要配置修改时查看 A/B/C、差异和风险，再由 KP 决定是否批准。收到回答、通过检查和发布生效是不同状态，不能把模型文案当成执行凭证。
+
+同一 `.venv` 供 AI Manager 和树桩镇当前启动入口共用；公网/P2P 的独立环境仍按对应模块安装。仅安装运行依赖不会安装 pytest、Playwright 等开发测试依赖。
+
+### 安装与连接失败后重试
+
+| 现象 | 处理与成功标志 |
+| --- | --- |
+| 下载或 pip 失败 | 查看 `engineering/.runtime/game-setup-logs/` 的本次日志，恢复网络后重跑 `setup-game.cmd`；失败不会写成功标记。不要删除房间存档。 |
+| Python 摘要不匹配 | 缓存不会被执行。按日志定位该归档，移走损坏缓存后重试；不要绕过摘要检查。 |
+| Python / `.venv` 目录不完整或版本不符 | 关闭使用该环境的程序，保留日志并将日志指向的**环境目录**改名留存，再重试；勿操作包的 runtime 游玩存档。 |
+| 提示已有安装或桌面宿主 | 关闭原窗口后重试，安装器不会并发改写它使用的环境。 |
+| 管理器无法启动 / 缺包 | 先运行 `engineering\setup-game.cmd -VerifyOnly`；若失败，重新安装。不要只从另一台机器复制 `.venv`。 |
+| 管理端口被占用 | 关闭旧管理器，或运行 `engineering\ai\start-manager.cmd --port 8777`。 |
+| 服务鉴权、限流或网络错误 | 在服务商面板核对密钥、启用状态、模型与地址；按错误原因修正后再“测试连接”。限流按服务提示等待，不连续反复提交。 |
+| `AI_DISABLED` / `EXTERNAL_SCOPE_DISABLED` | 由 KP 检查房间调用开关与实际需要的外发范围；不靠重新输入密钥绕过权限。 |
+| 消息发送失败 | 原草稿保留。恢复连接后重试该草稿；相同内容保留提交标识。若结果不确定，先看历史和真实回执，避免将“重试”当作新的增量操作。 |
+
+离线机器可准备与锁文件匹配的 wheel 和配置中指定、摘要正确的完整 Python ZIP，然后从项目根目录运行：
+
+```powershell
+engineering\setup-game.cmd -Offline -ArchivePath "D:\offline\python-3.14.2-amd64.zip" -WheelDirectory "D:\offline\wheels"
+```
+
+2026-11-26 的默认在线新装、离线失败重试、Tk 和一次本机模拟请求证据见[安装验收](../acceptance/ai-install-guide/README.md)。历史真实 DeepSeek 证据另列在该报告中；本机模拟通过不表示当前真实服务或密钥可用。
+
+## 已有能力与开发入口
+
 **独立面板入口：[start-manager.cmd](start-manager.cmd)**。启动本机浏览器管理器，默认以房间文件夹组织会话，提供底部对话输入、服务商/密钥管理和按需打开的 KP 审核面板。房间仍由原宿主运行，默认管理端口 8776。首次使用、权限边界、嵌入组件、JavaScript/HTTP/Python 接口见[管理器与开发接入](../../docs/current/engineering/ai-manager.md)。树桩镇已接入咨询与配置裁决，当前范围见[包侧集成](../../rulepacks/stumpsville/docs/current/integrations.md)。管理器左下角“配置包交互原型”提供 KP／PL 可操作演示，设计与接入步骤见[原型计划](../../docs/plans/ai-pack-interaction.md)。
 
 - 机器契约：[ai.json](../contracts/ai.json)。

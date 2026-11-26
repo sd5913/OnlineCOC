@@ -4,12 +4,12 @@
 - 文档子类：工程
 - 状态：有效
 - 创建日期：2026-11-13
-- 最后更新：2026-11-23
+- 最后更新：2026-11-26
 - 关联文档：[快速使用](../../../engineering/network-p2p/README.md)、[目录清单](hierarchy.md)、[房间发现与同步计划](../../plans/room-discovery-p2p-package-sync.md)、[启动编排计划](../../plans/room-launch-orchestration.md)、[云部署调研](../../plans/cloud-server-deployment-research.md)
 
 ## 1. 当前实现
 
-独立模块 `engineering/network-p2p`，本机及腾讯CVM当前均为0.2.3，2026-11-23随network-web 0.3.2部署；TURN未重启。开房与加入步骤见[快速使用](../../../engineering/network-p2p/README.md)。0.2.1 增加不可枚举的 `code` 房间、可替换主机 Peer 和浏览器信令入口扩展；平台账号、成员和分组资源由可选 [network-web](network-web.md) 提供，旧 public/private 与整包同步协议保持兼容。
+独立模块 `engineering/network-p2p`，本机版本为 0.2.3；腾讯 CVM 最近记录的部署为 2026-11-23 随 network-web 0.3.2 部署 0.2.3，当次未重启 TURN。2026-11-26 仅做本地验收，未重新确认云端健康状态。开房与加入步骤见[快速使用](../../../engineering/network-p2p/README.md)。0.2.1 增加不可枚举的 `code` 房间、可替换主机 Peer 和浏览器信令入口扩展；平台账号、成员和分组资源由可选 [network-web](network-web.md) 提供，旧 public/private 与整包同步协议保持兼容。
 
 0.2.2增加供可信网页主机适配器调用的 `Upstream.service_request`：显式回环服务、逐玩家Cookie/CSRF、GET/POST、大小与超时限制、拒绝重定向。只有network-web版本2按声明校验后调用；没有把包路径加入旧P2P的通用 `request` 白名单。树桩镇旧P2P入口仍仅基础状态/聊天，完整玩家模式见[包网页说明](../../../rulepacks/stumpsville/docs/current/web.md)。
 
@@ -27,6 +27,8 @@
 源码中的浏览器 `WebRtcTransport.stats()` 读取所选候选对，返回候选类型、中转判断、RTT、收发字节/包数、发送丢弃数及可用出站比特率。浏览器未提供的字段返回 `null`，零 RTT 保留为零；只知道一端且不能确认中转时也返回未知。候选对接口不提供 SCTP 重传次数，因此 `retransmittedPackets` 为 `null` 并附 `retransmissionStatus`。不导出 IP、SDP、票据或 TURN 凭据。该源码已随0.3.1/0.2.3部署；原专项证据仍只有指标契约与本机 TCP 测量，不构成公网/中转时延验收，见[引擎性能](engine-performance.md)。
 
 完整项目可先使用[离线依赖安装 EXE](../../../engineering/network-web/installer/README.md)，无需系统预装 Python。原开发安装流程仍可用：Windows 可双击模块 `play.cmd`，缺少独立运行时时自动调用 `setup.ps1`，随后打开联网页面；需要预先安装 Python 3.14 x64（含 `py` 启动器）。升级后需重开联网进程。Ubuntu 24.04 云端使用 Python 3.12；依赖版本见[requirements.lock](../../../engineering/network-p2p/requirements.lock)。新检出先运行模块 `setup.ps1`，再按[示例](../../../engineering/network-p2p/config/client.example.json)准备 `local/client-config.json`；`start.ps1 -Config 路径` 可选其他配置。
+
+`play.cmd` 只判断 `.venv/Scripts/python.exe` 是否存在；源码首次 pip 安装中断后，解释器可能已存在但依赖不全，此时须显式重跑 `setup.ps1` 再启动。离线安装器使用嵌入式运行时，修复时应重新运行安装器，不在其上执行源码 `setup.ps1` 或假设已有 pip。操作步骤及登录、下载重试见[快速使用](../../../engineering/network-p2p/README.md#常见问题)。
 
 | 字段 | 用途 |
 | --- | --- |
@@ -120,7 +122,9 @@ SSH/SCP 继续使用 [server.ps1](../../../engineering/network-p2p/scripts/serve
 
 ## 6. 验收及实用边界
 
-2026-11-22：0.2.3 本地 **43 项通过、11 项环境/云端跳过**，另有网页模块 39 项本地及 1 项公网测试通过，详见[0.3.1 联合记录](../../../engineering/network-web/acceptance/2026-11-22-0.3.1.json)。以下为历史基线，不计入本次重跑。
+2026-11-26：现有 P2P 测试 **46 项通过、8 项云端专项跳过**，另有新增真实宿主 P2P 浏览器和 LAN 验收各 1 项通过，见[本轮摘要](../../../engineering/network-p2p/acceptance/2026-11-26-firstplay.json)与[复测脚本](../../../engineering/network-p2p/acceptance/test_firstplay.py)。P2P 浏览器从注册记录选择真实宿主、发布私房，两类密码输错后重试、登录、下载并显示玩家页面、发送聊天，第二个独立账号读取同一消息；验证缓存命中零重复下载、停止分享保留原宿主。真实宿主登录失败在旧 P2P 页面显示 `AUTH_FAILED`，尚未映射中文。所有目录服务、玩家和宿主都在同一物理电脑，使用临时数据，本轮不访问或部署云端。
+
+以下为历史基线，不计入 2026-11-26 重跑。2026-11-22：0.2.3 本地 **43 项通过、11 项环境/云端跳过**，另有网页模块 39 项本地及 1 项公网测试通过，详见[0.3.1 联合记录](../../../engineering/network-web/acceptance/2026-11-22-0.3.1.json)。
 
 [0.2.0 验收记录](../../../engineering/network-p2p/acceptance/2026-11-13-0.2.0.json)为 54 项基线，原[0.1 的 46 项记录](../../../engineering/network-p2p/acceptance/2026-11-13.json)保留追溯。2026-11-13 增加网页扩展后，**54 项全部再次通过，零跳过**；本次摘要与网页专项证据见 [network-web 验收](../../../engineering/network-web/acceptance/2026-11-13.json)。
 
@@ -130,19 +134,21 @@ SSH/SCP 继续使用 [server.ps1](../../../engineering/network-p2p/scripts/serve
 - 准入、重放防护、租约/重启、持久封禁、进程锁和本机权限边界。
 - 当前真实宿主/Client SDK、双玩家 Cookie 隔离、规则/状态/聊天/幂等/撤权、浏览器发布和隔离页面；停止联机后原宿主仍运行。
 - 真实 DataChannel 传输 640000 字节、分块恢复/校验，缓存命中后零重复下载；玩家 ZIP 独立启动且无发布权限。
-- 公网短码加入及 UDP/TCP 强制 TURN；Windows↔Ubuntu 强制模式为 `relay/relay`，自动模式本次为 `host/prflx` 直连。
+- 公网短码加入及 UDP/TCP 强制 TURN；2026-11-13 的 Windows 房主↔Ubuntu CVM 玩家强制模式为 `relay/relay`，自动模式为 `host/prflx` 直连。它是两台机器的自动化证据，不是两名真人分别处于家庭/移动网络的证据。
 
-复测先安装模块 `requirements-test.txt` 和 Playwright Chromium，再从模块目录执行：
+本机复测使用已有开发虚拟环境；若需安装，先按项目规则登记独占运行时，在开发虚拟环境安装模块 `requirements-test.txt` 和 Playwright Chromium。真实宿主用例另外需要 `engineering/.venv/` 的引擎依赖。不要在离线嵌入式运行时上直接执行 pip。以下从模块目录执行，输出目录应为本次新建的独立路径：
 
     $env:PYTHONDONTWRITEBYTECODE='1'
     $env:PYTHONUTF8='1'
     $env:PLAYWRIGHT_BROWSERS_PATH="$PWD/local/browsers"
     $env:P2P_BROWSER_TEST='1'
-    $env:P2P_CLOUD_TEST='1'
-    $env:P2P_REAL_HOST_TEST='1'
-    .venv/Scripts/python.exe -m pytest -q --tb=short --junitxml=local/acceptance/final-0.2.xml
+    $env:P2P_CLOUD_TEST='0'
+    $env:P2P_REAL_HOST_TEST='0'
+    $run = Get-Date -Format 'yyyyMMdd-HHmmss'
+    $env:FIRSTPLAY_OUTPUT="$PWD/local/acceptance/$run"
+    .venv/Scripts/python.exe -B -m pytest tests acceptance/test_firstplay.py -q --tb=short -p no:cacheprovider --basetemp=".test-output/$run" --junitxml="local/acceptance/$run/results.xml"
 
-未设开关时对应专项跳过；公网测试创建并撤下临时房间，真实宿主测试使用当前工程运行时和临时存档，执行前按项目规则登记占用。
+本机浏览器原有测试还会更新 `local/acceptance/` 中的固定截图，因此应登记该目录。上面两个云端开关关闭，原云端专项跳过；新增 `acceptance/test_firstplay.py` 始终使用本机目录和真实临时宿主。需要重跑历史云端专项时，另行准备维护者的私密配置、登记占用并显式设 `P2P_CLOUD_TEST=1`、`P2P_REAL_HOST_TEST=1`；这些测试会创建/撤下临时公网房间，跨机项还会在已配置的 CVM 运行测试进程，不应作为默认安装检查。
 
 尚未完成真人独立家庭/移动网络、80 玩家、长期满载及长时 TURN 凭据续期验收。自动重连/ICE restart、房主迁移、运行中换包、缓存 LRU、统一 SessionController 仍在计划中。持久成员快捷重入与账号差异化资源组已由可选 [network-web](network-web.md) 实现，不改变旧模式的整包规则。树桩镇的[完整网页UI/服务](../../../rulepacks/stumpsville/docs/current/web.md)已接入network-web版本2，旧P2P入口仍为[通用宿主基础接入](../../../rulepacks/stumpsville/docs/current/integrations.md)，两者使用借用宿主模式。
 

@@ -17,7 +17,7 @@
 
 ## 房主
 
-在其他 Windows x64 电脑部署时，先运行[一键依赖安装 EXE](dist/OnlineCOC-Network-Setup.exe)，选择完整项目根目录即可离线安装；[使用与范围](installer/README.md)。纯浏览器玩家无需安装。
+在其他 Windows x64 电脑部署时，先按[离线 EXE 安装教学](installer/README.md)取得完整项目和安装包，选择直接包含 `engineering/` 的项目根目录，一键安装联机运行时。EXE 为另行分发产物，源码 clone 不自带；纯浏览器玩家和远程 KP 无需安装。游戏宿主运行时与联机运行时分别准备。
 
 树桩镇可使用包内 [start-web.cmd](../../rulepacks/stumpsville/start-web.cmd)，包侧启动见[说明](../../rulepacks/stumpsville/docs/current/web.md)。平台 0.3.0 新增开房串导入；旧版房主页面仍可使用创建页中的“兼容旧版房主入口”。下列通用命令默认导出首测规则桌面。
 
@@ -25,10 +25,11 @@
 
 ```powershell
 $py = 'engineering/network-p2p/.venv/Scripts/python.exe'
-& $py -m pip install --no-deps -e engineering/network-p2p -e engineering/network-web
 & $py engineering/network-web/scripts/configure_host.py --upstream http://127.0.0.1:8765
 & engineering/network-web/start.ps1
 ```
+
+上述命令适用于已经完成 EXE 安装的项目；其嵌入 Python 直接加载项目源码。开发者用常规 venv 时，先按 P2P 开发安装说明准备环境，并执行 `python -m pip install --no-deps -e engineering/network-p2p -e engineering/network-web`。
 
 生成器复用本机已有的目录/CA/发布凭据，默认导出配套“首测规则桌面”；省略 `--upstream` 时要求恰好发现一个本机已注册宿主。`--source` 可选其他已适配包，`--approval` 开启首次审批。已有配置不会覆盖；之后直接运行 `start.ps1`，或用 `-Config` 指定配置。
 
@@ -39,6 +40,19 @@ $py = 'engineering/network-p2p/.venv/Scripts/python.exe'
 配置包调用方法与独立联网管理页建议见[接入契约](../../docs/current/engineering/network-web.md#32-开房串与配置包管理页)。
 
 停止分享或房主离线后，服务器默认保留房间 **24 小时**，期间恢复可沿用代号、成员和快捷入口。到期会移除房间记录及所有快捷入口；在线待客不计过期。房主可在管理页点击“解散并移除房间”立即清理。旧身份被移除后，后台重试不会复活房间；重新启动本机适配器会创建新房间、需重新认领和加入。同一身份的资源版本固定，更新游戏包须开新房。停止本模块不停止宿主或 LAN/AI 等其他模块。
+
+## 树桩镇第一次网页互动
+
+1. 房主先按[树桩镇教学](../../rulepacks/stumpsville/docs/current/usage.md)准备宿主、建立独立房间和游戏账号，再从 `start-web.cmd` 启动网页分享。首次使用需要部署者提供可用平台地址、测试 CA（如适用）及房主发布权限配置；安装 EXE 不创建公共平台或发布凭据。
+2. 房主在本机 KP 的“房间管理 → 网页分享”复制开房串，到平台创建页粘贴并创建。把平台加入网址和 8 位代号发给玩家。
+3. 玩家按上文步骤完成平台登录、代号加入、进入游戏、连接房主和游戏账号登录。建角提交后由本机或远程 KP 审批，玩家准备，KP 开场。
+4. 玩家在入口场景选择“观察地面 → 仔细观察”并提交。至少保持一个 KP 页面在线；预设行动完成后，行动日志应显示“你找到了通往主门的路线。”，个人线索出现“入口地面的压痕”，地图可见 02 主门。此步用于确认动作与授权结果已真正往返。
+
+房主启动器持续运行；“进入房间”本身还不会下载游戏。没有平台服务或发布配置时，可先本机/LAN 试玩，不能把联网依赖安装成功当作已能公网开房。
+
+## 本轮验证与平台限制
+
+2026-11-26 只做本机验证：[安装与入场记录](acceptance/2026-11-26-firstplay.json)。离线 EXE 首次安装、占用拒绝后重试与依赖检查通过；网页模块 39 项通过，3 项云端用例明确跳过。树桩镇场景证据由同轮配置包会话提供，来源与网络范围在记录内分列。本轮没有检查公网可用性、续费状态、证书状态或变更服务器；此前公网 TURN 结果见[历史验收索引](acceptance/README.md)。
 
 ## 接入限制
 

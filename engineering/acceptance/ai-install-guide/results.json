@@ -1,0 +1,52 @@
+{
+  "externalModelCalls": 0,
+  "provider": "deterministic-offline",
+  "checks": [
+    {
+      "name": "wrong_archive_hash_rejected_before_execution",
+      "passed": true
+    },
+    {
+      "name": "missing_wheels_fails_without_ready_marker",
+      "passed": true
+    },
+    {
+      "name": "retry_installs_runtime_and_preserves_user_file",
+      "passed": true
+    },
+    {
+      "name": "repeat_install_and_verify",
+      "passed": true
+    },
+    {
+      "name": "concurrent_installer_or_desktop_host_rejected",
+      "passed": true
+    },
+    {
+      "name": "full_python_tk_and_fresh_base",
+      "passed": true,
+      "version": "3.14.2",
+      "tk": "8.6.15"
+    },
+    {
+      "name": "manager_unlock_synthetic_key_and_offline_probe",
+      "passed": true
+    },
+    {
+      "name": "kp_room_connection_and_explicit_public_egress",
+      "passed": true
+    },
+    {
+      "name": "failed_submit_keeps_draft_and_retry_identity",
+      "passed": true
+    },
+    {
+      "name": "one_offline_ai_request_reaches_review_without_approval",
+      "passed": true
+    }
+  ],
+  "pythonArchiveSha256": "7f9f03032b19222299d04ae5b1ad459bd913bc25e8d1ff070e1a80e09a4feddf",
+  "installationSource": "cached official full archive and hash-locked local wheels; no download tested",
+  "browserVersion": "158.0.4370.33",
+  "passed": true
+}

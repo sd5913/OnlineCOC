@@ -1,0 +1,37 @@
+{
+  "format": 1,
+  "files": [
+    {
+      "path": "engineering/setup-game.cmd",
+      "sha256": "7ad0a155938696791ba71c27ed5bd383af0414495c83bef9b08d24dbc4dd8457"
+    },
+    {
+      "path": "engineering/setup-game.ps1",
+      "sha256": "2e094f29548f1f57a45947694c3c869ec6cd16f6fd0da96fa5692ee3f8b419fc"
+    },
+    {
+      "path": "engineering/ai/README.md",
+      "sha256": "31cbe6788eb71525571eed2e5bf1a38c348fe26749fa221d6c2fe6f008ef0a6f"
+    },
+    {
+      "path": "engineering/acceptance/ai-install-guide/verify.py",
+      "sha256": "cf0db00e64c39b455fa57174dfbba5e16dd7ac361c5e038665d8cde5bdce21dc"
+    },
+    {
+      "path": "engineering/ai/tests/manager_ui_server.py",
+      "sha256": "9ed82d82bde322db5d7d0fea9a91637f7a3a053958eca62286944cccfc95f4f4"
+    },
+    {
+      "path": "engineering/ai/tests/ui_server.py",
+      "sha256": "efd76372661f9548d82a49baba8aeacacc1b3d603d43edaff72a74154ab80120"
+    },
+    {
+      "path": "engineering/requirements-runtime.lock",
+      "sha256": "3c38d46065519100629666c8e5d4a5c405276cd19b2a106815732bcb3e392cb1"
+    },
+    {
+      "path": "launcher-config.json",
+      "sha256": "e732ce01d3a26b38f2790017872f4b5286b98f1109e19573f2ba50e8b2793938"
+    }
+  ]
+}

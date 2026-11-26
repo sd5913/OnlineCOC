@@ -4,10 +4,18 @@
 - 文档子类：工程
 - 状态：有效
 - 创建日期：2026-10-30
-- 最后更新：2026-11-12
+- 最后更新：2026-11-26
 - 关联文档：[首测工程](first-test.md)、[工程索引](README.md)、[桌面工具源码](../../../engineering/desktop/README.md)、[更新问题](../../plans/Issues/README.md)
 
 ## 使用
+
+这两个 exe 是**本机引擎首测入口**。启动路径为 `启动OnlineCOC.exe` → 项目内虚拟环境 Python → `engineering/desktop/desktop_host.py` → `Host` / HTTP 服务 → `engineering/test-console/`。默认地址是 `http://127.0.0.1:8765`，页面标题为“OnlineCOC · 本机首测”，页面内标题为“调查室”。它不自动启动树桩镇、房间管理器、LAN/中转服务或 AI runtime；安装运行依赖也不等于启用了 AI。
+
+1. 将**完整项目**解压到较短、当前用户可写的本地目录，保留根目录 exe、配置和 `engineering/`。
+2. 双击 `安装依赖.exe`，等待依赖校验完成。默认在线安装需要能够访问 python.org 和 PyPI；无须预先安装 Python、Node.js 或编译器。
+3. 双击 `启动OnlineCOC.exe`。首次创建该数据目录时，设置至少 8 位初始密码。
+4. 在自动打开的浏览器中，用 `kp`、`player1` 或 `player2` 及刚设置的密码登录。三者初始密码相同；KP 可见主持人管理区域。多账号同时体验应使用不同浏览器配置或隔离会话，避免共享登录 cookie。
+5. 保持启动窗口运行。结束时使用“取消 / 停止”或关闭启动窗口；再次打开同一目录会恢复房间。
 
 在完整工程根目录双击 [安装依赖.exe](../../../安装依赖.exe)，完成后双击 [启动OnlineCOC.exe](../../../启动OnlineCOC.exe)。exe 必须与工程目录及 [launcher-config.json](../../../launcher-config.json) 一起保留，不是可单独搬走的应用包。
 
@@ -16,6 +24,12 @@
 启动程序检查环境，尚未安装或依赖锁变化时自动完成必要安装；环境就绪后启动本机服务并打开浏览器。首次启动询问初始密码，初始化 `kp`、`player1`、`player2` 三个首测账号。密码不写入配置或启动日志。后续使用同一存档目录会恢复进度。
 
 启动窗口保持运行，可点击“打开页面”和“取消 / 停止”。停止或关闭窗口时先通知主机正常退出并释放文件锁；超过 30 秒时结束本次子进程树，下次按存档恢复。它不会停止占用相同端口的其他程序。浏览器标签页关闭不等于停止主机。
+
+## 平台和入口边界
+
+两个 exe 用 `/platform:x64` 编译，依赖 Windows .NET Framework 4.x / WinForms；构建记录使用 .NET Framework 4.8 编译器。所用 Python 3.14 的官方平台要求为 Windows 10 及以上，见 [Python Windows 支持说明](https://docs.python.org/3.14/using/windows.html#supported-windows-versions)。本项目入口按 Windows x64 验证；没有提供 Linux/macOS 原生入口或 Windows ARM64 原生发行物，也没有完成这些平台验收。
+
+根安装器的虚拟环境位于 `engineering/.runtime/environments/<摘要>/`，**不会创建 `engineering/.venv`**。直接复制文档中的 `.venv/Scripts/python` 开发命令，或运行依赖 `.venv` 的配置包脚本，仍需对应入口自己的环境准备。根启动器只监听 `127.0.0.1`；另一台电脑不能用此地址加入，联机使用相应 LAN/中转或房间管理入口。
 
 ## 配置的唯一来源
 
@@ -54,10 +68,18 @@ Python 来源和摘要使用 [官方 Windows 发布清单](https://www.python.or
 
 常见处理：端口占用时修改配置或停止旧服务；依赖损坏时重跑安装器；Python 缓存摘要错误时检查配置和缓存来源；下载/安装失败时查看日志并重试。正式备份恢复仍使用 [首测运维步骤](first-test.md#5-管理和恢复)。
 
-## 本次验证
+首次安装还需留意：当前 exe 未做发行者签名；本轮没有验收系统下载标记或 SmartScreen 交互。项目路径过深时，.NET 解压 Python 可能报告 260/248 字符限制；优先将完整项目移到更短的可写目录后重新安装。`--config` 只改变配置文件，路径解析根仍是 exe 目录，不是当前 PowerShell 工作目录。删除或改换数据目录会打开另一份房间；安装器不会替你找回旧存档。
 
-默认配置的在线下载与安装也已成功执行，项目内默认运行环境已准备好；没有初始化或覆盖默认游玩存档。
+## 2026-11-26 验证
 
-8 项真实 exe 自动测试全部通过，无跳过，耗时约 115 秒，见 [机器记录](../../../engineering/desktop/acceptance-results.json)。覆盖全新 Python/虚拟环境安装、重复检查、锁文件变更生成新环境、损坏包修复、启动后执行 Lua 行动、正常停止和重开保持进度、重复工具拒绝、越界路径/错误摘要/缺少离线缓存及端口占用。
+根目录两个 exe 和 C# 源码的 SHA256 均与 `build-info.json` 一致。本轮复制到独立短路径工程后验收，不读写默认游玩存档。具体脚本、源码清单和机器结果见 [安装与页面验收](../../../engineering/desktop/acceptance-install-audit/README.md)。
 
-验证机器为 Windows x64，构建使用系统 .NET Framework 4.8 编译器。Windows 窗口自动化内核因资源路径缺失未能初始化，重置重试后仍失败；本次没有声称完成窗口视觉、密码弹窗或鼠标操作验收。后续交互核对记录为 [ISSUE-002](../../plans/Issues/issue-002-desktop-interaction-validation.md)。
+8 项真实 exe 自动测试全部通过，无跳过，耗时 138.48 秒，见 [JUnit](../../../engineering/desktop/acceptance-install-audit/desktop-tests-short-path.xml)。覆盖全新 Python/虚拟环境离线安装、重复检查、锁文件变更生成新环境、损坏包修复、启动后执行 Lua 行动、正常停止和重开保持进度、重复工具拒绝、越界路径/错误摘要/缺少离线缓存及端口占用。
+
+默认在线来源在没有 Python ZIP 缓存的新副本中安装成功，耗时 72.99 秒；启动子进程的 PATH 已排除系统 Python。`tkinter`、`_tkinter` 导入和 Tcl 8.6.15 探针通过。Windows 10 x64（19045）和 Edge 158 的三个隔离浏览器会话均登录成功、WebSocket 已连接；只有 KP 显示管理区。玩家执行 `demo.damage` 后，HP 从 9 变为 4，KP 页面同步为 4，正常停止后重新启动仍为 4；没有页面脚本错误。见 [机器结果](../../../engineering/desktop/acceptance-install-audit/online-browser.json) 和验收目录截图。
+
+首次重跑暴露旧测试的深层临时路径超过 .NET 上限，8 项均在共享夹具初始化时出错；已保留 [原始结果](../../../engineering/desktop/acceptance-install-audit/desktop-tests.xml)。测试随后缩短临时目录，并将过期的“26 项依赖”断言改为读取当前锁文件计数（当前为 29 项）；未重编译或改变 exe。
+
+这组测试以无头方式执行真实 exe，不代表原生窗口视觉、首次密码弹窗、下载拦截提示已验收；原生交互待办仍见 [ISSUE-002](../../plans/Issues/issue-002-desktop-interaction-validation.md)。
+
+“干净环境”在本轮指新解压的 Python、新虚拟环境、新合成房间且子进程不从 PATH 使用系统 Python。测试主机本身已有 Windows/.NET/Edge 和开发测试工具，并非刚安装的裸系统虚拟机；也没有验证 Tk 图形窗口或其他操作系统。

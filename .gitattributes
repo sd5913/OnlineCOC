@@ -3,3 +3,13 @@ engineering/acceptance/ai-official-compaction/** -text -whitespace
 engineering/acceptance/ai-official-compaction-interface-snapshot/** -text -whitespace
 engineering/acceptance/ai-compression-interface-snapshot/v3/** -text -whitespace
 engineering/acceptance/engine-kp-policy-interface-snapshot/v1/** -text -whitespace
+
+# Preserve the exact files used for the November onboarding checks.
+engineering/acceptance/ai-install-guide/** -text whitespace=trailing-space,cr-at-eol
+engineering/setup-game.cmd text eol=lf
+engineering/setup-game.ps1 text eol=lf
+engineering/network-p2p/acceptance/test_firstplay.py text eol=lf
+engineering/ai/README.md text eol=crlf
+engineering/desktop/tests/test_desktop.py text eol=crlf
+rulepacks/stumpsville/tests/web-results.json text eol=crlf
+engineering/desktop/acceptance-install-audit/desktop-tests.xml -text -whitespace

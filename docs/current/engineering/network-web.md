@@ -4,7 +4,7 @@
 - 文档子类：工程
 - 状态：有效
 - 创建日期：2026-11-13
-- 最后更新：2026-11-23
+- 最后更新：2026-11-26
 - 关联文档：[快速使用](../../../engineering/network-web/README.md)、[P2P 基础](network-p2p.md)、[后续验收](../../plans/browser-room-portal.md)、[域名步骤](../../plans/cloud-server-deployment-research.md#61-在腾讯云取得并接入域名)、[目录清单](hierarchy.md)
 
 ## 1. 已实现范围
@@ -127,6 +127,8 @@ setup_string = export_room_setup(state_path)
 `.backup.json` 仅为上一代。长期备份须停服保存状态目录、配置目录及 release 标记；恢复前保留现状，恢复同一代数据/配置与匹配代码，属主 `onlinecoc-net`、状态目录 0700、账号文件 0600。单独回退账号文件会影响黑名单/会话，须审查并注销旧会话后再开放；重启后主机重新发布，玩家重新连接。
 
 ## 6. 验收与边界
+
+2026-11-26 [入门与安装复核](../../../engineering/network-web/acceptance/2026-11-26-firstplay.json)：离线 EXE 首次安装、运行占用拒绝后重试通过；网页模块 39 项通过、3 项云端跳过。同轮 Stumpsville 双浏览器本机 WebRTC、18 预设及可见行动结果由配置包会话提供并单列来源。新增[目录选择/失败重试教学](../../../engineering/network-web/installer/README.md)与[首次网页互动](../../../engineering/network-web/README.md#树桩镇第一次网页互动)。本轮未复核公网可用性、计费或证书状态；以下部署与公网结果保留其原验收日期。
 
 [0.3.2 验收记录](../../../engineering/network-web/acceptance/2026-11-23-0.3.2.json)：网页模块 39 项通过、3 项云端用例跳过；树桩镇新增[远程 KP 专项](../../../rulepacks/stumpsville/tests/remote-kp-results.json)及原双玩家 18 预设回归通过，独立验证游戏 KP 权限与平台房主身份分离。另行[公网强制 TURN 主持流程](../../../rulepacks/stumpsville/tests/remote-kp-cloud-results.json)通过，包括同平台账号切换游戏角色后权限隔离；首次页面加载超过 60 秒，调整测试等待上限为 180 秒后通过，不等同独立网络或性能验收。下方 0.3.1 为上次安装器/生命周期基线，不重复计数。
 

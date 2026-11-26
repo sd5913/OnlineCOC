@@ -4,7 +4,7 @@
 - 文档子类：工程
 - 状态：有效
 - 创建日期：2026-11-09
-- 最后更新：2026-11-23
+- 最后更新：2026-11-26
 - 关联文档：[实现](implementation.md)、[验收](../../tests/README.md)、[工程运行](../../../../docs/current/engineering/first-test.md)
 
 当前包使用后端0.3.0 / Room v4，读取包格式 2 或 3。旧格式 2 房间达到行动归档条件后，在保存时自动使用格式 3；已有Room v3先按[引擎格式说明](../../../../docs/current/engineering/room-format.md)显式离线转换，再按[个人已知资料](player-knowledge.md)绑定策略和选择现在揭示的旧地点。新房间通过槽位创建；历史一次性清理记录见[归档](../history/2026-11-20-development-records.md)。
@@ -13,7 +13,7 @@
 
 网页联机使用 [start-web.cmd](../../start-web.cmd)，完整玩家场景已完成本地及公网强制TURN联测，云端已更新；旧的失败启动窗口需关闭后重新双击启动，操作见[网页联机](web.md)。可选 AI/旧 P2P 使用 [start-integrated.cmd](../../start-integrated.cmd)，提供 AI 咨询和旧 P2P 基础宿主接入，见[模块接入](integrations.md)。
 
-前提是现有 `engineering/.venv/` 可运行 FastAPI、uvicorn、httpx、websockets 和宿主依赖。包启动不安装或修改工程环境。
+首次在 Windows 安装树桩镇时，先运行 [engineering/setup-game.cmd](../../../../engineering/setup-game.cmd)。它为游戏面板和 AI 管理器准备带 Tk 的 Python 环境 `engineering/.venv/`。安装成功后再双击本包的 [start-panel.cmd](../../start-panel.cmd)。已有可用游戏环境可直接开面板。仓库根目录的“安装依赖.exe”用于 Desktop 首测环境。
 
 1. 双击 [start-panel.cmd](../../start-panel.cmd) 或 `start.cmd` 打开Python面板；本机默认 `127.0.0.1:8899`。选择本机／局域网／网页方式和端口；AI助手默认勾选，可主动取消，局域网另选网卡。原各双击入口预选对应模式，打开面板本身不创建或发布房间。
 2. 在“房间数据 · 存档槽位”输入名称（1–40字符），点击“创建新槽位”，或从下拉列表选择已有槽位。新槽位预填初始密码 `12345678`，可以直接点击“启动房间”，也可先改为自己的8–128位密码并确认。宿主建立 `kp`、`player1`、`player2` 三个账号，初始共用此密码；成功后打开主持登录页。已有存档不再询问初始密码，也不会重置账号。
@@ -41,6 +41,12 @@ rulepacks/stumpsville/start.cmd -Port 8900 -DataDir "D:\Studies\Art Programming\
 增加账号后即可登录所选房间；改密会使该账号旧登录会话失效。删除采用身份停用与成员停用，账号从活动列表移除，历史角色、聊天及归属仍保留，账号ID不回收；最后一个可登录的活跃KP不能删除。结果显示请求编号；若回复丢失，使用“核对／重试原请求”，不要另建同一操作。
 
 ## 首次走查
+
+### 新房间的第一次成功行动
+
+选包、开房和双账号登录的最短路径见[包首页](../../README.md#第一次玩--first-play)。进入 01 入口隧道后，依次选择“观察地面”和“仔细观察”。新现场无需投骰。查看个人行动日志中的“你找到了通往主门的路线。”，再打开线索确认“入口地面的压痕”，并在地图找到 02 主门。
+
+2026-11-26 的隔离新房间走查中，首次提交返回 `processing`，主持执行队列处理后以原请求编号查到 `completed / success`，线索和玩家地图均符合上述结果。另用两个浏览器玩家复验本机 WebRTC 入场和 18 项预设，见[联机验收结果](../../tests/web-results.json)。本次覆盖同机多会话和本机 WebRTC；公网异网实测范围见[联机说明](web.md)。
 
 ### 房间总览与一键开场
 

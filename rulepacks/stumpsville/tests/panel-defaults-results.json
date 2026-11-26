@@ -1,23 +1,18 @@
 {
-  "at": "2026-11-21T00:54:48.409893+08:00",
+  "at": "2026-11-26T10:08:04.013354+08:00",
   "passed": true,
   "checks": [
     "owned child stdin carries UTF-8 privately and exits cleanly",
     "AI defaults on; explicit disable works; two tabs and default bootstrap password are visible",
     "unknown account creation keeps original request; retry commits once, status retains locator and refreshes actual list",
     "selection-based delete reports refusal or committed result without deleting historical row",
-    "room stop clears account table and disables controls; no stale room mutation",
-    "real new room: default kp/player1/player2 login, AI enabled with all capabilities and egress; manual approvals and PL settings isolation remain",
-    "real native account creation uses local CLI and creates a login-ready player membership",
-    "duplicate create is rejected; password change and delete revoke actual sessions; player note/history remains",
-    "real panel displays LAST_KP_REQUIRED and preserves the final active host account",
-    "same save restart preserves changed password and disabled AI/egress/PL choices; no automatic model calls"
+    "room stop clears account table and disables controls; no stale room mutation"
   ],
   "error": null,
   "apiCalls": 0,
-  "mode": "native-and-real-host",
-  "engineSnapshot": "engineering\\acceptance\\engine-accounts-interface-snapshot\\v3",
-  "output": "D:\\Studies\\Art Programming\\OnlineCOC\\rulepacks\\stumpsville\\tests\\output\\panel-defaults-e34ac0bf",
+  "mode": "synthetic-native",
+  "engineSnapshot": null,
+  "output": "D:\\Studies\\Art Programming\\OnlineCOC\\rulepacks\\stumpsville\\tests\\output\\panel-defaults-f56b5a86",
   "initialSmokeFailure": "A first ad-hoc stdin fixture omitted PYTHONUTF8 and decoded Chinese using Windows legacy codepage; actual Runtime.env sets UTF-8. Retained here; formal fixture matches runtime environment.",
   "previousRuns": [
     {
@@ -130,6 +125,28 @@
       "mode": "native-and-real-host",
       "engineSnapshot": "engineering\\acceptance\\engine-accounts-interface-snapshot\\v1",
       "output": "D:\\Studies\\Art Programming\\OnlineCOC\\rulepacks\\stumpsville\\tests\\output\\panel-defaults-7f9f9beb",
+      "initialSmokeFailure": "A first ad-hoc stdin fixture omitted PYTHONUTF8 and decoded Chinese using Windows legacy codepage; actual Runtime.env sets UTF-8. Retained here; formal fixture matches runtime environment."
+    },
+    {
+      "at": "2026-11-21T00:54:48.409893+08:00",
+      "passed": true,
+      "checks": [
+        "owned child stdin carries UTF-8 privately and exits cleanly",
+        "AI defaults on; explicit disable works; two tabs and default bootstrap password are visible",
+        "unknown account creation keeps original request; retry commits once, status retains locator and refreshes actual list",
+        "selection-based delete reports refusal or committed result without deleting historical row",
+        "room stop clears account table and disables controls; no stale room mutation",
+        "real new room: default kp/player1/player2 login, AI enabled with all capabilities and egress; manual approvals and PL settings isolation remain",
+        "real native account creation uses local CLI and creates a login-ready player membership",
+        "duplicate create is rejected; password change and delete revoke actual sessions; player note/history remains",
+        "real panel displays LAST_KP_REQUIRED and preserves the final active host account",
+        "same save restart preserves changed password and disabled AI/egress/PL choices; no automatic model calls"
+      ],
+      "error": null,
+      "apiCalls": 0,
+      "mode": "native-and-real-host",
+      "engineSnapshot": "engineering\\acceptance\\engine-accounts-interface-snapshot\\v3",
+      "output": "D:\\Studies\\Art Programming\\OnlineCOC\\rulepacks\\stumpsville\\tests\\output\\panel-defaults-e34ac0bf",
       "initialSmokeFailure": "A first ad-hoc stdin fixture omitted PYTHONUTF8 and decoded Chinese using Windows legacy codepage; actual Runtime.env sets UTF-8. Retained here; formal fixture matches runtime environment."
     }
   ]

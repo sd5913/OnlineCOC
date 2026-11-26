@@ -2,6 +2,19 @@
 
 0.10.0 新房间可游玩原创主线「暴雨前的树桩镇」。从庭院接委托，救援居民后选择修复、求援或撤离。沿用既有槽位时以房间已激活修订为准。
 
+## 第一次玩 / First play
+
+1. **选树桩镇包**。Windows 上打开本包的 [start-panel.cmd](start-panel.cmd)，选择“本机游玩”。面板需要带 Tk 的项目 Python 环境；首次安装见[工程环境步骤](../../docs/current/engineering/first-test.md)。体验第一次行动时可以关闭 AI。
+2. **建房并分角色登录**。创建一个新存档槽位，确认初始密码并启动。用一个登录页进入 `kp` 主持管理台，另开独立登录页进入 `player1`。保留 KP 页面在线。
+3. **开场**。KP 在“房间”点击“一键开场”。玩家提交角色，KP 在裁决页批准，玩家确认准备并进入场景。
+4. **验证已能游玩**。在新房间的 01 入口隧道选择“观察地面 → 仔细观察”。行动日志显示“你找到了通往主门的路线。”，个人线索出现“入口地面的压痕”，地图可见 02 主门。出现等待结算时，先确认已登录的 KP 管理页仍开着。
+
+**English.** On Windows, open this pack’s **start-panel.cmd**, choose local play, create a fresh save slot and start the room. Sign in as `kp` and keep that page open. Use a separate login page for `player1`. The keeper starts the session from the Room page. The player submits a character, the keeper approves it, and the player marks it ready. In location 01, inspect the ground. Look for the ground-impression clue in the player’s journal and location 02 on their map.
+
+同机可用独立登录页扮演不同玩家。局域网模式向同网玩家提供面板显示的玩家地址。网页联机需先配置房间目录与连接服务；房主分享玩家加入网址和房间代号，玩家先加入平台房间，再用游戏账号进入。旧 P2P 入口仅支持基础状态和聊天。详见[网页联机](docs/current/web.md)。
+
+公开展示或分发前，按[来源与许可说明](docs/current/sources.md)区分 SRD 改编规则、冒险内容和美术。保留规则署名及改编说明；原书正文、插画、参考原图和第三方导出需单独确认授权。发布游戏时使用运行资源清单，排除真实房间存档与服务密钥。
+
 首次游玩请先阅读[玩家简明指南](docs/current/player-guide.md)，按“探路取物”推荐目标开始：记录两条新发现、带回一件新物品、全员返回入口。
 
 0.9.0提供 [网页联机双击入口](start-web.cmd)：本机 KP、浏览器 PL、完整场景行动与聊天、隔离存储和按需资源，本轮验证本地WebRTC；原0.8.0阶段已通过两名真实网页玩家及全部18个预设的公网强制TURN联测，本轮未重做公网验收。**云端桥已更新；真人独立家庭/移动网仍待验收**；操作与边界见[网页联机](docs/current/web.md)。

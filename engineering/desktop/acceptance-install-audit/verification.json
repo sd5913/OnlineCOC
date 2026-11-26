@@ -1,0 +1,33 @@
+{
+  "date": "2026-11-26",
+  "desktopTestsPassed": 8,
+  "onlineAndBrowserPassed": true,
+  "executables": {
+    "安装依赖.exe": {
+      "sha256": "a9b6a8bc0654e15796337295173307967db35292dd275480056eeaa322b2b9a2",
+      "machine": "0x8664",
+      "authenticode": "NotSigned"
+    },
+    "启动OnlineCOC.exe": {
+      "sha256": "9d8f88531204b7f4227c4a85e60e8584c8767e9093c08b5757c75cc2b364bc34",
+      "machine": "0x8664",
+      "authenticode": "NotSigned"
+    }
+  },
+  "nativeDialogsTested": false,
+  "cleanWindowsVMTested": false,
+  "systemPythonExcludedFromChildPath": true,
+  "noDefaultRoomAccessed": true,
+  "sourceFilesChanged": [
+    "engineering/desktop/tests/test_desktop.py"
+  ],
+  "docsChanged": [
+    "engineering/desktop/README.md",
+    "docs/current/engineering/desktop-tools.md"
+  ],
+  "initialFailures": [
+    "Deep fixture extraction path (269 characters) exceeded .NET limit.",
+    "Development Playwright bundled browser absent; used installed Edge.",
+    "String-based wait blocked by CSP; used DOM locators without relaxing CSP."
+  ]
+}

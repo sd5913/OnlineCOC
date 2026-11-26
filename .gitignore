@@ -7,3 +7,4 @@ engineering/acceptance/ai-runtime/*-tmp/
 **/__pycache__/
 **/.pytest_cache/
 *.pyc
+/docs/plans/local-coursework/

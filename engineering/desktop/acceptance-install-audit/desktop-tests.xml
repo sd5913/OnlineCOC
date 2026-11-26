@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="8" failures="0" skipped="0" tests="8" time="5.252" timestamp="2026-11-26T10:07:58.317120+08:00" hostname="LAPTOP-BIFSL64A"><testcase classname="engineering.desktop.tests.test_desktop" name="test_fresh_install_and_idempotent_check" time="4.746"><error message="failed on setup with &quot;AssertionError: 配置：C:\Users\26077\AppData\Local\Temp\oc-install-c4b4-1126\engineering\.test-output\desktop-tests\1e58cca6dedb46f29e4559d72b819029\installed.json&#10;  日志：C:\Users\26077\AppData\Local\Temp\oc-install-c4b4-1126\engineering\.test-output\desktop-tests\1e58cca6dedb46f29e4559d72b819029\logs\20261126-100758-28040.log&#10;  校验通过，展开项目内 Python……&#10;  错误：指定的路径或文件名太长，或者两者都太长。完全限定文件名必须少于 260 个字符，并且目录名必须少于 248 个字符。&#10;  &#10;assert 1 == 0&#10;[+1 more line; full report in element text]">engineering\desktop\tests\test_desktop.py:42: in installed
+    assert result.returncode == 0, result.stdout + result.stderr
+E   AssertionError: 配置：C:\Users\26077\AppData\Local\Temp\oc-install-c4b4-1126\engineering\.test-output\desktop-tests\1e58cca6dedb46f29e4559d72b819029\installed.json
+E     日志：C:\Users\26077\AppData\Local\Temp\oc-install-c4b4-1126\engineering\.test-output\desktop-tests\1e58cca6dedb46f29e4559d72b819029\logs\20261126-100758-28040.log
+E     校验通过，展开项目内 Python……
+E     错误：指定的路径或文件名太长，或者两者都太长。完全限定文件名必须少于 260 个字符，并且目录名必须少于 248 个字符。
+E     
+E   assert 1 == 0
+E    +  where 1 = CompletedProcess(args=['C:\\Users\\26077\\AppData\\Local\\Temp\\oc-install-c4b4-1126\\安装依赖.exe', '--headless', '--conf...126-100758-28040.log\n校验通过，展开项目内 Python……\n错误：指定的路径或文件名太长，或者两者都太长。完全限定文件名必须少于 260 个字符，并且目录名必须少于 248 个字符。\n', stderr='').returncode</error></testcase><testcase classname="engineering.desktop.tests.test_desktop" name="test_dependency_lock_update_creates_new_environment" time="0.001"><error message="failed on setup with &quot;AssertionError: 配置：C:\Users\26077\AppData\Local\Temp\oc-install-c4b4-1126\engineering\.test-output\desktop-tests\1e58cca6dedb46f29e4559d72b819029\installed.json&#10;  日志：C:\Users\26077\AppData\Local\Temp\oc-install-c4b4-1126\engineering\.test-output\desktop-tests\1e58cca6dedb46f29e4559d72b819029\logs\20261126-100758-28040.log&#10;  校验通过，展开项目内 Python……&#10;  错误：指定的路径或文件名太长，或者两者都太长。完全限定文件名必须少于 260 个字符，并且目录名必须少于 248 个字符。&#10;  &#10;assert 1 == 0&#10;[+1 more line; full report in element text]">engineering\desktop\tests\test_desktop.py:42: in installed
+    assert result.returncode == 0, result.stdout + result.stderr
+E   AssertionError: 配置：C:\Users\26077\AppData\Local\Temp\oc-install-c4b4-1126\engineering\.test-output\desktop-tests\1e58cca6dedb46f29e4559d72b819029\installed.json
+E     日志：C:\Users\26077\AppData\Local\Temp\oc-install-c4b4-1126\engineering\.test-output\desktop-tests\1e58cca6dedb46f29e4559d72b819029\logs\20261126-100758-28040.log
+E     校验通过，展开项目内 Python……
+E     错误：指定的路径或文件名太长，或者两者都太长。完全限定文件名必须少于 260 个字符，并且目录名必须少于 248 个字符。
+E     
+E   assert 1 == 0
+E    +  where 1 = CompletedProcess(args=['C:\\Users\\26077\\AppData\\Local\\Temp\\oc-install-c4b4-1126\\安装依赖.exe', '--headless', '--conf...126-100758-28040.log\n校验通过，展开项目内 Python……\n错误：指定的路径或文件名太长，或者两者都太长。完全限定文件名必须少于 260 个字符，并且目录名必须少于 248 个字符。\n', stderr='').returncode</error></testcase><testcase classname="engineering.desktop.tests.test_desktop" name="test_corrupt_package_is_repaired" time="0.001"><error message="failed on setup with &quot;AssertionError: 配置：C:\Users\26077\AppData\Local\Temp\oc-install-c4b4-1126\engineering\.test-output\desktop-tests\1e58cca6dedb46f29e4559d72b819029\installed.json&#10;  日志：C:\Users\26077\AppData\Local\Temp\oc-install-c4b4-1126\engineering\.test-output\desktop-tests\1e58cca6dedb46f29e4559d72b819029\logs\20261126-100758-28040.log&#10;  校验通过，展开项目内 Python……&#10;  错误：指定的路径或文件名太长，或者两者都太长。完全限定文件名必须少于 260 个字符，并且目录名必须少于 248 个字符。&#10;  &#10;assert 1 == 0&#10;[+1 more line; full report in element text]">engineering\desktop\tests\test_desktop.py:42: in installed
+    assert result.returncode == 0, result.stdout + result.stderr
+E   AssertionError: 配置：C:\Users\26077\AppData\Local\Temp\oc-install-c4b4-1126\engineering\.test-output\desktop-tests\1e58cca6dedb46f29e4559d72b819029\installed.json
+E     日志：C:\Users\26077\AppData\Local\Temp\oc-install-c4b4-1126\engineering\.test-output\desktop-tests\1e58cca6dedb46f29e4559d72b819029\logs\20261126-100758-28040.log
+E     校验通过，展开项目内 Python……
+E     错误：指定的路径或文件名太长，或者两者都太长。完全限定文件名必须少于 260 个字符，并且目录名必须少于 248 个字符。
+E     
+E   assert 1 == 0
+E    +  where 1 = CompletedProcess(args=['C:\\Users\\26077\\AppData\\Local\\Temp\\oc-install-c4b4-1126\\安装依赖.exe', '--headless', '--conf...126-100758-28040.log\n校验通过，展开项目内 Python……\n错误：指定的路径或文件名太长，或者两者都太长。完全限定文件名必须少于 260 个字符，并且目录名必须少于 248 个字符。\n', stderr='').returncode</error></testcase><testcase classname="engineering.desktop.tests.test_desktop" name="test_server_launch_action_shutdown_and_reopen" time="0.001"><error message="failed on setup with &quot;AssertionError: 配置：C:\Users\26077\AppData\Local\Temp\oc-install-c4b4-1126\engineering\.test-output\desktop-tests\1e58cca6dedb46f29e4559d72b819029\installed.json&#10;  日志：C:\Users\26077\AppData\Local\Temp\oc-install-c4b4-1126\engineering\.test-output\desktop-tests\1e58cca6dedb46f29e4559d72b819029\logs\20261126-100758-28040.log&#10;  校验通过，展开项目内 Python……&#10;  错误：指定的路径或文件名太长，或者两者都太长。完全限定文件名必须少于 260 个字符，并且目录名必须少于 248 个字符。&#10;  &#10;assert 1 == 0&#10;[+1 more line; full report in element text]">engineering\desktop\tests\test_desktop.py:42: in installed
+    assert result.returncode == 0, result.stdout + result.stderr
+E   AssertionError: 配置：C:\Users\26077\AppData\Local\Temp\oc-install-c4b4-1126\engineering\.test-output\desktop-tests\1e58cca6dedb46f29e4559d72b819029\installed.json
+E     日志：C:\Users\26077\AppData\Local\Temp\oc-install-c4b4-1126\engineering\.test-output\desktop-tests\1e58cca6dedb46f29e4559d72b819029\logs\20261126-100758-28040.log
+E     校验通过，展开项目内 Python……
+E     错误：指定的路径或文件名太长，或者两者都太长。完全限定文件名必须少于 260 个字符，并且目录名必须少于 248 个字符。
+E     
+E   assert 1 == 0
+E    +  where 1 = CompletedProcess(args=['C:\\Users\\26077\\AppData\\Local\\Temp\\oc-install-c4b4-1126\\安装依赖.exe', '--headless', '--conf...126-100758-28040.log\n校验通过，展开项目内 Python……\n错误：指定的路径或文件名太长，或者两者都太长。完全限定文件名必须少于 260 个字符，并且目录名必须少于 248 个字符。\n', stderr='').returncode</error></testcase><testcase classname="engineering.desktop.tests.test_desktop" name="test_invalid_configuration_and_archive[path]" time="0.000"><error message="failed on setup with &quot;AssertionError: 配置：C:\Users\26077\AppData\Local\Temp\oc-install-c4b4-1126\engineering\.test-output\desktop-tests\1e58cca6dedb46f29e4559d72b819029\installed.json&#10;  日志：C:\Users\26077\AppData\Local\Temp\oc-install-c4b4-1126\engineering\.test-output\desktop-tests\1e58cca6dedb46f29e4559d72b819029\logs\20261126-100758-28040.log&#10;  校验通过，展开项目内 Python……&#10;  错误：指定的路径或文件名太长，或者两者都太长。完全限定文件名必须少于 260 个字符，并且目录名必须少于 248 个字符。&#10;  &#10;assert 1 == 0&#10;[+1 more line; full report in element text]">engineering\desktop\tests\test_desktop.py:42: in installed
+    assert result.returncode == 0, result.stdout + result.stderr
+E   AssertionError: 配置：C:\Users\26077\AppData\Local\Temp\oc-install-c4b4-1126\engineering\.test-output\desktop-tests\1e58cca6dedb46f29e4559d72b819029\installed.json
+E     日志：C:\Users\26077\AppData\Local\Temp\oc-install-c4b4-1126\engineering\.test-output\desktop-tests\1e58cca6dedb46f29e4559d72b819029\logs\20261126-100758-28040.log
+E     校验通过，展开项目内 Python……
+E     错误：指定的路径或文件名太长，或者两者都太长。完全限定文件名必须少于 260 个字符，并且目录名必须少于 248 个字符。
+E     
+E   assert 1 == 0
+E    +  where 1 = CompletedProcess(args=['C:\\Users\\26077\\AppData\\Local\\Temp\\oc-install-c4b4-1126\\安装依赖.exe', '--headless', '--conf...126-100758-28040.log\n校验通过，展开项目内 Python……\n错误：指定的路径或文件名太长，或者两者都太长。完全限定文件名必须少于 260 个字符，并且目录名必须少于 248 个字符。\n', stderr='').returncode</error></testcase><testcase classname="engineering.desktop.tests.test_desktop" name="test_invalid_configuration_and_archive[hash]" time="0.000"><error message="failed on setup with &quot;AssertionError: 配置：C:\Users\26077\AppData\Local\Temp\oc-install-c4b4-1126\engineering\.test-output\desktop-tests\1e58cca6dedb46f29e4559d72b819029\installed.json&#10;  日志：C:\Users\26077\AppData\Local\Temp\oc-install-c4b4-1126\engineering\.test-output\desktop-tests\1e58cca6dedb46f29e4559d72b819029\logs\20261126-100758-28040.log&#10;  校验通过，展开项目内 Python……&#10;  错误：指定的路径或文件名太长，或者两者都太长。完全限定文件名必须少于 260 个字符，并且目录名必须少于 248 个字符。&#10;  &#10;assert 1 == 0&#10;[+1 more line; full report in element text]">engineering\desktop\tests\test_desktop.py:42: in installed
+    assert result.returncode == 0, result.stdout + result.stderr
+E   AssertionError: 配置：C:\Users\26077\AppData\Local\Temp\oc-install-c4b4-1126\engineering\.test-output\desktop-tests\1e58cca6dedb46f29e4559d72b819029\installed.json
+E     日志：C:\Users\26077\AppData\Local\Temp\oc-install-c4b4-1126\engineering\.test-output\desktop-tests\1e58cca6dedb46f29e4559d72b819029\logs\20261126-100758-28040.log
+E     校验通过，展开项目内 Python……
+E     错误：指定的路径或文件名太长，或者两者都太长。完全限定文件名必须少于 260 个字符，并且目录名必须少于 248 个字符。
+E     
+E   assert 1 == 0
+E    +  where 1 = CompletedProcess(args=['C:\\Users\\26077\\AppData\\Local\\Temp\\oc-install-c4b4-1126\\安装依赖.exe', '--headless', '--conf...126-100758-28040.log\n校验通过，展开项目内 Python……\n错误：指定的路径或文件名太长，或者两者都太长。完全限定文件名必须少于 260 个字符，并且目录名必须少于 248 个字符。\n', stderr='').returncode</error></testcase><testcase classname="engineering.desktop.tests.test_desktop" name="test_invalid_configuration_and_archive[offline-cache]" time="0.001"><error message="failed on setup with &quot;AssertionError: 配置：C:\Users\26077\AppData\Local\Temp\oc-install-c4b4-1126\engineering\.test-output\desktop-tests\1e58cca6dedb46f29e4559d72b819029\installed.json&#10;  日志：C:\Users\26077\AppData\Local\Temp\oc-install-c4b4-1126\engineering\.test-output\desktop-tests\1e58cca6dedb46f29e4559d72b819029\logs\20261126-100758-28040.log&#10;  校验通过，展开项目内 Python……&#10;  错误：指定的路径或文件名太长，或者两者都太长。完全限定文件名必须少于 260 个字符，并且目录名必须少于 248 个字符。&#10;  &#10;assert 1 == 0&#10;[+1 more line; full report in element text]">engineering\desktop\tests\test_desktop.py:42: in installed
+    assert result.returncode == 0, result.stdout + result.stderr
+E   AssertionError: 配置：C:\Users\26077\AppData\Local\Temp\oc-install-c4b4-1126\engineering\.test-output\desktop-tests\1e58cca6dedb46f29e4559d72b819029\installed.json
+E     日志：C:\Users\26077\AppData\Local\Temp\oc-install-c4b4-1126\engineering\.test-output\desktop-tests\1e58cca6dedb46f29e4559d72b819029\logs\20261126-100758-28040.log
+E     校验通过，展开项目内 Python……
+E     错误：指定的路径或文件名太长，或者两者都太长。完全限定文件名必须少于 260 个字符，并且目录名必须少于 248 个字符。
+E     
+E   assert 1 == 0
+E    +  where 1 = CompletedProcess(args=['C:\\Users\\26077\\AppData\\Local\\Temp\\oc-install-c4b4-1126\\安装依赖.exe', '--headless', '--conf...126-100758-28040.log\n校验通过，展开项目内 Python……\n错误：指定的路径或文件名太长，或者两者都太长。完全限定文件名必须少于 260 个字符，并且目录名必须少于 248 个字符。\n', stderr='').returncode</error></testcase><testcase classname="engineering.desktop.tests.test_desktop" name="test_occupied_port_fails_without_stopping_other_service" time="0.001"><error message="failed on setup with &quot;AssertionError: 配置：C:\Users\26077\AppData\Local\Temp\oc-install-c4b4-1126\engineering\.test-output\desktop-tests\1e58cca6dedb46f29e4559d72b819029\installed.json&#10;  日志：C:\Users\26077\AppData\Local\Temp\oc-install-c4b4-1126\engineering\.test-output\desktop-tests\1e58cca6dedb46f29e4559d72b819029\logs\20261126-100758-28040.log&#10;  校验通过，展开项目内 Python……&#10;  错误：指定的路径或文件名太长，或者两者都太长。完全限定文件名必须少于 260 个字符，并且目录名必须少于 248 个字符。&#10;  &#10;assert 1 == 0&#10;[+1 more line; full report in element text]">engineering\desktop\tests\test_desktop.py:42: in installed
+    assert result.returncode == 0, result.stdout + result.stderr
+E   AssertionError: 配置：C:\Users\26077\AppData\Local\Temp\oc-install-c4b4-1126\engineering\.test-output\desktop-tests\1e58cca6dedb46f29e4559d72b819029\installed.json
+E     日志：C:\Users\26077\AppData\Local\Temp\oc-install-c4b4-1126\engineering\.test-output\desktop-tests\1e58cca6dedb46f29e4559d72b819029\logs\20261126-100758-28040.log
+E     校验通过，展开项目内 Python……
+E     错误：指定的路径或文件名太长，或者两者都太长。完全限定文件名必须少于 260 个字符，并且目录名必须少于 248 个字符。
+E     
+E   assert 1 == 0
+E    +  where 1 = CompletedProcess(args=['C:\\Users\\26077\\AppData\\Local\\Temp\\oc-install-c4b4-1126\\安装依赖.exe', '--headless', '--conf...126-100758-28040.log\n校验通过，展开项目内 Python……\n错误：指定的路径或文件名太长，或者两者都太长。完全限定文件名必须少于 260 个字符，并且目录名必须少于 248 个字符。\n', stderr='').returncode</error></testcase></testsuite></testsuites>

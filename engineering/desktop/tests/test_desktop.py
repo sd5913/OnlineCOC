@@ -11,7 +11,8 @@ import httpx
 import pytest
 
 ROOT = Path(__file__).resolve().parents[3]
-BASE = ROOT / "engineering/.test-output/desktop-tests" / uuid.uuid4().hex
+# Keep the official Python archive's nested pip paths below .NET MAX_PATH.
+BASE = ROOT / "engineering/.test-output/desktop-tests" / uuid.uuid4().hex[:12]
 BASE.mkdir(parents=True)
 INSTALLER = ROOT / "安装依赖.exe"
 LAUNCHER = ROOT / "启动OnlineCOC.exe"
@@ -47,7 +48,9 @@ def test_fresh_install_and_idempotent_check(installed):
     result = run(INSTALLER, path)
     assert result.returncode == 0 and "无需重复安装" in result.stdout
     result = run(LAUNCHER, path, "--check")
-    assert result.returncode == 0 and "DEPENDENCIES_OK 26" in result.stdout
+    lock = (ROOT / settings["dependencies"]["lockFile"]).read_text(encoding="utf-8")
+    expected = sum(bool(line.strip()) and not line.startswith("#") for line in lock.splitlines())
+    assert result.returncode == 0 and f"DEPENDENCIES_OK {expected}" in result.stdout
 
 
 def test_dependency_lock_update_creates_new_environment(installed):
