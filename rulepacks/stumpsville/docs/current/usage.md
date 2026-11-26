@@ -13,7 +13,7 @@
 
 网页联机使用 [start-web.cmd](../../start-web.cmd)，完整玩家场景已完成本地及公网强制TURN联测，云端已更新；旧的失败启动窗口需关闭后重新双击启动，操作见[网页联机](web.md)。可选 AI/旧 P2P 使用 [start-integrated.cmd](../../start-integrated.cmd)，提供 AI 咨询和旧 P2P 基础宿主接入，见[模块接入](integrations.md)。
 
-首次在 Windows 安装树桩镇时，先运行 [engineering/setup-game.cmd](../../../../engineering/setup-game.cmd)。它为游戏面板和 AI 管理器准备带 Tk 的 Python 环境 `engineering/.venv/`。安装成功后再双击本包的 [start-panel.cmd](../../start-panel.cmd)。已有可用游戏环境可直接开面板。仓库根目录的“安装依赖.exe”用于 Desktop 首测环境。
+首次在 Windows 安装树桩镇时，先运行 [engineering/setup-game.cmd](../../../../engineering/setup-game.cmd)。它为游戏面板和 AI 管理器准备带 Tk 的 Python 环境 `engineering/.venv/`。安装成功后再双击本包的 [start-panel.cmd](../../start-panel.cmd)。已有可用游戏环境可直接开面板。`QuickStart/安装依赖.exe`用于 Desktop 首测环境。
 
 1. 双击 [start-panel.cmd](../../start-panel.cmd) 或 `start.cmd` 打开Python面板；本机默认 `127.0.0.1:8899`。选择本机／局域网／网页方式和端口；AI助手默认勾选，可主动取消，局域网另选网卡。原各双击入口预选对应模式，打开面板本身不创建或发布房间。
 2. 在“房间数据 · 存档槽位”输入名称（1–40字符），点击“创建新槽位”，或从下拉列表选择已有槽位。新槽位预填初始密码 `12345678`，可以直接点击“启动房间”，也可先改为自己的8–128位密码并确认。宿主建立 `kp`、`player1`、`player2` 三个账号，初始共用此密码；成功后打开主持登录页。已有存档不再询问初始密码，也不会重置账号。

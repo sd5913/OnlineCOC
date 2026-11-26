@@ -4,7 +4,7 @@
 - 文档子类：工程
 - 状态：有效
 - 创建日期：2026-10-30
-- 最后更新：2026-11-23
+- 最后更新：2026-11-26
 - 关联文档：[工程索引](README.md)、[编写 Lua](lua-authoring.md)、[验收报告](first-test-acceptance.md)、[施工计划](<../../plans/project planning/first-test-construction-plan.md>)
 
 ## 1. 实现范围
@@ -17,7 +17,7 @@
 
 可信组合调用方可使用[房间内原子批次](atomic-batches.md)完成逐项预检和整批提交。支持的 21 种操作、持久随机轨迹、失败丢弃、通知边界及单条记忆事实回执以该文档为准；跨存储和外部等待组合不会静默拆批。
 
-Windows 用户可直接使用根目录的安装与启动 exe，见 [桌面工具说明](desktop-tools.md)。它使用独立的项目内运行时和环境，不依赖下面的手工开发环境；两者默认指向同一份 `.runtime/demo`，不能同时打开该存档。以下命令仍是有效的开发和运维入口。
+Windows 用户可直接使用 `QuickStart/` 中的安装与启动 exe，见 [桌面工具说明](desktop-tools.md)。它使用独立的项目内运行时和环境，不依赖下面的手工开发环境；两者默认指向同一份 `.runtime/demo`，不能同时打开该存档。以下命令仍是有效的开发和运维入口。
 
 以下 PowerShell 命令均从项目根目录执行。验证环境为 Windows x64、CPython 3.14.2；Lua 来自 `lupa.lua54`，不需要系统 Lua 或本机 C 编译器。精确版本和平台 wheel 摘要见 [依赖清单](../../../engineering/dependency-manifest.json)。其他 Python/平台组合需另行生成锁并验收。
 

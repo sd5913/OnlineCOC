@@ -11,13 +11,13 @@
 
 这两个 exe 是**本机引擎首测入口**。启动路径为 `启动OnlineCOC.exe` → 项目内虚拟环境 Python → `engineering/desktop/desktop_host.py` → `Host` / HTTP 服务 → `engineering/test-console/`。默认地址是 `http://127.0.0.1:8765`，页面标题为“OnlineCOC · 本机首测”，页面内标题为“调查室”。它不自动启动树桩镇、房间管理器、LAN/中转服务或 AI runtime；安装运行依赖也不等于启用了 AI。
 
-1. 将**完整项目**解压到较短、当前用户可写的本地目录，保留根目录 exe、配置和 `engineering/`。
-2. 双击 `安装依赖.exe`，等待依赖校验完成。默认在线安装需要能够访问 python.org 和 PyPI；无须预先安装 Python、Node.js 或编译器。
-3. 双击 `启动OnlineCOC.exe`。首次创建该数据目录时，设置至少 8 位初始密码。
+1. 将**完整项目**解压到较短、当前用户可写的本地目录，保持 `QuickStart/`、`launcher-config.json` 和 `engineering/` 同级。
+2. 进入 `QuickStart/`，双击 [安装依赖.exe](../../../QuickStart/安装依赖.exe)，等待依赖校验完成。默认在线安装需要能够访问 python.org 和 PyPI；无须预先安装 Python、Node.js 或编译器。
+3. 在同一文件夹双击 [启动OnlineCOC.exe](../../../QuickStart/启动OnlineCOC.exe)。首次创建该数据目录时，设置至少 8 位初始密码。
 4. 在自动打开的浏览器中，用 `kp`、`player1` 或 `player2` 及刚设置的密码登录。三者初始密码相同；KP 可见主持人管理区域。多账号同时体验应使用不同浏览器配置或隔离会话，避免共享登录 cookie。
 5. 保持启动窗口运行。结束时使用“取消 / 停止”或关闭启动窗口；再次打开同一目录会恢复房间。
 
-在完整工程根目录双击 [安装依赖.exe](../../../安装依赖.exe)，完成后双击 [启动OnlineCOC.exe](../../../启动OnlineCOC.exe)。exe 必须与工程目录及 [launcher-config.json](../../../launcher-config.json) 一起保留，不是可单独搬走的应用包。
+两个程序从 `QuickStart/` 的上一级读取 [launcher-config.json](../../../launcher-config.json)。安装目录、端口和存档位置由这份配置决定。
 
 安装程序校验并展开官方 Python 3.14.2 x64 完整运行时，创建项目内虚拟环境，依据共享 `engineering/requirements-runtime.lock` 安装 29 项运行依赖（含 AI 使用的 HTTPX/HTTPCore/certifi），检查版本、模块导入和 `pip check` 后才标记完成。不需要系统 Python、不注册 Python、不修改 PATH 或系统 Python 环境，不需要管理员安装。
 
@@ -29,7 +29,7 @@
 
 两个 exe 用 `/platform:x64` 编译，依赖 Windows .NET Framework 4.x / WinForms；构建记录使用 .NET Framework 4.8 编译器。所用 Python 3.14 的官方平台要求为 Windows 10 及以上，见 [Python Windows 支持说明](https://docs.python.org/3.14/using/windows.html#supported-windows-versions)。本项目入口按 Windows x64 验证；没有提供 Linux/macOS 原生入口或 Windows ARM64 原生发行物，也没有完成这些平台验收。
 
-根安装器的虚拟环境位于 `engineering/.runtime/environments/<摘要>/`，**不会创建 `engineering/.venv`**。直接复制文档中的 `.venv/Scripts/python` 开发命令，或运行依赖 `.venv` 的配置包脚本，仍需对应入口自己的环境准备。根启动器只监听 `127.0.0.1`；另一台电脑不能用此地址加入，联机使用相应 LAN/中转或房间管理入口。
+QuickStart 安装器的虚拟环境位于 `engineering/.runtime/environments/<摘要>/`，**不会创建 `engineering/.venv`**。直接复制文档中的 `.venv/Scripts/python` 开发命令，或运行依赖 `.venv` 的配置包脚本，仍需对应入口自己的环境准备。QuickStart 启动器只监听 `127.0.0.1`；另一台电脑不能用此地址加入，联机使用相应 LAN/中转或房间管理入口。
 
 ## 配置的唯一来源
 
@@ -46,7 +46,7 @@
 | `application.port`、`openBrowser`、`startupTimeoutSeconds` | 回环端口、是否自动打开页面、就绪等待时间 |
 | `logsDirectory` | 安装/启动日志目录 |
 
-配置路径均相对 exe 所在工程根目录，拒绝绝对路径与越出工程目录的路径。配置文件不能存放密码、令牌或带账号密码的软件源 URL。更改存档目录表示打开另一份房间，不会自动迁移旧数据。
+配置中的路径均相对项目根目录，拒绝绝对路径与越出工程目录的路径。配置文件不能存放密码、令牌或带账号密码的软件源 URL。更改存档目录表示打开另一份房间，不会自动迁移旧数据。
 
 Python 来源和摘要使用 [官方 Windows 发布清单](https://www.python.org/ftp/python/3.14.2/windows-3.14.2.json) 的标准 x64 完整包；沿用本工程已经验证的 3.14.2，未在本次更换后端 Python 基线。
 
@@ -64,15 +64,19 @@ Python 来源和摘要使用 [官方 Windows 发布清单](https://www.python.or
 
 窗口下方显示进度，详细日志位于 `logsDirectory`。两个工具通过项目级锁避免同时安装/启动；原 CLI 主机仍由文件数据模块排他锁保护。
 
-测试支持 `--headless`、`--config <文件>`、`--check`；启动额外支持 `--no-browser` 和 `--run-seconds N`。自定义配置只覆盖设置，工程根仍为 exe 所在目录。无人值守首次初始化可使用 `ONLINECOC_BOOTSTRAP_PASSWORD` 环境变量；宿主使用后立即从自身环境移除，避免传给 Lua 子进程。
+测试支持 `--headless`、`--config <文件>`、`--check`；启动额外支持 `--no-browser` 和 `--run-seconds N`。自定义配置只覆盖设置，工程根仍为 `QuickStart/` 的上一级。无人值守首次初始化可使用 `ONLINECOC_BOOTSTRAP_PASSWORD` 环境变量；宿主使用后立即从自身环境移除，避免传给 Lua 子进程。
 
 常见处理：端口占用时修改配置或停止旧服务；依赖损坏时重跑安装器；Python 缓存摘要错误时检查配置和缓存来源；下载/安装失败时查看日志并重试。正式备份恢复仍使用 [首测运维步骤](first-test.md#5-管理和恢复)。
 
-首次安装还需留意：当前 exe 未做发行者签名；本轮没有验收系统下载标记或 SmartScreen 交互。项目路径过深时，.NET 解压 Python 可能报告 260/248 字符限制；优先将完整项目移到更短的可写目录后重新安装。`--config` 只改变配置文件，路径解析根仍是 exe 目录，不是当前 PowerShell 工作目录。删除或改换数据目录会打开另一份房间；安装器不会替你找回旧存档。
+首次安装还需留意：当前 exe 未做发行者签名；本轮没有验收系统下载标记或 SmartScreen 交互。项目路径过深时，.NET 解压 Python 可能报告 260/248 字符限制；优先将完整项目移到更短的可写目录后重新安装。`--config` 只改变配置文件，程序仍从 `QuickStart/` 的上一级解析工程路径。删除或改换数据目录会打开另一份房间；安装器不会替你找回旧存档。
 
-## 2026-11-26 验证
+## QuickStart 迁移验证（2026-11-26）
 
-根目录两个 exe 和 C# 源码的 SHA256 均与 `build-info.json` 一致。本轮复制到独立短路径工程后验收，不读写默认游玩存档。具体脚本、源码清单和机器结果见 [安装与页面验收](../../../engineering/desktop/acceptance-install-audit/README.md)。
+两个程序已从 `QuickStart/` 重新构建。以独立测试存档运行桌面套件，8 项全部通过，涵盖全新安装、依赖变更与修复、启动与执行行动、停止与重开、配置错误和端口占用。另在空运行环境的隔离副本中，从其他工作目录执行两款工具的 `--headless --check`，均读取了项目根目录的默认配置，并正确提示需先安装。当前可执行文件与源码摘要见[构建记录](../../../engineering/desktop/build-info.json)。
+
+## 迁移前的安装与浏览器验收（2026-11-26）
+
+以下为迁移前根目录布局及当时构建的记录。本轮复制到独立短路径工程后验收，不读写默认游玩存档。具体脚本、源码清单和机器结果见 [安装与页面验收](../../../engineering/desktop/acceptance-install-audit/README.md)。
 
 8 项真实 exe 自动测试全部通过，无跳过，耗时 138.48 秒，见 [JUnit](../../../engineering/desktop/acceptance-install-audit/desktop-tests-short-path.xml)。覆盖全新 Python/虚拟环境离线安装、重复检查、锁文件变更生成新环境、损坏包修复、启动后执行 Lua 行动、正常停止和重开保持进度、重复工具拒绝、越界路径/错误摘要/缺少离线缓存及端口占用。
 

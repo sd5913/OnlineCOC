@@ -10,7 +10,7 @@ TARGET.mkdir()
 ignore = shutil.ignore_patterns('__pycache__', '*.pyc', '.pytest_cache', '*.egg-info')
 for part in ('backend/src','data-management','contracts','rulepacks','client-sdk','test-console'):
     shutil.copytree(ROOT/'engineering'/part, TARGET/'engineering'/part, ignore=ignore)
-for name in ('安装依赖.exe','启动OnlineCOC.exe','launcher-config.json','engineering/requirements-runtime.lock',
+for name in ('QuickStart/安装依赖.exe','QuickStart/启动OnlineCOC.exe','launcher-config.json','engineering/requirements-runtime.lock',
              'engineering/desktop/DesktopTools.cs','engineering/desktop/desktop_host.py',
              'engineering/desktop/verify_environment.py','engineering/desktop/tests/test_desktop.py'):
     dest = TARGET/name; dest.parent.mkdir(parents=True, exist_ok=True); shutil.copy2(ROOT/name,dest)

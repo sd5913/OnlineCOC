@@ -110,7 +110,9 @@ public sealed class Engine : IDisposable {
     public string Url { get { return "http://127.0.0.1:" + Config.application.port; } }
     public Engine(Options options) {
         this.options = options;
-        Root = Path.GetFullPath(AppDomain.CurrentDomain.BaseDirectory).TrimEnd(Path.DirectorySeparatorChar);
+        var executableDirectory = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
+        Root = executableDirectory.Name.Equals("QuickStart", StringComparison.OrdinalIgnoreCase)
+            ? executableDirectory.Parent.FullName : executableDirectory.FullName.TrimEnd(Path.DirectorySeparatorChar);
         ConfigPath = Path.GetFullPath(options.Config ?? Path.Combine(Root, "launcher-config.json"));
         Config = new JavaScriptSerializer().Deserialize<Settings>(File.ReadAllText(ConfigPath, Encoding.UTF8));
         Validate();
@@ -134,7 +136,7 @@ public sealed class Engine : IDisposable {
                      Config.dependencies.wheelDirectory, Config.application.entryPoint, Config.application.dataDirectory, Config.logsDirectory}) Inside(path);
         if (Config.dependencies.probeModules == null || Config.dependencies.probeModules.Length == 0) throw new Exception("缺少依赖导入检查项。");
         foreach (string module in Config.dependencies.probeModules) if (!Regex.IsMatch(module, @"^[A-Za-z0-9_.]+$")) throw new Exception("依赖检查模块名无效。");
-        if (!File.Exists(Inside(Config.application.entryPoint))) throw new Exception("缺少工程代码。两个 exe 必须放在完整工程根目录。");
+        if (!File.Exists(Inside(Config.application.entryPoint))) throw new Exception("缺少工程代码。请将 QuickStart 与 engineering 保留在同一项目目录内。");
     }
     static void SecureUrl(string text) {
         Uri uri;

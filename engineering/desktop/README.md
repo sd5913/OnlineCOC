@@ -1,6 +1,6 @@
 # Windows 安装与启动工具
 
-根目录的 `安装依赖.exe` 和 `启动OnlineCOC.exe` 是由 `DesktopTools.cs` 编译的 Windows x64 WinForms 程序，共用根目录 `launcher-config.json`。使用及配置维护见 [桌面工具说明](../../docs/current/engineering/desktop-tools.md)。
+[QuickStart/安装依赖.exe](../../QuickStart/安装依赖.exe) 和 [QuickStart/启动OnlineCOC.exe](../../QuickStart/启动OnlineCOC.exe) 是由 `DesktopTools.cs` 编译的 Windows x64 WinForms 程序，共用根目录 `launcher-config.json`。使用及配置维护见 [桌面工具说明](../../docs/current/engineering/desktop-tools.md)。
 
 它们启动的是 `http://127.0.0.1:8765` 上的本机基础操作台，默认不挂载 AI runtime 或配置包界面。运行环境装在 `engineering/.runtime/environments/`，不会生成开发和部分包脚本使用的 `engineering/.venv`。完整项目必须保留；两个 exe 不能单独分发为可用应用。
 

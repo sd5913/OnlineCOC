@@ -14,8 +14,8 @@ ROOT = Path(__file__).resolve().parents[3]
 # Keep the official Python archive's nested pip paths below .NET MAX_PATH.
 BASE = ROOT / "engineering/.test-output/desktop-tests" / uuid.uuid4().hex[:12]
 BASE.mkdir(parents=True)
-INSTALLER = ROOT / "安装依赖.exe"
-LAUNCHER = ROOT / "启动OnlineCOC.exe"
+INSTALLER = ROOT / "QuickStart" / "安装依赖.exe"
+LAUNCHER = ROOT / "QuickStart" / "启动OnlineCOC.exe"
 
 def relative(path):
     return path.relative_to(ROOT).as_posix()

@@ -5,7 +5,7 @@
 - 状态：有效
 - 创建日期：2026-10-29
 - 最后更新：2026-11-26
-- 最近目录核对：2026-11-26（双语游玩指南、英文开发记录、共用安装器及引擎、AI、联机验收文件）。2026-11-23（AI分步发布、投影兼容与专项验收）；2026-11-23（规则文件增量暂存、既有性能与远程KP验收清单）；详见[增量暂存验收](../../../engineering/acceptance/rule-stage-delta/README.md)。 2026-11-23（AI 模糊需求恢复源码、冻结差量和验收清单）。 2026-11-23（聊天交互修复、冻结组件与浏览器验收）。
+- 最近目录核对：2026-11-26（默认英文首页、更新日志、反馈目录、QuickStart 桌面工具和双语安装指南）。2026-11-23（AI分步发布、投影兼容与专项验收）；2026-11-23（规则文件增量暂存、既有性能与远程KP验收清单）；详见[增量暂存验收](../../../engineering/acceptance/rule-stage-delta/README.md)。 2026-11-23（AI 模糊需求恢复源码、冻结差量和验收清单）。 2026-11-23（聊天交互修复、冻结组件与浏览器验收）。
 - 关联文档：[工程文档索引](README.md)、[文档维护标准](../../standards/document-maintenance.md)
 
 ## 工程实际目录
@@ -22,8 +22,10 @@
 | --- | --- |
 | `AGENTS.md` | Agent 协作与施工要求 |
 | `.gitattributes` | 保留ISSUE-024验收及依赖冻结版本的原始字节，避免跨系统换行改变证据哈希 |
-| `README.md` | 中文安装与游玩指南，含树桩镇、联机、AI 和开发入口 |
-| `README.en.md` | 英文安装与游玩指南 |
+| `README.md` | 默认英文安装与游玩指南 |
+| `README.zh-CN.md` | 中文安装与游玩指南 |
+| `UPDATE-NOTES.md` | 按日期与提交整理的英文项目更新日志 |
+| `feedback/README.md` | 用户反馈目录入口，含记录方式与示例文件名 |
 | `PROCESS.md` | 英文课程开发记录、AI 协作案例、提交与验收依据 |
 | `engineering/setup-game.cmd` | 树桩镇与 AI 共用的一键安装入口 |
 | `engineering/setup-game.ps1` | 准备项目 Python、Tk 和运行依赖，支持环境复查 |
@@ -369,8 +371,8 @@
 | `engineering/desktop/tests/test_desktop.py` | Windows 安装/启动工具、配置、测试或更新问题文档 |
 | `engineering/desktop/verify_environment.py` | Windows 安装/启动工具、配置、测试或更新问题文档 |
 | `launcher-config.json` | Windows 安装/启动工具、配置、测试或更新问题文档 |
-| `启动OnlineCOC.exe` | Windows 安装/启动工具、配置、测试或更新问题文档 |
-| `安装依赖.exe` | Windows 安装/启动工具、配置、测试或更新问题文档 |
+| `QuickStart/启动OnlineCOC.exe` | Windows 安装/启动工具、配置、测试或更新问题文档 |
+| `QuickStart/安装依赖.exe` | Windows 安装/启动工具、配置、测试或更新问题文档 |
 | `docs/plans/Issues/issue-002-desktop-interaction-validation.md` | 桌面工具验收记录或后续问题 |
 | `engineering/desktop/acceptance-results.json` | 桌面工具验收记录或后续问题 |
 | `engineering/backend/src/onlinecoc/chat.py` | 聊天室领域模型、权限、分页及操作 |

@@ -5,7 +5,7 @@
 ## 首次安装与第一次请求（Windows x64）
 
 1. 将**完整工程**放在可写目录，关闭正在运行的本工程房间、管理器和安装窗口，双击 [engineering/setup-game.cmd](../setup-game.cmd)。它从 `launcher-config.json` 指定地址取得完整 CPython 3.14.2，校验 SHA256，检查 Tk，并按 [requirements-runtime.lock](../requirements-runtime.lock) 的版本及 wheel 摘要创建 `engineering/.venv`。不要求预先安装 Python，也不修改系统 PATH。看到 `GAME_RUNTIME_READY` 后才继续。
-2. 通过配置包的 AI 入口启动房间，例如树桩镇的 `start-ai.cmd`；保持房间运行。另双击 [start-manager.cmd](start-manager.cmd)，浏览器将打开本机管理器。**根目录的“安装依赖.exe”用于旧 Desktop 首测环境，写入 `.runtime/environments`；它不能替代上一步的共享 `.venv` 安装。**
+2. 通过配置包的 AI 入口启动房间，例如树桩镇的 `start-ai.cmd`；保持房间运行。另双击 [start-manager.cmd](start-manager.cmd)，浏览器将打开本机管理器。**`QuickStart/安装依赖.exe`用于旧 Desktop 首测环境，写入 `.runtime/environments`；它不能替代上一步的共享 `.venv` 安装。**
 3. 在“服务商”中编辑配置，核对服务类型、服务地址、模型与 `credentialRef`，启用该配置。仅在密钥输入框保存真实密钥；配置 JSON、聊天、截图和提交仓库中不要填写密钥。“测试连接（产生用量）”成功后再继续；真实服务测试会计费。
 4. 添加运行中的本机房间地址，以该房间 KP 账号登录。在“KP 审核与设置 → 服务与外发范围”选择同一服务配置，开启调用，按本次任务需要明确选择外发范围并保存。服务配置与房间开关是两层设置；本机管理器登录不自动授予房间 KP 权限。
 5. 新建会话，先发送讨论型需求，如“请概述当前公开资料，不执行修改”。需要配置修改时查看 A/B/C、差异和风险，再由 KP 决定是否批准。收到回答、通过检查和发布生效是不同状态，不能把模型文案当成执行凭证。

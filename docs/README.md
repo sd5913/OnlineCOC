@@ -1,6 +1,6 @@
 # 文档索引
 
-本目录按文档用途与生命周期组织项目知识。
+本目录按文档用途与生命周期组织项目知识。游玩从[英文首页](../README.md)或[中文指南](../README.zh-CN.md)开始；版本变化见[更新日志](../UPDATE-NOTES.md)，试玩观察可记入[用户反馈](../feedback/README.md)。
 
 具体包的名单、版本和状态见[配置包实例统计与管理](../rulepacks/catalog.md)，工程接入与开发约定见[配置包开发指南](../rulepacks/README.md)。包内计划须注明状态；工程接入问题统一登记到 [Issues](plans/Issues/README.md)。
 

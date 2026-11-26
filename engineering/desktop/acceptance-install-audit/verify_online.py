@@ -6,6 +6,8 @@ from playwright.sync_api import sync_playwright
 
 OUT = Path(__file__).parent
 ROOT = Path(json.loads((OUT/'source.json').read_text(encoding='utf-8'))['root'])
+# Previously prepared audit copies used the original project-root layout.
+LAUNCHERS = ROOT / 'QuickStart' if (ROOT / 'QuickStart').is_dir() else ROOT
 env = os.environ.copy()
 for key in ('VIRTUAL_ENV','PYTHONPATH','PYTHONHOME','ONLINECOC_BOOTSTRAP_PASSWORD'): env.pop(key,None)
 env['PATH'] = os.path.join(env['WINDIR'],'System32') + ';' + env['WINDIR']
@@ -19,7 +21,7 @@ result=(json.loads((OUT/'online-browser.json').read_text(encoding='utf-8')) if '
 result['port']=port
 def save(): (OUT/'online-browser.json').write_text(json.dumps(result,indent=2,ensure_ascii=False),encoding='utf-8')
 def run(exe,*args,timeout=360):
-    return subprocess.run([str(ROOT/exe),'--headless','--config',str(path),*args],capture_output=True,encoding='utf-8',errors='replace',env=env,timeout=timeout)
+    return subprocess.run([str(LAUNCHERS/exe),'--headless','--config',str(path),*args],capture_output=True,encoding='utf-8',errors='replace',env=env,timeout=timeout)
 if '--browser-only' not in sys.argv:
     save(); started=time.monotonic()
     installed=run('安装依赖.exe')
@@ -34,7 +36,7 @@ if '--browser-only' not in sys.argv:
 env['ONLINECOC_BOOTSTRAP_PASSWORD']='isolated-desktop-audit-password'
 base=f'http://127.0.0.1:{port}'
 def launch(seconds):
-    return subprocess.Popen([str(ROOT/'启动OnlineCOC.exe'),'--headless','--config',str(path),'--no-browser','--run-seconds',str(seconds)],env=env,stdout=subprocess.PIPE,stderr=subprocess.PIPE,encoding='utf-8',errors='replace')
+    return subprocess.Popen([str(LAUNCHERS/'启动OnlineCOC.exe'),'--headless','--config',str(path),'--no-browser','--run-seconds',str(seconds)],env=env,stdout=subprocess.PIPE,stderr=subprocess.PIPE,encoding='utf-8',errors='replace')
 def wait_ready(process):
     with httpx.Client(trust_env=False,timeout=2) as client:
         for _ in range(200):

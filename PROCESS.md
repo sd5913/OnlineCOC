@@ -1,29 +1,48 @@
 # How OnlineCOC was built
 
-[English user guide](README.en.md) · [Chinese user guide](README.md) · [Shared issue register](docs/plans/Issues/README.md)
+[User guide](README.md) · [Update notes](UPDATE-NOTES.md) · [Shared issue register](docs/plans/Issues/README.md)
 
-OnlineCOC started with a question about online tabletop play. Could a group change the rules of a running game, ask the game master for a decision, and continue with everyone seeing the same outcome? We tested that idea in a small Lua host before connecting it to a multiplayer room. Stumpsville later gave us a concrete test for the whole system. A player should be able to create a mouse, act in a scene, and see the game master's ruling reflected in their own view.
+Could a group change the rules of a running game, ask its game master for a ruling, and continue with everyone seeing the same outcome? We tried that first in a small Lua host. Stumpsville gave us a practical test: a player should be able to create a mouse, act in a scene and see the ruling reflected in their own view. [Lua prototype](engineering/lua-authoring-prototype/README.md)
 
-First compiled and last updated on 26 November 2026. Dates in the table refer to Git commits. The linked reports give the dates and conditions of the individual tests.
+The [update notes](UPDATE-NOTES.md) trace the implementation from the first host through browser play and the shared Windows installer. The decisions below show how the project lead and the Codex work sessions used those builds to test the game.
 
-## Development record
+## Who sees what at the table?
 
-| Date in 2026 | What changed | Evidence |
-| --- | --- | --- |
-| Oct 30 | A Lua prototype exercised checks, damage and item transfers. The first playable host added persistent room data, chat, a browser console and Windows setup tools. | [Prototype](engineering/lua-authoring-prototype/README.md) · [First host commit](https://github.com/sd5913/OnlineCOC/commit/4cafe52f5cc846ef9f0ca9c9a3f4c54d5aca5291) |
-| Nov 5 | Playable rulepacks and dedicated launchers made it possible to test a game from the player's entry point. The room and account tools gave the host a way to administer it. | [Rulepacks and automated game workflows](https://github.com/sd5913/OnlineCOC/commit/73832baae4138caabfb2734ae8970f54b206557b) · [Room and account tools](https://github.com/sd5913/OnlineCOC/commit/4c593cc3fa4141bf95913f45964aa33233c45007) |
-| Nov 10–12 | Stumpsville and the LAN gateway were integrated. A follow-up added LAN diagnostics and corrected how player actions travelled over HTTP. | [Initial integration](https://github.com/sd5913/OnlineCOC/commit/11306869d0b2c48d380882fa11f8ffc4acceb8fd) · [LAN follow-up](https://github.com/sd5913/OnlineCOC/commit/dff35404a661f8f483b4ee3c3741cd5fc866c28a) |
-| Nov 16–19 | Browser play, localisation and the room AI came together. The subsequent work on player knowledge made the visibility of a clue depend on what that player had learned. This also constrained what the assistant could use when answering that player. | [Integrated release](https://github.com/sd5913/OnlineCOC/commit/a59d875aa6f4c23b87e69a211a2d23a4cbbfdf56) · [Player knowledge and scene menus](https://github.com/sd5913/OnlineCOC/commit/5c4ff689e6067183d4a6d352f8082e12eafd19d4) |
-| Nov 20–23 | Work shifted to problems that emerge during a longer session. The team added an objective for first-time players, supported a remote game master, and revised the AI review and chat interfaces. | [Starter objective](https://github.com/sd5913/OnlineCOC/commit/653dd842348c389543a46c3a469ac643e379ff92) · [Remote GM](https://github.com/sd5913/OnlineCOC/commit/32cd26ba6393ce037b989b0a4481ba6f80b01c47) · [AI and chat changes](https://github.com/sd5913/OnlineCOC/commit/86ee58ff364f4a122b682802d385c50a313bf6f4) |
+The project lead asked for separate GM controls and player views, an independent chat window, and private conversations alongside room, scene and party channels. A player looking at the GM map could learn about locations their mouse had yet to discover.
 
-## How people and AI worked together
+The Stumpsville work session separated the GM's room, map and ruling pages. A GM can also open a player view to check what that player actually sees. The player's journal and map reflect discoveries made during play. [Interface guide](rulepacks/stumpsville/docs/current/interface.md) · [Player knowledge](rulepacks/stumpsville/docs/current/player-knowledge.md)
 
-**Designing the two sides of the table.** The project lead asked the Stumpsville assistant to separate game-master controls from the player view, give chat its own window, and support several private conversations alongside room, scene and party channels. That request specified what each participant should see. The resulting pack exposes separate GM room, map and ruling pages. A GM can also open a player view to check the player experience. The division matters during play because a private GM map could reveal locations that a mouse has yet to discover. [Interface guide](rulepacks/stumpsville/docs/current/interface.md) · [Player knowledge](rulepacks/stumpsville/docs/current/player-knowledge.md)
+## When should the assistant ask the GM?
 
-**Testing an ambiguous request against the actual game.** The AI and Stumpsville work sessions tested 16 requests with a live DeepSeek service in isolated rooms. The checks compared the final inventory, scene, rule or answer with the requested outcome. In the first run, 12 of 16 outcomes matched. After changes to reference handling, technical retries and the publication workflow, 15 of 16 matched in the final full run. The test driver played the GM. Its two scripted decisions were who should receive a travel payment and how much, and whether players should see a plot hint. One extra follow-up came from the test itself. It looked for the word “rain” even though the revised description already said that the eaves were dripping. The team corrected the check and kept the original exchange in the results. [Live comparison and remaining failure](rulepacks/stumpsville/tests/ambiguous-suite-live-report.md) · [Engine and AI recovery tests](engineering/acceptance/ai-ambiguity-recovery/README.md)
+The AI and Stumpsville work sessions tried **16 ambiguous requests** against a live DeepSeek service in isolated rooms. A scripted GM supplied decisions about a travel payment and whether to reveal a plot hint. The tests compared the resulting inventory, scene, rule or answer with the request.
 
-**Fixing a bug across two components.** While the chat view refreshed, a reader could lose their place and a player composing Chinese text could lose focus. The project lead specified the behaviour on an update: after a second without interaction the view should follow new messages, while typing or scrolling should keep the reading position. The AI component work session changed how messages and the editor were updated. The pack work session also had to keep the embedded editor alive when the surrounding player page refreshed. Only 3 of 12 baseline checks passed. After the fixes, the component report recorded 61 distinct passing checks, and eight separate pack checks exercised the GM view, player view and pop-up. Those runs used Edge and simulated input events. Physical phone input remains a separate check. [Baseline, fixes and retests](engineering/acceptance/ai-chat-interaction/README.md) · [Pack integration results](rulepacks/stumpsville/tests/player-layout-results.json)
+| Check | Before | After the final full run |
+| --- | ---: | ---: |
+| Requests whose actual outcome matched the intended result | 12 of 16 | 15 of 16 |
 
-**Preparing the first-use guides on Nov 26.** The project lead chose Stumpsville as the recommended game and asked for complete setup instructions in Chinese and English. Codex coordinated the engine, networking, AI and pack work sessions. Comparing their entry points exposed a practical problem: the desktop demo creates its own Python environment, while the pack panel and AI manager look for a different interpreter. The AI work session added a shared installer and tested it in a fresh project with no Python on the path and no download cache. The pack session checked that inspecting the ground revealed the main gate in a new room. These two results gave the guides a concrete start and finish for a first session. [Shared installer and isolated test](engineering/acceptance/ai-install-guide/README.md) · [English setup and play guide](README.en.md) · [Chinese setup and play guide](README.md)
+The team revised how the assistant resolved references, retried technical failures and published changes. It also corrected a test that searched for the word *rain* even though the new scene description already said the eaves were dripping. The report preserves that extra exchange and the remaining failure. [Live comparison](rulepacks/stumpsville/tests/ambiguous-suite-live-report.md) · [Recovery tests](engineering/acceptance/ai-ambiguity-recovery/README.md)
 
-Codex assisted with implementation, diagnosis, automated checks and documentation. The optional model called **inside** a running game has a separate role: its proposals follow the room's permissions and review settings. Generated illustrations are identified in the pack's asset notes. For ongoing work, the shared issue register and dated test reports record unresolved problems and available evidence. [AI development archive](docs/history/2026-11-20-ai-development-records.md) · [Runtime art credits](rulepacks/stumpsville/assets/runtime/README.md) · [Issue register](docs/plans/Issues/README.md)
+## Why did chat lose its place?
+
+When a new message arrived, a reader could lose their place and someone composing Chinese text could lose focus. The project lead set a concrete rule: follow new messages after a second without interaction, and preserve the reading position while the user types or scrolls.
+
+The AI component work session changed how the message list and editor updated. The pack work session kept the embedded editor alive when the player page refreshed. Both changes mattered because either component could interrupt the same keystroke.
+
+| Test stage | What the team observed |
+| --- | --- |
+| Before the fix | Only 3 of 12 baseline checks passed. |
+| After the fix | 61 distinct component checks passed. Eight separate pack checks exercised the GM view, player view and pop-up. |
+
+The runs used Edge and simulated input events. Physical phone input remains open. [Baseline and retests](engineering/acceptance/ai-chat-interaction/README.md) · [Pack results](rulepacks/stumpsville/tests/player-layout-results.json)
+
+## Could a first-time host start a session?
+
+On 26 November, the project lead chose Stumpsville as the recommended first game and requested installation guides in English and Chinese. Codex coordinated the engine, networking, AI and pack work sessions. Comparing the startup paths exposed a mismatch: the base demo installed its own environment, while the Stumpsville panel and AI manager expected another interpreter.
+
+The AI work session added a shared installer and tested it in a fresh project with no Python on the path and no download cache. The pack session checked the other end of the experience: inspecting the ground in a new room added a clue to the journal and revealed the main gate on the map. These became the first and last checks for a new host following the guide. [Installer evidence](engineering/acceptance/ai-install-guide/README.md) · [First-play steps](rulepacks/stumpsville/README.md)
+
+## Contributions and evidence
+
+Codex assisted with implementation, diagnosis, automated checks and documentation. During a game, the optional room AI operates within the permissions and review settings chosen by the GM. Generated illustrations are credited in the pack's asset notes. For dated changes, outstanding work and playtest observations, see the linked records.
+
+[Update notes](UPDATE-NOTES.md) · [AI development archive](docs/history/2026-11-20-ai-development-records.md) · [Artwork credits](rulepacks/stumpsville/assets/runtime/README.md) · [User feedback](feedback/README.md)

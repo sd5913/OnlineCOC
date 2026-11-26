@@ -7,6 +7,8 @@
 - 最后更新：2026-11-26
 - 关联文档：[桌面工具](../../../docs/current/engineering/desktop-tools.md)、[源码入口](../README.md)
 
+本报告记录移至 `QuickStart/` 之前的根目录布局及其构建摘要。现行入口与迁移复测见[桌面工具](../../../docs/current/engineering/desktop-tools.md)。
+
 ## 结果
 
 根目录两个 exe 和 `DesktopTools.cs` 的摘要均匹配既有 `build-info.json`，本轮没有重编译 exe。它们是 Windows x64 / WinForms 工具，启动 `desktop_host.py`，监听回环地址并提供 `engineering/test-console/`。默认 AI capability 的 `available` 和 `enabled` 都是 false。

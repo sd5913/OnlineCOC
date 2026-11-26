@@ -1,67 +1,103 @@
-# OnlineCOC · 线上跑团
+# OnlineCOC
 
-[English](README.en.md) · [项目开发与 AI 协作记录（英文）](PROCESS.md) · [共享任务与问题](docs/plans/Issues/README.md)
+[简体中文](README.zh-CN.md) · [Update notes](UPDATE-NOTES.md) · [Development process](PROCESS.md) · [Player feedback](feedback/README.md)
 
-OnlineCOC 是给主持人（KP / GM）、玩家和规则作者使用的多人跑团工具。房主电脑保存房间，规则包决定角色、地图和行动如何运作。**第一次游玩推荐《树桩镇》Stumpsville**：一人主持，其他人扮演小鼠。一次探索会改变角色已知的地点、线索和背包，主持可以裁决预设以外的行动。一个人也可以用两个浏览器标签分别体验主持和玩家视角。
+Host a tabletop RPG from a Windows PC and let players join in their browsers. The host keeps the save. A rulepack supplies the characters, map and rules, and the game master (**KP** in the interface) decides what happens when players try something outside the preset actions.
 
-## 先选要运行的内容
+**First game? Try Stumpsville.** Lead a party of mice into a settlement, discover a route together and bring something back. You can play both the GM and a player in two independent tabs on one computer.
 
-| 目标 | 在哪台设备准备什么 |
+| I want to… | Start here |
 | --- | --- |
-| 玩树桩镇，或使用房间 AI | 房主在 Windows x64 上取得完整项目，准备下述共用环境 `engineering/.venv`。本机试玩可关掉 AI，无需服务商账号。 |
-| 让异地玩家从网页加入 | 房主额外安装联网运行时，取得房间目录的发布配置。玩家只需支持 WebRTC 的浏览器、平台入口和游戏账号。 |
-| 单独体验基础引擎 | 在完整项目根目录双击 `安装依赖.exe`，再双击 `启动OnlineCOC.exe`，首次设置至少 8 位密码。在 `http://127.0.0.1:8765` 用 `kp`、`player1` 或 `player2` 登录，同时登录多个账号请用独立浏览器配置文件。保持启动窗口运行，关闭窗口可停止宿主。两个 EXE 使用独立的 `engineering/.runtime` 环境。详见[桌面工具](docs/current/engineering/desktop-tools.md)。 |
+| Play or host Stumpsville | [Install and play](#play-stumpsville) |
+| Invite another player | [LAN and remote browser play](#multiplayer) |
+| Use AI during a session | [Configure the room assistant](#room-ai) |
+| Try the base engine console | [Windows QuickStart](#engine-demo) |
 
-将[项目仓库](https://github.com/sd5913/OnlineCOC)完整克隆或下载 ZIP 后解压到层级较浅的可写目录（如 `D:\OnlineCOC`）。下文路径都从含有 `launcher-config.json`、`engineering` 和 `rulepacks` 的项目根目录开始。在 GitHub 网页上阅读时，请在本机文件夹中运行对应程序。
+<a id="play-stumpsville"></a>
 
-## 本机跑一局树桩镇
+## Play Stumpsville
 
-1. **一键准备依赖。** 双击 [engineering/setup-game.cmd](engineering/setup-game.cmd)，首次联网下载并校验完整 Python、Tk 和锁定依赖，无需预装 Python。看到 `GAME_RUNTIME_READY` 后即可打开树桩镇面板或 AI 管理器。需复查时在根目录 PowerShell 运行 `.\engineering\setup-game.cmd -VerifyOnly`。失败时查看 `engineering/.runtime/game-setup-logs/`，修正报错后重跑安装。
+Clone the [repository](https://github.com/sd5913/OnlineCOC) or download and extract the full ZIP to a short, writable path such as `D:\OnlineCOC`. Run launchers from the extracted project. Commands below start in the folder containing `launcher-config.json`.
 
-   若需手工安装，可使用 Windows x64 完整版 CPython 3.14.2，含 Tk 和 Python 启动器。在根目录的 PowerShell 执行以下命令。首次下载依赖需要联网，Lua 随锁定依赖安装。
+1. **Install.** On Windows x64, run [setup-game.cmd](engineering/setup-game.cmd). The first run downloads Python, checks Tk and installs the locked dependencies into `engineering/.venv`. When you see `GAME_RUNTIME_READY`, the game panel and AI manager are ready to open.
+2. **Open a room.** Run [start-panel.cmd](rulepacks/stumpsville/start-panel.cmd), select **Local** (本机), create a save slot, set its initial password and click **Start room** (启动房间). You can clear **AI assistant** for this first game. Keep the host panel running. The local address defaults to `http://127.0.0.1:8899`.
+3. **Seat the GM and player.** Sign in as `kp` and click **一键开场** on the Room page. Open the base address again for an independent login and sign in as `player1` with the slot's initial password. Submit a preset character. The GM approves it under **Rulings** (裁决), then the player checks their backpack and marks themselves ready. Keep a signed-in GM page open for automatic rulings.
+4. **Make a discovery.** In **01 · Entrance Tunnel**, choose **Inspect the ground → Look closely** (观察地面 → 仔细观察). Check the player's journal for the ground-impression clue and their map for **02 · Main Gate**. For a short expedition, record two discoveries, collect one new item and get everyone back to the entrance. For the longer story, take the commission in the courtyard. [Player guide](rulepacks/stumpsville/docs/current/player-guide.md)
+5. **Save and return.** Click **Stop room** in the panel. Reopen the same slot to resume with its active rules. Saves are under `rulepacks/stumpsville/runtime/slots/`. [Backup and recovery](rulepacks/stumpsville/docs/current/usage.md)
 
-   ```powershell
-   py -3.14 -m venv engineering/.venv
-   .\engineering\.venv\Scripts\python.exe -m pip install --require-hashes -r engineering/requirements-runtime.lock
-   .\engineering\.venv\Scripts\python.exe -m pip check
-   ```
+<details>
+<summary>Verify, repair or install dependencies manually</summary>
 
-2. **房主开房。** 双击 [start-panel.cmd](rulepacks/stumpsville/start-panel.cmd) 即选中树桩镇。选择“本机”，首次试玩可取消“AI助手”。创建新存档槽位，设置并确认初始密码，点击“启动房间”。默认本机地址为 `http://127.0.0.1:8899`。房间面板负责运行服务，游玩期间可以最小化。
-3. **主持和玩家入场。** 在打开的页面用 `kp` 登录，在“房间”点击“一键开场”。另开根地址，或点“新开独立登录页”，用 `player1` 和新槽位的初始密码登录。玩家在大厅选择预设角色并提交，主持到“裁决”批准，玩家检查背包并确认准备。保留至少一个已登录的主持页面处理行动。
-4. **检查首次互动。** 在“01 入口隧道”选择“观察地面 → 仔细观察”。玩家手记应出现“入口地面的压痕”，地图上应出现“02 主门”。首局可约定“探路取物”：记录两条不同发现、带回一件非初始物品，全员返回入口，由主持核对。完整冒险可以继续到庭院接任务。[玩家简明指南](rulepacks/stumpsville/docs/current/player-guide.md)
-5. **结束或恢复。** 在面板点击“停止房间”，下次选择同一槽位恢复。存档位于 `rulepacks/stumpsville/runtime/slots/`。旧槽位沿用已激活的规则，想体验当前出厂内容可新建槽位。[存档与恢复](rulepacks/stumpsville/docs/current/usage.md)
+Run `.\engineering\setup-game.cmd -VerifyOnly` from the project root. If setup failed, check `engineering/.runtime/game-setup-logs/`, correct the reported problem and rerun the installer.
 
-## 邀请玩家联机
+For a manual install, use full CPython 3.14.2 x64 with Tk and the Python launcher. The initial download requires internet access. Lua comes with the locked dependencies.
 
-新槽位中的示例账号共用创建时的初始密码。邀请其他人之前，在房主面板的“账号管理”给每位玩家创建账号或分别改密，单独保留主持账号。
+```powershell
+py -3.14 -m venv engineering/.venv
+.\engineering\.venv\Scripts\python.exe -m pip install --require-hashes -r engineering/requirements-runtime.lock
+.\engineering\.venv\Scripts\python.exe -m pip check
+```
 
-**同一局域网。** 房主双击 [start-lan.cmd](rulepacks/stumpsville/start-lan.cmd)，选局域网网卡、槽位并启动。在面板复制玩家访问地址给同一网络的玩家。玩家用浏览器打开该地址，登录自己的游戏账号。若无法连入，先在面板核对网卡、监听端口与连接诊断。回环地址 `127.0.0.1` 只在房主电脑上有效。[局域网说明](rulepacks/stumpsville/docs/current/usage.md)
+</details>
 
-**异地网页联机。** 完整树桩镇桌面使用网页模式。旧 P2P 客户端另有基础状态与聊天入口。若要使用该客户端，房主先启动宿主，再运行 `engineering/network-p2p/play.cmd`、选择本机宿主并发布。玩家取得完整加入信息、玩家 ZIP 与游戏账号，在装有 Python 3.14 x64 的 Windows 电脑解压 ZIP，运行 `play.cmd`，首次联网安装后连接、登录、下载内容并发送测试聊天。[旧 P2P 客户端](engineering/network-p2p/README.md)
+<a id="multiplayer"></a>
 
-1. **房主安装。** Windows 10/11 x64 房主取得维护者分发的 `OnlineCOC-Network-Setup.exe` 后双击，选择**含 engineering 的项目根目录**，点击“一键安装”。它离线安装到 `engineering/network-p2p/.venv`。若提示占用，正常关闭联网进程后重试。该 EXE 是构建产物。只有源码时，安装含 `py` 的 Python 3.14 x64，在根目录 PowerShell 运行 `.\engineering\network-p2p\setup.ps1` 并等待成功。然后运行 `.\engineering\network-p2p\.venv\Scripts\python.exe -m pip install --no-deps -e engineering/network-web` 将网页模块加入源码环境。使用离线 EXE 时可直接进入下一步。[安装器、构建与自检](engineering/network-web/installer/README.md)
-2. **准备发布配置。** 房主从平台维护者取得与所用目录服务匹配的本机配置（默认 `engineering/network-p2p/local/client-config.json`）、CA 公钥证书与发布授权。仓库提供代码与示例，自建服务的部署和配置见[联网工程说明](docs/current/engineering/network-p2p.md)。测试平台使用测试 CA，玩家需从可信渠道取得并信任其公钥证书。
-3. **房主分享。** 双击 [start-web.cmd](rulepacks/stumpsville/start-web.cmd)，选择槽位并启动。在房间管理页打开“网页分享与连接”，复制开房串，在平台“创建房间”登录后粘贴，选择公开性和密码。开房串供房主一次认领，十分钟有效。发给玩家的是**加入网址和八位房间代号**，另行分配游戏账号。
-4. **玩家加入。** 在浏览器注册或登录平台，输入代号和所需密码，按房间设置等待批准。点“进入游戏”→“连接房主”，用房主分配的**游戏账号**登录。两人在全局频道互发一条消息可确认连接，再按上节建角、开场。房主保持面板运行，主持保持游戏页在线。[网页房间说明](rulepacks/stumpsville/docs/current/web.md)
+## Invite players
 
-## 在房间中使用 AI
+The initial demo accounts share a password. In the host panel's **Account management** (账号管理), create individual game accounts or change their passwords before inviting others.
 
-1. 先完成树桩镇的共用环境安装。房主本机双击 [start-ai-manager.cmd](rulepacks/stumpsville/start-ai-manager.cmd) 打开服务商管理器。在“服务商”选择 DeepSeek 或兼容服务，按服务商提供的信息填写地址、模型 ID、凭据并启用，再点“测试连接”。测试会产生实际调用用量，密钥只在本机管理器配置。
-2. 双击 [start-ai.cmd](rulepacks/stumpsville/start-ai.cmd)，或在房间面板勾选“AI助手”后启动槽位。以 `kp` 登录，在“AI 设置”确认选中的服务、是否允许调用、可向服务商发送的资料以及玩家对话权限。已有槽位保留原设置。也可在独立管理器的“房间与会话”添加本机宿主地址，以 KP 登录后，在“KP 审核与设置 → 服务与外发范围”配置同一房间。
-3. 在主持裁决页的 AI 对话中发一个只读问题，例如“根据当前房间资料，我该如何开始这局游戏？”。等待会话里出现回答。获准的玩家也可从场景右栏打开个人 AI 对话。需要修改规则或发放物品时，主持可在裁决队列检查差异、风险和执行结果。
-4. 若管理器打不开，先检查共用环境；若面板正常但没有回答，依次核对服务商测试、房间选用的模型、调用与资料权限及任务状态。[管理器说明](docs/current/engineering/ai-manager.md) · [树桩镇 AI 接入](rulepacks/stumpsville/docs/current/integrations.md)
+### On the same LAN
 
-## 验证范围
+Run [start-lan.cmd](rulepacks/stumpsville/start-lan.cmd), choose the LAN adapter and save slot, and start the room. Copy the **player address** from the panel. Players open it in their browsers and sign in with their game accounts. If they cannot connect, check the adapter, port and diagnostics. The loopback address `127.0.0.1` works only on the host. [LAN guide](rulepacks/stumpsville/docs/current/usage.md)
 
-共用安装器已在无缓存的 Windows x64 隔离副本中完成安装，Tk 和 29 项运行依赖通过检查。本轮用模拟 AI 服务完成配置，首次提交失败后重试，同一请求进入待审核状态。真实 DeepSeek 的记录来自此前联测。[本轮 AI 安装与请求验收](engineering/acceptance/ai-install-guide/README.md) · [历史真实服务记录](engineering/acceptance/ai-runtime/deepseek-live.json)
+### Across the internet
 
-基础引擎在隔离目录完成无缓存在线安装，三个账号能登录，两端同步 Lua 行动结果，重启后保留进度。网页联网 EXE 在运行时被占用时提示失败，关闭占用后同目录重试成功。[引擎安装验收](engineering/desktop/acceptance-install-audit/README.md) · [联网安装验收](engineering/network-web/acceptance/2026-11-26-firstplay.json)
+1. **Host software.** Prepare the shared game environment above. On Windows 10/11 x64, run the separately distributed `OnlineCOC-Network-Setup.exe`, select the **project root containing engineering** and click **一键安装**. It installs the network runtime offline. If the runtime is busy, stop sharing and retry in the same directory. [Installer guide](engineering/network-web/installer/README.md)
+2. **Directory access.** Obtain the publishing configuration, authorisation and public CA certificate from the platform operator. The default config path is `engineering/network-p2p/local/client-config.json`. Players using the test portal need to obtain and trust its public CA certificate through a trusted channel. [Self-hosted deployment](docs/current/engineering/network-p2p.md)
+3. **Host invitation.** Run [start-web.cmd](rulepacks/stumpsville/start-web.cmd), select a slot and start the room. In **网页分享与连接**, copy the creation string into the portal's **Create room** page. Choose visibility and password. The single-use creation string is for the host and expires after ten minutes. Give players the **join URL and eight-character code**, plus their individual game accounts.
+4. **Player login.** Use a WebRTC-capable browser to sign in to the portal, enter the code and any room password, and wait for approval if enabled. Click **Enter game → Connect to host**, then sign in with the **game account**. Exchange a message in global chat. Keep the host panel and a GM page running. [Stumpsville web guide](rulepacks/stumpsville/docs/current/web.md)
 
-2026-11-26 在 Windows 隔离新房间验证了入口观察、个人线索和地图更新。本机双浏览器通过真实 WebRTC 进入同一间树桩镇房间并覆盖 18 项预设行动。独立家庭或移动网络的真人试玩仍待补验。历史公网强制 TURN 与远程主持证据单列。[双浏览器结果](rulepacks/stumpsville/tests/web-results.json) · [历史公网主持验证](rulepacks/stumpsville/tests/remote-kp-cloud-results.json)
+<details>
+<summary>Source-only networking setup and the legacy P2P client</summary>
 
-## 来源、进度与开发入口
+With a source checkout and Python 3.14 x64 with the `py` launcher, run these commands in PowerShell to prepare the networking environment:
 
-- 树桩镇适配 Isaac Williams / Losing Games 的 Mausritter SRD。规则、第三方冒险参考、原创分支及生成式运行插画分别标注来源。分发素材前请核对其对应许可。[来源与许可](rulepacks/stumpsville/docs/current/sources.md) · [运行插画](rulepacks/stumpsville/assets/runtime/README.md)
-- 项目使用 Python、FastAPI、WebSocket、Lua/Lupa 和浏览器 WebRTC。提交、测试、已知问题和 AI 协作过程见[开发记录](PROCESS.md)、[共享问题与计划](docs/plans/Issues/README.md)和[首测验收](docs/current/engineering/first-test-acceptance.md)。
-- 规则作者可从[Lua 编写说明](docs/current/engineering/lua-authoring.md)、[配置包目录](rulepacks/README.md)和[开发者参考](docs/current/engineering/developer-reference/README.md)开始，另有[《激光与情感》](rulepacks/lasers-and-feelings/README.md)。
-- 运维与工程入口包括[基础宿主](docs/current/engineering/first-test.md)、[聊天室](docs/current/engineering/chat-backend.md)、[桌面房间管理器](tools/room-manager/README.md)和[账号工具](tools/host-accounts/README.md)。协作前查看[工程登记](docs/current/engineering/hierarchy.md)、[文档规范](docs/standards/document-maintenance.md)和[文档索引](docs/README.md)。
+```powershell
+.\engineering\network-p2p\setup.ps1
+.\engineering\network-p2p\.venv\Scripts\python.exe -m pip install --no-deps -e engineering/network-web
+```
+
+For legacy P2P state and chat, start the host, run `engineering/network-p2p/play.cmd`, select the running host and publish. The player extracts the supplied ZIP on Windows with Python 3.14 x64, runs `play.cmd` online for its first installation, connects with the full join information, signs in and downloads the content. [Legacy P2P guide](engineering/network-p2p/README.md)
+
+</details>
+
+<a id="room-ai"></a>
+
+## Ask the room AI
+
+1. After installing the shared game environment, run [start-ai-manager.cmd](rulepacks/stumpsville/start-ai-manager.cmd) on the host. Under **Providers** (服务商), enable DeepSeek or a compatible service, enter its endpoint and model ID, and save the key in the credential field. **Test connection** uses real provider quota.
+2. Open [start-ai.cmd](rulepacks/stumpsville/start-ai.cmd) or enable AI in the room panel. Start the slot, sign in as `kp`, and under **AI settings** select the provider, allow calls and choose which information may leave the room. Set player chat permissions as needed. In the standalone manager, add the local host address under **Rooms and sessions** and sign in as KP to configure the same room.
+3. On the GM's **Rulings** page, ask “How can I start this session with the information available in the room?” Check for a reply. Players with permission have a personal AI tab. For a rule change or item grant, review the proposed changes and risks in the ruling queue, then check the execution result.
+
+If no reply appears, check the provider probe, the selected model, the room's call and data permissions, and the task status. [Manager guide](docs/current/engineering/ai-manager.md) · [Pack integration](rulepacks/stumpsville/docs/current/integrations.md)
+
+<a id="engine-demo"></a>
+
+## Windows QuickStart for the base engine
+
+Open the **QuickStart** folder in the full project. Run [安装依赖.exe](QuickStart/安装依赖.exe) to install dependencies, then [启动OnlineCOC.exe](QuickStart/启动OnlineCOC.exe) to start the console. Set an initial password of at least eight characters. Sign in at `http://127.0.0.1:8765` as `kp`, `player1` or `player2`. Use separate browser profiles for simultaneous accounts. Closing the launcher stops the host. This demo uses its own environment under `engineering/.runtime`. [Desktop guide](docs/current/engineering/desktop-tools.md)
+
+## What has been tested
+
+| Scenario | Evidence |
+| --- | --- |
+| First installation | An empty-cache Windows install verified Tk and 29 dependencies. The base console also passed login, shared Lua action and save/restart checks. [Shared setup](engineering/acceptance/ai-install-guide/README.md) · [Base engine](engineering/desktop/acceptance-install-audit/README.md) |
+| Multiplayer | The network installer recovered from a busy runtime. Two browsers on one computer exercised 18 Stumpsville actions over WebRTC. Earlier runs covered public TURN and remote GM operation. A human playthrough on independent home or mobile networks remains open. [Installer](engineering/network-web/acceptance/2026-11-26-firstplay.json) · [Two browsers](rulepacks/stumpsville/tests/web-results.json) · [Remote GM](rulepacks/stumpsville/tests/remote-kp-cloud-results.json) |
+| Room AI | The onboarding check used a simulated provider and retried a submission through GM review. A previous run exercised the real DeepSeek service. [Onboarding](engineering/acceptance/ai-install-guide/README.md) · [Live-provider record](engineering/acceptance/ai-runtime/deepseek-live.json) |
+
+## Credits and developer resources
+
+- Stumpsville adapts the Mausritter SRD by Isaac Williams / Losing Games. The pack distinguishes the rules, third-party adventure references, original branches and generated runtime art. Check the corresponding terms before redistributing assets. [Sources and licensing](rulepacks/stumpsville/docs/current/sources.md) · [Runtime illustrations](rulepacks/stumpsville/assets/runtime/README.md)
+- The project uses Python, FastAPI, WebSocket, Lua/Lupa and browser WebRTC. Dated changes, tests, open issues and the use of AI during development are documented in the [development record](PROCESS.md), [shared issues and plans](docs/plans/Issues/README.md) and [engine acceptance report](docs/current/engineering/first-test-acceptance.md).
+- Rule authors can start with the [Lua guide](docs/current/engineering/lua-authoring.md), [rulepack directory](rulepacks/README.md) and [developer reference](docs/current/engineering/developer-reference/README.md). [Lasers & Feelings](rulepacks/lasers-and-feelings/README.md) is another playable pack.
+- For operations, see the [base host](docs/current/engineering/first-test.md), [chat backend](docs/current/engineering/chat-backend.md), [desktop room manager](tools/room-manager/README.md) and [account tools](tools/host-accounts/README.md). Contributors can consult the [workspace register](docs/current/engineering/hierarchy.md), [documentation standard](docs/standards/document-maintenance.md) and [documentation index](docs/README.md).
