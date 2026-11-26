@@ -2,7 +2,12 @@
 
 [User guide](README.md) · [Development process](PROCESS.md) · [Issue register](docs/plans/Issues/README.md)
 
-## Unreleased
+## 26 November 2026 · Windows x64 preview
+
+- Added a downloadable offline build of Stumpsville from `e5b3244`, with a unified launcher, networking setup and a single-key DeepSeek preset. The bilingual guides include the trailer and first-session video. [Release notes and downloads](https://github.com/sd5913/OnlineCOC/releases/tag/win64-preview-e5b3244)
+- On `main`, Stumpsville adds shared combat, escape and incapacitation, plus map zoom and reset controls on desktop and mobile. The downloadable preview predates these changes. [Player guide](rulepacks/stumpsville/docs/current/player-guide.md)
+
+## 26 November 2026 · Documentation and desktop tools
 
 - The repository now opens with the English guide. The [Chinese guide](README.zh-CN.md) follows the same routes for local play, multiplayer, room AI and the engine demo.
 - The Windows base-engine installer and launcher are in [QuickStart](QuickStart/). Keep that folder beside `engineering/` and the root `launcher-config.json`. Existing installations keep their project-relative runtime and save paths.

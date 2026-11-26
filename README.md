@@ -1,29 +1,64 @@
 # OnlineCOC
 
-[简体中文](README.zh-CN.md) · [Update notes](UPDATE-NOTES.md) · [Development process](PROCESS.md) · [Player feedback](feedback/README.md)
+[简体中文](README.zh-CN.md) · [Download for Windows x64](https://github.com/sd5913/OnlineCOC/releases/download/win64-preview-e5b3244/OnlineCOC-Windows-x64-preview-e5b3244.zip) · [Release notes & subtitles](https://github.com/sd5913/OnlineCOC/releases/tag/win64-preview-e5b3244) · [Player feedback](feedback/README.md)
 
-Host a tabletop RPG from a Windows PC and let players join in their browsers. The host keeps the save. A rulepack supplies the characters, map and rules, and the game master (**KP** in the interface) decides what happens when players try something outside the preset actions.
+Host a tabletop RPG on Windows and invite friends to play in their browsers. In **Stumpsville**, your party of mice explores a settlement together. Players choose actions and keep their discoveries. The game master (**KP** in the interface) handles rulings and the host keeps the save.
 
-**First game? Try Stumpsville.** Lead a party of mice into a settlement, discover a route together and bring something back. You can play both the GM and a player in two independent tabs on one computer.
+**Trailer · 32 seconds.** Explore the entrance tunnel with a friend, then see a rule change take effect during play. The AI sequence uses a simulated proposal and shows the actual GM approval and player roll.
 
-| I want to… | Start here |
-| --- | --- |
-| Play or host Stumpsville | [Install and play](#play-stumpsville) |
-| Invite another player | [LAN and remote browser play](#multiplayer) |
-| Use AI during a session | [Configure the room assistant](#room-ai) |
-| Try the base engine console | [Windows QuickStart](#engine-demo) |
+https://github.com/user-attachments/assets/77f2f9d5-764e-4253-a489-76faf2667087
+
+[Start a session](#play-stumpsville) · [Invite players](#multiplayer) · [Use AI](#room-ai) · [Run from source](#from-source)
 
 <a id="play-stumpsville"></a>
 
-## Play Stumpsville
+## Start your first session
 
-Clone the [repository](https://github.com/sd5913/OnlineCOC) or download and extract the full ZIP to a short, writable path such as `D:\OnlineCOC`. Run launchers from the extracted project. Commands below start in the folder containing `launcher-config.json`.
+**Host requirements:** Windows 10/11 x64, PowerShell 5.1+, .NET Framework and a browser. The preview includes Python and the game dependencies for offline setup. One computer is enough to try both roles.
 
-1. **Install.** On Windows x64, run [setup-game.cmd](engineering/setup-game.cmd). The first run downloads Python, checks Tk and installs the locked dependencies into `engineering/.venv`. When you see `GAME_RUNTIME_READY`, the game panel and AI manager are ready to open.
-2. **Open a room.** Run [start-panel.cmd](rulepacks/stumpsville/start-panel.cmd), select **Local** (本机), create a save slot, set its initial password and click **Start room** (启动房间). You can clear **AI assistant** for this first game. Keep the host panel running. The local address defaults to `http://127.0.0.1:8899`.
-3. **Seat the GM and player.** Sign in as `kp` and click **一键开场** on the Room page. Open the base address again for an independent login and sign in as `player1` with the slot's initial password. Submit a preset character. The GM approves it under **Rulings** (裁决), then the player checks their backpack and marks themselves ready. Keep a signed-in GM page open for automatic rulings.
-4. **Make a discovery.** In **01 · Entrance Tunnel**, choose **Inspect the ground → Look closely** (观察地面 → 仔细观察). Check the player's journal for the ground-impression clue and their map for **02 · Main Gate**. For a short expedition, record two discoveries, collect one new item and get everyone back to the entrance. For the longer story, take the commission in the courtyard. [Player guide](rulepacks/stumpsville/docs/current/player-guide.md)
-5. **Save and return.** Click **Stop room** in the panel. Reopen the same slot to resume with its active rules. Saves are under `rulepacks/stumpsville/runtime/slots/`. [Backup and recovery](rulepacks/stumpsville/docs/current/usage.md)
+1. **Launch.** Download the [Windows preview ZIP](https://github.com/sd5913/OnlineCOC/releases/download/win64-preview-e5b3244/OnlineCOC-Windows-x64-preview-e5b3244.zip) and extract it to a short, writable path such as `D:\Games`. Open `OnlineCOC-preview\Start.cmd`. When setup finishes, choose the first menu item, **本机树桩镇** (local Stumpsville).
+2. **Create a room.** In the host panel, choose local play, create a save slot, set an initial password of at least eight characters and start the room. You can leave AI off. Keep the panel running. The default address is `http://127.0.0.1:8899`.
+3. **Take your seats.** Sign in as `kp` and click **一键开场** on the Room page. Open the room's base address in another tab. Sign in as `player1` with the slot password and submit a preset character. The GM approves it under **裁决** (Rulings), then the player checks their backpack and confirms readiness. Keep the GM page open.
+4. **Find a clue.** At **01 · Entrance Tunnel**, choose **观察地面 → 仔细观察** (Inspect the ground → Look closely). Check the player's journal for the marks in the mud and the map for **02 · Main Gate**. For a longer expedition, take the commission in the courtyard. [Player guide](rulepacks/stumpsville/docs/current/player-guide.md)
+5. **Return later.** Stop the room in the host panel. Select the same slot next time. Back up `userdata/rooms/` with the room stopped and keep the old directory when trying another version. [Preview notes & checksum](https://github.com/sd5913/OnlineCOC/releases/tag/win64-preview-e5b3244)
+
+**First-session video · 1 minute 45 seconds.** Follow the host and player through installation, character approval, discovery and save recovery. Both films have Chinese narration and English and Chinese subtitles.
+
+https://github.com/user-attachments/assets/b236b238-37fa-4cf6-8eb6-e6061aa46a11
+
+<a id="multiplayer"></a>
+
+## Invite players
+
+Before sharing a room, create individual game accounts or change the demo passwords under **账号管理** (Account management). Open **联网设置与安装** (Network settings) in the preview menu.
+
+| Where are the players? | Host | Player |
+| --- | --- | --- |
+| Same LAN | Select the LAN adapter and slot, start the room and copy the **player address**. | Open that address in a browser and sign in with a game account. |
+| Different networks | Install the bundled network runtime. Enter the operator's directory URL, publishing token and trusted CA if required. Start the web room and claim the creation string in the portal. | Sign in to the portal, enter the eight-character room code and any room password, then choose **Enter game → Connect to host** and sign in with a game account. |
+
+The creation string belongs to the host and expires after ten minutes. Share the join URL and room code with players. The test portal uses a project CA. Obtain its public certificate through a trusted channel. If a LAN player cannot connect, check the chosen adapter and port. `127.0.0.1` points to the player's own computer. [LAN guide](rulepacks/stumpsville/docs/current/usage.md) · [Remote play](rulepacks/stumpsville/docs/current/web.md) · [Self-hosting](docs/current/engineering/network-p2p.md)
+
+<a id="room-ai"></a>
+
+## Use AI at the table
+
+1. In the preview menu, open **AI 设置**. The DeepSeek endpoint and model are preset. The host enters their own API key. Saving it keeps it in the current Windows user's protected store. **Test connection** and model requests use the host's provider quota.
+2. Enable **AI assistant** in the room panel. As `kp`, select the provider, allow calls and choose what room information may be sent. Grant player chat access as needed.
+3. Ask how to begin the adventure using the room's current information. For a rule change, review the proposal and its risks, approve publication, then try the action in the same room. If no answer appears, check the connection test, room permissions and task status. [AI manager](docs/current/engineering/ai-manager.md) · [Stumpsville AI integration](rulepacks/stumpsville/docs/current/integrations.md)
+
+<a id="from-source"></a>
+
+## Run from source
+
+Use a checkout of `main` for the latest combat rules and map controls. The downloadable preview is built from [e5b3244](https://github.com/sd5913/OnlineCOC/commit/e5b3244aaa30ba7905bcf8f4bf57b28c7a76a652).
+
+| Task | Source entry point |
+| --- | --- |
+| Install | Clone or extract the complete repository into a short writable path. Run [setup-game.cmd](engineering/setup-game.cmd) from the project root. The first run downloads Python and the locked dependencies. Wait for `GAME_RUNTIME_READY`. |
+| Start or resume | Run [start-panel.cmd](rulepacks/stumpsville/start-panel.cmd) and follow the room and player steps above. Source saves live in `rulepacks/stumpsville/runtime/slots/`. |
+| Host multiplayer | Use [start-lan.cmd](rulepacks/stumpsville/start-lan.cmd) or [start-web.cmd](rulepacks/stumpsville/start-web.cmd). Prepare the separate web runtime using the instructions below. [Network installer](engineering/network-web/installer/README.md) |
+| Configure AI | Open [start-ai-manager.cmd](rulepacks/stumpsville/start-ai-manager.cmd), enable a provider, set its endpoint and model, and save the host's key. Use [start-ai.cmd](rulepacks/stumpsville/start-ai.cmd) or enable AI in the room panel. |
 
 <details>
 <summary>Verify, repair or install dependencies manually</summary>
@@ -40,23 +75,6 @@ py -3.14 -m venv engineering/.venv
 
 </details>
 
-<a id="multiplayer"></a>
-
-## Invite players
-
-The initial demo accounts share a password. In the host panel's **Account management** (账号管理), create individual game accounts or change their passwords before inviting others.
-
-### On the same LAN
-
-Run [start-lan.cmd](rulepacks/stumpsville/start-lan.cmd), choose the LAN adapter and save slot, and start the room. Copy the **player address** from the panel. Players open it in their browsers and sign in with their game accounts. If they cannot connect, check the adapter, port and diagnostics. The loopback address `127.0.0.1` works only on the host. [LAN guide](rulepacks/stumpsville/docs/current/usage.md)
-
-### Across the internet
-
-1. **Host software.** Prepare the shared game environment above. On Windows 10/11 x64, run the separately distributed `OnlineCOC-Network-Setup.exe`, select the **project root containing engineering** and click **一键安装**. It installs the network runtime offline. If the runtime is busy, stop sharing and retry in the same directory. [Installer guide](engineering/network-web/installer/README.md)
-2. **Directory access.** Obtain the publishing configuration, authorisation and public CA certificate from the platform operator. The default config path is `engineering/network-p2p/local/client-config.json`. Players using the test portal need to obtain and trust its public CA certificate through a trusted channel. [Self-hosted deployment](docs/current/engineering/network-p2p.md)
-3. **Host invitation.** Run [start-web.cmd](rulepacks/stumpsville/start-web.cmd), select a slot and start the room. In **网页分享与连接**, copy the creation string into the portal's **Create room** page. Choose visibility and password. The single-use creation string is for the host and expires after ten minutes. Give players the **join URL and eight-character code**, plus their individual game accounts.
-4. **Player login.** Use a WebRTC-capable browser to sign in to the portal, enter the code and any room password, and wait for approval if enabled. Click **Enter game → Connect to host**, then sign in with the **game account**. Exchange a message in global chat. Keep the host panel and a GM page running. [Stumpsville web guide](rulepacks/stumpsville/docs/current/web.md)
-
 <details>
 <summary>Source-only networking setup and the legacy P2P client</summary>
 
@@ -71,21 +89,14 @@ For legacy P2P state and chat, start the host, run `engineering/network-p2p/play
 
 </details>
 
-<a id="room-ai"></a>
-
-## Ask the room AI
-
-1. After installing the shared game environment, run [start-ai-manager.cmd](rulepacks/stumpsville/start-ai-manager.cmd) on the host. Under **Providers** (服务商), enable DeepSeek or a compatible service, enter its endpoint and model ID, and save the key in the credential field. **Test connection** uses real provider quota.
-2. Open [start-ai.cmd](rulepacks/stumpsville/start-ai.cmd) or enable AI in the room panel. Start the slot, sign in as `kp`, and under **AI settings** select the provider, allow calls and choose which information may leave the room. Set player chat permissions as needed. In the standalone manager, add the local host address under **Rooms and sessions** and sign in as KP to configure the same room.
-3. On the GM's **Rulings** page, ask “How can I start this session with the information available in the room?” Check for a reply. Players with permission have a personal AI tab. For a rule change or item grant, review the proposed changes and risks in the ruling queue, then check the execution result.
-
-If no reply appears, check the provider probe, the selected model, the room's call and data permissions, and the task status. [Manager guide](docs/current/engineering/ai-manager.md) · [Pack integration](rulepacks/stumpsville/docs/current/integrations.md)
-
 <a id="engine-demo"></a>
 
-## Windows QuickStart for the base engine
+<details>
+<summary>Windows QuickStart for the base engine</summary>
 
 Open the **QuickStart** folder in the full project. Run [安装依赖.exe](QuickStart/安装依赖.exe) to install dependencies, then [启动OnlineCOC.exe](QuickStart/启动OnlineCOC.exe) to start the console. Set an initial password of at least eight characters. Sign in at `http://127.0.0.1:8765` as `kp`, `player1` or `player2`. Use separate browser profiles for simultaneous accounts. Closing the launcher stops the host. This demo uses its own environment under `engineering/.runtime`. [Desktop guide](docs/current/engineering/desktop-tools.md)
+
+</details>
 
 ## What has been tested
 

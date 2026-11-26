@@ -5,7 +5,7 @@
 - 状态：有效
 - 创建日期：2026-10-29
 - 最后更新：2026-11-26
-- 最近目录核对：2026-11-26（默认英文首页、更新日志、反馈目录、QuickStart 桌面工具和双语安装指南）。2026-11-23（AI分步发布、投影兼容与专项验收）；2026-11-23（规则文件增量暂存、既有性能与远程KP验收清单）；详见[增量暂存验收](../../../engineering/acceptance/rule-stage-delta/README.md)。 2026-11-23（AI 模糊需求恢复源码、冻结差量和验收清单）。 2026-11-23（聊天交互修复、冻结组件与浏览器验收）。
+- 最近目录核对：2026-11-26（树桩镇战斗与地图验收、课程预览和双语下载入口、默认英文首页、更新日志、反馈目录、QuickStart 桌面工具和双语安装指南）。2026-11-23（AI分步发布、投影兼容与专项验收）；2026-11-23（规则文件增量暂存、既有性能与远程KP验收清单）；详见[增量暂存验收](../../../engineering/acceptance/rule-stage-delta/README.md)。 2026-11-23（AI 模糊需求恢复源码、冻结差量和验收清单）。 2026-11-23（聊天交互修复、冻结组件与浏览器验收）。
 - 关联文档：[工程文档索引](README.md)、[文档维护标准](../../standards/document-maintenance.md)
 
 ## 工程实际目录
@@ -57,7 +57,7 @@
 | `engineering/desktop/acceptance-install-audit/verify_online.py` | 执行在线安装和浏览器验证 |
 | `engineering/network-web/acceptance/2026-11-26-firstplay.json` | 联网安装器首次安装、占用重试与本机网页验收 |
 | `engineering/network-web/acceptance/2026-11-26-player.png` | 本轮网页玩家已结算检定与桌面截图 |
-| `docs/plans/local-coursework/` | 本地课程待办目录，含 `TODO.md`，整个目录由 Git 忽略 |
+| `docs/plans/local-coursework/` | 本地课程工作目录，含 `TODO.md`、Windows 单包与视频计划及本地交付物，整个目录由 Git 忽略 |
 | `engineering/README.md` | 工程代码目录用途与相关入口 |
 | `docs/current/engineering/network-p2p.md` | 公网模块配置、玩家包/内容导出、协议、云端运维与验收 |
 | `engineering/network-p2p/.gitattributes` | 固定 Linux 脚本及 Windows PowerShell 的行尾 |
@@ -2550,6 +2550,9 @@ AI 可选限额与用量统计（2026-11-16）：
 | `engineering/ai/tests/test_chat_interaction.py` | 长会话用户活动、原生组字、触屏、轮询及会话草稿浏览器回归 |
 | `engineering/acceptance/ai-chat-ui-interface-snapshot/v1/source.json` | 聊天交互 v1 冻结差量逐文件摘要 |
 | `engineering/acceptance/ai-chat-ui-interface-snapshot/v1/engineering/` | 聊天交互 v1 的三个冻结组件文件；逐文件清单见同版 source.json |
+
+| `rulepacks/stumpsville/rules/combat.lua` | 战斗回合、逃跑与共享敌人结算 |
+| `rulepacks/stumpsville/tests/verify_combat_map.py` | 隔离多人战斗与地图缩放浏览器回归 |
 
 ## 施工登记
 
