@@ -1,4 +1,5 @@
 return rule('sv.ground.take', {'actor', 'slot:amount', 'item:amount', 'uses:amount', 'ticks:amount', 'location:amount'}, function(r, actor, slot, item, uses, ticks, location)
+  assert((r.read(actor).numbers.combatKey or 0)==0,'SV_IN_COMBAT')
   assert(r.number(actor, 'location') == location, 'SV_SCENE_LOCATION')
   local result = r.call('sv.grant', actor, item, slot, uses)
   r.set(actor, 'ticks' .. slot, ticks)

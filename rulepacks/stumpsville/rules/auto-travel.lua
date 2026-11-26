@@ -1,4 +1,5 @@
 return rule('sv.travel.auto', {'actor', 'destination:actor'}, function(r, actor, destination)
+  assert((r.read(actor).numbers.combatKey or 0)==0,'SV_IN_COMBAT')
   local session = r.call('sv.automation', actor)
   assert(r.number(session, 'phase') == 1, 'SV_SESSION_NOT_STARTED')
   assert(r.number(actor, 'approved') == 1 and r.number(actor, 'ready') == 1, 'SV_NOT_READY')

@@ -158,3 +158,7 @@ engineering/.venv/Scripts/python.exe -B rulepacks/stumpsville/tests/verify_web.p
 运行 `verify_storm.py --races` 在隔离房间以两个 PL 同时提交、两个 KP 登录会话同时结算，核对首次搜查、支付口粮换蛇笛、安抚守卫、开门、有限库存、等待援队、勘路和人工修泵申请。每组自动任务重试原编号并比对完整回执；详细结果在该次房间的 `event-races.json` 中。完整行动分类见[场景行动逐项对照](../docs/current/scene-actions.md#规则配置逐项对照)。
 
 2026-11-23 的 `verify_storm.py --catalog` 检查 40 个行动、85 个做法在满足条件时的可达性，以及各声明式步骤的完成、前置、互斥和缺货分支。最终两个独立房间的多人专项均通过，每房 10 组。两份本机记录分别在 `tests/output/event-races-9c5da529/event-races.json` 和 `tests/output/event-races-619014cf/event-races.json`。一次实际打捞失败后，另一旧请求没有再次掷骰或耗轮。两位 KP 同时批准同一项修泵工作，两人合计只消耗一个齿轮、一格密封蜡、一个回合。三种结局的主要与备用路线、恢复专项和玩家界面均另行验证。
+
+运行 `verify_combat_map.py` 建立两名玩家和一名 KP 的隔离房间，检查蛇笼与蛛网屋事件、战斗小窗、逃跑成功与失败、多人攻击同一目标、原编号重试、胜利后的开门和角色失能。桌面 1366×768 与手机宽度 390×844 通过 Edge 验证缩放、复位及地图区域的尺寸。
+
+2026-11-23，战斗与地图专项在当前模板和缺少战斗字段的旧模板（`--legacy-fields`）各通过一次。另复跑场景目录（40 项行动、85 个做法）、双玩家争用专项及本机双浏览器 WebRTC 回归（18 项原有预设），均通过。

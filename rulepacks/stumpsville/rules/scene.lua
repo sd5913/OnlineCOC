@@ -1,5 +1,6 @@
 -- Host transaction for a validated, finite scene recipe. Never public to PL.
 return rule('sv.scene.resolve', {'actor', 'scene:actor', 'world:actor', 'action:text', 'choice:text'}, function(r, actor, scene, world, action, choice)
+  assert((r.read(actor).numbers.combatKey or 0)==0,'SV_IN_COMBAT')
   assert(r.matches(actor,'sv.character') and r.matches(scene,'sv.scene') and r.matches(world,'sv.world'),'SV_SCENE_TARGET')
   assert(r.number(actor,'approved')==1 and r.number(actor,'ready')==1,'SV_NOT_READY')
   assert(r.number(actor,'incapacitated')==0 and r.number(actor,'str')>0 and r.number(actor,'dex')>0 and r.number(actor,'wil')>0,'SV_CANNOT_ACT')
@@ -235,10 +236,10 @@ return rule('sv.scene.resolve', {'actor', 'scene:actor', 'world:actor', 'action:
     elseif not has(1) then fail('需要仍有用量的针剑才能执行这个固定救援做法。')
     else
       out.cost=1
-      if check('dex','避开网线割断束缚') then
+      if get('spidersCleared')==1 or check('dex','避开网线割断束缚') then
         set('villagersFreed',1,'两名村民已脱困');say('束缚被割开，两名村民沿梯子撤到庭院。')
         clue('villagers-rescued','Roquefort 与 Paneer 已脱困','你完成了救援，两名村民已撤到庭院。')
-      else set('spidersAlert',1,'蜘蛛已警觉');hurt(dice(6,'蜘蛛毒咬伤害'),'dex');say('网线惊动了蜘蛛，救援尚未完成。') end
+      else set('spidersAlert',1,'蜘蛛已警觉');out.hostile='spider';say('网线惊动了蜘蛛，进入战斗。') end
     end
   elseif action=='hall-observe' then rats()
   elseif action=='hall-negotiate' then
@@ -268,13 +269,13 @@ return rule('sv.scene.resolve', {'actor', 'scene:actor', 'world:actor', 'action:
     else r.set(actor,'location',3);reveal={3};say('你乘升降机返回庭院。');out.cost=1 end
   elseif action=='cage-gate' then
     set('snakeKnown',1,'守卫蛇已发现')
-    if choice=='inspect' then say(get('caveOpen')==1 and '铁门敞开。' or get('snakeCalmed')==1 and '蛇已平静，可以开门。' or '守卫蛇盘踞在门闩旁。')
-    elseif get('snakeCalmed')==0 then fail('守卫蛇尚未平静；可用蛇笛安抚，或从“聆听”选择潜行绕过。')
-    else set('caveOpen',1,'洞窟铁门已开放');doors={{edge='9-10',status='open'}};reveal={10};say('你从平静的守卫蛇旁经过，打开了洞窟铁门。') end
+    if choice=='inspect' then say(get('caveOpen')==1 and '铁门敞开。' or get('snakeDefeated')==1 and '门闩旁已没有守卫。' or get('snakeCalmed')==1 and '蛇已平静，可以开门。' or '守卫蛇盘踞在门闩旁。')
+    elseif get('snakeCalmed')==0 and get('snakeDefeated')==0 then fail('守卫蛇尚未平静；可用蛇笛安抚，或从“聆听”选择潜行绕过。')
+    else set('caveOpen',1,'洞窟铁门已开放');doors={{edge='9-10',status='open'}};reveal={10};say('你拉开门闩，打开了洞窟铁门。') end
   elseif action=='cage-listen' then
     set('snakeKnown',1,'守卫蛇已发现')
     if choice=='listen' then
-      say(get('caveOpen')==1 and '通路已开。' or get('snakeCalmed')==1 and '蛇的呼吸平缓。' or get('snakeAlert')==1 and '蛇正警戒。' or '门边传来鳞片摩擦声。')
+      say(get('caveOpen')==1 and '通路已开。' or get('snakeDefeated')==1 and '门边已经安静，可以接近门闩。' or get('snakeCalmed')==1 and '蛇的呼吸平缓。' or get('snakeAlert')==1 and '蛇正警戒。' or '门边传来鳞片摩擦声。')
       clue('snake-rhythm','守卫蛇的动静','已辨认出门边守卫蛇的呼吸和鳞片声。')
     elseif choice=='flute' then
       if get('snakeCalmed')==1 or get('caveOpen')==1 then fail('无须再次吹笛。')
@@ -283,9 +284,9 @@ return rule('sv.scene.resolve', {'actor', 'scene:actor', 'world:actor', 'action:
     else
       out.cost=1
       if get('caveOpen')==1 then say('通向洞窟的门已经打开。');out.cost=0
-      elseif check('dex','绕过守卫蛇开启铁门') then
+      elseif get('snakeDefeated')==1 or check('dex','绕过守卫蛇开启铁门') then
         set('caveOpen',1,'洞窟铁门已开放');doors={{edge='9-10',status='open'}};reveal={10};say('你抓住间隙拉开门闩，通路已经开放。')
-      else set('snakeAlert',1,'守卫蛇已警觉');hurt(dice(8,'守卫蛇咬击伤害'));say('守卫蛇拦住去路，铁门仍未开启。') end
+      else set('snakeAlert',1,'守卫蛇已警觉');out.hostile='snake';say('守卫蛇拦住去路，进入战斗。') end
     end
   elseif action=='cave-cheese' then
     if choice=='inspect' then set('agingKnown',1,'奶酪库存已清点');say('这里还剩 '..get('cheese10')..' 轮奶酪，每轮价值 100p。')

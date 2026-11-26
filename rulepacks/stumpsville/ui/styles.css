@@ -694,3 +694,12 @@ body.scene-workspace { height:100dvh; overflow:hidden; }
 .queue-status-line [data-recovery]>button { flex:none; min-height:23px; padding:2px 5px; font-size:12px; line-height:1.3; }
 .queue-status-line [hidden] { display:none; }
 .ruling-card.queue-item.ruling-stale,dialog.ruling-stale { background:#e8e7e3; }
+
+.node-map { position:relative; }
+.node-map svg[data-camera] { touch-action:none; user-select:none; }
+.map-controls { position:absolute; z-index:1; right:4px; top:4px; display:flex; gap:2px; }
+.map-controls button { padding:1px 5px; min-width:24px; font-size:15px; line-height:1.45; background:var(--paper); }
+.battle-window { position:fixed; z-index:30; bottom:14px; right:14px; width:min(330px,calc(100vw - 28px)); max-height:60dvh; overflow:auto; box-shadow:0 4px 18px #302b2333; }
+.battle-window.collapsed { width:auto; padding:3px; }
+.battle-window header { display:flex; align-items:center; justify-content:space-between; gap:8px; }
+@media(max-width:760px){.node-map:has(svg[data-camera]){display:block}.node-map:has(svg[data-camera])+.compact-map{display:none}}

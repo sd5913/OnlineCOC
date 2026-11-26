@@ -1,4 +1,5 @@
 return rule('sv.travel', {'actor', 'location:amount'}, function(r, actor, location)
+  assert((r.read(actor).numbers.combatKey or 0)==0,'SV_IN_COMBAT')
   assert(r.matches(actor, 'sv.character') and r.number(actor, 'approved') == 1, 'SV_NOT_APPROVED')
   local exists = false
   for _, place in ipairs(r.readData('game.json').locations) do

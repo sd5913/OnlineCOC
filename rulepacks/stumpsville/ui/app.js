@@ -5,7 +5,7 @@ import {characterStatsHTML,itemDetailsHTML,renderPackageReference} from './refer
 import {chatUI} from './chat.js';
 import {diceUI} from './dice.js';
 import {effectsUI} from './effects.js';
-import {mapPositions,mapRoutes,mapRoutePath} from './map.js';
+import {mapPositions,mapRoutes,mapRoutePath,cameraBox,enableMapControls} from './map.js';
 import {aiUI} from './ai.js';
 import {embeddedAI} from './ai-embedded.js';
 import {t, setLocale, locale, initLocale} from './i18n.js';
@@ -20,6 +20,7 @@ function newId(){
   return `${h.slice(0,8)}-${h.slice(8,12)}-${h.slice(12,16)}-${h.slice(16,20)}-${h.slice(20)}`;
 }
 const pageId=newId();
+enableMapControls();
 const playerWindow=new URLSearchParams(location.search).get('view')==='player';
 const statePath=()=> 'package/state?page='+pageId+(playerWindow?'&player=1':'')+'&locale='+encodeURIComponent(locale());
 const base = new URL(webMode?'https://stumpsville.invalid/':'.', location.href);
@@ -386,10 +387,14 @@ function mapView(locations,current,rosters=false) {
   const action=rosters===true?'map-room':'location';
   const nodes=locations.map(x=>{const [left,top]=positions[x.index],show=rosters===true||rosters==='player'&&x.index===current,actors=rosters===true?roomActors(x.index):show?(state.mapContacts||[]):[],names=actors.map(a=>a.name).join('、'),count=t('map.occupants',{count:actors.length});return `<g role="button" tabindex="0" aria-label="${escape(x.name+(show?' · '+count+' · '+names:''))}" data-action="${action}" data-args="${escape(JSON.stringify({index:x.index}))}" class="${x.index===current?'current':''}" transform="translate(${left},${top})"><title>${escape(x.name+(show?' · '+count+' · '+names:''))}</title><rect x="-64" y="-24" width="128" height="${show?84:48}" rx="9"/><text text-anchor="middle"><tspan x="0" y="-6" class="map-index">${String(x.index).padStart(2,'0')}</tspan><tspan x="0" y="13" ${x.name.length>13?'textLength="112" lengthAdjust="spacingAndGlyphs"':''}>${escape(x.name)}</tspan>${show?`<tspan x="0" y="32" class="map-count">${count}</tspan><tspan x="0" y="49" class="map-names">${escape(names.length>11?names.slice(0,10)+'…':names||t('map.empty'))}</tspan>`:''}</text>${x.index===current?'<circle cx="57" cy="-20" r="6"/>':''}</g>`;}).join('');
   const selected=locations.find(x=>x.index===current)||locations[0];
-  return `<div class="node-map ${rosters===true?'kp-map':''}"><svg viewBox="${locations.length?mapBox:'10 20 710 310'}" aria-label="${t('scene.maplabel')}">${edges}${nodes}</svg></div><div class="map compact-map">${locations.map(x=>button(`${String(x.index).padStart(2,'0')} ${escape(x.name)}${rosters===true?' · '+t('map.occupants',{count:roomActors(x.index).length}):rosters==='player'&&x.index===current?' · '+t('map.occupants',{count:state.mapContacts?.length||0}):''}`,action,{index:x.index},x.index===current?'current':'')).join('')}</div><p class="map-links">${t(rosters===true?'map.legend':'scene.legend')}</p>${rosters===true&&selected?`<section class="map-room-detail"><header><strong>${escape(selected.name)}</strong>${button(t('map.manage'),'location',{index:selected.index},'small')}</header>${roomRoster(selected.index)}</section>`:''}`;
+  const bounds=locations.length?mapBox:'10 20 710 310';
+  const camera=JSON.stringify([state.storageScope,state.accountId,route(),rosters]);
+  const controls=[[1.4,'＋','放大'],[1/1.4,'−','缩小'],[0,'⤢','适应全图']].map(([scale,label,title])=>`<button type="button" data-map-scale="${scale}" aria-label="${title}" title="${title}">${label}</button>`).join('');
+  return `<div class="node-map ${rosters===true?'kp-map':''}"><div class="map-controls">${controls}</div><svg tabindex="0" data-camera="${escape(camera)}" data-bounds="${bounds}" viewBox="${cameraBox(camera,bounds)}" aria-label="${t('scene.maplabel')}">${edges}${nodes}</svg></div><div class="map compact-map">${locations.map(x=>button(`${String(x.index).padStart(2,'0')} ${escape(x.name)}${rosters===true?' · '+t('map.occupants',{count:roomActors(x.index).length}):rosters==='player'&&x.index===current?' · '+t('map.occupants',{count:state.mapContacts?.length||0}):''}`,action,{index:x.index},x.index===current?'current':'')).join('')}</div><p class="map-links">${t(rosters===true?'map.legend':'scene.legend')}</p>${rosters===true&&selected?`<section class="map-room-detail"><header><strong>${escape(selected.name)}</strong>${button(t('map.manage'),'location',{index:selected.index},'small')}</header>${roomRoster(selected.index)}</section>`:''}`;
 }
 
 function renderEntry() {
+  battlePanel?.remove();battlePanel=null;lastBattle='';
   diceUI.observe(null);effectsUI.observe(null);
   if(webMode){app.innerHTML=empty('连接已断开，请在网页上方退出并重新连接房主。');return;}
   aiUI.update(null);embeddedAI.close();
@@ -433,6 +438,7 @@ function renderAround(container, markup, selector) {
 }
 
 function renderPage() {
+  refreshBattleWindow();
   if (!state) return renderEntry();
   const logScroll=document.querySelector('#action-feedback')?.scrollTop||0;
   const sceneScroll=document.querySelector('.scene-column')?.scrollTop||0;
@@ -517,6 +523,33 @@ function readyPage() {
   return heading('P04',t('ui.m041'))+panel(escape(c.name),`${statCards(c)}<p>${t('ready.check')}</p><div class="actions">${button(c.numbers.ready?t('ui.m043'):t('ui.m042'),'ready',{ready:!c.numbers.ready},'primary')}${button(t('ui.m044'),'navigate',{path:'play/character'})}${started&&c.numbers.ready?button(t('ui.m045'),'navigate',{path:'play/scene'},'primary'):''}</div><p class="muted">${started?t('ready.started'):t('ready.notstarted')}</p>`);
 }
 
+let lastBattle='', battlePanel=null, battleCollapsed=false;
+function refreshBattleWindow(force=false){
+  const fight=state?.battle, actor=state?.character;
+  if(!fight || !actor){battlePanel?.remove();battlePanel=null;lastBattle='';return;}
+  const id=JSON.stringify([state.storageScope,actor.instanceId,fight.key]);
+  if(force || lastBattle!==id)battleCollapsed=false;
+  lastBattle=id;
+  if(!battlePanel){
+    battlePanel=document.createElement('aside');battlePanel.className='battle-window panel';
+    battlePanel.setAttribute('role','region');battlePanel.setAttribute('aria-label','战斗');
+    document.body.append(battlePanel);
+  }
+  battlePanel.classList.toggle('collapsed',battleCollapsed);
+  if(battleCollapsed){
+    const toggle=button('查看战斗 · '+escape(fight.name),'battle-open',{},'small');
+    if(battlePanel._markup!==toggle){battlePanel.innerHTML=toggle;battlePanel._markup=toggle;}
+    return;
+  }
+  const queued=(state.autoSceneTasks||[]).some(t=>t.title==='战斗');
+  const input={enemy:fight.enemy,turn:fight.turn};
+  const latest=(state.events||[]).filter(e=>e.result?.combat?.enemy===fight.enemy).at(-1);
+  const markup=`<header><strong>战斗 · ${escape(fight.name)}</strong>${button('收起','battle-hide',{},'small')}</header>
+    <p>${escape(actor.name)} · HP ${actor.numbers.hp}/${actor.numbers.maxHp}　对手 HP ${fight.hp}/${fight.maxHp}</p>
+    ${latest?.result?.narrative?'<small>'+escape(latest.result.narrative.join(' · '))+'</small>':''}
+    <div class="actions">${queued?'等待主持执行端结算':button('攻击','battle-act',{...input,move:'attack'},'primary')+button('逃跑 · 敏捷检定','battle-act',{...input,move:'flee'})}</div>`;
+  if(battlePanel._markup!==markup){battlePanel.innerHTML=markup;battlePanel._markup=markup;}
+}
 function scenePage(){
   if(state.knowledge?.status!=='ready')return empty('个人资料暂不可用，请联系 KP 确认知识服务或重新揭示。');
   const c=state.character;
@@ -525,7 +558,7 @@ function scenePage(){
   const place=state.locations.find(x=>x.index===c.numbers.location);
   if(!place)return empty(t('scene.unpublished'));
   const observation=place.observedAt?`观察记录 · ${new Date(place.observedAt*1000).toLocaleString()}（非实时场景）`:t('scene.current');
-  return `<header class="scene-heading"><div><small>${escape(observation)}</small><h1>${String(place.index).padStart(2,'0')} ${escape(place.name)}</h1></div><span class="tag">${t('scene.round',{count:state.session?.numbers.round||0})}</span></header><p class="scene-description">${escape(place.description)}</p><div class="scene-map-area">${mapView(state.locations,place.index,'player')}${playerContacts()}</div><div class="available-actions"><header><h2>${t('scene.actions')}</h2><span class="tag scene-settlement" role="status">${settlementStatus()}</span></header><div class="preset-actions">${sceneButtons(place)}</div><div class="travel-actions">${place.exits.map(index=>button(t('scene.go',{place:escape(state.locations.find(x=>x.index===index)?.name||String(index))}),'travel',{destination:index},'small')).join('')}</div><div class="generic-actions">${button(t('ui.m051'),'check',{},'primary')}${button(t('ui.m049'),'request',{kind:'free'})}${button(t('ui.m050'),'review')}</div></div>${sceneStatusPanel()}${groundItems(place.index)}`;
+  return `<header class="scene-heading"><div><small>${escape(observation)}</small><h1>${String(place.index).padStart(2,'0')} ${escape(place.name)}</h1></div><span class="tag">${t('scene.round',{count:state.session?.numbers.round||0})}</span></header><p class="scene-description">${escape(place.description)}</p><div class="scene-map-area">${mapView(state.locations,place.index,'player')}${playerContacts()}</div><div class="available-actions"><header><h2>${t('scene.actions')}</h2><span class="tag scene-settlement" role="status">${settlementStatus()}</span></header><div class="preset-actions">${state.battle?button('查看战斗','battle-open',{},'primary'):sceneButtons(place)+(state.hostileContacts||[]).map(e=>button('迎战 '+escape(e.name),'battle-act',{move:'engage',enemy:e.id,turn:state.character.numbers.combatTurn||0})).join('')}</div><div class="travel-actions">${(state.battle?[]:place.exits).map(index=>button(t('scene.go',{place:escape(state.locations.find(x=>x.index===index)?.name||String(index))}),'travel',{destination:index},'small')).join('')}</div><div class="generic-actions">${button(t('ui.m051'),'check',{},'primary')}${button(t('ui.m049'),'request',{kind:'free'})}${button(t('ui.m050'),'review')}</div></div>${sceneStatusPanel()}${groundItems(place.index)}`;
 }
 
 function groundItems(location,keeper=false){
@@ -878,7 +911,7 @@ function consolePage(){
   const drafts=Object.values(state.drafts).filter(d=>d.status==='submitted');
   const controls=`<div class="console-controls">${link('房间总览与开场','gm/room')}</div>`;
   let content='';
-  content=`<div class="console-columns"><div>${panel(t('ui.m103'),charactersTable())}${panel(t('ui.m104'),`<div class="actions">${button('掷遭遇检查','generate',{kind:'encounter'})}${button('抽取遭遇内容','generate',{kind:'encounter-table'})}${button('反应骰','generate',{kind:'reaction'})}${button('战利品骰','generate',{kind:'loot'})}${button('角色伤害','damage')}${button('创建生物','npc-create')}</div>${(state.npcs||[]).map(n=>`<div class="row"><span>${escape(n.name)} · ${fieldName('hp')} ${n.numbers.hp}/${n.numbers.maxHp}</span><div>${button(t('ui.m112'),'damage',{actor:n.instanceId},'small')}${button(t('ui.m113'),'morale',{actor:n.instanceId},'small')}${button(t('ui.m109'),'actor-edit',{id:n.instanceId},'small')}</div></div>`).join('')}`)}</div><aside>${panel(t('queue.characterApproval'),`<p>${drafts.length} 项待审核</p>${button(t('queue.open'),'navigate',{path:'gm/rulings'},'primary')}`)}</aside></div>`;
+  content=`<div class="console-columns"><div>${panel(t('ui.m103'),charactersTable())}${panel(t('ui.m104'),`<div class="actions">${button('掷遭遇检查','generate',{kind:'encounter'})}${button('抽取遭遇内容','generate',{kind:'encounter-table'})}${button('反应骰','generate',{kind:'reaction'})}${button('战利品骰','generate',{kind:'loot'})}${button('角色伤害','damage')}${button('创建生物','npc-create')}</div>${(state.npcs||[]).map(n=>`<div class="row"><span>${escape(n.name)} · ${fieldName('hp')} ${n.numbers.hp}/${n.numbers.maxHp}</span><div>${state.combatReady?button('发起战斗','battle-start',{enemy:n.instanceId},'small'):''}${button(t('ui.m112'),'damage',{actor:n.instanceId},'small')}${button(t('ui.m113'),'morale',{actor:n.instanceId},'small')}${button(t('ui.m109'),'actor-edit',{id:n.instanceId},'small')}</div></div>`).join('')}`)}</div><aside>${panel(t('queue.characterApproval'),`<p>${drafts.length} 项待审核</p>${button(t('queue.open'),'navigate',{path:'gm/rulings'},'primary')}`)}</aside></div>`;
   return heading('P09',t('ui.m019'))+`<section class="kp-console">${controls}<div class="console-content">${content}</div></section>`;
 }
 
@@ -895,6 +928,18 @@ function updateRoomNetwork(){
 
 
 const actions = {
+  'battle-act':args=>perform('combat',args),
+  'battle-open':()=>refreshBattleWindow(true),
+  'battle-hide':()=>{battleCollapsed=true;refreshBattleWindow();},
+  'battle-start':({enemy})=>{
+    const npc=state.npcs.find(n=>n.instanceId===enemy);
+    const actors=state.characters.filter(a=>a.numbers.ready && !a.numbers.incapacitated && !a.numbers.combatKey && a.numbers.location===npc.numbers.location);
+    if(!actors.length)return toast('此处没有可以参战的角色');
+    openDialog('发起战斗 · '+escape(npc.name),select('参战角色','fighter',actors.map(a=>[a.instanceId,a.name])),data=>{
+      const actor=actors.find(a=>a.instanceId===data.get('fighter'));
+      return perform('combat',{actor:actor.instanceId,enemy,move:'engage',turn:actor.numbers.combatTurn||0});
+    },'进入战斗');
+  },
   'knowledge-ruling':({account})=>{
     const character=state.characters.find(c=>c.owner===account);
     if(!state.characters.length)return toast('当前没有可接收揭示的已审核角色');
@@ -1184,6 +1229,7 @@ async function pollState(){
     const changed=packet.changed ?? (visual(next)!==visual(state));
     if(chats!==chatGeneration&&next.accountId===state.accountId&&next.storageScope===state.storageScope)next.channels=state.channels;
     state=next;chatUI.update(state);diceUI.observe(state);effectsUI.observe(state);connection=t('ui.m065');
+    refreshBattleWindow();
     const editing=['INPUT','TEXTAREA','SELECT'].includes(document.activeElement?.tagName)&&!document.activeElement?.readOnly;
     const activityOnly=priorVersions&&packet.cache&&[0,1].every(i=>priorVersions[i]===packet.cache.versions[i])
       &&['gm/rulings','play/scene'].includes(route());

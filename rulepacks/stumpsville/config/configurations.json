@@ -84,7 +84,9 @@
       "item20": 0,
       "uses20": 0,
       "ticks20": 0,
-      "conditionPending": 0
+      "conditionPending": 0,
+      "combatKey": 0,
+      "combatTurn": 0
     }
   },
   {
@@ -149,7 +151,8 @@
       "armor": 0,
       "incapacitated": 0,
       "location": 1,
-      "lastRoll": 0
+      "lastRoll": 0,
+      "combatKey": 0
     }
   },
   {

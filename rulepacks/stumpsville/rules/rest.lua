@@ -1,4 +1,5 @@
 return rule('sv.rest', {'actor', 'kind:text', 'attribute:text'}, function(r, actor, kind, attribute)
+  assert((r.read(actor).numbers.combatKey or 0)==0,'SV_IN_COMBAT')
   assert(r.matches(actor, 'sv.character'), 'SV_NOT_CHARACTER')
   assert(r.number(actor, 'str') > 0, 'SV_DEAD_CANNOT_REST')
   if kind == 'short' then

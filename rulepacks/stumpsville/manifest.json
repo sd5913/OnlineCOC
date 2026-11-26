@@ -32,7 +32,8 @@
     "check-core.lua",
     "inventory-core.lua",
     "scene.lua",
-    "ground-take.lua"
+    "ground-take.lua",
+    "combat.lua"
   ],
   "contentLicense": "SEE docs/current/sources.md"
 }

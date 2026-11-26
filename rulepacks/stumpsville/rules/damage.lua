@@ -33,5 +33,6 @@ return rule('sv.damage', {'actor', 'amount:amount', 'attribute:text'}, function(
       end
     end
   end
+  if layout and (r.read(actor).numbers.combatKey or 0)>0 and (critical or (target==0 and overflow>0)) then r.set(actor,'combatKey',0) end
   return {damage=damage, hp=hp, overflow=overflow, attribute=attribute, remaining=target, save=rolled, critical=critical, dead=attribute=='str' and target==0}
 end, {kp=true, dependencies={'sv.layout'}})

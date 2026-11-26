@@ -193,7 +193,7 @@ class Package:
             session = next(iter(self.entities(view, 'sv.session')), None)
             enabled = session and session['numbers'].get('autoResolve', 1) and view['status'] == 'active'
             tasks = [t for t in self.state['autoSceneQueue'].values() if t['status'] in {'queued', 'running', 'finishing'}
-                     and (enabled or t.get('pickup')) and (not t.get('executor') or t['executor'] == view['accountId'])]
+                     and (enabled or t.get('pickup') or t.get('combat')) and (not t.get('executor') or t['executor'] == view['accountId'])]
             return {'jobs': [{'id': t['id'], 'commandId': t['commandId']} for t in tasks[:1]] if session and view['status'] == 'active' else []}
 
     def attempt_stamp(self, action, choice):
@@ -226,7 +226,7 @@ class Package:
             return task['result']
         require(not task.get('executor') or task['executor'] == view['accountId'], '请由原自动执行端恢复此行动')
         session = next(iter(self.entities(view, 'sv.session')))
-        require((session['numbers'].get('autoResolve', 1) == 1 or task.get('pickup')), '自动裁决已关闭，自动队列暂缓执行')
+        require((session['numbers'].get('autoResolve', 1) == 1 or task.get('pickup') or task.get('combat')), '自动裁决已关闭，自动队列暂缓执行')
         actor = view['entities'].get(task['actor'])
         task.update(status='running', executor=view['accountId'])
         self.save()
@@ -234,13 +234,16 @@ class Package:
             require(self.current_scene_request(job,task.get('menuVersion')),
                     '行动菜单已更新，请按本人已知选项重新提交')
             require(actor and actor['owner'] == task['account'] and actor['lifecycle'] == 'active', '角色归属或状态已改变')
-            if task.get('dropId'):
+            if task.get('combat'):
+                combat=task['combat']
+                result=self.fight(job,actor,view['entities'].get(combat['enemy']),combat['move'],combat['turn'])
+            elif task.get('dropId'):
                 result = self.take_drop(job, view, {'actor': task['actor'], 'id': task['dropId'], 'slot': task['slot']})
                 result.update(title=task['title'], sceneAction='pickup', outcome='success')
             else:
                 result = self.execute_scene(job, view, actor, task['action'], task['choice'], pickup=task.get('pickup', False), attempt=task)
         except (PackageError, HostError) as error:
-            if 'result' in job.record['steps'].get('scene-act', {}):
+            if 'result' in job.record['steps'].get('scene-act', {}) or 'result' in job.record['steps'].get('combat-exchange', {}):
                 raise  # Committed effects must finish publication through the same job.
             if isinstance(error, HostError) and error.response.get('status') != 'rejected':
                 raise
@@ -301,7 +304,13 @@ class Package:
         # Package publication is resumable through these exact persisted envelopes.
         work = Job(self, authority, job.record)
         if 'scene-act' not in job.record['steps']:
-            work.sync_numbers('scene-sync', privileged['entities'][self.state['sceneId']], scenes.package_numbers(self.state))
+            sync=scenes.package_numbers(self.state)
+            if self.combat_ready():
+                for location, flag, keys in [(6,'spidersCleared',('spider1','spider2')),(9,'snakeDefeated',('snake',))]:
+                    if definition['location']==location:
+                        enemies=[privileged['entities'].get(self.state['npcs'].get(k)) for k in keys]
+                        sync[flag]=int(not any(self.enemy_available(n) and n['numbers']['location']==location for n in enemies))
+            work.sync_numbers('scene-sync', privileged['entities'][self.state['sceneId']], sync)
         world = next(iter(self.entities(privileged, 'sv.world')))
         try:
             result = work.invoke('scene-act', 'sv.scene.resolve', actor=context['actor'], scene=self.state['sceneId'],
@@ -341,6 +350,18 @@ class Package:
             discovery[clue['id']] = clue
         after_scene = authority.request('/view')
         MapVisibility(self).discover_scene(owner, action, choice, public, after_scene)
+        if public.get('hostile') and self.combat_ready():
+            keys = ('spider1','spider2') if public['hostile']=='spider' else ('snake',)
+            if 'combatOpponent' not in job.record:
+                target = next((n for k in keys if (n:=after_scene['entities'].get(self.state['npcs'].get(k)))
+                               and self.enemy_available(n) and n['numbers']['location']==context['location']),None)
+                if target:
+                    job.record['combatOpponent']={'id':target['instanceId'],'turn':actual['numbers'].get('combatTurn',0)}
+                    self.save()
+            foe=job.record.get('combatOpponent')
+            if foe:
+                opening=self.fight(work,actual,after_scene['entities'][foe['id']],'engage',foe['turn'])
+                public['narrative'].append(opening['message'])
         for index in result['reveals']:
             key = str(index)
             if key not in self.state['published']:
@@ -369,6 +390,78 @@ class Package:
         public['status'] = 'completed'
         public['message'] = public['title'] + '：' + {'success': '已完成', 'failure': '已结算后果', 'blocked': '条件不满足'}[public['outcome']]
         return public
+
+    def combat_ready(self):
+        revision = self.state.get('activeRevision')
+        return 'combat.lua' in self.state['ruleRevisions'].get(revision, {}).get('sources', {})
+
+    def battle_card(self, character):
+        if not character:
+            return None
+        key = character['numbers'].get('combatKey', 0)
+        return next((dict(card, turn=character['numbers'].get('combatTurn', 0))
+                     for card in self.state.get('combatEnemies', {}).values() if card['key'] == key), None)
+
+    def enemy_available(self, enemy):
+        if not enemy or enemy['lifecycle'] != 'active':
+            return False
+        n = enemy['numbers']
+        return (enemy['configurationId'] == 'sv.npc' or n.get('isNpc') == 1) and not n.get('incapacitated') and all(n[v] > 0 for v in ('str','dex','wil'))
+
+    def hostile_ids(self):
+        return {self.state['npcs'].get(k) for k in ('spider1','spider2','snake')} | {
+            id for id, npc in self.state.get('mapNpcActors', {}).items() if npc['name'].startswith('Dedratz ')}
+
+    def fight(self, job, actor, enemy, move, turn):
+        require(self.combat_ready(), '请先激活包含 combat.lua 的战斗规则')
+        require(actor and enemy and (enemy['configurationId']=='sv.npc' or enemy['numbers'].get('isNpc')==1), '战斗目标无效')
+        foes = self.state.setdefault('combatEnemies', {})
+        enemy_id = enemy['instanceId']
+        if enemy_id not in foes:
+            require(move == 'engage' and self.enemy_available(enemy), '对手无法参战')
+            foes[enemy_id] = {'key': len(foes)+1, 'enemy': enemy_id, 'name': enemy['name']}
+        card = foes[enemy_id]
+        if 'combat-exchange' not in job.record['steps'] and move != 'engage':
+            require(actor['numbers'].get('combatKey')==card['key'] and actor['numbers'].get('combatTurn',0)==turn,
+                    '这次交锋已经结算或战斗已结束，请查看最新战况')
+        template = next((n for n in self.game['npcs'] if self.state['npcs'].get(n['key'])==enemy_id), {})
+        die = {'d4':4,'d6':6,'d8':8,'d10':10,'d12':12}.get(template.get('damage'),6)
+        if move == 'engage' and 'combat-exchange' not in job.record['steps']:
+            for step, entity, fields in [('combat-actor-fields', actor, ('combatKey','combatTurn')),
+                                         ('combat-enemy-fields', enemy, ('combatKey',))]:
+                missing = {field: 0 for field in fields if field not in entity['numbers']}
+                if missing or step in job.record['steps']:
+                    job.sync_numbers(step, entity, missing)
+        self.state['scenePending'] = job.record['requestKey']
+        try:
+            exchange = job.invoke('combat-exchange','sv.combat',actor=actor['instanceId'],enemy=enemy_id,
+                                  operation=move,battle=card['key'],turn=turn,enemyDie=die,
+                                  counterAttribute='dex' if template.get('kind')=='蜘蛛' else 'str')
+        except (HostError, PackageError) as error:
+            if (isinstance(error,PackageError) or error.response.get('status')=='rejected') and 'scene-act' not in job.record['steps']:
+                self.state.pop('scenePending',None)
+                self.save()
+            raise
+        card.update(hp=exchange['enemyHp'],maxHp=exchange['enemyMaxHp'],defeated=exchange['outcome']=='victory')
+        if card['defeated'] and template.get('key') in ('snake','spider1','spider2'):
+            current = job.client.request('/view')['entities']
+            snake = template['key']=='snake'
+            keys = ('snake',) if snake else ('spider1','spider2')
+            cleared = all(not self.enemy_available(current.get(self.state['npcs'].get(k))) for k in keys)
+            flag = 'snakeDefeated' if snake else 'spidersCleared'
+            job.sync_numbers('combat-site', current[self.state['sceneId']], {flag:int(cleared)})
+            self.state['sceneState'][flag] = int(cleared)
+        labels={'active':'仍在战斗','escaped':'敏捷检定成功，已脱离战斗','incapacitated':'角色已失能','victory':'敌人倒下，战斗胜利'}
+        message = actor['name']+' · '+enemy['name']+'：'+labels[exchange['outcome']]
+        lines = []
+        if 'check' in exchange:
+            c=exchange['check']
+            lines.append(f"逃跑敏捷检定 {c['rolled']} / {c['target']} · "+('成功' if c['passed'] else '失败'))
+        for name, label in [('attack','攻击'),('counter','反击')]:
+            if name in exchange:
+                lines.append(f"{label}掷得 {exchange[name+'Roll']}，护甲结算后伤害 {exchange[name]['damage']}")
+        return {'title':'战斗','message':message,'narrative':[message,*lines],'sceneAction':'combat',
+                'outcome':'success','status':'completed','combat':{**exchange,'enemy':enemy_id}}
 
     def observe_stock(self, job, view, location, item, exclude=None):
         # Only disclose a change that this present character can actually see.
@@ -749,6 +842,12 @@ class Package:
                       'channels': {} if preview else {**view['chatChannels'], **ScopedChat(self).channels(view if gm else {**view, 'role': 'player'})},
                       'canManage': is_kp and not preview,
                       'preview': bool(preview), 'previewKind': '包侧公开投影' if preview else None}
+            result['combatReady'] = self.combat_ready()
+            result['battle'] = self.battle_card(mine)
+            if self.combat_ready():
+                contacts = sight.contacts(account,mine,characters) if mine else []
+                result['hostileContacts'] = [a for a in contacts if a['id'] in self.hostile_ids()
+                                             and not self.state.get('combatEnemies',{}).get(a['id'],{}).get('defeated')]
             result['notifications'] = notifications
             if gm:
                 story = self.state.get('sceneState', {})
@@ -781,7 +880,7 @@ class Package:
                 result['mapNpcCatalog'] = list(sight.catalog().values())
                 result['actorDiscoveries'] = copy.deepcopy(self.state.get('actorDiscoveries', {}))
             elif player_mode:
-                personal_ops = {'draft', 'draft.roll', 'note', 'request', 'ready', 'check', 'inventory', 'chat', 'share.receipt', 'scene.action', 'pickup'}
+                personal_ops = {'draft', 'draft.roll', 'note', 'request', 'ready', 'combat', 'check', 'inventory', 'chat', 'share.receipt', 'scene.action', 'pickup'}
                 result['receipts'] = [r for r in result['receipts'] if r['operation'] in personal_ops]
             if not gm:
                 # Package shared current lore cannot bypass the same personal
@@ -851,7 +950,7 @@ class Package:
                     require(message and not message['deleted'] and str(message['revision'])==str(ref['revision']),'聊天来源已变化')
                     checked.append(copy.deepcopy(ref))
                 record['sourceMessages']=checked
-            feedback_ops = {'session.start', 'ready', 'check', 'inventory', 'request', 'resolve', 'world', 'actor.update', 'scene.action', 'scene.autorun',
+            feedback_ops = {'session.start', 'ready', 'combat', 'check', 'inventory', 'request', 'resolve', 'world', 'actor.update', 'scene.action', 'scene.autorun',
                             'rest', 'grant', 'damage', 'remove', 'stock.take', 'ground.take', 'approve',
                             'automation.configure', 'room', 'location.publish'}
             feedback = body['operation'] in feedback_ops
@@ -1006,7 +1105,7 @@ class Package:
         if op in {'session.start', 'world', 'automation.configure', 'room', 'location.publish'}:
             audience.update(after)
         titles = {'session.start': '房间开场', 'ready': '准备状态', 'check': '属性检定', 'inventory': '物品操作', 'request': '行动申请',
-                  'scene.action': '场景行动',
+                  'combat':'战斗', 'scene.action': '场景行动',
                   'scene.autorun': '场景行动自动结果',
                   'resolve': 'KP 裁决回复', 'world': '探索进度', 'actor.update': '主持调整数值', 'rest': '休息恢复',
                   'grant': '获得物品', 'damage': '伤害结算', 'remove': '移除物品', 'stock.take': '领取物品', 'ground.take': '拿取物品',
@@ -1129,13 +1228,39 @@ class Package:
         gm = view['role'] == 'kp'
         character = self.own_character(view)
         session = next(iter(self.entities(view, 'sv.session')), None)
-        if not gm and session is None and op in {'check', 'inventory', 'ready', 'request', 'scene.action', 'pickup'}:
+        if not gm and session is None and op in {'combat','check', 'inventory', 'ready', 'request', 'scene.action', 'pickup'}:
             play=next((i['data'] for i in knowledge_client.records(job.client, view, facet='play') if i['facetId']=='play'),None)
             session={'instanceId':play['entityId'],'numbers':play['numbers']} if play else None
         world = next(iter(self.entities(view, 'sv.world')), None)
         job.view, job.session = view, session
-        player_ops = {'draft', 'draft.roll', 'note', 'request', 'ready', 'check', 'inventory', 'chat', 'share.receipt', 'scene.action', 'pickup'}
+        player_ops = {'draft', 'draft.roll', 'note', 'request', 'ready', 'combat', 'check', 'inventory', 'chat', 'share.receipt', 'scene.action', 'pickup'}
         require(op in player_ops or gm, '需要主持权限')
+        if character and character['numbers'].get('combatKey') and (op in {'pickup','scene.action','rest'} or
+                op=='request' and args.get('kind')=='travel'):
+            raise PackageError('战斗中，请先战胜敌人、脱离战斗或结算失能')
+        if op == 'combat':
+            require(self.combat_ready() and view['status']=='active' and session and session['numbers']['phase']==1, '当前房间未启用战斗或尚未开场')
+            require(set(args) <= {'actor','enemy','move','turn'} and args.get('move') in ('engage','attack','flee')
+                    and type(args.get('turn')) is int and args['turn']>=0 and isinstance(args.get('enemy'),str), '战斗指令无效')
+            actor = view['entities'].get(args.get('actor')) if gm and args.get('actor') else character
+            require(actor and actor['configurationId']=='sv.character' and (gm or ('actor' not in args and actor['owner']==account)), '只能操作本人角色')
+            move, turn, enemy_id = args['move'],args['turn'],args['enemy']
+            if gm and 'combat-exchange' in job.record['steps']:
+                return self.fight(job,actor,view['entities'].get(enemy_id),move,turn)
+            require(actor['numbers'].get('combatTurn',0)==turn, '战况已更新，请查看新的行动选项')
+            current=self.battle_card(actor)
+            if move=='engage':
+                require(not current and not actor['numbers']['incapacitated'], '角色无法开始另一场战斗')
+                if not gm:
+                    seen=MapVisibility(self).contacts(account,actor,[])
+                    require(enemy_id in self.hostile_ids() and any(x['id']==enemy_id for x in seen),'当前没有发现该敌人')
+            else:
+                require(current and current['enemy']==enemy_id, '本次行动不属于当前战斗')
+            if gm:
+                return self.fight(job,actor,view['entities'].get(enemy_id),move,turn)
+            result=self.queue_scene(view,actor,job,{'id':'combat','label':'战斗'},move)
+            self.state['autoSceneQueue'][result['jobId']]['combat']={'move':move,'enemy':enemy_id,'turn':turn}
+            return result
         if op == 'ai.review':
             # Keep the original immutable source when recovering an already-sent envelope.
             if job.record.get('aiReview'):
@@ -1577,6 +1702,9 @@ class Package:
             require(all(isinstance(x, int) and not isinstance(x, bool) and 0 <= x <= 100000 for x in numbers.values()), '数值无效')
             merged = {**target['numbers'], **numbers}
             require(all(merged[x] <= merged[x + 'Max'] for x in ('str', 'dex', 'wil')) and merged['hp'] <= merged['maxHp'], '当前值不能超过上限')
+            if target['configurationId']=='sv.character' and merged.get('combatKey') and (
+                    merged.get('incapacitated') or any(merged[attr]<=0 for attr in ('str','dex','wil'))):
+                numbers = {**numbers, 'combatKey':0}
             return job.command('update', 'entity.update', {'id': target['instanceId'], 'numbers': numbers})
         if op == 'room':
             require(args.get('status') in {'active', 'paused'}, '房间状态不支持')
@@ -1663,7 +1791,16 @@ class Package:
         if self.state['initialized']:
             return {'message': '配置包已安装'}
         content = bundle()
-        revision = job.command('stage', 'rule.stage', stage_payload(content))
+        payload = stage_payload(content)
+        if 'stage' in job.record['steps'] and 'seed' not in job.record['steps']:
+            revision = job.command('stage', 'rule.stage', payload)
+        else:
+            # No playable entities exist during first install. Seed the private layout
+            # calculation, then stage the remaining rules within the command limit.
+            rules = dict(payload['sources'])
+            seed = job.command('seed','rule.stage',{'sources':{'layout.lua':rules.pop('layout.lua')},'data':payload['data']})
+            job.command('seed-activate','rule.activate',{'revision':seed})
+            revision = job.command('stage','rule.stage.delta',{'baseRevision':seed,'sources':rules})
         job.command('activate', 'rule.activate', {'revision': revision})
         self.state['ruleRevisions'][revision] = {'sources': content['sources'], 'data': content['data']}
         self.state['activeRevision'] = revision

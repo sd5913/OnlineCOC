@@ -88,7 +88,7 @@ def menu(content, location, clues):
 # These are observable changes at the event location, in latest-stage-first order.
 EVENT_STAGES = {
     'hall-negotiate': [('ratsDeal','双方已达成通行约定。'), ('ratsTalked','鼠帮已经拒绝说辞，仍可用口粮交换。')],
-    'cage-gate': [('caveOpen','洞窟铁门已经打开。'), ('snakeCalmed','蛇已平静，可以接近门闩。')],
+    'cage-gate': [('caveOpen','洞窟铁门已经打开。'), ('snakeDefeated','门闩旁已经没有守卫。'), ('snakeCalmed','蛇已平静，可以接近门闩。')],
     'cave-sleeper': [('ernieSpoken','Ernie 已准许搬取奶酪，可再向他询问北方线索。')],
     'storm-commission': [('home','获救的居民已在庭院安顿下来。'), ('delivered','栗婶已签收奶酪，正在安排住处。'),
                          ('batch','运货筐已经送到，栗婶等候签收。'), ('stormStart','栗婶在庭院等候搜救和补给的消息。')],
@@ -121,11 +121,11 @@ def unavailable(action, choice, step, flags, turn):
             return '鼠帮已拒绝说辞，可以用口粮交换。'
     if action == 'factory-exits' and choice == 'iron' and flags.get('ironOpen'):
         return '通向蛇笼的铁门已开放。'
-    if action == 'cage-listen' and choice == 'flute' and (flags.get('caveOpen') or flags.get('snakeCalmed')):
+    if action == 'cage-listen' and choice == 'flute' and (flags.get('caveOpen') or flags.get('snakeCalmed') or flags.get('snakeDefeated')):
         return '通路已开或守卫蛇已平静，无需再吹笛。'
     if (action, choice) in {('cage-gate','open'), ('cage-listen','sneak')} and flags.get('caveOpen'):
         return '洞窟铁门已经打开。'
-    if (action, choice) == ('cage-gate','open') and not flags.get('snakeCalmed'):
+    if (action, choice) == ('cage-gate','open') and not (flags.get('snakeCalmed') or flags.get('snakeDefeated')):
         return '需要先安抚守卫蛇，或另选绕行。'
     if (action, choice) == ('cave-cheese','take') and flags.get('ernieAwake') and not flags.get('ernieSpoken'):
         return 'Ernie 已醒来，请先与他交谈。'
@@ -180,11 +180,13 @@ def describe_events(view, content, flags, turn):
         if key == 'cage-listen' and 'snake-rhythm' in known:
             if flags.get('caveOpen'):
                 status = '门已经打开，可直接前往熟成洞。'
+            elif flags.get('snakeDefeated'):
+                status = '守卫已被击败，可以接近门闩。'
             elif flags.get('snakeCalmed'):
                 status = '笛声已经奏效，现在可以开启铁门。'
             elif flags.get('snakeAlert'):
                 status = '蛇仍警戒着门闩，再次绕行仍有风险。'
-        if key == 'web-inspect' and 'web-captives' in known and flags.get('spidersAlert') and not flags.get('villagersFreed'):
+        if key == 'web-inspect' and 'web-captives' in known and flags.get('spidersAlert') and not flags.get('spidersCleared') and not flags.get('villagersFreed'):
             status = (status + ' 蜘蛛已经警觉，村民仍未脱困。').strip()
         if key == 'storm-pump' and flags.get('stormStart') and turn-flags['stormStart']+1>=18 and not (flags.get('pump') or flags.get('dredged')):
             status = (status + ' 泵壳进水，启动前还需清淤。').strip()
